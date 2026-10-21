@@ -1,0 +1,65 @@
+{
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for doesn't exist or has been moved.",
+    "action": "Back to dashboard"
+  },
+  "forbidden": {
+    "title": "Access denied",
+    "description": "Your role doesn't include the permission required for this page.",
+    "action": "Back to dashboard",
+    "hint": "Switch to an account with more permissions to explore this area."
+  },
+  "routeError": {
+    "title": "This page failed to load",
+    "description": "An unexpected error occurred while rendering this page.",
+    "retry": "Try again"
+  },
+  "goBack": "Go back",
+  "goHome": "Go to dashboard",
+  "status": {
+    "unauthorized": {
+      "title": "Your session has expired",
+      "description": "Sign in again to continue where you left off.",
+      "hint": "If this keeps happening, the session may have been revoked from another device or the account may be inactive.",
+      "action": "Sign in again"
+    },
+    "serverError": {
+      "title": "Something went wrong on our side",
+      "description": "The page could not be loaded because of an unexpected server error.",
+      "hint": "Try reloading. If the problem persists, check the browser console or the mock API logs.",
+      "action": "Reload page"
+    },
+    "unavailable": {
+      "title": "Service temporarily unavailable",
+      "description": "The server is starting up or briefly overloaded.",
+      "hint": "Wait a few seconds and try again. A real app would surface its retry policy here.",
+      "action": "Try again"
+    },
+    "maintenance": {
+      "title": "We'll be back shortly",
+      "description": "FishAdmin is being updated to serve you better.",
+      "hint": "Scheduled window: 02:00–02:30 UTC. Data already saved in your browser is safe.",
+      "action": "Check again"
+    }
+  },
+  "offline": {
+    "title": "You're offline",
+    "description": "Changes can't be saved until the connection returns.",
+    "restored": "Connection restored.",
+    "retry": "Retry"
+  },
+  "api": {
+    "unauthorized": "Your session has expired. Please sign in again.",
+    "forbidden": "You don't have permission to perform this action.",
+    "notFound": "The requested resource could not be found.",
+    "validation": "Please check the submitted values and try again.",
+    "network": "Network error. Check your connection and try again.",
+    "unknown": "Something went wrong. Please try again."
+  },
+  "boundary": {
+    "title": "Something broke",
+    "description": "The application hit an unexpected error. Reloading usually helps.",
+    "reload": "Reload page"
+  }
+}

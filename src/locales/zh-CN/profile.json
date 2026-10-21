@@ -1,0 +1,40 @@
+{
+  "title": "个人中心",
+  "subtitle": "管理个人信息，并查看你所拥有的权限。",
+  "account": {
+    "role": "角色",
+    "email": "邮箱",
+    "id": "账号 ID"
+  },
+  "form": {
+    "title": "个人资料",
+    "description": "这些信息会展示给工作区内的其他成员。",
+    "name": "姓名",
+    "namePlaceholder": "你的名字",
+    "email": "邮箱",
+    "emailHint": "邮箱由管理员统一管理。",
+    "bio": "个人简介",
+    "bioPlaceholder": "写一段简短的自我介绍…",
+    "avatar": "头像",
+    "changeAvatar": "更换头像",
+    "removeAvatar": "移除",
+    "avatarHint": "支持 PNG、JPG 或 WebP，不超过 2 MB。"
+  },
+  "saveSuccess": "个人资料已更新。",
+  "avatarErrors": {
+    "invalidType": "请选择 PNG、JPG 或 WebP 图片。",
+    "tooLarge": "图片大小不能超过 2 MB。"
+  },
+  "permissions": {
+    "title": "当前权限",
+    "description": "通过角色授予你的权限列表。",
+    "count": "已授予 {{count}} 项",
+    "all": "全部权限",
+    "empty": "暂无已授予的权限。"
+  },
+  "session": {
+    "title": "会话",
+    "description": "退出登录会清除本地会话与缓存数据。",
+    "signOut": "退出当前设备"
+  }
+}

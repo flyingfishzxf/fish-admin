@@ -1,0 +1,20 @@
+{
+  "groups": {
+    "overview": "Overview",
+    "management": "Management",
+    "account": "Account"
+  },
+  "items": {
+    "dashboard": "Dashboard",
+    "ui": "UI Kit",
+    "users": "Users",
+    "roles": "Roles",
+    "permissions": "Permissions",
+    "profile": "Profile",
+    "security": "Security",
+    "settings": "Settings"
+  },
+  "breadcrumbs": {
+    "home": "Home"
+  }
+}

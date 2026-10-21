@@ -1,0 +1,79 @@
+{
+  "title": "Security",
+  "subtitle": "Manage your password, two-factor authentication and active sessions.",
+  "demo": {
+    "title": "Demo security model",
+    "description": "This is a frontend demo. Tokens live in localStorage and every check runs in your browser. A production app must enforce authentication and authorization on the server and should prefer httpOnly cookies."
+  },
+  "password": {
+    "title": "Password",
+    "description": "Use a strong password you do not reuse on other sites.",
+    "current": "Current password",
+    "new": "New password",
+    "confirm": "Confirm new password",
+    "submit": "Update password",
+    "success": "Password updated. Other sessions were signed out.",
+    "hint": "Changing your password signs out every other session.",
+    "error": "Could not update your password.",
+    "errors": {
+      "current": "The current password is incorrect.",
+      "unchanged": "Choose a password you have not used here.",
+      "weak": "Use at least 8 characters with a letter and a number."
+    }
+  },
+  "twoFactor": {
+    "title": "Two-factor authentication",
+    "description": "Ask for a one-time code after your password.",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "enable": "Enable 2FA",
+    "disable": "Disable 2FA",
+    "enabledDescription": "Sign-in now requires a six-digit verification code.",
+    "disabledDescription": "Add a second step to protect your account.",
+    "setup": {
+      "title": "Set up two-factor authentication",
+      "description": "Add the secret to an authenticator app, then enter the six-digit code it shows.",
+      "secret": "Secret key",
+      "copy": "Copy secret",
+      "copied": "Secret copied.",
+      "demoNote": "Demo mode uses a fixed secret and the code {{code}}. Never ship a fixed TOTP secret.",
+      "code": "Verification code",
+      "confirm": "Verify and enable",
+      "success": "Two-factor authentication enabled.",
+      "error": "Could not enable two-factor authentication."
+    },
+    "disableDialog": {
+      "title": "Disable two-factor authentication?",
+      "description": "Confirm your password. Other sessions will be signed out.",
+      "password": "Password",
+      "confirm": "Disable 2FA",
+      "success": "Two-factor authentication disabled.",
+      "error": "Could not disable two-factor authentication."
+    }
+  },
+  "sessions": {
+    "title": "Active sessions",
+    "description": "Devices currently signed in to your account.",
+    "current": "This device",
+    "lastActive": "Last active {{time}}",
+    "created": "Signed in {{time}}",
+    "ip": "IP {{ip}}",
+    "revoke": "Revoke",
+    "revokeOthers": "Sign out other sessions",
+    "revokeSuccess": "Session revoked.",
+    "revokeAllSuccess": "All other sessions were signed out.",
+    "revokeError": "Could not revoke the session.",
+    "loadError": "Could not load your sessions.",
+    "empty": "No active sessions.",
+    "confirm": {
+      "title": "Sign out other sessions?",
+      "description": "Every other device will need to sign in again. This device stays signed in.",
+      "confirm": "Sign out others"
+    },
+    "confirmRevoke": {
+      "title": "Sign out this session?",
+      "description": "This device will need to sign in again. You can repeat this for every device you no longer use.",
+      "confirm": "Sign out session"
+    }
+  }
+}

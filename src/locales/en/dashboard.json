@@ -1,0 +1,60 @@
+{
+  "title": "Dashboard",
+  "subtitle": "A quick look at how your workspace is performing.",
+  "welcome": "Welcome back, {{name}}",
+  "range": {
+    "label": "Time range",
+    "7": "Last 7 days",
+    "30": "Last 30 days"
+  },
+  "kpis": {
+    "revenue": "Revenue",
+    "activeUsers": "Active users",
+    "signups": "New signups",
+    "conversion": "Conversion rate"
+  },
+  "charts": {
+    "revenue": {
+      "title": "Revenue",
+      "description": "Daily revenue for the selected period."
+    },
+    "traffic": {
+      "title": "Traffic and signups",
+      "description": "Visits compared with new signups."
+    },
+    "channels": {
+      "title": "Acquisition channels",
+      "description": "Where your visitors come from."
+    },
+    "activity": {
+      "title": "Recent activity",
+      "description": "The latest changes across your workspace."
+    }
+  },
+  "series": {
+    "revenue": "Revenue",
+    "visits": "Visits",
+    "signups": "Signups"
+  },
+  "channels": {
+    "direct": "Direct",
+    "organic": "Organic search",
+    "referral": "Referral",
+    "social": "Social",
+    "email": "Email"
+  },
+  "activity": {
+    "user.created": "{{actor}} added {{target}} to the workspace",
+    "user.updated": "{{actor}} updated {{target}}",
+    "user.deleted": "{{actor}} removed {{target}}",
+    "user.restored": "{{actor}} restored {{target}}",
+    "role.updated": "{{actor}} changed permissions for {{target}}",
+    "auth.login": "{{actor}} signed in",
+    "profile.updated": "{{actor}} updated their profile",
+    "empty": "No activity yet."
+  },
+  "errors": {
+    "title": "Dashboard unavailable",
+    "description": "We couldn't load your metrics. Please try again."
+  }
+}

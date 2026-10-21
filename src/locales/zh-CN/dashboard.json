@@ -1,0 +1,60 @@
+{
+  "title": "工作台",
+  "subtitle": "快速了解工作区的运行情况。",
+  "welcome": "欢迎回来，{{name}}",
+  "range": {
+    "label": "时间范围",
+    "7": "最近 7 天",
+    "30": "最近 30 天"
+  },
+  "kpis": {
+    "revenue": "收入",
+    "activeUsers": "活跃用户",
+    "signups": "新增注册",
+    "conversion": "转化率"
+  },
+  "charts": {
+    "revenue": {
+      "title": "收入趋势",
+      "description": "所选时间范围内的每日收入。"
+    },
+    "traffic": {
+      "title": "流量与注册",
+      "description": "访问量与新增注册的对比。"
+    },
+    "channels": {
+      "title": "渠道分布",
+      "description": "访问者来自哪些渠道。"
+    },
+    "activity": {
+      "title": "最近动态",
+      "description": "工作区中的最新变更。"
+    }
+  },
+  "series": {
+    "revenue": "收入",
+    "visits": "访问量",
+    "signups": "注册量"
+  },
+  "channels": {
+    "direct": "直接访问",
+    "organic": "自然搜索",
+    "referral": "外部推荐",
+    "social": "社交媒体",
+    "email": "邮件"
+  },
+  "activity": {
+    "user.created": "{{actor}} 将 {{target}} 添加到工作区",
+    "user.updated": "{{actor}} 更新了 {{target}}",
+    "user.deleted": "{{actor}} 移除了 {{target}}",
+    "user.restored": "{{actor}} 恢复了 {{target}}",
+    "role.updated": "{{actor}} 修改了 {{target}} 的权限",
+    "auth.login": "{{actor}} 登录了系统",
+    "profile.updated": "{{actor}} 更新了个人资料",
+    "empty": "暂无动态。"
+  },
+  "errors": {
+    "title": "工作台暂不可用",
+    "description": "指标加载失败，请重试。"
+  }
+}

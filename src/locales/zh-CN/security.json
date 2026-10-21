@@ -1,0 +1,79 @@
+{
+  "title": "账户安全",
+  "subtitle": "管理密码、双因素认证与已登录设备。",
+  "demo": {
+    "title": "演示安全模型",
+    "description": "这是纯前端演示：令牌存放在 localStorage，所有校验都在浏览器中完成。生产环境必须由服务端强制校验身份与权限，并优先使用 httpOnly Cookie。"
+  },
+  "password": {
+    "title": "密码",
+    "description": "请使用未在其他网站复用过的强密码。",
+    "current": "当前密码",
+    "new": "新密码",
+    "confirm": "确认新密码",
+    "submit": "更新密码",
+    "success": "密码已更新，其他会话已被退出。",
+    "hint": "修改密码会退出除当前设备外的所有会话。",
+    "error": "密码更新失败。",
+    "errors": {
+      "current": "当前密码不正确。",
+      "unchanged": "请使用与此前不同的密码。",
+      "weak": "密码至少 8 位，且需包含字母和数字。"
+    }
+  },
+  "twoFactor": {
+    "title": "双因素认证",
+    "description": "在密码之外增加一次性验证码。",
+    "enabled": "已启用",
+    "disabled": "未启用",
+    "enable": "启用双因素",
+    "disable": "关闭双因素",
+    "enabledDescription": "登录时还需要输入六位验证码。",
+    "disabledDescription": "增加一道验证，进一步保护账号。",
+    "setup": {
+      "title": "设置双因素认证",
+      "description": "将密钥添加到验证器应用，然后输入应用生成的六位验证码。",
+      "secret": "密钥",
+      "copy": "复制密钥",
+      "copied": "密钥已复制。",
+      "demoNote": "演示模式使用固定密钥和验证码 {{code}}。切勿在生产环境使用固定 TOTP 密钥。",
+      "code": "验证码",
+      "confirm": "验证并启用",
+      "success": "双因素认证已启用。",
+      "error": "启用双因素认证失败。"
+    },
+    "disableDialog": {
+      "title": "关闭双因素认证？",
+      "description": "请输入密码确认。其他会话将被退出。",
+      "password": "密码",
+      "confirm": "关闭双因素",
+      "success": "双因素认证已关闭。",
+      "error": "关闭双因素认证失败。"
+    }
+  },
+  "sessions": {
+    "title": "活跃会话",
+    "description": "当前登录此账号的设备。",
+    "current": "当前设备",
+    "lastActive": "最近活动：{{time}}",
+    "created": "登录时间：{{time}}",
+    "ip": "IP {{ip}}",
+    "revoke": "撤销",
+    "revokeOthers": "退出其他会话",
+    "revokeSuccess": "会话已撤销。",
+    "revokeAllSuccess": "其他会话均已退出。",
+    "revokeError": "撤销会话失败。",
+    "loadError": "会话加载失败。",
+    "empty": "暂无活跃会话。",
+    "confirm": {
+      "title": "退出其他所有会话？",
+      "description": "其他设备需要重新登录，当前设备保持登录状态。",
+      "confirm": "退出其他会话"
+    },
+    "confirmRevoke": {
+      "title": "退出该会话？",
+      "description": "该设备需要重新登录。你可以对每一台不再使用的设备重复此操作。",
+      "confirm": "退出该会话"
+    }
+  }
+}

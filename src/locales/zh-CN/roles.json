@@ -1,0 +1,60 @@
+{
+  "title": "角色",
+  "subtitle": "定义每个角色可以看到和操作的内容。",
+  "searchPlaceholder": "搜索角色…",
+  "system": "系统内置",
+  "usersCount_one": "{{count}} 位用户",
+  "usersCount_other": "{{count}} 位用户",
+  "permissionsCount_one": "{{count}} 项权限",
+  "permissionsCount_other": "{{count}} 项权限",
+  "wildcard": "全部权限",
+  "editPermissions": "编辑权限",
+  "viewPermissions": "查看权限",
+  "dialog": {
+    "title": "{{role}} 的权限",
+    "description": "变更将在相关用户下次加载应用时生效。",
+    "save": "保存权限"
+  },
+  "saveSuccess": "权限已更新。",
+  "refreshHint": "重新登录后可在当前会话中看到新的权限。",
+  "selectAll": "全选",
+  "clearAll": "清空",
+  "readOnly": "你可以查看角色，但无法修改其权限。",
+  "groups": {
+    "dashboard": "工作台",
+    "user": "用户",
+    "role": "角色",
+    "permission": "权限",
+    "demo": "演示工具"
+  },
+  "permissionItems": {
+    "dashboardRead": "查看工作台",
+    "dashboardReadDescription": "访问工作台、指标卡片与图表。",
+    "userRead": "查看用户",
+    "userReadDescription": "浏览用户列表并查看用户详情。",
+    "userCreate": "创建用户",
+    "userCreateDescription": "邀请新成员加入工作区。",
+    "userUpdate": "更新用户",
+    "userUpdateDescription": "编辑用户资料、角色与状态。",
+    "userDelete": "删除用户",
+    "userDeleteDescription": "将成员从工作区中永久移除。",
+    "roleRead": "查看角色",
+    "roleReadDescription": "查看角色及其关联的权限。",
+    "roleUpdate": "更新角色",
+    "roleUpdateDescription": "修改角色的权限集合。",
+    "permissionRead": "查看权限",
+    "permissionReadDescription": "查看权限注册表。",
+    "demoReset": "重置演示数据",
+    "demoResetDescription": "将演示工作区恢复到初始种子数据。"
+  },
+  "descriptions": {
+    "admin": "拥有工作区全部功能的访问权限。",
+    "manager": "管理成员与角色，但不能删除用户。",
+    "viewer": "只读访问，适合查看报表与审计。"
+  },
+  "empty": {
+    "title": "没有找到角色",
+    "description": "试试其他搜索关键词。"
+  },
+  "saveNote": "导航与每次写操作都会校验权限。"
+}

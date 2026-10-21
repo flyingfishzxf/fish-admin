@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="FishAdmin is an open-source React admin dashboard starter with RBAC, i18n, theming and a realistic mock API."
+    />
+    <meta name="theme-color" content="#fcfbfd" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FishAdmin" />
+    <meta property="og:title" content="FishAdmin — Modern Admin Dashboard Starter" />
+    <meta
+      property="og:description"
+      content="Open-source React admin starter with RBAC, i18n, theming and a realistic mock API."
+    />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FishAdmin — Modern Admin Dashboard Starter" />
+    <meta
+      name="twitter:description"
+      content="Open-source React admin starter with RBAC, i18n, theming and a realistic mock API."
+    />
+    <meta name="twitter:image" content="/og.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>FishAdmin — Modern Admin Dashboard Starter</title>
+    <script>
+      ;(function () {
+        try {
+          var raw = localStorage.getItem('fish-admin:theme')
+          var state = raw ? JSON.parse(raw).state : null
+          var mode = (state && state.mode) || 'system'
+          var accent = (state && state.accent) || 'violet'
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          var dark = mode === 'dark' || (mode === 'system' && prefersDark)
+          var root = document.documentElement
+          root.classList.toggle('dark', dark)
+          root.dataset.accent = accent
+          root.style.colorScheme = dark ? 'dark' : 'light'
+        } catch (error) {
+          /* ignore malformed preferences */
+        }
+      })()
+    </script>
+    <style>
+      #root {
+        min-height: 100vh;
+        background: #fcfbfd;
+      }
+      .dark #root {
+        background: #191820;
+      }
+      .boot-screen {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        font-family:
+          'Inter Variable',
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          sans-serif;
+      }
+      .boot-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        box-shadow: 0 12px 30px -12px rgb(124 58 237 / 55%);
+      }
+      .boot-title {
+        color: #2b2440;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .dark .boot-title {
+        color: #f1eef8;
+      }
+      .boot-spinner {
+        width: 28px;
+        height: 28px;
+        border: 2px solid color-mix(in oklab, #7c5cff 22%, transparent);
+        border-top-color: #7c5cff;
+        border-radius: 9999px;
+        animation: boot-spin 0.8s linear infinite;
+      }
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .boot-spinner {
+          animation-duration: 2s;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot-screen" aria-hidden="true">
+        <img class="boot-logo" src="/favicon.svg" alt="" width="44" height="44" />
+        <div class="boot-title">FishAdmin</div>
+        <div class="boot-spinner"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

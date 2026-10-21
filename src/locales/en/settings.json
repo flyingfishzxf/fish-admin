@@ -1,0 +1,75 @@
+{
+  "title": "Settings",
+  "subtitle": "Personalize the workspace and manage demo data.",
+  "appearance": {
+    "title": "Appearance",
+    "description": "Choose how FishAdmin looks on this device.",
+    "mode": "Theme mode",
+    "modes": {
+      "light": "Light",
+      "lightDescription": "Bright and clean, ideal for daytime work.",
+      "dark": "Dark",
+      "darkDescription": "Easy on the eyes in low light.",
+      "system": "System",
+      "systemDescription": "Follow your operating system setting."
+    },
+    "accent": "Accent color",
+    "accentDescription": "Used for primary actions, links and highlights.",
+    "accents": {
+      "violet": "Violet",
+      "cyan": "Cyan",
+      "emerald": "Emerald",
+      "orange": "Orange",
+      "rose": "Rose"
+    }
+  },
+  "language": {
+    "title": "Language",
+    "description": "Interface language. Dates and numbers follow the same locale.",
+    "label": "Display language",
+    "languages": {
+      "en": "English",
+      "zh-CN": "简体中文"
+    }
+  },
+  "security": {
+    "title": "Account security",
+    "description": "Password, two-factor authentication and active sessions.",
+    "action": "Manage security"
+  },
+  "errorPages": {
+    "title": "Status page previews",
+    "description": "Full-page states you can wire into your own routing and error handling. Each preview opens in a new tab.",
+    "open": "Open preview"
+  },
+  "demo": {
+    "title": "Demo data",
+    "description": "The demo stores users, roles and activity in your browser. Reset to restore the original seed.",
+    "reset": "Reset demo data",
+    "dialog": {
+      "title": "Reset demo data?",
+      "description": "All changes you made to users and roles will be lost, and the demo accounts will be restored.",
+      "confirm": "Reset data"
+    },
+    "success": "Demo data has been reset.",
+    "error": "Could not reset demo data."
+  },
+  "about": {
+    "title": "About",
+    "description": "Version information and project links.",
+    "version": "Version",
+    "stack": "Stack",
+    "license": "License",
+    "repository": "GitHub repository",
+    "docs": "Documentation",
+    "builtWith": "Built with React 19, TanStack Router, Tailwind CSS 4 and shadcn/ui."
+  },
+  "storage": {
+    "title": "Local storage",
+    "description": "Theme, language, session and mock data are stored locally in this browser.",
+    "themeKey": "Theme",
+    "languageKey": "Language",
+    "sessionKey": "Session",
+    "dataKey": "Demo database"
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "title": "Users",
+  "subtitle": "Manage members, roles and access across your workspace.",
+  "addUser": "Add user",
+  "editUser": "Edit user",
+  "searchPlaceholder": "Search by name or email…",
+  "filters": {
+    "role": "Role",
+    "status": "Status",
+    "allRoles": "All roles",
+    "allStatuses": "All statuses"
+  },
+  "columns": {
+    "name": "User",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "department": "Department",
+    "createdAt": "Joined",
+    "lastActive": "Last active",
+    "actions": "Actions"
+  },
+  "form": {
+    "createTitle": "Add a new user",
+    "createDescription": "Invite a teammate and choose their initial role.",
+    "editTitle": "Edit user",
+    "editDescription": "Update this member's profile and access.",
+    "name": "Full name",
+    "namePlaceholder": "Jane Doe",
+    "email": "Email",
+    "emailPlaceholder": "jane@company.com",
+    "role": "Role",
+    "rolePlaceholder": "Select a role",
+    "status": "Status",
+    "department": "Department",
+    "departmentPlaceholder": "Select a department"
+  },
+  "actions": {
+    "edit": "Edit user",
+    "delete": "Delete user",
+    "exportCsv": "Export CSV",
+    "columns": "Columns",
+    "resetFilters": "Reset filters"
+  },
+  "delete": {
+    "title": "Delete {{name}}?",
+    "description": "This removes the user from the workspace. This action cannot be undone.",
+    "confirm": "Delete user",
+    "success": "{{name}} has been deleted."
+  },
+  "createSuccess": "User created.",
+  "updateSuccess": "User updated.",
+  "exportSuccess": "CSV exported.",
+  "total": "{{count}} users",
+  "summary": "Showing {{from}}–{{to}} of {{total}}",
+  "empty": {
+    "title": "No users yet",
+    "description": "Add your first teammate to get started.",
+    "action": "Add user"
+  },
+  "noResults": {
+    "title": "No matching users",
+    "description": "Try adjusting your search or filters.",
+    "action": "Clear filters"
+  },
+  "noPermission": "You don't have permission to do that.",
+  "neverActive": "Never",
+  "inviteSent": "Invitation sent.",
+  "emailTaken": "A user with this email already exists.",
+  "deleteError": "Could not delete this user. Please try again.",
+  "deleteSelf": "You cannot delete your own account.",
+  "deactivateSelf": "You cannot deactivate your own account.",
+  "changeRoleSelf": "You cannot change your own role.",
+  "bulk": {
+    "regionLabel": "Bulk actions",
+    "selected_one": "{{count}} selected",
+    "selected_other": "{{count}} selected",
+    "selectAll": "Select all users on this page",
+    "selectRow": "Select {{name}}",
+    "setStatus": "Set status",
+    "delete": "Delete",
+    "deleteTitle_one": "Delete {{count}} user?",
+    "deleteTitle_other": "Delete {{count}} users?",
+    "deleteDescription": "Selected users will be removed from the workspace. You can undo this for a few seconds.",
+    "deleteConfirm_one": "Delete user",
+    "deleteConfirm_other": "Delete {{count}} users",
+    "clear": "Clear selection",
+    "statusSuccess_one": "Status updated for {{count}} user.",
+    "statusSuccess_other": "Status updated for {{count}} users.",
+    "statusError": "Could not update status. Please try again.",
+    "deleteSuccess_one": "{{count}} user deleted.",
+    "deleteSuccess_other": "{{count}} users deleted.",
+    "deleteError": "Could not delete the selected users. Please try again.",
+    "noChanges": "Nothing to change.",
+    "undo": "Undo",
+    "restoreSuccess_one": "{{count}} user restored.",
+    "restoreSuccess_other": "{{count}} users restored.",
+    "restoreError": "Could not restore users. Please try again."
+  },
+  "views": {
+    "title": "Views",
+    "saveHint": "Save the current search, filters and sorting.",
+    "namePlaceholder": "View name",
+    "save": "Save",
+    "empty": "No saved views yet.",
+    "saved": "View saved.",
+    "deleted": "View deleted.",
+    "delete": "Delete view"
+  },
+  "context": {
+    "copyEmail": "Copy email",
+    "emailCopied": "Email copied.",
+    "copyFailed": "Could not copy email.",
+    "setStatus": "Set status"
+  },
+  "density": {
+    "label": "Row density",
+    "comfortable": "Comfortable",
+    "compact": "Compact"
+  }
+}

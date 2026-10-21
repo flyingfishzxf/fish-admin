@@ -1,0 +1,25 @@
+{
+  "title": "Permissions",
+  "subtitle": "The permission registry used by routes, menus and actions.",
+  "searchPlaceholder": "Search permissions…",
+  "allGroups": "All groups",
+  "columns": {
+    "code": "Code",
+    "group": "Group",
+    "label": "Permission",
+    "description": "Description"
+  },
+  "count": "{{count}} permissions registered",
+  "readOnlyNote": "This page is read-only. Grant permissions to roles from the Roles page.",
+  "empty": {
+    "title": "No permissions found",
+    "description": "Try a different search term or group."
+  },
+  "groups": {
+    "dashboard": "Dashboard",
+    "user": "Users",
+    "role": "Roles",
+    "permission": "Permissions",
+    "demo": "Demo tools"
+  }
+}

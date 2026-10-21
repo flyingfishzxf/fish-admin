@@ -1,0 +1,148 @@
+# 基于角色的权限控制
+
+FishAdmin 演示了一套完整的客户端权限闭环：导航、路由与按钮都读取同一个权限注册表，用来塑造用户能看到的界面。
+
+> **客户端 RBAC 不是安全边界。** 任何人都可以修改浏览器中的 JavaScript、构造 API 请求或重放令牌。客户端检查只决定渲染什么。后端必须认证每个请求并校验每个操作。Mock API 也执行同样的权限码校验，方便你理解真实服务端应实现的契约。
+
+## 模型
+
+权限码采用 `resource:action` 格式：
+
+| 权限码            | 保护对象                                                          |
+| ----------------- | ----------------------------------------------------------------- |
+| `dashboard:read`  | 工作台路由与 KPI 数据                                             |
+| `user:read`       | 用户路由、用户列表与角色选项                                      |
+| `user:create`     | 「新建用户」按钮与 `POST /api/users`                              |
+| `user:update`     | 编辑操作、`PATCH /api/users/:id` 与 `POST /api/users/bulk-status` |
+| `user:delete`     | 删除操作、`DELETE /api/users/:id` 与批量删除/恢复端点             |
+| `role:read`       | 角色路由与 `GET /api/roles`                                       |
+| `role:update`     | 编辑角色权限                                                      |
+| `permission:read` | 只读权限页                                                        |
+| `demo:reset`      | 重置演示数据库                                                    |
+
+有两个区域刻意不设权限码：`/ui`（组件演练场对所有已登录角色都有用），以及只对当前用户生效的账户页 `/profile` 与 `/security`。
+
+`src/config/permissions.ts` 是唯一事实来源，导出：
+
+- `PERMISSION_CODES`：全应用使用的类型化常量。
+- `PERMISSIONS`：角色编辑器与权限页所需的展示元数据（分组、label 与 description 的 i18n key）。
+- `DEMO_ROLE_PERMISSIONS`：三个种子角色的初始授权。
+
+`src/lib/permissions.ts` 中的 `hasPermission()` 支持精确匹配与两种通配：
+
+- `*` 授予全部权限（管理员角色使用）。
+- `resource:*` 授予某资源下的全部操作，例如 `user:*`。
+
+有效权限列表来自 `GET /api/auth/me`，不随用户资料落库。管理员修改角色后，下一次 `/me` 请求即反映新权限——角色编辑器提示刷新会话正是这个原因。
+
+## 演示角色
+
+| 角色                    | 权限                                                                     |
+| ----------------------- | ------------------------------------------------------------------------ |
+| 管理员（Administrator） | `*`                                                                      |
+| 经理（Manager）         | `dashboard:read`、`user:read`、`user:create`、`user:update`、`role:read` |
+| 访客（Viewer）          | `dashboard:read`、`user:read`                                            |
+
+差异是刻意设计且肉眼可见的：
+
+- 管理员能看到全部菜单，可删除用户、编辑角色权限、重置演示数据。
+- 经理可新建与编辑用户，但不能删除；无法打开 `/permissions`，也不能编辑角色。
+- 访客只能看到工作台与用户表，所有写操作入口都隐藏。
+
+以经理身份直接输入 `/permissions`：路由守卫会跳转到 `/403`。
+
+## 四层校验
+
+| 层级     | 位置                                      | 行为                                                                       |
+| -------- | ----------------------------------------- | -------------------------------------------------------------------------- |
+| 导航     | `src/config/nav.ts` + `filterNavGroups()` | 隐藏当前用户无权使用的入口，空分组自动移除。面包屑与命令面板读取同一棵树。 |
+| 路由     | 各叶子路由的 `beforeLoad`                 | 未登录 → `/login?redirect=…`；已登录但无权限 → `/403`。                    |
+| 界面操作 | `<Can permission="...">` 或 `useCan()`    | 隐藏或禁用按钮与菜单项。                                                   |
+| 服务端   | Mock handlers / 你的后端                  | 未认证返回 `401`，角色缺少权限返回 `403`。                                 |
+
+`_app/route.tsx` 只校验会话是否存在。权限检查放在叶子路由，保证刚被拒绝的用户仍能访问 `/403`。
+
+```tsx
+// src/routes/_app/users.tsx
+export const Route = createFileRoute('/_app/users')({
+  beforeLoad: async (context) => {
+    requirePermission(PERMISSION_CODES.userRead)(context)
+    await ensureNamespaces(['users', 'roles'])
+  },
+  component: UsersPage,
+})
+```
+
+条件渲染使用组件，可传入占位内容：
+
+```tsx
+<Can permission="user:delete" fallback={<span>只读</span>}>
+  <Button variant="destructive">删除</Button>
+</Can>
+```
+
+需要在逻辑中取得布尔值时——禁用状态、条件列或事件处理——调用 `useCan()`：
+
+```tsx
+const canDelete = useCan('user:delete')
+```
+
+## 四步新增一个权限
+
+假设要新增发票管理，权限码为 `invoice:read`。
+
+1. **注册权限**，修改 `src/config/permissions.ts`：
+
+   ```ts
+   export const PERMISSION_CODES = {
+     // ...
+     invoiceRead: 'invoice:read',
+   } as const
+   ```
+
+   将其加入 `PERMISSIONS`，填写分组与翻译 key。若为新的分组，需加入 `PERMISSION_GROUPS`，并在两种语言中补充 `roles:permissionItems.*`。最后在 `DEMO_ROLE_PERMISSIONS` 中授予相应角色。
+
+2. **添加导航项**，修改 `src/config/nav.ts`：
+
+   ```ts
+   {
+     titleKey: 'nav:items.invoices',
+     to: '/invoices',
+     icon: ReceiptText,
+     permission: PERMISSION_CODES.invoiceRead,
+   }
+   ```
+
+   同时扩展 `AppPath` 并添加 `nav:items.invoices` 翻译。
+
+3. **创建带守卫的路由**，`src/routes/_app/invoices.tsx`：
+
+   ```tsx
+   export const Route = createFileRoute('/_app/invoices')({
+     beforeLoad: (context) => requirePermission(PERMISSION_CODES.invoiceRead)(context),
+     component: InvoicesPage,
+   })
+   ```
+
+4. **保护操作**：界面上使用 `<Can permission={PERMISSION_CODES.invoiceRead}>`，服务端拒绝缺少同一权限的请求。
+
+完成。侧边栏、面包屑与命令面板由 `nav.ts` 派生；角色编辑器与权限页由 `PERMISSIONS` 派生。
+
+## 代码库中的防呆措施
+
+- **导航漂移测试**——`src/config/nav.test.ts` 用生成的路由树解析每个导航路径，菜单项失去对应路由会导致测试失败。
+- **注册表校验**——翻译测试检查每个权限 label 在中英文中都存在。
+- **单飞刷新**——`401` 只触发一次刷新；失败则清空会话并回到登录页。
+- **Mock 403**——写 handler 在修改数据前调用 `authorize()`。Playwright 套件验证访客直接 `POST /api/users` 会得到 `403`。
+- **批量操作部分成功**——批量 handler 会逐行校验，而不只看调用者：当前用户本人和已删除的账号会放在 `skipped` 中返回，因此经理在批量删除中提交自己的 id 什么都改变不了。
+- **禁止自删**——即使是管理员也不能删除自己的账号，服务端返回 `CANNOT_DELETE_SELF`。
+- **禁止自锁**——账号本人不能停用自己或修改自己的角色（`CANNOT_DEACTIVATE_SELF`、`CANNOT_CHANGE_OWN_ROLE`）。没有这两道校验，管理员可以把自己降为访客，而撤销该操作所需的权限也同时消失，演示数据就此卡死。
+- **认证状态与 RBAC 分离**——注册、邮箱验证、密码重置、邀请与 MFA 步骤都不依赖任何权限码即可运行，且 mock 登录 handler 像真实服务端一样校验 `emailVerified`、`status` 与锁定状态。
+
+## 上线检查清单
+
+1. 由你自己的 `/auth/me`（或独立权限接口）返回用户的有效权限。
+2. 每个请求都在服务端校验令牌与权限，绝不相信客户端提交的角色或权限。
+3. 保留 UI 检查——它们提供良好体验——但只当作提示。
+4. 优先使用存放在 `httpOnly`、`Secure`、`SameSite` Cookie 中的短期 access token。演示项目因没有后端才把令牌放在 `localStorage`，真实系统不要照搬。
+5. 记录并审查授权失败；持续的 `403` 是有价值的信号。

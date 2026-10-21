@@ -1,0 +1,63 @@
+name: Feature request
+description: Suggest an improvement or a new capability.
+title: '[Feature]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        FishAdmin aims to stay a focused starter. Features that belong in a real product rather than a template may be better left to downstream projects. Explain the problem before the solution.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the situation and who benefits.
+      placeholder: Teams using the template need to...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior or API you would like. Sketches and examples are welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Existing workarounds, other libraries or a simpler approach.
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Authentication / session
+        - Permissions / RBAC
+        - Dashboard / charts
+        - Users table / CRUD
+        - Roles / permissions pages
+        - Profile / settings
+        - Theme / design system
+        - Internationalization
+        - Mock API / MSW
+        - Testing / tooling
+        - Build / deployment
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Links, prior art or screenshots.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and discussions for this idea.
+          required: true
+        - label: I understand this is a template, and maintainers may decline features that add product-specific scope.
+          required: true

@@ -1,0 +1,75 @@
+{
+  "title": "设置",
+  "subtitle": "个性化工作区外观，并管理演示数据。",
+  "appearance": {
+    "title": "外观",
+    "description": "选择 FishAdmin 在此设备上的显示方式。",
+    "mode": "主题模式",
+    "modes": {
+      "light": "浅色",
+      "lightDescription": "明亮清爽，适合白天使用。",
+      "dark": "深色",
+      "darkDescription": "光线较暗时更护眼。",
+      "system": "跟随系统",
+      "systemDescription": "与操作系统的设置保持一致。"
+    },
+    "accent": "强调色",
+    "accentDescription": "用于主要操作、链接与高亮。",
+    "accents": {
+      "violet": "紫罗兰",
+      "cyan": "青色",
+      "emerald": "翡翠绿",
+      "orange": "橙色",
+      "rose": "玫瑰红"
+    }
+  },
+  "language": {
+    "title": "语言",
+    "description": "界面语言。日期与数字也会使用相同的区域设置。",
+    "label": "显示语言",
+    "languages": {
+      "en": "English",
+      "zh-CN": "简体中文"
+    }
+  },
+  "security": {
+    "title": "账户安全",
+    "description": "密码、双因素认证与已登录设备。",
+    "action": "管理账户安全"
+  },
+  "errorPages": {
+    "title": "状态页预览",
+    "description": "可接入自身路由与错误处理的全屏状态页。每个预览会在新标签页中打开。",
+    "open": "打开预览"
+  },
+  "demo": {
+    "title": "演示数据",
+    "description": "演示数据保存在浏览器本地。重置可恢复初始种子数据。",
+    "reset": "重置演示数据",
+    "dialog": {
+      "title": "重置演示数据？",
+      "description": "你对用户和角色所做的所有更改都会丢失，演示账号将恢复初始状态。",
+      "confirm": "重置数据"
+    },
+    "success": "演示数据已重置。",
+    "error": "重置演示数据失败。"
+  },
+  "about": {
+    "title": "关于",
+    "description": "版本信息与项目链接。",
+    "version": "版本",
+    "stack": "技术栈",
+    "license": "许可证",
+    "repository": "GitHub 仓库",
+    "docs": "文档",
+    "builtWith": "基于 React 19、TanStack Router、Tailwind CSS 4 与 shadcn/ui 构建。"
+  },
+  "storage": {
+    "title": "本地存储",
+    "description": "主题、语言、会话与演示数据都保存在此浏览器中。",
+    "themeKey": "主题",
+    "languageKey": "语言",
+    "sessionKey": "会话",
+    "dataKey": "演示数据库"
+  }
+}

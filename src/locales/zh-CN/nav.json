@@ -1,0 +1,20 @@
+{
+  "groups": {
+    "overview": "概览",
+    "management": "管理",
+    "account": "账户"
+  },
+  "items": {
+    "dashboard": "工作台",
+    "ui": "组件库",
+    "users": "用户",
+    "roles": "角色",
+    "permissions": "权限",
+    "profile": "个人中心",
+    "security": "账户安全",
+    "settings": "设置"
+  },
+  "breadcrumbs": {
+    "home": "首页"
+  }
+}

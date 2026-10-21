@@ -1,0 +1,25 @@
+{
+  "title": "权限",
+  "subtitle": "路由、菜单与操作共同依赖的权限注册表。",
+  "searchPlaceholder": "搜索权限…",
+  "allGroups": "全部分组",
+  "columns": {
+    "code": "权限码",
+    "group": "分组",
+    "label": "权限",
+    "description": "说明"
+  },
+  "count": "共注册 {{count}} 项权限",
+  "readOnlyNote": "此页面只读。请前往角色页面为角色授予权限。",
+  "empty": {
+    "title": "没有匹配的权限",
+    "description": "试试其他关键词或分组。"
+  },
+  "groups": {
+    "dashboard": "工作台",
+    "user": "用户",
+    "role": "角色",
+    "permission": "权限",
+    "demo": "演示工具"
+  }
+}

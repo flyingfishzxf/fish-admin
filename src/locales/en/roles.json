@@ -1,0 +1,60 @@
+{
+  "title": "Roles",
+  "subtitle": "Define what each role can see and do.",
+  "searchPlaceholder": "Search roles…",
+  "system": "System",
+  "usersCount_one": "{{count}} user",
+  "usersCount_other": "{{count}} users",
+  "permissionsCount_one": "{{count}} permission",
+  "permissionsCount_other": "{{count}} permissions",
+  "wildcard": "All permissions",
+  "editPermissions": "Edit permissions",
+  "viewPermissions": "View permissions",
+  "dialog": {
+    "title": "Permissions for {{role}}",
+    "description": "Changes apply the next time the affected users load the app.",
+    "save": "Save permissions"
+  },
+  "saveSuccess": "Permissions updated.",
+  "refreshHint": "Re-authenticate to see the new permissions in your own session.",
+  "selectAll": "Select all",
+  "clearAll": "Clear all",
+  "readOnly": "You can view roles, but not change their permissions.",
+  "groups": {
+    "dashboard": "Dashboard",
+    "user": "Users",
+    "role": "Roles",
+    "permission": "Permissions",
+    "demo": "Demo tools"
+  },
+  "permissionItems": {
+    "dashboardRead": "View dashboard",
+    "dashboardReadDescription": "Access the dashboard, KPIs and charts.",
+    "userRead": "View users",
+    "userReadDescription": "Browse the user list and open user details.",
+    "userCreate": "Create users",
+    "userCreateDescription": "Invite new members to the workspace.",
+    "userUpdate": "Update users",
+    "userUpdateDescription": "Edit user profiles, roles and status.",
+    "userDelete": "Delete users",
+    "userDeleteDescription": "Permanently remove members from the workspace.",
+    "roleRead": "View roles",
+    "roleReadDescription": "See roles and the permissions attached to them.",
+    "roleUpdate": "Update roles",
+    "roleUpdateDescription": "Change the permission set of a role.",
+    "permissionRead": "View permissions",
+    "permissionReadDescription": "Inspect the permission registry.",
+    "demoReset": "Reset demo data",
+    "demoResetDescription": "Restore the demo workspace to its seeded state."
+  },
+  "descriptions": {
+    "admin": "Full access to every feature in the workspace.",
+    "manager": "Manages people and roles, but cannot delete users.",
+    "viewer": "Read-only access for reporting and audits."
+  },
+  "empty": {
+    "title": "No roles found",
+    "description": "Try a different search term."
+  },
+  "saveNote": "Permissions are checked on navigation and on every write request."
+}

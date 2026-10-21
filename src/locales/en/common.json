@@ -1,0 +1,135 @@
+{
+  "app": {
+    "name": "FishAdmin",
+    "tagline": "A modern admin starter for React teams"
+  },
+  "actions": {
+    "save": "Save",
+    "saveChanges": "Save changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "confirm": "Confirm",
+    "close": "Close",
+    "search": "Search",
+    "reset": "Reset",
+    "retry": "Try again",
+    "refresh": "Refresh",
+    "back": "Back",
+    "view": "View",
+    "viewAll": "View all",
+    "export": "Export",
+    "add": "Add",
+    "copy": "Copy",
+    "copied": "Copied",
+    "more": "More",
+    "clearFilters": "Clear filters",
+    "clearSearch": "Clear search",
+    "download": "Download",
+    "upload": "Upload",
+    "change": "Change",
+    "update": "Update",
+    "submit": "Submit",
+    "signOut": "Sign out",
+    "loading": "Loading…",
+    "saving": "Saving…"
+  },
+  "states": {
+    "loading": "Loading…",
+    "empty": {
+      "title": "Nothing here yet",
+      "description": "Once there is data to show, it will appear here."
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "We couldn't load this content. Please try again."
+    }
+  },
+  "status": {
+    "active": "Active",
+    "invited": "Invited",
+    "inactive": "Inactive"
+  },
+  "departments": {
+    "Engineering": "Engineering",
+    "Product": "Product",
+    "Design": "Design",
+    "Operations": "Operations",
+    "Marketing": "Marketing",
+    "Finance": "Finance"
+  },
+  "table": {
+    "page": "Page",
+    "pageOf": "Page {{page}} of {{pageCount}}",
+    "rowsPerPage": "Rows per page",
+    "selected": "{{count}} selected",
+    "columns": "Columns",
+    "noResults": "No results",
+    "summary": "Showing {{from}}–{{to}} of {{total}}",
+    "previous": "Previous page",
+    "next": "Next page"
+  },
+  "theme": {
+    "label": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "toggle": "Toggle theme"
+  },
+  "language": {
+    "label": "Language",
+    "switch": "Change language",
+    "en": "English",
+    "zh-CN": "简体中文"
+  },
+  "command": {
+    "title": "Command menu",
+    "description": "Search pages and actions",
+    "placeholder": "Type a command or search…",
+    "empty": "No results found.",
+    "shortcut": "⌘K",
+    "groups": {
+      "navigation": "Navigation",
+      "actions": "Actions"
+    },
+    "actions": {
+      "toggleTheme": "Toggle theme",
+      "toggleLanguage": "Switch to {{language}}",
+      "profile": "Open profile",
+      "signOut": "Sign out"
+    }
+  },
+  "sidebar": {
+    "toggle": "Toggle sidebar",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "mobileTitle": "Navigation",
+    "description": "Browse the workspace",
+    "demoTitle": "Demo workspace",
+    "demoDescription": "Mock API — data stays in your browser.",
+    "version": "Version {{version}}"
+  },
+  "header": {
+    "search": "Search…",
+    "notifications": "Notifications",
+    "openCommand": "Open command menu",
+    "account": "Account menu",
+    "toggleSidebar": "Toggle sidebar"
+  },
+  "userMenu": {
+    "profile": "Profile",
+    "security": "Security",
+    "settings": "Settings",
+    "signOut": "Sign out"
+  },
+  "footer": {
+    "builtWith": "Built with React, TanStack Router and shadcn/ui.",
+    "license": "MIT License"
+  },
+  "units": {
+    "percent": "{{value}}%",
+    "new": "New",
+    "vsPrevious": "vs previous period"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "required": "{{field}} is required.",
+  "email": "Enter a valid email address.",
+  "minLength": "{{field}} must be at least {{min}} characters.",
+  "maxLength": "{{field}} must be at most {{max}} characters.",
+  "invalidValue": "{{field}} contains an invalid value.",
+  "imageType": "Choose a PNG, JPG or WebP image.",
+  "imageSize": "Image must be smaller than {{max}} MB.",
+  "passwordLetter": "Include at least one letter.",
+  "passwordNumber": "Include at least one number.",
+  "passwordMismatch": "Passwords do not match.",
+  "fixErrors": "Please fix the highlighted fields."
+}

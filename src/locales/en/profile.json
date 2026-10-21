@@ -1,0 +1,40 @@
+{
+  "title": "Profile",
+  "subtitle": "Manage your personal information and see what you can access.",
+  "account": {
+    "role": "Role",
+    "email": "Email",
+    "id": "Account ID"
+  },
+  "form": {
+    "title": "Personal information",
+    "description": "This information is visible to other members of your workspace.",
+    "name": "Full name",
+    "namePlaceholder": "Your name",
+    "email": "Email",
+    "emailHint": "Email is managed by your administrator.",
+    "bio": "Bio",
+    "bioPlaceholder": "A short introduction about yourself…",
+    "avatar": "Avatar",
+    "changeAvatar": "Change avatar",
+    "removeAvatar": "Remove",
+    "avatarHint": "PNG, JPG or WebP, up to 2 MB."
+  },
+  "saveSuccess": "Profile updated.",
+  "avatarErrors": {
+    "invalidType": "Choose a PNG, JPG or WebP image.",
+    "tooLarge": "Image must be smaller than 2 MB."
+  },
+  "permissions": {
+    "title": "Effective permissions",
+    "description": "The permissions granted to you through your role.",
+    "count": "{{count}} granted",
+    "all": "All permissions",
+    "empty": "No permissions granted."
+  },
+  "session": {
+    "title": "Session",
+    "description": "Signing out clears the local session and cached data.",
+    "signOut": "Sign out of this device"
+  }
+}

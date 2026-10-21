@@ -1,0 +1,98 @@
+name: Bug report
+description: Report something that is broken or behaves unexpectedly.
+title: '[Bug]: '
+labels: ['bug']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve FishAdmin. Please search existing issues first.
+
+        **Do not report security vulnerabilities here.** Follow the private reporting process described in `SECURITY.md` instead. Do not paste real credentials, tokens or personal data.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug and its impact.
+      placeholder: When I open /users on a 375px viewport...
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the account you used (administrator, manager or viewer) and whether the mock API was enabled.
+      placeholder: |
+        1. Sign in as manager@fish.dev
+        2. Open /users
+        3. Click ...
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include console errors or screenshots if they help.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      multiple: true
+      options:
+        - Authentication / session
+        - Permissions / RBAC
+        - Dashboard / charts
+        - Users table / CRUD
+        - Roles / permissions pages
+        - Profile / settings
+        - Theme / styling
+        - Internationalization
+        - Mock API / MSW
+        - Build / deployment
+        - Documentation
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, OS, Node version and package manager version.
+      placeholder: Chrome 141, Windows 11, Node 24.18.0, pnpm 9.1.1
+    validations:
+      required: true
+  - type: dropdown
+    id: mock
+    attributes:
+      label: Is the mock API enabled?
+      options:
+        - 'Yes (default dev or demo build)'
+        - 'No (connected to a real backend)'
+        - 'Not sure'
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Browser console output, terminal errors or a failing test name. Remove anything sensitive.
+      render: shell
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: This report does not contain a security vulnerability or real credentials.
+          required: true
+        - label: I can reproduce this on the latest commit or live demo.
+          required: true

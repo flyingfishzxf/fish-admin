@@ -1,0 +1,65 @@
+{
+  "notFound": {
+    "title": "页面不存在",
+    "description": "你访问的页面不存在，或已被移动。",
+    "action": "返回工作台"
+  },
+  "forbidden": {
+    "title": "无权访问",
+    "description": "当前角色不包含访问此页面所需的权限。",
+    "action": "返回工作台",
+    "hint": "切换到权限更高的账号即可体验该功能。"
+  },
+  "routeError": {
+    "title": "页面加载失败",
+    "description": "渲染该页面时发生了意外错误。",
+    "retry": "重试"
+  },
+  "goBack": "返回上一页",
+  "goHome": "前往工作台",
+  "status": {
+    "unauthorized": {
+      "title": "登录状态已失效",
+      "description": "请重新登录后继续之前的操作。",
+      "hint": "如果持续出现，可能是会话已在其他设备上被撤销，或账号已被停用。",
+      "action": "重新登录"
+    },
+    "serverError": {
+      "title": "服务端出了点问题",
+      "description": "由于意外的服务端错误，页面未能加载。",
+      "hint": "请尝试刷新页面。若问题持续，请检查浏览器控制台或 Mock API 日志。",
+      "action": "刷新页面"
+    },
+    "unavailable": {
+      "title": "服务暂时不可用",
+      "description": "服务器正在启动或短暂过载。",
+      "hint": "请等待几秒后重试。真实应用可在此展示自己的重试策略。",
+      "action": "重试"
+    },
+    "maintenance": {
+      "title": "系统维护中，马上回来",
+      "description": "FishAdmin 正在升级，为你提供更好的体验。",
+      "hint": "计划维护窗口：UTC 02:00–02:30。已保存在浏览器中的数据不会丢失。",
+      "action": "重新检查"
+    }
+  },
+  "offline": {
+    "title": "当前处于离线状态",
+    "description": "网络恢复前，更改无法保存。",
+    "restored": "网络已恢复。",
+    "retry": "重试"
+  },
+  "api": {
+    "unauthorized": "登录状态已过期，请重新登录。",
+    "forbidden": "你没有执行该操作的权限。",
+    "notFound": "请求的资源不存在。",
+    "validation": "请检查提交的内容后重试。",
+    "network": "网络异常，请检查连接后重试。",
+    "unknown": "出了点问题，请重试。"
+  },
+  "boundary": {
+    "title": "页面出错了",
+    "description": "应用遇到了意外错误，刷新页面通常可以恢复。",
+    "reload": "刷新页面"
+  }
+}
