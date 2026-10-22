@@ -15,6 +15,8 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 
 > **Security note:** client-side RBAC is a UX layer, **not a security boundary**. Every permission check in this project can be bypassed by editing JavaScript or calling the API directly. Your backend must enforce authorization. The mock API returns `403` for forbidden writes to demonstrate the expected contract.
 
+**Live demo: <https://fish-admin.vercel.app>** — built with `pnpm build:demo`, so the MSW mock API runs entirely in your browser. Sign in with any [demo account](#demo-accounts) below. Data lives in `localStorage`; clear site storage to reset it. The client-side permission checks there are still a UX layer, not a security boundary.
+
 ## Preview
 
 ![FishAdmin dashboard](docs/assets/dashboard.png)

@@ -15,6 +15,8 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 
 > **安全声明：** 客户端 RBAC 只是交互层，**不是安全边界**。修改 JavaScript 或直接调用 API 都能绕过本项目的权限判断。真实权限必须由服务端校验。Mock API 对无权限的写操作返回 `403`，用于演示这一契约。
 
+**在线演示：<https://fish-admin.vercel.app>** —— 使用 `pnpm build:demo` 构建，MSW Mock API 完全跑在你的浏览器里。可直接登录下面的[演示账号](#演示账号)；数据保存在 `localStorage`，清除站点数据即可恢复初始状态。线上的权限判断同样只是体验层，不是安全边界。
+
 ## 预览
 
 ![FishAdmin 工作台](docs/assets/dashboard.png)

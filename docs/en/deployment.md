@@ -24,7 +24,7 @@ Vite inlines variables at build time. Set them in the hosting provider's build s
 
 ## Vercel
 
-The repository ships with [`vercel.json`](../../vercel.json):
+This exact configuration is deployed at <https://fish-admin.vercel.app>. The repository ships with [`vercel.json`](../../vercel.json):
 
 ```json
 {

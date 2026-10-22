@@ -24,7 +24,7 @@ Vite 在构建时内联变量。请在托管平台的构建设置或 `.env.*` �
 
 ## Vercel
 
-仓库自带 [`vercel.json`](../../vercel.json)：
+这套配置已部署在 <https://fish-admin.vercel.app>。仓库自带 [`vercel.json`](../../vercel.json)：
 
 ```json
 {
