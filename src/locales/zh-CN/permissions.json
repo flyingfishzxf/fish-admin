@@ -19,6 +19,8 @@
     "dashboard": "工作台",
     "user": "用户",
     "role": "角色",
+    "audit": "审计日志",
+    "department": "组织架构",
     "permission": "权限",
     "demo": "演示工具"
   }

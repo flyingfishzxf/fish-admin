@@ -1,7 +1,16 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+
 import { describe, expect, it } from 'vitest'
 
 import { ALL_NAV_ITEMS, NAV_GROUPS } from '@/config/nav'
-import { PERMISSIONS } from '@/config/permissions'
+import { PERMISSIONS, PERMISSION_GROUPS } from '@/config/permissions'
+
+const CATALOG_DEMO_FILES = [
+  'src/features/playground/components/component-catalog-demos.tsx',
+  'src/features/playground/components/component-catalog-demos-wave2.tsx',
+  'src/features/playground/components/component-catalog-demos-wave3.tsx',
+]
 
 type JsonObject = Record<string, unknown>
 
@@ -101,6 +110,28 @@ describe('locale resources', () => {
         expect(lookup(language, permission.descriptionKey), permission.descriptionKey).toEqual(
           expect.any(String),
         )
+      }
+    }
+  })
+
+  it('translates every permission group', () => {
+    for (const language of ['en', 'zh-CN']) {
+      for (const group of PERMISSION_GROUPS) {
+        const key = `permissions:groups.${group}`
+        expect(lookup(language, key), key).toEqual(expect.any(String))
+      }
+    }
+  })
+
+  it('translates every literal key used by the catalog demos', () => {
+    for (const file of CATALOG_DEMO_FILES) {
+      const source = readFileSync(resolve(process.cwd(), file), 'utf8')
+
+      for (const match of source.matchAll(/\bt\('(catalog:[^']+)'/g)) {
+        const key = match[1]
+        for (const language of ['en', 'zh-CN']) {
+          expect(lookup(language, key), `${file}: ${key}`).toEqual(expect.any(String))
+        }
       }
     }
   })

@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { Minus, Plus } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { cn } from '@/lib/utils'
 
@@ -69,6 +70,7 @@ function InputNumber({
   'aria-label': ariaLabel,
   size = 'default',
 }: InputNumberProps) {
+  const { t } = useTranslation('common')
   const [draft, setDraft] = React.useState(() => formatValue(value, precision))
   const [focused, setFocused] = React.useState(false)
   const previousValue = React.useRef(value)
@@ -166,7 +168,7 @@ function InputNumber({
       <button
         type="button"
         data-slot="input-number-decrement"
-        aria-label="Decrease"
+        aria-label={t('numberInput.decrease')}
         disabled={disabled || atMin}
         onClick={() => stepBy(-1)}
         className={cn(
@@ -206,7 +208,7 @@ function InputNumber({
       <button
         type="button"
         data-slot="input-number-increment"
-        aria-label="Increase"
+        aria-label={t('numberInput.increase')}
         disabled={disabled || atMax}
         onClick={() => stepBy(1)}
         className={cn(

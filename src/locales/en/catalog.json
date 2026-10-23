@@ -102,6 +102,7 @@
       "added": "Member added (demo).",
       "activated": "{{count}} members marked active (demo).",
       "empty": "No members match this view.",
+      "hint": "Try a different search term or team filter.",
       "teams": {
         "engineering": "Engineering",
         "design": "Design",

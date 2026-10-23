@@ -3,7 +3,14 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-import { DayPicker, getDefaultClassNames, type DayButton } from 'react-day-picker'
+import {
+  DateLib,
+  DayPicker,
+  getDefaultClassNames,
+  type DayButton,
+  type Labels,
+} from 'react-day-picker'
+import { useTranslation } from 'react-i18next'
 
 import { Button, buttonVariants } from '@/components/ui/button'
 
@@ -15,11 +22,34 @@ function Calendar({
   buttonVariant = 'ghost',
   formatters,
   components,
+  labels,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>['variant']
 }) {
   const defaultClassNames = getDefaultClassNames()
+  const { t } = useTranslation('common')
+
+  const localizedLabels: Partial<Labels> = {
+    labelNav: () => t('calendar.nav'),
+    labelPrevious: () => t('calendar.previousMonth'),
+    labelNext: () => t('calendar.nextMonth'),
+    labelMonthDropdown: () => t('calendar.month'),
+    labelYearDropdown: () => t('calendar.year'),
+    labelDayButton: (date, modifiers, options, dateLib) => {
+      const formatted = (dateLib ?? new DateLib(options)).format(date, 'PPPP')
+      if (modifiers.today && modifiers.selected) {
+        return t('calendar.todaySelected', { date: formatted })
+      }
+      if (modifiers.today) return t('calendar.today', { date: formatted })
+      if (modifiers.selected) return t('calendar.selected', { date: formatted })
+      return formatted
+    },
+    labelGridcell: (date, modifiers, options, dateLib) => {
+      const formatted = (dateLib ?? new DateLib(options)).format(date, 'PPPP')
+      return modifiers?.today ? t('calendar.today', { date: formatted }) : formatted
+    },
+  }
 
   return (
     <DayPicker
@@ -31,6 +61,7 @@ function Calendar({
         className,
       )}
       captionLayout={captionLayout}
+      labels={{ ...localizedLabels, ...labels }}
       formatters={{
         formatMonthDropdown: (date) => date.toLocaleString('default', { month: 'short' }),
         ...formatters,

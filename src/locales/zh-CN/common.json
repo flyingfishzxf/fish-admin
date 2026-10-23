@@ -78,6 +78,32 @@
     "previous": "上一页",
     "next": "下一页"
   },
+  "pagination": {
+    "label": "分页",
+    "previous": "上一页",
+    "next": "下一页",
+    "goPrevious": "转到上一页",
+    "goNext": "转到下一页",
+    "more": "更多页码"
+  },
+  "breadcrumb": {
+    "label": "面包屑导航",
+    "more": "更多"
+  },
+  "numberInput": {
+    "decrease": "减少",
+    "increase": "增加"
+  },
+  "calendar": {
+    "nav": "日历导航",
+    "previousMonth": "转到上个月",
+    "nextMonth": "转到下个月",
+    "month": "选择月份",
+    "year": "选择年份",
+    "today": "今天，{{date}}",
+    "selected": "{{date}}，已选择",
+    "todaySelected": "今天，{{date}}，已选择"
+  },
   "theme": {
     "label": "主题",
     "light": "浅色",
@@ -109,10 +135,12 @@
     }
   },
   "sidebar": {
-    "toggle": "折叠侧边栏",
+    "toggle": "切换侧边栏",
     "expand": "展开侧边栏",
     "collapse": "收起侧边栏",
     "mobileTitle": "导航菜单",
+    "sheetTitle": "侧边栏",
+    "sheetDescription": "显示移动端侧边栏。",
     "description": "浏览工作区",
     "demoTitle": "演示工作区",
     "demoDescription": "Mock API —— 数据保存在浏览器本地。",

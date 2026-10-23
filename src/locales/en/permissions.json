@@ -19,6 +19,8 @@
     "dashboard": "Dashboard",
     "user": "Users",
     "role": "Roles",
+    "audit": "Audit log",
+    "department": "Departments",
     "permission": "Permissions",
     "demo": "Demo tools"
   }

@@ -78,6 +78,32 @@
     "previous": "Previous page",
     "next": "Next page"
   },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous",
+    "next": "Next",
+    "goPrevious": "Go to previous page",
+    "goNext": "Go to next page",
+    "more": "More pages"
+  },
+  "breadcrumb": {
+    "label": "Breadcrumb",
+    "more": "More"
+  },
+  "numberInput": {
+    "decrease": "Decrease",
+    "increase": "Increase"
+  },
+  "calendar": {
+    "nav": "Calendar navigation",
+    "previousMonth": "Go to previous month",
+    "nextMonth": "Go to next month",
+    "month": "Choose month",
+    "year": "Choose year",
+    "today": "Today, {{date}}",
+    "selected": "{{date}}, selected",
+    "todaySelected": "Today, {{date}}, selected"
+  },
   "theme": {
     "label": "Theme",
     "light": "Light",
@@ -113,6 +139,8 @@
     "expand": "Expand sidebar",
     "collapse": "Collapse sidebar",
     "mobileTitle": "Navigation",
+    "sheetTitle": "Sidebar",
+    "sheetDescription": "Displays the mobile sidebar.",
     "description": "Browse the workspace",
     "demoTitle": "Demo workspace",
     "demoDescription": "Mock API — data stays in your browser.",

@@ -1,8 +1,9 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { InputNumber } from '@/components/ui/input-number'
+import { changeLanguage, i18nReady } from '@/lib/i18n'
 
 type HarnessProps = {
   initialValue?: number | null
@@ -20,6 +21,11 @@ function Harness({ initialValue = 3, ...props }: HarnessProps) {
 }
 
 describe('InputNumber', () => {
+  beforeEach(async () => {
+    await i18nReady
+    await changeLanguage('en')
+  })
+
   it('renders a spinbutton and steps with the buttons', () => {
     render(<Harness min={0} max={5} />)
     const input = screen.getByRole('spinbutton', { name: 'Quantity' })
