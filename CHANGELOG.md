@@ -4,7 +4,34 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.0] - 2026-10-23
+
+### Added
+
+- **Searchable component catalog** (`/components`): a registry of 83 shared
+  components (47 primitives, 30 enterprise, 6 Pro) with search, category
+  filters, 68 live demos and links to where each component is used.
+- **Thirty-three new components** across three waves:
+  - Primitives and Pro: input number, slider, segmented control, empty state,
+    spinner/loading overlay, color picker, query filter, ProTable, ProForm,
+    DetailPage, EditableTable and ImportWizard.
+  - Enterprise: date picker, time picker, page container, popconfirm,
+    statistic, trend, rate, watermark, back top, JSON viewer, image preview,
+    notification center, combobox, cascader, upload, anchor navigation,
+    tree select, auto complete, list, tour and carousel.
+- **ProTable and QueryFilter** now back the users and audit log pages, sharing
+  one table shell for search, filters, selection, pagination and fetching
+  states.
+
+### Fixed
+
+- The ProTable catalog demo no longer enables TanStack Table's automatic
+  page-index reset; filtering a client-paginated table could previously queue
+  renders indefinitely.
+- Carousel overlay copy no longer collides with the previous/next controls on
+  narrow screens.
+- ColorPicker's native swatch and hex input now expose distinct accessible
+  names.
 
 ## [1.1.0] - 2026-10-23
 
@@ -30,7 +57,7 @@ table columns.
   with system-role and in-use guards, plus a row action menu.
 - **Nine enterprise components** in `src/components/enterprise/`:
   descriptions, timeline, result, stepper, transfer, tree, tags input, date
-  range picker, and drop zone, each demoed in the UI playground.
+  range picker, and drop zone, each wired into a real screen.
 - **Draggable table columns**: reorder columns by drag and drop or with
   `ArrowUp`/`ArrowDown` in the columns popover, with focus retention and a
   tested pure reorder helper.
@@ -77,6 +104,7 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/flyingfishzxf/fish-admin/releases/tag/v1.0.0
