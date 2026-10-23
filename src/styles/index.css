@@ -329,3 +329,15 @@
     display: none;
   }
 }
+
+@supports (scrollbar-gutter: stable) {
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  /* Radix's scroll lock hides the scrollbar and compensates with a body margin.
+     The stable gutter already reserves that space, so the margin would shift content. */
+  html body[data-scroll-locked] {
+    margin-right: 0 !important;
+  }
+}
