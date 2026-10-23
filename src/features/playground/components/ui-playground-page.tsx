@@ -1360,26 +1360,25 @@ function DataDemo() {
     <div className="space-y-8">
       <div className="grid gap-8 lg:grid-cols-2">
         <DemoBlock label={t('ui:layout.resizable')} hint={t('ui:layout.resizableHint')}>
-          <ResizablePanelGroup
-            orientation="horizontal"
-            className="h-44 overflow-hidden rounded-lg border"
-          >
-            <ResizablePanel
-              defaultSize="40"
-              minSize="20"
-              className="grid place-items-center bg-muted/40 text-xs font-medium"
-            >
-              {t('ui:layout.panelLeft')}
-            </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel
-              defaultSize="60"
-              minSize="30"
-              className="grid place-items-center text-xs text-muted-foreground"
-            >
-              {t('ui:layout.panelRight')}
-            </ResizablePanel>
-          </ResizablePanelGroup>
+          <div className="h-44 overflow-hidden rounded-lg border">
+            <ResizablePanelGroup orientation="horizontal">
+              <ResizablePanel
+                defaultSize="40"
+                minSize="20"
+                className="grid place-items-center bg-muted/40 text-xs font-medium"
+              >
+                {t('ui:layout.panelLeft')}
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel
+                defaultSize="60"
+                minSize="30"
+                className="grid place-items-center text-xs text-muted-foreground"
+              >
+                {t('ui:layout.panelRight')}
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </div>
         </DemoBlock>
 
         <DemoBlock label={t('ui:layout.scrollArea')} hint={t('ui:layout.scrollAreaHint')}>

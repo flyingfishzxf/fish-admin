@@ -17,6 +17,7 @@ import {
   rotateSession,
 } from '../auth'
 import {
+  findDepartmentByName,
   findRole,
   findUserByEmail,
   findUserById,
@@ -141,6 +142,8 @@ function createUserRecord(
     roleId: input.roleId,
     status: 'active',
     department: input.department,
+    departmentId: findDepartmentByName(db, input.department)?.id,
+    tags: [],
     emailVerified: true,
     twoFactorEnabled: false,
     createdAt: now,
@@ -153,7 +156,10 @@ function createUserRecord(
 function loginResult(db: MockDb, user: MockUserRecord, request: Request) {
   user.lastActiveAt = new Date().toISOString()
   const tokens = issueTokens(db, user, request)
-  logActivity(db, 'auth.login', user.name, user.name)
+  logActivity(db, 'auth.login', user.name, user.name, {
+    actorId: user.id,
+    entityType: 'auth',
+  })
   writeDb(db)
   return tokens
 }

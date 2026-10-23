@@ -1,0 +1,71 @@
+{
+  "title": "审计日志",
+  "subtitle": "追溯工作区中谁在何时改了什么。",
+  "searchPlaceholder": "搜索操作人、对象或元数据…",
+  "filters": {
+    "action": "动作",
+    "entity": "对象类型",
+    "allActions": "全部动作",
+    "allEntities": "全部对象",
+    "dateRange": "日期范围",
+    "clear": "清除筛选"
+  },
+  "presets": {
+    "today": "今天",
+    "last7": "近 7 天",
+    "last30": "近 30 天",
+    "last90": "近 90 天",
+    "thisMonth": "本月"
+  },
+  "columns": {
+    "time": "时间",
+    "actor": "操作人",
+    "action": "动作",
+    "entity": "对象",
+    "metadata": "元数据",
+    "details": "详情"
+  },
+  "actions": {
+    "user.created": "创建用户",
+    "user.updated": "更新用户",
+    "user.deleted": "删除用户",
+    "user.restored": "恢复用户",
+    "role.created": "创建角色",
+    "role.updated": "更新角色",
+    "role.deleted": "删除角色",
+    "department.created": "创建部门",
+    "department.updated": "更新部门",
+    "auth.login": "登录",
+    "profile.updated": "更新个人资料"
+  },
+  "entities": {
+    "user": "用户",
+    "role": "角色",
+    "department": "部门",
+    "auth": "身份认证"
+  },
+  "detail": {
+    "title": "事件详情",
+    "description": "发生了什么、由谁操作，以及原始元数据。",
+    "open": "查看事件详情",
+    "eventId": "事件 ID",
+    "metadata": "原始元数据",
+    "noMetadata": "没有记录元数据。",
+    "related": "该对象的近期事件",
+    "noRelated": "该对象没有其他事件。",
+    "viewEntity": "打开对象"
+  },
+  "activity": {
+    "title": "动态",
+    "description": "审计日志中记录的近期变更。",
+    "empty": "该用户还没有记录动态。"
+  },
+  "empty": {
+    "title": "没有审计事件",
+    "description": "没有符合当前筛选条件的事件。",
+    "unfiltered": "成员在工作区中的操作会显示在这里。",
+    "action": "清除筛选"
+  },
+  "loadError": "无法加载审计事件。",
+  "actorFallback": "系统"
+}

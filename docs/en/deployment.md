@@ -105,12 +105,13 @@ If the app lives at `https://example.com/admin/`, set `base: '/admin/'` in `vite
 
 `autoCodeSplitting` gives each route its own chunk, so the dashboard's chart dependency and the `/ui` playground are only fetched when those pages open.
 
-| Chunk       | Build  | Size (gzip)  | When it loads                                 |
-| ----------- | ------ | ------------ | --------------------------------------------- |
-| `index-*`   | either | 277 kB (86)  | First paint: shell, router, i18n, auth store  |
-| `charts-*`  | either | 384 kB (111) | Dashboard only                                |
-| `ui-*`      | either | 240 kB (67)  | `/ui` playground only                         |
-| `browser-*` | demo   | 870 kB (323) | MSW plus the seeded database, demo build only |
+| Chunk       | Build             | Size (gzip)  | When it loads                                 |
+| ----------- | ----------------- | ------------ | --------------------------------------------- |
+| `index-*`   | `pnpm build`      | 286 kB (88)  | First paint: shell, router, i18n, auth store  |
+| `index-*`   | `pnpm build:demo` | 292 kB (91)  | Same shell plus the mock entry stub           |
+| `charts-*`  | either            | 384 kB (111) | Dashboard only                                |
+| `ui-*`      | either            | 182 kB (54)  | `/ui` playground only (three chunks)          |
+| `browser-*` | demo              | 883 kB (326) | MSW plus the seeded database, demo build only |
 
 The `browser-*` chunk exists only in a demo build. `src/main.tsx` imports it behind `VITE_ENABLE_MOCK`, so `pnpm build` (flag off) tree-shakes the branch away and emits no such chunk — `ls dist/assets | grep browser` and `grep -r mockServiceWorker dist` both come back empty. Vite prints a chunk-size warning for it; that is expected, because it is a lazy, dev-demo-only chunk that never ships in an API build.
 

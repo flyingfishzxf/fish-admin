@@ -2,7 +2,9 @@ import {
   KeyRound,
   LayoutDashboard,
   LockKeyhole,
+  Network,
   Palette,
+  ScrollText,
   Settings2,
   ShieldCheck,
   UserRound,
@@ -13,7 +15,16 @@ import {
 import { PERMISSION_CODES, type PermissionCode } from '@/config/permissions'
 
 export type AppPath =
-  '/' | '/ui' | '/users' | '/roles' | '/permissions' | '/profile' | '/security' | '/settings'
+  | '/'
+  | '/ui'
+  | '/users'
+  | '/departments'
+  | '/roles'
+  | '/permissions'
+  | '/audit-logs'
+  | '/profile'
+  | '/security'
+  | '/settings'
 
 export interface NavItem {
   titleKey: string
@@ -54,6 +65,12 @@ export const NAV_GROUPS: NavGroup[] = [
         permission: PERMISSION_CODES.userRead,
       },
       {
+        titleKey: 'nav:items.departments',
+        to: '/departments',
+        icon: Network,
+        permission: PERMISSION_CODES.departmentRead,
+      },
+      {
         titleKey: 'nav:items.roles',
         to: '/roles',
         icon: ShieldCheck,
@@ -64,6 +81,12 @@ export const NAV_GROUPS: NavGroup[] = [
         to: '/permissions',
         icon: KeyRound,
         permission: PERMISSION_CODES.permissionRead,
+      },
+      {
+        titleKey: 'nav:items.auditLogs',
+        to: '/audit-logs',
+        icon: ScrollText,
+        permission: PERMISSION_CODES.auditRead,
       },
     ],
   },
@@ -97,9 +120,12 @@ export function isPathActive(pathname: string, path: AppPath) {
 }
 
 export function findNavGroup(pathname: string) {
-  return NAV_GROUPS.find((group) => group.items.some((item) => isPathActive(pathname, item.to)))
+  const item = findNavItem(pathname)
+  return item ? NAV_GROUPS.find((group) => group.items.includes(item)) : undefined
 }
 
 export function findNavItem(pathname: string) {
-  return ALL_NAV_ITEMS.find((item) => isPathActive(pathname, item.to))
+  return ALL_NAV_ITEMS.filter((item) => isPathActive(pathname, item.to)).sort(
+    (a, b) => b.to.length - a.to.length,
+  )[0]
 }

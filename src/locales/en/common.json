@@ -57,7 +57,11 @@
     "Design": "Design",
     "Operations": "Operations",
     "Marketing": "Marketing",
-    "Finance": "Finance"
+    "Finance": "Finance",
+    "Platform": "Platform",
+    "Frontend": "Frontend",
+    "Quality": "Quality",
+    "Support": "Support"
   },
   "table": {
     "page": "Page",
@@ -65,6 +69,8 @@
     "rowsPerPage": "Rows per page",
     "selected": "{{count}} selected",
     "columns": "Columns",
+    "reorderHint": "Drag to reorder, or use ↑ / ↓.",
+    "reorderColumn": "Reorder {{column}}",
     "noResults": "No results",
     "summary": "Showing {{from}}–{{to}} of {{total}}",
     "previous": "Previous page",
@@ -131,5 +137,17 @@
     "percent": "{{value}}%",
     "new": "New",
     "vsPrevious": "vs previous period"
+  },
+  "enterprise": {
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "search": "Search…",
+    "selectAll": "Select all",
+    "noMatches": "No matches",
+    "removeTag": "Remove {{tag}}",
+    "clear": "Clear",
+    "clearSelection": "Clear selection",
+    "dropFile": "Drop a file here",
+    "browse": "Browse files"
   }
 }

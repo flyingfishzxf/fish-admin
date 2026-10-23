@@ -20,7 +20,7 @@ test.describe('user management', () => {
     await createDialog.getByLabel('Role').click()
     await page.getByRole('option', { name: 'Viewer' }).click()
     await createDialog.getByLabel('Department').click()
-    await page.getByRole('option', { name: 'Design' }).click()
+    await page.getByRole('treeitem', { name: 'Design' }).click()
     await createDialog.getByRole('button', { name: 'Create' }).click()
 
     await expect(page.getByText('User created.')).toBeVisible()

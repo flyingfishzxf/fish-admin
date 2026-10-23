@@ -46,8 +46,12 @@ __root.tsx              Providers, global 404, error fallback
    ├─ index.tsx         /            dashboard:read
    ├─ ui.tsx            /ui          signed in (component playground)
    ├─ users.tsx         /users       user:read
+   ├─ users_.$id.tsx    /users/$id   user:read
+   ├─ departments.tsx   /departments department:read
    ├─ roles.tsx         /roles       role:read
+   ├─ roles_.matrix.tsx /roles/matrix role:read
    ├─ permissions.tsx   /permissions permission:read
+   ├─ audit-logs.tsx    /audit-logs  audit:read
    ├─ profile.tsx       /profile     signed in
    ├─ security.tsx      /security    signed in
    ├─ settings.tsx      /settings    signed in
@@ -72,6 +76,8 @@ The Vite plugin runs before the React and Tailwind plugins and enables `autoCode
 | Command palette visibility | `src/stores/ui-store.ts`    | In-memory                                                         |
 | API data                   | TanStack Query              | Keys are defined next to each feature (`queries.ts`)              |
 | Table filters and paging   | URL search params           | `validateUsersSearch` keeps links shareable and reloads identical |
+| Audit filters and paging   | URL search params           | `validateAuditSearch` syncs search, action, entity and date range |
+| Selected department        | URL search params           | `/departments?dept=…` deep-links to a node, invalid ids fall back |
 | Saved views                | `localStorage`              | `fish-admin:users-views:{userId}`, capped at 10                   |
 | Table density              | `localStorage`              | `fish-admin:users-density`                                        |
 | Connectivity               | `src/lib/online.ts`         | `useSyncExternalStore` over the `online`/`offline` window events  |
@@ -94,11 +100,21 @@ Each feature keeps its API calls, query options, schemas and components together
 
 ```text
 features/users/
-├─ api.ts          fetchUsers, createUser, updateUser, deleteUser, bulk*, restoreUsers
-├─ queries.ts      userListQueryOptions
+├─ api.ts          fetchUsers, fetchUser, createUser, updateUser, updateUserProfile, deleteUser, bulk*, restoreUsers
+├─ queries.ts      userListQueryOptions, userDetailQueryOptions, userAuditQueryOptions
 ├─ schemas.ts      createUserSchema(t)
 ├─ search.ts       URL search validation for the table
-└─ components/     UsersPage, UserFormDrawer, DeleteUserDialog, SavedViewsMenu, UserContextMenu, columns
+└─ components/     UsersPage, UserDetailPage, UserFormDrawer, DeleteUserDialog, SavedViewsMenu, UserContextMenu, columns
+```
+
+```text
+features/departments/           features/audit/
+├─ api.ts          CRUD over     ├─ api.ts       list and detail queries
+│                  /departments  ├─ queries.ts   auditListQueryOptions,
+├─ queries.ts      departments  │                auditEventQueryOptions
+│                  QueryOptions  ├─ search.ts    URL search + range presets
+└─ components/     tree panel,  └─ components/  AuditLogsPage, filters,
+                   detail, form                  columns, detail drawer
 ```
 
 ```text
@@ -113,9 +129,10 @@ UI components never call `fetch` directly; they use TanStack Query options that 
 
 ## Mock backend
 
-- `src/mocks/seed.ts` creates the database with Faker using a fixed seed: three demo accounts plus 57 generated users, roles, invitations and activity.
-- `src/mocks/db/store.ts` reads and writes the database and synchronizes it to `localStorage` on every mutation.
-- Handlers under `src/mocks/handlers` implement the auth lifecycle, users (including bulk and restore), roles, permissions, dashboard and reset endpoints. Write handlers call `authorize()` and return `403` when the token's role lacks the permission.
+- `src/mocks/seed.ts` creates the database with Faker using a fixed seed: three demo accounts plus 57 generated users, a 10-node department tree, roles, invitations and 160 audit events spread over 90 days.
+- `src/mocks/db/store.ts` reads and writes the database and synchronizes it to `localStorage` on every mutation. It migrates v1 and v2 databases to the current v3 shape; only an unknown version triggers a reset.
+- Handlers under `src/mocks/handlers` implement the auth lifecycle, users (including bulk and restore), departments, roles (including create, rename and delete), permissions, audit events, dashboard and reset endpoints. Write handlers call `authorize()` and return `403` when the token's role lacks the permission.
+- Audit events are the single activity log. User, role, department and profile mutations call `logAuditEvent()`; `logActivity()` remains a thin wrapper, and the dashboard maps the newest events through `recentActivity()`. The list is capped at 500 entries.
 - Tokens are fake but structurally realistic: a base64url access token with an expiry, opaque refresh tokens tied to session records, and separate verification, password-reset and MFA-challenge entries with their own TTLs.
 - `src/mocks/auth.ts` holds the auth rules: session rotation on refresh, five failed passwords locking an email for one minute, an MFA challenge that short-circuits login, and revocation of other sessions when a password changes.
 - Deleting a user is soft (`deletedAt`), so `POST /api/users/restore` can undo a bulk delete; deactivating a user revokes their sessions.
@@ -135,7 +152,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Internationalization
 
-- Locale JSON lives in `src/locales/{en,zh-CN}` with 13 namespaces: `common`, `nav`, `auth`, `dashboard`, `users`, `roles`, `permissions`, `profile`, `security`, `settings`, `ui`, `errors`, `validation`.
+- Locale JSON lives in `src/locales/{en,zh-CN}` with 15 namespaces: `common`, `nav`, `auth`, `dashboard`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `ui`, `errors`, `validation`.
 - `common`, `nav` and `errors` are bundled; other namespaces are loaded on demand with `i18next-resources-to-backend` and `import.meta.glob`.
 - The initial language comes from `localStorage`, then the browser language, then English.
 - `changeLanguage()` persists the choice, switches i18next and updates `<html lang>`.
@@ -152,6 +169,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Testing strategy
 
-- Unit tests cover permission parsing, nav-to-route resolution, URL search validation, Zod schemas for users and every auth form, password strength, theme application, locale key parity, API clients, query keys, single-flight refresh, saved-view persistence, online status and `<Can>`.
-- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, saved views, density and column controls, URL-restored filters, theme/language persistence, the `/ui` playground and the status and offline screens.
+- Unit tests cover permission parsing and wildcard expansion, nav-to-route resolution (including longest-prefix matching), URL search validation for users and audit logs, Zod schemas for users and every auth form, password strength, theme application, locale key parity, API clients, query keys, single-flight refresh, saved-view persistence, online status, `<Can>`, the tree utilities, transfer selection and the tags input.
+- Database migration tests replay v1 and v2 payloads into v3 and verify that damaged storage resets instead of crashing.
+- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, saved views, density and column controls, URL-restored filters, user detail and tags, department deep links and creation, the role matrix and role CRUD, audit filters and the detail drawer, theme/language persistence, the `/ui` playground and the status and offline screens.
 - CI runs format check, lint, typecheck, coverage, a production build and the E2E suite in parallel jobs.

@@ -8,17 +8,22 @@ FishAdmin 演示了一套完整的客户端权限闭环：导航、路由与按�
 
 权限码采用 `resource:action` 格式：
 
-| 权限码            | 保护对象                                                          |
-| ----------------- | ----------------------------------------------------------------- |
-| `dashboard:read`  | 工作台路由与 KPI 数据                                             |
-| `user:read`       | 用户路由、用户列表与角色选项                                      |
-| `user:create`     | 「新建用户」按钮与 `POST /api/users`                              |
-| `user:update`     | 编辑操作、`PATCH /api/users/:id` 与 `POST /api/users/bulk-status` |
-| `user:delete`     | 删除操作、`DELETE /api/users/:id` 与批量删除/恢复端点             |
-| `role:read`       | 角色路由与 `GET /api/roles`                                       |
-| `role:update`     | 编辑角色权限                                                      |
-| `permission:read` | 只读权限页                                                        |
-| `demo:reset`      | 重置演示数据库                                                    |
+| 权限码              | 保护对象                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------ |
+| `dashboard:read`    | 工作台路由与 KPI 数据                                                                |
+| `user:read`         | 用户路由、用户详情、用户列表与角色选项                                               |
+| `user:create`       | 「新建用户」按钮与 `POST /api/users`                                                 |
+| `user:update`       | 编辑操作、`PATCH /api/users/:id` 与 `POST /api/users/bulk-status`                    |
+| `user:delete`       | 删除操作、`DELETE /api/users/:id` 与批量删除/恢复端点                                |
+| `role:read`         | 角色路由、权限矩阵与 `GET /api/roles`                                                |
+| `role:create`       | 「新建角色」入口、创建向导与 `POST /api/roles`                                       |
+| `role:update`       | 编辑自定义角色、权限矩阵、`PATCH /api/roles/:id` 与 `PUT /api/roles/:id/permissions` |
+| `role:delete`       | 删除自定义角色与 `DELETE /api/roles/:id`                                             |
+| `audit:read`        | 审计日志路由、用户动态与 `GET /api/audit-events`                                     |
+| `department:read`   | 组织架构路由、部门树与 `GET /api/departments`                                        |
+| `department:manage` | 新建/重命名部门操作与 `POST`/`PATCH /api/departments`                                |
+| `permission:read`   | 只读权限页与 `GET /api/permissions`                                                  |
+| `demo:reset`        | 重置演示数据库                                                                       |
 
 有两个区域刻意不设权限码：`/ui`（组件演练场对所有已登录角色都有用），以及只对当前用户生效的账户页 `/profile` 与 `/security`。
 
@@ -37,28 +42,28 @@ FishAdmin 演示了一套完整的客户端权限闭环：导航、路由与按�
 
 ## 演示角色
 
-| 角色                    | 权限                                                                     |
-| ----------------------- | ------------------------------------------------------------------------ |
-| 管理员（Administrator） | `*`                                                                      |
-| 经理（Manager）         | `dashboard:read`、`user:read`、`user:create`、`user:update`、`role:read` |
-| 访客（Viewer）          | `dashboard:read`、`user:read`                                            |
+| 角色                    | 权限                                                                                                                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 管理员（Administrator） | `*`                                                                                                                                                                             |
+| 经理（Manager）         | `dashboard:read`、`user:read`、`user:create`、`user:update`、`role:read`、`role:create`、`role:update`、`audit:read`、`department:read`、`department:manage`、`permission:read` |
+| 访客（Viewer）          | `dashboard:read`、`user:read`、`audit:read`、`department:read`                                                                                                                  |
 
 差异是刻意设计且肉眼可见的：
 
-- 管理员能看到全部菜单，可删除用户、编辑角色权限、重置演示数据。
-- 经理可新建与编辑用户，但不能删除；无法打开 `/permissions`，也不能编辑角色。
-- 访客只能看到工作台与用户表，所有写操作入口都隐藏。
+- 管理员能看到全部菜单，可删除用户与角色、在矩阵中编辑除管理员外的所有角色，并重置演示数据。
+- 经理可新建与编辑用户、管理部门、创建与编辑自定义角色，并打开只读权限页；不能删除用户或角色，矩阵中的管理员列只读。
+- 访客只能看到工作台、用户、部门与审计日志，所有写操作入口都隐藏。
 
-以经理身份直接输入 `/permissions`：路由守卫会跳转到 `/403`。
+以访客身份直接输入 `/roles/matrix`：路由守卫会跳转到 `/403`。以经理身份可打开同一页面，但管理员列不可修改。
 
 ## 四层校验
 
-| 层级     | 位置                                      | 行为                                                                       |
-| -------- | ----------------------------------------- | -------------------------------------------------------------------------- |
-| 导航     | `src/config/nav.ts` + `filterNavGroups()` | 隐藏当前用户无权使用的入口，空分组自动移除。面包屑与命令面板读取同一棵树。 |
-| 路由     | 各叶子路由的 `beforeLoad`                 | 未登录 → `/login?redirect=…`；已登录但无权限 → `/403`。                    |
-| 界面操作 | `<Can permission="...">` 或 `useCan()`    | 隐藏或禁用按钮与菜单项。                                                   |
-| 服务端   | Mock handlers / 你的后端                  | 未认证返回 `401`，角色缺少权限返回 `403`。                                 |
+| 层级     | 位置                                      | 行为                                                                                                                                        |
+| -------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 导航     | `src/config/nav.ts` + `filterNavGroups()` | 隐藏当前用户无权使用的入口，空分组自动移除。面包屑与命令面板读取同一棵树；`findNavItem()` 取最长匹配路径，所以 `/roles/matrix` 只点亮角色。 |
+| 路由     | 各叶子路由的 `beforeLoad`                 | 未登录 → `/login?redirect=…`；已登录但无权限 → `/403`。                                                                                     |
+| 界面操作 | `<Can permission="...">` 或 `useCan()`    | 隐藏或禁用按钮与菜单项。                                                                                                                    |
+| 服务端   | Mock handlers / 你的后端                  | 未认证返回 `401`，角色缺少权限返回 `403`。                                                                                                  |
 
 `_app/route.tsx` 只校验会话是否存在。权限检查放在叶子路由，保证刚被拒绝的用户仍能访问 `/403`。
 
@@ -126,7 +131,7 @@ const canDelete = useCan('user:delete')
 
 4. **保护操作**：界面上使用 `<Can permission={PERMISSION_CODES.invoiceRead}>`，服务端拒绝缺少同一权限的请求。
 
-完成。侧边栏、面包屑与命令面板由 `nav.ts` 派生；角色编辑器与权限页由 `PERMISSIONS` 派生。
+完成。侧边栏、面包屑与命令面板由 `nav.ts` 派生；角色编辑器、权限矩阵与权限页由 `PERMISSIONS` 派生。
 
 ## 代码库中的防呆措施
 
@@ -134,6 +139,9 @@ const canDelete = useCan('user:delete')
 - **注册表校验**——翻译测试检查每个权限 label 在中英文中都存在。
 - **单飞刷新**——`401` 只触发一次刷新；失败则清空会话并回到登录页。
 - **Mock 403**——写 handler 在修改数据前调用 `authorize()`。Playwright 套件验证访客直接 `POST /api/users` 会得到 `403`。
+- **系统角色保护**——对种子角色调用 `PATCH` / `DELETE /api/roles/:id` 返回 `PROTECTED_ROLE`，管理员角色忽略权限编辑；删除仍有成员的自定义角色返回 `ROLE_IN_USE`。
+- **矩阵显式保存**——权限按整组替换。矩阵保留本地 draft，逐个提交发生变更的角色，而不是每勾选一次就保存，避免两次快速编辑互相覆盖。
+- **部门成环校验**——`PATCH /api/departments/:id` 拒绝把节点移动到自己的子树内，返回 `INVALID_PARENT`。
 - **批量操作部分成功**——批量 handler 会逐行校验，而不只看调用者：当前用户本人和已删除的账号会放在 `skipped` 中返回，因此经理在批量删除中提交自己的 id 什么都改变不了。
 - **禁止自删**——即使是管理员也不能删除自己的账号，服务端返回 `CANNOT_DELETE_SELF`。
 - **禁止自锁**——账号本人不能停用自己或修改自己的角色（`CANNOT_DEACTIVATE_SELF`、`CANNOT_CHANGE_OWN_ROLE`）。没有这两道校验，管理员可以把自己降为访客，而撤销该操作所需的权限也同时消失，演示数据就此卡死。

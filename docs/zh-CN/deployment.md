@@ -105,12 +105,13 @@ docker build \
 
 `autoCodeSplitting` 让每个路由都有独立的 chunk，因此工作台依赖的图表库与 `/ui` 组件 playground 只会在打开这些页面时才发起请求。
 
-| Chunk       | 构建类型 | 体积（gzip） | 加载时机                             |
-| ----------- | -------- | ------------ | ------------------------------------ |
-| `index-*`   | 两者都有 | 277 kB (86)  | 首屏：外壳、路由、i18n、会话 store   |
-| `charts-*`  | 两者都有 | 384 kB (111) | 仅工作台                             |
-| `ui-*`      | 两者都有 | 240 kB (67)  | 仅 `/ui` 组件演练场                  |
-| `browser-*` | 演示构建 | 870 kB (323) | MSW 与预置数据库，只在演示构建里出现 |
+| Chunk       | 构建类型          | 体积（gzip） | 加载时机                             |
+| ----------- | ----------------- | ------------ | ------------------------------------ |
+| `index-*`   | `pnpm build`      | 286 kB (88)  | 首屏：外壳、路由、i18n、会话 store   |
+| `index-*`   | `pnpm build:demo` | 292 kB (91)  | 同一外壳加 Mock 入口桩               |
+| `charts-*`  | 两者都有          | 384 kB (111) | 仅工作台                             |
+| `ui-*`      | 两者都有          | 182 kB (54)  | 仅 `/ui` 组件演练场（三个 chunk）    |
+| `browser-*` | 演示构建          | 883 kB (326) | MSW 与预置数据库，只在演示构建里出现 |
 
 `browser-*` 只存在于演示构建。`src/main.tsx` 中的 import 被 `VITE_ENABLE_MOCK` 包住，因此 `pnpm build`（开关关闭）会把这条分支整体摇掉，不会产出该 chunk —— `ls dist/assets | grep browser` 与 `grep -r mockServiceWorker dist` 都是空的。构建时 Vite 会为它打印 chunk 体积警告，这属于预期：它是一个懒加载、只在演示中出现的 chunk，不会进入对接真实后端的构建产物。
 

@@ -6,6 +6,8 @@ import type { User, UserStatus } from '@/types'
 
 import { authorize, revokeSessionsForUser } from '../auth'
 import {
+  findDepartment,
+  findDepartmentByName,
   findRole,
   findUserByEmail,
   findUserById,
@@ -16,10 +18,14 @@ import {
   writeDb,
   type UserListQuery,
 } from '../db/store'
+import type { MockDb } from '../db/types'
 import { HttpError, readJson, run, runNoContent } from '../http'
 
 const API = env.apiBaseUrl
 const STATUSES: UserStatus[] = ['active', 'invited', 'inactive']
+const MAX_AVATAR_LENGTH = 400_000
+const MAX_TAGS = 8
+const MAX_TAG_LENGTH = 24
 
 interface UserBody {
   name?: string
@@ -27,6 +33,10 @@ interface UserBody {
   roleId?: string
   status?: UserStatus
   department?: string
+  departmentId?: string
+  jobTitle?: string
+  tags?: string[]
+  avatar?: string
 }
 
 interface BulkBody {
@@ -48,12 +58,13 @@ function readIds(body: BulkBody) {
   return ids
 }
 
-function ensureUserFields(db: ReturnType<typeof readDb>, body: UserBody, partial: boolean) {
+function ensureUserFields(db: MockDb, body: UserBody, partial: boolean) {
   const name = body.name?.trim()
   const email = body.email?.trim().toLowerCase()
   const roleId = body.roleId
   const status = body.status
-  const department = body.department?.trim()
+  const departmentId = body.departmentId
+  const departmentName = body.department?.trim()
 
   if (!partial || body.name !== undefined) {
     if (!name || name.length < 2) {
@@ -75,13 +86,66 @@ function ensureUserFields(db: ReturnType<typeof readDb>, body: UserBody, partial
       throw new HttpError(400, 'VALIDATION_ERROR', 'A valid status is required.')
     }
   }
-  if (!partial || body.department !== undefined) {
-    if (!department) {
+
+  let department: { id: string; name: string } | undefined
+  const departmentInput = departmentId ?? departmentName
+  if (!partial || departmentInput !== undefined) {
+    if (!departmentInput) {
       throw new HttpError(400, 'VALIDATION_ERROR', 'Department is required.')
     }
+    const record = departmentId
+      ? findDepartment(db, departmentId)
+      : findDepartmentByName(db, departmentName!)
+    if (!record) {
+      throw new HttpError(400, 'VALIDATION_ERROR', 'A valid department is required.')
+    }
+    department = { id: record.id, name: record.name }
   }
 
   return { name, email, roleId, status, department }
+}
+
+function ensureTags(tags: string[] | undefined) {
+  if (tags === undefined) return undefined
+  if (!Array.isArray(tags)) {
+    throw new HttpError(400, 'VALIDATION_ERROR', 'Tags must be a list of short labels.')
+  }
+  const normalized = [
+    ...new Set(
+      tags
+        .filter((tag): tag is string => typeof tag === 'string')
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+    ),
+  ]
+  if (normalized.length > MAX_TAGS || normalized.some((tag) => tag.length > MAX_TAG_LENGTH)) {
+    throw new HttpError(
+      400,
+      'VALIDATION_ERROR',
+      `Use at most ${MAX_TAGS} tags of ${MAX_TAG_LENGTH} characters or fewer.`,
+    )
+  }
+  return normalized
+}
+
+function ensureJobTitle(jobTitle: string | undefined) {
+  if (jobTitle === undefined) return undefined
+  const trimmed = jobTitle.trim()
+  if (trimmed.length > 80) {
+    throw new HttpError(400, 'VALIDATION_ERROR', 'Job title must be 80 characters or fewer.')
+  }
+  return trimmed || undefined
+}
+
+function ensureAvatar(avatar: string | undefined) {
+  if (avatar === undefined) return undefined
+  if (typeof avatar !== 'string') {
+    throw new HttpError(400, 'VALIDATION_ERROR', 'Avatar must be an image.')
+  }
+  if (avatar.length > MAX_AVATAR_LENGTH) {
+    throw new HttpError(400, 'VALIDATION_ERROR', 'Choose a smaller image.')
+  }
+  return avatar || undefined
 }
 
 export const userHandlers = [
@@ -97,6 +161,8 @@ export const userHandlers = [
         q: url.searchParams.get('q') ?? undefined,
         roleId: url.searchParams.get('roleId') ?? undefined,
         status: url.searchParams.get('status') ?? undefined,
+        departmentId: url.searchParams.get('departmentId') ?? undefined,
+        includeDescendants: url.searchParams.get('includeDescendants') === '1',
         sort: url.searchParams.get('sort') ?? undefined,
         order: url.searchParams.get('order') ?? undefined,
       }
@@ -110,6 +176,9 @@ export const userHandlers = [
       const actor = authorize(db, request, PERMISSION_CODES.userCreate)
       const body = (await readJson<UserBody>(request)) ?? {}
       const { name, email, roleId, status, department } = ensureUserFields(db, body, false)
+      const tags = ensureTags(body.tags) ?? []
+      const jobTitle = ensureJobTitle(body.jobTitle)
+      const avatar = ensureAvatar(body.avatar)
 
       if (findUserByEmail(db, email!)) {
         throw new HttpError(409, 'EMAIL_TAKEN', 'A user with this email already exists.')
@@ -123,7 +192,11 @@ export const userHandlers = [
         password: 'Password123!',
         roleId: roleId!,
         status: status!,
-        department: department!,
+        department: department!.name,
+        departmentId: department!.id,
+        jobTitle,
+        tags,
+        avatar,
         emailVerified: true,
         twoFactorEnabled: false,
         createdAt: now,
@@ -131,7 +204,12 @@ export const userHandlers = [
       }
 
       db.users.unshift(record)
-      logActivity(db, 'user.created', actor.user.name, record.name)
+      logActivity(db, 'user.created', actor.user.name, record.name, {
+        actorId: actor.user.id,
+        entityType: 'user',
+        entityId: record.id,
+        metadata: { roleId: record.roleId, departmentId: record.departmentId },
+      })
       writeDb(db)
       return serializeUser(db, record)
     }),
@@ -165,7 +243,12 @@ export const userHandlers = [
 
         user.status = status
         if (status === 'inactive') revokeSessionsForUser(db, user.id)
-        logActivity(db, 'user.updated', actor.user.name, user.name)
+        logActivity(db, 'user.updated', actor.user.name, user.name, {
+          actorId: actor.user.id,
+          entityType: 'user',
+          entityId: user.id,
+          metadata: { field: 'status', value: status },
+        })
         updated.push(id)
       }
 
@@ -194,7 +277,11 @@ export const userHandlers = [
 
         user.deletedAt = now
         revokeSessionsForUser(db, user.id)
-        logActivity(db, 'user.deleted', actor.user.name, user.name)
+        logActivity(db, 'user.deleted', actor.user.name, user.name, {
+          actorId: actor.user.id,
+          entityType: 'user',
+          entityId: user.id,
+        })
         deleted.push(id)
       }
 
@@ -217,7 +304,11 @@ export const userHandlers = [
         if (!user || !user.deletedAt) continue
 
         user.deletedAt = undefined
-        logActivity(db, 'user.restored', actor.user.name, user.name)
+        logActivity(db, 'user.restored', actor.user.name, user.name, {
+          actorId: actor.user.id,
+          entityType: 'user',
+          entityId: user.id,
+        })
         restored.push(serializeUser(db, user))
       }
 
@@ -245,6 +336,10 @@ export const userHandlers = [
 
       const body = (await readJson<UserBody>(request)) ?? {}
       const fields = ensureUserFields(db, body, true)
+      const tags = ensureTags(body.tags)
+      const jobTitle = ensureJobTitle(body.jobTitle)
+      const avatar = ensureAvatar(body.avatar)
+      const changed: string[] = []
 
       if (fields.email && fields.email !== user.email.toLowerCase()) {
         const duplicate = findUserByEmail(db, fields.email)
@@ -265,15 +360,48 @@ export const userHandlers = [
         throw new HttpError(400, 'CANNOT_CHANGE_OWN_ROLE', 'You cannot change your own role.')
       }
 
-      if (fields.name !== undefined) user.name = fields.name!
-      if (fields.email !== undefined) user.email = fields.email!
-      if (fields.roleId !== undefined) user.roleId = fields.roleId!
-      if (fields.status !== undefined) user.status = fields.status!
-      if (fields.department !== undefined) user.department = fields.department!
+      if (fields.name !== undefined && fields.name !== user.name) {
+        user.name = fields.name
+        changed.push('name')
+      }
+      if (fields.email !== undefined && fields.email !== user.email) {
+        user.email = fields.email
+        changed.push('email')
+      }
+      if (fields.roleId !== undefined && fields.roleId !== user.roleId) {
+        user.roleId = fields.roleId
+        changed.push('roleId')
+      }
+      if (fields.status !== undefined && fields.status !== user.status) {
+        user.status = fields.status
+        changed.push('status')
+      }
+      if (fields.department !== undefined && fields.department.id !== user.departmentId) {
+        user.department = fields.department.name
+        user.departmentId = fields.department.id
+        changed.push('departmentId')
+      }
+      if (tags !== undefined) {
+        user.tags = tags
+        changed.push('tags')
+      }
+      if (body.jobTitle !== undefined) {
+        user.jobTitle = jobTitle
+        changed.push('jobTitle')
+      }
+      if (body.avatar !== undefined) {
+        user.avatar = avatar
+        changed.push('avatar')
+      }
 
       if (fields.status === 'inactive') revokeSessionsForUser(db, user.id)
 
-      logActivity(db, 'user.updated', actor.user.name, user.name)
+      logActivity(db, 'user.updated', actor.user.name, user.name, {
+        actorId: actor.user.id,
+        entityType: 'user',
+        entityId: user.id,
+        metadata: changed.length > 0 ? { fields: changed.join(', ') } : {},
+      })
       writeDb(db)
       return serializeUser(db, user)
     }),
@@ -291,7 +419,11 @@ export const userHandlers = [
 
       user.deletedAt = new Date().toISOString()
       revokeSessionsForUser(db, user.id)
-      logActivity(db, 'user.deleted', actor.user.name, user.name)
+      logActivity(db, 'user.deleted', actor.user.name, user.name, {
+        actorId: actor.user.id,
+        entityType: 'user',
+        entityId: user.id,
+      })
       writeDb(db)
     }),
   ),

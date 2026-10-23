@@ -14,9 +14,12 @@ import {
   bulkUpdateUserStatus,
   createUser,
   deleteUser,
+  fetchUser,
+  fetchUserActivity,
   fetchUsers,
   restoreUsers,
   updateUser,
+  updateUserProfile,
 } from '@/features/users/api'
 
 const userInput = {
@@ -24,7 +27,7 @@ const userInput = {
   email: 'ada@fish.dev',
   roleId: 'role_viewer',
   status: 'active' as const,
-  department: 'Engineering',
+  departmentId: 'dept-engineering',
 }
 
 describe('feature API clients', () => {
@@ -40,12 +43,14 @@ describe('feature API clients', () => {
       q: 'ada lovelace',
       roleId: 'role_admin',
       status: 'active',
+      departmentId: 'dept-engineering',
+      includeDescendants: true,
       sort: 'name',
       order: 'asc',
     })
 
     expect(apiRequestMock).toHaveBeenCalledWith(
-      '/users?page=2&pageSize=20&q=ada+lovelace&roleId=role_admin&status=active&sort=name&order=asc',
+      '/users?page=2&pageSize=20&q=ada+lovelace&roleId=role_admin&status=active&departmentId=dept-engineering&includeDescendants=1&sort=name&order=asc',
     )
   })
 
@@ -69,6 +74,22 @@ describe('feature API clients', () => {
       body: { ...userInput, name: 'Grace' },
     })
     expect(apiRequestMock).toHaveBeenNthCalledWith(3, '/users/user_1', { method: 'DELETE' })
+  })
+
+  it('loads a user detail, updates the profile and fetches user activity', () => {
+    fetchUser('user_1')
+    updateUserProfile('user_1', { tags: ['design'], jobTitle: 'Lead' })
+    fetchUserActivity('user_1', 5)
+
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/users/user_1')
+    expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/users/user_1', {
+      method: 'PATCH',
+      body: { tags: ['design'], jobTitle: 'Lead' },
+    })
+    expect(apiRequestMock).toHaveBeenNthCalledWith(
+      3,
+      '/audit-events?entityType=user&entityId=user_1&page=1&pageSize=5',
+    )
   })
 
   it('loads roles and saves role permissions', () => {

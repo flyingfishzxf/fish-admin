@@ -1,4 +1,5 @@
-import { BadgeCheck, Copy, Pencil, Trash2 } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
+import { BadgeCheck, Copy, Eye, Pencil, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
@@ -50,6 +51,12 @@ export function UserContextMenu({
         <span className="block truncate text-xs text-muted-foreground">{user.email}</span>
       </ContextMenuLabel>
       <ContextMenuSeparator />
+      <ContextMenuItem asChild>
+        <Link to="/users/$id" params={{ id: user.id }}>
+          <Eye />
+          {t('users:actions.view')}
+        </Link>
+      </ContextMenuItem>
       <ContextMenuItem onSelect={() => void copyEmail()}>
         <Copy />
         {t('users:context.copyEmail')}

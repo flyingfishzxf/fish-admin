@@ -18,7 +18,7 @@ describe('createUserSchema', () => {
     email: 'ada@fish.dev',
     roleId: 'role_admin',
     status: 'active',
-    department: 'Engineering',
+    departmentId: 'dept-engineering',
   }
 
   it('accepts valid input and trims text fields', () => {
@@ -26,14 +26,14 @@ describe('createUserSchema', () => {
       ...valid,
       name: '  Ada Lovelace  ',
       email: '  ada@fish.dev  ',
-      department: '  Engineering  ',
+      departmentId: '  dept-engineering  ',
     })
 
     expect(result.success).toBe(true)
     if (result.success) {
       expect(result.data.name).toBe('Ada Lovelace')
       expect(result.data.email).toBe('ada@fish.dev')
-      expect(result.data.department).toBe('Engineering')
+      expect(result.data.departmentId).toBe('dept-engineering')
     }
   })
 
@@ -53,7 +53,7 @@ describe('createUserSchema', () => {
 
   it('requires a role and a department', () => {
     expect(messages({ ...valid, roleId: '' })).toContain('validation:required')
-    expect(messages({ ...valid, department: '' })).toContain('validation:required')
+    expect(messages({ ...valid, departmentId: '' })).toContain('validation:required')
   })
 
   it('rejects unknown statuses', () => {

@@ -31,7 +31,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { DEMO_DEPARTMENTS } from '@/config/demo'
+import { TreeSelect } from '@/components/enterprise/tree/tree-select'
+import type { TreeItem } from '@/components/enterprise/tree/tree'
+import { useDepartmentsQuery } from '@/features/departments/queries'
 import { ApiError } from '@/lib/api-error'
 import type { RoleOption, User } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -44,7 +46,7 @@ const EMPTY_VALUES: UserFormValues = {
   email: '',
   roleId: '',
   status: 'active',
-  department: '',
+  departmentId: '',
 }
 
 export function UserFormDrawer({
@@ -62,10 +64,20 @@ export function UserFormDrawer({
 }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
+  const departmentsQuery = useDepartmentsQuery()
   const [serverError, setServerError] = useState<string | null>(null)
   const isEditing = Boolean(user)
 
   const schema = useMemo(() => createUserSchema(t), [t])
+  const departmentItems = useMemo<TreeItem[]>(
+    () =>
+      (departmentsQuery.data ?? []).map((department) => ({
+        id: department.id,
+        parentId: department.parentId,
+        label: t(`common:departments.${department.name}`, { defaultValue: department.name }),
+      })),
+    [departmentsQuery.data, t],
+  )
   const form = useForm<UserFormValues>({
     resolver: zodResolver(schema),
     defaultValues: EMPTY_VALUES,
@@ -81,7 +93,7 @@ export function UserFormDrawer({
             email: user.email,
             roleId: user.roleId,
             status: user.status,
-            department: user.department,
+            departmentId: user.departmentId ?? '',
           }
         : EMPTY_VALUES,
     )
@@ -93,6 +105,7 @@ export function UserFormDrawer({
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['users'] })
       void queryClient.invalidateQueries({ queryKey: ['roles'] })
+      void queryClient.invalidateQueries({ queryKey: ['departments'] })
       toast.success(t(isEditing ? 'users:updateSuccess' : 'users:createSuccess'))
       onOpenChange(false)
     },
@@ -231,24 +244,22 @@ export function UserFormDrawer({
 
               <FormField
                 control={form.control}
-                name="department"
+                name="departmentId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t('users:form.department')}</FormLabel>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t('users:form.departmentPlaceholder')} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {DEMO_DEPARTMENTS.map((department) => (
-                          <SelectItem key={department} value={department}>
-                            {t(`common:departments.${department}`)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <TreeSelect
+                        items={departmentItems}
+                        value={field.value || null}
+                        onChange={field.onChange}
+                        onClear={() => field.onChange('')}
+                        placeholder={t('users:form.departmentPlaceholder')}
+                        ariaLabel={t('users:form.department')}
+                        emptyLabel={t('common:enterprise.noMatches')}
+                        disabled={departmentsQuery.isPending}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}

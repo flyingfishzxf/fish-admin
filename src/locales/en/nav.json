@@ -8,8 +8,10 @@
     "dashboard": "Dashboard",
     "ui": "UI Kit",
     "users": "Users",
+    "departments": "Departments",
     "roles": "Roles",
     "permissions": "Permissions",
+    "auditLogs": "Audit log",
     "profile": "Profile",
     "security": "Security",
     "settings": "Settings"

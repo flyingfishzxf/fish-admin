@@ -19,8 +19,10 @@ const EXPECTED_ROUTE_IDS: Record<AppPath, string> = {
   '/': '/_app/',
   '/ui': '/_app/ui',
   '/users': '/_app/users',
+  '/departments': '/_app/departments',
   '/roles': '/_app/roles',
   '/permissions': '/_app/permissions',
+  '/audit-logs': '/_app/audit-logs',
   '/profile': '/_app/profile',
   '/security': '/_app/security',
   '/settings': '/_app/settings',
@@ -87,5 +89,12 @@ describe('navigation config', () => {
     expect(findNavGroup('/roles/editor')?.titleKey).toBe('nav:groups.management')
     expect(findNavItem('/unknown')).toBeUndefined()
     expect(findNavGroup('/unknown')).toBeUndefined()
+  })
+
+  it('resolves the longest matching nav item', () => {
+    expect(findNavItem('/roles/matrix')?.to).toBe('/roles')
+    expect(findNavItem('/departments')?.to).toBe('/departments')
+    expect(findNavItem('/users/42')?.to).toBe('/users')
+    expect(findNavItem('/')?.to).toBe('/')
   })
 })

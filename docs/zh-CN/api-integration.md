@@ -29,15 +29,15 @@
 
 客户端会包装成带 `status`、`code`、`message` 的 `ApiError`。任何 `401` 都会触发下文所述的刷新流程；其他状态码交给 TanStack Query，并在界面中展示。
 
-| 状态码 | 场景                                                                                                                            |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| `400`  | 校验失败（`VALIDATION_ERROR`、`INVALID_TOKEN`、`WEAK_PASSWORD`、`INVALID_PASSWORD`、`PASSWORD_UNCHANGED`、`SETUP_REQUIRED`）    |
-| `401`  | 缺少/过期令牌（`UNAUTHORIZED`、`TOKEN_EXPIRED`、`INVALID_REFRESH_TOKEN`、`INVALID_CREDENTIALS`、`INVALID_CODE`、`MFA_EXPIRED`） |
-| `403`  | 已认证但无权操作（`FORBIDDEN`、`ACCOUNT_INACTIVE`、`EMAIL_NOT_VERIFIED`）                                                       |
-| `404`  | 资源不存在（`USER_NOT_FOUND`、`ROLE_NOT_FOUND`、`SESSION_NOT_FOUND`、`INVITE_NOT_FOUND`）                                       |
-| `409`  | 冲突（`EMAIL_TAKEN`、`ALREADY_ENABLED`）                                                                                        |
-| `410`  | 邀请已被使用或已过期（`INVITE_USED`、`INVITE_EXPIRED`）                                                                         |
-| `429`  | 登录失败次数过多（`ACCOUNT_LOCKED`）                                                                                            |
+| 状态码 | 场景                                                                                                                                                             |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `400`  | 校验失败（`VALIDATION_ERROR`、`INVALID_TOKEN`、`WEAK_PASSWORD`、`INVALID_PASSWORD`、`PASSWORD_UNCHANGED`、`SETUP_REQUIRED`、`INVALID_PARENT`、`PROTECTED_ROLE`） |
+| `401`  | 缺少/过期令牌（`UNAUTHORIZED`、`TOKEN_EXPIRED`、`INVALID_REFRESH_TOKEN`、`INVALID_CREDENTIALS`、`INVALID_CODE`、`MFA_EXPIRED`）                                  |
+| `403`  | 已认证但无权操作（`FORBIDDEN`、`ACCOUNT_INACTIVE`、`EMAIL_NOT_VERIFIED`）                                                                                        |
+| `404`  | 资源不存在（`USER_NOT_FOUND`、`ROLE_NOT_FOUND`、`DEPARTMENT_NOT_FOUND`、`AUDIT_EVENT_NOT_FOUND`、`SESSION_NOT_FOUND`、`INVITE_NOT_FOUND`）                       |
+| `409`  | 冲突（`EMAIL_TAKEN`、`ALREADY_ENABLED`、`ROLE_NAME_TAKEN`、`ROLE_IN_USE`、`DEPARTMENT_NAME_TAKEN`）                                                              |
+| `410`  | 邀请已被使用或已过期（`INVITE_USED`、`INVITE_EXPIRED`）                                                                                                          |
+| `429`  | 登录失败次数过多（`ACCOUNT_LOCKED`）                                                                                                                             |
 
 ## 认证
 
@@ -167,15 +167,17 @@
 
 查询参数：
 
-| 参数       | 类型                                         | 说明           |
-| ---------- | -------------------------------------------- | -------------- |
-| `page`     | number                                       | 从 1 开始      |
-| `pageSize` | number                                       | 默认 10        |
-| `q`        | string                                       | 匹配姓名或邮箱 |
-| `roleId`   | string                                       | 精确匹配角色   |
-| `status`   | `active \| invited \| inactive`              | 精确匹配状态   |
-| `sort`     | `name \| email \| createdAt \| lastActiveAt` | 列 id          |
-| `order`    | `asc \| desc`                                | 排序方向       |
+| 参数                 | 类型                                         | 说明               |
+| -------------------- | -------------------------------------------- | ------------------ |
+| `page`               | number                                       | 从 1 开始          |
+| `pageSize`           | number                                       | 默认 10            |
+| `q`                  | string                                       | 匹配姓名或邮箱     |
+| `roleId`             | string                                       | 精确匹配角色       |
+| `status`             | `active \| invited \| inactive`              | 精确匹配状态       |
+| `departmentId`       | string                                       | 精确匹配部门       |
+| `includeDescendants` | `1`                                          | 连同子部门一起筛选 |
+| `sort`               | `name \| email \| createdAt \| lastActiveAt` | 列 id              |
+| `order`              | `asc \| desc`                                | 排序方向           |
 
 响应：
 
@@ -191,6 +193,10 @@
       "roleName": "Administrator",
       "status": "active",
       "department": "Platform",
+      "departmentId": "dept-engineering-platform",
+      "departmentPath": ["Engineering", "Platform"],
+      "jobTitle": "Staff Engineer",
+      "tags": ["on-call", "backend"],
       "bio": "…",
       "createdAt": "2025-01-10T08:00:00.000Z",
       "lastActiveAt": "2026-10-21T09:12:00.000Z"
@@ -213,15 +219,19 @@
   "email": "jordan@example.com",
   "roleId": "manager",
   "status": "active",
-  "department": "Operations"
+  "departmentId": "dept-operations",
+  "jobTitle": "Operations Lead",
+  "tags": ["remote"]
 }
 ```
 
-返回创建后的用户（`201` 亦可，Mock 返回 `200`）。
+返回创建后的用户（`201` 亦可，Mock 返回 `200`）。`departmentId`（或兼容字段 `department` 名称）必填；`tags` 最多 8 个。
 
 ### `GET /users/:id`、`PATCH /users/:id`
 
-`PATCH` 接受创建字段的任意子集，返回更新后的用户。
+`GET` 返回单个用户；未知或已删除的 id 返回 `404 USER_NOT_FOUND`，详情页会渲染 `Result` 空状态。
+
+`PATCH` 接受创建字段的任意子集，包括 `departmentId`、`jobTitle`、`tags` 与 `avatar`，返回更新后的用户。
 
 针对自己的两种修改会返回 `400`：把本人 `status` 改为 `inactive` 时返回 `CANNOT_DEACTIVATE_SELF`，把本人 `roleId` 改成其他角色时返回 `CANNOT_CHANGE_OWN_ROLE`。请在后端保留这两条校验——否则管理员可以停用自己的访问，或者把自己降到没有权限撤销该操作的角色。
 
@@ -251,12 +261,36 @@
     "id": "manager",
     "name": "Manager",
     "description": "Runs day-to-day user management.",
-    "permissions": ["dashboard:read", "user:read", "user:create", "user:update", "role:read"],
-    "isSystem": false,
+    "permissions": [
+      "dashboard:read",
+      "user:read",
+      "user:create",
+      "user:update",
+      "role:read",
+      "role:create",
+      "role:update",
+      "audit:read",
+      "department:read",
+      "department:manage",
+      "permission:read"
+    ],
+    "isSystem": true,
     "userCount": 21
   }
 ]
 ```
+
+### `POST /roles`
+
+```json
+{ "name": "Support", "description": "Handles customer tickets.", "permissions": ["user:read"] }
+```
+
+返回创建后的角色。名称重复返回 `409 ROLE_NAME_TAKEN`；未知权限码返回 `400 VALIDATION_ERROR`。
+
+### `PATCH /roles/:id`、`DELETE /roles/:id`
+
+`PATCH` 接受 `{ name?, description? }`。种子角色受保护，返回 `400 PROTECTED_ROLE`。`DELETE` 返回 `204`；系统角色同样返回 `PROTECTED_ROLE`，仍有启用成员时返回 `409 ROLE_IN_USE`。
 
 ### `GET /roles/options`
 
@@ -284,6 +318,80 @@
   }
 ]
 ```
+
+## 部门
+
+### `GET /departments`
+
+返回扁平的前序列表，由客户端构建树：
+
+```json
+{
+  "items": [
+    {
+      "id": "dept-engineering",
+      "name": "Engineering",
+      "parentId": null,
+      "managerId": "user-admin",
+      "managerName": "Avery Chen",
+      "directMemberCount": 12,
+      "memberCount": 34,
+      "sortOrder": 1,
+      "createdAt": "2025-01-10T08:00:00.000Z"
+    }
+  ]
+}
+```
+
+`memberCount` 含后代部门，详情面板与 `includeDescendants` 筛选都以它为准。
+
+### `POST /departments`、`PATCH /departments/:id`
+
+`POST` 接受 `{ name, parentId }`（根节点用 `null`），返回创建后的部门。`PATCH` 接受 `{ name?, parentId? }`；重命名会同步成员的 `department` 名称。两者都需要 `department:manage`，名称重复返回 `409 DEPARTMENT_NAME_TAKEN`。把节点移动到自己的后代之下会返回 `400 INVALID_PARENT`，父级不存在同样如此。
+
+## 审计事件
+
+### `GET /audit-events`
+
+| 参数         | 类型                                 | 说明                               |
+| ------------ | ------------------------------------ | ---------------------------------- |
+| `page`       | number                               | 从 1 开始                          |
+| `pageSize`   | number                               | 限制在 10–100                      |
+| `q`          | string                               | 匹配操作人、对象名称与 metadata 值 |
+| `action`     | `AuditAction`                        | 精确动作，例如 `user.updated`      |
+| `entityType` | `user \| role \| department \| auth` | 精确对象类型                       |
+| `entityId`   | string                               | 精确对象 id                        |
+| `from`、`to` | `yyyy-MM-dd`                         | 按本地日界含首尾比较               |
+
+返回 `PaginatedResult<AuditEvent>`：
+
+```json
+{
+  "items": [
+    {
+      "id": "audit-…",
+      "action": "user.updated",
+      "actorId": "user-admin",
+      "actorName": "Avery Chen",
+      "entityType": "user",
+      "entityId": "user-42",
+      "entityLabel": "Jordan Lee",
+      "metadata": { "fields": "departmentId, tags" },
+      "createdAt": "2026-10-21T09:12:00.000Z"
+    }
+  ],
+  "total": 160,
+  "page": 1,
+  "pageSize": 20,
+  "pageCount": 8
+}
+```
+
+未知动作或对象类型返回 `400 VALIDATION_ERROR`；日期格式错误或 `from > to` 返回 `400 INVALID_DATE_RANGE`。
+
+### `GET /audit-events/:id`
+
+返回 `{ event, related }`，其中 `related` 是同一对象最近 5 条事件。id 不存在返回 `404 AUDIT_EVENT_NOT_FOUND`。演示最多保留 500 条事件。
 
 ## 工作台
 
@@ -326,16 +434,16 @@
 
 ### `POST /__mock/reset`
 
-仅存在于 Mock 中，且需要 `demo:reset` 权限。它会重新播种用户、角色、邀请、令牌与活动记录，然后当当前登录账号仍然存在时重新挂接现有会话。接入真实 API 后请移除设置页中的对应操作。
+仅存在于 Mock 中，且需要 `demo:reset` 权限。它会重新播种用户、角色、部门、审计事件、邀请与令牌，然后当当前登录账号仍然存在时重新挂接现有会话。接入真实 API 后请移除设置页中的对应操作。
 
 ## 逐步替换 Mock
 
 1. 继续使用 `src/types` 作为内部契约，或用 OpenAPI schema 生成的类型替换。
-2. 重写七个 `api.ts`（`auth`、`users`、`roles`、`permissions`、`dashboard`、`profile`、`settings`），让它们调用你的接口。它们是仅有的使用 `apiRequest` 的位置；安全页面复用 `auth/api.ts`。
+2. 重写各 feature 的 `api.ts`（`auth`、`users`、`roles`、`permissions`、`departments`、`audit`、`dashboard`、`profile`、`settings`），让它们调用你的接口。它们是仅有的使用 `apiRequest` 的位置；安全页面复用 `auth/api.ts`。
 3. 保留 `apiRequest` 以复用 Bearer 令牌、单飞刷新与全局 401 处理。若后端使用 Cookie，可简化：去掉 Authorization 头、加入 `credentials: 'include'`，保留 401 跳转逻辑。
 4. 在服务端实现完整的认证生命周期——注册与邮箱验证、带 TTL 的重置令牌、邀请、TOTP、登录锁定以及会话表。`src/mocks/handlers/auth.ts` 记录了每个界面所期待的请求/响应结构，客户端只依赖这些结构。
 5. 把 `/auth/me` 的 `permissions` 字段换成服务端计算的有效权限列表。
-6. 决定角色与权限数据放在哪里。演示为了方便角色编辑器在客户端保留完整注册表；真实后端可以只返回展示所需的标签。
+6. 决定角色、部门与权限数据放在哪里。演示为了方便角色编辑器与权限矩阵在客户端保留完整注册表；真实后端可以只返回展示所需的标签，但仍必须在服务端强制校验每个权限码。
 7. 删除 `src/mocks` 与 `public/mockServiceWorker.js`，然后用 `pnpm build && pnpm preview` 验证生产构建。
 
 ## 针对真实 API 的测试

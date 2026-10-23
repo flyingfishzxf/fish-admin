@@ -8,17 +8,22 @@ FishAdmin demonstrates a complete client-side permission flow: navigation, route
 
 Permissions use a `resource:action` format:
 
-| Code              | What it protects                                                             |
-| ----------------- | ---------------------------------------------------------------------------- |
-| `dashboard:read`  | Dashboard route and KPI data                                                 |
-| `user:read`       | Users route, user list and role options                                      |
-| `user:create`     | "New user" button and `POST /api/users`                                      |
-| `user:update`     | Edit action, `PATCH /api/users/:id` and `POST /api/users/bulk-status`        |
-| `user:delete`     | Delete action, `DELETE /api/users/:id` and the bulk delete/restore endpoints |
-| `role:read`       | Roles route and `GET /api/roles`                                             |
-| `role:update`     | Editing a role's permissions                                                 |
-| `permission:read` | Read-only permissions page                                                   |
-| `demo:reset`      | Resetting the demo database                                                  |
+| Code                | What it protects                                                                                         |
+| ------------------- | -------------------------------------------------------------------------------------------------------- |
+| `dashboard:read`    | Dashboard route and KPI data                                                                             |
+| `user:read`         | Users route, user detail, user list and role options                                                     |
+| `user:create`       | "New user" button and `POST /api/users`                                                                  |
+| `user:update`       | Edit action, `PATCH /api/users/:id` and `POST /api/users/bulk-status`                                    |
+| `user:delete`       | Delete action, `DELETE /api/users/:id` and the bulk delete/restore endpoints                             |
+| `role:read`         | Roles route, permission matrix and `GET /api/roles`                                                      |
+| `role:create`       | "New role" action, the create-role wizard and `POST /api/roles`                                          |
+| `role:update`       | Editing custom roles, the permission matrix, `PATCH /api/roles/:id` and `PUT /api/roles/:id/permissions` |
+| `role:delete`       | Deleting custom roles and `DELETE /api/roles/:id`                                                        |
+| `audit:read`        | Audit log route, per-user activity and `GET /api/audit-events`                                           |
+| `department:read`   | Departments route, the department tree and `GET /api/departments`                                        |
+| `department:manage` | Create/rename department actions and `POST`/`PATCH /api/departments`                                     |
+| `permission:read`   | Read-only permissions page and `GET /api/permissions`                                                    |
+| `demo:reset`        | Resetting the demo database                                                                              |
 
 Two areas deliberately have no permission code: `/ui` (the component playground is useful to every signed-in role) and the account pages `/profile` and `/security`, which operate on the current user only.
 
@@ -37,28 +42,28 @@ An effective permission list comes from `GET /api/auth/me`; it is not stored wit
 
 ## Roles in the demo
 
-| Role          | Permissions                                                              |
-| ------------- | ------------------------------------------------------------------------ |
-| Administrator | `*`                                                                      |
-| Manager       | `dashboard:read`, `user:read`, `user:create`, `user:update`, `role:read` |
-| Viewer        | `dashboard:read`, `user:read`                                            |
+| Role          | Permissions                                                                                                                                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Administrator | `*`                                                                                                                                                                             |
+| Manager       | `dashboard:read`, `user:read`, `user:create`, `user:update`, `role:read`, `role:create`, `role:update`, `audit:read`, `department:read`, `department:manage`, `permission:read` |
+| Viewer        | `dashboard:read`, `user:read`, `audit:read`, `department:read`                                                                                                                  |
 
 The difference is intentional and visible:
 
-- Administrator sees every menu entry, can delete users, edit role permissions and reset demo data.
-- Manager can create and edit users but not delete them, and cannot open `/permissions` or edit roles.
-- Viewer sees the dashboard, the users table and nothing else; every write control is hidden.
+- Administrator sees every menu entry, can delete users and roles, edit any non-admin role in the matrix and reset demo data.
+- Manager can create and edit users, manage departments, create and edit custom roles and open the read-only permission registry. It cannot delete users or roles, and the admin column of the matrix is read-only.
+- Viewer sees the dashboard, users, departments and the audit log; every write control is hidden.
 
-Try opening `/permissions` while signed in as Manager: the route guard redirects to `/403` even though the URL was typed directly.
+Try opening `/roles/matrix` while signed in as Viewer: the route guard redirects to `/403` even though the URL was typed directly. As Manager, the same page opens but the Administrator column cannot be changed.
 
 ## Enforcement layers
 
-| Layer      | Where                                     | Behaviour                                                                                                                    |
-| ---------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| Navigation | `src/config/nav.ts` + `filterNavGroups()` | Hides entries the current user cannot use; empty groups are dropped. Breadcrumbs and the command palette read the same tree. |
-| Routes     | `beforeLoad` in each leaf route           | Unauthenticated → `/login?redirect=…`; authenticated without permission → `/403`.                                            |
-| UI actions | `<Can permission="...">` or `useCan()`    | Hides or disables buttons and menu items.                                                                                    |
-| Server     | Mock handlers / your backend              | Returns `401` when unauthenticated and `403` when the role lacks the permission.                                             |
+| Layer      | Where                                     | Behaviour                                                                                                                                                                                                                  |
+| ---------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Navigation | `src/config/nav.ts` + `filterNavGroups()` | Hides entries the current user cannot use; empty groups are dropped. Breadcrumbs and the command palette read the same tree, and `findNavItem()` picks the longest matching path so `/roles/matrix` highlights only Roles. |
+| Routes     | `beforeLoad` in each leaf route           | Unauthenticated → `/login?redirect=…`; authenticated without permission → `/403`.                                                                                                                                          |
+| UI actions | `<Can permission="...">` or `useCan()`    | Hides or disables buttons and menu items.                                                                                                                                                                                  |
+| Server     | Mock handlers / your backend              | Returns `401` when unauthenticated and `403` when the role lacks the permission.                                                                                                                                           |
 
 `_app/route.tsx` only checks that a session exists. Permission checks live in leaf routes so `/403` remains reachable for users who just failed a check.
 
@@ -126,7 +131,7 @@ Say you want to add invoice management with `invoice:read`.
 
 4. **Protect the actions** with `<Can permission={PERMISSION_CODES.invoiceRead}>` and, on the server, reject requests without the same permission.
 
-That's all. The sidebar, breadcrumbs and command palette derive from `nav.ts`; the role editor and permissions page derive from `PERMISSIONS`.
+That's all. The sidebar, breadcrumbs and command palette derive from `nav.ts`; the role editor, permission matrix and permissions page derive from `PERMISSIONS`.
 
 ## Guard rails in the codebase
 
@@ -134,6 +139,9 @@ That's all. The sidebar, breadcrumbs and command palette derive from `nav.ts`; t
 - **Registry validation** — the translation test checks every permission label exists in both languages.
 - **Single-flight refresh** — a `401` triggers exactly one refresh request; if it fails, the session is cleared and the user is sent to login.
 - **Mock 403s** — write handlers call `authorize()` before mutating data. The Playwright suite verifies that a Viewer's direct `POST /api/users` is rejected with `403`.
+- **Protected system roles** — `PATCH` and `DELETE /api/roles/:id` return `PROTECTED_ROLE` for seeded roles, and the admin role ignores permission edits. Deleting a custom role that still has members returns `ROLE_IN_USE`.
+- **Explicit matrix saves** — permissions are replaced as a whole set. The matrix keeps a local draft and submits changed roles one by one instead of saving each checkbox, so two rapid edits cannot overwrite each other.
+- **Department cycle guard** — `PATCH /api/departments/:id` rejects reparenting a node into its own subtree with `INVALID_PARENT`.
 - **Partial bulk results** — bulk handlers check each row, not only the caller: the current user and already-deleted accounts are returned in `skipped`, so a Manager sending their own id in a bulk delete changes nothing.
 - **Self-deletion** — even an Administrator cannot delete their own account; the server returns `CANNOT_DELETE_SELF`.
 - **Self lock-out** — the same account cannot be deactivated or re-roled by its own owner (`CANNOT_DEACTIVATE_SELF`, `CANNOT_CHANGE_OWN_ROLE`). Without these guards an Administrator could drop themselves to Viewer and lose the permission needed to undo it, which is how a demo database gets bricked.

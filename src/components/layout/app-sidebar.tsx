@@ -18,7 +18,7 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { APP_VERSION } from '@/config/app'
-import { isPathActive, NAV_GROUPS } from '@/config/nav'
+import { findNavItem, NAV_GROUPS } from '@/config/nav'
 import { filterNavGroups } from '@/lib/permissions'
 import { useAuthStore } from '@/stores/auth-store'
 
@@ -30,6 +30,7 @@ export function AppSidebar() {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const permissions = useAuthStore((state) => state.user?.permissions ?? NO_PERMISSIONS)
   const groups = filterNavGroups(NAV_GROUPS, permissions)
+  const activeItem = findNavItem(pathname)
   const closeMobileSidebar = () => {
     if (isMobile) setOpenMobile(false)
   }
@@ -67,7 +68,7 @@ export function AppSidebar() {
                     <SidebarMenuItem key={item.to}>
                       <SidebarMenuButton
                         asChild
-                        isActive={isPathActive(pathname, item.to)}
+                        isActive={activeItem?.to === item.to}
                         tooltip={t(item.titleKey)}
                       >
                         <Link to={item.to} onClick={closeMobileSidebar}>

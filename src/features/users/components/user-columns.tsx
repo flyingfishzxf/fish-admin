@@ -1,5 +1,6 @@
 import type { TFunction } from 'i18next'
 import type { ColumnDef } from '@tanstack/react-table'
+import { Link } from '@tanstack/react-router'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 
 import { StatusBadge } from '@/components/common/status-badge'
@@ -113,7 +114,13 @@ export function createUserColumns({
               </AvatarFallback>
             </Avatar>
             <div className="min-w-0">
-              <p className="truncate text-sm font-medium">{user.name}</p>
+              <Link
+                to="/users/$id"
+                params={{ id: user.id }}
+                className="block truncate text-sm font-medium hover:text-primary hover:underline focus-visible:underline focus-visible:outline-none"
+              >
+                {user.name}
+              </Link>
               <p className="truncate text-xs text-muted-foreground md:hidden">{user.email}</p>
             </div>
           </div>

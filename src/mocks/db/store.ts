@@ -1,10 +1,22 @@
-import type { ActivityAction, AuthSession, AuthUser, PaginatedResult, User } from '@/types'
+import type {
+  ActivityAction,
+  ActivityItem,
+  AuthSession,
+  AuthUser,
+  AuditAction,
+  AuditEntityType,
+  Department,
+  PaginatedResult,
+  User,
+} from '@/types'
 
-import { createDemoInvite, createSeedDb } from '../seed'
+import { createDemoDepartments, createDemoInvite, createSeedDb } from '../seed'
 import {
   MOCK_DB_STORAGE_KEY,
   MOCK_DB_VERSION,
+  type MockAuditEvent,
   type MockDb,
+  type MockDepartmentRecord,
   type MockInvite,
   type MockRoleRecord,
   type MockSession,
@@ -13,14 +25,40 @@ import {
 
 let memoryDb: MockDb | null = null
 
+type UserV2 = Omit<MockUserRecord, 'departmentId' | 'jobTitle' | 'tags'>
+
 interface LegacyDbV1 {
   version: 1
   seededAt: string
-  users: Array<Omit<MockUserRecord, 'emailVerified' | 'twoFactorEnabled'>>
+  users: Array<Omit<UserV2, 'emailVerified' | 'twoFactorEnabled'>>
   roles: MockRoleRecord[]
-  activity: MockDb['activity']
+  activity: ActivityItem[]
   refreshTokens?: Record<string, { userId: string; expiresAt: number }>
 }
+
+interface LegacyDbV2 {
+  version: 2
+  seededAt: string
+  users: UserV2[]
+  roles: MockRoleRecord[]
+  activity: ActivityItem[]
+  sessions: MockSession[]
+  loginAttempts: MockDb['loginAttempts']
+  mfaChallenges: MockDb['mfaChallenges']
+  verificationTokens: MockDb['verificationTokens']
+  passwordResetTokens: MockDb['passwordResetTokens']
+  invites: MockInvite[]
+}
+
+const ACTIVITY_ACTIONS = new Set<ActivityAction>([
+  'user.created',
+  'user.updated',
+  'user.deleted',
+  'user.restored',
+  'role.updated',
+  'auth.login',
+  'profile.updated',
+])
 
 function hasStorage() {
   try {
@@ -30,7 +68,14 @@ function hasStorage() {
   }
 }
 
-function migrateV1(legacy: LegacyDbV1): MockDb {
+function activityEntityType(action: AuditAction | ActivityAction): AuditEntityType {
+  if (action === 'auth.login') return 'auth'
+  if (action.startsWith('role.')) return 'role'
+  if (action.startsWith('department.')) return 'department'
+  return 'user'
+}
+
+function migrateV1(legacy: LegacyDbV1): LegacyDbV2 {
   const now = Date.now()
   const users = legacy.users.map((user) => ({
     ...user,
@@ -51,7 +96,7 @@ function migrateV1(legacy: LegacyDbV1): MockDb {
   )
 
   return {
-    version: MOCK_DB_VERSION,
+    version: 2,
     seededAt: legacy.seededAt,
     users,
     roles: legacy.roles,
@@ -62,6 +107,44 @@ function migrateV1(legacy: LegacyDbV1): MockDb {
     verificationTokens: [],
     passwordResetTokens: [],
     invites: [createDemoInvite()],
+  }
+}
+
+function migrateV2(legacy: LegacyDbV2): MockDb {
+  const departments = createDemoDepartments()
+  const departmentByName = new Map(
+    departments.map((department) => [department.name.toLowerCase(), department]),
+  )
+
+  const users: MockUserRecord[] = legacy.users.map((user) => ({
+    ...user,
+    departmentId: departmentByName.get(user.department.toLowerCase())?.id,
+    tags: [],
+  }))
+
+  const auditEvents: MockAuditEvent[] = legacy.activity.map((item, index) => ({
+    id: `audit-migrated-${index}-${item.id}`,
+    action: item.action,
+    actorName: item.actorName,
+    entityType: activityEntityType(item.action),
+    entityLabel: item.target,
+    metadata: {},
+    createdAt: item.createdAt,
+  }))
+
+  return {
+    version: MOCK_DB_VERSION,
+    seededAt: legacy.seededAt,
+    users,
+    roles: legacy.roles,
+    departments,
+    auditEvents,
+    sessions: legacy.sessions,
+    loginAttempts: legacy.loginAttempts,
+    mfaChallenges: legacy.mfaChallenges,
+    verificationTokens: legacy.verificationTokens,
+    passwordResetTokens: legacy.passwordResetTokens,
+    invites: legacy.invites,
   }
 }
 
@@ -79,7 +162,13 @@ export function readDb(): MockDb {
     if (!parsed || typeof parsed !== 'object') return resetDb()
 
     if (parsed.version === 1) {
-      const migrated = migrateV1(parsed as unknown as LegacyDbV1)
+      const migrated = migrateV2(migrateV1(parsed as unknown as LegacyDbV1))
+      writeDb(migrated)
+      return migrated
+    }
+
+    if (parsed.version === 2) {
+      const migrated = migrateV2(parsed as unknown as LegacyDbV2)
       writeDb(migrated)
       return migrated
     }
@@ -88,7 +177,8 @@ export function readDb(): MockDb {
       parsed.version !== MOCK_DB_VERSION ||
       !Array.isArray(parsed.users) ||
       !Array.isArray(parsed.roles) ||
-      !Array.isArray(parsed.activity) ||
+      !Array.isArray(parsed.departments) ||
+      !Array.isArray(parsed.auditEvents) ||
       !Array.isArray(parsed.sessions)
     ) {
       return resetDb()
@@ -129,8 +219,52 @@ export function findUserById(db: MockDb, id: string) {
   return db.users.find((user) => user.id === id)
 }
 
+export function findDepartment(db: MockDb, id: string) {
+  return db.departments.find((department) => department.id === id)
+}
+
+export function findDepartmentByName(db: MockDb, name: string) {
+  const normalized = name.trim().toLowerCase()
+  return db.departments.find((department) => department.name.toLowerCase() === normalized)
+}
+
+export function departmentPath(db: MockDb, id: string): string[] {
+  const path: string[] = []
+  const seen = new Set<string>()
+  let current = findDepartment(db, id)
+
+  while (current && !seen.has(current.id)) {
+    seen.add(current.id)
+    path.unshift(current.name)
+    const parentId = current.parentId
+    current = parentId ? findDepartment(db, parentId) : undefined
+  }
+
+  return path
+}
+
+export function departmentSubtreeIds(db: MockDb, id: string): Set<string> {
+  const ids = new Set<string>([id])
+  let added = true
+
+  while (added) {
+    added = false
+    for (const department of db.departments) {
+      if (department.parentId && ids.has(department.parentId) && !ids.has(department.id)) {
+        ids.add(department.id)
+        added = true
+      }
+    }
+  }
+
+  return ids
+}
+
 export function serializeUser(db: MockDb, record: MockUserRecord): User {
   const role = findRole(db, record.roleId)
+  const departmentId = record.departmentId ?? findDepartmentByName(db, record.department)?.id
+  const path = departmentId ? departmentPath(db, departmentId) : []
+
   return {
     id: record.id,
     name: record.name,
@@ -140,11 +274,29 @@ export function serializeUser(db: MockDb, record: MockUserRecord): User {
     roleName: role?.name ?? 'Unknown',
     status: record.status,
     department: record.department,
+    departmentId,
+    departmentPath: path.length > 0 ? path : [record.department],
+    jobTitle: record.jobTitle,
+    tags: record.tags ?? [],
     bio: record.bio,
     emailVerified: record.emailVerified,
+    twoFactorEnabled: record.twoFactorEnabled,
     createdAt: record.createdAt,
     lastActiveAt: record.lastActiveAt,
     deletedAt: record.deletedAt,
+  }
+}
+
+export function serializeDepartment(db: MockDb, record: MockDepartmentRecord): Department {
+  const subtree = departmentSubtreeIds(db, record.id)
+  const activeUsers = db.users.filter((user) => !user.deletedAt)
+
+  return {
+    ...record,
+    managerName: record.managerId ? findUserById(db, record.managerId)?.name : undefined,
+    directMemberCount: activeUsers.filter((user) => user.departmentId === record.id).length,
+    memberCount: activeUsers.filter((user) => user.departmentId && subtree.has(user.departmentId))
+      .length,
   }
 }
 
@@ -221,6 +373,8 @@ export interface UserListQuery {
   q?: string
   roleId?: string
   status?: string
+  departmentId?: string
+  includeDescendants?: boolean
   sort?: string
   order?: string
 }
@@ -229,11 +383,19 @@ type SortKey = 'name' | 'email' | 'role' | 'createdAt' | 'lastActiveAt'
 export function queryUsers(db: MockDb, query: UserListQuery): PaginatedResult<User> {
   const pageSize = Math.min(Math.max(query.pageSize ?? 10, 1), 100)
   const search = query.q?.trim().toLowerCase() ?? ''
+  const departmentIds = query.departmentId
+    ? query.includeDescendants
+      ? departmentSubtreeIds(db, query.departmentId)
+      : new Set([query.departmentId])
+    : null
 
   let filtered = db.users.filter((user) => {
     if (user.deletedAt) return false
     if (query.roleId && user.roleId !== query.roleId) return false
     if (query.status && user.status !== query.status) return false
+    if (departmentIds && (!user.departmentId || !departmentIds.has(user.departmentId))) {
+      return false
+    }
     if (!search) return true
     return (
       user.name.toLowerCase().includes(search) ||
@@ -273,13 +435,61 @@ function roleName(db: MockDb, roleId: string) {
   return findRole(db, roleId)?.name ?? ''
 }
 
-export function logActivity(db: MockDb, action: ActivityAction, actorName: string, target: string) {
-  db.activity.unshift({
-    id: `activity-${crypto.randomUUID()}`,
-    action,
-    actorName,
-    target,
+export interface AuditMeta {
+  actorId?: string
+  entityType?: AuditEntityType
+  entityId?: string
+  metadata?: Record<string, string>
+}
+
+export function logAuditEvent(
+  db: MockDb,
+  event: {
+    action: AuditAction
+    actorName: string
+    entityLabel: string
+    actorId?: string
+    entityType?: AuditEntityType
+    entityId?: string
+    metadata?: Record<string, string>
+  },
+) {
+  const record: MockAuditEvent = {
+    id: `audit-${crypto.randomUUID()}`,
+    action: event.action,
+    actorId: event.actorId,
+    actorName: event.actorName,
+    entityType: event.entityType ?? activityEntityType(event.action),
+    entityId: event.entityId,
+    entityLabel: event.entityLabel,
+    metadata: event.metadata ?? {},
     createdAt: new Date().toISOString(),
-  })
-  db.activity = db.activity.slice(0, 40)
+  }
+
+  db.auditEvents.unshift(record)
+  db.auditEvents = db.auditEvents.slice(0, 500)
+  return record
+}
+
+export function logActivity(
+  db: MockDb,
+  action: ActivityAction,
+  actorName: string,
+  target: string,
+  meta: AuditMeta = {},
+) {
+  logAuditEvent(db, { action, actorName, entityLabel: target, ...meta })
+}
+
+export function recentActivity(db: MockDb, limit = 8): ActivityItem[] {
+  return db.auditEvents
+    .filter((event) => ACTIVITY_ACTIONS.has(event.action as ActivityAction))
+    .slice(0, limit)
+    .map((event) => ({
+      id: event.id,
+      action: event.action as ActivityAction,
+      actorName: event.actorName,
+      target: event.entityLabel,
+      createdAt: event.createdAt,
+    }))
 }

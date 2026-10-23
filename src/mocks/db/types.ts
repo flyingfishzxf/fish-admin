@@ -1,6 +1,6 @@
-import type { ActivityItem, UserStatus } from '@/types'
+import type { AuditAction, AuditEntityType, UserStatus } from '@/types'
 
-export const MOCK_DB_VERSION = 2
+export const MOCK_DB_VERSION = 3
 // The storage key stays stable so earlier demo databases can be migrated in place.
 export const MOCK_DB_STORAGE_KEY = 'fish-admin:db:v1'
 
@@ -12,6 +12,9 @@ export interface MockUserRecord {
   roleId: string
   status: UserStatus
   department: string
+  departmentId?: string
+  jobTitle?: string
+  tags: string[]
   avatar?: string
   bio?: string
   emailVerified: boolean
@@ -28,6 +31,27 @@ export interface MockRoleRecord {
   description: string
   permissions: string[]
   isSystem: boolean
+}
+
+export interface MockDepartmentRecord {
+  id: string
+  name: string
+  parentId: string | null
+  managerId?: string
+  sortOrder: number
+  createdAt: string
+}
+
+export interface MockAuditEvent {
+  id: string
+  action: AuditAction
+  actorId?: string
+  actorName: string
+  entityType: AuditEntityType
+  entityId?: string
+  entityLabel: string
+  metadata: Record<string, string>
+  createdAt: string
 }
 
 export interface MockSession {
@@ -78,7 +102,8 @@ export interface MockDb {
   seededAt: string
   users: MockUserRecord[]
   roles: MockRoleRecord[]
-  activity: ActivityItem[]
+  departments: MockDepartmentRecord[]
+  auditEvents: MockAuditEvent[]
   sessions: MockSession[]
   loginAttempts: Record<string, MockLoginAttempt>
   mfaChallenges: Record<string, MockMfaChallenge>

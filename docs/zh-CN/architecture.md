@@ -46,8 +46,12 @@ __root.tsx              Providers、全局 404 与错误兜底
    ├─ index.tsx         /            dashboard:read
    ├─ ui.tsx            /ui          仅需登录（组件演练场）
    ├─ users.tsx         /users       user:read
+   ├─ users_.$id.tsx    /users/$id   user:read
+   ├─ departments.tsx   /departments department:read
    ├─ roles.tsx         /roles       role:read
+   ├─ roles_.matrix.tsx /roles/matrix role:read
    ├─ permissions.tsx   /permissions permission:read
+   ├─ audit-logs.tsx    /audit-logs  audit:read
    ├─ profile.tsx       /profile     仅需登录
    ├─ security.tsx      /security    仅需登录
    ├─ settings.tsx      /settings    仅需登录
@@ -72,6 +76,8 @@ Vite 插件排在 React 与 Tailwind 插件之前，并启用了 `autoCodeSplitt
 | 命令面板可见性   | `src/stores/ui-store.ts`    | 仅内存                                                             |
 | API 数据         | TanStack Query              | query key 与各 feature 的 `queries.ts` 放在一起                    |
 | 表格筛选与分页   | URL search params           | `validateUsersSearch` 保证链接可分享、刷新后呈现一致               |
+| 审计筛选与分页   | URL search params           | `validateAuditSearch` 同步搜索、动作、对象与日期区间               |
+| 选中部门         | URL search params           | `/departments?dept=…` 可深链，非法 id 回退到首个根节点             |
 | 已保存视图       | `localStorage`              | `fish-admin:users-views:{userId}`，最多 10 个                      |
 | 表格密度         | `localStorage`              | `fish-admin:users-density`                                         |
 | 网络连通性       | `src/lib/online.ts`         | 基于 `useSyncExternalStore` 监听 window 的 `online`/`offline` 事件 |
@@ -94,11 +100,21 @@ Vite 插件排在 React 与 Tailwind 插件之前，并启用了 `autoCodeSplitt
 
 ```text
 features/users/
-├─ api.ts          fetchUsers、createUser、updateUser、deleteUser、bulk*、restoreUsers
-├─ queries.ts      userListQueryOptions
+├─ api.ts          fetchUsers、fetchUser、createUser、updateUser、updateUserProfile、deleteUser、bulk*、restoreUsers
+├─ queries.ts      userListQueryOptions、userDetailQueryOptions、userAuditQueryOptions
 ├─ schemas.ts      createUserSchema(t)
 ├─ search.ts       表格的 URL search 校验
-└─ components/     UsersPage、UserFormDrawer、DeleteUserDialog、SavedViewsMenu、UserContextMenu、columns
+└─ components/     UsersPage、UserDetailPage、UserFormDrawer、DeleteUserDialog、SavedViewsMenu、UserContextMenu、columns
+```
+
+```text
+features/departments/           features/audit/
+├─ api.ts          部门 CRUD     ├─ api.ts       列表与详情
+├─ queries.ts      departments  ├─ queries.ts   auditListQueryOptions、
+│                  QueryOptions  │                auditEventQueryOptions
+└─ components/     树面板、详情  ├─ search.ts    URL search 与区间预设
+                   与表单        └─ components/  AuditLogsPage、筛选、
+                                                 列定义、详情抽屉
 ```
 
 ```text
@@ -113,9 +129,10 @@ UI 组件不直接调用 `fetch`，而是使用包装了 feature API 的 TanStac
 
 ## Mock 后端
 
-- `src/mocks/seed.ts` 使用固定种子通过 Faker 生成数据库：三个演示账号加 57 个生成用户，以及角色、邀请和活动记录。
-- `src/mocks/db/store.ts` 负责读写数据库，每次变更同步到 `localStorage`。
-- `src/mocks/handlers` 下的 handler 实现认证生命周期、用户（含批量操作与恢复）、角色、权限、工作台与重置接口。写操作会先调用 `authorize()`，token 所属角色缺少权限时返回 `403`。
+- `src/mocks/seed.ts` 使用固定种子通过 Faker 生成数据库：三个演示账号加 57 个生成用户、10 个部门节点、角色、邀请，以及分布在 90 天内的 160 条审计事件。
+- `src/mocks/db/store.ts` 负责读写数据库，每次变更同步到 `localStorage`；它会把 v1、v2 数据迁移到当前 v3 结构，只有未知版本才重置。
+- `src/mocks/handlers` 下的 handler 实现认证生命周期、用户（含批量操作与恢复）、部门、角色（含新建、重命名与删除）、权限、审计事件、工作台与重置接口。写操作会先调用 `authorize()`，token 所属角色缺少权限时返回 `403`。
+- 审计事件是唯一的活动日志。用户、角色、部门与个人资料的变更都调用 `logAuditEvent()`；`logActivity()` 保留为薄包装，工作台通过 `recentActivity()` 映射最新事件。日志上限 500 条。
 - 令牌是假令牌，但结构贴近真实：带过期时间的 base64url access token、与会话记录绑定的不透明 refresh token，以及各自带 TTL 的验证、密码重置和 MFA 挑战条目。
 - `src/mocks/auth.ts` 集中认证规则：刷新时轮换会话、同一邮箱密码错误五次锁定一分钟、MFA 挑战会中断登录流程、修改密码时撤销其他会话。
 - 删除用户是软删除（`deletedAt`），因此 `POST /api/users/restore` 可以撤销批量删除；停用用户会撤销其会话。
@@ -135,7 +152,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 国际化
 
-- 语言 JSON 位于 `src/locales/{en,zh-CN}`，共 13 个 namespace：`common`、`nav`、`auth`、`dashboard`、`users`、`roles`、`permissions`、`profile`、`security`、`settings`、`ui`、`errors`、`validation`。
+- 语言 JSON 位于 `src/locales/{en,zh-CN}`，共 15 个 namespace：`common`、`nav`、`auth`、`dashboard`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`ui`、`errors`、`validation`。
 - `common`、`nav`、`errors` 直接打入主包；其余通过 `i18next-resources-to-backend` 与 `import.meta.glob` 按需加载。
 - 初始语言依次取 `localStorage`、浏览器语言，最后回退英文。
 - `changeLanguage()` 持久化选择、切换 i18next 并同步 `<html lang>`。
@@ -152,6 +169,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 测试策略
 
-- 单元测试覆盖权限解析、导航到路由的解析、URL search 校验、用户与所有认证表单的 Zod schema、密码强度、主题应用、locale key 对齐、API 客户端、query key、单飞刷新、已保存视图持久化、在线状态与 `<Can>`。
-- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、已保存视图、密度与列控制、URL 还原筛选、主题与语言持久化、`/ui` 演练场以及状态页与离线画面。
+- 单元测试覆盖权限解析与通配展开、导航到路由的解析（含最长前缀匹配）、用户与审计的 URL search 校验、用户与所有认证表单的 Zod schema、密码强度、主题应用、locale key 对齐、API 客户端、query key、单飞刷新、已保存视图持久化、在线状态、`<Can>`、树工具函数、穿梭框选择与标签输入。
+- 数据库迁移测试会重放 v1、v2 数据到 v3，并验证损坏的存储会重置而不是崩溃。
+- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与详情抽屉、主题与语言持久化、`/ui` 演练场以及状态页与离线画面。
 - CI 并行执行格式检查、lint、类型检查、覆盖率、生产构建与 E2E。

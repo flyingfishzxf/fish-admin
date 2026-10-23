@@ -29,15 +29,15 @@ Every non-2xx response should return JSON:
 
 The client wraps this in `ApiError` with `status`, `code` and `message`. Any `401` triggers the refresh flow described below; other statuses are surfaced to TanStack Query and shown in the UI.
 
-| Status | When                                                                                                                                   |
-| ------ | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `400`  | Validation failed (`VALIDATION_ERROR`, `INVALID_TOKEN`, `WEAK_PASSWORD`, `INVALID_PASSWORD`, `PASSWORD_UNCHANGED`, `SETUP_REQUIRED`)   |
-| `401`  | Missing/expired token (`UNAUTHORIZED`, `TOKEN_EXPIRED`, `INVALID_REFRESH_TOKEN`, `INVALID_CREDENTIALS`, `INVALID_CODE`, `MFA_EXPIRED`) |
-| `403`  | Authenticated but not allowed (`FORBIDDEN`, `ACCOUNT_INACTIVE`, `EMAIL_NOT_VERIFIED`)                                                  |
-| `404`  | Unknown resource (`USER_NOT_FOUND`, `ROLE_NOT_FOUND`, `SESSION_NOT_FOUND`, `INVITE_NOT_FOUND`)                                         |
-| `409`  | Conflict (`EMAIL_TAKEN`, `ALREADY_ENABLED`)                                                                                            |
-| `410`  | Invitation already used or expired (`INVITE_USED`, `INVITE_EXPIRED`)                                                                   |
-| `429`  | Too many failed sign-ins (`ACCOUNT_LOCKED`)                                                                                            |
+| Status | When                                                                                                                                                                     |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `400`  | Validation failed (`VALIDATION_ERROR`, `INVALID_TOKEN`, `WEAK_PASSWORD`, `INVALID_PASSWORD`, `PASSWORD_UNCHANGED`, `SETUP_REQUIRED`, `INVALID_PARENT`, `PROTECTED_ROLE`) |
+| `401`  | Missing/expired token (`UNAUTHORIZED`, `TOKEN_EXPIRED`, `INVALID_REFRESH_TOKEN`, `INVALID_CREDENTIALS`, `INVALID_CODE`, `MFA_EXPIRED`)                                   |
+| `403`  | Authenticated but not allowed (`FORBIDDEN`, `ACCOUNT_INACTIVE`, `EMAIL_NOT_VERIFIED`)                                                                                    |
+| `404`  | Unknown resource (`USER_NOT_FOUND`, `ROLE_NOT_FOUND`, `DEPARTMENT_NOT_FOUND`, `AUDIT_EVENT_NOT_FOUND`, `SESSION_NOT_FOUND`, `INVITE_NOT_FOUND`)                          |
+| `409`  | Conflict (`EMAIL_TAKEN`, `ALREADY_ENABLED`, `ROLE_NAME_TAKEN`, `ROLE_IN_USE`, `DEPARTMENT_NAME_TAKEN`)                                                                   |
+| `410`  | Invitation already used or expired (`INVITE_USED`, `INVITE_EXPIRED`)                                                                                                     |
+| `429`  | Too many failed sign-ins (`ACCOUNT_LOCKED`)                                                                                                                              |
 
 ## Auth
 
@@ -167,15 +167,17 @@ Your refresh endpoint should return `401` for invalid, expired or revoked refres
 
 Query parameters:
 
-| Parameter  | Type                                         | Notes                 |
-| ---------- | -------------------------------------------- | --------------------- |
-| `page`     | number                                       | 1-based               |
-| `pageSize` | number                                       | 10 by default         |
-| `q`        | string                                       | Matches name or email |
-| `roleId`   | string                                       | Exact role            |
-| `status`   | `active \| invited \| inactive`              | Exact status          |
-| `sort`     | `name \| email \| createdAt \| lastActiveAt` | Column id             |
-| `order`    | `asc \| desc`                                | Sort direction        |
+| Parameter            | Type                                         | Notes                                     |
+| -------------------- | -------------------------------------------- | ----------------------------------------- |
+| `page`               | number                                       | 1-based                                   |
+| `pageSize`           | number                                       | 10 by default                             |
+| `q`                  | string                                       | Matches name or email                     |
+| `roleId`             | string                                       | Exact role                                |
+| `status`             | `active \| invited \| inactive`              | Exact status                              |
+| `departmentId`       | string                                       | Exact department                          |
+| `includeDescendants` | `1`                                          | Include child departments with the filter |
+| `sort`               | `name \| email \| createdAt \| lastActiveAt` | Column id                                 |
+| `order`              | `asc \| desc`                                | Sort direction                            |
 
 Response:
 
@@ -191,6 +193,10 @@ Response:
       "roleName": "Administrator",
       "status": "active",
       "department": "Platform",
+      "departmentId": "dept-platform",
+      "departmentPath": ["Engineering", "Platform"],
+      "jobTitle": "Staff Engineer",
+      "tags": ["on-call", "backend"],
       "bio": "…",
       "createdAt": "2025-01-10T08:00:00.000Z",
       "lastActiveAt": "2026-10-21T09:12:00.000Z"
@@ -213,15 +219,19 @@ Search, filters, sort and paging live in the URL (`validateSearch` in `src/featu
   "email": "jordan@example.com",
   "roleId": "manager",
   "status": "active",
-  "department": "Operations"
+  "departmentId": "dept-operations",
+  "jobTitle": "Operations Lead",
+  "tags": ["remote"]
 }
 ```
 
-Returns the created user (`201` is fine; the mock returns `200`).
+Returns the created user (`201` is fine; the mock returns `200`). `departmentId` (or the legacy `department` name) is required; `tags` is capped at eight labels.
 
 ### `GET /users/:id`, `PATCH /users/:id`
 
-`PATCH` accepts any subset of the create fields. Returns the updated user.
+`GET` returns one user and answers `404 USER_NOT_FOUND` for unknown or deleted ids; the detail page renders a `Result` screen in that case.
+
+`PATCH` accepts any subset of the create fields, including `departmentId`, `jobTitle`, `tags` and `avatar`. Returns the updated user.
 
 Two self-targeted changes are rejected with `400`: `CANNOT_DEACTIVATE_SELF` when `status` becomes `inactive` for the caller's own id, and `CANNOT_CHANGE_OWN_ROLE` when `roleId` differs from the caller's current role. Keep them in your backend — otherwise an Administrator can revoke their own access or demote themselves below the permission needed to undo it.
 
@@ -251,12 +261,36 @@ Returns `{ updated: string[], skipped: string[] }`. Rows the caller may not touc
     "id": "manager",
     "name": "Manager",
     "description": "Runs day-to-day user management.",
-    "permissions": ["dashboard:read", "user:read", "user:create", "user:update", "role:read"],
-    "isSystem": false,
+    "permissions": [
+      "dashboard:read",
+      "user:read",
+      "user:create",
+      "user:update",
+      "role:read",
+      "role:create",
+      "role:update",
+      "audit:read",
+      "department:read",
+      "department:manage",
+      "permission:read"
+    ],
+    "isSystem": true,
     "userCount": 21
   }
 ]
 ```
+
+### `POST /roles`
+
+```json
+{ "name": "Support", "description": "Handles customer tickets.", "permissions": ["user:read"] }
+```
+
+Returns the created role. Duplicate names return `409 ROLE_NAME_TAKEN`; unknown permission codes return `400 VALIDATION_ERROR`.
+
+### `PATCH /roles/:id`, `DELETE /roles/:id`
+
+`PATCH` accepts `{ name?, description? }`. Seeded roles are protected and answer `400 PROTECTED_ROLE`. `DELETE` returns `204`; it also answers `PROTECTED_ROLE` for system roles and `409 ROLE_IN_USE` while any active user still has the role.
 
 ### `GET /roles/options`
 
@@ -284,6 +318,80 @@ Returns the registry:
   }
 ]
 ```
+
+## Departments
+
+### `GET /departments`
+
+Returns a flat, pre-order list; the client builds the tree:
+
+```json
+{
+  "items": [
+    {
+      "id": "dept-engineering",
+      "name": "Engineering",
+      "parentId": null,
+      "managerId": "user-admin",
+      "managerName": "Avery Chen",
+      "directMemberCount": 12,
+      "memberCount": 34,
+      "sortOrder": 1,
+      "createdAt": "2025-01-10T08:00:00.000Z"
+    }
+  ]
+}
+```
+
+`memberCount` includes descendants, which is what the detail panel and `includeDescendants` filtering use.
+
+### `POST /departments`, `PATCH /departments/:id`
+
+`POST` takes `{ name, parentId }` (use `null` for a root) and returns the created department. `PATCH` accepts `{ name?, parentId? }`; renaming also updates the denormalized `department` name on members. Both require `department:manage` and answer `409 DEPARTMENT_NAME_TAKEN` on duplicate names. Moving a node below its own descendant is rejected with `400 INVALID_PARENT`, and so is an unknown parent.
+
+## Audit events
+
+### `GET /audit-events`
+
+| Parameter    | Type                                 | Notes                                           |
+| ------------ | ------------------------------------ | ----------------------------------------------- |
+| `page`       | number                               | 1-based                                         |
+| `pageSize`   | number                               | Clamped to 10–100                               |
+| `q`          | string                               | Matches actor, entity label and metadata values |
+| `action`     | `AuditAction`                        | Exact action, e.g. `user.updated`               |
+| `entityType` | `user \| role \| department \| auth` | Exact entity type                               |
+| `entityId`   | string                               | Exact entity id                                 |
+| `from`, `to` | `yyyy-MM-dd`                         | Inclusive local-day boundaries                  |
+
+Returns `PaginatedResult<AuditEvent>`:
+
+```json
+{
+  "items": [
+    {
+      "id": "audit-…",
+      "action": "user.updated",
+      "actorId": "user-admin",
+      "actorName": "Avery Chen",
+      "entityType": "user",
+      "entityId": "user-42",
+      "entityLabel": "Jordan Lee",
+      "metadata": { "fields": "departmentId, tags" },
+      "createdAt": "2026-10-21T09:12:00.000Z"
+    }
+  ],
+  "total": 160,
+  "page": 1,
+  "pageSize": 20,
+  "pageCount": 8
+}
+```
+
+Unknown actions or entity types return `400 VALIDATION_ERROR`; malformed dates or `from > to` return `400 INVALID_DATE_RANGE`.
+
+### `GET /audit-events/:id`
+
+Returns `{ event, related }`, where `related` holds up to five newer events for the same entity. A missing id returns `404 AUDIT_EVENT_NOT_FOUND`. The demo keeps at most 500 events.
 
 ## Dashboard
 
@@ -326,16 +434,16 @@ Returns the updated `AuthUser`. Send `null` or an empty string to remove the ava
 
 ### `POST /__mock/reset`
 
-Only exists in the mock, and requires `demo:reset`. It reseeds users, roles, invitations, tokens and activity, then reattaches the current session when the signed-in account still exists. Remove the Settings action when you connect a real API.
+Only exists in the mock, and requires `demo:reset`. It reseeds users, roles, departments, audit events, invitations and tokens, then reattaches the current session when the signed-in account still exists. Remove the Settings action when you connect a real API.
 
 ## Replacing the mock, step by step
 
 1. Keep `src/types` as the internal contract, or replace it with generated types from your OpenAPI schema.
-2. Rewrite the seven `api.ts` files (`auth`, `users`, `roles`, `permissions`, `dashboard`, `profile`, `settings`) to call your endpoints. They are the only places that use `apiRequest`; the security screen reuses `auth/api.ts`.
+2. Rewrite the feature `api.ts` files (`auth`, `users`, `roles`, `permissions`, `departments`, `audit`, `dashboard`, `profile`, `settings`) to call your endpoints. They are the only places that use `apiRequest`; the security screen reuses `auth/api.ts`.
 3. Keep `apiRequest` for bearer tokens, single-flight refresh and global 401 handling. If your backend uses cookies, simplify it: drop the Authorization header, add `credentials: 'include'`, and keep the 401 redirect.
 4. Implement the auth lifecycle on the server — registration with verification, reset tokens with a TTL, invitations, TOTP, lockout and a session table. `src/mocks/handlers/auth.ts` documents the request/response shape each screen expects, and the client only depends on those shapes.
 5. Update the `permissions` field in `/auth/me` to your server's effective permission list.
-6. Decide where roles and permissions live. The demo keeps a full registry on the client for the role editor; a real backend may expose only the labels it needs.
+6. Decide where roles, departments and permissions live. The demo keeps a full registry on the client for the role editor and matrix; a real backend may expose only the labels it needs, but it must still enforce every code.
 7. Remove `src/mocks` and `public/mockServiceWorker.js`, then verify a production build with `pnpm build && pnpm preview`.
 
 ## Testing against a real API

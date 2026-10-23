@@ -5,14 +5,27 @@ export const PERMISSION_CODES = {
   userUpdate: 'user:update',
   userDelete: 'user:delete',
   roleRead: 'role:read',
+  roleCreate: 'role:create',
   roleUpdate: 'role:update',
+  roleDelete: 'role:delete',
+  auditRead: 'audit:read',
+  departmentRead: 'department:read',
+  departmentManage: 'department:manage',
   permissionRead: 'permission:read',
   demoReset: 'demo:reset',
 } as const
 
 export type PermissionCode = (typeof PERMISSION_CODES)[keyof typeof PERMISSION_CODES]
 
-export const PERMISSION_GROUPS = ['dashboard', 'user', 'role', 'permission', 'demo'] as const
+export const PERMISSION_GROUPS = [
+  'dashboard',
+  'user',
+  'role',
+  'audit',
+  'department',
+  'permission',
+  'demo',
+] as const
 
 export type PermissionGroup = (typeof PERMISSION_GROUPS)[number]
 
@@ -61,10 +74,40 @@ export const PERMISSIONS: PermissionDefinition[] = [
     descriptionKey: 'roles:permissionItems.roleReadDescription',
   },
   {
+    code: PERMISSION_CODES.roleCreate,
+    group: 'role',
+    labelKey: 'roles:permissionItems.roleCreate',
+    descriptionKey: 'roles:permissionItems.roleCreateDescription',
+  },
+  {
     code: PERMISSION_CODES.roleUpdate,
     group: 'role',
     labelKey: 'roles:permissionItems.roleUpdate',
     descriptionKey: 'roles:permissionItems.roleUpdateDescription',
+  },
+  {
+    code: PERMISSION_CODES.roleDelete,
+    group: 'role',
+    labelKey: 'roles:permissionItems.roleDelete',
+    descriptionKey: 'roles:permissionItems.roleDeleteDescription',
+  },
+  {
+    code: PERMISSION_CODES.auditRead,
+    group: 'audit',
+    labelKey: 'roles:permissionItems.auditRead',
+    descriptionKey: 'roles:permissionItems.auditReadDescription',
+  },
+  {
+    code: PERMISSION_CODES.departmentRead,
+    group: 'department',
+    labelKey: 'roles:permissionItems.departmentRead',
+    descriptionKey: 'roles:permissionItems.departmentReadDescription',
+  },
+  {
+    code: PERMISSION_CODES.departmentManage,
+    group: 'department',
+    labelKey: 'roles:permissionItems.departmentManage',
+    descriptionKey: 'roles:permissionItems.departmentManageDescription',
   },
   {
     code: PERMISSION_CODES.permissionRead,
@@ -90,6 +133,17 @@ export const DEMO_ROLE_PERMISSIONS: Record<string, string[]> = {
     PERMISSION_CODES.userCreate,
     PERMISSION_CODES.userUpdate,
     PERMISSION_CODES.roleRead,
+    PERMISSION_CODES.roleCreate,
+    PERMISSION_CODES.roleUpdate,
+    PERMISSION_CODES.auditRead,
+    PERMISSION_CODES.departmentRead,
+    PERMISSION_CODES.departmentManage,
+    PERMISSION_CODES.permissionRead,
   ],
-  viewer: [PERMISSION_CODES.dashboardRead, PERMISSION_CODES.userRead],
+  viewer: [
+    PERMISSION_CODES.dashboardRead,
+    PERMISSION_CODES.userRead,
+    PERMISSION_CODES.auditRead,
+    PERMISSION_CODES.departmentRead,
+  ],
 }

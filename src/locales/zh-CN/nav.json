@@ -8,8 +8,10 @@
     "dashboard": "工作台",
     "ui": "组件库",
     "users": "用户",
+    "departments": "组织架构",
     "roles": "角色",
     "permissions": "权限",
+    "auditLogs": "审计日志",
     "profile": "个人中心",
     "security": "账户安全",
     "settings": "设置"

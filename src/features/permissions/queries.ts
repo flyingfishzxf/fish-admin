@@ -8,6 +8,6 @@ export const permissionsQueryOptions = () =>
     queryFn: fetchPermissions,
   })
 
-export function usePermissionsQuery() {
-  return useQuery(permissionsQueryOptions())
+export function usePermissionsQuery(enabled = true) {
+  return useQuery({ ...permissionsQueryOptions(), enabled })
 }

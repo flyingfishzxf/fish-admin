@@ -46,6 +46,7 @@ export function DataTable<TData>({
   footer,
   density = 'comfortable',
   rowContextMenu,
+  onRowClick,
 }: {
   table: TableInstance<TData>
   loading?: boolean
@@ -55,6 +56,7 @@ export function DataTable<TData>({
   footer?: ReactNode
   density?: DataTableDensity
   rowContextMenu?: (row: TData) => ReactNode
+  onRowClick?: (row: TData) => void
 }) {
   const columnCount = table.getVisibleLeafColumns().length
   const cellPadding = density === 'compact' ? 'py-1.5' : 'py-3'
@@ -124,7 +126,24 @@ export function DataTable<TData>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() ? 'selected' : undefined}
-                    className={cn(row.getIsSelected() && 'bg-muted/60')}
+                    tabIndex={onRowClick ? 0 : undefined}
+                    onClick={onRowClick ? () => onRowClick(row.original) : undefined}
+                    onKeyDown={
+                      onRowClick
+                        ? (event) => {
+                            if (event.target !== event.currentTarget) return
+                            if (event.key === 'Enter' || event.key === ' ') {
+                              event.preventDefault()
+                              onRowClick(row.original)
+                            }
+                          }
+                        : undefined
+                    }
+                    className={cn(
+                      row.getIsSelected() && 'bg-muted/60',
+                      onRowClick &&
+                        'cursor-pointer focus-visible:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset',
+                    )}
                   >
                     {row.getVisibleCells().map((cell) => {
                       const pinned = cell.column.getIsPinned()

@@ -1,0 +1,71 @@
+{
+  "title": "Audit log",
+  "subtitle": "Trace who changed what across the workspace.",
+  "searchPlaceholder": "Search actor, target or metadata…",
+  "filters": {
+    "action": "Action",
+    "entity": "Object",
+    "allActions": "All actions",
+    "allEntities": "All objects",
+    "dateRange": "Date range",
+    "clear": "Clear filters"
+  },
+  "presets": {
+    "today": "Today",
+    "last7": "Last 7 days",
+    "last30": "Last 30 days",
+    "last90": "Last 90 days",
+    "thisMonth": "This month"
+  },
+  "columns": {
+    "time": "Time",
+    "actor": "Actor",
+    "action": "Action",
+    "entity": "Object",
+    "metadata": "Metadata",
+    "details": "Details"
+  },
+  "actions": {
+    "user.created": "Created user",
+    "user.updated": "Updated user",
+    "user.deleted": "Deleted user",
+    "user.restored": "Restored user",
+    "role.created": "Created role",
+    "role.updated": "Updated role",
+    "role.deleted": "Deleted role",
+    "department.created": "Created department",
+    "department.updated": "Updated department",
+    "auth.login": "Signed in",
+    "profile.updated": "Updated profile"
+  },
+  "entities": {
+    "user": "User",
+    "role": "Role",
+    "department": "Department",
+    "auth": "Authentication"
+  },
+  "detail": {
+    "title": "Event details",
+    "description": "What happened, who did it and the raw metadata.",
+    "open": "View event details",
+    "eventId": "Event ID",
+    "metadata": "Raw metadata",
+    "noMetadata": "No metadata recorded.",
+    "related": "Recent events for this object",
+    "noRelated": "No other events for this object.",
+    "viewEntity": "Open object"
+  },
+  "activity": {
+    "title": "Activity",
+    "description": "Recent changes recorded in the audit log.",
+    "empty": "No activity recorded for this user yet."
+  },
+  "empty": {
+    "title": "No audit events",
+    "description": "No events match the current filters.",
+    "unfiltered": "Events will appear here as people work in the workspace.",
+    "action": "Clear filters"
+  },
+  "loadError": "Could not load audit events.",
+  "actorFallback": "System"
+}

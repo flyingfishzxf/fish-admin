@@ -27,6 +27,13 @@ test.describe('UI playground', () => {
       await expect(page.getByRole('heading', { name: section, exact: true })).toBeVisible()
     }
 
+    const resizableBox = await page.locator('[data-slot="resizable-panel-group"]').boundingBox()
+    const tableBox = await page.locator('[data-slot="table-container"]').boundingBox()
+    expect(resizableBox).not.toBeNull()
+    expect(tableBox).not.toBeNull()
+    expect(resizableBox!.height).toBeLessThan(200)
+    expect(tableBox!.y).toBeGreaterThan(resizableBox!.y + resizableBox!.height)
+
     await page.getByRole('button', { name: 'Cyan', exact: true }).click()
     await expect(page.locator('html')).toHaveAttribute('data-accent', 'cyan')
 

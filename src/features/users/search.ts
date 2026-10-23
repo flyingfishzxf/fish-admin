@@ -16,6 +16,13 @@ export interface UsersSearch {
 const SORT_KEYS: UserSortKey[] = ['name', 'email', 'role', 'createdAt', 'lastActiveAt']
 const STATUSES: UserStatus[] = ['active', 'invited', 'inactive']
 
+export const DEFAULT_USERS_SEARCH: UsersSearch = {
+  page: 1,
+  pageSize: 10,
+  sort: 'createdAt',
+  order: 'desc',
+}
+
 export function validateUsersSearch(search: Record<string, unknown>): UsersSearch {
   const page = Number(search.page)
   const pageSize = Number(search.pageSize)

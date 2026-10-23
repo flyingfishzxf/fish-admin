@@ -1,5 +1,6 @@
 import type { DashboardData, DashboardRange } from '@/types'
 
+import { recentActivity } from './db/store'
 import type { MockDb } from './db/types'
 
 const CHANNEL_KEYS = ['direct', 'organic', 'referral', 'social', 'email'] as const
@@ -77,6 +78,6 @@ export function buildDashboard(db: MockDb, range: DashboardRange): DashboardData
       name,
       value: Math.round((weights[index] / weightTotal) * 1000) / 10,
     })),
-    activity: db.activity.slice(0, 8),
+    activity: recentActivity(db, 8),
   }
 }

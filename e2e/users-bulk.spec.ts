@@ -10,9 +10,9 @@ test.describe('user table bulk actions', () => {
     await page.goto('/users')
 
     const search = page.getByRole('textbox', { name: 'Search' })
-    await search.fill('Margarett')
-    await expect(page).toHaveURL((url) => url.searchParams.get('q') === 'Margarett')
-    const row = page.getByRole('row', { name: /Margarett Boyer/ })
+    await search.fill('Morgan')
+    await expect(page).toHaveURL((url) => url.searchParams.get('q') === 'Morgan')
+    const row = page.getByRole('row', { name: /Morgan Lee/ })
     await expect(row).toBeVisible()
 
     await row.getByRole('checkbox', { name: /^Select / }).check()
@@ -21,9 +21,9 @@ test.describe('user table bulk actions', () => {
     await expect(bulkBar.getByText('1 selected')).toBeVisible()
 
     await bulkBar.getByRole('button', { name: 'Set status' }).click()
-    await page.getByRole('menuitem', { name: 'Active', exact: true }).click()
+    await page.getByRole('menuitem', { name: 'Inactive', exact: true }).click()
     await expect(page.getByText('Status updated for 1 user.')).toBeVisible()
-    await expect(row.getByText('Active')).toBeVisible()
+    await expect(row.getByText('Inactive')).toBeVisible()
 
     await row.getByRole('checkbox', { name: /^Select / }).check()
     await bulkBar.getByRole('button', { name: 'Delete' }).click()
@@ -55,8 +55,8 @@ test.describe('user table bulk actions', () => {
     await expect(page.getByRole('radio', { name: 'Compact' })).toBeChecked()
     await page.getByRole('button', { name: /^Views/ }).click()
     await page.getByRole('button', { name: viewName }).click()
-    await expect(search).toHaveValue('Margarett')
-    await expect(page).toHaveURL((url) => url.searchParams.get('q') === 'Margarett')
+    await expect(search).toHaveValue('Morgan')
+    await expect(page).toHaveURL((url) => url.searchParams.get('q') === 'Morgan')
     await expect(row).toBeVisible()
 
     await row.click({ button: 'right' })

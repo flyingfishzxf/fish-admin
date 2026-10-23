@@ -21,9 +21,11 @@ import { deleteUser } from '../api'
 export function DeleteUserDialog({
   user,
   onOpenChange,
+  onDeleted,
 }: {
   user: User | null
   onOpenChange: (open: boolean) => void
+  onDeleted?: () => void
 }) {
   const { t } = useTranslation()
   const queryClient = useQueryClient()
@@ -34,10 +36,15 @@ export function DeleteUserDialog({
       await deleteUser(user.id)
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['users'] })
+      void queryClient.invalidateQueries({
+        queryKey: ['users'],
+        // Refetching a deleted user's detail/activity would 404 before navigation.
+        predicate: (query) => query.queryKey[1] !== 'detail' && query.queryKey[1] !== 'activity',
+      })
       void queryClient.invalidateQueries({ queryKey: ['roles'] })
       toast.success(t('users:delete.success', { name: user?.name }))
       onOpenChange(false)
+      onDeleted?.()
     },
     onError: (error) => {
       if (error instanceof ApiError && error.code === 'CANNOT_DELETE_SELF') {

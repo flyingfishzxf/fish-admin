@@ -38,6 +38,7 @@
   "actions": {
     "edit": "编辑用户",
     "delete": "删除用户",
+    "view": "查看详情",
     "exportCsv": "导出 CSV",
     "columns": "列设置",
     "resetFilters": "重置筛选"
@@ -117,5 +118,43 @@
     "label": "行密度",
     "comfortable": "舒适",
     "compact": "紧凑"
+  },
+  "detail": {
+    "back": "返回用户列表",
+    "title": "用户详情",
+    "notFoundTitle": "未找到用户",
+    "notFoundDescription": "该用户可能已被删除，或链接已失效。",
+    "tabs": {
+      "overview": "概览",
+      "activity": "动态"
+    },
+    "profile": "资料",
+    "profileDescription": "联系方式、访问权限与工作区信息。",
+    "role": "角色",
+    "department": "部门",
+    "jobTitle": "职位",
+    "noJobTitle": "未设置",
+    "status": "状态",
+    "emailVerified": "邮箱验证",
+    "twoFactor": "双因素认证",
+    "enabled": "已启用",
+    "disabled": "未启用",
+    "joined": "加入时间",
+    "lastActive": "最近活跃",
+    "bio": "简介",
+    "noBio": "还没有简介。",
+    "tags": "标签",
+    "tagsHint": "按回车或逗号添加标签，最多 8 个。",
+    "saveTags": "保存标签",
+    "tagsSaved": "标签已更新。",
+    "avatar": "头像",
+    "avatarLabel": "拖放头像到此处",
+    "avatarHint": "支持 PNG、JPG 或 WebP，保存前会自动压缩。",
+    "avatarUpdated": "头像已更新。",
+    "avatarRemoved": "头像已移除。",
+    "avatarInvalidType": "请选择 PNG、JPG 或 WebP 图片。",
+    "avatarTooLarge": "请选择更小的图片（最大 2 MB）。",
+    "avatarError": "无法更新头像。",
+    "removeAvatar": "移除头像"
   }
 }

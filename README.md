@@ -28,13 +28,16 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 ## Features
 
 - **Full account lifecycle** — login, registration with email verification, forgot/reset password, invitation links, TOTP-style two-factor sign-in, five-attempt lockout, password change and a per-device session list. Session restore uses single-flight refresh-token rotation, deep-link redirect after login and global 401 handling.
-- **Three-level RBAC** — navigation, route guards and button-level `<Can>` checks derived from one permission registry. Admin, Manager and Viewer accounts are ready to compare.
-- **Realistic mock API** — MSW, a seeded in-memory database persisted to `localStorage`, 60 users, pagination, filtering, sorting, fake JWTs, refresh tokens, `403` responses and a demo-data reset.
-- **Advanced users table** — URL-driven search, filters, sorting and paging; row selection with bulk status changes and bulk delete/restore (undo from the toast); column visibility, pinning and resizing; two densities; per-row context menu; saved views; CSV export; drawer forms with React Hook Form + Zod; loading, empty and error states.
+- **Three-level RBAC** — navigation, route guards and button-level `<Can>` checks derived from one permission registry. Fourteen permission codes cover users, roles, departments and audit. Admin, Manager and Viewer accounts are ready to compare.
+- **Realistic mock API** — MSW, a seeded in-memory database persisted to `localStorage`, 60 users across a 10-node department tree, 160 audit events, pagination, filtering, sorting, fake JWTs, refresh tokens, `403` responses and a demo-data reset.
+- **Advanced users table** — URL-driven search, filters, sorting and paging; row selection with bulk status changes and bulk delete/restore (undo from the toast); column visibility, drag-to-reorder, pinning and resizing; two densities; per-row context menu; saved views; CSV export; drawer forms with React Hook Form + Zod; loading, empty and error states.
+- **User detail and history** — `/users/$id` combines an overview, inline tag editing, an avatar dropzone and a per-user activity timeline, with a not-found Result state.
+- **Organization tree** — `/departments` renders a keyboard-navigable department tree with member counts, plus create/rename actions and deep-linkable selection.
+- **Role governance** — system and custom roles, a two-step create-role wizard, and a `/roles/matrix` permission matrix with grouped checkboxes, sticky headers and an explicit save bar.
+- **Audit log** — `/audit-logs` with URL-synced filters, date-range presets, a detail drawer with related events, and links back to the affected user, role or department.
 - **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings and the UI playground.
 - **Dashboard** — KPI cards, revenue area chart, traffic bars, acquisition donut and recent activity, with a 7/30-day switch. Charts are lazy-loaded with the dashboard route.
-- **Role and permission management** — editable permission tree with parent/child selection, a read-only permission registry, and an explicit session refresh after permission changes.
-- **41 shadcn/ui primitives and a `/ui` playground** — every component, state and overlay rendered in one page, so you can check theming and translations before using them in your own screens.
+- **41 shadcn/ui primitives, nine enterprise components and a `/ui` playground** — DateRangePicker, Descriptions, Tree/TreeSelect, Transfer, TagsInput, Stepper, Dropzone, Result and Timeline live in `src/components/enterprise/` and are wired into real screens; every primitive, state and overlay is rendered on one page so you can check theming and translations before using them.
 - **Product-style design system** — light, dark and system modes, five accent colors, oklch tokens, refined shadows and a FOUC-free first paint.
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
@@ -56,11 +59,11 @@ Open http://localhost:5173. The mock API starts automatically in development.
 
 ### Demo accounts
 
-| Role          | Email              | Password      | What it can do                                                                         |
-| ------------- | ------------------ | ------------- | -------------------------------------------------------------------------------------- |
-| Administrator | `admin@fish.dev`   | `Admin123!`   | Everything, including deleting users, editing role permissions and resetting demo data |
-| Manager       | `manager@fish.dev` | `Manager123!` | Read dashboards and users, create and edit users, read roles                           |
-| Viewer        | `viewer@fish.dev`  | `Viewer123!`  | Read the dashboard and users only                                                      |
+| Role          | Email              | Password      | What it can do                                                                      |
+| ------------- | ------------------ | ------------- | ----------------------------------------------------------------------------------- |
+| Administrator | `admin@fish.dev`   | `Admin123!`   | Everything, including user and role deletion, the permission matrix and demo reset  |
+| Manager       | `manager@fish.dev` | `Manager123!` | Manage users, departments and custom roles, edit permissions and read the audit log |
+| Viewer        | `viewer@fish.dev`  | `Viewer123!`  | Read the dashboard, users, departments and audit log                                |
 
 The login page fills these credentials with one click. Mock data lives in your browser under `fish-admin:db:v1`; use **Settings → Reset demo data** or clear site storage to start over. These credentials exist only in the browser mock — never ship them to a real backend.
 
@@ -69,6 +72,9 @@ More things to try:
 - **Two-factor sign-in** — enable 2FA on `/security`, sign out and sign in again. The demo code is `246810`; a real app would generate it from a TOTP secret.
 - **Invitations** — open `/accept-invite?token=fish-demo-invite` to join as `manager`, then reload it to see the used-token screen.
 - **Recovery** — `/forgot-password` returns a demo reset link so you can finish the flow without email delivery.
+- **Permission matrix** — open `/roles/matrix` as Administrator, toggle a permission, save and reload. The matrix refuses to change the admin column.
+- **Audit trail** — `/audit-logs` filters by action, entity and date range. Every change made in the demo is recorded there.
+- **Departments** — `/departments?dept=dept-engineering` deep-links to a node and lists its members, including descendants.
 - **Failure screens** — `/401`, `/500`, `/503` and `/maintenance` are directly reachable, and the offline banner appears when you throttle the network.
 
 ## What is inside
@@ -80,8 +86,12 @@ More things to try:
 | `/`                  | Dashboard with KPIs, charts and activity                | `dashboard:read`    |
 | `/ui`                | UI playground: every primitive, state and overlay       | signed in           |
 | `/users`             | Users table, CRUD and bulk operations                   | `user:read`         |
+| `/users/$id`         | User overview, tags, avatar and activity timeline       | `user:read`         |
+| `/departments`       | Department tree, members and create/rename actions      | `department:read`   |
 | `/roles`             | Role cards and permission editor                        | `role:read`         |
+| `/roles/matrix`      | Permission matrix across every role                     | `role:read`         |
 | `/permissions`       | Read-only permission registry                           | `permission:read`   |
+| `/audit-logs`        | Filterable audit trail with a detail drawer             | `audit:read`        |
 | `/profile`           | Profile details and avatar upload demo                  | signed in           |
 | `/security`          | Password, two-factor authentication and active sessions | signed in           |
 | `/settings`          | Theme, accent, language, status previews, demo reset    | signed in           |
@@ -102,11 +112,11 @@ Unknown paths render a 404 inside the shell when you are signed in; unauthentica
 
 Permissions use a `resource:action` format and are defined in [`src/config/permissions.ts`](src/config/permissions.ts). Buttons, menus and routes are all derived from that registry.
 
-| Role          | Permissions                                                              |
-| ------------- | ------------------------------------------------------------------------ |
-| Administrator | `*`                                                                      |
-| Manager       | `dashboard:read`, `user:read`, `user:create`, `user:update`, `role:read` |
-| Viewer        | `dashboard:read`, `user:read`                                            |
+| Role          | Permissions                                                                                                                                                                     |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Administrator | `*`                                                                                                                                                                             |
+| Manager       | `dashboard:read`, `user:read`, `user:create`, `user:update`, `role:read`, `role:create`, `role:update`, `audit:read`, `department:read`, `department:manage`, `permission:read` |
+| Viewer        | `dashboard:read`, `user:read`, `audit:read`, `department:read`                                                                                                                  |
 
 The route guard lives in each leaf route's `beforeLoad`; menu entries are filtered in [`src/config/nav.ts`](src/config/nav.ts); buttons use `<Can permission="user:delete">`. See [docs/en/rbac.md](docs/en/rbac.md) for the four-step guide to adding a permission.
 
@@ -114,41 +124,49 @@ The route guard lives in each leaf route's `beforeLoad`; menu entries are filter
 
 The demo runs entirely in the browser through a Service Worker.
 
-| Method   | Endpoint                     | Notes                                                            |
-| -------- | ---------------------------- | ---------------------------------------------------------------- |
-| `POST`   | `/api/auth/login`            | Tokens, or an MFA challenge when the account has 2FA             |
-| `POST`   | `/api/auth/mfa/verify`       | Exchanges the challenge and the six-digit code for tokens        |
-| `POST`   | `/api/auth/register`         | Creates an unverified `viewer`; returns the demo verify token    |
-| `POST`   | `/api/auth/verify-email`     | Marks the address verified                                       |
-| `POST`   | `/api/auth/forgot-password`  | Always `200`; returns the demo reset token when the account hits |
-| `POST`   | `/api/auth/reset-password`   | Sets the password and revokes the other sessions                 |
-| `GET`    | `/api/auth/invites/:token`   | Invitation preview                                               |
-| `POST`   | `/api/auth/accept-invite`    | Creates the invited user and signs them in                       |
-| `POST`   | `/api/auth/refresh`          | Rotates the refresh token                                        |
-| `POST`   | `/api/auth/logout`           | Revokes the refresh token                                        |
-| `GET`    | `/api/auth/me`               | Returns the current user and resolved permissions                |
-| `GET`    | `/api/auth/sessions`         | Active sessions for the current user                             |
-| `DELETE` | `/api/auth/sessions/:id`     | Revoke one session (never the current one)                       |
-| `DELETE` | `/api/auth/sessions`         | Sign out every other session                                     |
-| `POST`   | `/api/auth/change-password`  | Requires the current password                                    |
-| `POST`   | `/api/auth/2fa/setup`        | Returns the demo secret and code                                 |
-| `POST`   | `/api/auth/2fa/enable`       | Confirms the code and turns 2FA on                               |
-| `POST`   | `/api/auth/2fa/disable`      | Confirms the password and turns 2FA off                          |
-| `GET`    | `/api/users`                 | `page`, `pageSize`, `q`, `roleId`, `status`, `sort`, `order`     |
-| `POST`   | `/api/users`                 | Requires `user:create`                                           |
-| `GET`    | `/api/users/:id`             | Requires `user:read`                                             |
-| `PATCH`  | `/api/users/:id`             | Requires `user:update`                                           |
-| `DELETE` | `/api/users/:id`             | Requires `user:delete`; soft delete, cannot delete yourself      |
-| `POST`   | `/api/users/bulk-status`     | Requires `user:update`; skips rows the caller may not touch      |
-| `POST`   | `/api/users/bulk-delete`     | Requires `user:delete`; returns the ids actually removed         |
-| `POST`   | `/api/users/restore`         | Requires `user:delete`; undo target for the bulk toast           |
-| `GET`    | `/api/roles`                 | Roles with user and permission counts                            |
-| `GET`    | `/api/roles/options`         | Lightweight role options                                         |
-| `PUT`    | `/api/roles/:id/permissions` | Requires `role:update`                                           |
-| `GET`    | `/api/permissions`           | Permission registry                                              |
-| `GET`    | `/api/dashboard?range=7\|30` | Dashboard payload                                                |
-| `PATCH`  | `/api/profile`               | Current user's profile                                           |
-| `POST`   | `/api/__mock/reset`          | Reseeds users, roles and tokens, keeps the current session       |
+| Method   | Endpoint                     | Notes                                                                                              |
+| -------- | ---------------------------- | -------------------------------------------------------------------------------------------------- |
+| `POST`   | `/api/auth/login`            | Tokens, or an MFA challenge when the account has 2FA                                               |
+| `POST`   | `/api/auth/mfa/verify`       | Exchanges the challenge and the six-digit code for tokens                                          |
+| `POST`   | `/api/auth/register`         | Creates an unverified `viewer`; returns the demo verify token                                      |
+| `POST`   | `/api/auth/verify-email`     | Marks the address verified                                                                         |
+| `POST`   | `/api/auth/forgot-password`  | Always `200`; returns the demo reset token when the account hits                                   |
+| `POST`   | `/api/auth/reset-password`   | Sets the password and revokes the other sessions                                                   |
+| `GET`    | `/api/auth/invites/:token`   | Invitation preview                                                                                 |
+| `POST`   | `/api/auth/accept-invite`    | Creates the invited user and signs them in                                                         |
+| `POST`   | `/api/auth/refresh`          | Rotates the refresh token                                                                          |
+| `POST`   | `/api/auth/logout`           | Revokes the refresh token                                                                          |
+| `GET`    | `/api/auth/me`               | Returns the current user and resolved permissions                                                  |
+| `GET`    | `/api/auth/sessions`         | Active sessions for the current user                                                               |
+| `DELETE` | `/api/auth/sessions/:id`     | Revoke one session (never the current one)                                                         |
+| `DELETE` | `/api/auth/sessions`         | Sign out every other session                                                                       |
+| `POST`   | `/api/auth/change-password`  | Requires the current password                                                                      |
+| `POST`   | `/api/auth/2fa/setup`        | Returns the demo secret and code                                                                   |
+| `POST`   | `/api/auth/2fa/enable`       | Confirms the code and turns 2FA on                                                                 |
+| `POST`   | `/api/auth/2fa/disable`      | Confirms the password and turns 2FA off                                                            |
+| `GET`    | `/api/users`                 | `page`, `pageSize`, `q`, `roleId`, `status`, `departmentId`, `includeDescendants`, `sort`, `order` |
+| `POST`   | `/api/users`                 | Requires `user:create`                                                                             |
+| `GET`    | `/api/users/:id`             | Requires `user:read`                                                                               |
+| `PATCH`  | `/api/users/:id`             | Requires `user:update`; accepts `departmentId`, `jobTitle`, `tags`, `avatar`                       |
+| `DELETE` | `/api/users/:id`             | Requires `user:delete`; soft delete, cannot delete yourself                                        |
+| `POST`   | `/api/users/bulk-status`     | Requires `user:update`; skips rows the caller may not touch                                        |
+| `POST`   | `/api/users/bulk-delete`     | Requires `user:delete`; returns the ids actually removed                                           |
+| `POST`   | `/api/users/restore`         | Requires `user:delete`; undo target for the bulk toast                                             |
+| `GET`    | `/api/roles`                 | Roles with user and permission counts                                                              |
+| `GET`    | `/api/roles/options`         | Lightweight role options                                                                           |
+| `POST`   | `/api/roles`                 | Requires `role:create`; 409 `ROLE_NAME_TAKEN`                                                      |
+| `PATCH`  | `/api/roles/:id`             | Requires `role:update`; system roles return `PROTECTED_ROLE`                                       |
+| `DELETE` | `/api/roles/:id`             | Requires `role:delete`; `ROLE_IN_USE` while members remain                                         |
+| `PUT`    | `/api/roles/:id/permissions` | Requires `role:update`                                                                             |
+| `GET`    | `/api/departments`           | Flat department list with direct and total member counts                                           |
+| `POST`   | `/api/departments`           | Requires `department:manage`; 409 `DEPARTMENT_NAME_TAKEN`                                          |
+| `PATCH`  | `/api/departments/:id`       | Requires `department:manage`; rename or reparent, rejects cycles                                   |
+| `GET`    | `/api/audit-events`          | Requires `audit:read`; `page`, `pageSize`, `q`, `action`, `entityType`, `entityId`, `from`, `to`   |
+| `GET`    | `/api/audit-events/:id`      | Requires `audit:read`; event plus five related events                                              |
+| `GET`    | `/api/permissions`           | Permission registry                                                                                |
+| `GET`    | `/api/dashboard?range=7\|30` | Dashboard payload                                                                                  |
+| `PATCH`  | `/api/profile`               | Current user's profile                                                                             |
+| `POST`   | `/api/__mock/reset`          | Reseeds users, roles, departments and audit events, keeps the current session                      |
 
 Access tokens are fake base64url JWTs valid for 15 minutes; refresh tokens last 7 days, verification tokens 24 hours and password-reset tokens 30 minutes. Five wrong passwords lock an email for one minute. The client retries a request once after refreshing; if that fails it clears the session and redirects to login. In a real deployment, prefer `httpOnly` cookies over `localStorage` and never return reset or verification tokens in a response body — see [docs/en/api-integration.md](docs/en/api-integration.md).
 
@@ -173,13 +191,14 @@ Access tokens are fake base64url JWTs valid for 15 minutes; refresh tokens last 
 ```text
 src/
 ├─ routes/                 # File-based routes; routeTree.gen.ts is generated
-├─ features/               # auth, dashboard, users, roles, permissions, profile, security, settings, playground
+├─ features/               # auth, dashboard, users, roles, permissions, departments, audit, profile, security, settings, playground
 ├─ components/
 │  ├─ ui/                  # 41 shadcn/ui components
+│  ├─ enterprise/          # Tree/TreeSelect, Transfer, DateRangePicker, Descriptions, TagsInput, Stepper, Dropzone, Result, Timeline
 │  ├─ layout/              # AppShell, sidebar, header, breadcrumbs, command menu, offline banner
-│  ├─ data-table/          # Table, pagination, column visibility
+│  ├─ data-table/          # Table, pagination, column visibility and ordering
 │  └─ common/              # Can, PageHeader, EmptyState, StatusScreen, theme/language toggles
-├─ config/                 # env, permissions, navigation, theme presets, demo data
+├─ config/                 # env, permissions, audit actions, navigation, theme presets, demo data
 ├─ lib/                    # API client, auth helpers, i18n, formatting, CSV, online status
 ├─ stores/                 # Auth, theme and UI Zustand stores
 ├─ locales/{en,zh-CN}/     # Lazy-loaded namespaces

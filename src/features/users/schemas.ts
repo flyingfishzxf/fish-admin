@@ -27,7 +27,7 @@ export function createUserSchema(t: TFunction) {
       .regex(EMAIL_PATTERN, t('validation:email')),
     roleId: z.string().min(1, t('validation:required', { field: role })),
     status: z.enum(['active', 'invited', 'inactive']),
-    department: z
+    departmentId: z
       .string()
       .trim()
       .min(1, t('validation:required', { field: department })),

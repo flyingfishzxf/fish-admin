@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   getCoreRowModel,
   useReactTable,
+  type ColumnOrderState,
   type RowSelectionState,
   type VisibilityState,
 } from '@tanstack/react-table'
@@ -102,6 +103,7 @@ export function UsersPage({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     department: false,
   })
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [density, setDensity] = useState<DataTableDensity>(readDensity)
   const [formOpen, setFormOpen] = useState(false)
@@ -313,8 +315,9 @@ export function UsersPage({
   const table = useReactTable({
     data: rows,
     columns,
-    state: { columnVisibility, rowSelection },
+    state: { columnVisibility, columnOrder, rowSelection },
     onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
     onRowSelectionChange: setRowSelection,
     enableRowSelection: selectable,
     enableColumnResizing: true,

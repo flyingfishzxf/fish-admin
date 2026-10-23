@@ -9,6 +9,45 @@ export interface Role {
   userCount: number
 }
 
+export interface Department {
+  id: string
+  name: string
+  parentId: string | null
+  managerId?: string
+  managerName?: string
+  directMemberCount: number
+  memberCount: number
+  sortOrder: number
+  createdAt: string
+}
+
+export type AuditEntityType = 'user' | 'role' | 'department' | 'auth'
+
+export type AuditAction =
+  | 'user.created'
+  | 'user.updated'
+  | 'user.deleted'
+  | 'user.restored'
+  | 'role.created'
+  | 'role.updated'
+  | 'role.deleted'
+  | 'department.created'
+  | 'department.updated'
+  | 'auth.login'
+  | 'profile.updated'
+
+export interface AuditEvent {
+  id: string
+  action: AuditAction
+  actorId?: string
+  actorName: string
+  entityType: AuditEntityType
+  entityId?: string
+  entityLabel: string
+  metadata: Record<string, string>
+  createdAt: string
+}
+
 export interface User {
   id: string
   name: string
@@ -18,8 +57,13 @@ export interface User {
   roleName: string
   status: UserStatus
   department: string
+  departmentId?: string
+  departmentPath?: string[]
+  jobTitle?: string
+  tags: string[]
   bio?: string
   emailVerified: boolean
+  twoFactorEnabled: boolean
   createdAt: string
   lastActiveAt: string
   deletedAt?: string
@@ -75,7 +119,14 @@ export interface UserInput {
   email: string
   roleId: string
   status: UserStatus
-  department: string
+  departmentId: string
+}
+
+export interface UserProfileInput {
+  departmentId?: string
+  jobTitle?: string | null
+  tags?: string[]
+  avatar?: string | null
 }
 
 export interface ProfileInput {

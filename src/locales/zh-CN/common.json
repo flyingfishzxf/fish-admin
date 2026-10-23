@@ -57,7 +57,11 @@
     "Design": "设计",
     "Operations": "运营",
     "Marketing": "市场",
-    "Finance": "财务"
+    "Finance": "财务",
+    "Platform": "平台",
+    "Frontend": "前端",
+    "Quality": "质量",
+    "Support": "支持"
   },
   "table": {
     "page": "第 {{page}} 页",
@@ -65,6 +69,8 @@
     "rowsPerPage": "每页条数",
     "selected": "已选择 {{count}} 项",
     "columns": "列设置",
+    "reorderHint": "拖动调整顺序，或使用 ↑ / ↓ 键。",
+    "reorderColumn": "调整 {{column}} 的顺序",
     "noResults": "无匹配结果",
     "summary": "显示第 {{from}}–{{to}} 条，共 {{total}} 条",
     "previous": "上一页",
@@ -131,5 +137,17 @@
     "percent": "{{value}}%",
     "new": "新增",
     "vsPrevious": "较上期"
+  },
+  "enterprise": {
+    "expand": "展开",
+    "collapse": "收起",
+    "search": "搜索…",
+    "selectAll": "全选",
+    "noMatches": "无匹配项",
+    "removeTag": "移除 {{tag}}",
+    "clear": "清除",
+    "clearSelection": "清除选择",
+    "dropFile": "将文件拖到这里",
+    "browse": "浏览文件"
   }
 }

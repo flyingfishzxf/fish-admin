@@ -18,6 +18,8 @@ import { Route as MaintenanceRouteImport } from './routes/maintenance'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppSplatRouteImport } from './routes/_app/$'
 import { Route as App403RouteImport } from './routes/_app/403'
+import { Route as AppAuditLogsRouteImport } from './routes/_app/audit-logs'
+import { Route as AppDepartmentsRouteImport } from './routes/_app/departments'
 import { Route as AppPermissionsRouteImport } from './routes/_app/permissions'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
 import { Route as AppRolesRouteImport } from './routes/_app/roles'
@@ -32,6 +34,8 @@ import { Route as AuthOtpRouteImport } from './routes/_auth/otp'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
+import { Route as AppRolesMatrixRouteImport } from './routes/_app/roles_.matrix'
+import { Route as AppUsersIdRouteImport } from './routes/_app/users_.$id'
 
 const R401Route = R401RouteImport.update({
   id: '/401',
@@ -74,6 +78,16 @@ const AppSplatRoute = AppSplatRouteImport.update({
 const App403Route = App403RouteImport.update({
   id: '/403',
   path: '/403',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAuditLogsRoute = AppAuditLogsRouteImport.update({
+  id: '/audit-logs',
+  path: '/audit-logs',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppDepartmentsRoute = AppDepartmentsRouteImport.update({
+  id: '/departments',
+  path: '/departments',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppPermissionsRoute = AppPermissionsRouteImport.update({
@@ -146,6 +160,16 @@ const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   path: '/verify-email',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AppRolesMatrixRoute = AppRolesMatrixRouteImport.update({
+  id: '/roles_/matrix',
+  path: '/roles/matrix',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppUsersIdRoute = AppUsersIdRouteImport.update({
+  id: '/users_/$id',
+  path: '/users/$id',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
@@ -155,6 +179,8 @@ export interface FileRoutesByFullPath {
   '/maintenance': typeof MaintenanceRoute
   '/$': typeof AppSplatRoute
   '/403': typeof App403Route
+  '/audit-logs': typeof AppAuditLogsRoute
+  '/departments': typeof AppDepartmentsRoute
   '/permissions': typeof AppPermissionsRoute
   '/profile': typeof AppProfileRoute
   '/roles': typeof AppRolesRoute
@@ -169,6 +195,8 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/roles/matrix': typeof AppRolesMatrixRoute
+  '/users/$id': typeof AppUsersIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
@@ -178,6 +206,8 @@ export interface FileRoutesByTo {
   '/maintenance': typeof MaintenanceRoute
   '/$': typeof AppSplatRoute
   '/403': typeof App403Route
+  '/audit-logs': typeof AppAuditLogsRoute
+  '/departments': typeof AppDepartmentsRoute
   '/permissions': typeof AppPermissionsRoute
   '/profile': typeof AppProfileRoute
   '/roles': typeof AppRolesRoute
@@ -192,6 +222,8 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/roles/matrix': typeof AppRolesMatrixRoute
+  '/users/$id': typeof AppUsersIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -203,6 +235,8 @@ export interface FileRoutesById {
   '/maintenance': typeof MaintenanceRoute
   '/_app/$': typeof AppSplatRoute
   '/_app/403': typeof App403Route
+  '/_app/audit-logs': typeof AppAuditLogsRoute
+  '/_app/departments': typeof AppDepartmentsRoute
   '/_app/permissions': typeof AppPermissionsRoute
   '/_app/profile': typeof AppProfileRoute
   '/_app/roles': typeof AppRolesRoute
@@ -218,6 +252,8 @@ export interface FileRoutesById {
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/roles_/matrix': typeof AppRolesMatrixRoute
+  '/_app/users_/$id': typeof AppUsersIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -229,6 +265,8 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/$'
     | '/403'
+    | '/audit-logs'
+    | '/departments'
     | '/permissions'
     | '/profile'
     | '/roles'
@@ -243,6 +281,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/roles/matrix'
+    | '/users/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -252,6 +292,8 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/$'
     | '/403'
+    | '/audit-logs'
+    | '/departments'
     | '/permissions'
     | '/profile'
     | '/roles'
@@ -266,6 +308,8 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/roles/matrix'
+    | '/users/$id'
   id:
     | '__root__'
     | '/_app'
@@ -276,6 +320,8 @@ export interface FileRouteTypes {
     | '/maintenance'
     | '/_app/$'
     | '/_app/403'
+    | '/_app/audit-logs'
+    | '/_app/departments'
     | '/_app/permissions'
     | '/_app/profile'
     | '/_app/roles'
@@ -291,6 +337,8 @@ export interface FileRouteTypes {
     | '/_auth/reset-password'
     | '/_auth/verify-email'
     | '/_app/'
+    | '/_app/roles_/matrix'
+    | '/_app/users_/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -365,6 +413,20 @@ declare module '@tanstack/react-router' {
       path: '/403'
       fullPath: '/403'
       preLoaderRoute: typeof App403RouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/audit-logs': {
+      id: '/_app/audit-logs'
+      path: '/audit-logs'
+      fullPath: '/audit-logs'
+      preLoaderRoute: typeof AppAuditLogsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/departments': {
+      id: '/_app/departments'
+      path: '/departments'
+      fullPath: '/departments'
+      preLoaderRoute: typeof AppDepartmentsRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/permissions': {
@@ -465,12 +527,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyEmailRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_app/roles_/matrix': {
+      id: '/_app/roles_/matrix'
+      path: '/roles/matrix'
+      fullPath: '/roles/matrix'
+      preLoaderRoute: typeof AppRolesMatrixRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/users_/$id': {
+      id: '/_app/users_/$id'
+      path: '/users/$id'
+      fullPath: '/users/$id'
+      preLoaderRoute: typeof AppUsersIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
 interface AppRouteRouteChildren {
   AppSplatRoute: typeof AppSplatRoute
   App403Route: typeof App403Route
+  AppAuditLogsRoute: typeof AppAuditLogsRoute
+  AppDepartmentsRoute: typeof AppDepartmentsRoute
   AppPermissionsRoute: typeof AppPermissionsRoute
   AppProfileRoute: typeof AppProfileRoute
   AppRolesRoute: typeof AppRolesRoute
@@ -479,11 +557,15 @@ interface AppRouteRouteChildren {
   AppUiRoute: typeof AppUiRoute
   AppUsersRoute: typeof AppUsersRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppRolesMatrixRoute: typeof AppRolesMatrixRoute
+  AppUsersIdRoute: typeof AppUsersIdRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppSplatRoute: AppSplatRoute,
   App403Route: App403Route,
+  AppAuditLogsRoute: AppAuditLogsRoute,
+  AppDepartmentsRoute: AppDepartmentsRoute,
   AppPermissionsRoute: AppPermissionsRoute,
   AppProfileRoute: AppProfileRoute,
   AppRolesRoute: AppRolesRoute,
@@ -492,6 +574,8 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppUiRoute: AppUiRoute,
   AppUsersRoute: AppUsersRoute,
   AppIndexRoute: AppIndexRoute,
+  AppRolesMatrixRoute: AppRolesMatrixRoute,
+  AppUsersIdRoute: AppUsersIdRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

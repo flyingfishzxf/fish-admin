@@ -38,6 +38,7 @@
   "actions": {
     "edit": "Edit user",
     "delete": "Delete user",
+    "view": "View details",
     "exportCsv": "Export CSV",
     "columns": "Columns",
     "resetFilters": "Reset filters"
@@ -117,5 +118,43 @@
     "label": "Row density",
     "comfortable": "Comfortable",
     "compact": "Compact"
+  },
+  "detail": {
+    "back": "Back to users",
+    "title": "User details",
+    "notFoundTitle": "User not found",
+    "notFoundDescription": "This user may have been deleted or the link is out of date.",
+    "tabs": {
+      "overview": "Overview",
+      "activity": "Activity"
+    },
+    "profile": "Profile",
+    "profileDescription": "Contact details, access and workspace metadata.",
+    "role": "Role",
+    "department": "Department",
+    "jobTitle": "Job title",
+    "noJobTitle": "Not set",
+    "status": "Status",
+    "emailVerified": "Email verified",
+    "twoFactor": "Two-factor authentication",
+    "enabled": "Enabled",
+    "disabled": "Not enabled",
+    "joined": "Joined",
+    "lastActive": "Last active",
+    "bio": "Bio",
+    "noBio": "No bio yet.",
+    "tags": "Tags",
+    "tagsHint": "Press Enter or a comma to add a tag. Up to 8 tags.",
+    "saveTags": "Save tags",
+    "tagsSaved": "Tags updated.",
+    "avatar": "Avatar",
+    "avatarLabel": "Drop an avatar here",
+    "avatarHint": "PNG, JPG or WebP. Images are resized before saving.",
+    "avatarUpdated": "Avatar updated.",
+    "avatarRemoved": "Avatar removed.",
+    "avatarInvalidType": "Choose a PNG, JPG or WebP image.",
+    "avatarTooLarge": "Choose a smaller image (max 2 MB).",
+    "avatarError": "Could not update the avatar.",
+    "removeAvatar": "Remove avatar"
   }
 }
