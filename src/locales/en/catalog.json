@@ -1,17 +1,16 @@
 {
   "eyebrow": "Component catalog",
-  "title": "{{count}} components, one system",
-  "subtitle": "Every primitive, enterprise widget and Pro pattern that ships with FishAdmin, in one searchable place. Open a live demo or jump to the screen already using it.",
+  "title": "{{count}} components, {{demoed}} live demos on this page",
+  "documentTitle": "{{count}} live component demos",
+  "subtitle": "Every primitive, enterprise widget and Pro pattern that ships with FishAdmin, in one searchable place. Each card runs the component live inside a real business scenario.",
   "hero": {
     "components": "{{count}} shared components",
     "runtime": "shadcn/ui · Radix · TanStack",
-    "license": "MIT licensed"
+    "license": "MIT licensed",
+    "uiKit": "UI Playground"
   },
   "stats": {
-    "total": "Shared components",
-    "demoed": "With live demos",
-    "primitives": "Primitives",
-    "patterns": "Enterprise + Pro"
+    "total": "Shared components"
   },
   "filters": {
     "searchPlaceholder": "Search by name or capability…",
@@ -33,8 +32,8 @@
   "card": {
     "new": "New",
     "usedIn": "Used in {{route}}",
-    "inUiKit": "Open in UI kit",
-    "libraryOnly": "No standalone demo yet"
+    "pathCopied": "Copied {{path}} to the clipboard",
+    "copyFailed": "Clipboard unavailable, copy the path manually"
   },
   "demos": {
     "datePicker": {
@@ -395,6 +394,433 @@
       "fieldName": "Name",
       "fieldEmail": "Email",
       "fieldTeam": "Team"
+    },
+    "accordion": {
+      "billing": "How does per-seat billing work?",
+      "billingAnswer": "You are billed for active members at the end of each monthly cycle. Invited members are counted once they accept.",
+      "security": "Where is workspace data stored?",
+      "securityAnswer": "Data stays in the region selected at creation time, and audit exports follow the same retention policy.",
+      "sso": "Can owners enforce SSO for everyone?",
+      "ssoAnswer": "Yes. Owners can require single sign-on under Security, which disables password sign-in workspace-wide."
+    },
+    "alert": {
+      "title": "Service tokens must be rotated",
+      "description": "Tokens issued before October 1 stop working in 3 days. Rotate them to keep CI deployments running."
+    },
+    "alertDialog": {
+      "trigger": "Revoke API key",
+      "title": "Revoke deploy-bot?",
+      "description": "Every request signed with this key fails immediately and the action cannot be undone.",
+      "cancel": "Keep key",
+      "confirm": "Revoke key",
+      "done": "API key revoked (demo)."
+    },
+    "avatar": {
+      "title": "On-call rotation",
+      "online": "Online",
+      "onCall": "Primary on-call · GMT+1"
+    },
+    "badge": {
+      "active": "Active",
+      "trial": "Trial",
+      "invited": "Invited",
+      "pastDue": "Past due"
+    },
+    "breadcrumb": {
+      "workspace": "Workspace",
+      "members": "Members"
+    },
+    "button": {
+      "invite": "Invite member",
+      "invited": "Invitation queued (demo).",
+      "export": "Export CSV",
+      "exported": "Export started (demo).",
+      "revoke": "Revoke access",
+      "revoked": "Access revoked (demo)."
+    },
+    "calendar": {
+      "selected": "Next access review: {{date}}",
+      "empty": "Pick a date to schedule the review."
+    },
+    "card": {
+      "title": "Monthly revenue",
+      "description": "Recurring subscriptions, net of refunds",
+      "plan": "Team plan",
+      "action": "View report",
+      "opened": "Opening the billing report (demo)."
+    },
+    "chart": {
+      "title": "Revenue by month",
+      "series": "Revenue",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "Aug",
+      "september": "Sep",
+      "october": "Oct"
+    },
+    "checkbox": {
+      "title": "Notification preferences",
+      "requests": "Email me when a member requests access",
+      "digest": "Send a weekly audit digest",
+      "summary": "{{count}} of 2 alerts enabled"
+    },
+    "collapsible": {
+      "trigger": "Advanced retention settings",
+      "expand": "Show",
+      "collapse": "Hide",
+      "hint": "Control how long exports and audit events are kept.",
+      "exports": "Keep CSV exports for 30 days",
+      "audit": "Retain audit events for 12 months"
+    },
+    "command": {
+      "placeholder": "Search workspace actions…",
+      "group": "Quick actions",
+      "invite": "Invite member",
+      "key": "Create API key",
+      "export": "Export audit log",
+      "empty": "No matching action."
+    },
+    "contextMenu": {
+      "hint": "Right-click a member row for quick actions.",
+      "profileAction": "Open profile",
+      "profile": "Opening {{name}}’s profile (demo).",
+      "resendAction": "Resend invitation",
+      "resend": "Invitation resent to {{name}} (demo).",
+      "archiveAction": "Archive member",
+      "archive": "{{name}} archived (demo)."
+    },
+    "dialog": {
+      "trigger": "Invite teammate",
+      "title": "Invite a teammate",
+      "description": "They receive an email with a link to join this workspace.",
+      "email": "Work email",
+      "role": "Role",
+      "roleMember": "Member",
+      "roleAdmin": "Admin",
+      "roleViewer": "Viewer",
+      "cancel": "Cancel",
+      "send": "Send invite",
+      "sent": "Invitation sent to {{email}} (demo)."
+    },
+    "drawer": {
+      "trigger": "Filter audit log",
+      "title": "Filter audit events",
+      "description": "Narrow the log down to the events you care about.",
+      "logins": "Sign-in events",
+      "billing": "Billing changes",
+      "apply": "Apply filters",
+      "applied": "Sign-in events {{logins}} (demo)."
+    },
+    "dropdown": {
+      "trigger": "Row actions",
+      "label": "Ada Lovelace",
+      "profileAction": "Open profile",
+      "profile": "Opening the profile (demo).",
+      "resetAction": "Send reset link",
+      "reset": "Reset link sent (demo).",
+      "suspendAction": "Suspend member",
+      "suspend": "Member suspended (demo)."
+    },
+    "empty": {
+      "title": "No pending invitations",
+      "description": "Everyone you invited has already joined the workspace.",
+      "action": "Invite teammate"
+    },
+    "form": {
+      "name": "Workspace name",
+      "slug": "Workspace URL",
+      "nameRequired": "A workspace name is required.",
+      "slugInvalid": "Use lowercase letters, numbers and dashes only.",
+      "submit": "Save workspace",
+      "saved": "{{name}} updated (demo)."
+    },
+    "hoverCard": {
+      "role": "Staff engineer · Platform",
+      "timezone": "GMT+1 · usually replies within 2h"
+    },
+    "input": {
+      "label": "Work email",
+      "hint": "Used only for workspace invitations.",
+      "valid": "Invitations will be sent to {{email}}."
+    },
+    "inputNumber": {
+      "label": "Licensed seats",
+      "hint": "{{count}} seats · ${{total}} per month"
+    },
+    "inputOtp": {
+      "label": "Two-factor code",
+      "description": "Enter the 6-digit code from your authenticator app.",
+      "progress": "{{count}} of 6 digits entered",
+      "verified": "Code complete — sign-in would continue (demo)."
+    },
+    "label": {
+      "title": "Webhook endpoint",
+      "hint": "Events are signed with your workspace secret."
+    },
+    "pagination": {
+      "summary": "Page {{page}} · {{total}} audit events"
+    },
+    "popover": {
+      "trigger": "Filter by plan",
+      "title": "Billing plan",
+      "clear": "Clear filters",
+      "starter": "Starter",
+      "team": "Team",
+      "enterprise": "Enterprise"
+    },
+    "progress": {
+      "title": "Workspace setup",
+      "value": "{{value}}% complete",
+      "step1": "Profile",
+      "step2": "Billing",
+      "step3": "Invite",
+      "step4": "SSO"
+    },
+    "radioGroup": {
+      "label": "Billing plan",
+      "starter": "Starter",
+      "starterHint": "Up to 3 members, community support",
+      "team": "Team",
+      "teamHint": "$12 per seat, audit log export",
+      "enterprise": "Enterprise",
+      "enterpriseHint": "SSO, scoped roles, priority SLA"
+    },
+    "resizable": {
+      "queue": "Approval queue",
+      "details": "Request details",
+      "t1": "Duplicate refund",
+      "t2": "SSO enforcement",
+      "t3": "Seat upgrade",
+      "ticketTitle": "Duplicate refund request",
+      "ticketBody": "The September invoice was charged twice. Refund the duplicate and confirm by email."
+    },
+    "scrollArea": {
+      "title": "Recent workspace activity",
+      "e1": "Grace invited Linus to Engineering",
+      "e2": "Ada changed Katherine’s role to Admin",
+      "e3": "Billing plan upgraded to Team",
+      "e4": "API key deploy-bot created",
+      "e5": "SSO enforced for all members",
+      "e6": "Audit export downloaded",
+      "e7": "Two sessions revoked remotely"
+    },
+    "segmented": {
+      "label": "Workspace view",
+      "members": "Members",
+      "invoices": "Invoices",
+      "membersHint": "24 members shown as a compact list.",
+      "invoicesHint": "12 invoices grouped by billing month."
+    },
+    "select": {
+      "label": "Assign role",
+      "placeholder": "Choose a role",
+      "owner": "Owner",
+      "admin": "Admin",
+      "member": "Member",
+      "viewer": "Viewer",
+      "hint": "Current role: {{role}}"
+    },
+    "separator": {
+      "invoice": "Invoice",
+      "subtotal": "Subtotal",
+      "tax": "Tax",
+      "total": "Total"
+    },
+    "sheet": {
+      "trigger": "Member detail",
+      "description": "Admin · Platform team",
+      "email": "Email",
+      "team": "Team",
+      "teamValue": "Platform",
+      "lastActive": "Last active",
+      "lastActiveValue": "2 hours ago",
+      "manage": "Manage access"
+    },
+    "sidebar": {
+      "workspace": "Acme Operations",
+      "plan": "Team plan · 24 seats",
+      "group": "Workspace",
+      "overview": "Overview",
+      "members": "Members",
+      "billing": "Billing",
+      "settings": "Settings",
+      "footer": "Signed in as Owner"
+    },
+    "skeleton": {
+      "title": "Member list",
+      "loading": "Loading members…",
+      "show": "Reload",
+      "hide": "Done"
+    },
+    "slider": {
+      "label": "Monthly infrastructure budget",
+      "hint": "Alerts fire at 80% of the selected budget."
+    },
+    "sonner": {
+      "save": "Save changes",
+      "success": "Workspace settings saved (demo).",
+      "warn": "Session policy will expire in 3 days.",
+      "error": "Cannot revoke the key in use by CI.",
+      "hint": "Toasts stack in the top-right corner and follow the active theme."
+    },
+    "spinner": {
+      "label": "Loading",
+      "export": "Exporting…",
+      "hint": "Use the inline sizes for buttons and the overlay for panels."
+    },
+    "switch": {
+      "title": "Require two-factor authentication",
+      "description": "Members must enroll an authenticator before opening billing.",
+      "on": "Enforced for all members",
+      "off": "Optional for members"
+    },
+    "table": {
+      "invoice": "Invoice",
+      "date": "Issued",
+      "amount": "Amount",
+      "status": "Status",
+      "paid": "Paid",
+      "open": "Open",
+      "overdue": "Overdue"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "activity": "Activity",
+      "settings": "Settings",
+      "overviewBody": "Katherine is an Admin in the Platform team and owns billing approvals.",
+      "activityBody": "3 role changes and 12 sign-ins in the last 7 days.",
+      "settingsBody": "SSO required · session timeout 8h · audit retention 12 months."
+    },
+    "textarea": {
+      "label": "Review notes",
+      "seed": "Duplicate charge confirmed with finance — refund approved.",
+      "placeholder": "Summarize why this request should be approved…",
+      "hint": "Notes are attached to the audit event."
+    },
+    "toggle": {
+      "bold": "Draft mode",
+      "italic": "Insert list",
+      "comment": "Add comment",
+      "on": "Draft mode is on; replies stay private.",
+      "off": "Draft mode is off; replies are public."
+    },
+    "toggleGroup": {
+      "label": "Member view layout",
+      "rows": "Rows",
+      "columns": "Columns",
+      "export": "Export",
+      "hint": "Layout: {{layout}}"
+    },
+    "tooltip": {
+      "view": "View member",
+      "edit": "Edit member",
+      "remove": "Remove member",
+      "hint": "Keep icon-only actions labelled."
+    },
+    "dateRangePicker": {
+      "label": "Audit window",
+      "placeholder": "Select a range",
+      "ariaLabel": "Audit log date range",
+      "last7": "Last 7 days",
+      "last30": "Last 30 days",
+      "quarter": "This quarter",
+      "summary": "{{from}} → {{to}} · {{count}} events",
+      "empty": "No range selected — showing every event."
+    },
+    "descriptions": {
+      "email": "Email",
+      "role": "Role",
+      "roleValue": "Admin",
+      "team": "Team",
+      "joined": "Joined",
+      "sessions": "Active sessions",
+      "sessionsValue": "MacBook Pro (Berlin) · Chrome (Berlin)"
+    },
+    "dropzone": {
+      "label": "Import members from CSV",
+      "hint": "Drag a file here or browse. Max 5 MB, UTF-8 encoded.",
+      "browse": "Choose CSV",
+      "selected": "Ready to import {{name}} ({{size}} KB) — demo only.",
+      "invalid": "Only .csv files are supported."
+    },
+    "result": {
+      "title": "Invitation sent",
+      "description": "Grace will receive a link to join Acme Operations.",
+      "inviteMore": "Invite another",
+      "invited": "New invitation form opened (demo).",
+      "back": "Back to members"
+    },
+    "stepper": {
+      "ariaLabel": "Workspace onboarding progress",
+      "profile": "Workspace",
+      "profileHint": "Name and URL",
+      "workspace": "Billing",
+      "workspaceHint": "Plan and seats",
+      "invite": "Invite team",
+      "inviteHint": "Add coworkers",
+      "review": "Review",
+      "reviewHint": "Go live",
+      "back": "Back",
+      "next": "Next",
+      "progress": "Step {{current}} of {{total}}"
+    },
+    "tagsInput": {
+      "label": "Project labels",
+      "ariaLabel": "Project labels",
+      "placeholder": "Add a label and press Enter",
+      "hint": "{{count}} labels · used to filter reports"
+    },
+    "timeline": {
+      "roleTitle": "Role changed to Admin",
+      "roleBody": "Ada promoted Katherine in the Platform team.",
+      "time1": "2 hours ago",
+      "inviteTitle": "Invitation accepted",
+      "inviteBody": "Grace joined the Engineering team.",
+      "time2": "Yesterday",
+      "keyTitle": "API key created",
+      "keyBody": "deploy-bot was issued for the CI pipeline.",
+      "time3": "3 days ago",
+      "loginTitle": "New sign-in from Berlin",
+      "loginBody": "Chrome on macOS · IP 203.0.113.24.",
+      "time4": "5 days ago",
+      "empty": "No audit events yet."
+    },
+    "transfer": {
+      "available": "Available teams",
+      "assigned": "Teams on this project",
+      "search": "Search team names…",
+      "emptySource": "Every team is assigned.",
+      "emptyTarget": "Pick the teams that own this project.",
+      "hint": "{{count}} teams assigned",
+      "groupProduct": "Product",
+      "groupDesign": "Design",
+      "groupOperations": "Operations",
+      "platform": "Platform",
+      "platformSize": "7 members",
+      "billing": "Billing",
+      "billingSize": "4 members",
+      "design": "Design",
+      "designSize": "4 members",
+      "support": "Support",
+      "supportSize": "6 members",
+      "finance": "Finance (read only)",
+      "financeSize": "Cannot be assigned"
+    },
+    "tree": {
+      "hint": "Keyboard reachable: arrows move, Enter selects.",
+      "ariaLabel": "Organization structure",
+      "empty": "No departments yet.",
+      "acme": "Acme Operations",
+      "engineering": "Engineering",
+      "platform": "Platform",
+      "web": "Web",
+      "infra": "Infrastructure",
+      "design": "Growth",
+      "operations": "Operations",
+      "retired": "Legacy (archived)",
+      "selected": "Selected: {{name}}",
+      "none": "No department selected."
     }
   },
   "components": {

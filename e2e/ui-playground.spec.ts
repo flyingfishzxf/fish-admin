@@ -153,7 +153,23 @@ test.describe('UI playground', () => {
     await page.getByRole('link', { name: 'Component catalog' }).click()
     await expect(page).toHaveURL(/\/components$/)
     await expect(
-      page.getByRole('heading', { name: '83 components, one system', level: 1 }),
+      page.getByRole('heading', { name: '83 components, 83 live demos on this page', level: 1 }),
     ).toBeVisible()
+  })
+
+  test('jumps between sections from the sticky section bar', async ({ page }) => {
+    await signInAs(page, 'admin')
+    await page.goto('/ui')
+
+    const sectionNav = page.getByRole('navigation', { name: 'Jump to a component section' })
+    await expect(sectionNav).toHaveAttribute('data-orientation', 'horizontal')
+
+    await sectionNav.getByRole('button', { name: 'Overlays', exact: true }).click()
+    await expect(page.locator('#ui-overlays')).toBeInViewport()
+    await expect(sectionNav).toBeInViewport()
+    await expect(sectionNav.getByRole('button', { name: 'Overlays', exact: true })).toHaveAttribute(
+      'aria-current',
+      'location',
+    )
   })
 })

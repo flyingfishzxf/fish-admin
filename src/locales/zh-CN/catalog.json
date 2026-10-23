@@ -1,17 +1,16 @@
 {
   "eyebrow": "组件目录",
-  "title": "{{count}} 个组件，一套体系",
-  "subtitle": "FishAdmin 内置的全部基础组件、企业级组件与 Pro 模式，集中在一处搜索。打开在线示例，或直接跳到正在使用它的页面。",
+  "title": "{{count}} 个组件，本页 {{demoed}} 个在线示例",
+  "documentTitle": "{{count}} 个组件在线示例",
+  "subtitle": "FishAdmin 内置的全部基础组件、企业级组件与 Pro 模式，集中在一处搜索。每张卡片都在真实业务场景中在线运行组件。",
   "hero": {
     "components": "{{count}} 个共享组件",
     "runtime": "shadcn/ui · Radix · TanStack",
-    "license": "MIT 开源协议"
+    "license": "MIT 开源协议",
+    "uiKit": "UI 组件库"
   },
   "stats": {
-    "total": "共享组件",
-    "demoed": "含在线示例",
-    "primitives": "基础组件",
-    "patterns": "企业级 + Pro"
+    "total": "共享组件"
   },
   "filters": {
     "searchPlaceholder": "按名称或能力搜索…",
@@ -33,8 +32,8 @@
   "card": {
     "new": "新增",
     "usedIn": "用于 {{route}}",
-    "inUiKit": "在 UI Playground 查看",
-    "libraryOnly": "暂无独立示例"
+    "pathCopied": "已复制 {{path}} 到剪贴板",
+    "copyFailed": "无法访问剪贴板，请手动复制路径"
   },
   "demos": {
     "datePicker": {
@@ -395,6 +394,433 @@
       "fieldName": "姓名",
       "fieldEmail": "邮箱",
       "fieldTeam": "团队"
+    },
+    "accordion": {
+      "billing": "按席位计费如何运作？",
+      "billingAnswer": "每个计费周期结束时按活跃成员计费。受邀成员在接受邀请后开始计入席位。",
+      "security": "工作区数据存放在哪里？",
+      "securityAnswer": "数据始终保存在创建工作区时选择的区域，审计导出也遵循相同的留存策略。",
+      "sso": "管理员可以强制所有人使用 SSO 吗？",
+      "ssoAnswer": "可以。管理员可在安全设置中要求单点登录，届时全工作区的密码登录将被禁用。"
+    },
+    "alert": {
+      "title": "服务令牌需要轮换",
+      "description": "10 月 1 日之前签发的令牌将在 3 天后失效，请及时轮换以保证 CI 部署正常。"
+    },
+    "alertDialog": {
+      "trigger": "吊销 API 密钥",
+      "title": "确认吊销 deploy-bot？",
+      "description": "使用该密钥签名的所有请求将立即失败，且此操作无法撤销。",
+      "cancel": "保留密钥",
+      "confirm": "吊销密钥",
+      "done": "API 密钥已吊销（演示）。"
+    },
+    "avatar": {
+      "title": "本周值班成员",
+      "online": "在线",
+      "onCall": "主值班 · GMT+1"
+    },
+    "badge": {
+      "active": "正常",
+      "trial": "试用中",
+      "invited": "待接受",
+      "pastDue": "已逾期"
+    },
+    "breadcrumb": {
+      "workspace": "工作区",
+      "members": "成员管理"
+    },
+    "button": {
+      "invite": "邀请成员",
+      "invited": "邀请已排队（演示）。",
+      "export": "导出 CSV",
+      "exported": "导出已开始（演示）。",
+      "revoke": "移除访问权限",
+      "revoked": "访问权限已移除（演示）。"
+    },
+    "calendar": {
+      "selected": "下次权限巡检：{{date}}",
+      "empty": "请选择日期以安排权限巡检。"
+    },
+    "card": {
+      "title": "本月营收",
+      "description": "订阅收入，已扣除退款",
+      "plan": "团队版",
+      "action": "查看报表",
+      "opened": "正在打开账单报表（演示）。"
+    },
+    "chart": {
+      "title": "按月营收",
+      "series": "营收",
+      "may": "5月",
+      "june": "6月",
+      "july": "7月",
+      "august": "8月",
+      "september": "9月",
+      "october": "10月"
+    },
+    "checkbox": {
+      "title": "通知偏好",
+      "requests": "成员申请权限时邮件通知我",
+      "digest": "每周发送审计摘要",
+      "summary": "已开启 {{count}}/2 项提醒"
+    },
+    "collapsible": {
+      "trigger": "高级留存设置",
+      "expand": "展开",
+      "collapse": "收起",
+      "hint": "控制导出文件与审计事件的留存时长。",
+      "exports": "CSV 导出保留 30 天",
+      "audit": "审计事件保留 12 个月"
+    },
+    "command": {
+      "placeholder": "搜索工作区操作…",
+      "group": "快捷操作",
+      "invite": "邀请成员",
+      "key": "创建 API 密钥",
+      "export": "导出审计日志",
+      "empty": "没有匹配的操作。"
+    },
+    "contextMenu": {
+      "hint": "右键点击成员行可呼出快捷操作。",
+      "profileAction": "查看资料",
+      "profile": "正在打开 {{name}} 的资料（演示）。",
+      "resendAction": "重发邀请",
+      "resend": "已向 {{name}} 重发邀请（演示）。",
+      "archiveAction": "归档成员",
+      "archive": "{{name}} 已归档（演示）。"
+    },
+    "dialog": {
+      "trigger": "邀请同事",
+      "title": "邀请同事加入",
+      "description": "对方会收到一封包含工作区加入链接的邮件。",
+      "email": "工作邮箱",
+      "role": "角色",
+      "roleMember": "成员",
+      "roleAdmin": "管理员",
+      "roleViewer": "只读",
+      "cancel": "取消",
+      "send": "发送邀请",
+      "sent": "邀请已发送至 {{email}}（演示）。"
+    },
+    "drawer": {
+      "trigger": "筛选审计日志",
+      "title": "筛选审计事件",
+      "description": "只保留你关注的审计事件。",
+      "logins": "登录事件",
+      "billing": "账单变更",
+      "apply": "应用筛选",
+      "applied": "登录事件 {{logins}}（演示）。"
+    },
+    "dropdown": {
+      "trigger": "行操作",
+      "label": "Ada Lovelace",
+      "profileAction": "查看资料",
+      "profile": "正在打开资料（演示）。",
+      "resetAction": "发送重置链接",
+      "reset": "重置链接已发送（演示）。",
+      "suspendAction": "停用成员",
+      "suspend": "成员已停用（演示）。"
+    },
+    "empty": {
+      "title": "暂无待处理邀请",
+      "description": "你邀请的成员都已加入工作区。",
+      "action": "邀请同事"
+    },
+    "form": {
+      "name": "工作区名称",
+      "slug": "工作区地址",
+      "nameRequired": "请填写工作区名称。",
+      "slugInvalid": "仅支持小写字母、数字和连字符。",
+      "submit": "保存工作区",
+      "saved": "{{name}} 已更新（演示）。"
+    },
+    "hoverCard": {
+      "role": "平台组 · 资深工程师",
+      "timezone": "GMT+1 · 通常 2 小时内回复"
+    },
+    "input": {
+      "label": "工作邮箱",
+      "hint": "仅用于发送工作区邀请。",
+      "valid": "邀请将发送至 {{email}}。"
+    },
+    "inputNumber": {
+      "label": "授权席位",
+      "hint": "{{count}} 个席位 · 每月 ${{total}}"
+    },
+    "inputOtp": {
+      "label": "双因素验证码",
+      "description": "请输入身份验证器中的 6 位验证码。",
+      "progress": "已输入 {{count}}/6 位",
+      "verified": "验证码完整 — 实际流程将继续登录（演示）。"
+    },
+    "label": {
+      "title": "Webhook 地址",
+      "hint": "事件会使用工作区密钥签名。"
+    },
+    "pagination": {
+      "summary": "第 {{page}} 页 · 共 {{total}} 条审计事件"
+    },
+    "popover": {
+      "trigger": "按套餐筛选",
+      "title": "账单套餐",
+      "clear": "清空筛选",
+      "starter": "入门版",
+      "team": "团队版",
+      "enterprise": "企业版"
+    },
+    "progress": {
+      "title": "工作区初始化",
+      "value": "已完成 {{value}}%",
+      "step1": "资料",
+      "step2": "账单",
+      "step3": "邀请",
+      "step4": "SSO"
+    },
+    "radioGroup": {
+      "label": "账单套餐",
+      "starter": "入门版",
+      "starterHint": "最多 3 名成员，社区支持",
+      "team": "团队版",
+      "teamHint": "每席位 $12，支持审计日志导出",
+      "enterprise": "企业版",
+      "enterpriseHint": "SSO、细粒度角色、优先 SLA"
+    },
+    "resizable": {
+      "queue": "审批队列",
+      "details": "申请详情",
+      "t1": "重复退款",
+      "t2": "强制 SSO",
+      "t3": "席位扩容",
+      "ticketTitle": "重复退款申请",
+      "ticketBody": "9 月账单被扣款两次，需退回重复款项并邮件确认。"
+    },
+    "scrollArea": {
+      "title": "最近工作区动态",
+      "e1": "Grace 邀请 Linus 加入工程部",
+      "e2": "Ada 将 Katherine 的角色改为管理员",
+      "e3": "账单套餐升级为团队版",
+      "e4": "创建 API 密钥 deploy-bot",
+      "e5": "已对全体成员强制 SSO",
+      "e6": "审计导出文件已下载",
+      "e7": "远程吊销了两个会话"
+    },
+    "segmented": {
+      "label": "工作区视图",
+      "members": "成员",
+      "invoices": "账单",
+      "membersHint": "以紧凑列表展示 24 名成员。",
+      "invoicesHint": "按账期分组展示 12 条账单。"
+    },
+    "select": {
+      "label": "分配角色",
+      "placeholder": "请选择角色",
+      "owner": "所有者",
+      "admin": "管理员",
+      "member": "成员",
+      "viewer": "只读",
+      "hint": "当前角色：{{role}}"
+    },
+    "separator": {
+      "invoice": "账单编号",
+      "subtotal": "小计",
+      "tax": "税费",
+      "total": "合计"
+    },
+    "sheet": {
+      "trigger": "成员详情",
+      "description": "管理员 · 平台组",
+      "email": "邮箱",
+      "team": "所属团队",
+      "teamValue": "平台组",
+      "lastActive": "最近活跃",
+      "lastActiveValue": "2 小时前",
+      "manage": "管理权限"
+    },
+    "sidebar": {
+      "workspace": "Acme 运营中心",
+      "plan": "团队版 · 24 席位",
+      "group": "工作区",
+      "overview": "概览",
+      "members": "成员管理",
+      "billing": "账单",
+      "settings": "设置",
+      "footer": "以所有者身份登录"
+    },
+    "skeleton": {
+      "title": "成员列表",
+      "loading": "正在加载成员…",
+      "show": "重新加载",
+      "hide": "加载完成"
+    },
+    "slider": {
+      "label": "每月基础设施预算",
+      "hint": "达到所选预算的 80% 时触发告警。"
+    },
+    "sonner": {
+      "save": "保存更改",
+      "success": "工作区设置已保存（演示）。",
+      "warn": "会话策略将在 3 天后过期。",
+      "error": "无法吊销 CI 正在使用的密钥。",
+      "hint": "提示消息在右上角堆叠，并跟随当前主题。"
+    },
+    "spinner": {
+      "label": "加载中",
+      "export": "导出中…",
+      "hint": "按钮使用内联尺寸，面板使用遮罩层。"
+    },
+    "switch": {
+      "title": "强制双因素认证",
+      "description": "成员需绑定身份验证器才能查看账单。",
+      "on": "对全体成员强制生效",
+      "off": "成员可自选开启"
+    },
+    "table": {
+      "invoice": "账单",
+      "date": "开具日期",
+      "amount": "金额",
+      "status": "状态",
+      "paid": "已支付",
+      "open": "待支付",
+      "overdue": "已逾期"
+    },
+    "tabs": {
+      "overview": "概览",
+      "activity": "活动",
+      "settings": "设置",
+      "overviewBody": "Katherine 是平台组的管理员，负责账单审批。",
+      "activityBody": "最近 7 天有 3 次角色变更和 12 次登录。",
+      "settingsBody": "必须使用 SSO · 会话超时 8 小时 · 审计留存 12 个月。"
+    },
+    "textarea": {
+      "label": "审批备注",
+      "seed": "已与财务确认重复扣款，同意退款。",
+      "placeholder": "简述该申请通过审批的理由…",
+      "hint": "备注会一并记入审计事件。"
+    },
+    "toggle": {
+      "bold": "草稿模式",
+      "italic": "插入列表",
+      "comment": "添加评论",
+      "on": "草稿模式已开启，回复不会公开。",
+      "off": "草稿模式已关闭，回复会公开。"
+    },
+    "toggleGroup": {
+      "label": "成员视图布局",
+      "rows": "行视图",
+      "columns": "列视图",
+      "export": "导出",
+      "hint": "当前布局：{{layout}}"
+    },
+    "tooltip": {
+      "view": "查看成员",
+      "edit": "编辑成员",
+      "remove": "移除成员",
+      "hint": "纯图标操作也要有文字提示。"
+    },
+    "dateRangePicker": {
+      "label": "审计时间范围",
+      "placeholder": "选择时间范围",
+      "ariaLabel": "审计日志日期范围",
+      "last7": "最近 7 天",
+      "last30": "最近 30 天",
+      "quarter": "本季度",
+      "summary": "{{from}} → {{to}} · {{count}} 条事件",
+      "empty": "未选择范围，展示全部事件。"
+    },
+    "descriptions": {
+      "email": "邮箱",
+      "role": "角色",
+      "roleValue": "管理员",
+      "team": "所属团队",
+      "joined": "加入时间",
+      "sessions": "活跃会话",
+      "sessionsValue": "MacBook Pro（柏林） · Chrome（柏林）"
+    },
+    "dropzone": {
+      "label": "从 CSV 导入成员",
+      "hint": "可拖拽文件或点击选择，最大 5 MB，UTF-8 编码。",
+      "browse": "选择 CSV 文件",
+      "selected": "已准备好导入 {{name}}（{{size}} KB），仅演示。",
+      "invalid": "仅支持 .csv 文件。"
+    },
+    "result": {
+      "title": "邀请已发送",
+      "description": "Grace 将收到加入 Acme 运营中心的链接。",
+      "inviteMore": "继续邀请",
+      "invited": "已打开新的邀请表单（演示）。",
+      "back": "返回成员列表"
+    },
+    "stepper": {
+      "ariaLabel": "工作区初始化进度",
+      "profile": "工作区",
+      "profileHint": "名称与地址",
+      "workspace": "账单",
+      "workspaceHint": "套餐与席位",
+      "invite": "邀请团队",
+      "inviteHint": "添加同事",
+      "review": "确认",
+      "reviewHint": "完成设置",
+      "back": "上一步",
+      "next": "下一步",
+      "progress": "第 {{current}} 步 / 共 {{total}} 步"
+    },
+    "tagsInput": {
+      "label": "项目标签",
+      "ariaLabel": "项目标签",
+      "placeholder": "输入标签后按回车",
+      "hint": "{{count}} 个标签 · 用于报表筛选"
+    },
+    "timeline": {
+      "roleTitle": "角色已变更为管理员",
+      "roleBody": "Ada 将平台组的 Katherine 提升为管理员。",
+      "time1": "2 小时前",
+      "inviteTitle": "邀请已接受",
+      "inviteBody": "Grace 加入了工程部。",
+      "time2": "昨天",
+      "keyTitle": "创建 API 密钥",
+      "keyBody": "为 CI 流水线签发了 deploy-bot。",
+      "time3": "3 天前",
+      "loginTitle": "来自柏林的新登录",
+      "loginBody": "Chrome / macOS · IP 203.0.113.24。",
+      "time4": "5 天前",
+      "empty": "暂无审计事件。"
+    },
+    "transfer": {
+      "available": "可选团队",
+      "assigned": "已分配团队",
+      "search": "搜索团队名称…",
+      "emptySource": "所有团队均已分配。",
+      "emptyTarget": "选择负责该项目的团队。",
+      "hint": "已分配 {{count}} 个团队",
+      "groupProduct": "产品",
+      "groupDesign": "设计",
+      "groupOperations": "运营",
+      "platform": "平台组",
+      "platformSize": "7 人",
+      "billing": "账务组",
+      "billingSize": "4 人",
+      "design": "设计组",
+      "designSize": "4 人",
+      "support": "支持组",
+      "supportSize": "6 人",
+      "finance": "财务组（只读）",
+      "financeSize": "不可分配"
+    },
+    "tree": {
+      "hint": "支持键盘操作：方向键移动，回车选中。",
+      "ariaLabel": "组织架构",
+      "empty": "暂无部门。",
+      "acme": "Acme 运营中心",
+      "engineering": "工程部",
+      "platform": "平台组",
+      "web": "Web 组",
+      "infra": "基础设施组",
+      "design": "增长",
+      "operations": "运营部",
+      "retired": "历史部门（已归档）",
+      "selected": "已选择：{{name}}",
+      "none": "未选择部门。"
     }
   },
   "components": {

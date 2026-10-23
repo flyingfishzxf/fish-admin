@@ -37,7 +37,7 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 - **Audit log** — `/audit-logs` with URL-synced filters, date-range presets, a detail drawer with related events, and links back to the affected user, role or department.
 - **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings and the UI playground.
 - **Dashboard** — KPI cards, revenue area chart, traffic bars, acquisition donut and recent activity, with a 7/30-day switch. Charts are lazy-loaded with the dashboard route.
-- **83 shared components with a searchable catalog** — 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`) are registered in `src/config/components.ts`. `/components` searches the whole inventory and renders 68 live demos; `/ui` still collects the primitive states, overlays and form controls. ProTable now powers the users and audit pages, so the same table shell is reused across business screens.
+- **83 shared components with a searchable catalog** — 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`) are registered in `src/config/components.ts`. `/components` searches the whole inventory and renders a live, business-framed demo for every one of the 83 entries, each with a copyable import path and a link to the screen that already uses it; `/ui` keeps the primitive states, overlays and form controls behind a sticky section nav. ProTable now powers the users and audit pages, so the same table shell is reused across business screens.
 - **Product-style design system** — light, dark and system modes, five accent colors, oklch tokens, refined shadows and a FOUC-free first paint.
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
@@ -76,7 +76,7 @@ More things to try:
 - **Audit trail** — `/audit-logs` filters by action, entity and date range. Every change made in the demo is recorded there.
 - **Departments** — `/departments?dept=dept-engineering` deep-links to a node and lists its members, including descendants.
 - **Failure screens** — `/401`, `/500`, `/503` and `/maintenance` are directly reachable, and the offline banner appears when you throttle the network.
-- **Component catalog** — `/components` searches all 83 shared components, filters by layer and renders live demos for 68 of them; `/ui` keeps the primitive state gallery.
+- **Component catalog** — `/components` searches all 83 shared components, filters by layer and renders a live demo for every one of them; `/ui` keeps the primitive state gallery.
 
 ## What is inside
 

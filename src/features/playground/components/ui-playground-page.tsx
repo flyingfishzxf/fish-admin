@@ -45,11 +45,12 @@ import {
   UserRound,
   type LucideIcon,
 } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { PageHeader } from '@/components/common/page-header'
+import { AnchorNav, type AnchorItem } from '@/components/enterprise/anchor-nav/anchor-nav'
 import {
   Accordion,
   AccordionContent,
@@ -199,6 +200,17 @@ import { changeLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/l
 import { cn } from '@/lib/utils'
 import { useThemeStore } from '@/stores/theme-store'
 
+const UI_SECTIONS = [
+  'foundations',
+  'actions',
+  'feedback',
+  'forms',
+  'overlays',
+  'navigation',
+  'layout',
+  'states',
+] as const
+
 const MODE_ICONS = {
   light: Sun,
   dark: Moon,
@@ -243,12 +255,14 @@ const STATUS_LINKS = [
 const SCROLL_ROWS = Array.from({ length: 10 }, (_, index) => index + 1)
 
 function SectionCard({
+  id,
   icon: Icon,
   title,
   description,
   className,
   children,
 }: {
+  id: string
   icon: LucideIcon
   title: string
   description: string
@@ -256,7 +270,7 @@ function SectionCard({
   children: ReactNode
 }) {
   return (
-    <Card className={cn('shadow-soft', className)}>
+    <Card id={id} className={cn('shadow-soft scroll-mt-32', className)}>
       <CardHeader>
         <CardTitle role="heading" aria-level={2} className="flex items-center gap-2.5 text-base">
           <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -302,6 +316,15 @@ export function UiPlaygroundPage() {
   const setMode = useThemeStore((state) => state.setMode)
   const setAccent = useThemeStore((state) => state.setAccent)
   const language: SupportedLanguage = i18n.resolvedLanguage === 'zh-CN' ? 'zh-CN' : 'en'
+
+  const sectionItems = useMemo<AnchorItem[]>(
+    () =>
+      UI_SECTIONS.map((key) => ({
+        id: `ui-${key}`,
+        label: t(`ui:sections.${key}.title`),
+      })),
+    [t],
+  )
 
   return (
     <div className="space-y-6">
@@ -459,8 +482,19 @@ export function UiPlaygroundPage() {
         </div>
       </section>
 
+      <div className="sticky top-16 z-10 -mx-4 border-b bg-background/95 px-4 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+        <AnchorNav
+          orientation="horizontal"
+          items={sectionItems}
+          ariaLabel={t('ui:sections.nav')}
+          offset={112}
+          className="-mb-px"
+        />
+      </div>
+
       <SectionCard
         icon={Palette}
+        id="ui-foundations"
         title={t('ui:sections.foundations.title')}
         description={t('ui:sections.foundations.description')}
       >
@@ -470,6 +504,7 @@ export function UiPlaygroundPage() {
       <div className="grid gap-6 xl:grid-cols-2">
         <SectionCard
           icon={MousePointerClick}
+          id="ui-actions"
           title={t('ui:sections.actions.title')}
           description={t('ui:sections.actions.description')}
         >
@@ -478,6 +513,7 @@ export function UiPlaygroundPage() {
 
         <SectionCard
           icon={BellRing}
+          id="ui-feedback"
           title={t('ui:sections.feedback.title')}
           description={t('ui:sections.feedback.description')}
         >
@@ -486,6 +522,7 @@ export function UiPlaygroundPage() {
 
         <SectionCard
           icon={TextCursorInput}
+          id="ui-forms"
           title={t('ui:sections.forms.title')}
           description={t('ui:sections.forms.description')}
           className="xl:col-span-2"
@@ -495,6 +532,7 @@ export function UiPlaygroundPage() {
 
         <SectionCard
           icon={Layers}
+          id="ui-overlays"
           title={t('ui:sections.overlays.title')}
           description={t('ui:sections.overlays.description')}
           className="xl:col-span-2"
@@ -504,6 +542,7 @@ export function UiPlaygroundPage() {
 
         <SectionCard
           icon={Compass}
+          id="ui-navigation"
           title={t('ui:sections.navigation.title')}
           description={t('ui:sections.navigation.description')}
         >
@@ -512,6 +551,7 @@ export function UiPlaygroundPage() {
 
         <SectionCard
           icon={PanelsTopLeft}
+          id="ui-layout"
           title={t('ui:sections.layout.title')}
           description={t('ui:sections.layout.description')}
         >
@@ -520,6 +560,7 @@ export function UiPlaygroundPage() {
 
         <SectionCard
           icon={LifeBuoy}
+          id="ui-states"
           title={t('ui:sections.states.title')}
           description={t('ui:sections.states.description')}
           className="xl:col-span-2"

@@ -1,7 +1,18 @@
 import { Link } from '@tanstack/react-router'
-import { Boxes, Layers, LayoutGrid, Search, SearchX, Sparkles, X } from 'lucide-react'
+import {
+  Boxes,
+  Copy,
+  Layers,
+  LayoutGrid,
+  Palette,
+  Search,
+  SearchX,
+  Sparkles,
+  X,
+} from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
 
 import { PageContainer } from '@/components/enterprise/page-container/page-container'
 import { Statistic } from '@/components/enterprise/statistic/statistic'
@@ -30,6 +41,7 @@ import {
   COMPONENT_CATEGORIES,
   COMPONENT_COUNTS,
   DEMOED_COMPONENTS,
+  getComponentModulePath,
   type ComponentCategory,
   type ComponentEntry,
 } from '@/config/components'
@@ -50,16 +62,27 @@ const DEMO_SPANS: Record<string, string> = {
   'detail-page': 'md:col-span-2',
   'import-wizard': 'md:col-span-2',
   'editable-table': 'md:col-span-2 xl:col-span-3',
+  accordion: 'md:col-span-2',
+  chart: 'md:col-span-2',
+  command: 'md:col-span-2',
+  form: 'md:col-span-2',
+  resizable: 'md:col-span-2',
+  sidebar: 'md:col-span-2',
+  stepper: 'md:col-span-2',
+  table: 'md:col-span-2 xl:col-span-2',
+  tabs: 'md:col-span-2',
+  timeline: 'md:col-span-2',
+  transfer: 'md:col-span-2 xl:col-span-3',
+  tree: 'md:col-span-2',
 }
 
 export function ComponentCatalogPage() {
   const { t } = useTranslation()
-  useDocumentTitle(t('catalog:title', { count: COMPONENTS.length }))
+  const coverage = { count: COMPONENTS.length, demoed: DEMOED_COMPONENTS.length }
+  useDocumentTitle(t('catalog:documentTitle', coverage))
 
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState<CategoryFilter>('all')
-
-  const patternCount = COMPONENT_COUNTS.enterprise + COMPONENT_COUNTS.pro
 
   const filterOptions = useMemo(
     () => [
@@ -111,12 +134,18 @@ export function ComponentCatalogPage() {
   return (
     <PageContainer
       eyebrow={t('catalog:eyebrow')}
-      title={t('catalog:title', { count: COMPONENTS.length })}
+      title={t('catalog:title', coverage)}
       description={t('catalog:subtitle')}
       actions={
         <>
           <Badge variant="outline">{t('catalog:hero.runtime')}</Badge>
           <Badge variant="secondary">{t('catalog:hero.license')}</Badge>
+          <Button asChild variant="outline" size="sm">
+            <Link to="/ui">
+              <Palette className="size-4" />
+              {t('catalog:hero.uiKit')}
+            </Link>
+          </Button>
         </>
       }
     >
@@ -126,16 +155,16 @@ export function ComponentCatalogPage() {
       >
         <Statistic label={t('catalog:stats.total')} value={COMPONENTS.length} icon={Boxes} />
         <Statistic
-          label={t('catalog:stats.demoed')}
-          value={DEMOED_COMPONENTS.length}
-          icon={Sparkles}
-        />
-        <Statistic
-          label={t('catalog:stats.primitives')}
+          label={t('catalog:filters.primitive')}
           value={COMPONENT_COUNTS.primitive}
           icon={LayoutGrid}
         />
-        <Statistic label={t('catalog:stats.patterns')} value={patternCount} icon={Layers} />
+        <Statistic
+          label={t('catalog:filters.enterprise')}
+          value={COMPONENT_COUNTS.enterprise}
+          icon={Layers}
+        />
+        <Statistic label={t('catalog:filters.pro')} value={COMPONENT_COUNTS.pro} icon={Sparkles} />
       </section>
 
       <section
@@ -270,39 +299,39 @@ function ComponentCard({ entry }: { entry: ComponentEntry }) {
       )}
 
       <CardFooter className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-0">
-        <code className="font-mono text-[11px] text-muted-foreground">{entry.id}</code>
-        <CardDemoAction entry={entry} />
+        <CopyModulePath entry={entry} />
+        {entry.usedIn ? (
+          <span className="shrink-0 text-[11px] text-muted-foreground">
+            {t('catalog:card.usedIn', { route: entry.usedIn })}
+          </span>
+        ) : null}
       </CardFooter>
     </Card>
   )
 }
 
-function CardDemoAction({ entry }: { entry: ComponentEntry }) {
+function CopyModulePath({ entry }: { entry: ComponentEntry }) {
   const { t } = useTranslation()
+  const modulePath = getComponentModulePath(entry)
 
-  if (CATALOG_DEMOS[entry.id]) {
-    return null
+  const copy = () => {
+    void navigator.clipboard
+      .writeText(modulePath)
+      .then(() => toast.success(t('catalog:card.pathCopied', { path: modulePath })))
+      .catch(() => toast.error(t('catalog:card.copyFailed')))
   }
 
-  if (entry.demo) {
-    const [path, hash] = entry.demo.split('#')
-
-    return (
-      <Button asChild variant="link" size="sm" className="h-auto p-0 text-xs">
-        <Link to={path as '/ui'} hash={hash}>
-          {t('catalog:card.inUiKit')}
-        </Link>
-      </Button>
-    )
-  }
-
-  if (entry.usedIn) {
-    return (
-      <span className="text-xs text-muted-foreground">
-        {t('catalog:card.usedIn', { route: entry.usedIn })}
-      </span>
-    )
-  }
-
-  return <span className="text-xs text-muted-foreground">{t('catalog:card.libraryOnly')}</span>
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="sm"
+      onClick={copy}
+      title={modulePath}
+      className="-ml-2 max-w-full min-w-0 gap-1.5 px-2 py-0 text-[11px] font-normal text-muted-foreground hover:text-foreground"
+    >
+      <Copy className="size-3 shrink-0" />
+      <code className="truncate font-mono">{modulePath}</code>
+    </Button>
+  )
 }

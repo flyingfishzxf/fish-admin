@@ -1,20 +1,24 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
-import { CATALOG_DEMO_IDS } from '@/features/playground/components/component-catalog-demo-map'
+import {
+  CATALOG_DEMOS,
+  CATALOG_DEMO_IDS,
+} from '@/features/playground/components/component-catalog-demo-map'
 import enCatalog from '@/locales/en/catalog.json'
 import zhCatalog from '@/locales/zh-CN/catalog.json'
 
-import { COMPONENTS, COMPONENT_CATEGORIES, COMPONENT_COUNTS, DEMOED_COMPONENTS } from './components'
+import {
+  COMPONENTS,
+  COMPONENT_CATEGORIES,
+  COMPONENT_COUNTS,
+  DEMOED_COMPONENTS,
+  getComponentModulePath,
+} from './components'
 
 const ROOT = resolve(process.cwd())
-
-function componentFile(id: string, category: (typeof COMPONENTS)[number]['category']) {
-  if (category === 'primitive') return resolve(ROOT, `src/components/ui/${id}.tsx`)
-  return resolve(ROOT, `src/components/${category}/${id}/${id}.tsx`)
-}
 
 describe('component registry', () => {
   it('tracks 83 shared components across three layers', () => {
@@ -33,9 +37,12 @@ describe('component registry', () => {
     for (const entry of COMPONENTS) expect(entry.name.trim()).not.toBe('')
   })
 
-  it('points at a component file that exists', () => {
+  it('publishes an import specifier that resolves to the component file', () => {
     for (const entry of COMPONENTS) {
-      const file = componentFile(entry.id, entry.category)
+      const specifier = getComponentModulePath(entry)
+      expect(specifier.startsWith('@/components/'), `${entry.id} specifier`).toBe(true)
+
+      const file = resolve(ROOT, `${specifier.replace('@/', 'src/')}.tsx`)
       expect(existsSync(file), `${entry.id} should exist at ${file}`).toBe(true)
     }
   })
@@ -55,33 +62,21 @@ describe('component registry', () => {
     }
   })
 
-  it('resolves every demo link to a real anchor', () => {
-    const uiSource = readFileSync(
-      resolve(ROOT, 'src/features/playground/components/ui-playground-page.tsx'),
-      'utf8',
-    )
-    const catalogDemos = new Set<string>(CATALOG_DEMO_IDS)
+  it('gives every component a live catalog demo', () => {
+    const ids = COMPONENTS.map((entry) => entry.id)
+
+    expect(DEMOED_COMPONENTS).toHaveLength(83)
+    expect(new Set(CATALOG_DEMO_IDS)).toEqual(new Set(ids))
+    expect(CATALOG_DEMO_IDS).toHaveLength(83)
 
     for (const entry of COMPONENTS) {
-      if (!entry.demo) continue
-
-      if (entry.demo.startsWith('/ui#')) {
-        const anchor = entry.demo.split('#')[1]
-        expect(uiSource, `${entry.id} anchor`).toContain(`id="${anchor}"`)
-      } else if (entry.demo.startsWith('/components#')) {
-        expect(catalogDemos.has(entry.id), `${entry.id} catalog demo`).toBe(true)
-      } else {
-        expect(entry.demo, `${entry.id} demo path`).toBe('/ui')
-      }
+      expect(entry.demo, `${entry.id} demo link`).toBe(`/components#demo-${entry.id}`)
+      expect(CATALOG_DEMOS[entry.id], `${entry.id} demo component`).toBeTypeOf('function')
     }
   })
 
-  it('marks all thirty-three new components as demoed and keeps the coverage honest', () => {
-    const newComponents = COMPONENTS.filter((entry) => entry.isNew)
-
-    expect(newComponents).toHaveLength(33)
-    for (const entry of newComponents) expect(entry.demo).toBeTruthy()
-    expect(DEMOED_COMPONENTS).toHaveLength(68)
+  it('badges the newest component wave', () => {
+    expect(COMPONENTS.filter((entry) => entry.isNew)).toHaveLength(33)
   })
 
   it('uses app-relative routes for usedIn hints', () => {

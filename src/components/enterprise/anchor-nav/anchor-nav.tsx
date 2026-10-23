@@ -12,12 +12,15 @@ export function AnchorNav({
   ariaLabel,
   rootRef,
   offset = 88,
+  orientation = 'vertical',
   className,
 }: {
   items: AnchorItem[]
   ariaLabel: string
   rootRef?: RefObject<HTMLElement | null>
   offset?: number
+  /** Sticky section bars use the horizontal variant; in-page rails keep the default. */
+  orientation?: 'vertical' | 'horizontal'
   className?: string
 }) {
   const [activeId, setActiveId] = useState<string | undefined>(items[0]?.id)
@@ -73,11 +76,17 @@ export function AnchorNav({
     }
   }
 
+  const horizontal = orientation === 'horizontal'
+
   return (
     <nav
       data-slot="anchor-nav"
+      data-orientation={orientation}
       aria-label={ariaLabel}
-      className={cn('flex flex-col border-l', className)}
+      className={cn(
+        horizontal ? 'flex items-stretch gap-1 overflow-x-auto' : 'flex flex-col border-l',
+        className,
+      )}
     >
       {items.map((item) => {
         const active = item.id === activeId
@@ -89,8 +98,13 @@ export function AnchorNav({
             aria-current={active ? 'location' : undefined}
             onClick={() => scrollTo(item.id)}
             className={cn(
-              '-ml-px border-l-2 border-transparent px-3 py-1.5 text-left text-sm transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50',
-              active ? 'border-primary font-medium text-primary' : 'text-muted-foreground',
+              'shrink-0 text-sm whitespace-nowrap transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50',
+              horizontal
+                ? '-mb-px border-b-2 px-3 py-2'
+                : '-ml-px border-l-2 px-3 py-1.5 text-left',
+              active
+                ? 'border-primary font-medium text-primary'
+                : 'border-transparent text-muted-foreground',
             )}
           >
             {item.label}

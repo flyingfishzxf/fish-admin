@@ -8,14 +8,16 @@ test.describe('component catalog', () => {
     await page.goto('/components')
 
     await expect(
-      page.getByRole('heading', { name: '83 components, one system', level: 1 }),
+      page.getByRole('heading', { name: '83 components, 83 live demos on this page', level: 1 }),
     ).toBeVisible()
     await expect(page.getByText('83 of 83 components')).toBeVisible()
     await expect(page.getByText('New', { exact: true })).toHaveCount(33)
+    await expect(page.locator('#demo-button').getByText('@/components/ui/button')).toBeVisible()
 
     const search = page.getByRole('textbox', { name: 'Search components' })
+    const filters = page.locator('[data-slot="segmented"]')
 
-    await page.getByRole('radio', { name: /^Enterprise/ }).click()
+    await filters.getByRole('radio', { name: /^Enterprise/ }).click()
     await expect(page.getByText('30 of 83 components')).toBeVisible()
 
     await search.fill('popconfirm')
@@ -24,26 +26,39 @@ test.describe('component catalog', () => {
     await expect(page.locator('#demo-pro-table')).toHaveCount(0)
 
     await page.getByRole('button', { name: 'Clear search' }).click()
-    await page.getByRole('radio', { name: /^Pro patterns/ }).click()
+    await filters.getByRole('radio', { name: /^Pro patterns/ }).click()
     await expect(page.getByText('6 of 83 components')).toBeVisible()
     await expect(page.locator('#demo-pro-table')).toBeVisible()
     await expect(page.locator('#demo-query-filter')).toBeVisible()
     await expect(page.locator('#demo-pro-form')).toBeVisible()
     await expect(page.locator('#demo-import-wizard')).toBeVisible()
 
-    await page.getByRole('radio', { name: /^All/ }).click()
+    await filters.getByRole('radio', { name: /^All/ }).click()
     await search.fill('zzzz-not-a-component')
     await expect(page.getByText('No components match')).toBeVisible()
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(page.getByText('83 of 83 components')).toBeVisible()
 
     await expect(page.locator('#demo-timeline').getByText('Used in /users/$id')).toBeVisible()
-    await expect(
-      page.locator('#demo-collapsible').getByText('No standalone demo yet'),
-    ).toBeVisible()
 
-    await page.locator('#demo-input-number').getByRole('link', { name: 'Open in UI kit' }).click()
-    await expect(page).toHaveURL(/\/ui#demo-input-number$/)
+    const collapsible = page.locator('#demo-collapsible')
+    await expect(collapsible.getByText('Keep CSV exports for 30 days')).toHaveCount(0)
+    await collapsible.getByRole('button', { name: /Advanced retention settings/ }).click()
+    await expect(
+      collapsible.getByText('Control how long exports and audit events are kept.'),
+    ).toBeVisible()
+    await expect(collapsible.getByText('Keep CSV exports for 30 days')).toBeVisible()
+
+    const pathButton = page
+      .locator('#demo-input-number')
+      .locator('[data-slot="card-footer"] button')
+    await expect(pathButton).toContainText('@/components/ui/input-number')
+    await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
+    await pathButton.click()
+    await expect(page.getByText('Copied @/components/ui/input-number')).toBeVisible()
+
+    await page.getByRole('link', { name: 'UI Playground' }).click()
+    await expect(page).toHaveURL(/\/ui$/)
     await expect(page.locator('#demo-input-number')).toBeVisible()
   })
 
@@ -120,7 +135,10 @@ test.describe('component catalog', () => {
     const combobox = page.locator('#demo-combobox')
     await combobox.getByRole('combobox', { name: 'Demo combobox' }).click()
     await page.getByPlaceholder('Search teams…').fill('des')
-    await page.getByRole('option', { name: /Design/ }).click()
+    await page
+      .locator('[data-slot="popover-content"]')
+      .getByRole('option', { name: /Design/ })
+      .click()
     await expect(combobox.getByRole('combobox', { name: 'Demo combobox' })).toContainText('Design')
 
     const cascader = page.locator('#demo-cascader')

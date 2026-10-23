@@ -10,6 +10,9 @@ const CATALOG_DEMO_FILES = [
   'src/features/playground/components/component-catalog-demos.tsx',
   'src/features/playground/components/component-catalog-demos-wave2.tsx',
   'src/features/playground/components/component-catalog-demos-wave3.tsx',
+  'src/features/playground/components/component-catalog-demos-wave4.tsx',
+  'src/features/playground/components/component-catalog-demos-wave5.tsx',
+  'src/features/playground/components/component-catalog-demos-wave6.tsx',
 ]
 
 type JsonObject = Record<string, unknown>

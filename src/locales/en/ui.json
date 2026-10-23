@@ -30,6 +30,7 @@
     }
   },
   "sections": {
+    "nav": "Jump to a component section",
     "foundations": {
       "title": "Foundations",
       "description": "Semantic color tokens, typography and elevation that every component shares."

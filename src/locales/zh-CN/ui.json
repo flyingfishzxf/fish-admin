@@ -30,6 +30,7 @@
     }
   },
   "sections": {
+    "nav": "跳转到组件分组",
     "foundations": {
       "title": "基础规范",
       "description": "所有组件共享的语义色板、字体层级与阴影。"
