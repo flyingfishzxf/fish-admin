@@ -45,6 +45,14 @@ All notable changes to this project are documented here. The format is based on
   no longer writes the shell's sidebar cookie or registers a second global
   `Cmd/Ctrl+B` handler, so collapsing the preview can no longer hijack the app
   shell.
+- Opening or closing a dropdown, select or dialog no longer nudges the page
+  sideways. The layout reserves a stable scrollbar gutter and cancels the margin
+  Radix adds while it locks scrolling, guarded by `@supports` so older browsers
+  keep the previous behaviour.
+- Labels that rendered as raw keys or English-only text are translated in both
+  languages — permission names, pagination and sheet controls, the input-number
+  accessible names and the shared action vocabulary. `src/lib/locales.test.ts`
+  now fails when a literal `t('…')` key is missing from either locale.
 
 ### Security
 
