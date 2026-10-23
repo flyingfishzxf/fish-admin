@@ -19,6 +19,7 @@ import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppSplatRouteImport } from './routes/_app/$'
 import { Route as App403RouteImport } from './routes/_app/403'
 import { Route as AppAuditLogsRouteImport } from './routes/_app/audit-logs'
+import { Route as AppComponentsRouteImport } from './routes/_app/components'
 import { Route as AppDepartmentsRouteImport } from './routes/_app/departments'
 import { Route as AppPermissionsRouteImport } from './routes/_app/permissions'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
@@ -83,6 +84,11 @@ const App403Route = App403RouteImport.update({
 const AppAuditLogsRoute = AppAuditLogsRouteImport.update({
   id: '/audit-logs',
   path: '/audit-logs',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppComponentsRoute = AppComponentsRouteImport.update({
+  id: '/components',
+  path: '/components',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppDepartmentsRoute = AppDepartmentsRouteImport.update({
@@ -180,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/$': typeof AppSplatRoute
   '/403': typeof App403Route
   '/audit-logs': typeof AppAuditLogsRoute
+  '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
   '/permissions': typeof AppPermissionsRoute
   '/profile': typeof AppProfileRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByTo {
   '/$': typeof AppSplatRoute
   '/403': typeof App403Route
   '/audit-logs': typeof AppAuditLogsRoute
+  '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
   '/permissions': typeof AppPermissionsRoute
   '/profile': typeof AppProfileRoute
@@ -236,6 +244,7 @@ export interface FileRoutesById {
   '/_app/$': typeof AppSplatRoute
   '/_app/403': typeof App403Route
   '/_app/audit-logs': typeof AppAuditLogsRoute
+  '/_app/components': typeof AppComponentsRoute
   '/_app/departments': typeof AppDepartmentsRoute
   '/_app/permissions': typeof AppPermissionsRoute
   '/_app/profile': typeof AppProfileRoute
@@ -266,6 +275,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/403'
     | '/audit-logs'
+    | '/components'
     | '/departments'
     | '/permissions'
     | '/profile'
@@ -293,6 +303,7 @@ export interface FileRouteTypes {
     | '/$'
     | '/403'
     | '/audit-logs'
+    | '/components'
     | '/departments'
     | '/permissions'
     | '/profile'
@@ -321,6 +332,7 @@ export interface FileRouteTypes {
     | '/_app/$'
     | '/_app/403'
     | '/_app/audit-logs'
+    | '/_app/components'
     | '/_app/departments'
     | '/_app/permissions'
     | '/_app/profile'
@@ -420,6 +432,13 @@ declare module '@tanstack/react-router' {
       path: '/audit-logs'
       fullPath: '/audit-logs'
       preLoaderRoute: typeof AppAuditLogsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/components': {
+      id: '/_app/components'
+      path: '/components'
+      fullPath: '/components'
+      preLoaderRoute: typeof AppComponentsRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/departments': {
@@ -548,6 +567,7 @@ interface AppRouteRouteChildren {
   AppSplatRoute: typeof AppSplatRoute
   App403Route: typeof App403Route
   AppAuditLogsRoute: typeof AppAuditLogsRoute
+  AppComponentsRoute: typeof AppComponentsRoute
   AppDepartmentsRoute: typeof AppDepartmentsRoute
   AppPermissionsRoute: typeof AppPermissionsRoute
   AppProfileRoute: typeof AppProfileRoute
@@ -565,6 +585,7 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppSplatRoute: AppSplatRoute,
   App403Route: App403Route,
   AppAuditLogsRoute: AppAuditLogsRoute,
+  AppComponentsRoute: AppComponentsRoute,
   AppDepartmentsRoute: AppDepartmentsRoute,
   AppPermissionsRoute: AppPermissionsRoute,
   AppProfileRoute: AppProfileRoute,

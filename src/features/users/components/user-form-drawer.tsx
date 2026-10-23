@@ -31,7 +31,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { TreeSelect } from '@/components/enterprise/tree/tree-select'
+import { TreeSelect } from '@/components/enterprise/tree-select/tree-select'
 import type { TreeItem } from '@/components/enterprise/tree/tree'
 import { useDepartmentsQuery } from '@/features/departments/queries'
 import { ApiError } from '@/lib/api-error'

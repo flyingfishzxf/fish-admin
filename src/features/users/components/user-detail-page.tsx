@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { ErrorState } from '@/components/common/error-state'
 import { StatusBadge } from '@/components/common/status-badge'
 import { Result } from '@/components/enterprise/result/result'
+import { DetailPage } from '@/components/pro/detail-page/detail-page'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useRoleOptionsQuery } from '@/features/roles/queries'
 import { useCan } from '@/hooks/use-can'
@@ -99,75 +99,74 @@ export function UserDetailPage({ userId }: { userId: string }) {
   })
 
   return (
-    <div className="space-y-6">
-      <Button variant="ghost" size="sm" className="-ml-2" onClick={goBack}>
-        <ArrowLeft className="size-4" />
-        {t('users:detail.back')}
-      </Button>
-
-      <header className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex min-w-0 items-center gap-4">
+    <>
+      <DetailPage
+        back={
+          <Button variant="ghost" size="sm" className="-ml-2" onClick={goBack}>
+            <ArrowLeft className="size-4" />
+            {t('users:detail.back')}
+          </Button>
+        }
+        avatar={
           <Avatar className="size-16">
             {user.avatar ? <AvatarImage src={user.avatar} alt="" /> : null}
             <AvatarFallback className="bg-brand-soft text-lg font-semibold text-primary">
               {getInitials(user.name)}
             </AvatarFallback>
           </Avatar>
-          <div className="min-w-0 space-y-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <h1 className="truncate text-2xl font-semibold tracking-tight">{user.name}</h1>
-              <StatusBadge status={user.status} />
-            </div>
-            <p className="truncate text-sm text-muted-foreground">{user.email}</p>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="size-3.5" />
-                {user.roleName}
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Building2 className="size-3.5" />
-                {department}
-              </span>
-              <span>
-                {t('users:detail.joined')}:{' '}
-                {formatDate(user.createdAt, i18n.language, { dateStyle: 'medium' })}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
-          {canEdit ? (
-            <Button onClick={() => setFormOpen(true)}>
-              <Pencil className="size-4" />
-              {t('users:actions.edit')}
-            </Button>
-          ) : null}
-          {canDelete && user.id !== currentUserId ? (
-            <Button variant="outline" onClick={() => setDeleteOpen(true)}>
-              <Trash2 className="size-4" />
-              {t('users:actions.delete')}
-            </Button>
-          ) : null}
-        </div>
-      </header>
-
-      <Tabs defaultValue="overview" className="gap-4">
-        <TabsList>
-          <TabsTrigger value="overview">{t('users:detail.tabs.overview')}</TabsTrigger>
-          {canReadAudit ? (
-            <TabsTrigger value="activity">{t('users:detail.tabs.activity')}</TabsTrigger>
-          ) : null}
-        </TabsList>
-        <TabsContent value="overview">
-          <UserOverview user={user} canEdit={canEdit} />
-        </TabsContent>
-        {canReadAudit ? (
-          <TabsContent value="activity">
-            <UserActivityTab userId={user.id} />
-          </TabsContent>
-        ) : null}
-      </Tabs>
+        }
+        title={user.name}
+        badges={<StatusBadge status={user.status} />}
+        subtitle={user.email}
+        meta={
+          <>
+            <span className="inline-flex items-center gap-1.5">
+              <ShieldCheck className="size-3.5" />
+              {user.roleName}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Building2 className="size-3.5" />
+              {department}
+            </span>
+            <span>
+              {t('users:detail.joined')}:{' '}
+              {formatDate(user.createdAt, i18n.language, { dateStyle: 'medium' })}
+            </span>
+          </>
+        }
+        actions={
+          <>
+            {canEdit ? (
+              <Button onClick={() => setFormOpen(true)}>
+                <Pencil className="size-4" />
+                {t('users:actions.edit')}
+              </Button>
+            ) : null}
+            {canDelete && user.id !== currentUserId ? (
+              <Button variant="outline" onClick={() => setDeleteOpen(true)}>
+                <Trash2 className="size-4" />
+                {t('users:actions.delete')}
+              </Button>
+            ) : null}
+          </>
+        }
+        tabs={[
+          {
+            value: 'overview',
+            label: t('users:detail.tabs.overview'),
+            content: <UserOverview user={user} canEdit={canEdit} />,
+          },
+          ...(canReadAudit
+            ? [
+                {
+                  value: 'activity',
+                  label: t('users:detail.tabs.activity'),
+                  content: <UserActivityTab userId={user.id} />,
+                },
+              ]
+            : []),
+        ]}
+      />
 
       {canEdit ? (
         <UserFormDrawer
@@ -184,6 +183,6 @@ export function UserDetailPage({ userId }: { userId: string }) {
         onOpenChange={(open) => !open && setDeleteOpen(false)}
         onDeleted={() => void navigate({ to: '/users', search: DEFAULT_USERS_SEARCH })}
       />
-    </div>
+    </>
   )
 }

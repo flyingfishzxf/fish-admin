@@ -37,7 +37,7 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 - **审计日志** —— `/audit-logs` 支持 URL 同步筛选、日期区间预设、详情抽屉与关联事件，并可跳转到受影响的用户、角色或部门。
 - **可见的异常处理** —— `401`、`403`、`500`、`503` 与维护页各有专页，断网时显示离线横幅并在恢复后提示，路由错误由 error boundary 兜底，设置页与组件库页提供直达预览入口。
 - **工作台** —— KPI 卡片、收入面积图、流量柱状图、渠道环形图、最近活动，支持 7/30 天切换；图表随路由懒加载。
-- **41 个 shadcn/ui 组件、9 个企业组件与 `/ui` 组件库页** —— 日期区间、描述列表、树 / 树选择、穿梭框、标签输入、步骤条、拖拽上传、结果页与时间线位于 `src/components/enterprise/` 并接入真实页面；所有原语、状态与浮层集中在一页展示，可先确认主题与译文再用到业务页面。
+- **83 个共享组件与可搜索目录** —— 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）统一登记在 `src/config/components.ts`。`/components` 支持搜索整份清单，并为其中 68 个组件提供实时演示；`/ui` 继续集中展示原语的状态、浮层与表单控件。ProTable 现已用于用户与审计页，让同一套表格外壳在业务页面中复用。
 - **明快产品风设计系统** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，首屏无闪烁。
 - **中英双语** —— i18next 按 namespace 懒加载，`Intl` 处理日期/数字，校验文案随语言切换。
 - **命令面板** —— `Ctrl/⌘ K` 打开导航与快捷动作，按当前角色过滤。
@@ -76,6 +76,7 @@ pnpm dev
 - **审计日志** —— `/audit-logs` 可按动作、对象与日期区间筛选，演示中的每次变更都会记录在案。
 - **组织架构** —— `/departments?dept=dept-engineering` 可深链到节点，并分页查看其成员（含后代部门）。
 - **异常页** —— `/401`、`/500`、`/503`、`/maintenance` 均可直接访问；在开发者工具中断网会出现离线横幅。
+- **组件目录** —— `/components` 可搜索全部 83 个共享组件、按层级筛选，并为其中 68 个提供实时演示；`/ui` 保留原语状态陈列。
 
 ## 项目内容
 
@@ -84,7 +85,8 @@ pnpm dev
 | 路径                 | 说明                                     | 所需权限          |
 | -------------------- | ---------------------------------------- | ----------------- |
 | `/`                  | 工作台：KPI、图表、活动                  | `dashboard:read`  |
-| `/ui`                | 组件库页：全部组件、状态与浮层           | 已登录            |
+| `/components`        | 全部 83 个共享组件的可搜索目录           | 已登录            |
+| `/ui`                | 组件演练场：40 个原语演示、状态与浮层    | 已登录            |
 | `/users`             | 用户表格、CRUD 与批量操作                | `user:read`       |
 | `/users/$id`         | 用户概览、标签、头像与动态时间线         | `user:read`       |
 | `/departments`       | 部门树、成员与新建/重命名                | `department:read` |
@@ -193,8 +195,9 @@ src/
 ├─ routes/                 # 文件路由；routeTree.gen.ts 自动生成
 ├─ features/               # auth、dashboard、users、roles、permissions、departments、audit、profile、security、settings、playground
 ├─ components/
-│  ├─ ui/                  # 41 个 shadcn/ui 组件
-│  ├─ enterprise/          # 树/树选择、穿梭框、日期区间、描述列表、标签输入、步骤条、拖拽上传、结果页、时间线
+│  ├─ ui/                  # 47 个 shadcn/ui 原语
+│  ├─ enterprise/          # 30 个业务组件（树、选择器、上传、反馈等）
+│  ├─ pro/                 # DetailPage、EditableTable、ImportWizard、ProForm、QueryFilter 与 ProTable 组合
 │  ├─ layout/              # AppShell、侧边栏、Header、面包屑、命令面板、离线横幅
 │  ├─ data-table/          # 表格、分页、列显隐与列排序
 │  └─ common/              # Can、PageHeader、EmptyState、StatusScreen、主题/语言切换

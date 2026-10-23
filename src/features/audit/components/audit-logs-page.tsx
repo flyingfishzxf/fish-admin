@@ -6,8 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
 import { PageHeader } from '@/components/common/page-header'
-import { DataTable } from '@/components/data-table/data-table'
-import { DataTablePagination } from '@/components/data-table/data-table-pagination'
+import { ProTable } from '@/components/pro/pro-table/pro-table'
 import { Button } from '@/components/ui/button'
 import { useDocumentTitle } from '@/lib/document-title'
 import type { AuditEvent } from '@/types'
@@ -134,33 +133,32 @@ export function AuditLogsPage({
       {query.isError && !query.data ? (
         <ErrorState title={t('audit:loadError')} onRetry={() => void query.refetch()} />
       ) : (
-        <DataTable
+        <ProTable
           table={table}
           loading={query.isPending}
+          fetching={query.isFetching && !query.isPending}
+          fetchingLabel={t('common:states.loading')}
           empty={emptyState}
           onRowClick={openEvent}
-          toolbar={
-            <AuditFilters
-              search={search}
-              searchValue={searchValue}
-              onSearchValueChange={setSearchValue}
-              onSearchChange={onSearchChange}
-              onClear={clearFilters}
-              fetching={query.isFetching && !query.isPending}
-            />
+          search={{
+            value: searchValue,
+            onChange: setSearchValue,
+            placeholder: t('audit:searchPlaceholder'),
+            ariaLabel: t('common:actions.search'),
+            clearLabel: t('common:actions.clearSearch'),
+          }}
+          filters={
+            <AuditFilters search={search} onSearchChange={onSearchChange} onClear={clearFilters} />
           }
-          footer={
-            <DataTablePagination
-              page={query.data?.page ?? search.page}
-              pageCount={Math.max(pageCount, 1)}
-              total={total}
-              pageSize={search.pageSize}
-              onPageChange={(page) => onSearchChange((previous) => ({ ...previous, page }))}
-              onPageSizeChange={(pageSize) =>
-                onSearchChange((previous) => ({ ...previous, pageSize, page: 1 }))
-              }
-            />
-          }
+          pagination={{
+            page: query.data?.page ?? search.page,
+            pageCount: Math.max(pageCount, 1),
+            total,
+            pageSize: search.pageSize,
+            onPageChange: (page) => onSearchChange((previous) => ({ ...previous, page })),
+            onPageSizeChange: (pageSize) =>
+              onSearchChange((previous) => ({ ...previous, pageSize, page: 1 })),
+          }}
         />
       )}
 

@@ -8,7 +8,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { treePath } from '@/lib/tree'
 import { cn } from '@/lib/utils'
 
-import { Tree, type TreeItem } from './tree'
+import { Tree, type TreeItem } from '@/components/enterprise/tree/tree'
 
 export function TreeSelect({
   id,

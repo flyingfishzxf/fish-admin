@@ -106,4 +106,54 @@ test.describe('UI playground', () => {
     await expect(page.getByRole('link', { name: '401 Unauthorized' })).toBeVisible()
     await expect(page.getByRole('link', { name: '403 Forbidden' })).toBeVisible()
   })
+
+  test('runs the number, slider, spinner, segmented and empty demos', async ({ page }) => {
+    await signInAs(page, 'admin')
+    await page.goto('/ui')
+
+    for (const id of [
+      'demo-segmented',
+      'demo-input-number',
+      'demo-slider',
+      'demo-spinner',
+      'demo-empty',
+    ]) {
+      await expect(page.locator(`#${id}`)).toBeAttached()
+    }
+
+    await expect(page.getByRole('radio', { name: '30 days' })).toBeChecked()
+    await page.getByRole('radio', { name: '7 days' }).click()
+    await expect(page.getByRole('radio', { name: '7 days' })).toBeChecked()
+
+    const quantity = page.getByRole('spinbutton', { name: 'Quantity' })
+    await expect(quantity).toHaveValue('3')
+    await page
+      .locator('#demo-input-number')
+      .getByRole('button', { name: 'Increase' })
+      .first()
+      .click()
+    await expect(quantity).toHaveValue('4')
+
+    const slider = page.getByRole('slider', { name: 'Notification volume' })
+    await slider.focus()
+    await page.keyboard.press('ArrowRight')
+    await expect(slider).toHaveAttribute('aria-valuenow', '61')
+
+    await page.getByRole('button', { name: 'Toggle overlay' }).click()
+    const overlay = page.locator('[data-slot="loading-overlay"]')
+    await expect(overlay).toHaveAttribute('aria-busy', 'true')
+    await expect(overlay.getByRole('status')).toBeVisible()
+    await page.getByRole('button', { name: 'Toggle overlay' }).click()
+    await expect(overlay).toHaveAttribute('aria-busy', 'false')
+    await expect(overlay.getByRole('status')).toHaveCount(0)
+
+    await expect(page.getByText('Inbox zero')).toBeVisible()
+    await expect(page.getByText('No results')).toBeVisible()
+
+    await page.getByRole('link', { name: 'Component catalog' }).click()
+    await expect(page).toHaveURL(/\/components$/)
+    await expect(
+      page.getByRole('heading', { name: '83 components, one system', level: 1 }),
+    ).toBeVisible()
+  })
 })

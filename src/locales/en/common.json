@@ -24,6 +24,8 @@
     "copy": "Copy",
     "copied": "Copied",
     "more": "More",
+    "previous": "Previous",
+    "next": "Next",
     "clearFilters": "Clear filters",
     "clearSearch": "Clear search",
     "download": "Download",
@@ -148,6 +150,14 @@
     "clear": "Clear",
     "clearSelection": "Clear selection",
     "dropFile": "Drop a file here",
-    "browse": "Browse files"
+    "browse": "Browse files",
+    "backToTop": "Back to top",
+    "noData": "No data",
+    "rating": "Rating",
+    "rateValue": "{{count}} of {{max}} stars",
+    "removeFile": "Remove {{name}}",
+    "notifications": "Notifications",
+    "markAllRead": "Mark all read",
+    "noNotifications": "You're all caught up."
   }
 }

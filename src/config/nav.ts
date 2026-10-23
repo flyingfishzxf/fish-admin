@@ -1,4 +1,5 @@
 import {
+  Boxes,
   KeyRound,
   LayoutDashboard,
   LockKeyhole,
@@ -17,6 +18,7 @@ import { PERMISSION_CODES, type PermissionCode } from '@/config/permissions'
 export type AppPath =
   | '/'
   | '/ui'
+  | '/components'
   | '/users'
   | '/departments'
   | '/roles'
@@ -52,6 +54,11 @@ export const NAV_GROUPS: NavGroup[] = [
         titleKey: 'nav:items.ui',
         to: '/ui',
         icon: Palette,
+      },
+      {
+        titleKey: 'nav:items.components',
+        to: '/components',
+        icon: Boxes,
       },
     ],
   },

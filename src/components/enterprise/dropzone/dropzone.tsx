@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils'
 
 export function Dropzone({
   onFile,
+  onFiles,
+  multiple = false,
   accept,
   label,
   hint,
@@ -16,7 +18,9 @@ export function Dropzone({
   preview,
   className,
 }: {
-  onFile: (file: File) => void
+  onFile?: (file: File) => void
+  onFiles?: (files: File[]) => void
+  multiple?: boolean
   accept?: string
   label: string
   hint?: string
@@ -51,8 +55,10 @@ export function Dropzone({
     setDragging(false)
     if (disabled) return
 
-    const file = event.dataTransfer.files?.[0]
-    if (file) onFile(file)
+    const files = Array.from(event.dataTransfer.files ?? [])
+    if (files.length === 0) return
+    if (onFiles) onFiles(files)
+    else onFile?.(files[0]!)
   }
 
   return (
@@ -80,11 +86,15 @@ export function Dropzone({
         id={inputId}
         type="file"
         accept={accept}
+        multiple={multiple}
         disabled={disabled}
         className="sr-only"
         onChange={(event) => {
-          const file = event.target.files?.[0]
-          if (file) onFile(file)
+          const files = Array.from(event.target.files ?? [])
+          if (files.length > 0) {
+            if (onFiles) onFiles(files)
+            else onFile?.(files[0]!)
+          }
           event.target.value = ''
         }}
       />

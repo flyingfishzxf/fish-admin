@@ -44,6 +44,7 @@ __root.tsx              Providers、全局 404 与错误兜底
 │  └─ otp.tsx              /otp?challenge=…  第二因子
 └─ _app/route.tsx       会话守卫 + AppShell（侧边栏、离线横幅、命令面板）
    ├─ index.tsx         /            dashboard:read
+   ├─ components.tsx    /components  仅需登录（可搜索的组件目录）
    ├─ ui.tsx            /ui          仅需登录（组件演练场）
    ├─ users.tsx         /users       user:read
    ├─ users_.$id.tsx    /users/$id   user:read
@@ -171,5 +172,5 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 - 单元测试覆盖权限解析与通配展开、导航到路由的解析（含最长前缀匹配）、用户与审计的 URL search 校验、用户与所有认证表单的 Zod schema、密码强度、主题应用、locale key 对齐、API 客户端、query key、单飞刷新、已保存视图持久化、在线状态、`<Can>`、树工具函数、穿梭框选择与标签输入。
 - 数据库迁移测试会重放 v1、v2 数据到 v3，并验证损坏的存储会重置而不是崩溃。
-- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与详情抽屉、主题与语言持久化、`/ui` 演练场以及状态页与离线画面。
+- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与详情抽屉、主题与语言持久化、`/components` 组件目录与 `/ui` 演练场，以及状态页与离线画面。
 - CI 并行执行格式检查、lint、类型检查、覆盖率、生产构建与 E2E。

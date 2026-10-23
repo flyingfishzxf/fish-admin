@@ -44,6 +44,7 @@ __root.tsx              Providers, global 404, error fallback
 │  └─ otp.tsx              /otp?challenge=…  second factor
 └─ _app/route.tsx       Session guard + AppShell (sidebar, offline banner, command palette)
    ├─ index.tsx         /            dashboard:read
+   ├─ components.tsx    /components  signed in (searchable component catalog)
    ├─ ui.tsx            /ui          signed in (component playground)
    ├─ users.tsx         /users       user:read
    ├─ users_.$id.tsx    /users/$id   user:read
@@ -171,5 +172,5 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 - Unit tests cover permission parsing and wildcard expansion, nav-to-route resolution (including longest-prefix matching), URL search validation for users and audit logs, Zod schemas for users and every auth form, password strength, theme application, locale key parity, API clients, query keys, single-flight refresh, saved-view persistence, online status, `<Can>`, the tree utilities, transfer selection and the tags input.
 - Database migration tests replay v1 and v2 payloads into v3 and verify that damaged storage resets instead of crashing.
-- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, saved views, density and column controls, URL-restored filters, user detail and tags, department deep links and creation, the role matrix and role CRUD, audit filters and the detail drawer, theme/language persistence, the `/ui` playground and the status and offline screens.
+- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, saved views, density and column controls, URL-restored filters, user detail and tags, department deep links and creation, the role matrix and role CRUD, audit filters and the detail drawer, theme/language persistence, the `/components` catalog and `/ui` playground, and the status and offline screens.
 - CI runs format check, lint, typecheck, coverage, a production build and the E2E suite in parallel jobs.

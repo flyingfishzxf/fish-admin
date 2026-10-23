@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   BellRing,
   Bold,
+  Boxes,
   Check,
   CircleCheck,
   Columns3,
@@ -12,6 +13,7 @@ import {
   Download,
   EllipsisVertical,
   Filter,
+  Inbox,
   Info,
   Italic,
   Layers,
@@ -30,6 +32,7 @@ import {
   PanelsTopLeft,
   Pencil,
   Plus,
+  SearchX,
   Settings2,
   Share2,
   SlidersHorizontal,
@@ -119,8 +122,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty'
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
 import { Input } from '@/components/ui/input'
+import { InputNumber } from '@/components/ui/input-number'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import { Label } from '@/components/ui/label'
 import {
@@ -151,6 +163,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { Segmented } from '@/components/ui/segmented'
 import { Separator } from '@/components/ui/separator'
 import {
   Sheet,
@@ -163,6 +176,8 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { Skeleton } from '@/components/ui/skeleton'
+import { Slider } from '@/components/ui/slider'
+import { LoadingOverlay, Spinner } from '@/components/ui/spinner'
 import { Switch } from '@/components/ui/switch'
 import {
   Table,
@@ -177,6 +192,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Toggle } from '@/components/ui/toggle'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { COMPONENT_COUNTS } from '@/config/components'
 import { ACCENTS, THEME_MODES, type ThemeMode } from '@/config/theme'
 import { useDocumentTitle } from '@/lib/document-title'
 import { changeLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
@@ -297,6 +313,12 @@ export function UiPlaygroundPage() {
           <>
             <Badge variant="outline">shadcn/ui · Radix</Badge>
             <Badge variant="secondary">Tailwind CSS 4</Badge>
+            <Button asChild variant="outline" size="sm">
+              <Link to="/components">
+                <Boxes className="size-4" />
+                {t('ui:hero.catalog')}
+              </Link>
+            </Button>
           </>
         }
       />
@@ -326,7 +348,7 @@ export function UiPlaygroundPage() {
               {['primitives', 'accents', 'locales', 'responsive'].map((key) => (
                 <span key={key} className="inline-flex items-center gap-1.5">
                   <Check className="size-3.5 text-primary" />
-                  {t(`ui:hero.${key}`)}
+                  {t(`ui:hero.${key}`, { count: COMPONENT_COUNTS.primitive })}
                 </span>
               ))}
             </div>
@@ -581,6 +603,7 @@ function FoundationsDemo() {
 function ActionsDemo() {
   const { t } = useTranslation()
   const [view, setView] = useState('list')
+  const [range, setRange] = useState('30d')
 
   return (
     <div className="space-y-8">
@@ -681,6 +704,32 @@ function ActionsDemo() {
         </DemoBlock>
       </div>
 
+      <DemoBlock label={t('ui:actions.segmented')} hint={t('ui:actions.segmentedHint')}>
+        <div id="demo-segmented" className="flex scroll-mt-24 flex-wrap items-center gap-4">
+          <Segmented
+            options={[
+              { value: '7d', label: t('ui:actions.range7') },
+              { value: '30d', label: t('ui:actions.range30') },
+              { value: '90d', label: t('ui:actions.range90') },
+            ]}
+            value={range}
+            onValueChange={setRange}
+            aria-label={t('ui:actions.segmented')}
+          />
+          <Segmented
+            size="sm"
+            options={[
+              { value: 'list', label: t('ui:actions.viewList'), icon: List },
+              { value: 'grid', label: t('ui:actions.viewGrid'), icon: LayoutGrid },
+              { value: 'board', label: t('ui:actions.viewBoard'), icon: Columns3 },
+            ]}
+            value={view}
+            onValueChange={setView}
+            aria-label={t('ui:actions.toggleGroup')}
+          />
+        </div>
+      </DemoBlock>
+
       <div className="grid gap-8 sm:grid-cols-2">
         <DemoBlock label={t('ui:actions.withIcons')}>
           <div className="flex flex-wrap gap-2">
@@ -726,6 +775,9 @@ function FormsDemo() {
   const [defaultRole, setDefaultRole] = useState('manager')
   const [otp, setOtp] = useState('')
   const [date, setDate] = useState<Date | undefined>(new Date())
+  const [quantity, setQuantity] = useState<number | null>(3)
+  const [price, setPrice] = useState<number | null>(129.99)
+  const [volume, setVolume] = useState(60)
   const calendarLocale = i18n.resolvedLanguage === 'zh-CN' ? zhCN : enUS
 
   return (
@@ -816,6 +868,54 @@ function FormsDemo() {
       <Separator />
 
       <div className="grid gap-8 lg:grid-cols-2">
+        <DemoBlock label={t('ui:forms.inputNumber')} hint={t('ui:forms.inputNumberHint')}>
+          <div id="demo-input-number" className="grid scroll-mt-24 gap-4 sm:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="ui-quantity">{t('ui:forms.quantity')}</Label>
+              <InputNumber
+                id="ui-quantity"
+                value={quantity}
+                onValueChange={setQuantity}
+                min={1}
+                max={20}
+                aria-label={t('ui:forms.quantity')}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ui-price">{t('ui:forms.unitPrice')}</Label>
+              <InputNumber
+                id="ui-price"
+                value={price}
+                onValueChange={setPrice}
+                min={0}
+                step={0.5}
+                precision={2}
+                aria-label={t('ui:forms.unitPrice')}
+              />
+            </div>
+          </div>
+        </DemoBlock>
+
+        <DemoBlock label={t('ui:forms.slider')} hint={t('ui:forms.sliderHint')}>
+          <div id="demo-slider" className="scroll-mt-24 space-y-4">
+            <div className="flex items-center justify-between text-sm">
+              <span>{t('ui:forms.volume')}</span>
+              <span className="font-mono text-xs text-muted-foreground">
+                {t('ui:forms.volumeValue', { value: volume })}
+              </span>
+            </div>
+            <Slider
+              value={[volume]}
+              onValueChange={([next]) => setVolume(next ?? 0)}
+              thumbLabels={[t('ui:forms.volume')]}
+            />
+          </div>
+        </DemoBlock>
+      </div>
+
+      <Separator />
+
+      <div className="grid gap-8 lg:grid-cols-2">
         <div className="space-y-8">
           <DemoBlock label={t('ui:forms.otp')} hint={t('ui:forms.otpHint')}>
             <InputOTP maxLength={6} value={otp} onChange={setOtp} aria-label={t('ui:forms.otp')}>
@@ -857,6 +957,7 @@ function FormsDemo() {
 
 function FeedbackDemo() {
   const { t } = useTranslation()
+  const [overlay, setOverlay] = useState(false)
 
   return (
     <div className="space-y-8">
@@ -985,6 +1086,42 @@ function FeedbackDemo() {
           </DemoBlock>
         </div>
       </div>
+
+      <DemoBlock label={t('ui:feedback.spinner')} hint={t('ui:feedback.spinnerHint')}>
+        <div id="demo-spinner" className="scroll-mt-24 space-y-4">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground">
+            <span className="inline-flex items-center gap-2">
+              <Spinner size="sm" label={t('ui:feedback.spinnerSmall')} />
+              <span aria-hidden>{t('ui:feedback.spinnerSmall')}</span>
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Spinner label={t('ui:feedback.spinnerDefault')} />
+              <span aria-hidden>{t('ui:feedback.spinnerDefault')}</span>
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <Spinner size="lg" label={t('ui:feedback.spinnerLarge')} />
+              <span aria-hidden>{t('ui:feedback.spinnerLarge')}</span>
+            </span>
+          </div>
+          <div className="rounded-lg border p-4">
+            <LoadingOverlay loading={overlay} label={t('common:states.loading')}>
+              <p className="grid min-h-24 place-items-center text-sm text-muted-foreground">
+                {t('ui:feedback.overlayContent')}
+              </p>
+            </LoadingOverlay>
+            <div className="mt-3 flex justify-end">
+              <Button
+                variant="outline"
+                size="sm"
+                aria-pressed={overlay}
+                onClick={() => setOverlay((current) => !current)}
+              >
+                {t('ui:feedback.overlayToggle')}
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DemoBlock>
     </div>
   )
 }
@@ -1477,6 +1614,45 @@ function StatesDemo() {
               <ArrowUpRight className="size-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
             </Link>
           ))}
+        </div>
+      </DemoBlock>
+
+      <DemoBlock
+        label={t('ui:states.emptyTitle')}
+        hint={t('ui:states.emptyNote')}
+        className="lg:col-span-2"
+      >
+        <div id="demo-empty" className="grid scroll-mt-24 gap-4 sm:grid-cols-2">
+          <Empty variant="outline">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <Inbox />
+              </EmptyMedia>
+              <EmptyTitle>{t('ui:states.emptyInboxTitle')}</EmptyTitle>
+              <EmptyDescription>{t('ui:states.emptyInboxDescription')}</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button variant="outline" size="sm">
+                <Plus className="size-4" />
+                {t('ui:states.emptyInboxAction')}
+              </Button>
+            </EmptyContent>
+          </Empty>
+
+          <Empty variant="outline">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <SearchX />
+              </EmptyMedia>
+              <EmptyTitle>{t('ui:states.emptySearchTitle')}</EmptyTitle>
+              <EmptyDescription>{t('ui:states.emptySearchDescription')}</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button variant="ghost" size="sm">
+                {t('common:actions.clearFilters')}
+              </Button>
+            </EmptyContent>
+          </Empty>
         </div>
       </DemoBlock>
     </div>

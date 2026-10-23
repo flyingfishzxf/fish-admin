@@ -18,6 +18,7 @@ const router = createRouter({ routeTree })
 const EXPECTED_ROUTE_IDS: Record<AppPath, string> = {
   '/': '/_app/',
   '/ui': '/_app/ui',
+  '/components': '/_app/components',
   '/users': '/_app/users',
   '/departments': '/_app/departments',
   '/roles': '/_app/roles',

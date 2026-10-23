@@ -6,7 +6,8 @@
     "badge": "实时组件清单",
     "title": "一套设计系统，覆盖所有界面。",
     "description": "按钮、表单、浮层、导航与边界状态 —— 基于 Radix 构建，使用 Tailwind 设计变量，并完成端到端国际化。切换主题或语言，所有示例即时响应。",
-    "primitives": "40+ 基础组件",
+    "primitives": "{{count}} 个基础组件",
+    "catalog": "组件目录",
     "accents": "5 套强调色",
     "locales": "英语 + 简体中文",
     "responsive": "默认响应式"
@@ -118,6 +119,11 @@
     "export": "导出",
     "toggle": "切换按钮",
     "toggleHint": "按下状态会自动继承强调色。",
+    "segmented": "分段控制器",
+    "segmentedHint": "在一个控件里切换视图或时间范围。",
+    "range7": "7 天",
+    "range30": "30 天",
+    "range90": "90 天",
     "toggleBold": "加粗",
     "toggleItalic": "斜体",
     "toggleUnderline": "下划线"
@@ -153,7 +159,15 @@
     "validationError": "请输入完整的邮箱地址。",
     "disabled": "禁用状态",
     "disabledPlaceholder": "只读值",
-    "disabledHint": "禁用控件仍保留标签与对比度。"
+    "disabledHint": "禁用控件仍保留标签与对比度。",
+    "inputNumber": "数字输入",
+    "inputNumberHint": "支持步进、边界、精度与方向键控制。",
+    "quantity": "数量",
+    "unitPrice": "单价",
+    "slider": "滑块",
+    "sliderHint": "拖动或使用方向键，数值实时可见。",
+    "volume": "通知音量",
+    "volumeValue": "{{value}}%"
   },
   "feedback": {
     "alerts": "提示",
@@ -188,7 +202,14 @@
     "hoverCardName": "Ada Lovelace",
     "hoverCardRole": "平台工程师",
     "hoverCardBio": "构建平和的界面，并让设计系统保持诚实。",
-    "hoverCardMeta": "2024 年加入 · 伦敦"
+    "hoverCardMeta": "2024 年加入 · 伦敦",
+    "spinner": "加载指示与遮罩",
+    "spinnerHint": "带无障碍标签的行内加载状态与延迟遮罩。",
+    "spinnerSmall": "小",
+    "spinnerDefault": "默认",
+    "spinnerLarge": "大",
+    "overlayContent": "团队成员将在这里加载。",
+    "overlayToggle": "切换遮罩"
   },
   "overlays": {
     "dialogTrigger": "打开对话框",
@@ -289,6 +310,13 @@
     "forbidden": "403 无权限",
     "serverError": "500 服务器错误",
     "unavailable": "503 服务不可用",
-    "maintenance": "系统维护"
+    "maintenance": "系统维护",
+    "emptyTitle": "空状态",
+    "emptyNote": "由图标、文案与操作组合而成的零数据页面。",
+    "emptyInboxTitle": "收件箱已清空",
+    "emptyInboxDescription": "新的邀请和提及会出现在这里。",
+    "emptyInboxAction": "邀请成员",
+    "emptySearchTitle": "没有结果",
+    "emptySearchDescription": "试试其他关键词，或移除筛选条件。"
   }
 }

@@ -25,7 +25,7 @@ Permissions use a `resource:action` format:
 | `permission:read`   | Read-only permissions page and `GET /api/permissions`                                                    |
 | `demo:reset`        | Resetting the demo database                                                                              |
 
-Two areas deliberately have no permission code: `/ui` (the component playground is useful to every signed-in role) and the account pages `/profile` and `/security`, which operate on the current user only.
+Three areas deliberately have no permission code: `/components` and `/ui` (the component catalog and playground are useful to every signed-in role) and the account pages `/profile` and `/security`, which operate on the current user only.
 
 `src/config/permissions.ts` is the single source of truth. It exports:
 

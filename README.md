@@ -37,7 +37,7 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 - **Audit log** — `/audit-logs` with URL-synced filters, date-range presets, a detail drawer with related events, and links back to the affected user, role or department.
 - **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings and the UI playground.
 - **Dashboard** — KPI cards, revenue area chart, traffic bars, acquisition donut and recent activity, with a 7/30-day switch. Charts are lazy-loaded with the dashboard route.
-- **41 shadcn/ui primitives, nine enterprise components and a `/ui` playground** — DateRangePicker, Descriptions, Tree/TreeSelect, Transfer, TagsInput, Stepper, Dropzone, Result and Timeline live in `src/components/enterprise/` and are wired into real screens; every primitive, state and overlay is rendered on one page so you can check theming and translations before using them.
+- **83 shared components with a searchable catalog** — 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`) are registered in `src/config/components.ts`. `/components` searches the whole inventory and renders 68 live demos; `/ui` still collects the primitive states, overlays and form controls. ProTable now powers the users and audit pages, so the same table shell is reused across business screens.
 - **Product-style design system** — light, dark and system modes, five accent colors, oklch tokens, refined shadows and a FOUC-free first paint.
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
@@ -76,6 +76,7 @@ More things to try:
 - **Audit trail** — `/audit-logs` filters by action, entity and date range. Every change made in the demo is recorded there.
 - **Departments** — `/departments?dept=dept-engineering` deep-links to a node and lists its members, including descendants.
 - **Failure screens** — `/401`, `/500`, `/503` and `/maintenance` are directly reachable, and the offline banner appears when you throttle the network.
+- **Component catalog** — `/components` searches all 83 shared components, filters by layer and renders live demos for 68 of them; `/ui` keeps the primitive state gallery.
 
 ## What is inside
 
@@ -84,7 +85,8 @@ More things to try:
 | Path                 | Description                                             | Required permission |
 | -------------------- | ------------------------------------------------------- | ------------------- |
 | `/`                  | Dashboard with KPIs, charts and activity                | `dashboard:read`    |
-| `/ui`                | UI playground: every primitive, state and overlay       | signed in           |
+| `/components`        | Searchable catalog of all 83 shared components          | signed in           |
+| `/ui`                | UI playground: 40 primitive demos, states and overlays  | signed in           |
 | `/users`             | Users table, CRUD and bulk operations                   | `user:read`         |
 | `/users/$id`         | User overview, tags, avatar and activity timeline       | `user:read`         |
 | `/departments`       | Department tree, members and create/rename actions      | `department:read`   |
@@ -193,8 +195,9 @@ src/
 ├─ routes/                 # File-based routes; routeTree.gen.ts is generated
 ├─ features/               # auth, dashboard, users, roles, permissions, departments, audit, profile, security, settings, playground
 ├─ components/
-│  ├─ ui/                  # 41 shadcn/ui components
-│  ├─ enterprise/          # Tree/TreeSelect, Transfer, DateRangePicker, Descriptions, TagsInput, Stepper, Dropzone, Result, Timeline
+│  ├─ ui/                  # 47 shadcn/ui primitives
+│  ├─ enterprise/          # 30 business components (trees, pickers, upload, feedback…)
+│  ├─ pro/                 # DetailPage, EditableTable, ImportWizard, ProForm, QueryFilter and ProTable compositions
 │  ├─ layout/              # AppShell, sidebar, header, breadcrumbs, command menu, offline banner
 │  ├─ data-table/          # Table, pagination, column visibility and ordering
 │  └─ common/              # Can, PageHeader, EmptyState, StatusScreen, theme/language toggles

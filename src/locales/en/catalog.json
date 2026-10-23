@@ -1,0 +1,650 @@
+{
+  "eyebrow": "Component catalog",
+  "title": "{{count}} components, one system",
+  "subtitle": "Every primitive, enterprise widget and Pro pattern that ships with FishAdmin, in one searchable place. Open a live demo or jump to the screen already using it.",
+  "hero": {
+    "components": "{{count}} shared components",
+    "runtime": "shadcn/ui · Radix · TanStack",
+    "license": "MIT licensed"
+  },
+  "stats": {
+    "total": "Shared components",
+    "demoed": "With live demos",
+    "primitives": "Primitives",
+    "patterns": "Enterprise + Pro"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name or capability…",
+    "searchLabel": "Search components",
+    "all": "All",
+    "primitive": "Primitives",
+    "enterprise": "Enterprise",
+    "pro": "Pro patterns",
+    "summary": "{{visible}} of {{total}} components",
+    "clear": "Clear filters",
+    "emptyTitle": "No components match",
+    "emptyDescription": "Try a broader keyword or switch back to all layers."
+  },
+  "categories": {
+    "primitive": "Primitive",
+    "enterprise": "Enterprise",
+    "pro": "Pro"
+  },
+  "card": {
+    "new": "New",
+    "usedIn": "Used in {{route}}",
+    "inUiKit": "Open in UI kit",
+    "libraryOnly": "No standalone demo yet"
+  },
+  "demos": {
+    "datePicker": {
+      "placeholder": "Pick a date",
+      "ariaLabel": "Demo date picker"
+    },
+    "timePicker": {
+      "placeholder": "Pick a time",
+      "ariaLabel": "Demo time picker"
+    },
+    "popconfirm": {
+      "trigger": "Delete API key",
+      "confirmTitle": "Delete this API key?",
+      "confirmDescription": "Requests using it will fail immediately. This cannot be undone.",
+      "confirm": "Delete key",
+      "cancel": "Keep key",
+      "deleted": "API key deleted (demo)."
+    },
+    "statistic": {
+      "revenue": "Monthly revenue",
+      "revenueSuffix": "USD",
+      "members": "Active members",
+      "churn": "Churn rate",
+      "trendLabel": "vs last month"
+    },
+    "pageContainer": {
+      "pageTitle": "Billing overview",
+      "pageDescription": "A compact preview of the page shell.",
+      "action": "Export",
+      "tabOverview": "Overview",
+      "tabInvoices": "Invoices",
+      "body": "Drop any page content here — the container handles the header, tab strip and footer rhythm.",
+      "footer": "Last synced a few seconds ago"
+    },
+    "queryFilter": {
+      "name": "Name",
+      "namePlaceholder": "Filter by name…",
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "statusActive": "Active",
+      "statusInvited": "Invited",
+      "statusInactive": "Inactive",
+      "verified": "Verified only",
+      "joined": "Joined",
+      "reset": "Reset filters",
+      "more": "More filters",
+      "less": "Fewer filters",
+      "active": "{{count}} filters active"
+    },
+    "proTable": {
+      "searchPlaceholder": "Search members…",
+      "searchLabel": "Search members",
+      "clearSearch": "Clear search",
+      "filterAll": "All teams",
+      "member": "Member",
+      "team": "Team",
+      "status": "Status",
+      "joined": "Joined",
+      "active": "Active",
+      "invited": "Invited",
+      "selected": "{{count}} selected",
+      "clearSelection": "Clear selection",
+      "makeActive": "Mark active",
+      "addMember": "Add member",
+      "added": "Member added (demo).",
+      "activated": "{{count}} members marked active (demo).",
+      "empty": "No members match this view.",
+      "teams": {
+        "engineering": "Engineering",
+        "design": "Design",
+        "product": "Product"
+      }
+    },
+    "trend": {
+      "revenue": "Monthly revenue",
+      "churn": "Churn rate",
+      "users": "Active users",
+      "vsLastMonth": "vs last month",
+      "vsLastWeek": "vs last week"
+    },
+    "rate": {
+      "ariaLabel": "Rate this release",
+      "none": "Not rated yet"
+    },
+    "watermark": {
+      "text": "FishAdmin · Confidential",
+      "title": "Confidential preview",
+      "body": "The tiled watermark redraws with the container and theme."
+    },
+    "backTop": {
+      "title": "Release notes",
+      "row": "Change {{count}} · shipped this week",
+      "label": "Back to top",
+      "hint": "Scroll the panel to reveal the button."
+    },
+    "jsonViewer": {
+      "ariaLabel": "Session payload"
+    },
+    "imagePreview": {
+      "ariaLabel": "Product screenshots",
+      "alt1": "Teal gradient artwork",
+      "alt2": "Violet gradient artwork",
+      "alt3": "Amber gradient artwork",
+      "caption1": "Dashboard",
+      "caption2": "Analytics",
+      "caption3": "Billing"
+    },
+    "notifications": {
+      "ariaLabel": "Notifications",
+      "title": "Notifications",
+      "markAll": "Mark all as read",
+      "empty": "You're all caught up.",
+      "hint": "Click the bell to open the inbox.",
+      "inviteTitle": "New teammate invited",
+      "inviteDescription": "Grace accepted your invite to the Platform team.",
+      "inviteTime": "2 minutes ago",
+      "deployTitle": "Production deploy finished",
+      "deployDescription": "Release 1.2.0 is live in all regions.",
+      "deployTime": "1 hour ago",
+      "reportTitle": "Quarterly report ready",
+      "reportDescription": "Revenue and churn exports are available to download.",
+      "reportTime": "Yesterday"
+    },
+    "combobox": {
+      "placeholder": "Assign a team",
+      "searchPlaceholder": "Search teams…",
+      "ariaLabel": "Demo combobox",
+      "clear": "Clear team",
+      "empty": "No teams match.",
+      "engineering": "Engineering",
+      "engineeringDescription": "12 people · platform and product",
+      "design": "Design",
+      "designDescription": "5 people · product design",
+      "product": "Product",
+      "productDescription": "4 people · discovery and delivery"
+    },
+    "cascader": {
+      "placeholder": "Select a location",
+      "ariaLabel": "Demo cascader",
+      "clear": "Clear location",
+      "empty": "No locations available.",
+      "americas": "Americas",
+      "us": "United States",
+      "california": "California",
+      "newYork": "New York",
+      "canada": "Canada",
+      "ontario": "Ontario",
+      "europe": "Europe",
+      "germany": "Germany",
+      "berlin": "Berlin",
+      "bavaria": "Bavaria"
+    },
+    "upload": {
+      "label": "Drop files here",
+      "hint": "PDF, ZIP or PNG · demo keeps files in memory",
+      "browse": "Choose files",
+      "remove": "Remove {{name}}",
+      "retry": "Retry upload",
+      "error": "Upload failed. Check your connection."
+    },
+    "anchorNav": {
+      "ariaLabel": "Demo section navigation",
+      "overview": "Overview",
+      "details": "Details",
+      "security": "Security",
+      "activity": "Activity",
+      "body": "Scroll this panel or pick a section on the left. The active item follows the scroll position."
+    },
+    "treeSelect": {
+      "placeholder": "Choose a department",
+      "ariaLabel": "Demo tree select",
+      "clear": "Clear department",
+      "engineering": "Engineering",
+      "platform": "Platform",
+      "frontend": "Frontend",
+      "design": "Design",
+      "product": "Product"
+    },
+    "proForm": {
+      "ariaLabel": "Create a team member",
+      "fullName": "Full name",
+      "fullNamePlaceholder": "Ada Lovelace",
+      "email": "Work email",
+      "emailPlaceholder": "ada@example.com",
+      "team": "Team",
+      "teamPlaceholder": "Select a team",
+      "teamEngineering": "Engineering",
+      "teamDesign": "Design",
+      "teamProduct": "Product",
+      "startDate": "Start date",
+      "bio": "Bio",
+      "bioPlaceholder": "Tell us what they will work on…",
+      "alerts": "Email alerts",
+      "alertsDescription": "Send a welcome email and weekly summaries.",
+      "submit": "Create member",
+      "reset": "Reset",
+      "submitted": "Member created (demo).",
+      "payload": "Submitted values",
+      "rules": {
+        "required": "{{label}} is required.",
+        "email": "{{label}} must be a valid email.",
+        "number": "{{label}} must be a number.",
+        "min": "{{label}} must be at least {{limit}}.",
+        "max": "{{label}} must be at most {{limit}}.",
+        "minLength": "{{label}} must be at least {{limit}} characters.",
+        "maxLength": "{{label}} must be at most {{limit}} characters."
+      }
+    },
+    "autoComplete": {
+      "label": "Assign reviewer",
+      "placeholder": "Type a name or role…",
+      "ariaLabel": "Demo auto complete",
+      "empty": "No reviewers match that search.",
+      "hint": "Free text is allowed — suggestions narrow as you type.",
+      "selected": "Selected {{name}}",
+      "ada": "Platform lead · Berlin",
+      "grace": "Design systems · Remote",
+      "katherine": "Data platform · New York",
+      "linus": "Unavailable until onboarding completes"
+    },
+    "list": {
+      "ariaLabel": "Team members",
+      "empty": "No members in this team yet.",
+      "selected": "Selected {{name}}",
+      "hint": "Pick a row to inspect it.",
+      "action": "More actions for {{name}}",
+      "actionToast": "Row action for {{name}} (demo).",
+      "roleAda": "Staff engineer",
+      "roleGrace": "Design systems lead",
+      "roleKatherine": "Data engineer",
+      "metaAda": "Berlin",
+      "metaGrace": "Remote",
+      "metaKatherine": "New York"
+    },
+    "tour": {
+      "title": "Workspace setup",
+      "start": "Start tour",
+      "hint": "Three spotlight steps anchored to the fields below.",
+      "finished": "Tour finished — nice work.",
+      "workspaceLabel": "Workspace name",
+      "workspacePlaceholder": "Acme HQ",
+      "planLabel": "Plan",
+      "planTeam": "Team",
+      "planBusiness": "Business",
+      "save": "Save workspace",
+      "stepTitle1": "Name your workspace",
+      "stepBody1": "This is what teammates will see in the switcher.",
+      "stepTitle2": "Pick a plan",
+      "stepBody2": "You can change plans later from billing.",
+      "stepTitle3": "Save and invite",
+      "stepBody3": "Saving unlocks the invite flow.",
+      "next": "Next",
+      "previous": "Back",
+      "skip": "Skip tour",
+      "finish": "Finish",
+      "step": "Step {{current}} of {{total}}"
+    },
+    "carousel": {
+      "ariaLabel": "Product highlights",
+      "previous": "Previous slide",
+      "next": "Next slide",
+      "goTo": "Go to slide {{index}}",
+      "slide1Title": "Onboard in minutes",
+      "slide1Body": "Invite your team and assign roles on day one.",
+      "slide1Alt": "Teal gradient cover",
+      "slide2Title": "Roles that scale",
+      "slide2Body": "Grant scoped access from one permission matrix.",
+      "slide2Alt": "Indigo gradient cover",
+      "slide3Title": "Audit every change",
+      "slide3Body": "Sensitive actions land in a filterable audit trail.",
+      "slide3Alt": "Amber gradient cover"
+    },
+    "colorPicker": {
+      "ariaLabel": "Accent color",
+      "hexLabel": "Hex value",
+      "pickerLabel": "Custom color",
+      "presetsLabel": "Preset colors",
+      "selected": "Accent set to {{color}}"
+    },
+    "detailPage": {
+      "active": "Active",
+      "metaRole": "Staff engineer",
+      "email": "Email",
+      "team": "Team",
+      "location": "Location",
+      "manager": "Manager",
+      "teamValue": "Platform",
+      "locationValue": "London, UK",
+      "tabOverview": "Overview",
+      "tabActivity": "Activity",
+      "tabsLabel": "Profile sections",
+      "about": "About",
+      "aboutBody": "Leads the platform group and owns the component library roadmap.",
+      "activity1": "Approved the Q3 access review",
+      "activity2": "Published v1.1.0 of the component library",
+      "activity3": "Joined the platform team",
+      "message": "Message",
+      "edit": "Edit profile"
+    },
+    "editableTable": {
+      "ariaLabel": "Team roster",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "roleAdmin": "Admin",
+      "roleEditor": "Editor",
+      "roleViewer": "Viewer",
+      "add": "Add member",
+      "save": "Save",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "actions": "Actions",
+      "empty": "No members yet. Add one to get started.",
+      "nameRequired": "Name is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "rowCount": "{{count}} members · click the pencil to edit inline"
+    },
+    "importWizard": {
+      "ariaLabel": "Import members from CSV",
+      "stepUpload": "Upload",
+      "stepMap": "Map columns",
+      "stepReview": "Review",
+      "stepDone": "Done",
+      "dropTitle": "Drop a CSV here",
+      "dropHint": "Up to 1,000 rows · parsed in the browser",
+      "browse": "Choose file",
+      "sample": "Load sample",
+      "emptyFile": "That file has no header or data rows.",
+      "parseError": "Could not read that file. Try a UTF-8 CSV.",
+      "mapTitle": "Map columns",
+      "mapHint": "Headers were matched automatically — adjust anything that looks off.",
+      "sourceColumn": "Column",
+      "skipColumn": "Do not import",
+      "previewTitle": "First rows",
+      "mapRequired": "Map these required columns first: {{fields}}",
+      "reviewTitle": "Review before import",
+      "reviewHint": "Invalid rows are skipped; fix the CSV and try again if needed.",
+      "validCount": "{{count}} ready to import",
+      "invalidCount": "{{count}} need attention",
+      "rowNumber": "Row",
+      "status": "Status",
+      "statusValid": "Ready",
+      "statusInvalid": "Invalid",
+      "back": "Back",
+      "next": "Continue",
+      "import": "Import {{count}} rows",
+      "importing": "Importing…",
+      "importFailed": "Import failed. Nothing was saved.",
+      "doneTitle": "Import complete",
+      "doneHint": "{{count}} members were added (demo).",
+      "reset": "Import another file",
+      "imported": "Imported {{count}} rows (demo).",
+      "requiredMessage": "{{label}} is required.",
+      "emailMessage": "{{label}} must be a valid email.",
+      "numberMessage": "{{label}} must be a number.",
+      "fieldName": "Name",
+      "fieldEmail": "Email",
+      "fieldTeam": "Team"
+    }
+  },
+  "components": {
+    "accordion": {
+      "description": "Stacked sections that expand one or many panels at a time."
+    },
+    "alert": {
+      "description": "Inline status messaging for info, success, warning and error states."
+    },
+    "alert-dialog": {
+      "description": "A modal that forces an explicit choice before a destructive action."
+    },
+    "avatar": {
+      "description": "Image with initials fallback, presence badge and grouped stacks."
+    },
+    "badge": {
+      "description": "Compact labels for status, counts and categories."
+    },
+    "breadcrumb": {
+      "description": "Shows where the current page sits in the hierarchy."
+    },
+    "button": {
+      "description": "Six variants and four sizes with icon and loading slots."
+    },
+    "calendar": {
+      "description": "Month and range selection built on react-day-picker."
+    },
+    "card": {
+      "description": "A bordered surface for grouped content and actions."
+    },
+    "chart": {
+      "description": "Theme-aware chart wrapper with tooltips and responsive containers."
+    },
+    "checkbox": {
+      "description": "Binary choice with an indeterminate state and keyboard support."
+    },
+    "collapsible": {
+      "description": "Reveals a single region when the user asks for it."
+    },
+    "color-picker": {
+      "description": "Hex picker with native color input, validation and preset swatches."
+    },
+    "command": {
+      "description": "Searchable command palette wired to the ⌘K shortcut."
+    },
+    "context-menu": {
+      "description": "Right-click actions with submenus and shortcuts."
+    },
+    "dialog": {
+      "description": "Accessible modal dialog with focus management."
+    },
+    "drawer": {
+      "description": "Bottom sheet navigation for touch-sized screens."
+    },
+    "dropdown-menu": {
+      "description": "Anchored action menu with checkbox and radio items."
+    },
+    "empty": {
+      "description": "Composable empty state with media, title, copy and actions."
+    },
+    "form": {
+      "description": "React Hook Form field wrapper with labels, descriptions and errors."
+    },
+    "hover-card": {
+      "description": "A rich preview that appears on hover or focus."
+    },
+    "input": {
+      "description": "Single-line text field with invalid and disabled styling."
+    },
+    "input-number": {
+      "description": "Numeric field with steppers, bounds, precision and keyboard control."
+    },
+    "input-otp": {
+      "description": "One-time-code input with grouped slots and paste support."
+    },
+    "label": {
+      "description": "Accessible label that connects controls and descriptions."
+    },
+    "pagination": {
+      "description": "Page links with previous, next and ellipsis states."
+    },
+    "popover": {
+      "description": "Anchored floating panel for filters, pickers and menus."
+    },
+    "progress": {
+      "description": "Determinate progress with accessible values."
+    },
+    "radio-group": {
+      "description": "Single choice from a short, visible list."
+    },
+    "resizable": {
+      "description": "Split views with draggable, keyboard-accessible handles."
+    },
+    "scroll-area": {
+      "description": "Custom scrollbars for dense lists and panels."
+    },
+    "segmented": {
+      "description": "Compact single-select for views, ranges and modes."
+    },
+    "select": {
+      "description": "Accessible dropdown with grouped, search-friendly options."
+    },
+    "separator": {
+      "description": "Horizontal or vertical rule between regions."
+    },
+    "sheet": {
+      "description": "Slide-over panel that can dock to any edge."
+    },
+    "sidebar": {
+      "description": "Collapsible navigation shell with mobile sheet behavior."
+    },
+    "skeleton": {
+      "description": "Neutral placeholders that hold layout while data loads."
+    },
+    "slider": {
+      "description": "Track and thumb input for continuous or stepped values."
+    },
+    "sonner": {
+      "description": "Toast notifications with actions, descriptions and undo."
+    },
+    "spinner": {
+      "description": "Inline loading indicator with an optional accessible label."
+    },
+    "switch": {
+      "description": "Instant on/off control for settings that save automatically."
+    },
+    "table": {
+      "description": "Semantic table primitives with sticky headers and compact rows."
+    },
+    "tabs": {
+      "description": "Switch between related views without leaving the page."
+    },
+    "textarea": {
+      "description": "Multi-line text input with a resizable height."
+    },
+    "toggle": {
+      "description": "Pressable button that keeps an on/off state."
+    },
+    "toggle-group": {
+      "description": "Single or multiple toggles sharing one segmented surface."
+    },
+    "tooltip": {
+      "description": "Short contextual hint on hover or keyboard focus."
+    },
+    "anchor-nav": {
+      "description": "Scroll-spy section links that highlight the region in view."
+    },
+    "auto-complete": {
+      "description": "Free-text input with filtered suggestions and full keyboard control."
+    },
+    "back-top": {
+      "description": "Floating button that returns long pages or panels to the top."
+    },
+    "carousel": {
+      "description": "Sliding banner region with arrows, dots, keyboard control and wrap-around."
+    },
+    "cascader": {
+      "description": "Multi-column drill-down picker for hierarchical data."
+    },
+    "combobox": {
+      "description": "Searchable select with descriptions, disabled options and clear."
+    },
+    "date-picker": {
+      "description": "Locale-aware single date picker returning YYYY-MM-DD values."
+    },
+    "date-range-picker": {
+      "description": "Preset ranges and a two-month calendar with clear and apply actions."
+    },
+    "descriptions": {
+      "description": "Label/value pairs for detail drawers, profiles and summaries."
+    },
+    "dropzone": {
+      "description": "Drag-and-drop file upload with validation and preview."
+    },
+    "image-preview": {
+      "description": "Thumbnail grid with a keyboard-navigable lightbox."
+    },
+    "json-viewer": {
+      "description": "Collapsible, copyable JSON tree with syntax tones."
+    },
+    "list": {
+      "description": "Composable list rows with selection, avatars, metadata and inline actions."
+    },
+    "notification-center": {
+      "description": "Bell inbox with unread counts, read state and mark-all."
+    },
+    "page-container": {
+      "description": "Page header, tabs, content and footer with a consistent rhythm."
+    },
+    "popconfirm": {
+      "description": "Inline confirmation popover for quick, reversible actions."
+    },
+    "rate": {
+      "description": "Star rating with hover preview, keyboard nav and clear-to-zero."
+    },
+    "result": {
+      "description": "Success, error and not-found result screens with next steps."
+    },
+    "statistic": {
+      "description": "KPI card with icon, prefix/suffix, precision and trend."
+    },
+    "stepper": {
+      "description": "Horizontal or vertical progress for multi-step forms."
+    },
+    "tags-input": {
+      "description": "Free-form tags with deduplication and keyboard entry."
+    },
+    "time-picker": {
+      "description": "Hour and minute selects with configurable minute steps."
+    },
+    "timeline": {
+      "description": "Chronological events with icons, timestamps and metadata."
+    },
+    "tour": {
+      "description": "Spotlight onboarding walkthrough anchored to real interface elements."
+    },
+    "transfer": {
+      "description": "Move items between source and target lists."
+    },
+    "tree": {
+      "description": "Hierarchical list with expand, selection and checkboxes."
+    },
+    "tree-select": {
+      "description": "Popover tree picker that keeps the full path visible."
+    },
+    "trend": {
+      "description": "Signed delta indicator with invertible up/down semantics."
+    },
+    "upload": {
+      "description": "Multi-file dropzone with size hints, progress, retry and removal."
+    },
+    "watermark": {
+      "description": "Canvas watermark that adapts to container size and theme."
+    },
+    "detail-page": {
+      "description": "Profile header, metadata, actions and tabbed content for detail routes."
+    },
+    "editable-table": {
+      "description": "Inline row editing with typed editors, per-cell validation and add/remove."
+    },
+    "import-wizard": {
+      "description": "Four-step CSV import with column mapping, validation and review."
+    },
+    "pro-form": {
+      "description": "Descriptor-driven React Hook Form with shared validation and layout."
+    },
+    "pro-table": {
+      "description": "Data table shell with toolbar, search, filters, actions, pagination and bulk selection."
+    },
+    "query-filter": {
+      "description": "Schema-driven filter grid with expand/collapse and reset."
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { downloadCsv, toCsv } from '@/lib/csv'
+import { downloadCsv, parseCsvTable, toCsv } from '@/lib/csv'
 
 interface Row extends Record<string, unknown> {
   name: string
@@ -31,6 +31,32 @@ describe('toCsv', () => {
 
   it('returns just the header for no rows', () => {
     expect(toCsv<Row>([], columns)).toBe('Name,Note,Age')
+  })
+})
+
+describe('parseCsvTable', () => {
+  it('parses headers, quoted cells and CRLF rows', () => {
+    const table = parseCsvTable(
+      'Name,Email,Note\r\n"Lovelace, Ada",ada@fish.dev,"Says ""hello"""\r\nGrace,grace@fish.dev,"line\r\nbreak"\r\n',
+    )
+
+    expect(table.headers).toEqual(['Name', 'Email', 'Note'])
+    expect(table.rows).toEqual([
+      ['Lovelace, Ada', 'ada@fish.dev', 'Says "hello"'],
+      ['Grace', 'grace@fish.dev', 'line\r\nbreak'],
+    ])
+  })
+
+  it('strips a BOM, trims headers and skips blank rows', () => {
+    const table = parseCsvTable('\uFEFF Name , Email \n\nAda,ada@fish.dev\n,,\n')
+
+    expect(table.headers).toEqual(['Name', 'Email'])
+    expect(table.rows).toEqual([['Ada', 'ada@fish.dev']])
+  })
+
+  it('returns an empty table for empty input', () => {
+    expect(parseCsvTable('')).toEqual({ headers: [], rows: [] })
+    expect(parseCsvTable('\n\r\n')).toEqual({ headers: [], rows: [] })
   })
 })
 

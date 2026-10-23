@@ -15,11 +15,9 @@ import {
   List,
   Loader2,
   Plus,
-  Search,
   SearchX,
   Trash2,
   Users,
-  X,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -28,9 +26,9 @@ import { Can } from '@/components/common/can'
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
 import { PageHeader } from '@/components/common/page-header'
-import { DataTable, type DataTableDensity } from '@/components/data-table/data-table'
-import { DataTablePagination } from '@/components/data-table/data-table-pagination'
+import type { DataTableDensity } from '@/components/data-table/data-table'
 import { DataTableViewOptions } from '@/components/data-table/data-table-view-options'
+import { ProTable } from '@/components/pro/pro-table/pro-table'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -40,7 +38,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -50,7 +47,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Input } from '@/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -430,11 +426,177 @@ export function UsersPage({
       {query.isError && !query.data ? (
         <ErrorState onRetry={() => void query.refetch()} />
       ) : (
-        <DataTable
+        <ProTable
           table={table}
           loading={query.isPending}
+          fetching={query.isFetching && !query.isPending}
+          fetchingLabel={t('common:states.loading')}
           density={density}
           empty={emptyState}
+          search={{
+            value: searchValue,
+            onChange: setSearchValue,
+            placeholder: t('users:searchPlaceholder'),
+            ariaLabel: t('common:actions.search'),
+            clearLabel: t('common:actions.clearSearch'),
+          }}
+          filters={
+            <>
+              <Select
+                value={search.roleId ?? 'all'}
+                onValueChange={(value) =>
+                  onSearchChange((previous) => ({
+                    ...previous,
+                    roleId: value === 'all' ? undefined : value,
+                    page: 1,
+                  }))
+                }
+                disabled={roleOptions.isPending}
+              >
+                <SelectTrigger className="h-9 w-[9.5rem]" aria-label={t('users:filters.role')}>
+                  <SelectValue placeholder={t('users:filters.allRoles')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('users:filters.allRoles')}</SelectItem>
+                  {(roleOptions.data ?? []).map((role) => (
+                    <SelectItem key={role.id} value={role.id}>
+                      {role.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              <Select
+                value={search.status ?? 'all'}
+                onValueChange={(value) =>
+                  onSearchChange((previous) => ({
+                    ...previous,
+                    status: value === 'all' ? undefined : (value as UserStatus),
+                    page: 1,
+                  }))
+                }
+              >
+                <SelectTrigger className="h-9 w-[8.5rem]" aria-label={t('users:filters.status')}>
+                  <SelectValue placeholder={t('users:filters.allStatuses')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('users:filters.allStatuses')}</SelectItem>
+                  {USER_STATUSES.map((status) => (
+                    <SelectItem key={status} value={status}>
+                      {t(`common:status.${status}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {hasFilters ? (
+                <Button variant="ghost" size="sm" className="h-9" onClick={clearFilters}>
+                  {t('users:actions.resetFilters')}
+                </Button>
+              ) : null}
+            </>
+          }
+          actions={
+            <>
+              <SavedViewsMenu
+                key={currentUser?.id ?? 'anonymous'}
+                userId={currentUser?.id ?? 'anonymous'}
+                search={search}
+                onApply={applyView}
+              />
+              <ToggleGroup
+                type="single"
+                value={density}
+                onValueChange={updateDensity}
+                variant="outline"
+                size="sm"
+                aria-label={t('users:density.label')}
+              >
+                <ToggleGroupItem value="comfortable" aria-label={t('users:density.comfortable')}>
+                  <List className="size-4" />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="compact" aria-label={t('users:density.compact')}>
+                  <AlignJustify className="size-4" />
+                </ToggleGroupItem>
+              </ToggleGroup>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 gap-2"
+                disabled={exporting || total === 0}
+                onClick={() => void handleExport()}
+              >
+                {exporting ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Download className="size-4" />
+                )}
+                <span className="hidden sm:inline">{t('users:actions.exportCsv')}</span>
+              </Button>
+              <DataTableViewOptions table={table} />
+            </>
+          }
+          pagination={{
+            page: query.data?.page ?? search.page,
+            pageCount: Math.max(pageCount, 1),
+            total,
+            pageSize: search.pageSize,
+            onPageChange: (page) => onSearchChange((previous) => ({ ...previous, page })),
+            onPageSizeChange: (pageSize) =>
+              onSearchChange((previous) => ({ ...previous, pageSize, page: 1 })),
+          }}
+          selection={
+            selectedCount > 0
+              ? {
+                  count: selectedCount,
+                  label: t('users:bulk.selected', { count: selectedCount }),
+                  regionLabel: t('users:bulk.regionLabel'),
+                  clearLabel: t('users:bulk.clear'),
+                  onClear: () => setRowSelection({}),
+                  children: (
+                    <>
+                      {canEdit ? (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="sm" disabled={statusMutation.isPending}>
+                              {statusMutation.isPending ? (
+                                <Loader2 className="size-4 animate-spin" />
+                              ) : (
+                                <BadgeCheck className="size-4" />
+                              )}
+                              {t('users:bulk.setStatus')}
+                              <ChevronDown className="size-3.5" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent side="top" align="center" className="w-44">
+                            <DropdownMenuLabel>{t('users:bulk.setStatus')}</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            {USER_STATUSES.map((status) => (
+                              <DropdownMenuItem
+                                key={status}
+                                onSelect={() => statusMutation.mutate({ ids: selectedIds, status })}
+                              >
+                                {t(`common:status.${status}`)}
+                              </DropdownMenuItem>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      ) : null}
+                      {canDelete ? (
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => setBulkDeleteOpen(true)}
+                        >
+                          <Trash2 className="size-4" />
+                          {t('users:bulk.delete')}
+                        </Button>
+                      ) : null}
+                    </>
+                  ),
+                }
+              : undefined
+          }
           rowContextMenu={(user) => (
             <UserContextMenu
               user={user}
@@ -446,195 +608,8 @@ export function UsersPage({
               onStatusChange={handleStatusChange}
             />
           )}
-          toolbar={
-            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex flex-1 flex-wrap items-center gap-2">
-                <div className="relative min-w-0 flex-1 sm:max-w-xs">
-                  <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-                  <Input
-                    value={searchValue}
-                    onChange={(event) => setSearchValue(event.target.value)}
-                    placeholder={t('users:searchPlaceholder')}
-                    aria-label={t('common:actions.search')}
-                    className="h-9 pl-9"
-                  />
-                  {searchValue ? (
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      className="absolute top-1/2 right-2 -translate-y-1/2"
-                      aria-label={t('common:actions.clearSearch')}
-                      onClick={() => setSearchValue('')}
-                    >
-                      <X className="size-3.5" />
-                    </Button>
-                  ) : null}
-                </div>
-
-                <Select
-                  value={search.roleId ?? 'all'}
-                  onValueChange={(value) =>
-                    onSearchChange((previous) => ({
-                      ...previous,
-                      roleId: value === 'all' ? undefined : value,
-                      page: 1,
-                    }))
-                  }
-                  disabled={roleOptions.isPending}
-                >
-                  <SelectTrigger className="h-9 w-[9.5rem]" aria-label={t('users:filters.role')}>
-                    <SelectValue placeholder={t('users:filters.allRoles')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t('users:filters.allRoles')}</SelectItem>
-                    {(roleOptions.data ?? []).map((role) => (
-                      <SelectItem key={role.id} value={role.id}>
-                        {role.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                <Select
-                  value={search.status ?? 'all'}
-                  onValueChange={(value) =>
-                    onSearchChange((previous) => ({
-                      ...previous,
-                      status: value === 'all' ? undefined : (value as UserStatus),
-                      page: 1,
-                    }))
-                  }
-                >
-                  <SelectTrigger className="h-9 w-[8.5rem]" aria-label={t('users:filters.status')}>
-                    <SelectValue placeholder={t('users:filters.allStatuses')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{t('users:filters.allStatuses')}</SelectItem>
-                    {USER_STATUSES.map((status) => (
-                      <SelectItem key={status} value={status}>
-                        {t(`common:status.${status}`)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
-                {hasFilters ? (
-                  <Button variant="ghost" size="sm" className="h-9" onClick={clearFilters}>
-                    {t('users:actions.resetFilters')}
-                  </Button>
-                ) : null}
-              </div>
-
-              <div className="flex flex-wrap items-center justify-end gap-2">
-                {query.isFetching && !query.isPending ? (
-                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                ) : null}
-                <SavedViewsMenu
-                  key={currentUser?.id ?? 'anonymous'}
-                  userId={currentUser?.id ?? 'anonymous'}
-                  search={search}
-                  onApply={applyView}
-                />
-                <ToggleGroup
-                  type="single"
-                  value={density}
-                  onValueChange={updateDensity}
-                  variant="outline"
-                  size="sm"
-                  aria-label={t('users:density.label')}
-                >
-                  <ToggleGroupItem value="comfortable" aria-label={t('users:density.comfortable')}>
-                    <List className="size-4" />
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="compact" aria-label={t('users:density.compact')}>
-                    <AlignJustify className="size-4" />
-                  </ToggleGroupItem>
-                </ToggleGroup>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-9 gap-2"
-                  disabled={exporting || total === 0}
-                  onClick={() => void handleExport()}
-                >
-                  {exporting ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <Download className="size-4" />
-                  )}
-                  <span className="hidden sm:inline">{t('users:actions.exportCsv')}</span>
-                </Button>
-                <DataTableViewOptions table={table} />
-              </div>
-            </div>
-          }
-          footer={
-            <DataTablePagination
-              page={query.data?.page ?? search.page}
-              pageCount={Math.max(pageCount, 1)}
-              total={total}
-              pageSize={search.pageSize}
-              onPageChange={(page) => onSearchChange((previous) => ({ ...previous, page }))}
-              onPageSizeChange={(pageSize) =>
-                onSearchChange((previous) => ({ ...previous, pageSize, page: 1 }))
-              }
-            />
-          }
         />
       )}
-
-      {selectedCount > 0 ? (
-        <div
-          role="region"
-          aria-label={t('users:bulk.regionLabel')}
-          className="fixed bottom-6 left-1/2 z-40 flex max-w-[calc(100vw-2rem)] -translate-x-1/2 flex-wrap items-center justify-center gap-2 rounded-2xl border bg-background/95 px-3 py-2 shadow-xl backdrop-blur sm:rounded-full"
-        >
-          <Badge variant="secondary" className="rounded-full px-2.5 font-normal">
-            {t('users:bulk.selected', { count: selectedCount })}
-          </Badge>
-          {canEdit ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" disabled={statusMutation.isPending}>
-                  {statusMutation.isPending ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    <BadgeCheck className="size-4" />
-                  )}
-                  {t('users:bulk.setStatus')}
-                  <ChevronDown className="size-3.5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="top" align="center" className="w-44">
-                <DropdownMenuLabel>{t('users:bulk.setStatus')}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {USER_STATUSES.map((status) => (
-                  <DropdownMenuItem
-                    key={status}
-                    onSelect={() => statusMutation.mutate({ ids: selectedIds, status })}
-                  >
-                    {t(`common:status.${status}`)}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : null}
-          {canDelete ? (
-            <Button variant="destructive" size="sm" onClick={() => setBulkDeleteOpen(true)}>
-              <Trash2 className="size-4" />
-              {t('users:bulk.delete')}
-            </Button>
-          ) : null}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label={t('users:bulk.clear')}
-            onClick={() => setRowSelection({})}
-          >
-            <X className="size-4" />
-          </Button>
-        </div>
-      ) : null}
 
       <AlertDialog open={bulkDeleteOpen} onOpenChange={setBulkDeleteOpen}>
         <AlertDialogContent>

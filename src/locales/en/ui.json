@@ -6,7 +6,8 @@
     "badge": "Live component inventory",
     "title": "Every primitive, one workspace.",
     "description": "Buttons, forms, overlays, navigation and edge cases — built on Radix, styled with Tailwind tokens, and translated end to end. Change the theme or locale and every example reacts instantly.",
-    "primitives": "40+ primitives",
+    "primitives": "{{count}} primitives",
+    "catalog": "Component catalog",
     "accents": "5 accent presets",
     "locales": "English + 简体中文",
     "responsive": "Responsive by default"
@@ -120,7 +121,12 @@
     "toggleHint": "Pressed states inherit the accent color.",
     "toggleBold": "Bold",
     "toggleItalic": "Italic",
-    "toggleUnderline": "Underline"
+    "toggleUnderline": "Underline",
+    "segmented": "Segmented",
+    "segmentedHint": "One compact control for switching views or ranges.",
+    "range7": "7 days",
+    "range30": "30 days",
+    "range90": "90 days"
   },
   "forms": {
     "email": "Email",
@@ -153,7 +159,15 @@
     "validationError": "Enter a complete email address.",
     "disabled": "Disabled state",
     "disabledPlaceholder": "Read-only value",
-    "disabledHint": "Disabled controls keep their labels and contrast."
+    "disabledHint": "Disabled controls keep their labels and contrast.",
+    "inputNumber": "Number field",
+    "inputNumberHint": "Steppers, bounds, precision and arrow-key control.",
+    "quantity": "Quantity",
+    "unitPrice": "Unit price",
+    "slider": "Slider",
+    "sliderHint": "Drag or use arrow keys; the value stays visible.",
+    "volume": "Notification volume",
+    "volumeValue": "{{value}}%"
   },
   "feedback": {
     "alerts": "Alerts",
@@ -188,7 +202,14 @@
     "hoverCardName": "Ada Lovelace",
     "hoverCardRole": "Platform engineer",
     "hoverCardBio": "Ships calm interfaces and keeps the design system honest.",
-    "hoverCardMeta": "Joined 2024 · London"
+    "hoverCardMeta": "Joined 2024 · London",
+    "spinner": "Spinner & loading overlay",
+    "spinnerHint": "Inline loading states with an accessible label and a delayed overlay.",
+    "spinnerSmall": "Small",
+    "spinnerDefault": "Default",
+    "spinnerLarge": "Large",
+    "overlayContent": "Team members load here.",
+    "overlayToggle": "Toggle overlay"
   },
   "overlays": {
     "dialogTrigger": "Open dialog",
@@ -289,6 +310,13 @@
     "forbidden": "403 Forbidden",
     "serverError": "500 Server error",
     "unavailable": "503 Unavailable",
-    "maintenance": "Maintenance"
+    "maintenance": "Maintenance",
+    "emptyTitle": "Empty states",
+    "emptyNote": "Composable media, copy and actions for zero-data screens.",
+    "emptyInboxTitle": "Inbox zero",
+    "emptyInboxDescription": "New invitations and mentions will appear here.",
+    "emptyInboxAction": "Invite a teammate",
+    "emptySearchTitle": "No results",
+    "emptySearchDescription": "Try a different keyword or remove a filter."
   }
 }
