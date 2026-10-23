@@ -4,6 +4,54 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-10-23
+
+### Added
+
+- **A live demo for every registered component.** `/components` coverage went
+  from 28 of 83 to 83 of 83 — 55 new demos across three waves that place each
+  component in an admin context instead of an isolated widget: an input-number
+  field that quotes the monthly cost for the selected seats, a budget slider
+  that names the threshold at which alerts fire, an invite-a-teammate dialog, an
+  audit-event filter drawer, a retention collapsible, on-call rotation avatars,
+  a report-label tag input and a two-factor switch.
+- **Copyable import path on every catalog card.** The card footer renders the
+  specifier a consumer actually types (`@/components/ui/button`,
+  `@/components/enterprise/tree/tree`, …) and copies it to the clipboard;
+  `getComponentModulePath()` in `src/config/components.ts` derives it from the
+  registry category.
+- **Sticky section navigation on `/ui`.** The playground's eight sections are
+  reachable from an always-visible bar that tracks the scroll position.
+  `AnchorNav` gained an `orientation` prop — `horizontal` renders that underline
+  section bar, `vertical` (the default) keeps the in-page rail.
+- **Registry and demo invariants** in `src/config/components.test.ts`: every
+  component must have a demo anchor, a demo component and an import path that
+  resolves to a real file, so a card that renders nothing can no longer ship.
+
+### Changed
+
+- Catalog card footers show the import path and the screen that already uses
+  the component; 21 wide demos — tables, charts, forms, the sidebar, the
+  stepper, the tree and the Pro compositions — now span multiple grid columns
+  so they stay legible.
+- The catalog header states its own coverage — 83 components, 83 live demos —
+  and links to `/ui`, so the claim degrades visibly rather than silently if
+  coverage ever regresses. The stats row was cut to four honest tiles and the
+  dead locale keys were removed.
+
+### Fixed
+
+- `SidebarProvider` accepts an `embedded` flag. The catalog's sidebar preview
+  no longer writes the shell's sidebar cookie or registers a second global
+  `Cmd/Ctrl+B` handler, so collapsing the preview can no longer hijack the app
+  shell.
+
+### Security
+
+- Client-side RBAC remains a UX and authorization demo, **not** a security
+  boundary. The new demos add no server-side checks; enforce authorization on
+  your backend.
+
 ## [1.2.0] - 2026-10-23
 
 ### Added
@@ -104,7 +152,8 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/flyingfishzxf/fish-admin/releases/tag/v1.0.0
