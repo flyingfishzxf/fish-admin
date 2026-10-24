@@ -62,8 +62,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm build
+      - name: Build and check bundle size budgets
+        run: pnpm size
 
   e2e:
     name: E2E
@@ -86,7 +86,7 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Run E2E tests
+      - name: Run E2E, accessibility and performance tests
         run: pnpm test:e2e
 
       - name: Upload Playwright report
@@ -95,4 +95,36 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report
+          retention-days: 7
+
+  visual:
+    name: Visual regression
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001 --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          corepack enable --install-directory "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        # The workspace is on a different filesystem than HOME, which makes pnpm
+        # default to a project-local .pnpm-store.
+        run: pnpm install --frozen-lockfile --store-dir /tmp/pnpm-store
+
+      - name: Compare screenshots
+        run: pnpm test:visual
+
+      - name: Upload visual diff report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-report
+          path: |
+            playwright-report/visual
+            test-results
           retention-days: 7

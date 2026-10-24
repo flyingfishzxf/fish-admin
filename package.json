@@ -23,6 +23,11 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "cross-env VITE_ENABLE_MOCK=true pnpm build && playwright test",
+    "test:visual": "node scripts/check-visual-platform.mjs && playwright test -c playwright.visual.config.ts",
+    "test:visual:update": "node scripts/check-visual-platform.mjs && playwright test -c playwright.visual.config.ts --update-snapshots",
+    "test:visual:docker": "node scripts/visual-regression.mjs",
+    "size": "pnpm build && node scripts/check-bundle-size.mjs",
+    "perf": "playwright test e2e/perf.spec.ts",
     "msw:init": "msw init public --save",
     "prepare": "husky"
   },
@@ -55,6 +60,7 @@
     "zustand": "^5.0.15"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
     "@eslint/js": "^9.39.5",
@@ -72,8 +78,10 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "@vitest/coverage-v8": "^5.0.5",
+    "axe-core": "^4.14.0",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.13.0",
