@@ -42,7 +42,7 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 - **中英双语** —— i18next 按 namespace 懒加载，`Intl` 处理日期/数字，校验文案随语言切换。
 - **命令面板** —— `Ctrl/⌘ K` 打开导航与快捷动作，按当前角色过滤。
 - **响应式** —— 移动端侧边栏 Sheet、表格自适应、窄屏抽屉，375 / 768 / 1440 三档可用。
-- **工程化齐全** —— 严格 TypeScript、Vitest + Testing Library、Playwright、ESLint、Prettier、Husky、lint-staged、commitlint、GitHub Actions、Docker 与 Vercel 配置。
+- **工程化齐全** —— 严格 TypeScript、Vitest + Testing Library、Playwright（含 axe 无障碍扫描）、gzip 打包体积与运行时性能预算、基于 Docker 的视觉回归、ESLint、Prettier、Husky、lint-staged、commitlint、GitHub Actions、Docker 与 Vercel 配置。
 
 ## 快速开始
 
@@ -224,7 +224,21 @@ docs/{en,zh-CN}/           # 文档
 | `pnpm typecheck`                    | 仅跑 TypeScript 检查                  |
 | `pnpm test` / `pnpm test:watch`     | 单元测试                              |
 | `pnpm test:coverage`                | 带覆盖率的单元测试                    |
-| `pnpm test:e2e`                     | 构建演示包并运行 Playwright           |
+| `pnpm test:e2e`                     | 构建演示包并运行 E2E、axe 与性能用例  |
+| `pnpm perf`                         | 仅运行运行时性能预算                  |
+| `pnpm size`                         | 构建生产包并校验 gzip 体积预算        |
+| `pnpm test:visual:docker`           | 在 Playwright Docker 镜像中比对截图   |
+
+## 质量门禁
+
+CI 在每次 push 和 pull request 上运行四道门禁：
+
+- **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描九个流程（登录页的浅色、深色与中文，仪表盘，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，以及组件目录）。出现任何违规即失败。
+- **打包体积** —— `pnpm size` 先构建生产包再做 gzip 统计，超出预算即失败：总 JS 750 KB、总 CSS 30 KB、最大分块 115 KB、入口分块 100 KB。
+- **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
+- **视觉回归** —— 九张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置与组件目录首屏）与 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的基线比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。
+
+基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。
 
 ## 接入真实后端
 

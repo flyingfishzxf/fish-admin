@@ -4,6 +4,22 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Four engineering credibility gates in CI.** Accessibility: `eslint-plugin-jsx-a11y` joins the lint job and `e2e/a11y.spec.ts` scans nine flows against WCAG 2.1 A/AA with axe. Bundle: `scripts/check-bundle-size.mjs` fails the build when gzipped output exceeds 750 KB JS, 30 KB CSS, 115 KB for the largest chunk or 100 KB for the entry chunk. Runtime: `e2e/perf.spec.ts` budgets FCP (2.5 s), LCP (3 s), CLS (0.1) and request count (140) on the dashboard. Visual: `e2e/visual/pages.spec.ts` compares nine screenshots with baselines rendered in the Playwright Docker image, with the clock frozen and the mock database seeded. The local visual script exits with instructions off Linux, so screenshots are only ever compared against the Docker-rendered baselines.
+- `pnpm size`, `pnpm perf`, `pnpm test:visual` and `pnpm test:visual:docker` scripts, plus `--update` baseline regeneration through the Docker runner. `pnpm size` builds the production bundle itself, so a leftover demo build can no longer skew the budgets.
+
+### Changed
+
+- Darkened `--success` and `--warning`, and added theme-aware `--chart-1-foreground` … `--chart-5-foreground` tokens so chart badges, alerts and toasts meet AA contrast in both themes.
+- Picker triggers, tree items, image previews, OTP inputs, file inputs and icon-only controls now expose accessible names that include their visible text, and scrollable demos are reachable with the keyboard.
+
+### Fixed
+
+- Tab labels, role codes, avatar fallbacks, alert descriptions and the account menu no longer fail axe contrast or `label-content-name-mismatch` checks.
+
 ## [1.3.0] - 2026-10-23
 
 ### Added

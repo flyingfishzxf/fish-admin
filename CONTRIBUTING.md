@@ -37,7 +37,20 @@ For changes that affect a user flow, also run the end-to-end suite:
 pnpm test:e2e
 ```
 
-`pnpm test:e2e` builds the demo bundle with the mock API enabled and runs Playwright against it. Install the browser once with `pnpm exec playwright install chromium`.
+`pnpm test:e2e` builds the demo bundle with the mock API enabled and runs Playwright against it, including the axe accessibility scans (`e2e/a11y.spec.ts`) and the runtime performance budgets (`e2e/perf.spec.ts`). Install the browser once with `pnpm exec playwright install chromium`.
+
+`pnpm size` builds the production bundle (without the mock API) and then checks its gzip budgets, so run it after a dependency change. It rebuilds `dist/` itself because the demo builds used by `test:e2e` and the visual suite are much larger.
+
+### Visual regression
+
+`e2e/visual/pages.spec.ts` compares nine screenshots against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The baselines are platform-specific, so run the suite through Docker even on Linux; `pnpm test:visual` exits with an error off Linux and warns when it is not running in a container.
+
+```bash
+pnpm test:visual:docker --update   # regenerate baselines after an intentional UI change
+pnpm test:visual:docker            # verify a change did not move anything else
+```
+
+The mock database is seeded and each test freezes the clock, so dates and chart series stay stable. Review the regenerated `.png` files before committing them — an unexpected diff is usually the bug.
 
 Husky runs lint-staged on commit and commitlint on the commit message. Do not bypass the hooks with `--no-verify`; fix the underlying problem instead.
 

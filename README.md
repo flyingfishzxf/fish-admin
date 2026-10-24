@@ -42,7 +42,7 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
 - **Responsive layout** — mobile sidebar sheet, adaptive tables and drawers that work at 375, 768 and 1440 pixels.
-- **Engineering included** — strict TypeScript, Vitest + Testing Library, Playwright, ESLint, Prettier, Husky, lint-staged, commitlint, GitHub Actions, Docker and Vercel configuration.
+- **Engineering included** — strict TypeScript, Vitest + Testing Library, Playwright with axe accessibility scans, gzip bundle and runtime performance budgets, Docker-based visual regression, ESLint, Prettier, Husky, lint-staged, commitlint, GitHub Actions, Docker and Vercel configuration.
 
 ## Quick start
 
@@ -224,7 +224,21 @@ docs/{en,zh-CN}/           # Documentation
 | `pnpm typecheck`                    | Run TypeScript without emitting                           |
 | `pnpm test` / `pnpm test:watch`     | Run unit tests                                            |
 | `pnpm test:coverage`                | Unit tests with a coverage report                         |
-| `pnpm test:e2e`                     | Build the demo and run Playwright                         |
+| `pnpm test:e2e`                     | Build the demo, then run E2E, axe and performance specs   |
+| `pnpm perf`                         | Run only the runtime performance budgets                  |
+| `pnpm size`                         | Build production and check gzip budgets                   |
+| `pnpm test:visual:docker`           | Compare screenshots in the Playwright Docker image        |
+
+## Quality gates
+
+Every push and pull request runs four gates in CI:
+
+- **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans nine flows (login in light, dark and Simplified Chinese, dashboard, users list and create dialog, user detail, roles and permission matrix, audit log, security and settings, and the component catalog) against WCAG 2.1 A/AA with axe. Any violation fails the run.
+- **Bundle size** — `pnpm size` builds the production bundle, gzips it and fails when a budget is exceeded: 750 KB total JS, 30 KB total CSS, 115 KB for the largest chunk and 100 KB for the entry chunk.
+- **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
+- **Visual regression** — nine screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings and the catalog hero) are compared against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable.
+
+Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`.
 
 ## Connect your own backend
 
