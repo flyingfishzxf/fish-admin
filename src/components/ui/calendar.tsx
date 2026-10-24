@@ -36,8 +36,9 @@ function Calendar({
     labelNext: () => t('calendar.nextMonth'),
     labelMonthDropdown: () => t('calendar.month'),
     labelYearDropdown: () => t('calendar.year'),
+    // No ordinal suffix ("27th"), so the accessible name always contains the visible day number.
     labelDayButton: (date, modifiers, options, dateLib) => {
-      const formatted = (dateLib ?? new DateLib(options)).format(date, 'PPPP')
+      const formatted = (dateLib ?? new DateLib(options)).format(date, 'EEEE, MMMM d, yyyy')
       if (modifiers.today && modifiers.selected) {
         return t('calendar.todaySelected', { date: formatted })
       }
@@ -46,7 +47,7 @@ function Calendar({
       return formatted
     },
     labelGridcell: (date, modifiers, options, dateLib) => {
-      const formatted = (dateLib ?? new DateLib(options)).format(date, 'PPPP')
+      const formatted = (dateLib ?? new DateLib(options)).format(date, 'EEEE, MMMM d, yyyy')
       return modifiers?.today ? t('calendar.today', { date: formatted }) : formatted
     },
   }

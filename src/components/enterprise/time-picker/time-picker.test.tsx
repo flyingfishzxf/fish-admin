@@ -37,14 +37,14 @@ describe('TimePicker', () => {
   it('renders the placeholder when empty', () => {
     render(<Harness />)
 
-    expect(screen.getByRole('button', { name: 'Start time' })).toHaveTextContent('Pick a time')
+    expect(screen.getByRole('button', { name: /^Start time/ })).toHaveTextContent('Pick a time')
   })
 
   it('selects an hour and minute, then clears', async () => {
     const user = userEvent.setup()
     render(<Harness initialValue="08:30" />)
 
-    const trigger = screen.getByRole('button', { name: 'Start time' })
+    const trigger = screen.getByRole('button', { name: /^Start time/ })
     expect(trigger).toHaveTextContent('08:30')
 
     await user.click(trigger)

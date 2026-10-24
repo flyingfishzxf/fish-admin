@@ -63,7 +63,7 @@ export function DateRangePicker({
         <Button
           type="button"
           variant="outline"
-          aria-label={ariaLabel}
+          aria-label={`${ariaLabel}: ${display ?? placeholder}`}
           disabled={disabled}
           className={cn(
             'justify-start gap-2 font-normal',
@@ -110,6 +110,7 @@ export function DateRangePicker({
                   to: range?.to ? formatDayValue(range.to) : undefined,
                 })
               }}
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- focus should enter the calendar when the popover opens
               autoFocus
               className="p-0"
             />

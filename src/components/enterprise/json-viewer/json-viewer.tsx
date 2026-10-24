@@ -66,7 +66,6 @@ function JsonNode({
       <button
         type="button"
         aria-expanded={expanded}
-        aria-label={`${expanded ? t('enterprise.collapse') : t('enterprise.expand')} ${label}`}
         onClick={() => setExpanded((current) => !current)}
         className="flex items-center gap-1 rounded-sm py-0.5 text-left outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
       >
@@ -77,7 +76,11 @@ function JsonNode({
             expanded && 'rotate-90',
           )}
         />
-        {name ? <span className="text-foreground">{name}:</span> : null}
+        {name ? (
+          <span className="text-foreground">{name}:</span>
+        ) : (
+          <span className="sr-only">{label}</span>
+        )}
         <span className="text-muted-foreground">{summary}</span>
       </button>
       {expanded ? (

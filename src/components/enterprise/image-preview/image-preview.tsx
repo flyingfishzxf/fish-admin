@@ -45,7 +45,7 @@ export function ImagePreview({
         <button
           key={`${image.src}-${imageIndex}`}
           type="button"
-          aria-label={`${ariaLabel}: ${image.alt}`}
+          aria-label={`${ariaLabel}: ${image.alt}${image.caption ? ` — ${image.caption}` : ''}`}
           onClick={() => setIndex(imageIndex)}
           className="group relative aspect-4/3 overflow-hidden rounded-lg border bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
         >

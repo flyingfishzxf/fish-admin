@@ -113,7 +113,13 @@ export function BackTopDemo() {
   return (
     <DemoSurface className="space-y-2">
       <div className="relative">
-        <div ref={scrollRef} className="h-40 overflow-y-auto rounded-md border bg-background p-3">
+        <div
+          ref={scrollRef}
+          role="region"
+          aria-label={t('catalog:demos.backTop.title')}
+          tabIndex={0}
+          className="h-40 overflow-y-auto rounded-md border bg-background p-3"
+        >
           <p className="text-sm font-medium">{t('catalog:demos.backTop.title')}</p>
           <ul className="mt-2 space-y-1 text-xs text-muted-foreground">
             {Array.from({ length: 14 }, (_, index) => (
@@ -385,6 +391,9 @@ export function AnchorNavDemo() {
         />
         <div
           ref={scrollRef}
+          role="region"
+          aria-label={t('catalog:demos.anchorNav.ariaLabel')}
+          tabIndex={0}
           className="h-56 space-y-4 overflow-y-auto rounded-md border bg-background p-4"
         >
           {items.map((item) => (

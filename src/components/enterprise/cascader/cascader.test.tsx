@@ -46,7 +46,7 @@ describe('Cascader', () => {
     const onChange = vi.fn()
     renderCascader({ onChange })
 
-    await user.click(screen.getByRole('button', { name: 'Location' }))
+    await user.click(screen.getByRole('button', { name: 'Location: Select a location' }))
     await user.click(screen.getByRole('button', { name: 'Americas' }))
     await user.click(screen.getByRole('button', { name: 'United States' }))
     await user.click(screen.getByRole('button', { name: 'California' }))
@@ -57,9 +57,9 @@ describe('Cascader', () => {
   it('renders the full path for the selected value', () => {
     renderCascader({ value: ['americas', 'us', 'california'] })
 
-    expect(screen.getByRole('button', { name: 'Location' })).toHaveTextContent(
-      'Americas / United States / California',
-    )
+    expect(
+      screen.getByRole('button', { name: 'Location: Americas / United States / California' }),
+    ).toHaveTextContent('Americas / United States / California')
   })
 
   it('clears the selected path', async () => {

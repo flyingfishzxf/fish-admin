@@ -138,6 +138,7 @@ export function AutoComplete({
             </li>
           ) : (
             filtered.map((option, index) => (
+              // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- the combobox input owns keyboard navigation
               <li
                 key={option.value}
                 id={`${listId}-option-${index}`}

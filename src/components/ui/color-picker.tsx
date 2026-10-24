@@ -84,7 +84,7 @@ export function ColorPicker({
           type="button"
           id={id}
           variant="outline"
-          aria-label={ariaLabel}
+          aria-label={`${ariaLabel}: ${color}`}
           disabled={disabled}
           className={cn('w-full justify-start gap-2 font-normal', className)}
         >

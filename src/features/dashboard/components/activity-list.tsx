@@ -25,12 +25,12 @@ const ACTION_ICONS: Record<ActivityAction, LucideIcon> = {
 }
 
 const ACTION_TILES: Record<ActivityAction, string> = {
-  'user.created': 'bg-chart-3/14 text-chart-3',
-  'user.updated': 'bg-chart-1/12 text-chart-1',
+  'user.created': 'bg-chart-3/14 text-chart-3-foreground',
+  'user.updated': 'bg-chart-1/12 text-chart-1-foreground',
   'user.deleted': 'bg-destructive/10 text-destructive',
-  'user.restored': 'bg-chart-3/14 text-chart-3',
-  'role.updated': 'bg-chart-4/16 text-chart-4',
-  'auth.login': 'bg-chart-2/14 text-chart-2',
+  'user.restored': 'bg-chart-3/14 text-chart-3-foreground',
+  'role.updated': 'bg-chart-4/16 text-chart-4-foreground',
+  'auth.login': 'bg-chart-2/14 text-chart-2-foreground',
   'profile.updated': 'bg-muted text-muted-foreground',
 }
 

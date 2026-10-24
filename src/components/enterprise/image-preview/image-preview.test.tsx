@@ -19,7 +19,7 @@ describe('ImagePreview', () => {
     const user = userEvent.setup()
     render(<ImagePreview images={images} ariaLabel="Screenshots" />)
 
-    await user.click(screen.getByRole('button', { name: 'Screenshots: Alpha' }))
+    await user.click(screen.getByRole('button', { name: 'Screenshots: Alpha — First' }))
 
     const dialog = screen.getByRole('dialog')
     expect(within(dialog).getByText('First')).toBeInTheDocument()

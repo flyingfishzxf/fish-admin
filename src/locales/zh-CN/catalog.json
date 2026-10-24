@@ -63,6 +63,7 @@
       "pageTitle": "账单概览",
       "pageDescription": "页面外壳的紧凑预览。",
       "action": "导出",
+      "tabLabel": "页面视图",
       "tabOverview": "概览",
       "tabInvoices": "发票",
       "body": "在这里放入任意页面内容，容器会统一处理头部、标签栏与页脚的节奏。",

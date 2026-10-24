@@ -27,7 +27,7 @@ describe('ColorPicker', () => {
       />,
     )
 
-    await user.click(screen.getByRole('button', { name: 'Brand color' }))
+    await user.click(screen.getByRole('button', { name: 'Brand color: #6366f1' }))
     await user.click(screen.getByRole('button', { name: '#ec4899' }))
 
     expect(onValueChange).toHaveBeenCalledWith('#ec4899')
@@ -46,7 +46,7 @@ describe('ColorPicker', () => {
       />,
     )
 
-    await user.click(screen.getByRole('button', { name: 'Brand color' }))
+    await user.click(screen.getByRole('button', { name: 'Brand color: #6366f1' }))
     const hexInput = screen.getByRole('textbox', { name: 'Brand color hex' })
     expect(screen.getByLabelText('Brand color swatch')).toHaveAttribute('type', 'color')
 
@@ -65,7 +65,7 @@ describe('ColorPicker', () => {
     const user = userEvent.setup()
     render(<ColorPicker value="#6366f1" ariaLabel="Brand color" disabled />)
 
-    const trigger = screen.getByRole('button', { name: 'Brand color' })
+    const trigger = screen.getByRole('button', { name: 'Brand color: #6366f1' })
     expect(trigger).toBeDisabled()
     await user.click(trigger)
     expect(screen.queryByRole('group')).not.toBeInTheDocument()

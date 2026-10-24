@@ -31,7 +31,7 @@ describe('TreeSelect', () => {
       />,
     )
 
-    const trigger = screen.getByRole('button', { name: 'Department' })
+    const trigger = screen.getByRole('button', { name: /^Department/ })
     expect(trigger).toHaveTextContent('Engineering / Frontend')
 
     await user.click(trigger)

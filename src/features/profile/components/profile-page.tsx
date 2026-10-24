@@ -178,6 +178,7 @@ export function ProfilePage() {
                     <input
                       ref={fileInputRef}
                       type="file"
+                      aria-label={t('profile:form.changeAvatar')}
                       accept="image/png,image/jpeg,image/webp"
                       className="hidden"
                       onChange={(event) => void handleAvatarChange(event)}

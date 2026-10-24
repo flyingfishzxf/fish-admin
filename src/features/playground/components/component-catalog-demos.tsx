@@ -28,7 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Segmented } from '@/components/ui/segmented'
 import { formatDayDisplay } from '@/lib/date'
 import { cn } from '@/lib/utils'
 
@@ -137,16 +137,16 @@ export function PageContainerDemo() {
           </Button>
         }
         tabs={
-          <Tabs value={tab} onValueChange={setTab}>
-            <TabsList>
-              <TabsTrigger value="overview">
-                {t('catalog:demos.pageContainer.tabOverview')}
-              </TabsTrigger>
-              <TabsTrigger value="invoices">
-                {t('catalog:demos.pageContainer.tabInvoices')}
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <Segmented
+            value={tab}
+            onValueChange={setTab}
+            aria-label={t('catalog:demos.pageContainer.tabLabel')}
+            size="sm"
+            options={[
+              { value: 'overview', label: t('catalog:demos.pageContainer.tabOverview') },
+              { value: 'invoices', label: t('catalog:demos.pageContainer.tabInvoices') },
+            ]}
+          />
         }
         footer={
           <p className="text-xs text-muted-foreground">{t('catalog:demos.pageContainer.footer')}</p>

@@ -62,9 +62,9 @@ export const AUDIT_ACTION_ICONS: Record<AuditAction, LucideIcon> = {
 }
 
 export const AUDIT_TONE_BADGE_CLASSES: Record<AuditTone, string> = {
-  success: 'border-chart-3/30 bg-chart-3/12 text-chart-3',
-  info: 'border-chart-1/30 bg-chart-1/12 text-chart-1',
-  warning: 'border-chart-4/30 bg-chart-4/14 text-chart-4',
+  success: 'border-chart-3/30 bg-chart-3/12 text-chart-3-foreground',
+  info: 'border-chart-1/30 bg-chart-1/12 text-chart-1-foreground',
+  warning: 'border-chart-4/30 bg-chart-4/14 text-chart-4-foreground',
   destructive: 'border-destructive/25 bg-destructive/10 text-destructive',
   neutral: 'border-border bg-muted text-muted-foreground',
 }

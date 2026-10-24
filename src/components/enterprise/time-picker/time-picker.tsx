@@ -78,7 +78,7 @@ export function TimePicker({
         <Button
           type="button"
           variant="outline"
-          aria-label={ariaLabel}
+          aria-label={`${ariaLabel}: ${display ?? placeholder}`}
           disabled={disabled}
           className={cn(
             'justify-start gap-2 font-normal',

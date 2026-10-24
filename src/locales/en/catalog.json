@@ -63,6 +63,7 @@
       "pageTitle": "Billing overview",
       "pageDescription": "A compact preview of the page shell.",
       "action": "Export",
+      "tabLabel": "Page view",
       "tabOverview": "Overview",
       "tabInvoices": "Invoices",
       "body": "Drop any page content here — the container handles the header, tab strip and footer rhythm.",

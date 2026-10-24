@@ -38,12 +38,7 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="inset">
       <SidebarHeader>
-        <Link
-          to="/"
-          aria-label={t('common:app.name')}
-          onClick={closeMobileSidebar}
-          className="flex items-center gap-2.5 px-1.5 py-1"
-        >
+        <Link to="/" onClick={closeMobileSidebar} className="flex items-center gap-2.5 px-1.5 py-1">
           <BrandMark />
           <div className="grid min-w-0 leading-tight group-data-[collapsible=icon]:hidden">
             <span className="truncate text-sm font-semibold tracking-tight">

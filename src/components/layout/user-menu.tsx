@@ -37,14 +37,14 @@ export function UserMenu() {
         <Button
           variant="ghost"
           className="h-9 gap-2 px-1.5 md:pr-2"
-          aria-label={t('common:header.account')}
+          aria-label={`${getInitials(user.name)} ${user.name} — ${t('common:header.account')}`}
         >
-          <Avatar className="size-7">
-            {user.avatar ? <AvatarImage src={user.avatar} alt={user.name} /> : null}
-            <AvatarFallback className="bg-primary/12 text-[11px] font-semibold text-primary">
+          <Avatar className="size-7" aria-hidden>
+            {user.avatar ? <AvatarImage src={user.avatar} alt="" /> : null}
+            <AvatarFallback className="bg-primary/12 text-[11px] font-semibold text-accent-foreground">
               {getInitials(user.name)}
             </AvatarFallback>
-          </Avatar>
+          </Avatar>{' '}
           <span className="hidden max-w-28 truncate text-sm font-medium lg:block">{user.name}</span>
           <ChevronDown className="hidden size-3.5 text-muted-foreground lg:block" />
         </Button>
@@ -53,7 +53,7 @@ export function UserMenu() {
         <DropdownMenuLabel className="font-normal">
           <p className="truncate text-sm font-semibold">{user.name}</p>
           <p className="truncate text-xs text-muted-foreground">{user.email}</p>
-          <p className="mt-2 inline-flex rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary">
+          <p className="mt-2 inline-flex rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-accent-foreground">
             {user.roleName}
           </p>
         </DropdownMenuLabel>

@@ -107,11 +107,9 @@ test.describe('component catalog', () => {
     await expect(statistic.getByText('Active members')).toBeVisible()
 
     const pageContainer = page.locator('#demo-page-container')
-    await pageContainer.getByRole('tab', { name: 'Invoices' }).click()
-    await expect(pageContainer.getByRole('tab', { name: 'Invoices' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    )
+    const invoices = pageContainer.getByRole('radio', { name: 'Invoices' })
+    await invoices.click()
+    await expect(invoices).toHaveAttribute('aria-checked', 'true')
   })
 
   test('runs the Wave 2 data, feedback, form and navigation demos', async ({ page }) => {
@@ -127,7 +125,7 @@ test.describe('component catalog', () => {
 
     const jsonViewer = page.locator('#demo-json-viewer')
     await expect(jsonViewer.getByText('"usr_1042"')).toBeVisible()
-    await jsonViewer.getByRole('button', { name: 'Collapse Session payload' }).click()
+    await jsonViewer.getByRole('button', { name: /^Session payload/ }).click()
     await expect(jsonViewer.getByText('"usr_1042"')).toHaveCount(0)
 
     await expect(page.locator('#demo-watermark canvas')).toBeVisible()
@@ -158,7 +156,7 @@ test.describe('component catalog', () => {
     )
 
     const notifications = page.locator('#demo-notification-center')
-    await notifications.getByRole('button', { name: 'Notifications (3)' }).click()
+    await notifications.getByRole('button', { name: 'Notifications, 3 unread' }).click()
     await page.getByRole('button', { name: 'Mark all as read' }).click()
     await expect(notifications.getByRole('button', { name: 'Notifications' })).toBeVisible()
     await page.keyboard.press('Escape')

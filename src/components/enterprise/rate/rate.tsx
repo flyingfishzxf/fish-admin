@@ -66,6 +66,7 @@ export function Rate({
     <div
       role="radiogroup"
       aria-label={ariaLabel ?? t('enterprise.rating')}
+      tabIndex={-1}
       data-slot="rate"
       className={cn('inline-flex items-center gap-0.5', className)}
       onMouseLeave={() => setHovered(null)}

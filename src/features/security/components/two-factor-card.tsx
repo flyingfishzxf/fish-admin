@@ -186,7 +186,9 @@ export function TwoFactorCard() {
                 maxLength={6}
                 value={code}
                 onChange={setCode}
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- entering the code is the dialog's only task
                 autoFocus
+                aria-label={t('security:twoFactor.setup.code')}
                 containerClassName="justify-center"
               >
                 <InputOTPGroup>

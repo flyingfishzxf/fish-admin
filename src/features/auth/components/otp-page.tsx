@@ -90,7 +90,9 @@ export function OtpPage({
             value={code}
             onChange={setCode}
             onComplete={(value) => void submit(value)}
+            // eslint-disable-next-line jsx-a11y/no-autofocus -- entering the code is the only task on this step
             autoFocus
+            aria-label={t('auth:otp.codeLabel')}
             aria-invalid={Boolean(error)}
             containerClassName="justify-center"
           >

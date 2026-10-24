@@ -259,7 +259,7 @@ export function RoleMatrixPage() {
                           className="sticky left-0 z-10 bg-background px-4 py-2.5 text-left font-normal"
                         >
                           <span className="block text-sm">{label}</span>
-                          <code className="block font-mono text-[10px] text-muted-foreground/70">
+                          <code className="block font-mono text-[10px] text-muted-foreground">
                             {permission.code}
                           </code>
                         </th>

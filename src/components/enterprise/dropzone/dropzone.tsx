@@ -85,6 +85,7 @@ export function Dropzone({
         ref={inputRef}
         id={inputId}
         type="file"
+        aria-label={label}
         accept={accept}
         multiple={multiple}
         disabled={disabled}

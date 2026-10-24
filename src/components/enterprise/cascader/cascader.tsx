@@ -89,7 +89,7 @@ export function Cascader({
           <Button
             type="button"
             variant="outline"
-            aria-label={ariaLabel}
+            aria-label={`${ariaLabel}: ${label || placeholder}`}
             aria-expanded={open}
             disabled={disabled}
             className={cn(
@@ -127,7 +127,7 @@ export function Cascader({
                           onClick={() => select(depth, option)}
                           className={cn(
                             'flex w-full items-center gap-1.5 rounded-sm px-2 py-1.5 text-left text-sm transition-colors outline-none hover:bg-accent focus-visible:bg-accent disabled:cursor-not-allowed disabled:opacity-50',
-                            selected && 'bg-primary/10 font-medium text-primary',
+                            selected && 'bg-primary/10 font-medium text-accent-foreground',
                           )}
                         >
                           <span className="min-w-0 flex-1 truncate">{option.label}</span>

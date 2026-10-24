@@ -132,6 +132,7 @@ export function DepartmentFormDialog({
                   <FormLabel>{t('departments:form.name')}</FormLabel>
                   <FormControl>
                     <Input
+                      // eslint-disable-next-line jsx-a11y/no-autofocus -- the dialog opens for this field
                       autoFocus
                       placeholder={t('departments:form.namePlaceholder')}
                       {...field}

@@ -847,7 +847,12 @@ export function InputOtpDemo() {
         <Label>{t('catalog:demos.inputOtp.label')}</Label>
         <p className="text-xs text-muted-foreground">{t('catalog:demos.inputOtp.description')}</p>
       </div>
-      <InputOTP maxLength={6} value={code} onChange={setCode}>
+      <InputOTP
+        maxLength={6}
+        value={code}
+        onChange={setCode}
+        aria-label={t('catalog:demos.inputOtp.label')}
+      >
         <InputOTPGroup>
           {Array.from({ length: 6 }, (_, index) => (
             <InputOTPSlot key={index} index={index} />

@@ -234,7 +234,7 @@ export function EditableTable({
   }
 
   return (
-    <div className={cn('space-y-3', className)} onKeyDown={handleKeyDown}>
+    <div role="presentation" className={cn('space-y-3', className)} onKeyDown={handleKeyDown}>
       {addRow ? (
         <div className="flex justify-end">
           <Button type="button" variant="outline" size="sm" onClick={startAdd}>

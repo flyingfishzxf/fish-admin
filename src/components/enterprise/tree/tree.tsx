@@ -161,6 +161,7 @@ export function Tree({
     <div
       role="tree"
       aria-label={ariaLabel}
+      tabIndex={-1}
       className={cn('select-none', className)}
       onKeyDown={handleKeyDown}
     >
@@ -174,6 +175,7 @@ export function Tree({
         const Icon = item.icon
 
         return (
+          // eslint-disable-next-line jsx-a11y/click-events-have-key-events -- Enter and Space are handled by the tree's roving-focus keydown
           <div
             key={item.id}
             ref={(node) => {
@@ -182,7 +184,7 @@ export function Tree({
             }}
             role="treeitem"
             aria-level={entry.depth + 1}
-            aria-label={item.label}
+            aria-label={item.badge ? `${item.label}${item.badge}` : item.label}
             aria-selected={isSelected}
             aria-expanded={entry.hasChildren ? isExpanded : undefined}
             aria-disabled={item.disabled || undefined}
@@ -196,7 +198,7 @@ export function Tree({
             onFocus={() => setFocusedId(item.id)}
             className={cn(
               'flex items-center gap-1.5 rounded-md border border-transparent py-1.5 pr-2 text-sm transition-colors outline-none hover:bg-accent focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
-              isSelected && 'bg-primary/10 font-medium text-primary',
+              isSelected && 'bg-primary/10 font-medium text-accent-foreground',
               item.disabled && 'cursor-not-allowed opacity-50',
             )}
             style={{ paddingLeft: `${entry.depth * 16 + 6}px` }}

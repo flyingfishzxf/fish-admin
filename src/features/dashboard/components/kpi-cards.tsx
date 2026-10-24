@@ -10,22 +10,22 @@ import type { DashboardKpi } from '@/types'
 const KPI_META = {
   revenue: {
     icon: Wallet,
-    tile: 'bg-chart-1/12 text-chart-1',
+    tile: 'bg-chart-1/12 text-chart-1-foreground',
     format: 'currency',
   },
   activeUsers: {
     icon: Users,
-    tile: 'bg-chart-2/14 text-chart-2',
+    tile: 'bg-chart-2/14 text-chart-2-foreground',
     format: 'number',
   },
   signups: {
     icon: UserPlus,
-    tile: 'bg-chart-3/14 text-chart-3',
+    tile: 'bg-chart-3/14 text-chart-3-foreground',
     format: 'number',
   },
   conversion: {
     icon: Target,
-    tile: 'bg-chart-4/16 text-chart-4',
+    tile: 'bg-chart-4/16 text-chart-4-foreground',
     format: 'percent',
   },
 } as const

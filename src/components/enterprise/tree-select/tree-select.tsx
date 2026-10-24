@@ -55,7 +55,7 @@ export function TreeSelect({
             type="button"
             id={id}
             variant="outline"
-            aria-label={ariaLabel}
+            aria-label={`${ariaLabel}: ${selectedLabel ?? placeholder}`}
             aria-expanded={open}
             aria-invalid={ariaInvalid}
             aria-describedby={ariaDescribedBy}

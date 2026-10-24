@@ -79,18 +79,18 @@ describe('QueryFilter', () => {
     expect(screen.getByLabelText('Keyword')).toBeInTheDocument()
     expect(screen.getByRole('combobox', { name: 'Status' })).toBeInTheDocument()
     expect(screen.getByRole('switch', { name: 'Flagged' })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Created' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^Created/ })).not.toBeInTheDocument()
     expect(screen.queryByLabelText('Score')).not.toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'More' }))
 
     expect(screen.getByRole('button', { name: 'Less' })).toHaveAttribute('aria-expanded', 'true')
-    expect(screen.getByRole('button', { name: 'Created' })).toHaveTextContent('Pick dates')
+    expect(screen.getByRole('button', { name: /^Created/ })).toHaveTextContent('Pick dates')
     expect(screen.getByRole('group', { name: 'Score' })).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Less' }))
 
-    expect(screen.queryByRole('button', { name: 'Created' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^Created/ })).not.toBeInTheDocument()
     expect(screen.queryByLabelText('Score')).not.toBeInTheDocument()
   })
 

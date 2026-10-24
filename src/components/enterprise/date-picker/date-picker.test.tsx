@@ -29,7 +29,7 @@ function Harness({
 }
 
 function openPicker() {
-  fireEvent.click(screen.getByRole('button', { name: 'Start date' }))
+  fireEvent.click(screen.getByRole('button', { name: /^Start date/ }))
 }
 
 function dayCell(value: string) {
@@ -46,7 +46,7 @@ describe('DatePicker', () => {
   it('renders the placeholder when empty', () => {
     render(<Harness />)
 
-    expect(screen.getByRole('button', { name: 'Start date' })).toHaveTextContent('Pick a date')
+    expect(screen.getByRole('button', { name: /^Start date/ })).toHaveTextContent('Pick a date')
   })
 
   it('opens, selects a day, and closes', async () => {
@@ -57,7 +57,7 @@ describe('DatePicker', () => {
 
     fireEvent.click(within(dayCell('2026-03-15')).getByRole('button'))
 
-    expect(screen.getByRole('button', { name: 'Start date' })).toHaveTextContent('Mar 15, 2026')
+    expect(screen.getByRole('button', { name: /^Start date/ })).toHaveTextContent('Mar 15, 2026')
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
   })
 
@@ -67,7 +67,7 @@ describe('DatePicker', () => {
     openPicker()
     fireEvent.click(screen.getByRole('button', { name: 'Clear' }))
 
-    expect(screen.getByRole('button', { name: 'Start date' })).toHaveTextContent('Pick a date')
+    expect(screen.getByRole('button', { name: /^Start date/ })).toHaveTextContent('Pick a date')
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
   })
 

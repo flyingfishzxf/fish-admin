@@ -13,9 +13,9 @@ import { cn } from '@/lib/utils'
 export type ResultStatus = 'success' | 'info' | 'warning' | 'error' | 'not-found'
 
 const RESULT_STYLES: Record<ResultStatus, { icon: LucideIcon; tile: string }> = {
-  success: { icon: CheckCircle2, tile: 'bg-chart-3/14 text-chart-3' },
-  info: { icon: Info, tile: 'bg-chart-1/12 text-chart-1' },
-  warning: { icon: AlertTriangle, tile: 'bg-chart-4/16 text-chart-4' },
+  success: { icon: CheckCircle2, tile: 'bg-chart-3/14 text-chart-3-foreground' },
+  info: { icon: Info, tile: 'bg-chart-1/12 text-chart-1-foreground' },
+  warning: { icon: AlertTriangle, tile: 'bg-chart-4/16 text-chart-4-foreground' },
   error: { icon: XCircle, tile: 'bg-destructive/10 text-destructive' },
   'not-found': { icon: FileQuestion, tile: 'bg-muted text-muted-foreground' },
 }

@@ -720,7 +720,9 @@ function ActionsDemo() {
         <DemoBlock label={t('ui:actions.avatars')} hint={t('ui:actions.avatarsHint')}>
           <div className="flex flex-wrap items-center gap-4">
             <Avatar size="lg">
-              <AvatarFallback className="bg-primary/10 font-medium text-primary">AL</AvatarFallback>
+              <AvatarFallback className="bg-primary/10 font-medium text-accent-foreground">
+                AL
+              </AvatarFallback>
               <AvatarBadge />
             </Avatar>
             <Avatar>
@@ -1107,7 +1109,7 @@ function FeedbackDemo() {
               <HoverCardContent className="w-72">
                 <div className="flex gap-3">
                   <Avatar>
-                    <AvatarFallback className="bg-primary/10 font-medium text-primary">
+                    <AvatarFallback className="bg-primary/10 font-medium text-accent-foreground">
                       AL
                     </AvatarFallback>
                   </Avatar>

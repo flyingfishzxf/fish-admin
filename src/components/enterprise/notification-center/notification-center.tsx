@@ -44,7 +44,9 @@ export function NotificationCenter({
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label={unread > 0 ? `${label} (${unread})` : label}
+          aria-label={
+            unread > 0 ? t('enterprise.notificationsWithUnread', { label, count: unread }) : label
+          }
           data-slot="notification-center"
           className={cn('relative', className)}
         >

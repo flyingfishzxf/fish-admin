@@ -185,6 +185,7 @@
     "rateValue": "{{count}} / {{max}} 星",
     "removeFile": "移除 {{name}}",
     "notifications": "通知",
+    "notificationsWithUnread": "{{label}}，{{count}} 条未读",
     "markAllRead": "全部标为已读",
     "noNotifications": "没有新的通知。"
   }

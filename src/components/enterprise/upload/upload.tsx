@@ -102,7 +102,11 @@ export function Upload({
                   </div>
                   {status === 'uploading' ? (
                     <div className="mt-1.5 flex items-center gap-2">
-                      <Progress value={item.progress ?? 0} className="h-1.5" />
+                      <Progress
+                        value={item.progress ?? 0}
+                        aria-label={item.name}
+                        className="h-1.5"
+                      />
                       <span className="w-9 text-right text-[11px] text-muted-foreground tabular-nums">
                         {item.progress ?? 0}%
                       </span>

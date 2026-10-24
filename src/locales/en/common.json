@@ -185,6 +185,7 @@
     "rateValue": "{{count}} of {{max}} stars",
     "removeFile": "Remove {{name}}",
     "notifications": "Notifications",
+    "notificationsWithUnread": "{{label}}, {{count}} unread",
     "markAllRead": "Mark all read",
     "noNotifications": "You're all caught up."
   }

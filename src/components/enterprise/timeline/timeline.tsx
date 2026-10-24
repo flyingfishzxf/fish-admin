@@ -16,9 +16,9 @@ export interface TimelineItem {
 
 const TONE_CLASSES: Record<TimelineTone, string> = {
   default: 'bg-muted text-muted-foreground',
-  info: 'bg-chart-1/12 text-chart-1',
-  success: 'bg-chart-3/14 text-chart-3',
-  warning: 'bg-chart-4/16 text-chart-4',
+  info: 'bg-chart-1/12 text-chart-1-foreground',
+  success: 'bg-chart-3/14 text-chart-3-foreground',
+  warning: 'bg-chart-4/16 text-chart-4-foreground',
   destructive: 'bg-destructive/10 text-destructive',
 }
 

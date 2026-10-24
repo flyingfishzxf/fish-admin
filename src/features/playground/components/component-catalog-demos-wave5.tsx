@@ -201,7 +201,7 @@ export function ProgressDemo() {
           {t('catalog:demos.progress.value', { value: done * 25 })}
         </span>
       </div>
-      <Progress value={done * 25} />
+      <Progress value={done * 25} aria-label={t('catalog:demos.progress.title')} />
       <div className="flex flex-wrap gap-2">
         {[
           { id: 1, label: t('catalog:demos.progress.step1') },
@@ -555,7 +555,7 @@ export function SliderDemo() {
         min={200}
         max={5000}
         step={100}
-        aria-label={t('catalog:demos.slider.label')}
+        thumbLabels={[t('catalog:demos.slider.label')]}
       />
       <p className="text-xs text-muted-foreground">{t('catalog:demos.slider.hint')}</p>
     </div>

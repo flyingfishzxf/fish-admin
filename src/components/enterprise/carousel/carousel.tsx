@@ -63,6 +63,7 @@ export function Carousel({
   }
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- the focusable region adds arrow-key paging on top of the slide controls
     <div
       role="region"
       aria-roledescription="carousel"
