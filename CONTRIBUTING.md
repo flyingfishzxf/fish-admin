@@ -39,7 +39,7 @@ pnpm test:e2e
 
 `pnpm test:e2e` builds the demo bundle with the mock API enabled and runs Playwright against it, including the axe accessibility scans (`e2e/a11y.spec.ts`) and the runtime performance budgets (`e2e/perf.spec.ts`). Install the browser once with `pnpm exec playwright install chromium`.
 
-`pnpm size` builds the production bundle (without the mock API) and then checks its gzip budgets, so run it after a dependency change. It rebuilds `dist/` itself because the demo builds used by `test:e2e` and the visual suite are much larger.
+`pnpm size` builds the production bundle (without the mock API) and then checks four gzip budgets against it — `firstPaintJs` 180 KB, `largestAsyncJs` 115 KB, `totalJs` 800 KB, `totalCss` 30 KB — so run it after a dependency change. It rebuilds `dist/` itself, because the demo builds used by `test:e2e` and the visual suite carry the MSW chunk and would break the two JavaScript totals; first paint is the number the gate actually protects, and it is identical in both builds.
 
 ### Visual regression
 

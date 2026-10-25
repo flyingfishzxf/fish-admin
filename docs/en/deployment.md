@@ -103,18 +103,23 @@ If the app lives at `https://example.com/admin/`, set `base: '/admin/'` in `vite
 
 ## Bundle layout
 
-`autoCodeSplitting` gives each route its own chunk, so the dashboard's chart dependency, the `/components` catalog and the `/ui` playground are only fetched when those pages open.
+`autoCodeSplitting` gives each route its own chunk, so the chart library, the `/components` catalog, the `/ui` playground and the mock API are only fetched when something actually needs them. `pnpm size` enforces that split; the figures below are measured by the budget script (gzip level 9) at v1.5.0.
 
-| Chunk          | Build             | Size (gzip)  | When it loads                                 |
-| -------------- | ----------------- | ------------ | --------------------------------------------- |
-| `index-*`      | `pnpm build`      | 287 kB (89)  | First paint: shell, router, i18n, auth store  |
-| `index-*`      | `pnpm build:demo` | 293 kB (91)  | Same shell plus the mock entry stub           |
-| `charts-*`     | either            | 384 kB (111) | Dashboard only                                |
-| `ui-*`         | either            | 170 kB (47)  | `/ui` playground only (three chunks)          |
-| `components-*` | either            | 102 kB (26)  | `/components` catalog only                    |
-| `browser-*`    | demo              | 883 kB (326) | MSW plus the seeded database, demo build only |
+| Measure                                     | `pnpm build` | `pnpm build:demo` | Budget              |
+| ------------------------------------------- | ------------ | ----------------- | ------------------- |
+| First paint: entry script + `modulepreload` | 165 kB       | 165 kB            | 180 kB              |
+| Entry chunk `index-*`                       | 295 kB (90)  | 301 kB (92)       | counted in the line |
+| Largest lazy chunk `chart-*`                | 322 kB (96)  | 322 kB (96)       | 115 kB              |
+| Every JavaScript chunk                      | 750 kB       | 1,079 kB          | 800 kB              |
+| Every CSS chunk                             | 144 kB (22)  | 144 kB (22)       | 30 kB               |
 
-The `browser-*` chunk exists only in a demo build. `src/main.tsx` imports it behind `VITE_ENABLE_MOCK`, so `pnpm build` (flag off) tree-shakes the branch away and emits no such chunk — `ls dist/assets | grep browser` and `grep -r mockServiceWorker dist` both come back empty. Vite prints a chunk-size warning for it; that is expected, because it is a lazy, dev-demo-only chunk that never ships in an API build.
+Two things about that table are deliberate.
+
+The first-paint budget counts the entry chunk _and_ the 23 `modulepreload` tags Vite writes into `dist/index.html`, because the browser downloads all of them before it paints. The entry file alone is 90 kB, so a budget on `index-*` only would pass while the real cost crept up.
+
+The budgets are enforced against `pnpm build`, not the demo build. The demo build adds `browser-*` (907 kB, 327 gzip — MSW plus the seeded workspace database), which on its own breaks the largest-chunk and total-JS budgets. First paint is identical in both builds, because that chunk is lazy and `src/main.tsx` imports it only behind `VITE_ENABLE_MOCK`; `pnpm build` tree-shakes the branch away, so `ls dist/assets | grep browser` and `grep -r mockServiceWorker dist` both come back empty. Vite still prints a chunk-size warning for it in a demo build, which is expected.
+
+The other large lazy chunks are the ones you would expect: `chart-*` is recharts, shared by the dashboard, `/reports` and the chart demos on `/components`; the catalog and the playground split into their own demo chunks. None of them is fetched on the way to `/users`.
 
 Run `pnpm build && pnpm preview` and check the Network panel before shipping: the first paint should load only the shell, auth and locale chunks.
 
