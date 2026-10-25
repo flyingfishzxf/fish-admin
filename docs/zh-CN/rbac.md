@@ -8,24 +8,31 @@ FishAdmin 演示了一套完整的客户端权限闭环：导航、路由与按�
 
 权限码采用 `resource:action` 格式：
 
-| 权限码              | 保护对象                                                                             |
-| ------------------- | ------------------------------------------------------------------------------------ |
-| `dashboard:read`    | 工作台路由与 KPI 数据                                                                |
-| `user:read`         | 用户路由、用户详情、用户列表与角色选项                                               |
-| `user:create`       | 「新建用户」按钮与 `POST /api/users`                                                 |
-| `user:update`       | 编辑操作、`PATCH /api/users/:id` 与 `POST /api/users/bulk-status`                    |
-| `user:delete`       | 删除操作、`DELETE /api/users/:id` 与批量删除/恢复端点                                |
-| `role:read`         | 角色路由、权限矩阵与 `GET /api/roles`                                                |
-| `role:create`       | 「新建角色」入口、创建向导与 `POST /api/roles`                                       |
-| `role:update`       | 编辑自定义角色、权限矩阵、`PATCH /api/roles/:id` 与 `PUT /api/roles/:id/permissions` |
-| `role:delete`       | 删除自定义角色与 `DELETE /api/roles/:id`                                             |
-| `audit:read`        | 审计日志路由、用户动态与 `GET /api/audit-events`                                     |
-| `department:read`   | 组织架构路由、部门树与 `GET /api/departments`                                        |
-| `department:manage` | 新建/重命名部门操作与 `POST`/`PATCH /api/departments`                                |
-| `permission:read`   | 只读权限页与 `GET /api/permissions`                                                  |
-| `demo:reset`        | 重置演示数据库                                                                       |
+| 权限码               | 保护对象                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `dashboard:read`     | 工作台路由与 KPI 数据                                                                |
+| `project:read`       | 项目看板、项目详情、任务与里程碑                                                     |
+| `project:manage`     | 创建/更新/归档项目、任务、里程碑、预算与附件                                         |
+| `file:read`          | 资源库、文件夹树、预览与下载                                                         |
+| `file:manage`        | 上传、重命名、移动、收藏与删除文件                                                   |
+| `report:read`        | 报表路由与 `GET /api/reports`                                                        |
+| `integration:read`   | 集成列表、连接详情与投递日志                                                         |
+| `integration:manage` | 创建、更新、删除集成与重放投递                                                       |
+| `user:read`          | 用户路由、用户详情、用户列表与角色选项                                               |
+| `user:create`        | 「新建用户」按钮、`POST /api/users` 与 CSV 导入                                      |
+| `user:update`        | 编辑操作、`PATCH /api/users/:id` 与 `POST /api/users/bulk-status`                    |
+| `user:delete`        | 删除操作、`DELETE /api/users/:id` 与批量删除/恢复端点                                |
+| `role:read`          | 角色路由、权限矩阵与 `GET /api/roles`                                                |
+| `role:create`        | 「新建角色」入口、创建向导与 `POST /api/roles`                                       |
+| `role:update`        | 编辑自定义角色、权限矩阵、`PATCH /api/roles/:id` 与 `PUT /api/roles/:id/permissions` |
+| `role:delete`        | 删除自定义角色与 `DELETE /api/roles/:id`                                             |
+| `audit:read`         | 审计日志路由、用户动态与 `GET /api/audit-events`                                     |
+| `department:read`    | 组织架构路由、部门树与 `GET /api/departments`                                        |
+| `department:manage`  | 新建/重命名部门操作与 `POST`/`PATCH /api/departments`                                |
+| `permission:read`    | 只读权限页与 `GET /api/permissions`                                                  |
+| `demo:reset`         | 重置演示数据库                                                                       |
 
-有三个区域刻意不设权限码：`/components` 与 `/ui`（组件目录和演练场对所有已登录角色都有用），以及只对当前用户生效的账户页 `/profile` 与 `/security`。
+有若干区域刻意不设权限码：`/components` 与 `/ui`（组件目录和演练场对所有已登录角色都有用）、`/notifications`（只暴露当前用户自己的收件箱），以及只对当前用户生效的账户页 `/profile` 与 `/security`。
 
 `src/config/permissions.ts` 是唯一事实来源，导出：
 
@@ -42,17 +49,17 @@ FishAdmin 演示了一套完整的客户端权限闭环：导航、路由与按�
 
 ## 演示角色
 
-| 角色                    | 权限                                                                                                                                                                            |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 管理员（Administrator） | `*`                                                                                                                                                                             |
-| 经理（Manager）         | `dashboard:read`、`user:read`、`user:create`、`user:update`、`role:read`、`role:create`、`role:update`、`audit:read`、`department:read`、`department:manage`、`permission:read` |
-| 访客（Viewer）          | `dashboard:read`、`user:read`、`audit:read`、`department:read`                                                                                                                  |
+| 角色                    | 权限                                                                                                                                                                                                                                                                             |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 管理员（Administrator） | `*`                                                                                                                                                                                                                                                                              |
+| 经理（Manager）         | `dashboard:read`、`project:read`、`project:manage`、`file:read`、`file:manage`、`report:read`、`integration:read`、`user:read`、`user:create`、`user:update`、`role:read`、`role:create`、`role:update`、`audit:read`、`department:read`、`department:manage`、`permission:read` |
+| 访客（Viewer）          | `dashboard:read`、`project:read`、`file:read`、`report:read`、`integration:read`、`user:read`、`audit:read`、`department:read`                                                                                                                                                   |
 
 差异是刻意设计且肉眼可见的：
 
 - 管理员能看到全部菜单，可删除用户与角色、在矩阵中编辑除管理员外的所有角色，并重置演示数据。
-- 经理可新建与编辑用户、管理部门、创建与编辑自定义角色，并打开只读权限页；不能删除用户或角色，矩阵中的管理员列只读。
-- 访客只能看到工作台、用户、部门与审计日志，所有写操作入口都隐藏。
+- 经理可新建与编辑用户、管理项目与文件、管理部门、创建与编辑自定义角色，并打开只读权限页；不能删除用户或角色，不能管理集成，矩阵中的管理员列只读。
+- 访客只能看到工作台、项目、文件、报表、集成、用户、部门与审计日志，所有写操作入口都隐藏。
 
 以访客身份直接输入 `/roles/matrix`：路由守卫会跳转到 `/403`。以经理身份可打开同一页面，但管理员列不可修改。
 

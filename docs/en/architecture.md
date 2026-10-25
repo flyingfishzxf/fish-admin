@@ -42,10 +42,15 @@ __root.tsx              Providers, global 404, error fallback
 │  ├─ reset-password.tsx   /reset-password?token=…
 │  ├─ accept-invite.tsx    /accept-invite?token=…
 │  └─ otp.tsx              /otp?challenge=…  second factor
-└─ _app/route.tsx       Session guard + AppShell (sidebar, offline banner, command palette)
+└─ _app/route.tsx       Session guard + AppShell (sidebar, bell, offline banner, command palette)
    ├─ index.tsx         /            dashboard:read
+   ├─ reports.tsx       /reports     report:read
    ├─ components.tsx    /components  signed in (searchable component catalog)
    ├─ ui.tsx            /ui          signed in (component playground)
+   ├─ projects.tsx      /projects    project:read
+   ├─ projects_.$id.tsx /projects/$id project:read
+   ├─ files.tsx         /files       file:read
+   ├─ notifications.tsx /notifications signed in
    ├─ users.tsx         /users       user:read
    ├─ users_.$id.tsx    /users/$id   user:read
    ├─ departments.tsx   /departments department:read
@@ -53,6 +58,7 @@ __root.tsx              Providers, global 404, error fallback
    ├─ roles_.matrix.tsx /roles/matrix role:read
    ├─ permissions.tsx   /permissions permission:read
    ├─ audit-logs.tsx    /audit-logs  audit:read
+   ├─ integrations.tsx  /integrations integration:read
    ├─ profile.tsx       /profile     signed in
    ├─ security.tsx      /security    signed in
    ├─ settings.tsx      /settings    signed in
@@ -70,19 +76,23 @@ The Vite plugin runs before the React and Tailwind plugins and enables `autoCode
 
 ## Data flow
 
-| Data                       | Owner                       | Notes                                                             |
-| -------------------------- | --------------------------- | ----------------------------------------------------------------- |
-| Session and tokens         | `src/stores/auth-store.ts`  | Persisted under `fish-admin:session`; only tokens are persisted   |
-| Theme mode and accent      | `src/stores/theme-store.ts` | Persisted under `fish-admin:theme`                                |
-| Command palette visibility | `src/stores/ui-store.ts`    | In-memory                                                         |
-| API data                   | TanStack Query              | Keys are defined next to each feature (`queries.ts`)              |
-| Table filters and paging   | URL search params           | `validateUsersSearch` keeps links shareable and reloads identical |
-| Audit filters and paging   | URL search params           | `validateAuditSearch` syncs search, action, entity and date range |
-| Selected department        | URL search params           | `/departments?dept=…` deep-links to a node, invalid ids fall back |
-| Saved views                | `localStorage`              | `fish-admin:users-views:{userId}`, capped at 10                   |
-| Table density              | `localStorage`              | `fish-admin:users-density`                                        |
-| Connectivity               | `src/lib/online.ts`         | `useSyncExternalStore` over the `online`/`offline` window events  |
-| Demo database              | MSW handlers                | Persisted under `fish-admin:db:v1`                                |
+| Data                       | Owner                       | Notes                                                                      |
+| -------------------------- | --------------------------- | -------------------------------------------------------------------------- |
+| Session and tokens         | `src/stores/auth-store.ts`  | Persisted under `fish-admin:session`; only tokens are persisted            |
+| Theme mode and accent      | `src/stores/theme-store.ts` | Persisted under `fish-admin:theme`                                         |
+| Command palette visibility | `src/stores/ui-store.ts`    | In-memory                                                                  |
+| API data                   | TanStack Query              | Keys are defined next to each feature (`queries.ts`)                       |
+| Table filters and paging   | URL search params           | `validateUsersSearch` keeps links shareable and reloads identical          |
+| Audit filters and paging   | URL search params           | `validateAuditSearch` syncs search, action, entity and date range          |
+| Project filters and paging | URL search params           | `validateProjectsSearch` keeps status, priority, owner and view in the URL |
+| File filters and folder    | URL search params           | `validateFilesSearch` drives the folder tree, view mode and paging         |
+| Report range               | URL search params           | `validateReportsSearch` keeps `from`, `to` and granularity shareable       |
+| Integration filters        | URL search params           | `validateIntegrationsSearch` keeps provider, enabled and paging            |
+| Selected department        | URL search params           | `/departments?dept=…` deep-links to a node, invalid ids fall back          |
+| Saved views                | `localStorage`              | `fish-admin:users-views:{userId}`, capped at 10                            |
+| Table density              | `localStorage`              | `fish-admin:users-density`                                                 |
+| Connectivity               | `src/lib/online.ts`         | `useSyncExternalStore` over the `online`/`offline` window events           |
+| Demo database              | MSW handlers                | Persisted under `fish-admin:db:v1`                                         |
 
 ### API client
 
@@ -126,14 +136,39 @@ features/auth/
 └─ components/     AuthShell plus one page per step of the lifecycle
 ```
 
+```text
+features/projects/              features/files/
+├─ api.ts          list, detail ├─ api.ts       folders, files, bulk delete
+│                  and mutations├─ queries.ts   folder and file queries
+├─ queries.ts      project      ├─ search.ts    folder, view, filters, paging
+│                  queries      └─ components/  FileLibraryPage, folder tree,
+├─ search.ts       filters, view,                 upload drawer, preview pane
+│                  paging
+└─ components/     ProjectsPage, project board,
+                   create wizard, detail tabs
+```
+
+```text
+features/reports/               features/notifications/       features/integrations/
+├─ api.ts          report query ├─ api.ts       inbox and pref├─ api.ts       connections and
+├─ queries.ts      range-aware  │                mutations      │                deliveries
+│                  query keys   ├─ queries.ts   notification   ├─ queries.ts   list and delivery
+├─ search.ts       from/to/     │                queries        │                query keys
+│                  granularity  └─ components/  inbox, drawer, ├─ search.ts    filters/paging
+└─ components/     ReportPage     preferences                  └─ components/  list, editor,
+                   lazy charts                                                 deliveries drawer
+```
+
 UI components never call `fetch` directly; they use TanStack Query options that wrap the feature API.
 
 ## Mock backend
 
 - `src/mocks/seed.ts` creates the database with Faker using a fixed seed: three demo accounts plus 57 generated users, a 10-node department tree, roles, invitations and 160 audit events spread over 90 days.
-- `src/mocks/db/store.ts` reads and writes the database and synchronizes it to `localStorage` on every mutation. It migrates v1 and v2 databases to the current v3 shape; only an unknown version triggers a reset.
-- Handlers under `src/mocks/handlers` implement the auth lifecycle, users (including bulk and restore), departments, roles (including create, rename and delete), permissions, audit events, dashboard and reset endpoints. Write handlers call `authorize()` and return `403` when the token's role lacks the permission.
-- Audit events are the single activity log. User, role, department and profile mutations call `logAuditEvent()`; `logActivity()` remains a thin wrapper, and the dashboard maps the newest events through `recentActivity()`. The list is capped at 500 entries.
+- `src/mocks/seed-workspace.ts` deterministically seeds the business collections shared by seed and migration: 12 projects with 72 tasks, 48 milestones and budget items; 8 file folders and 18 files (image thumbnails are small SVG data URIs); 6 integrations with 24 delivery records; a notification inbox with per-user quiet hours and channel preferences; and 60 audit events tied to real project, file and integration ids.
+- `src/mocks/db/store.ts` reads and writes the database and synchronizes it to `localStorage` on every mutation. `MOCK_DB_VERSION` is 4: it migrates v1 → v2 → v3 → v4, preserves users, roles, departments, sessions and tokens, merges the new permission codes into system roles and appends the workspace collections idempotently. Only an unknown version triggers a reset.
+- Handlers under `src/mocks/handlers` implement the auth lifecycle, users (including bulk, restore and CSV import), departments, roles (including create, rename and delete), permissions, audit events, projects (tasks, milestones and attachments), file folders and files (including bulk delete), reports, notifications and preferences, integrations (deliveries and replay), dashboard and reset endpoints. Write handlers call `authorize()` and return `403` when the token's role lacks the permission.
+- Reports are generated deterministically from the requested range and granularity; thresholds and series colors are presentation-only and never persisted. File uploads send metadata plus an optional data URL; files above 256 KB keep metadata only.
+- Audit events are the single activity log. User, role, department, profile, project, file and integration mutations call `logAuditEvent()`; `logActivity()` remains a thin wrapper, and the dashboard maps the newest events through `recentActivity()`. The list is capped at 500 entries.
 - Tokens are fake but structurally realistic: a base64url access token with an expiry, opaque refresh tokens tied to session records, and separate verification, password-reset and MFA-challenge entries with their own TTLs.
 - `src/mocks/auth.ts` holds the auth rules: session rotation on refresh, five failed passwords locking an email for one minute, an MFA challenge that short-circuits login, and revocation of other sessions when a password changes.
 - Deleting a user is soft (`deletedAt`), so `POST /api/users/restore` can undo a bulk delete; deactivating a user revokes their sessions.
@@ -153,7 +188,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Internationalization
 
-- Locale JSON lives in `src/locales/{en,zh-CN}` with 15 namespaces: `common`, `nav`, `auth`, `dashboard`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `ui`, `errors`, `validation`.
+- Locale JSON lives in `src/locales/{en,zh-CN}` with 21 namespaces: `common`, `nav`, `auth`, `dashboard`, `projects`, `files`, `reports`, `notifications`, `integrations`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `ui`, `catalog`, `errors`, `validation`.
 - `common`, `nav` and `errors` are bundled; other namespaces are loaded on demand with `i18next-resources-to-backend` and `import.meta.glob`.
 - The initial language comes from `localStorage`, then the browser language, then English.
 - `changeLanguage()` persists the choice, switches i18next and updates `<html lang>`.
@@ -170,7 +205,8 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Testing strategy
 
-- Unit tests cover permission parsing and wildcard expansion, nav-to-route resolution (including longest-prefix matching), URL search validation for users and audit logs, Zod schemas for users and every auth form, password strength, theme application, locale key parity, API clients, query keys, single-flight refresh, saved-view persistence, online status, `<Can>`, the tree utilities, transfer selection and the tags input.
-- Database migration tests replay v1 and v2 payloads into v3 and verify that damaged storage resets instead of crashing.
-- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, saved views, density and column controls, URL-restored filters, user detail and tags, department deep links and creation, the role matrix and role CRUD, audit filters and the detail drawer, theme/language persistence, the `/components` catalog and `/ui` playground, and the status and offline screens.
+- Unit tests cover permission parsing and wildcard expansion, nav-to-route resolution (including longest-prefix matching), URL search validation for users, audit logs, projects, files, reports and integrations, Zod schemas for users and every auth form, password strength, theme application, locale key parity, API clients, query keys, single-flight refresh, saved-view persistence, online status, `<Can>`, the tree utilities, transfer selection, the tags input, notification preferences, integration headers and deterministic report generation.
+- The component registry test requires all 83 entries to declare a `usedIn` route, rejects `/components` and `/ui`, resolves each route through the generated route tree, and checks that every new business route is referenced.
+- Database migration tests replay v1, v2 and v3 payloads into v4, verify that users, sessions and tokens survive, that the new permissions are merged and that a second migration is idempotent; damaged storage resets instead of crashing.
+- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, CSV import, saved views, density and column controls, URL-restored filters, user detail and tags, department deep links and creation, the role matrix and role CRUD, audit filters and the JSON detail drawer, project filters, the create wizard, archiving, detail tabs, tasks, members, budget and retrospective, file upload, preview, watermark, move and delete, notification read state and preferences, report ranges, anchors and CSV export, integration creation, toggling, payloads and replay, theme/language persistence, the `/components` catalog and `/ui` playground, and the status and offline screens.
 - CI runs format check, lint, typecheck, coverage, a production build and the E2E suite in parallel jobs.

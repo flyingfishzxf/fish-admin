@@ -42,10 +42,15 @@ __root.tsx              Providers、全局 404 与错误兜底
 │  ├─ reset-password.tsx   /reset-password?token=…
 │  ├─ accept-invite.tsx    /accept-invite?token=…
 │  └─ otp.tsx              /otp?challenge=…  第二因子
-└─ _app/route.tsx       会话守卫 + AppShell（侧边栏、离线横幅、命令面板）
+└─ _app/route.tsx       会话守卫 + AppShell（侧边栏、铃铛、离线横幅、命令面板）
    ├─ index.tsx         /            dashboard:read
+   ├─ reports.tsx       /reports     report:read
    ├─ components.tsx    /components  仅需登录（可搜索的组件目录）
    ├─ ui.tsx            /ui          仅需登录（组件演练场）
+   ├─ projects.tsx      /projects    project:read
+   ├─ projects_.$id.tsx /projects/$id project:read
+   ├─ files.tsx         /files       file:read
+   ├─ notifications.tsx /notifications 仅需登录
    ├─ users.tsx         /users       user:read
    ├─ users_.$id.tsx    /users/$id   user:read
    ├─ departments.tsx   /departments department:read
@@ -53,6 +58,7 @@ __root.tsx              Providers、全局 404 与错误兜底
    ├─ roles_.matrix.tsx /roles/matrix role:read
    ├─ permissions.tsx   /permissions permission:read
    ├─ audit-logs.tsx    /audit-logs  audit:read
+   ├─ integrations.tsx  /integrations integration:read
    ├─ profile.tsx       /profile     仅需登录
    ├─ security.tsx      /security    仅需登录
    ├─ settings.tsx      /settings    仅需登录
@@ -78,6 +84,10 @@ Vite 插件排在 React 与 Tailwind 插件之前，并启用了 `autoCodeSplitt
 | API 数据         | TanStack Query              | query key 与各 feature 的 `queries.ts` 放在一起                    |
 | 表格筛选与分页   | URL search params           | `validateUsersSearch` 保证链接可分享、刷新后呈现一致               |
 | 审计筛选与分页   | URL search params           | `validateAuditSearch` 同步搜索、动作、对象与日期区间               |
+| 项目筛选与分页   | URL search params           | `validateProjectsSearch` 把状态、优先级、负责人与视图写入 URL      |
+| 文件筛选与目录   | URL search params           | `validateFilesSearch` 驱动文件夹树、视图模式与分页                 |
+| 报表区间         | URL search params           | `validateReportsSearch` 让 `from`、`to` 与粒度可分享               |
+| 集成筛选         | URL search params           | `validateIntegrationsSearch` 同步服务商、启停与分页                |
 | 选中部门         | URL search params           | `/departments?dept=…` 可深链，非法 id 回退到首个根节点             |
 | 已保存视图       | `localStorage`              | `fish-admin:users-views:{userId}`，最多 10 个                      |
 | 表格密度         | `localStorage`              | `fish-admin:users-density`                                         |
@@ -126,14 +136,38 @@ features/auth/
 └─ components/     AuthShell 及账号生命周期每一步各一个页面
 ```
 
+```text
+features/projects/              features/files/
+├─ api.ts          列表、详情  ├─ api.ts       文件夹、文件与批量删除
+│                  与变更      ├─ queries.ts   文件夹与文件查询
+├─ queries.ts      项目查询    ├─ search.ts    目录、视图、筛选与分页
+├─ search.ts       筛选、视图  └─ components/  FileLibraryPage、文件夹树、
+│                  与分页                      上传抽屉、预览分栏
+└─ components/     ProjectsPage、项目看板、
+                   创建向导、详情 tabs
+```
+
+```text
+features/reports/               features/notifications/       features/integrations/
+├─ api.ts          报表查询    ├─ api.ts       收件箱与偏好 ├─ api.ts       连接与投递
+├─ queries.ts      按区间生成  │                变更         │                记录
+│                  query key   ├─ queries.ts   通知查询     ├─ queries.ts   列表与投递
+├─ search.ts       from/to/    │                             │                查询 key
+│                  granularity └─ components/  收件箱、抽屉 ├─ search.ts    筛选与分页
+└─ components/     ReportPage    与偏好设置                  └─ components/  列表、编辑器、
+                   懒加载图表                                               投递抽屉
+```
+
 UI 组件不直接调用 `fetch`，而是使用包装了 feature API 的 TanStack Query options。
 
 ## Mock 后端
 
 - `src/mocks/seed.ts` 使用固定种子通过 Faker 生成数据库：三个演示账号加 57 个生成用户、10 个部门节点、角色、邀请，以及分布在 90 天内的 160 条审计事件。
-- `src/mocks/db/store.ts` 负责读写数据库，每次变更同步到 `localStorage`；它会把 v1、v2 数据迁移到当前 v3 结构，只有未知版本才重置。
-- `src/mocks/handlers` 下的 handler 实现认证生命周期、用户（含批量操作与恢复）、部门、角色（含新建、重命名与删除）、权限、审计事件、工作台与重置接口。写操作会先调用 `authorize()`，token 所属角色缺少权限时返回 `403`。
-- 审计事件是唯一的活动日志。用户、角色、部门与个人资料的变更都调用 `logAuditEvent()`；`logActivity()` 保留为薄包装，工作台通过 `recentActivity()` 映射最新事件。日志上限 500 条。
+- `src/mocks/seed-workspace.ts` 为 seed 与迁移共用一套确定性的业务数据：12 个项目含 72 条任务、48 个里程碑与预算项；8 个文件夹与 18 个文件（图片缩略图使用小体积 SVG data URI）；6 个集成连接与 24 条投递记录；按用户保存的通知收件箱、免打扰时段与渠道偏好；以及 60 条引用真实项目、文件与集成 ID 的审计事件。
+- `src/mocks/db/store.ts` 负责读写数据库，每次变更同步到 `localStorage`。`MOCK_DB_VERSION` 为 4：按 v1 → v2 → v3 → v4 迁移，保留用户、角色、部门、会话与令牌，把新权限码合并进系统角色，并幂等追加工作区集合；只有未知版本才重置。
+- `src/mocks/handlers` 下的 handler 实现认证生命周期、用户（含批量操作、恢复与 CSV 导入）、部门、角色（含新建、重命名与删除）、权限、审计事件、项目（任务、里程碑与附件）、文件夹与文件（含批量删除）、报表、通知与偏好、集成（投递与重放）、工作台与重置接口。写操作会先调用 `authorize()`，token 所属角色缺少权限时返回 `403`。
+- 报表完全由请求区间与粒度确定性生成；阈值与系列颜色只影响展示，不写库。文件上传发送元数据和可选的 data URL；超过 256 KB 的文件只保留元数据。
+- 审计事件是唯一的活动日志。用户、角色、部门、个人资料、项目、文件与集成的变更都调用 `logAuditEvent()`；`logActivity()` 保留为薄包装，工作台通过 `recentActivity()` 映射最新事件。日志上限 500 条。
 - 令牌是假令牌，但结构贴近真实：带过期时间的 base64url access token、与会话记录绑定的不透明 refresh token，以及各自带 TTL 的验证、密码重置和 MFA 挑战条目。
 - `src/mocks/auth.ts` 集中认证规则：刷新时轮换会话、同一邮箱密码错误五次锁定一分钟、MFA 挑战会中断登录流程、修改密码时撤销其他会话。
 - 删除用户是软删除（`deletedAt`），因此 `POST /api/users/restore` 可以撤销批量删除；停用用户会撤销其会话。
@@ -153,7 +187,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 国际化
 
-- 语言 JSON 位于 `src/locales/{en,zh-CN}`，共 15 个 namespace：`common`、`nav`、`auth`、`dashboard`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`ui`、`errors`、`validation`。
+- 语言 JSON 位于 `src/locales/{en,zh-CN}`，共 21 个 namespace：`common`、`nav`、`auth`、`dashboard`、`projects`、`files`、`reports`、`notifications`、`integrations`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`ui`、`catalog`、`errors`、`validation`。
 - `common`、`nav`、`errors` 直接打入主包；其余通过 `i18next-resources-to-backend` 与 `import.meta.glob` 按需加载。
 - 初始语言依次取 `localStorage`、浏览器语言，最后回退英文。
 - `changeLanguage()` 持久化选择、切换 i18next 并同步 `<html lang>`。
@@ -170,7 +204,8 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 测试策略
 
-- 单元测试覆盖权限解析与通配展开、导航到路由的解析（含最长前缀匹配）、用户与审计的 URL search 校验、用户与所有认证表单的 Zod schema、密码强度、主题应用、locale key 对齐、API 客户端、query key、单飞刷新、已保存视图持久化、在线状态、`<Can>`、树工具函数、穿梭框选择与标签输入。
-- 数据库迁移测试会重放 v1、v2 数据到 v3，并验证损坏的存储会重置而不是崩溃。
-- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与详情抽屉、主题与语言持久化、`/components` 组件目录与 `/ui` 演练场，以及状态页与离线画面。
+- 单元测试覆盖权限解析与通配展开、导航到路由的解析（含最长前缀匹配）、用户、审计、项目、文件、报表与集成的 URL search 校验、用户与所有认证表单的 Zod schema、密码强度、主题应用、locale key 对齐、API 客户端、query key、单飞刷新、已保存视图持久化、在线状态、`<Can>`、树工具函数、穿梭框选择、标签输入、通知偏好、集成请求头与确定性报表生成。
+- 组件注册表测试要求 83 个条目全部声明 `usedIn`，拒绝 `/components` 与 `/ui`，通过生成的 route tree 解析每个路由，并检查每个新业务路由至少被引用一次。
+- 数据库迁移测试会把 v1、v2、v3 数据重放到 v4，验证用户、会话与令牌保留、新权限合并、重复迁移幂等；损坏的存储会重置而不是崩溃。
+- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、CSV 导入、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与 JSON 详情抽屉、项目筛选/创建向导/归档/详情 tabs/任务/成员/预算/复盘、文件上传/预览/水印/移动/删除、通知已读与偏好、报表区间/锚点/CSV 导出、集成创建/启停/payload/重放、主题与语言持久化、`/components` 组件目录与 `/ui` 演练场，以及状态页与离线画面。
 - CI 并行执行格式检查、lint、类型检查、覆盖率、生产构建与 E2E。

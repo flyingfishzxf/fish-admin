@@ -8,24 +8,31 @@ FishAdmin demonstrates a complete client-side permission flow: navigation, route
 
 Permissions use a `resource:action` format:
 
-| Code                | What it protects                                                                                         |
-| ------------------- | -------------------------------------------------------------------------------------------------------- |
-| `dashboard:read`    | Dashboard route and KPI data                                                                             |
-| `user:read`         | Users route, user detail, user list and role options                                                     |
-| `user:create`       | "New user" button and `POST /api/users`                                                                  |
-| `user:update`       | Edit action, `PATCH /api/users/:id` and `POST /api/users/bulk-status`                                    |
-| `user:delete`       | Delete action, `DELETE /api/users/:id` and the bulk delete/restore endpoints                             |
-| `role:read`         | Roles route, permission matrix and `GET /api/roles`                                                      |
-| `role:create`       | "New role" action, the create-role wizard and `POST /api/roles`                                          |
-| `role:update`       | Editing custom roles, the permission matrix, `PATCH /api/roles/:id` and `PUT /api/roles/:id/permissions` |
-| `role:delete`       | Deleting custom roles and `DELETE /api/roles/:id`                                                        |
-| `audit:read`        | Audit log route, per-user activity and `GET /api/audit-events`                                           |
-| `department:read`   | Departments route, the department tree and `GET /api/departments`                                        |
-| `department:manage` | Create/rename department actions and `POST`/`PATCH /api/departments`                                     |
-| `permission:read`   | Read-only permissions page and `GET /api/permissions`                                                    |
-| `demo:reset`        | Resetting the demo database                                                                              |
+| Code                 | What it protects                                                                                         |
+| -------------------- | -------------------------------------------------------------------------------------------------------- |
+| `dashboard:read`     | Dashboard route and KPI data                                                                             |
+| `project:read`       | Projects board, project detail, tasks and milestones                                                     |
+| `project:manage`     | Create/update/archive projects, tasks, milestones, budget and attachments                                |
+| `file:read`          | File library, folder tree, previews and downloads                                                        |
+| `file:manage`        | Uploading, renaming, moving, favoriting and deleting files                                               |
+| `report:read`        | Reports route and `GET /api/reports`                                                                     |
+| `integration:read`   | Integrations list, connection details and delivery logs                                                  |
+| `integration:manage` | Creating, updating, deleting and replaying integrations                                                  |
+| `user:read`          | Users route, user detail, user list and role options                                                     |
+| `user:create`        | "New user" button, `POST /api/users` and CSV import                                                      |
+| `user:update`        | Edit action, `PATCH /api/users/:id` and `POST /api/users/bulk-status`                                    |
+| `user:delete`        | Delete action, `DELETE /api/users/:id` and the bulk delete/restore endpoints                             |
+| `role:read`          | Roles route, permission matrix and `GET /api/roles`                                                      |
+| `role:create`        | "New role" action, the create-role wizard and `POST /api/roles`                                          |
+| `role:update`        | Editing custom roles, the permission matrix, `PATCH /api/roles/:id` and `PUT /api/roles/:id/permissions` |
+| `role:delete`        | Deleting custom roles and `DELETE /api/roles/:id`                                                        |
+| `audit:read`         | Audit log route, per-user activity and `GET /api/audit-events`                                           |
+| `department:read`    | Departments route, the department tree and `GET /api/departments`                                        |
+| `department:manage`  | Create/rename department actions and `POST`/`PATCH /api/departments`                                     |
+| `permission:read`    | Read-only permissions page and `GET /api/permissions`                                                    |
+| `demo:reset`         | Resetting the demo database                                                                              |
 
-Three areas deliberately have no permission code: `/components` and `/ui` (the component catalog and playground are useful to every signed-in role) and the account pages `/profile` and `/security`, which operate on the current user only.
+Several areas deliberately have no permission code: `/components` and `/ui` (the component catalog and playground are useful to every signed-in role), `/notifications` (it only exposes the current user's inbox) and the account pages `/profile` and `/security`, which operate on the current user only.
 
 `src/config/permissions.ts` is the single source of truth. It exports:
 
@@ -42,17 +49,17 @@ An effective permission list comes from `GET /api/auth/me`; it is not stored wit
 
 ## Roles in the demo
 
-| Role          | Permissions                                                                                                                                                                     |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Administrator | `*`                                                                                                                                                                             |
-| Manager       | `dashboard:read`, `user:read`, `user:create`, `user:update`, `role:read`, `role:create`, `role:update`, `audit:read`, `department:read`, `department:manage`, `permission:read` |
-| Viewer        | `dashboard:read`, `user:read`, `audit:read`, `department:read`                                                                                                                  |
+| Role          | Permissions                                                                                                                                                                                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Administrator | `*`                                                                                                                                                                                                                                                                              |
+| Manager       | `dashboard:read`, `project:read`, `project:manage`, `file:read`, `file:manage`, `report:read`, `integration:read`, `user:read`, `user:create`, `user:update`, `role:read`, `role:create`, `role:update`, `audit:read`, `department:read`, `department:manage`, `permission:read` |
+| Viewer        | `dashboard:read`, `project:read`, `file:read`, `report:read`, `integration:read`, `user:read`, `audit:read`, `department:read`                                                                                                                                                   |
 
 The difference is intentional and visible:
 
 - Administrator sees every menu entry, can delete users and roles, edit any non-admin role in the matrix and reset demo data.
-- Manager can create and edit users, manage departments, create and edit custom roles and open the read-only permission registry. It cannot delete users or roles, and the admin column of the matrix is read-only.
-- Viewer sees the dashboard, users, departments and the audit log; every write control is hidden.
+- Manager can create and edit users, manage projects and files, manage departments, create and edit custom roles and open the read-only permission registry. It cannot delete users or roles, cannot manage integrations, and the admin column of the matrix is read-only.
+- Viewer sees the dashboard, projects, files, reports, integrations, users, departments and the audit log; every write control is hidden.
 
 Try opening `/roles/matrix` while signed in as Viewer: the route guard redirects to `/403` even though the URL was typed directly. As Manager, the same page opens but the Administrator column cannot be changed.
 

@@ -43,7 +43,7 @@ pnpm test:e2e
 
 ### Visual regression
 
-`e2e/visual/pages.spec.ts` compares nine screenshots against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The baselines are platform-specific, so run the suite through Docker even on Linux; `pnpm test:visual` exits with an error off Linux and warns when it is not running in a container.
+`e2e/visual/pages.spec.ts` compares sixteen screenshots against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The baselines are platform-specific, so run the suite through Docker even on Linux; `pnpm test:visual` exits with an error off Linux and warns when it is not running in a container.
 
 ```bash
 pnpm test:visual:docker --update   # regenerate baselines after an intentional UI change

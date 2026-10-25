@@ -28,8 +28,13 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 ## 功能
 
 - **完整账号生命周期** —— 登录、注册与邮箱验证、忘记密码/重置、邀请链接、两步验证登录（TOTP 风格）、连续五次失败锁定、修改密码与多设备会话列表。会话恢复包含单飞刷新令牌轮换、登录后深链回跳与全局 401 处理。
-- **三级 RBAC** —— 导航、路由守卫与按钮级 `<Can>` 全部由同一份权限注册表派生。14 个权限码覆盖用户、角色、部门与审计，管理员、经理、访客三种账号可一键切换对比。
-- **真实感 Mock API** —— MSW + 固定种子的内存数据库（同步到 `localStorage`），60 个用户分布在 10 个部门节点，160 条审计事件，支持分页、筛选、排序、假 JWT、刷新令牌、`403` 与演示数据重置。
+- **三级 RBAC** —— 导航、路由守卫与按钮级 `<Can>` 全部由同一份权限注册表派生。21 个权限码覆盖项目、文件、报表、集成、用户、角色、部门与审计，管理员、经理、访客三种账号可一键切换对比。
+- **真实感 Mock API** —— MSW + 固定种子的内存数据库（同步到 `localStorage`），60 个用户分布在 10 个部门节点，12 个项目含 72 条任务与 48 个里程碑，18 个文件分布在 8 个文件夹节点，6 个集成连接与 24 条投递记录，通知中心与偏好设置，220 条审计事件，支持分页、筛选、排序、假 JWT、刷新令牌、`403` 与演示数据重置。
+- **项目交付工作台** —— `/projects` 组合 URL 驱动的筛选栏、看板/列表切换、精选项目轮播、创建向导、右键菜单、归档确认与分页；进入 `/projects/$id` 后可查看概览、任务、里程碑日历、成员转移、预算编辑、附件与复盘步骤条。
+- **资源库** —— `/files` 将文件夹树与面包屑、网格/列表视图、上传队列、可拖拽预览分栏与水印、图片轮播、JSON 元数据、批量选择以及移动/删除串成一条流程。上传文件在客户端读成 data URL；大文件只保留元数据。
+- **报表与通知** —— `/reports` 提供懒加载的 KPI/趋势/渠道报表，支持日期范围、粒度、目标阈值、锚点导航、回到顶部与 CSV 导出。`/notifications` 增加全部/未读/提及分段筛选、批量已读、详情抽屉、免打扰时段与渠道偏好；顶栏铃铛复用同一查询。
+- **集成中心与用户导入** —— `/integrations` 管理 Webhook 连接、请求头、投递记录 payload 与重放；`/users` 新增批量导入向导，`/audit-logs` 可在详情抽屉查看原始事件 JSON，并跳转到项目、文件或集成实体。
+- **产品导览** —— 工作台页头的导览按钮会依次指向侧边栏、搜索、通知铃铛与账户菜单。
 - **高级用户表格** —— URL 驱动搜索、筛选、排序、分页；行选择与批量改状态、批量删除/恢复（Toast 可撤销）；列显隐、列拖动排序、列固定与列宽拖拽；两种行高密度；行右键菜单；保存视图；CSV 导出；Drawer 表单（RHF + Zod）；加载、空态与错误态齐全。
 - **用户详情与动态** —— `/users/$id` 汇总概览、标签即时编辑、头像拖拽上传与该用户的活动时间线，未知 ID 显示 Result 空状态。
 - **组织架构树** —— `/departments` 提供可键盘导航的部门树、成员计数，以及新建子部门 / 重命名与可深链的选中态。
@@ -37,7 +42,7 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 - **审计日志** —— `/audit-logs` 支持 URL 同步筛选、日期区间预设、详情抽屉与关联事件，并可跳转到受影响的用户、角色或部门。
 - **可见的异常处理** —— `401`、`403`、`500`、`503` 与维护页各有专页，断网时显示离线横幅并在恢复后提示，路由错误由 error boundary 兜底，设置页与组件库页提供直达预览入口。
 - **工作台** —— KPI 卡片、收入面积图、流量柱状图、渠道环形图、最近活动，支持 7/30 天切换；图表随路由懒加载。
-- **83 个共享组件与可搜索目录** —— 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）统一登记在 `src/config/components.ts`。`/components` 支持搜索整份清单，并为全部 83 个组件提供贴合业务场景的实时演示，每张卡片都能一键复制 import 路径、并标注它已在哪个页面投入使用；`/ui` 继续集中展示原语的状态、浮层与表单控件，并由吸顶分段导航串联。ProTable 现已用于用户与审计页，让同一套表格外壳在业务页面中复用。
+- **83 个共享组件与可搜索目录** —— 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）统一登记在 `src/config/components.ts`。`/components` 支持搜索整份清单，并为全部 83 个组件提供贴合业务场景的实时演示，每张卡片都能一键复制 import 路径、并标注它已在哪个业务页面投入使用；每个条目都必须指向 `/components`、`/ui` 之外的真实路由，并由单元测试强制校验。`/ui` 继续集中展示原语的状态、浮层与表单控件，并由吸顶分段导航串联。ProTable 现已用于用户与审计页，让同一套表格外壳在业务页面中复用。
 - **明快产品风设计系统** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，首屏无闪烁。
 - **中英双语** —— i18next 按 namespace 懒加载，`Intl` 处理日期/数字，校验文案随语言切换。
 - **命令面板** —— `Ctrl/⌘ K` 打开导航与快捷动作，按当前角色过滤。
@@ -59,16 +64,23 @@ pnpm dev
 
 ### 演示账号
 
-| 角色   | 邮箱               | 密码          | 能力                                             |
-| ------ | ------------------ | ------------- | ------------------------------------------------ |
-| 管理员 | `admin@fish.dev`   | `Admin123!`   | 全部权限：删除用户与角色、编辑权限矩阵、重置数据 |
-| 经理   | `manager@fish.dev` | `Manager123!` | 管理用户、部门与自定义角色，编辑权限，查看审计   |
-| 访客   | `viewer@fish.dev`  | `Viewer123!`  | 只读工作台、用户、部门与审计日志                 |
+| 角色   | 邮箱               | 密码          | 能力                                                                 |
+| ------ | ------------------ | ------------- | -------------------------------------------------------------------- |
+| 管理员 | `admin@fish.dev`   | `Admin123!`   | 全部权限：删除用户与角色、编辑权限矩阵、重置数据                     |
+| 经理   | `manager@fish.dev` | `Manager123!` | 管理项目、文件与用户；查看报表、集成、部门与审计；编辑自定义角色     |
+| 访客   | `viewer@fish.dev`  | `Viewer123!`  | 只读工作台、项目、文件、报表、集成、用户、部门与审计；没有任何写权限 |
 
 登录页支持一键填充。Mock 数据保存在浏览器的 `fish-admin:db:v1` 中，可在 **设置 → 重置演示数据** 或清除站点存储恢复初始状态。这些账号只存在于浏览器 Mock 中，请勿用于真实后端。
 
 还可以试试：
 
+- **项目** —— `/projects` 可按状态、优先级与负责人筛选。用两步向导创建项目，打开 `/projects/$id`，移动任务、编辑预算、转移成员、上传附件并完成复盘步骤条。
+- **资源库** —— `/files` 浏览文件夹树、切换网格/列表、上传一张小图、打开预览分栏与水印、在文件夹间移动文件，并用可撤销的 Toast 删除文件。
+- **通知** —— 顶栏铃铛显示未读数。`/notifications` 可切换全部/未读/提及、一键全部已读、打开详情抽屉，并保存免打扰时段与渠道偏好。
+- **报表** —— `/reports` 调整日期范围、粒度、目标阈值与系列颜色，在锚点区间跳转、回到顶部并下载 CSV。
+- **集成中心** —— `/integrations` 创建 Webhook、在行内表格编辑请求头、启停连接、查看投递 payload 并重放失败投递。
+- **批量导入** —— `/users` → **导入用户** 依次完成粘贴 CSV、预览与提交，并在审计日志中留下记录。
+- **产品导览** —— 点击工作台页头的 **产品导览** 按钮，依次高亮侧边栏、命令面板、通知铃铛与账户菜单。
 - **两步验证** —— 在 `/security` 开启 2FA，登出后重新登录即进入验证码步骤。演示验证码是 `246810`；真实应用应由 TOTP 密钥生成。
 - **邀请链接** —— 打开 `/accept-invite?token=fish-demo-invite` 以经理身份加入，再次访问可看到邀请已使用的提示。
 - **找回密码** —— `/forgot-password` 会直接返回演示重置链接，无需真实邮件即可走完流程。
@@ -82,31 +94,37 @@ pnpm dev
 
 ### 路由
 
-| 路径                 | 说明                                     | 所需权限          |
-| -------------------- | ---------------------------------------- | ----------------- |
-| `/`                  | 工作台：KPI、图表、活动                  | `dashboard:read`  |
-| `/components`        | 全部 83 个共享组件的可搜索目录           | 已登录            |
-| `/ui`                | 组件演练场：40 个原语演示、状态与浮层    | 已登录            |
-| `/users`             | 用户表格、CRUD 与批量操作                | `user:read`       |
-| `/users/$id`         | 用户概览、标签、头像与动态时间线         | `user:read`       |
-| `/departments`       | 部门树、成员与新建/重命名                | `department:read` |
-| `/roles`             | 角色卡片与权限编辑                       | `role:read`       |
-| `/roles/matrix`      | 跨角色权限矩阵                           | `role:read`       |
-| `/permissions`       | 只读权限注册表                           | `permission:read` |
-| `/audit-logs`        | 可筛选审计日志与详情抽屉                 | `audit:read`      |
-| `/profile`           | 个人资料与头像上传演示                   | 已登录            |
-| `/security`          | 密码、两步验证与活动会话                 | 已登录            |
-| `/settings`          | 主题、强调色、语言、异常页预览、重置数据 | 已登录            |
-| `/403`               | 带应用外壳的无权限页                     | 已登录            |
-| `/login`             | 登录（账号开启 2FA 时进入验证码步骤）    | 公开              |
-| `/register`          | 注册并验证邮箱                           | 公开              |
-| `/verify-email`      | 消费验证 token                           | 公开              |
-| `/forgot-password`   | 申请重置链接                             | 公开              |
-| `/reset-password`    | 设置新密码并登出其他会话                 | 公开              |
-| `/accept-invite`     | 用邀请 token 创建经理账号                | 公开              |
-| `/otp`               | 密码通过后的第二步验证                   | 公开              |
-| `/401` `/500` `/503` | 会话过期、服务端错误、服务不可用         | 公开              |
-| `/maintenance`       | 计划停机页                               | 公开              |
+| 路径                 | 说明                                     | 所需权限           |
+| -------------------- | ---------------------------------------- | ------------------ |
+| `/`                  | 工作台：KPI、图表、活动与产品导览        | `dashboard:read`   |
+| `/reports`           | KPI、趋势与渠道报表，含锚点与 CSV 导出   | `report:read`      |
+| `/components`        | 全部 83 个共享组件的可搜索目录           | 已登录             |
+| `/ui`                | 组件演练场：40 个原语演示、状态与浮层    | 已登录             |
+| `/projects`          | 项目组合：筛选、看板/列表、向导与分页    | `project:read`     |
+| `/projects/$id`      | 项目工作台：任务、日历、预算与复盘       | `project:read`     |
+| `/files`             | 资源库：文件夹、上传、预览、移动与删除   | `file:read`        |
+| `/notifications`     | 通知中心、批量已读与渠道偏好             | 已登录             |
+| `/users`             | 用户表格、CRUD、批量操作与 CSV 导入      | `user:read`        |
+| `/users/$id`         | 用户概览、标签、头像与动态时间线         | `user:read`        |
+| `/departments`       | 部门树、成员与新建/重命名                | `department:read`  |
+| `/roles`             | 角色卡片与权限编辑                       | `role:read`        |
+| `/roles/matrix`      | 跨角色权限矩阵                           | `role:read`        |
+| `/permissions`       | 只读权限注册表                           | `permission:read`  |
+| `/audit-logs`        | 可筛选审计日志与原始 JSON 详情抽屉       | `audit:read`       |
+| `/integrations`      | Webhook 连接、请求头与投递记录           | `integration:read` |
+| `/profile`           | 个人资料与头像上传演示                   | 已登录             |
+| `/security`          | 密码、两步验证与活动会话                 | 已登录             |
+| `/settings`          | 主题、强调色、语言、异常页预览、重置数据 | 已登录             |
+| `/403`               | 带应用外壳的无权限页                     | 已登录             |
+| `/login`             | 登录（账号开启 2FA 时进入验证码步骤）    | 公开               |
+| `/register`          | 注册并验证邮箱                           | 公开               |
+| `/verify-email`      | 消费验证 token                           | 公开               |
+| `/forgot-password`   | 申请重置链接                             | 公开               |
+| `/reset-password`    | 设置新密码并登出其他会话                 | 公开               |
+| `/accept-invite`     | 用邀请 token 创建经理账号                | 公开               |
+| `/otp`               | 密码通过后的第二步验证                   | 公开               |
+| `/401` `/500` `/503` | 会话过期、服务端错误、服务不可用         | 公开               |
+| `/maintenance`       | 计划停机页                               | 公开               |
 
 未知路径在登录状态下显示外壳内的 404；未登录访问受保护页面会跳转 `/login?redirect=…`，登录后回到原地址。所有页面守卫都写在 `beforeLoad` 中；路由渲染抛错时由 error boundary 展示可重试的兜底页，而不是白屏。
 
@@ -114,11 +132,11 @@ pnpm dev
 
 权限采用 `resource:action` 格式，注册表位于 [`src/config/permissions.ts`](src/config/permissions.ts)。菜单、按钮和路由都由这份注册表派生。
 
-| 角色   | 权限                                                                                                                                                                            |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 管理员 | `*`                                                                                                                                                                             |
-| 经理   | `dashboard:read`、`user:read`、`user:create`、`user:update`、`role:read`、`role:create`、`role:update`、`audit:read`、`department:read`、`department:manage`、`permission:read` |
-| 访客   | `dashboard:read`、`user:read`、`audit:read`、`department:read`                                                                                                                  |
+| 角色   | 权限                                                                                                                                                                                                                                                                             |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 管理员 | `*`                                                                                                                                                                                                                                                                              |
+| 经理   | `dashboard:read`、`project:read`、`project:manage`、`file:read`、`file:manage`、`report:read`、`integration:read`、`user:read`、`user:create`、`user:update`、`role:read`、`role:create`、`role:update`、`audit:read`、`department:read`、`department:manage`、`permission:read` |
+| 访客   | `dashboard:read`、`project:read`、`file:read`、`report:read`、`integration:read`、`user:read`、`audit:read`、`department:read`                                                                                                                                                   |
 
 路由守卫位于各叶子路由的 `beforeLoad`；菜单在 [`src/config/nav.ts`](src/config/nav.ts) 中按权限过滤；按钮使用 `<Can permission="user:delete">`。新增权限的四步说明见 [docs/zh-CN/rbac.md](docs/zh-CN/rbac.md)。
 
@@ -126,49 +144,80 @@ pnpm dev
 
 演示完全运行在浏览器中，由 Service Worker 拦截请求。
 
-| 方法     | 端点                         | 说明                                                                                               |
-| -------- | ---------------------------- | -------------------------------------------------------------------------------------------------- |
-| `POST`   | `/api/auth/login`            | 返回令牌；账号开启 2FA 时返回验证挑战                                                              |
-| `POST`   | `/api/auth/mfa/verify`       | 用挑战 ID 与六位验证码换取令牌                                                                     |
-| `POST`   | `/api/auth/register`         | 创建未验证的访客账号，返回演示用验证 token                                                         |
-| `POST`   | `/api/auth/verify-email`     | 标记邮箱已验证                                                                                     |
-| `POST`   | `/api/auth/forgot-password`  | 无论账号是否存在都返回 200；命中账号时给出演示重置 token                                           |
-| `POST`   | `/api/auth/reset-password`   | 设置新密码并吊销其他会话                                                                           |
-| `GET`    | `/api/auth/invites/:token`   | 邀请预览                                                                                           |
-| `POST`   | `/api/auth/accept-invite`    | 创建被邀请用户并直接登录                                                                           |
-| `POST`   | `/api/auth/refresh`          | 轮换 refresh token                                                                                 |
-| `POST`   | `/api/auth/logout`           | 吊销 refresh token                                                                                 |
-| `GET`    | `/api/auth/me`               | 当前用户及有效权限                                                                                 |
-| `GET`    | `/api/auth/sessions`         | 当前用户的活动会话                                                                                 |
-| `DELETE` | `/api/auth/sessions/:id`     | 吊销单个会话（不能吊销当前设备）                                                                   |
-| `DELETE` | `/api/auth/sessions`         | 退出其他全部会话                                                                                   |
-| `POST`   | `/api/auth/change-password`  | 需要校验当前密码                                                                                   |
-| `POST`   | `/api/auth/2fa/setup`        | 返回演示密钥与验证码                                                                               |
-| `POST`   | `/api/auth/2fa/enable`       | 校验验证码并开启 2FA                                                                               |
-| `POST`   | `/api/auth/2fa/disable`      | 校验密码并关闭 2FA                                                                                 |
-| `GET`    | `/api/users`                 | `page`、`pageSize`、`q`、`roleId`、`status`、`departmentId`、`includeDescendants`、`sort`、`order` |
-| `POST`   | `/api/users`                 | 需要 `user:create`                                                                                 |
-| `GET`    | `/api/users/:id`             | 需要 `user:read`                                                                                   |
-| `PATCH`  | `/api/users/:id`             | 需要 `user:update`；支持 `departmentId`、`jobTitle`、`tags`、`avatar`                              |
-| `DELETE` | `/api/users/:id`             | 需要 `user:delete`；软删除，不能删除自己                                                           |
-| `POST`   | `/api/users/bulk-status`     | 需要 `user:update`；跳过无权操作的对象                                                             |
-| `POST`   | `/api/users/bulk-delete`     | 需要 `user:delete`；返回真正被删除的 ID                                                            |
-| `POST`   | `/api/users/restore`         | 需要 `user:delete`；供 Toast 撤销使用                                                              |
-| `GET`    | `/api/roles`                 | 角色及用户数、权限数                                                                               |
-| `GET`    | `/api/roles/options`         | 轻量角色选项                                                                                       |
-| `POST`   | `/api/roles`                 | 需要 `role:create`；重名返回 409 `ROLE_NAME_TAKEN`                                                 |
-| `PATCH`  | `/api/roles/:id`             | 需要 `role:update`；系统角色返回 `PROTECTED_ROLE`                                                  |
-| `DELETE` | `/api/roles/:id`             | 需要 `role:delete`；仍有成员时返回 `ROLE_IN_USE`                                                   |
-| `PUT`    | `/api/roles/:id/permissions` | 需要 `role:update`                                                                                 |
-| `GET`    | `/api/departments`           | 扁平部门列表，含直属与含后代人数                                                                   |
-| `POST`   | `/api/departments`           | 需要 `department:manage`；重名返回 409 `DEPARTMENT_NAME_TAKEN`                                     |
-| `PATCH`  | `/api/departments/:id`       | 需要 `department:manage`；重命名或换父级，拒绝成环                                                 |
-| `GET`    | `/api/audit-events`          | 需要 `audit:read`；`page`、`pageSize`、`q`、`action`、`entityType`、`entityId`、`from`、`to`       |
-| `GET`    | `/api/audit-events/:id`      | 需要 `audit:read`；返回事件及 5 条关联事件                                                         |
-| `GET`    | `/api/permissions`           | 权限注册表                                                                                         |
-| `GET`    | `/api/dashboard?range=7\|30` | 工作台数据                                                                                         |
-| `PATCH`  | `/api/profile`               | 当前用户资料                                                                                       |
-| `POST`   | `/api/__mock/reset`          | 重置用户、角色、部门与审计事件，保留当前会话                                                       |
+| 方法     | 端点                                                 | 说明                                                                                                                       |
+| -------- | ---------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `POST`   | `/api/auth/login`                                    | 返回令牌；账号开启 2FA 时返回验证挑战                                                                                      |
+| `POST`   | `/api/auth/mfa/verify`                               | 用挑战 ID 与六位验证码换取令牌                                                                                             |
+| `POST`   | `/api/auth/register`                                 | 创建未验证的访客账号，返回演示用验证 token                                                                                 |
+| `POST`   | `/api/auth/verify-email`                             | 标记邮箱已验证                                                                                                             |
+| `POST`   | `/api/auth/forgot-password`                          | 无论账号是否存在都返回 200；命中账号时给出演示重置 token                                                                   |
+| `POST`   | `/api/auth/reset-password`                           | 设置新密码并吊销其他会话                                                                                                   |
+| `GET`    | `/api/auth/invites/:token`                           | 邀请预览                                                                                                                   |
+| `POST`   | `/api/auth/accept-invite`                            | 创建被邀请用户并直接登录                                                                                                   |
+| `POST`   | `/api/auth/refresh`                                  | 轮换 refresh token                                                                                                         |
+| `POST`   | `/api/auth/logout`                                   | 吊销 refresh token                                                                                                         |
+| `GET`    | `/api/auth/me`                                       | 当前用户及有效权限                                                                                                         |
+| `GET`    | `/api/auth/sessions`                                 | 当前用户的活动会话                                                                                                         |
+| `DELETE` | `/api/auth/sessions/:id`                             | 吊销单个会话（不能吊销当前设备）                                                                                           |
+| `DELETE` | `/api/auth/sessions`                                 | 退出其他全部会话                                                                                                           |
+| `POST`   | `/api/auth/change-password`                          | 需要校验当前密码                                                                                                           |
+| `POST`   | `/api/auth/2fa/setup`                                | 返回演示密钥与验证码                                                                                                       |
+| `POST`   | `/api/auth/2fa/enable`                               | 校验验证码并开启 2FA                                                                                                       |
+| `POST`   | `/api/auth/2fa/disable`                              | 校验密码并关闭 2FA                                                                                                         |
+| `GET`    | `/api/users`                                         | `page`、`pageSize`、`q`、`roleId`、`status`、`departmentId`、`includeDescendants`、`sort`、`order`                         |
+| `POST`   | `/api/users`                                         | 需要 `user:create`                                                                                                         |
+| `GET`    | `/api/users/:id`                                     | 需要 `user:read`                                                                                                           |
+| `PATCH`  | `/api/users/:id`                                     | 需要 `user:update`；支持 `departmentId`、`jobTitle`、`tags`、`avatar`                                                      |
+| `DELETE` | `/api/users/:id`                                     | 需要 `user:delete`；软删除，不能删除自己                                                                                   |
+| `POST`   | `/api/users/bulk-status`                             | 需要 `user:update`；跳过无权操作的对象                                                                                     |
+| `POST`   | `/api/users/bulk-delete`                             | 需要 `user:delete`；返回真正被删除的 ID                                                                                    |
+| `POST`   | `/api/users/restore`                                 | 需要 `user:delete`；供 Toast 撤销使用                                                                                      |
+| `POST`   | `/api/users/import`                                  | 需要 `user:create`；校验行数据、返回逐行错误并创建通过的账号                                                               |
+| `GET`    | `/api/roles`                                         | 角色及用户数、权限数                                                                                                       |
+| `GET`    | `/api/roles/options`                                 | 轻量角色选项                                                                                                               |
+| `POST`   | `/api/roles`                                         | 需要 `role:create`；重名返回 409 `ROLE_NAME_TAKEN`                                                                         |
+| `PATCH`  | `/api/roles/:id`                                     | 需要 `role:update`；系统角色返回 `PROTECTED_ROLE`                                                                          |
+| `DELETE` | `/api/roles/:id`                                     | 需要 `role:delete`；仍有成员时返回 `ROLE_IN_USE`                                                                           |
+| `PUT`    | `/api/roles/:id/permissions`                         | 需要 `role:update`                                                                                                         |
+| `GET`    | `/api/departments`                                   | 扁平部门列表，含直属与含后代人数                                                                                           |
+| `POST`   | `/api/departments`                                   | 需要 `department:manage`；重名返回 409 `DEPARTMENT_NAME_TAKEN`                                                             |
+| `PATCH`  | `/api/departments/:id`                               | 需要 `department:manage`；重命名或换父级，拒绝成环                                                                         |
+| `GET`    | `/api/audit-events`                                  | 需要 `audit:read`；`page`、`pageSize`、`q`、`action`、`entityType`、`entityId`、`from`、`to`                               |
+| `GET`    | `/api/audit-events/:id`                              | 需要 `audit:read`；返回事件及 5 条关联事件                                                                                 |
+| `GET`    | `/api/permissions`                                   | 权限注册表                                                                                                                 |
+| `GET`    | `/api/dashboard?range=7\|30`                         | 工作台数据                                                                                                                 |
+| `GET`    | `/api/projects`                                      | 需要 `project:read`；`page`、`pageSize`、`q`、`status`、`priority`、`ownerId`、`departmentId`、`archived`、`sort`、`order` |
+| `GET`    | `/api/projects/:id`                                  | 需要 `project:read`；项目及任务、里程碑、成员与附件                                                                        |
+| `POST`   | `/api/projects`                                      | 需要 `project:manage`；重复 key 返回 409 `KEY_TAKEN`                                                                       |
+| `PATCH`  | `/api/projects/:id`                                  | 需要 `project:manage`；状态、优先级、成员、预算、进度、标签、评分、复盘与归档                                              |
+| `POST`   | `/api/projects/:id/tasks`                            | 需要 `project:manage`；在项目中创建任务                                                                                    |
+| `PATCH`  | `/api/projects/:id/tasks/:taskId`                    | 需要 `project:manage`；标题、状态、负责人、截止日期与估时                                                                  |
+| `PATCH`  | `/api/projects/:id/milestones/:milestoneId`          | 需要 `project:manage`；切换里程碑完成状态                                                                                  |
+| `POST`   | `/api/projects/:id/attachments`                      | 需要 `project:manage`；把已有文件关联到项目                                                                                |
+| `DELETE` | `/api/projects/:id/attachments/:fileId`              | 需要 `project:manage`                                                                                                      |
+| `GET`    | `/api/file-folders`                                  | 需要 `file:read`；扁平文件夹树与文件计数                                                                                   |
+| `GET`    | `/api/files`                                         | 需要 `file:read`；`folderId`、`q`、`kind`、`visibility`、`favorite`、`sort`、`order`、`updatedAfter`、`page`、`pageSize`   |
+| `POST`   | `/api/files`                                         | 需要 `file:manage`；JSON 元数据，小文件可带 data URL                                                                       |
+| `PATCH`  | `/api/files/:id`                                     | 需要 `file:manage`；名称、文件夹、可见性与收藏                                                                             |
+| `DELETE` | `/api/files/:id`                                     | 需要 `file:manage`                                                                                                         |
+| `POST`   | `/api/files/bulk-delete`                             | 需要 `file:manage`；返回真正被删除的 ID                                                                                    |
+| `GET`    | `/api/reports`                                       | 需要 `report:read`；`from`、`to`（`yyyy-MM-dd`）与 `granularity=day\|week\|month`                                          |
+| `GET`    | `/api/notifications`                                 | 已登录；`filter=all\|unread\|mentions`、`page`、`pageSize`                                                                 |
+| `GET`    | `/api/notifications/:id`                             | 已登录；当前用户的一条通知                                                                                                 |
+| `PATCH`  | `/api/notifications/:id`                             | 已登录；已读状态                                                                                                           |
+| `POST`   | `/api/notifications/read`                            | 已登录；按 ID 批量标记已读                                                                                                 |
+| `POST`   | `/api/notifications/read-all`                        | 已登录；全部标记已读                                                                                                       |
+| `GET`    | `/api/notifications/preferences`                     | 已登录；免打扰时段、摘要频率与渠道                                                                                         |
+| `PUT`    | `/api/notifications/preferences`                     | 已登录；保存免打扰时段、摘要频率与渠道                                                                                     |
+| `GET`    | `/api/integrations`                                  | 需要 `integration:read`；`page`、`pageSize`、`q`、`provider`、`enabled`                                                    |
+| `POST`   | `/api/integrations`                                  | 需要 `integration:manage`                                                                                                  |
+| `PATCH`  | `/api/integrations/:id`                              | 需要 `integration:manage`；端点、事件、模式、启停与请求头                                                                  |
+| `DELETE` | `/api/integrations/:id`                              | 需要 `integration:manage`                                                                                                  |
+| `GET`    | `/api/integrations/deliveries`                       | 需要 `integration:read`；跨连接的最新 `limit` 条投递                                                                       |
+| `GET`    | `/api/integrations/:id/deliveries`                   | 需要 `integration:read`；单个连接的投递记录                                                                                |
+| `POST`   | `/api/integrations/:id/deliveries/:deliveryId/retry` | 需要 `integration:manage`；重放一条投递                                                                                    |
+| `PATCH`  | `/api/profile`                                       | 当前用户资料                                                                                                               |
+| `POST`   | `/api/__mock/reset`                                  | 重置用户、角色、部门、工作区数据与审计事件，保留当前会话                                                                   |
 
 假 JWT 有效期 15 分钟，refresh token 有效期 7 天，验证 token 24 小时，重置 token 30 分钟；同一邮箱连续五次密码错误会锁定一分钟。客户端遇到 401 只做一次刷新并重试；失败则清空会话并跳转登录。真实部署建议改用 `httpOnly` Cookie，并且不要在响应体里返回验证或重置 token，详见 [docs/zh-CN/api-integration.md](docs/zh-CN/api-integration.md)。
 
@@ -193,19 +242,19 @@ pnpm dev
 ```text
 src/
 ├─ routes/                 # 文件路由；routeTree.gen.ts 自动生成
-├─ features/               # auth、dashboard、users、roles、permissions、departments、audit、profile、security、settings、playground
+├─ features/               # auth、dashboard、users、roles、permissions、departments、audit、projects、files、reports、notifications、integrations、profile、security、settings、playground
 ├─ components/
 │  ├─ ui/                  # 47 个 shadcn/ui 原语
 │  ├─ enterprise/          # 30 个业务组件（树、选择器、上传、反馈等）
 │  ├─ pro/                 # DetailPage、EditableTable、ImportWizard、ProForm、QueryFilter 与 ProTable 组合
-│  ├─ layout/              # AppShell、侧边栏、Header、面包屑、命令面板、离线横幅
+│  ├─ layout/              # AppShell、侧边栏、Header、通知铃铛、面包屑、命令面板、离线横幅
 │  ├─ data-table/          # 表格、分页、列显隐与列排序
 │  └─ common/              # Can、PageHeader、EmptyState、StatusScreen、主题/语言切换
-├─ config/                 # env、权限、审计动作、导航、主题预设、演示数据
+├─ config/                 # env、权限、审计动作、导航、主题预设、组件注册表
 ├─ lib/                    # API 客户端、鉴权、i18n、格式化、CSV、在线状态
 ├─ stores/                 # 会话、主题、UI 状态
 ├─ locales/{en,zh-CN}/     # 懒加载语言包
-├─ mocks/                  # MSW handlers、种子数据库、假鉴权
+├─ mocks/                  # MSW handlers、种子数据库、工作区种子与假鉴权
 └─ styles/index.css
 e2e/                       # Playwright 用例
 docs/{en,zh-CN}/           # 文档
@@ -233,10 +282,10 @@ docs/{en,zh-CN}/           # 文档
 
 CI 在每次 push 和 pull request 上运行四道门禁：
 
-- **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描九个流程（登录页的浅色、深色与中文，仪表盘，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，以及组件目录）。出现任何违规即失败。
+- **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描十三个流程（登录页的浅色、深色与中文，仪表盘浅色与深色，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，项目看板/新建弹窗/详情，文件库/上传抽屉/预览，通知中心与偏好，报表与集成表单，组件目录与 UI 演练场）。出现任何违规即失败。
 - **打包体积** —— `pnpm size` 先构建生产包再做 gzip 统计，超出预算即失败：总 JS 750 KB、总 CSS 30 KB、最大分块 115 KB、入口分块 100 KB。
 - **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
-- **视觉回归** —— 九张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置与组件目录首屏）与 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的基线比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。
+- **视觉回归** —— 十六张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、组件目录首屏、项目看板、项目详情、资源库、报表浅色与深色、通知中心与集成中心）与 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的基线比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。
 
 基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。
 

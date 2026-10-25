@@ -28,8 +28,13 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 ## Features
 
 - **Full account lifecycle** — login, registration with email verification, forgot/reset password, invitation links, TOTP-style two-factor sign-in, five-attempt lockout, password change and a per-device session list. Session restore uses single-flight refresh-token rotation, deep-link redirect after login and global 401 handling.
-- **Three-level RBAC** — navigation, route guards and button-level `<Can>` checks derived from one permission registry. Fourteen permission codes cover users, roles, departments and audit. Admin, Manager and Viewer accounts are ready to compare.
-- **Realistic mock API** — MSW, a seeded in-memory database persisted to `localStorage`, 60 users across a 10-node department tree, 160 audit events, pagination, filtering, sorting, fake JWTs, refresh tokens, `403` responses and a demo-data reset.
+- **Three-level RBAC** — navigation, route guards and button-level `<Can>` checks derived from one permission registry. Twenty-one permission codes cover projects, files, reports, integrations, users, roles, departments and audit. Admin, Manager and Viewer accounts are ready to compare.
+- **Realistic mock API** — MSW, a seeded in-memory database persisted to `localStorage`, 60 users across a 10-node department tree, 12 projects with 72 tasks and 48 milestones, 18 files in an 8-node folder tree, 6 integrations with 24 delivery records, a notification inbox with preferences, 220 audit events, pagination, filtering, sorting, fake JWTs, refresh tokens, `403` responses and a demo-data reset.
+- **Project delivery workspace** — `/projects` combines a URL-driven filter bar, board/list switch, featured-project carousel, create wizard, context menus, archive confirmations and paging. Each project opens at `/projects/$id` with overview, task board, milestone calendar, member transfer, budget editing, attachments and a retrospective stepper.
+- **File library** — `/files` pairs a folder tree and breadcrumb with grid/list views, upload queue, resizable preview pane with watermark, image carousel, JSON metadata, bulk selection and move/delete flows. Uploads are read client-side and stored as data URLs; large files keep metadata only.
+- **Reports and notifications** — `/reports` renders a lazy-loaded KPI/trend/channel report with date range, granularity, thresholds, anchor navigation, back-to-top and CSV export. `/notifications` adds segmented inbox filters, bulk read, a detail drawer, quiet hours and per-channel preferences; the header bell reuses the same query.
+- **Integrations and user import** — `/integrations` manages webhook connections, headers, delivery history payloads and replay, while `/users` gains a bulk import wizard and `/audit-logs` renders raw event JSON with links for project, file and integration entities.
+- **Guided tour** — the dashboard header starts a `Tour` that walks through the sidebar, search, notification bell and account menu.
 - **Advanced users table** — URL-driven search, filters, sorting and paging; row selection with bulk status changes and bulk delete/restore (undo from the toast); column visibility, drag-to-reorder, pinning and resizing; two densities; per-row context menu; saved views; CSV export; drawer forms with React Hook Form + Zod; loading, empty and error states.
 - **User detail and history** — `/users/$id` combines an overview, inline tag editing, an avatar dropzone and a per-user activity timeline, with a not-found Result state.
 - **Organization tree** — `/departments` renders a keyboard-navigable department tree with member counts, plus create/rename actions and deep-linkable selection.
@@ -37,7 +42,7 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 - **Audit log** — `/audit-logs` with URL-synced filters, date-range presets, a detail drawer with related events, and links back to the affected user, role or department.
 - **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings and the UI playground.
 - **Dashboard** — KPI cards, revenue area chart, traffic bars, acquisition donut and recent activity, with a 7/30-day switch. Charts are lazy-loaded with the dashboard route.
-- **83 shared components with a searchable catalog** — 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`) are registered in `src/config/components.ts`. `/components` searches the whole inventory and renders a live, business-framed demo for every one of the 83 entries, each with a copyable import path and a link to the screen that already uses it; `/ui` keeps the primitive states, overlays and form controls behind a sticky section nav. ProTable now powers the users and audit pages, so the same table shell is reused across business screens.
+- **83 shared components with a searchable catalog** — 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`) are registered in `src/config/components.ts`. `/components` searches the whole inventory and renders a live, business-framed demo for every one of the 83 entries, each with a copyable import path and a link to the business screen that uses it; every entry must name a real route outside `/components` and `/ui`, and a unit test enforces it. `/ui` keeps the primitive states, overlays and form controls behind a sticky section nav. ProTable now powers the users and audit pages, so the same table shell is reused across business screens.
 - **Product-style design system** — light, dark and system modes, five accent colors, oklch tokens, refined shadows and a FOUC-free first paint.
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
@@ -59,16 +64,23 @@ Open http://localhost:5173. The mock API starts automatically in development.
 
 ### Demo accounts
 
-| Role          | Email              | Password      | What it can do                                                                      |
-| ------------- | ------------------ | ------------- | ----------------------------------------------------------------------------------- |
-| Administrator | `admin@fish.dev`   | `Admin123!`   | Everything, including user and role deletion, the permission matrix and demo reset  |
-| Manager       | `manager@fish.dev` | `Manager123!` | Manage users, departments and custom roles, edit permissions and read the audit log |
-| Viewer        | `viewer@fish.dev`  | `Viewer123!`  | Read the dashboard, users, departments and audit log                                |
+| Role          | Email              | Password      | What it can do                                                                                                   |
+| ------------- | ------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Administrator | `admin@fish.dev`   | `Admin123!`   | Everything, including user and role deletion, the permission matrix and demo reset                               |
+| Manager       | `manager@fish.dev` | `Manager123!` | Manage projects, files and users; read reports, integrations, departments and the audit log; edit custom roles   |
+| Viewer        | `viewer@fish.dev`  | `Viewer123!`  | Read the dashboard, projects, files, reports, integrations, users, departments and audit log; no writes anywhere |
 
 The login page fills these credentials with one click. Mock data lives in your browser under `fish-admin:db:v1`; use **Settings → Reset demo data** or clear site storage to start over. These credentials exist only in the browser mock — never ship them to a real backend.
 
 More things to try:
 
+- **Projects** — `/projects` filters by status, priority and owner. Create a project with the two-step wizard, open it at `/projects/$id`, move a task, drag the budget, transfer members, upload an attachment and finish the retrospective stepper.
+- **Files** — `/files` browses the folder tree, switches grid and list views, uploads a small image, opens the preview pane and watermark, moves files between folders and deletes them with an undo toast.
+- **Notifications** — the header bell opens the unread count. `/notifications` filters all/unread/mentions, marks everything read, opens the detail drawer and saves quiet hours and channel preferences.
+- **Reports** — `/reports` changes the date range, granularity, goal threshold and series colors, jumps between anchored sections, returns to the top and downloads CSV.
+- **Integrations** — `/integrations` creates a webhook, edits headers in an inline table, toggles a connection, inspects a delivery payload and replays a failed delivery.
+- **Bulk import** — `/users` → **Import users** walks through CSV paste, preview and commit, then records the import in the audit log.
+- **Guided tour** — the dashboard header's **Product tour** button highlights the sidebar, command palette, notification bell and account menu.
 - **Two-factor sign-in** — enable 2FA on `/security`, sign out and sign in again. The demo code is `246810`; a real app would generate it from a TOTP secret.
 - **Invitations** — open `/accept-invite?token=fish-demo-invite` to join as `manager`, then reload it to see the used-token screen.
 - **Recovery** — `/forgot-password` returns a demo reset link so you can finish the flow without email delivery.
@@ -82,31 +94,37 @@ More things to try:
 
 ### Routes
 
-| Path                 | Description                                             | Required permission |
-| -------------------- | ------------------------------------------------------- | ------------------- |
-| `/`                  | Dashboard with KPIs, charts and activity                | `dashboard:read`    |
-| `/components`        | Searchable catalog of all 83 shared components          | signed in           |
-| `/ui`                | UI playground: 40 primitive demos, states and overlays  | signed in           |
-| `/users`             | Users table, CRUD and bulk operations                   | `user:read`         |
-| `/users/$id`         | User overview, tags, avatar and activity timeline       | `user:read`         |
-| `/departments`       | Department tree, members and create/rename actions      | `department:read`   |
-| `/roles`             | Role cards and permission editor                        | `role:read`         |
-| `/roles/matrix`      | Permission matrix across every role                     | `role:read`         |
-| `/permissions`       | Read-only permission registry                           | `permission:read`   |
-| `/audit-logs`        | Filterable audit trail with a detail drawer             | `audit:read`        |
-| `/profile`           | Profile details and avatar upload demo                  | signed in           |
-| `/security`          | Password, two-factor authentication and active sessions | signed in           |
-| `/settings`          | Theme, accent, language, status previews, demo reset    | signed in           |
-| `/403`               | Access denied inside the app shell                      | signed in           |
-| `/login`             | Sign in (and start MFA when the account has it)         | public              |
-| `/register`          | Create an account, then verify the email                | public              |
-| `/verify-email`      | Consumes the verification token                         | public              |
-| `/forgot-password`   | Requests a reset link                                   | public              |
-| `/reset-password`    | Sets a new password and signs out other sessions        | public              |
-| `/accept-invite`     | Turns an invitation token into a `manager` account      | public              |
-| `/otp`               | Second step after a successful password                 | public              |
-| `/401` `/500` `/503` | Expired session, server error, unavailable service      | public              |
-| `/maintenance`       | Planned-downtime screen                                 | public              |
+| Path                 | Description                                                  | Required permission |
+| -------------------- | ------------------------------------------------------------ | ------------------- |
+| `/`                  | Dashboard with KPIs, charts, activity and the product tour   | `dashboard:read`    |
+| `/reports`           | KPI, trend and channel reports with anchors and CSV export   | `report:read`       |
+| `/components`        | Searchable catalog of all 83 shared components               | signed in           |
+| `/ui`                | UI playground: 40 primitive demos, states and overlays       | signed in           |
+| `/projects`          | Project portfolio: filters, board/list, wizard and paging    | `project:read`      |
+| `/projects/$id`      | Project workspace: tasks, calendar, budget and retrospective | `project:read`      |
+| `/files`             | Asset library: folders, upload, preview, move and delete     | `file:read`         |
+| `/notifications`     | Notification inbox, bulk read and channel preferences        | signed in           |
+| `/users`             | Users table, CRUD, bulk operations and CSV import            | `user:read`         |
+| `/users/$id`         | User overview, tags, avatar and activity timeline            | `user:read`         |
+| `/departments`       | Department tree, members and create/rename actions           | `department:read`   |
+| `/roles`             | Role cards and permission editor                             | `role:read`         |
+| `/roles/matrix`      | Permission matrix across every role                          | `role:read`         |
+| `/permissions`       | Read-only permission registry                                | `permission:read`   |
+| `/audit-logs`        | Filterable audit trail with a raw-JSON detail drawer         | `audit:read`        |
+| `/integrations`      | Webhook connections, headers and delivery history            | `integration:read`  |
+| `/profile`           | Profile details and avatar upload demo                       | signed in           |
+| `/security`          | Password, two-factor authentication and active sessions      | signed in           |
+| `/settings`          | Theme, accent, language, status previews, demo reset         | signed in           |
+| `/403`               | Access denied inside the app shell                           | signed in           |
+| `/login`             | Sign in (and start MFA when the account has it)              | public              |
+| `/register`          | Create an account, then verify the email                     | public              |
+| `/verify-email`      | Consumes the verification token                              | public              |
+| `/forgot-password`   | Requests a reset link                                        | public              |
+| `/reset-password`    | Sets a new password and signs out other sessions             | public              |
+| `/accept-invite`     | Turns an invitation token into a `manager` account           | public              |
+| `/otp`               | Second step after a successful password                      | public              |
+| `/401` `/500` `/503` | Expired session, server error, unavailable service           | public              |
+| `/maintenance`       | Planned-downtime screen                                      | public              |
 
 Unknown paths render a 404 inside the shell when you are signed in; unauthenticated visitors are redirected to `/login?redirect=…` and returned to the original URL after signing in. Every page above is guarded by `beforeLoad`, and a throwing route falls back to an error boundary with a retry action instead of a blank screen.
 
@@ -114,11 +132,11 @@ Unknown paths render a 404 inside the shell when you are signed in; unauthentica
 
 Permissions use a `resource:action` format and are defined in [`src/config/permissions.ts`](src/config/permissions.ts). Buttons, menus and routes are all derived from that registry.
 
-| Role          | Permissions                                                                                                                                                                     |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Administrator | `*`                                                                                                                                                                             |
-| Manager       | `dashboard:read`, `user:read`, `user:create`, `user:update`, `role:read`, `role:create`, `role:update`, `audit:read`, `department:read`, `department:manage`, `permission:read` |
-| Viewer        | `dashboard:read`, `user:read`, `audit:read`, `department:read`                                                                                                                  |
+| Role          | Permissions                                                                                                                                                                                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Administrator | `*`                                                                                                                                                                                                                                                                              |
+| Manager       | `dashboard:read`, `project:read`, `project:manage`, `file:read`, `file:manage`, `report:read`, `integration:read`, `user:read`, `user:create`, `user:update`, `role:read`, `role:create`, `role:update`, `audit:read`, `department:read`, `department:manage`, `permission:read` |
+| Viewer        | `dashboard:read`, `project:read`, `file:read`, `report:read`, `integration:read`, `user:read`, `audit:read`, `department:read`                                                                                                                                                   |
 
 The route guard lives in each leaf route's `beforeLoad`; menu entries are filtered in [`src/config/nav.ts`](src/config/nav.ts); buttons use `<Can permission="user:delete">`. See [docs/en/rbac.md](docs/en/rbac.md) for the four-step guide to adding a permission.
 
@@ -126,49 +144,80 @@ The route guard lives in each leaf route's `beforeLoad`; menu entries are filter
 
 The demo runs entirely in the browser through a Service Worker.
 
-| Method   | Endpoint                     | Notes                                                                                              |
-| -------- | ---------------------------- | -------------------------------------------------------------------------------------------------- |
-| `POST`   | `/api/auth/login`            | Tokens, or an MFA challenge when the account has 2FA                                               |
-| `POST`   | `/api/auth/mfa/verify`       | Exchanges the challenge and the six-digit code for tokens                                          |
-| `POST`   | `/api/auth/register`         | Creates an unverified `viewer`; returns the demo verify token                                      |
-| `POST`   | `/api/auth/verify-email`     | Marks the address verified                                                                         |
-| `POST`   | `/api/auth/forgot-password`  | Always `200`; returns the demo reset token when the account hits                                   |
-| `POST`   | `/api/auth/reset-password`   | Sets the password and revokes the other sessions                                                   |
-| `GET`    | `/api/auth/invites/:token`   | Invitation preview                                                                                 |
-| `POST`   | `/api/auth/accept-invite`    | Creates the invited user and signs them in                                                         |
-| `POST`   | `/api/auth/refresh`          | Rotates the refresh token                                                                          |
-| `POST`   | `/api/auth/logout`           | Revokes the refresh token                                                                          |
-| `GET`    | `/api/auth/me`               | Returns the current user and resolved permissions                                                  |
-| `GET`    | `/api/auth/sessions`         | Active sessions for the current user                                                               |
-| `DELETE` | `/api/auth/sessions/:id`     | Revoke one session (never the current one)                                                         |
-| `DELETE` | `/api/auth/sessions`         | Sign out every other session                                                                       |
-| `POST`   | `/api/auth/change-password`  | Requires the current password                                                                      |
-| `POST`   | `/api/auth/2fa/setup`        | Returns the demo secret and code                                                                   |
-| `POST`   | `/api/auth/2fa/enable`       | Confirms the code and turns 2FA on                                                                 |
-| `POST`   | `/api/auth/2fa/disable`      | Confirms the password and turns 2FA off                                                            |
-| `GET`    | `/api/users`                 | `page`, `pageSize`, `q`, `roleId`, `status`, `departmentId`, `includeDescendants`, `sort`, `order` |
-| `POST`   | `/api/users`                 | Requires `user:create`                                                                             |
-| `GET`    | `/api/users/:id`             | Requires `user:read`                                                                               |
-| `PATCH`  | `/api/users/:id`             | Requires `user:update`; accepts `departmentId`, `jobTitle`, `tags`, `avatar`                       |
-| `DELETE` | `/api/users/:id`             | Requires `user:delete`; soft delete, cannot delete yourself                                        |
-| `POST`   | `/api/users/bulk-status`     | Requires `user:update`; skips rows the caller may not touch                                        |
-| `POST`   | `/api/users/bulk-delete`     | Requires `user:delete`; returns the ids actually removed                                           |
-| `POST`   | `/api/users/restore`         | Requires `user:delete`; undo target for the bulk toast                                             |
-| `GET`    | `/api/roles`                 | Roles with user and permission counts                                                              |
-| `GET`    | `/api/roles/options`         | Lightweight role options                                                                           |
-| `POST`   | `/api/roles`                 | Requires `role:create`; 409 `ROLE_NAME_TAKEN`                                                      |
-| `PATCH`  | `/api/roles/:id`             | Requires `role:update`; system roles return `PROTECTED_ROLE`                                       |
-| `DELETE` | `/api/roles/:id`             | Requires `role:delete`; `ROLE_IN_USE` while members remain                                         |
-| `PUT`    | `/api/roles/:id/permissions` | Requires `role:update`                                                                             |
-| `GET`    | `/api/departments`           | Flat department list with direct and total member counts                                           |
-| `POST`   | `/api/departments`           | Requires `department:manage`; 409 `DEPARTMENT_NAME_TAKEN`                                          |
-| `PATCH`  | `/api/departments/:id`       | Requires `department:manage`; rename or reparent, rejects cycles                                   |
-| `GET`    | `/api/audit-events`          | Requires `audit:read`; `page`, `pageSize`, `q`, `action`, `entityType`, `entityId`, `from`, `to`   |
-| `GET`    | `/api/audit-events/:id`      | Requires `audit:read`; event plus five related events                                              |
-| `GET`    | `/api/permissions`           | Permission registry                                                                                |
-| `GET`    | `/api/dashboard?range=7\|30` | Dashboard payload                                                                                  |
-| `PATCH`  | `/api/profile`               | Current user's profile                                                                             |
-| `POST`   | `/api/__mock/reset`          | Reseeds users, roles, departments and audit events, keeps the current session                      |
+| Method   | Endpoint                                             | Notes                                                                                                                          |
+| -------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `POST`   | `/api/auth/login`                                    | Tokens, or an MFA challenge when the account has 2FA                                                                           |
+| `POST`   | `/api/auth/mfa/verify`                               | Exchanges the challenge and the six-digit code for tokens                                                                      |
+| `POST`   | `/api/auth/register`                                 | Creates an unverified `viewer`; returns the demo verify token                                                                  |
+| `POST`   | `/api/auth/verify-email`                             | Marks the address verified                                                                                                     |
+| `POST`   | `/api/auth/forgot-password`                          | Always `200`; returns the demo reset token when the account hits                                                               |
+| `POST`   | `/api/auth/reset-password`                           | Sets the password and revokes the other sessions                                                                               |
+| `GET`    | `/api/auth/invites/:token`                           | Invitation preview                                                                                                             |
+| `POST`   | `/api/auth/accept-invite`                            | Creates the invited user and signs them in                                                                                     |
+| `POST`   | `/api/auth/refresh`                                  | Rotates the refresh token                                                                                                      |
+| `POST`   | `/api/auth/logout`                                   | Revokes the refresh token                                                                                                      |
+| `GET`    | `/api/auth/me`                                       | Returns the current user and resolved permissions                                                                              |
+| `GET`    | `/api/auth/sessions`                                 | Active sessions for the current user                                                                                           |
+| `DELETE` | `/api/auth/sessions/:id`                             | Revoke one session (never the current one)                                                                                     |
+| `DELETE` | `/api/auth/sessions`                                 | Sign out every other session                                                                                                   |
+| `POST`   | `/api/auth/change-password`                          | Requires the current password                                                                                                  |
+| `POST`   | `/api/auth/2fa/setup`                                | Returns the demo secret and code                                                                                               |
+| `POST`   | `/api/auth/2fa/enable`                               | Confirms the code and turns 2FA on                                                                                             |
+| `POST`   | `/api/auth/2fa/disable`                              | Confirms the password and turns 2FA off                                                                                        |
+| `GET`    | `/api/users`                                         | `page`, `pageSize`, `q`, `roleId`, `status`, `departmentId`, `includeDescendants`, `sort`, `order`                             |
+| `POST`   | `/api/users`                                         | Requires `user:create`                                                                                                         |
+| `GET`    | `/api/users/:id`                                     | Requires `user:read`                                                                                                           |
+| `PATCH`  | `/api/users/:id`                                     | Requires `user:update`; accepts `departmentId`, `jobTitle`, `tags`, `avatar`                                                   |
+| `DELETE` | `/api/users/:id`                                     | Requires `user:delete`; soft delete, cannot delete yourself                                                                    |
+| `POST`   | `/api/users/bulk-status`                             | Requires `user:update`; skips rows the caller may not touch                                                                    |
+| `POST`   | `/api/users/bulk-delete`                             | Requires `user:delete`; returns the ids actually removed                                                                       |
+| `POST`   | `/api/users/restore`                                 | Requires `user:delete`; undo target for the bulk toast                                                                         |
+| `POST`   | `/api/users/import`                                  | Requires `user:create`; validates rows, reports per-row errors and creates the accepted users                                  |
+| `GET`    | `/api/roles`                                         | Roles with user and permission counts                                                                                          |
+| `GET`    | `/api/roles/options`                                 | Lightweight role options                                                                                                       |
+| `POST`   | `/api/roles`                                         | Requires `role:create`; 409 `ROLE_NAME_TAKEN`                                                                                  |
+| `PATCH`  | `/api/roles/:id`                                     | Requires `role:update`; system roles return `PROTECTED_ROLE`                                                                   |
+| `DELETE` | `/api/roles/:id`                                     | Requires `role:delete`; `ROLE_IN_USE` while members remain                                                                     |
+| `PUT`    | `/api/roles/:id/permissions`                         | Requires `role:update`                                                                                                         |
+| `GET`    | `/api/departments`                                   | Flat department list with direct and total member counts                                                                       |
+| `POST`   | `/api/departments`                                   | Requires `department:manage`; 409 `DEPARTMENT_NAME_TAKEN`                                                                      |
+| `PATCH`  | `/api/departments/:id`                               | Requires `department:manage`; rename or reparent, rejects cycles                                                               |
+| `GET`    | `/api/audit-events`                                  | Requires `audit:read`; `page`, `pageSize`, `q`, `action`, `entityType`, `entityId`, `from`, `to`                               |
+| `GET`    | `/api/audit-events/:id`                              | Requires `audit:read`; event plus five related events                                                                          |
+| `GET`    | `/api/permissions`                                   | Permission registry                                                                                                            |
+| `GET`    | `/api/dashboard?range=7\|30`                         | Dashboard payload                                                                                                              |
+| `GET`    | `/api/projects`                                      | Requires `project:read`; `page`, `pageSize`, `q`, `status`, `priority`, `ownerId`, `departmentId`, `archived`, `sort`, `order` |
+| `GET`    | `/api/projects/:id`                                  | Requires `project:read`; project with tasks, milestones, members and attachments                                               |
+| `POST`   | `/api/projects`                                      | Requires `project:manage`; 409 `KEY_TAKEN` for a duplicate key                                                                 |
+| `PATCH`  | `/api/projects/:id`                                  | Requires `project:manage`; status, priority, members, budget, progress, tags, rating, retro, archive                           |
+| `POST`   | `/api/projects/:id/tasks`                            | Requires `project:manage`; creates a task in the project                                                                       |
+| `PATCH`  | `/api/projects/:id/tasks/:taskId`                    | Requires `project:manage`; title, status, assignee, due date and estimate                                                      |
+| `PATCH`  | `/api/projects/:id/milestones/:milestoneId`          | Requires `project:manage`; toggles milestone completion                                                                        |
+| `POST`   | `/api/projects/:id/attachments`                      | Requires `project:manage`; links an existing file to the project                                                               |
+| `DELETE` | `/api/projects/:id/attachments/:fileId`              | Requires `project:manage`                                                                                                      |
+| `GET`    | `/api/file-folders`                                  | Requires `file:read`; flat folder tree with file counts                                                                        |
+| `GET`    | `/api/files`                                         | Requires `file:read`; `folderId`, `q`, `kind`, `visibility`, `favorite`, `sort`, `order`, `updatedAfter`, `page`, `pageSize`   |
+| `POST`   | `/api/files`                                         | Requires `file:manage`; JSON metadata plus an optional data URL for small files                                                |
+| `PATCH`  | `/api/files/:id`                                     | Requires `file:manage`; name, folder, visibility, favorite                                                                     |
+| `DELETE` | `/api/files/:id`                                     | Requires `file:manage`                                                                                                         |
+| `POST`   | `/api/files/bulk-delete`                             | Requires `file:manage`; returns the ids actually removed                                                                       |
+| `GET`    | `/api/reports`                                       | Requires `report:read`; `from`, `to` (`yyyy-MM-dd`) and `granularity=day\|week\|month`                                         |
+| `GET`    | `/api/notifications`                                 | Signed in; `filter=all\|unread\|mentions`, `page`, `pageSize`                                                                  |
+| `GET`    | `/api/notifications/:id`                             | Signed in; one notification for the current user                                                                               |
+| `PATCH`  | `/api/notifications/:id`                             | Signed in; read state                                                                                                          |
+| `POST`   | `/api/notifications/read`                            | Signed in; marks the given ids read                                                                                            |
+| `POST`   | `/api/notifications/read-all`                        | Signed in; marks every notification read                                                                                       |
+| `GET`    | `/api/notifications/preferences`                     | Signed in; quiet hours, digest and channels                                                                                    |
+| `PUT`    | `/api/notifications/preferences`                     | Signed in; saves quiet hours, digest and channels                                                                              |
+| `GET`    | `/api/integrations`                                  | Requires `integration:read`; `page`, `pageSize`, `q`, `provider`, `enabled`                                                    |
+| `POST`   | `/api/integrations`                                  | Requires `integration:manage`                                                                                                  |
+| `PATCH`  | `/api/integrations/:id`                              | Requires `integration:manage`; endpoint, event, mode, enabled and headers                                                      |
+| `DELETE` | `/api/integrations/:id`                              | Requires `integration:manage`                                                                                                  |
+| `GET`    | `/api/integrations/deliveries`                       | Requires `integration:read`; `limit` across all connections                                                                    |
+| `GET`    | `/api/integrations/:id/deliveries`                   | Requires `integration:read`; delivery log for one connection                                                                   |
+| `POST`   | `/api/integrations/:id/deliveries/:deliveryId/retry` | Requires `integration:manage`; replays a delivery                                                                              |
+| `PATCH`  | `/api/profile`                                       | Current user's profile                                                                                                         |
+| `POST`   | `/api/__mock/reset`                                  | Reseeds users, roles, departments, workspace data and audit events, keeps the current session                                  |
 
 Access tokens are fake base64url JWTs valid for 15 minutes; refresh tokens last 7 days, verification tokens 24 hours and password-reset tokens 30 minutes. Five wrong passwords lock an email for one minute. The client retries a request once after refreshing; if that fails it clears the session and redirects to login. In a real deployment, prefer `httpOnly` cookies over `localStorage` and never return reset or verification tokens in a response body — see [docs/en/api-integration.md](docs/en/api-integration.md).
 
@@ -193,19 +242,19 @@ Access tokens are fake base64url JWTs valid for 15 minutes; refresh tokens last 
 ```text
 src/
 ├─ routes/                 # File-based routes; routeTree.gen.ts is generated
-├─ features/               # auth, dashboard, users, roles, permissions, departments, audit, profile, security, settings, playground
+├─ features/               # auth, dashboard, users, roles, permissions, departments, audit, projects, files, reports, notifications, integrations, profile, security, settings, playground
 ├─ components/
 │  ├─ ui/                  # 47 shadcn/ui primitives
 │  ├─ enterprise/          # 30 business components (trees, pickers, upload, feedback…)
 │  ├─ pro/                 # DetailPage, EditableTable, ImportWizard, ProForm, QueryFilter and ProTable compositions
-│  ├─ layout/              # AppShell, sidebar, header, breadcrumbs, command menu, offline banner
+│  ├─ layout/              # AppShell, sidebar, header, notification bell, breadcrumbs, command menu, offline banner
 │  ├─ data-table/          # Table, pagination, column visibility and ordering
 │  └─ common/              # Can, PageHeader, EmptyState, StatusScreen, theme/language toggles
-├─ config/                 # env, permissions, audit actions, navigation, theme presets, demo data
+├─ config/                 # env, permissions, audit actions, navigation, theme presets, component registry
 ├─ lib/                    # API client, auth helpers, i18n, formatting, CSV, online status
 ├─ stores/                 # Auth, theme and UI Zustand stores
 ├─ locales/{en,zh-CN}/     # Lazy-loaded namespaces
-├─ mocks/                  # MSW handlers, seeded database, fake auth
+├─ mocks/                  # MSW handlers, seeded database, workspace seed and fake auth
 └─ styles/index.css
 e2e/                       # Playwright specs
 docs/{en,zh-CN}/           # Documentation
@@ -233,10 +282,10 @@ docs/{en,zh-CN}/           # Documentation
 
 Every push and pull request runs four gates in CI:
 
-- **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans nine flows (login in light, dark and Simplified Chinese, dashboard, users list and create dialog, user detail, roles and permission matrix, audit log, security and settings, and the component catalog) against WCAG 2.1 A/AA with axe. Any violation fails the run.
+- **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans thirteen flows (login in light, dark and Simplified Chinese; dashboard in both themes; users list and create dialog; user detail; roles and permission matrix; audit log; security and settings; projects board, create dialog and project detail; file library, upload drawer and preview; notification inbox and preferences; reports and the integration form; component catalog and UI playground) against WCAG 2.1 A/AA with axe. Any violation fails the run.
 - **Bundle size** — `pnpm size` builds the production bundle, gzips it and fails when a budget is exceeded: 750 KB total JS, 30 KB total CSS, 115 KB for the largest chunk and 100 KB for the entry chunk.
 - **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
-- **Visual regression** — nine screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings and the catalog hero) are compared against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable.
+- **Visual regression** — sixteen screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, catalog hero, projects, project detail, files, reports in both themes, notifications and integrations) are compared against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable.
 
 Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`.
 
