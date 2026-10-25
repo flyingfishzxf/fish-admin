@@ -4,21 +4,6 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Changed
-
-- **The bundle gate now measures first paint instead of the entry file.** `pnpm size`
-  counts the entry chunk together with the 23 `modulepreload` chunks Vite writes into
-  `dist/index.html`, so `firstPaintJs` budgets the 164.7 KB the browser really downloads
-  rather than the 90 KB entry file that lets the eager graph grow unnoticed. Budget: 180 KB.
-- **The largest-chunk budget covers lazy chunks only and names the offender**, and the
-  total-JS ceiling moved from 750 KB to 800 KB. v1.5.0 added five business domains and left
-  0.4 KB of headroom, so any routine dependency update would have turned CI red.
-- `docs/en/deployment.md` and `docs/zh-CN/deployment.md` carry the real v1.5.0 chunk numbers
-  and explain why the demo build is exempt from the two JavaScript totals; the README quality
-  gate bullets and `CONTRIBUTING.md` describe the four budgets by name.
-
 ## [1.5.0] - 2026-10-25
 
 ### Added
@@ -59,6 +44,15 @@ All notable changes to this project are documented here. The format is based on
 - Tables expose their scroll containers to the keyboard, carousel slides are
   inert while hidden, and the project key badge, file-card open control and
   primary buttons meet WCAG 2.1 AA contrast and naming rules.
+- **The bundle gate now measures first paint instead of the entry file.** `pnpm size`
+  counts the entry chunk together with the 23 `modulepreload` chunks Vite writes into
+  `dist/index.html`, so `firstPaintJs` budgets the 164.7 KB the browser really downloads
+  rather than the 90 KB entry file that let the eager graph grow unnoticed. Budget: 180 KB.
+- **The largest-chunk budget covers lazy chunks only and names the offender**, and the
+  total-JS ceiling moved from 750 KB to 800 KB — v1.5.0 added five business domains and
+  left 0.4 KB of headroom, so any routine dependency update would have turned CI red.
+  `docs/en/deployment.md` and `docs/zh-CN/deployment.md` now carry the measured chunk
+  numbers and explain why the gate runs against the API build rather than the demo build.
 
 ### Fixed
 
