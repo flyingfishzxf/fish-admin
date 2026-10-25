@@ -4,6 +4,85 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-10-25
+
+### Added
+
+- **Five business domains, six new routes.** `/projects` is a portfolio board with
+  query filters, board/list layouts, a two-step creation wizard, archived-project
+  popconfirms and a featured carousel. `/projects/$id` adds a project workspace
+  with overview, tasks, budget, retrospective, member transfer, milestones,
+  attachments and activity. `/files` is an asset library with a folder tree,
+  grid/list views, upload queue, watermarked previews, metadata, move and bulk
+  delete. `/notifications` is an inbox with unread/mention filters, bulk read,
+  a detail drawer and quiet-hours/channel preferences. `/integrations` manages
+  webhook connections, request headers, delivery history and replay. `/reports`
+  turns the same range and granularity controls into KPI cards, anchor-linked
+  sections, threshold-aware charts and a CSV export.
+- **A “Collaboration” navigation group** (Projects, Files, Notifications), a
+  header notification bell fed by the same inbox query, a dashboard product tour,
+  a user import wizard on `/users`, raw-event JSON in the audit drawer and a
+  collapsible data-retention card on `/settings`.
+- **Workspace data in the mock backend.** DB version 4 adds projects, tasks,
+  milestones, file folders, files, notification preferences, integrations and
+  webhook deliveries, plus 60 workspace audit events. Updates persist to
+  `localStorage` and write audit records; the v3 → v4 migration keeps existing
+  users, roles, sessions and audit history and merges the new permission codes
+  into the system roles.
+- **Seven new permission codes** — `project:read`/`manage`, `file:read`/`manage`,
+  `report:read` and `integration:read`/`manage` — wired into routes, navigation,
+  `<Can>` checks and the permission matrix.
+- **`usedIn` is now required for every catalog component.** All 83 entries name a
+  real business route, and `src/config/components.test.ts` resolves each one
+  against the generated route tree and rejects `/components` and `/ui`.
+
+### Changed
+
+- Demo workspace copy now covers project, file, report, notification and
+  integration scenarios in English and Simplified Chinese, including the new
+  audit entity/action labels.
+- Tables expose their scroll containers to the keyboard, carousel slides are
+  inert while hidden, and the project key badge, file-card open control and
+  primary buttons meet WCAG 2.1 AA contrast and naming rules.
+
+### Fixed
+
+- **The notification list no longer spills under its pagination.** The `ScrollArea`
+  viewport now inherits the root's `max-height`, so the clipped row fades out above
+  a bordered pager instead of overlapping it.
+- **Page headers stop pushing the document sideways at tablet widths.** Actions wrap
+  below the title from `lg` rather than `sm`, which removes the horizontal overflow on
+  `/reports` and `/roles` at 768 px.
+- **`/files` sizes its lists to the pane, not the viewport.** The asset grid now
+  repeats `auto-fill` tracks with a 160 px floor instead of `sm:`/`xl:` column
+  counts, so cards stop collapsing to 92 px inside the resizable pane, and the
+  table drops Type, Size, Visibility and Updated by container width rather than
+  viewport width, which removes the sideways scroll inside the pane. Below `xl`
+  (was `lg`) the split gives up entirely and the preview opens in a drawer — at
+  1024 px it had been a 159 px column.
+- **The list/preview split scrolls again.** `ResizablePanelGroup` sets its own
+  inline `height: 100%`, so `min-h-[560px]` let both panes grow to ~2 000 px and
+  pushed the pager below the clipped edge. The group now sits in a fixed-height
+  wrapper and the list `ScrollArea` gets `min-h-0`, so each pane scrolls on its
+  own and the page is about 1 000 px tall.
+- **File cards line up.** Private and favorite badges are icon-only with
+  screen-reader labels, so every card keeps a single badge row and the delete
+  footer no longer floats above a gap; the metadata viewer drops the duplicate
+  "File metadata" caption it rendered on top of its own header, truncated names
+  expose a tooltip, and the preview drawer gains the close button the other
+  drawers already had.
+- **Icon collapse works again.** The collapsed rail width now wins the Tailwind v4
+  cascade, so `collapsible="icon"` really narrows the sidebar to 64 px; this affected
+  every release since the inset sidebar shipped, including the live demo.
+- **The sidebar fits without hunting for a scroll region.** Group and item spacing is
+  tightened so all sixteen navigation entries fit a 900 px-tall window.
+
+### Security
+
+- Client-side RBAC remains a UX and authorization demo, **not** a security
+  boundary. The new pages add no server-side enforcement; authorize every write
+  on your backend.
+
 ## [1.4.0] - 2026-10-24
 
 ### Added
@@ -176,7 +255,8 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.1.0...v1.2.0
