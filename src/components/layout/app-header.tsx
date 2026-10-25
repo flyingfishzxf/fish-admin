@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { LanguageToggle } from '@/components/common/language-toggle'
 import { ThemeToggle } from '@/components/common/theme-toggle'
 import { AppBreadcrumbs } from '@/components/layout/app-breadcrumbs'
+import { NotificationBell } from '@/components/layout/notification-bell'
 import { UserMenu } from '@/components/layout/user-menu'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -26,6 +27,7 @@ export function AppHeader() {
           size="sm"
           className="hidden h-8 gap-2 font-normal text-muted-foreground lg:flex"
           onClick={() => setCommandOpen(true)}
+          data-tour="search"
         >
           <Search className="size-3.5" />
           <span>{t('header.search')}</span>
@@ -42,6 +44,7 @@ export function AppHeader() {
         >
           <Search className="size-4" />
         </Button>
+        <NotificationBell />
         <ThemeToggle />
         <LanguageToggle />
         <Separator orientation="vertical" className="mx-1 hidden h-4 sm:block" />

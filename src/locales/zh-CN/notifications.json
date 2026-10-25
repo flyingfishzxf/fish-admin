@@ -1,0 +1,112 @@
+{
+  "title": "通知",
+  "subtitle": "集中查看提及、项目动态与工作区提醒。",
+  "bell": {
+    "label": "通知",
+    "title": "最新动态"
+  },
+  "filters": {
+    "label": "筛选通知",
+    "all": "全部",
+    "unread": "未读",
+    "mention": "提及"
+  },
+  "actions": {
+    "markAllRead": "全部标为已读",
+    "viewAll": "查看全部通知",
+    "markSelected": "标为已读（{{count}}）",
+    "markRead": "标为已读",
+    "markUnread": "标为未读",
+    "openEntity": "打开{{entity}}",
+    "savePreferences": "保存偏好",
+    "resetPreferences": "重置"
+  },
+  "list": {
+    "ariaLabel": "通知列表",
+    "selectAll": "选择本页全部通知",
+    "selectOne": "选择{{title}}",
+    "markAllSuccess": "已更新 {{count}} 条通知。",
+    "markSelectedSuccess": "已将 {{count}} 条通知标为已读。",
+    "markOneSuccess": "通知已更新。",
+    "emptyTitle": "暂无通知",
+    "emptyDescription": "新的提及与动态会显示在这里。",
+    "loading": "正在加载通知",
+    "selectedCount": "已选择 {{count}} 条",
+    "hoverActor": "来自 {{actor}}",
+    "hoverEntity": "关联 {{entity}}",
+    "unreadLabel": "未读"
+  },
+  "empty": {
+    "title": "全部处理完了。",
+    "description": "新的提及、项目动态和提醒会出现在这里。"
+  },
+  "detail": {
+    "title": "通知详情",
+    "kind": "类型",
+    "actor": "来自",
+    "entity": "关联对象",
+    "received": "接收时间",
+    "open": "打开关联对象",
+    "system": "FishAdmin"
+  },
+  "preferences": {
+    "title": "投递偏好",
+    "description": "选择 FishAdmin 在什么时间、通过哪些渠道联系你。",
+    "quietHours": "免打扰时段",
+    "quietHelp": "该时间段内通知会静音，摘要会在结束后继续投递。",
+    "quietStart": "免打扰开始时间",
+    "quietEnd": "免打扰结束时间",
+    "digest": "摘要频率",
+    "digests": {
+      "off": "关闭",
+      "daily": "每天",
+      "weekly": "每周"
+    },
+    "channels": "渠道",
+    "channelLabels": {
+      "inApp": "站内信",
+      "email": "邮件",
+      "push": "推送"
+    },
+    "channelDescriptions": {
+      "inApp": "站内信与顶栏铃铛",
+      "email": "每日摘要发送到工作邮箱",
+      "push": "浏览器与桌面提醒"
+    },
+    "saved": "偏好已保存。",
+    "saveFailed": "无法保存偏好。"
+  },
+  "kinds": {
+    "unknownActor": "有人",
+    "somewhere": "某个工作区对象",
+    "mention": {
+      "label": "提及",
+      "title": "{{actor}}在{{entity}}中提及了你",
+      "summary": "你在项目讨论中被提及。",
+      "body": "{{actor}}在查看{{entity}}时提及了你。打开项目即可回复该讨论。"
+    },
+    "project": {
+      "label": "项目动态",
+      "title": "{{actor}}更新了{{entity}}",
+      "summary": "关注的项目状态发生变化。",
+      "body": "{{actor}}将{{entity}}切换到了新状态。查看里程碑计划以确保交付进度。"
+    },
+    "invite": {
+      "label": "文件共享",
+      "title": "{{actor}}向你共享了{{entity}}",
+      "summary": "工作区中有新文件可用。",
+      "body": "{{actor}}将文件{{entity}}共享给你的团队，可在资源库中查看。"
+    },
+    "system": {
+      "label": "系统提醒",
+      "title": "{{entity}}需要处理",
+      "summary": "集成投递需要检查。",
+      "body": "集成{{entity}}报告了一次投递失败。请检查请求日志，并在端点恢复后重放。"
+    }
+  },
+  "errors": {
+    "title": "通知加载失败",
+    "description": "无法加载通知列表，请稍后重试。",
+    "retry": "重试"
+  }
+}

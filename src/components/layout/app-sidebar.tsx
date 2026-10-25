@@ -36,7 +36,7 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon" variant="inset">
+    <Sidebar collapsible="icon" variant="inset" data-tour="sidebar">
       <SidebarHeader>
         <Link to="/" onClick={closeMobileSidebar} className="flex items-center gap-2.5 px-1.5 py-1">
           <BrandMark />
@@ -51,12 +51,14 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="gap-1">
         {groups.map((group) => (
-          <SidebarGroup key={group.titleKey}>
-            <SidebarGroupLabel>{t(group.titleKey)}</SidebarGroupLabel>
+          <SidebarGroup key={group.titleKey} className="px-2 py-1">
+            <SidebarGroupLabel className="h-7 group-data-[collapsible=icon]:-mt-7">
+              {t(group.titleKey)}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-0.5">
                 {group.items.map((item) => {
                   const Icon = item.icon
                   return (
@@ -80,17 +82,17 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
 
-      <SidebarFooter className="gap-2">
-        <div className="rounded-xl border border-sidebar-border/60 bg-sidebar-accent/60 p-3 group-data-[collapsible=icon]:hidden">
+      <SidebarFooter className="gap-1.5">
+        <div className="rounded-xl border border-sidebar-border/60 bg-sidebar-accent/60 p-2.5 group-data-[collapsible=icon]:hidden">
           <p className="flex items-center gap-2 text-xs font-semibold">
             <FlaskConical className="size-3.5 text-primary" />
             {t('common:sidebar.demoTitle')}
           </p>
-          <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+          <p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">
             {t('common:sidebar.demoDescription')}
           </p>
         </div>
-        <p className="px-2 pb-1 text-[11px] text-muted-foreground group-data-[collapsible=icon]:hidden">
+        <p className="px-2 pb-0.5 text-[11px] text-muted-foreground group-data-[collapsible=icon]:hidden">
           {t('common:sidebar.version', { version: APP_VERSION })}
         </p>
       </SidebarFooter>

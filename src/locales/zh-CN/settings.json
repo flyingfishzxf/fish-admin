@@ -42,6 +42,19 @@
     "description": "可接入自身路由与错误处理的全屏状态页。每个预览会在新标签页中打开。",
     "open": "打开预览"
   },
+  "retention": {
+    "title": "高级数据保留",
+    "description": "查看工作区记录在清理前可检索的时长。",
+    "rows": {
+      "audit": "审计日志",
+      "auditValue": "90 天",
+      "notifications": "通知",
+      "notificationsValue": "30 天",
+      "deliveries": "Webhook 投递",
+      "deliveriesValue": "14 天"
+    },
+    "note": "本演示中的数据保留策略仅作示意。生产环境请在服务端配置，让清理任务在浏览器之外运行。"
+  },
   "demo": {
     "title": "演示数据",
     "description": "演示数据保存在浏览器本地。重置可恢复初始种子数据。",

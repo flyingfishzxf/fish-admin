@@ -7,6 +7,7 @@ import {
   Descriptions,
   type DescriptionItem,
 } from '@/components/enterprise/descriptions/descriptions'
+import { JsonViewer } from '@/components/enterprise/json-viewer/json-viewer'
 import {
   Timeline,
   type TimelineItem,
@@ -22,6 +23,8 @@ import {
 } from '@/components/ui/sheet'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AUDIT_ACTION_ICONS, AUDIT_ACTION_TONES, type AuditTone } from '@/config/audit'
+import { DEFAULT_FILES_SEARCH } from '@/features/files/search'
+import { DEFAULT_INTEGRATIONS_SEARCH } from '@/features/integrations/search'
 import { formatDateTime } from '@/lib/format'
 import type { AuditEvent } from '@/types'
 
@@ -70,6 +73,36 @@ function EntityButton({ event }: { event: AuditEvent }) {
     return (
       <Button asChild variant="outline" size="sm">
         <Link to="/departments" search={{ dept: event.entityId }}>
+          {label}
+        </Link>
+      </Button>
+    )
+  }
+
+  if (event.entityType === 'project') {
+    return (
+      <Button asChild variant="outline" size="sm">
+        <Link to="/projects/$id" params={{ id: event.entityId }}>
+          {label}
+        </Link>
+      </Button>
+    )
+  }
+
+  if (event.entityType === 'file') {
+    return (
+      <Button asChild variant="outline" size="sm">
+        <Link to="/files" search={{ ...DEFAULT_FILES_SEARCH, q: event.entityLabel || undefined }}>
+          {label}
+        </Link>
+      </Button>
+    )
+  }
+
+  if (event.entityType === 'integration') {
+    return (
+      <Button asChild variant="outline" size="sm">
+        <Link to="/integrations" search={DEFAULT_INTEGRATIONS_SEARCH}>
           {label}
         </Link>
       </Button>
@@ -182,9 +215,11 @@ export function AuditDetailDrawer({
               <section className="space-y-2">
                 <h3 className="text-sm font-semibold">{t('audit:detail.metadata')}</h3>
                 {hasMetadata ? (
-                  <pre className="max-h-60 overflow-auto rounded-xl border bg-muted/40 p-3 text-xs leading-relaxed">
-                    {JSON.stringify(event.metadata, null, 2)}
-                  </pre>
+                  <JsonViewer
+                    value={event.metadata}
+                    ariaLabel={t('audit:detail.metadata')}
+                    className="max-h-60 overflow-auto"
+                  />
                 ) : (
                   <p className="text-sm text-muted-foreground">{t('audit:detail.noMetadata')}</p>
                 )}

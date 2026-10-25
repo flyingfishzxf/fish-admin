@@ -1,0 +1,154 @@
+{
+  "title": "Integrations",
+  "subtitle": "Connect webhooks and keep an eye on every delivery.",
+  "actions": {
+    "create": "New connection",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+  "demo": {
+    "title": "Demo mode",
+    "description": "Deliveries are simulated locally. Replaying a delivery creates a new success record so you can explore the workflow end to end."
+  },
+  "filters": {
+    "provider": "Provider",
+    "providerSearch": "Search providers",
+    "providerEmpty": "No providers found.",
+    "clear": "Clear filter",
+    "statusAll": "All",
+    "statusEnabled": "Enabled",
+    "statusDisabled": "Disabled",
+    "statusLabel": "Filter by status"
+  },
+  "summary": "{{count}} connections",
+  "empty": {
+    "title": "No connections match these filters",
+    "description": "Clear the filters or create a new webhook connection.",
+    "reset": "Reset filters"
+  },
+  "status": {
+    "enabled": "Enabled",
+    "disabled": "Disabled"
+  },
+  "card": {
+    "toggle": "Toggle {{name}}",
+    "event": "Event",
+    "mode": "Delivery",
+    "lastDelivery": "Last delivery",
+    "never": "No deliveries yet",
+    "deliveries": "Deliveries",
+    "delete": "Delete {{name}}",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDescription": "The connection and its delivery history will be removed."
+  },
+  "mode": {
+    "immediate": "Immediate",
+    "digest": "Digest"
+  },
+  "events": {
+    "project.created": "Project created",
+    "project.updated": "Project updated",
+    "project.status_changed": "Project status changed",
+    "project.archived": "Project archived",
+    "task.created": "Task created",
+    "file.uploaded": "File uploaded",
+    "invoice.paid": "Invoice paid",
+    "user.invited": "User invited"
+  },
+  "activity": {
+    "title": "Recent deliveries",
+    "description": "The latest webhook attempts across every connection.",
+    "summary": "HTTP {{code}} in {{duration}} ms",
+    "empty": "No deliveries recorded yet."
+  },
+  "toasts": {
+    "created": "Connection created.",
+    "updated": "Connection updated.",
+    "enabled": "Connection enabled.",
+    "disabled": "Connection disabled.",
+    "deleted": "Connection deleted."
+  },
+  "errors": {
+    "save": "Could not save this connection.",
+    "update": "Could not update this connection.",
+    "delete": "Could not delete this connection.",
+    "retry": "Could not replay this delivery."
+  },
+  "form": {
+    "createTitle": "New connection",
+    "createDescription": "Send workspace events to an HTTPS endpoint.",
+    "editTitle": "Edit connection",
+    "editDescription": "Update the target, event routing and request headers.",
+    "save": "Save changes",
+    "create": "Create connection",
+    "reset": "Reset",
+    "cancel": "Cancel"
+  },
+  "fields": {
+    "name": "Name",
+    "namePlaceholder": "Billing alerts",
+    "provider": "Provider",
+    "providerPlaceholder": "Choose a provider",
+    "endpoint": "Endpoint URL",
+    "endpointHint": "Must use HTTPS. Query parameters are preserved.",
+    "event": "Event",
+    "mode": "Delivery mode",
+    "enabled": "Enabled",
+    "enabledHint": "Disabled connections keep their history but stop sending events."
+  },
+  "headers": {
+    "title": "Request headers",
+    "description": "Sent with every delivery. Names allow letters, numbers and dashes.",
+    "savedWithForm": "Saved with the form",
+    "add": "Add header",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit header",
+    "delete": "Delete header",
+    "actions": "Header actions",
+    "empty": "No custom headers yet.",
+    "columns": {
+      "key": "Header",
+      "value": "Value"
+    },
+    "errors": {
+      "key": "Header names allow letters, numbers and dashes."
+    }
+  },
+  "deliveries": {
+    "title": "Deliveries · {{name}}",
+    "description": "History for {{endpoint}}",
+    "listLabel": "Delivery history",
+    "loading": "Loading deliveries…",
+    "emptyTitle": "No deliveries in this range",
+    "emptyDescription": "Adjust the date filter or send a new event.",
+    "retry": "Replay",
+    "retrySuccess": "Delivery replayed successfully.",
+    "retryConfirmTitle": "Replay this delivery?",
+    "retryConfirmDescription": "A new delivery is recorded using the stored payload.",
+    "status": {
+      "success": "Delivered",
+      "failed": "Delivery failed"
+    },
+    "resultSummary": "HTTP {{code}} · {{duration}} ms",
+    "deliveryId": "Delivery ID",
+    "deliveredAt": "Attempted at",
+    "payload": "Payload",
+    "filters": {
+      "date": "From date",
+      "datePlaceholder": "Any date",
+      "time": "From time",
+      "timePlaceholder": "00:00",
+      "reset": "Clear"
+    }
+  },
+  "validation": {
+    "required": "{{label}} is required.",
+    "email": "Enter a valid {{label}}.",
+    "number": "{{label}} must be a number.",
+    "min": "{{label}} must be at least {{limit}}.",
+    "max": "{{label}} must be at most {{limit}}.",
+    "minLength": "{{label}} needs at least {{limit}} characters.",
+    "maxLength": "{{label}} can be at most {{limit}} characters."
+  }
+}

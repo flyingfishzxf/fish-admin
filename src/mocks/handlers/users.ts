@@ -18,7 +18,7 @@ import {
   writeDb,
   type UserListQuery,
 } from '../db/store'
-import type { MockDb } from '../db/types'
+import type { MockDb, MockUserRecord } from '../db/types'
 import { HttpError, readJson, run, runNoContent } from '../http'
 
 const API = env.apiBaseUrl
@@ -45,6 +45,15 @@ interface BulkBody {
 
 interface BulkStatusBody extends BulkBody {
   status?: UserStatus
+}
+
+interface UserImportBody {
+  users?: Array<{
+    name?: unknown
+    email?: unknown
+    role?: unknown
+    department?: unknown
+  }>
 }
 
 function readIds(body: BulkBody) {
@@ -212,6 +221,97 @@ export const userHandlers = [
       })
       writeDb(db)
       return serializeUser(db, record)
+    }),
+  ),
+
+  http.post(`${API}/users/import`, ({ request }) =>
+    run(async () => {
+      const db = readDb()
+      const actor = authorize(db, request, PERMISSION_CODES.userCreate)
+      const body = (await readJson<UserImportBody>(request)) ?? {}
+      const rows = Array.isArray(body.users) ? body.users : []
+
+      if (rows.length === 0) {
+        throw new HttpError(400, 'VALIDATION_ERROR', 'Import at least one user.')
+      }
+      if (rows.length > 100) {
+        throw new HttpError(400, 'VALIDATION_ERROR', 'Import 100 users or fewer.')
+      }
+
+      const defaultRole = findRole(db, 'viewer')
+      if (!defaultRole) {
+        throw new HttpError(500, 'CONFIG_ERROR', 'The default viewer role is missing.')
+      }
+      const fallbackDepartment = findDepartment(db, 'dept-engineering')
+      const now = new Date().toISOString()
+      const created: MockUserRecord[] = []
+      const skipped: Array<{ email: string; message: string }> = []
+      const seen = new Set<string>()
+
+      for (const row of rows) {
+        const name = typeof row.name === 'string' ? row.name.trim() : ''
+        const email = typeof row.email === 'string' ? row.email.trim().toLowerCase() : ''
+
+        if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          skipped.push({ email, message: 'Name and a valid email are required.' })
+          continue
+        }
+        if (seen.has(email) || findUserByEmail(db, email)) {
+          skipped.push({ email, message: 'A user with this email already exists.' })
+          continue
+        }
+
+        const roleInput = typeof row.role === 'string' ? row.role.trim().toLowerCase() : ''
+        const role =
+          db.roles.find(
+            (entry) =>
+              entry.id.toLowerCase() === roleInput || entry.name.toLowerCase() === roleInput,
+          ) ?? defaultRole
+
+        const departmentInput =
+          typeof row.department === 'string' ? row.department.trim().toLowerCase() : ''
+        const department =
+          (departmentInput
+            ? db.departments.find(
+                (entry) =>
+                  entry.id.toLowerCase() === departmentInput ||
+                  entry.name.toLowerCase() === departmentInput,
+              )
+            : undefined) ?? fallbackDepartment
+
+        const record: MockUserRecord = {
+          id: `user-${crypto.randomUUID()}`,
+          name,
+          email,
+          password: 'Password123!',
+          roleId: role.id,
+          status: 'active',
+          department: department?.name ?? 'General',
+          departmentId: department?.id,
+          tags: [],
+          emailVerified: true,
+          twoFactorEnabled: false,
+          createdAt: now,
+          lastActiveAt: now,
+        }
+
+        db.users.unshift(record)
+        created.push(record)
+        seen.add(email)
+        logActivity(db, 'user.created', actor.user.name, record.name, {
+          actorId: actor.user.id,
+          entityType: 'user',
+          entityId: record.id,
+          metadata: { source: 'import', roleId: record.roleId },
+        })
+      }
+
+      if (created.length > 0) writeDb(db)
+
+      return {
+        created: created.map((record) => serializeUser(db, record)),
+        skipped,
+      }
     }),
   ),
 

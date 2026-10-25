@@ -1,10 +1,15 @@
 import {
+  BarChart3,
+  Bell,
   Boxes,
+  FolderKanban,
+  FolderOpen,
   KeyRound,
   LayoutDashboard,
   LockKeyhole,
   Network,
   Palette,
+  Plug,
   ScrollText,
   Settings2,
   ShieldCheck,
@@ -19,11 +24,16 @@ export type AppPath =
   | '/'
   | '/ui'
   | '/components'
+  | '/projects'
+  | '/reports'
+  | '/files'
+  | '/notifications'
   | '/users'
   | '/departments'
   | '/roles'
   | '/permissions'
   | '/audit-logs'
+  | '/integrations'
   | '/profile'
   | '/security'
   | '/settings'
@@ -51,6 +61,12 @@ export const NAV_GROUPS: NavGroup[] = [
         permission: PERMISSION_CODES.dashboardRead,
       },
       {
+        titleKey: 'nav:items.reports',
+        to: '/reports',
+        icon: BarChart3,
+        permission: PERMISSION_CODES.reportRead,
+      },
+      {
         titleKey: 'nav:items.ui',
         to: '/ui',
         icon: Palette,
@@ -59,6 +75,28 @@ export const NAV_GROUPS: NavGroup[] = [
         titleKey: 'nav:items.components',
         to: '/components',
         icon: Boxes,
+      },
+    ],
+  },
+  {
+    titleKey: 'nav:groups.collaboration',
+    items: [
+      {
+        titleKey: 'nav:items.projects',
+        to: '/projects',
+        icon: FolderKanban,
+        permission: PERMISSION_CODES.projectRead,
+      },
+      {
+        titleKey: 'nav:items.files',
+        to: '/files',
+        icon: FolderOpen,
+        permission: PERMISSION_CODES.fileRead,
+      },
+      {
+        titleKey: 'nav:items.notifications',
+        to: '/notifications',
+        icon: Bell,
       },
     ],
   },
@@ -94,6 +132,12 @@ export const NAV_GROUPS: NavGroup[] = [
         to: '/audit-logs',
         icon: ScrollText,
         permission: PERMISSION_CODES.auditRead,
+      },
+      {
+        titleKey: 'nav:items.integrations',
+        to: '/integrations',
+        icon: Plug,
+        permission: PERMISSION_CODES.integrationRead,
       },
     ],
   },

@@ -100,4 +100,68 @@ test.describe('visual regression', () => {
     ).toBeVisible()
     await expect(page).toHaveScreenshot('components.png')
   })
+
+  test('projects board', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/projects')
+    await expect(page.getByRole('heading', { name: 'Projects', level: 1 })).toBeVisible()
+    await expect(page.locator('[data-slot="skeleton"]')).toHaveCount(0)
+    await expect(page.locator('[data-slot="project-card"]').first()).toBeVisible()
+    await expect(page).toHaveScreenshot('projects.png', { fullPage: true })
+  })
+
+  test('project detail', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/projects/project-atl')
+    await expect(page.getByRole('heading', { name: 'Atlas Design System', level: 1 })).toBeVisible()
+    await expect(page.getByRole('tab', { name: 'Tasks' })).toBeVisible()
+    await expect(page.locator('[data-slot="skeleton"]')).toHaveCount(0)
+    await expect(page).toHaveScreenshot('project-detail.png', { fullPage: true })
+  })
+
+  test('file library', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/files')
+    await expect(page.getByRole('heading', { name: 'Files', level: 1 })).toBeVisible()
+    await expect(page.locator('[data-slot="skeleton"]')).toHaveCount(0)
+    await expect(page.getByRole('button', { name: /^Open / }).first()).toBeVisible()
+    await expect(page).toHaveScreenshot('files.png', { fullPage: true })
+  })
+
+  test('reports, light and dark', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/reports')
+    await expect(page.getByRole('heading', { name: 'Reports', level: 1 })).toBeVisible()
+    await expect(page.getByText('Revenue trend')).toBeVisible()
+    // Recharts animates the series in with requestAnimationFrame.
+    await page.waitForTimeout(2000)
+    await expect(page).toHaveScreenshot('reports-light.png', { fullPage: true })
+
+    await page.getByRole('button', { name: 'Toggle theme' }).click()
+    await page.getByRole('menuitem', { name: 'Dark' }).click()
+    await expect(page.locator('html')).toHaveClass(/dark/)
+    await expect(page.locator('[role="menu"]')).toHaveCount(0)
+    await page.waitForTimeout(800)
+    await expect(page).toHaveScreenshot('reports-dark.png', { fullPage: true })
+  })
+
+  test('notification center', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/notifications')
+    await expect(page.getByRole('heading', { name: 'Notifications', level: 1 })).toBeVisible()
+    await expect(page.locator('[data-slot="skeleton"]')).toHaveCount(0)
+    await expect(
+      page.getByRole('list', { name: 'Notifications' }).getByRole('listitem').first(),
+    ).toBeVisible()
+    await expect(page).toHaveScreenshot('notifications.png', { fullPage: true })
+  })
+
+  test('integrations', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/integrations')
+    await expect(page.getByRole('heading', { name: 'Integrations', level: 1 })).toBeVisible()
+    await expect(page.locator('[data-slot="skeleton"]')).toHaveCount(0)
+    await expect(page.locator('[data-slot="integration-card"]').first()).toBeVisible()
+    await expect(page).toHaveScreenshot('integrations.png', { fullPage: true })
+  })
 })

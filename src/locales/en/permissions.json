@@ -17,6 +17,10 @@
   },
   "groups": {
     "dashboard": "Dashboard",
+    "project": "Projects",
+    "file": "Files",
+    "report": "Reports",
+    "integration": "Integrations",
     "user": "Users",
     "role": "Roles",
     "audit": "Audit log",

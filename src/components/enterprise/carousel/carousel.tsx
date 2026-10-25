@@ -88,6 +88,7 @@ export function Carousel({
               aria-roledescription="slide"
               aria-label={`${slideIndex + 1} / ${slides.length}`}
               aria-hidden={slideIndex !== activeIndex}
+              inert={slideIndex !== activeIndex}
               className="relative min-w-full shrink-0"
             >
               {slide.content ?? (

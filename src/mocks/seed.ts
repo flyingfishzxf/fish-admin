@@ -14,6 +14,7 @@ import {
   type MockSession,
   type MockUserRecord,
 } from './db/types'
+import { createWorkspaceSeed } from './seed-workspace'
 
 const SEED = 2026
 const GENERATED_USER_COUNT = 57
@@ -288,18 +289,31 @@ export function createSeedDb(): MockDb {
     })
   }
 
+  const workspace = createWorkspaceSeed(users, departments)
+
   return {
     version: MOCK_DB_VERSION,
     seededAt: new Date().toISOString(),
     users,
     roles,
     departments,
-    auditEvents: createAuditEvents(users, roles, departments),
+    auditEvents: [...workspace.auditEvents, ...createAuditEvents(users, roles, departments)].sort(
+      (a, b) => b.createdAt.localeCompare(a.createdAt),
+    ),
     sessions: createSeededSessions(),
     loginAttempts: {},
     mfaChallenges: {},
     verificationTokens: [],
     passwordResetTokens: [],
     invites: [createDemoInvite()],
+    notifications: workspace.notifications,
+    notificationPreferences: workspace.notificationPreferences,
+    projects: workspace.projects,
+    tasks: workspace.tasks,
+    milestones: workspace.milestones,
+    fileFolders: workspace.fileFolders,
+    files: workspace.files,
+    integrations: workspace.integrations,
+    deliveries: workspace.deliveries,
   }
 }

@@ -38,6 +38,7 @@ export function UserMenu() {
           variant="ghost"
           className="h-9 gap-2 px-1.5 md:pr-2"
           aria-label={`${getInitials(user.name)} ${user.name} — ${t('common:header.account')}`}
+          data-tour="account"
         >
           <Avatar className="size-7" aria-hidden>
             {user.avatar ? <AvatarImage src={user.avatar} alt="" /> : null}

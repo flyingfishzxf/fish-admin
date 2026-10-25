@@ -1,0 +1,154 @@
+{
+  "title": "集成中心",
+  "subtitle": "连接 Webhook，并跟踪每一次投递结果。",
+  "actions": {
+    "create": "新建连接",
+    "edit": "编辑",
+    "delete": "删除"
+  },
+  "demo": {
+    "title": "演示模式",
+    "description": "投递记录均在本地模拟生成。重放投递会追加一条成功记录，方便完整走通流程。"
+  },
+  "filters": {
+    "provider": "服务商",
+    "providerSearch": "搜索服务商",
+    "providerEmpty": "没有匹配的服务商。",
+    "clear": "清除筛选",
+    "statusAll": "全部",
+    "statusEnabled": "已启用",
+    "statusDisabled": "已停用",
+    "statusLabel": "按状态筛选"
+  },
+  "summary": "{{count}} 个连接",
+  "empty": {
+    "title": "没有符合筛选条件的连接",
+    "description": "清除筛选条件，或新建一个 Webhook 连接。",
+    "reset": "重置筛选"
+  },
+  "status": {
+    "enabled": "已启用",
+    "disabled": "已停用"
+  },
+  "card": {
+    "toggle": "切换 {{name}}",
+    "event": "事件",
+    "mode": "投递方式",
+    "lastDelivery": "最近投递",
+    "never": "暂无投递",
+    "deliveries": "投递记录",
+    "delete": "删除 {{name}}",
+    "deleteTitle": "删除 {{name}}？",
+    "deleteDescription": "该连接及其投递历史将被移除。"
+  },
+  "mode": {
+    "immediate": "实时",
+    "digest": "汇总"
+  },
+  "events": {
+    "project.created": "项目创建",
+    "project.updated": "项目更新",
+    "project.status_changed": "项目状态变更",
+    "project.archived": "项目归档",
+    "task.created": "任务创建",
+    "file.uploaded": "文件上传",
+    "invoice.paid": "账单支付",
+    "user.invited": "邀请成员"
+  },
+  "activity": {
+    "title": "最近投递",
+    "description": "所有连接的最新 Webhook 尝试。",
+    "summary": "HTTP {{code}} · {{duration}} ms",
+    "empty": "还没有投递记录。"
+  },
+  "toasts": {
+    "created": "连接已创建。",
+    "updated": "连接已更新。",
+    "enabled": "连接已启用。",
+    "disabled": "连接已停用。",
+    "deleted": "连接已删除。"
+  },
+  "errors": {
+    "save": "无法保存该连接。",
+    "update": "无法更新该连接。",
+    "delete": "无法删除该连接。",
+    "retry": "无法重放该投递。"
+  },
+  "form": {
+    "createTitle": "新建连接",
+    "createDescription": "将工作区事件发送到 HTTPS 端点。",
+    "editTitle": "编辑连接",
+    "editDescription": "调整目标地址、事件路由和请求头。",
+    "save": "保存修改",
+    "create": "创建连接",
+    "reset": "重置",
+    "cancel": "取消"
+  },
+  "fields": {
+    "name": "名称",
+    "namePlaceholder": "账单提醒",
+    "provider": "服务商",
+    "providerPlaceholder": "选择服务商",
+    "endpoint": "端点地址",
+    "endpointHint": "必须使用 HTTPS，查询参数会保留。",
+    "event": "事件",
+    "mode": "投递方式",
+    "enabled": "启用",
+    "enabledHint": "停用后保留历史记录，但不再发送事件。"
+  },
+  "headers": {
+    "title": "请求头",
+    "description": "每次投递都会携带。名称支持字母、数字和短横线。",
+    "savedWithForm": "随表单一起保存",
+    "add": "添加请求头",
+    "save": "保存",
+    "cancel": "取消",
+    "edit": "编辑请求头",
+    "delete": "删除请求头",
+    "actions": "请求头操作",
+    "empty": "还没有自定义请求头。",
+    "columns": {
+      "key": "请求头",
+      "value": "值"
+    },
+    "errors": {
+      "key": "请求头名称只支持字母、数字和短横线。"
+    }
+  },
+  "deliveries": {
+    "title": "投递记录 · {{name}}",
+    "description": "{{endpoint}} 的投递历史",
+    "listLabel": "投递历史",
+    "loading": "正在加载投递记录…",
+    "emptyTitle": "该时间范围内没有投递",
+    "emptyDescription": "调整日期筛选，或触发一个新事件。",
+    "retry": "重放",
+    "retrySuccess": "投递已成功重放。",
+    "retryConfirmTitle": "重放这次投递？",
+    "retryConfirmDescription": "将使用存档的 payload 生成一条新的投递记录。",
+    "status": {
+      "success": "投递成功",
+      "failed": "投递失败"
+    },
+    "resultSummary": "HTTP {{code}} · {{duration}} ms",
+    "deliveryId": "投递 ID",
+    "deliveredAt": "尝试时间",
+    "payload": "Payload",
+    "filters": {
+      "date": "起始日期",
+      "datePlaceholder": "不限日期",
+      "time": "起始时间",
+      "timePlaceholder": "00:00",
+      "reset": "清除"
+    }
+  },
+  "validation": {
+    "required": "请填写{{label}}。",
+    "email": "请输入有效的{{label}}。",
+    "number": "{{label}}必须是数字。",
+    "min": "{{label}}不能小于 {{limit}}。",
+    "max": "{{label}}不能大于 {{limit}}。",
+    "minLength": "{{label}}至少需要 {{limit}} 个字符。",
+    "maxLength": "{{label}}最多 {{limit}} 个字符。"
+  }
+}

@@ -244,7 +244,8 @@ export function EditableTable({
         </div>
       ) : null}
 
-      <div className="overflow-x-auto rounded-lg border">
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the scroll container must be reachable so keyboard users can scroll wide tables */}
+      <div tabIndex={0} className="overflow-x-auto rounded-lg border">
         <table aria-label={ariaLabel} className="w-full min-w-[40rem] text-sm">
           <thead className="bg-muted/40 text-left text-xs text-muted-foreground">
             <tr>

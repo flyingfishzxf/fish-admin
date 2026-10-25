@@ -39,6 +39,25 @@ export function createUser(input: UserInput) {
   return apiRequest<User>('/users', { method: 'POST', body: input })
 }
 
+export interface UserImportRow {
+  name: string
+  email: string
+  role?: string
+  department?: string
+}
+
+export interface UserImportResult {
+  created: User[]
+  skipped: Array<{ email: string; message: string }>
+}
+
+export function importUsers(rows: UserImportRow[]) {
+  return apiRequest<UserImportResult>('/users/import', {
+    method: 'POST',
+    body: { users: rows },
+  })
+}
+
 export function fetchUser(id: string) {
   return apiRequest<User>(`/users/${encodeURIComponent(id)}`)
 }

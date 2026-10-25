@@ -21,7 +21,8 @@ export interface Department {
   createdAt: string
 }
 
-export type AuditEntityType = 'user' | 'role' | 'department' | 'auth'
+export type AuditEntityType =
+  'user' | 'role' | 'department' | 'auth' | 'project' | 'file' | 'integration'
 
 export type AuditAction =
   | 'user.created'
@@ -35,6 +36,15 @@ export type AuditAction =
   | 'department.updated'
   | 'auth.login'
   | 'profile.updated'
+  | 'project.created'
+  | 'project.updated'
+  | 'project.archived'
+  | 'file.uploaded'
+  | 'file.updated'
+  | 'file.deleted'
+  | 'integration.created'
+  | 'integration.updated'
+  | 'integration.deleted'
 
 export interface AuditEvent {
   id: string
@@ -184,3 +194,5 @@ export interface DashboardData {
   channels: ChannelPoint[]
   activity: ActivityItem[]
 }
+
+export * from './workspace'

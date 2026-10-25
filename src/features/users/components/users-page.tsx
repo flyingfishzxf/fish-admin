@@ -12,6 +12,7 @@ import {
   BadgeCheck,
   ChevronDown,
   Download,
+  FileUp,
   List,
   Loader2,
   Plus,
@@ -28,6 +29,8 @@ import { ErrorState } from '@/components/common/error-state'
 import { PageHeader } from '@/components/common/page-header'
 import type { DataTableDensity } from '@/components/data-table/data-table'
 import { DataTableViewOptions } from '@/components/data-table/data-table-view-options'
+import { ImportWizard, type ImportWizardLabels } from '@/components/pro/import-wizard/import-wizard'
+import type { ImportField } from '@/components/pro/import-wizard/import-wizard-utils'
 import { ProTable } from '@/components/pro/pro-table/pro-table'
 import {
   AlertDialog,
@@ -39,6 +42,13 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,7 +73,13 @@ import { formatDate } from '@/lib/format'
 import { useAuthStore } from '@/stores/auth-store'
 import type { User, UserStatus } from '@/types'
 
-import { bulkDeleteUsers, bulkUpdateUserStatus, fetchUsers, restoreUsers } from '../api'
+import {
+  bulkDeleteUsers,
+  bulkUpdateUserStatus,
+  fetchUsers,
+  importUsers,
+  restoreUsers,
+} from '../api'
 import { useUserListQuery } from '../queries'
 import { USER_STATUSES } from '../schemas'
 import type { UserSortKey, UsersSearch } from '../search'
@@ -75,6 +91,12 @@ import { UserContextMenu } from './user-context-menu'
 import { UserFormDrawer } from './user-form-drawer'
 
 const DENSITY_KEY = 'fish-admin:users-density'
+
+const IMPORT_SAMPLE = `name,email,role,department
+Harper Lin,harper.lin@example.com,viewer,Design
+Noah Patel,noah.patel@example.com,manager,Product
+Riley Chen,riley.chen@example.com,viewer,Engineering
+`
 
 function readDensity(): DataTableDensity {
   return localStorage.getItem(DENSITY_KEY) === 'compact' ? 'compact' : 'comfortable'
@@ -107,6 +129,81 @@ export function UsersPage({
   const [deletingUser, setDeletingUser] = useState<User | null>(null)
   const [bulkDeleteOpen, setBulkDeleteOpen] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
+
+  const importFields = useMemo<ImportField[]>(
+    () => [
+      {
+        key: 'name',
+        label: t('users:import.fieldName'),
+        required: true,
+        aliases: ['name', 'full name'],
+      },
+      {
+        key: 'email',
+        label: t('users:import.fieldEmail'),
+        required: true,
+        type: 'email',
+        aliases: ['email', 'e-mail'],
+      },
+      {
+        key: 'role',
+        label: t('users:import.fieldRole'),
+        aliases: ['role', 'access'],
+      },
+      {
+        key: 'department',
+        label: t('users:import.fieldDepartment'),
+        aliases: ['department', 'team'],
+      },
+    ],
+    [t],
+  )
+
+  const importLabels = useMemo<ImportWizardLabels>(
+    () => ({
+      steps: [
+        t('users:import.steps.upload'),
+        t('users:import.steps.map'),
+        t('users:import.steps.review'),
+        t('users:import.steps.done'),
+      ],
+      dropTitle: t('users:import.dropTitle'),
+      dropHint: t('users:import.dropHint'),
+      browse: t('users:import.browse'),
+      sample: t('users:import.sample'),
+      emptyFile: t('users:import.emptyFile'),
+      parseError: t('users:import.parseError'),
+      mapTitle: t('users:import.mapTitle'),
+      mapHint: t('users:import.mapHint'),
+      sourceColumn: t('users:import.sourceColumn'),
+      skipColumn: t('users:import.skipColumn'),
+      previewTitle: t('users:import.previewTitle'),
+      mapRequired: (names) => t('users:import.mapRequired', { fields: names }),
+      reviewTitle: t('users:import.reviewTitle'),
+      reviewHint: t('users:import.reviewHint'),
+      validCount: (count) => t('users:import.validCount', { count }),
+      invalidCount: (count) => t('users:import.invalidCount', { count }),
+      rowNumber: t('users:import.rowNumber'),
+      status: t('users:import.status'),
+      statusValid: t('users:import.statusValid'),
+      statusInvalid: t('users:import.statusInvalid'),
+      back: t('users:import.back'),
+      next: t('users:import.next'),
+      import: (count) => t('users:import.import', { count }),
+      importing: t('users:import.importing'),
+      importFailed: t('users:import.importFailed'),
+      doneTitle: t('users:import.doneTitle'),
+      doneHint: (count) => t('users:import.doneHint', { count }),
+      reset: t('users:import.reset'),
+      messages: {
+        required: (label) => t('users:import.requiredMessage', { label }),
+        email: (label) => t('users:import.emailMessage', { label }),
+        number: (label) => t('users:import.numberMessage', { label }),
+      },
+    }),
+    [t],
+  )
 
   const query = useUserListQuery({
     page: search.page,
@@ -414,12 +511,20 @@ export function UsersPage({
         title={t('users:title')}
         description={t('users:subtitle')}
         actions={
-          <Can permission={PERMISSION_CODES.userCreate}>
-            <Button onClick={openCreate}>
-              <Plus className="size-4" />
-              {t('users:addUser')}
-            </Button>
-          </Can>
+          <div className="flex flex-wrap items-center gap-2">
+            <Can permission={PERMISSION_CODES.userCreate}>
+              <Button variant="outline" onClick={() => setImportOpen(true)}>
+                <FileUp className="size-4" />
+                {t('users:import.action')}
+              </Button>
+            </Can>
+            <Can permission={PERMISSION_CODES.userCreate}>
+              <Button onClick={openCreate}>
+                <Plus className="size-4" />
+                {t('users:addUser')}
+              </Button>
+            </Can>
+          </div>
         }
       />
 
@@ -634,6 +739,42 @@ export function UsersPage({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={importOpen} onOpenChange={setImportOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>{t('users:import.title')}</DialogTitle>
+            <DialogDescription>{t('users:import.description')}</DialogDescription>
+          </DialogHeader>
+          <ImportWizard
+            fields={importFields}
+            labels={importLabels}
+            sample={IMPORT_SAMPLE}
+            sampleName="users.csv"
+            ariaLabel={t('users:import.ariaLabel')}
+            onImport={async (payload) => {
+              const result = await importUsers(
+                payload.map((row) => ({
+                  name: String(row.name ?? ''),
+                  email: String(row.email ?? ''),
+                  role: row.role ? String(row.role) : undefined,
+                  department: row.department ? String(row.department) : undefined,
+                })),
+              )
+              await queryClient.invalidateQueries({ queryKey: ['users'] })
+
+              if (result.created.length === 0) {
+                toast.warning(t('users:import.skipped', { count: result.skipped.length }))
+                throw new Error(t('users:import.importFailed'))
+              }
+              toast.success(t('users:import.imported', { count: result.created.length }))
+              if (result.skipped.length > 0) {
+                toast.warning(t('users:import.skipped', { count: result.skipped.length }))
+              }
+            }}
+          />
+        </DialogContent>
+      </Dialog>
 
       <UserFormDrawer
         open={formOpen}

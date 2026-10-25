@@ -1,3 +1,4 @@
+import { DEMO_ROLE_PERMISSIONS } from '@/config/permissions'
 import type {
   ActivityAction,
   ActivityItem,
@@ -11,6 +12,7 @@ import type {
 } from '@/types'
 
 import { createDemoDepartments, createDemoInvite, createSeedDb } from '../seed'
+import { createWorkspaceSeed } from '../seed-workspace'
 import {
   MOCK_DB_STORAGE_KEY,
   MOCK_DB_VERSION,
@@ -50,6 +52,21 @@ interface LegacyDbV2 {
   invites: MockInvite[]
 }
 
+interface LegacyDbV3 {
+  version: 3
+  seededAt: string
+  users: MockUserRecord[]
+  roles: MockRoleRecord[]
+  departments: MockDepartmentRecord[]
+  auditEvents: MockAuditEvent[]
+  sessions: MockSession[]
+  loginAttempts: MockDb['loginAttempts']
+  mfaChallenges: MockDb['mfaChallenges']
+  verificationTokens: MockDb['verificationTokens']
+  passwordResetTokens: MockDb['passwordResetTokens']
+  invites: MockInvite[]
+}
+
 const ACTIVITY_ACTIONS = new Set<ActivityAction>([
   'user.created',
   'user.updated',
@@ -72,6 +89,9 @@ function activityEntityType(action: AuditAction | ActivityAction): AuditEntityTy
   if (action === 'auth.login') return 'auth'
   if (action.startsWith('role.')) return 'role'
   if (action.startsWith('department.')) return 'department'
+  if (action.startsWith('project.')) return 'project'
+  if (action.startsWith('file.')) return 'file'
+  if (action.startsWith('integration.')) return 'integration'
   return 'user'
 }
 
@@ -110,7 +130,7 @@ function migrateV1(legacy: LegacyDbV1): LegacyDbV2 {
   }
 }
 
-function migrateV2(legacy: LegacyDbV2): MockDb {
+function migrateV2(legacy: LegacyDbV2): LegacyDbV3 {
   const departments = createDemoDepartments()
   const departmentByName = new Map(
     departments.map((department) => [department.name.toLowerCase(), department]),
@@ -133,7 +153,7 @@ function migrateV2(legacy: LegacyDbV2): MockDb {
   }))
 
   return {
-    version: MOCK_DB_VERSION,
+    version: 3,
     seededAt: legacy.seededAt,
     users,
     roles: legacy.roles,
@@ -145,6 +165,47 @@ function migrateV2(legacy: LegacyDbV2): MockDb {
     verificationTokens: legacy.verificationTokens,
     passwordResetTokens: legacy.passwordResetTokens,
     invites: legacy.invites,
+  }
+}
+
+function mergeRolePermissions(role: MockRoleRecord): MockRoleRecord {
+  const defined = DEMO_ROLE_PERMISSIONS[role.id]
+  if (!defined) return role
+
+  return {
+    ...role,
+    permissions: Array.from(new Set([...role.permissions, ...defined])),
+  }
+}
+
+function migrateV3(legacy: LegacyDbV3): MockDb {
+  const workspace = createWorkspaceSeed(legacy.users, legacy.departments)
+  const auditEvents = [...workspace.auditEvents, ...legacy.auditEvents]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, 500)
+
+  return {
+    version: MOCK_DB_VERSION,
+    seededAt: legacy.seededAt,
+    users: legacy.users,
+    roles: legacy.roles.map(mergeRolePermissions),
+    departments: legacy.departments,
+    auditEvents,
+    sessions: legacy.sessions,
+    loginAttempts: legacy.loginAttempts,
+    mfaChallenges: legacy.mfaChallenges,
+    verificationTokens: legacy.verificationTokens,
+    passwordResetTokens: legacy.passwordResetTokens,
+    invites: legacy.invites,
+    notifications: workspace.notifications,
+    notificationPreferences: workspace.notificationPreferences,
+    projects: workspace.projects,
+    tasks: workspace.tasks,
+    milestones: workspace.milestones,
+    fileFolders: workspace.fileFolders,
+    files: workspace.files,
+    integrations: workspace.integrations,
+    deliveries: workspace.deliveries,
   }
 }
 
@@ -162,13 +223,19 @@ export function readDb(): MockDb {
     if (!parsed || typeof parsed !== 'object') return resetDb()
 
     if (parsed.version === 1) {
-      const migrated = migrateV2(migrateV1(parsed as unknown as LegacyDbV1))
+      const migrated = migrateV3(migrateV2(migrateV1(parsed as unknown as LegacyDbV1)))
       writeDb(migrated)
       return migrated
     }
 
     if (parsed.version === 2) {
-      const migrated = migrateV2(parsed as unknown as LegacyDbV2)
+      const migrated = migrateV3(migrateV2(parsed as unknown as LegacyDbV2))
+      writeDb(migrated)
+      return migrated
+    }
+
+    if (parsed.version === 3) {
+      const migrated = migrateV3(parsed as unknown as LegacyDbV3)
       writeDb(migrated)
       return migrated
     }
@@ -179,7 +246,17 @@ export function readDb(): MockDb {
       !Array.isArray(parsed.roles) ||
       !Array.isArray(parsed.departments) ||
       !Array.isArray(parsed.auditEvents) ||
-      !Array.isArray(parsed.sessions)
+      !Array.isArray(parsed.sessions) ||
+      !Array.isArray(parsed.notifications) ||
+      !Array.isArray(parsed.projects) ||
+      !Array.isArray(parsed.tasks) ||
+      !Array.isArray(parsed.milestones) ||
+      !Array.isArray(parsed.fileFolders) ||
+      !Array.isArray(parsed.files) ||
+      !Array.isArray(parsed.integrations) ||
+      !Array.isArray(parsed.deliveries) ||
+      !parsed.notificationPreferences ||
+      typeof parsed.notificationPreferences !== 'object'
     ) {
       return resetDb()
     }

@@ -1,8 +1,11 @@
-import { lazy, Suspense } from 'react'
+import { Compass } from 'lucide-react'
+import { lazy, Suspense, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ErrorState } from '@/components/common/error-state'
 import { PageHeader } from '@/components/common/page-header'
+import { Tour } from '@/components/enterprise/tour/tour'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
@@ -32,7 +35,32 @@ export function DashboardPage({
 }) {
   const { t } = useTranslation('dashboard')
   const query = useDashboardQuery(range)
+  const [tourOpen, setTourOpen] = useState(false)
   useDocumentTitle(t('title'))
+
+  const tourSteps = [
+    {
+      target: () => document.querySelector<HTMLElement>('[data-tour="sidebar"]'),
+      title: t('tour.steps.sidebar.title'),
+      description: t('tour.steps.sidebar.description'),
+      placement: 'right' as const,
+    },
+    {
+      target: () => document.querySelector<HTMLElement>('[data-tour="search"]'),
+      title: t('tour.steps.search.title'),
+      description: t('tour.steps.search.description'),
+    },
+    {
+      target: () => document.querySelector<HTMLElement>('[data-tour="notifications"]'),
+      title: t('tour.steps.notifications.title'),
+      description: t('tour.steps.notifications.description'),
+    },
+    {
+      target: () => document.querySelector<HTMLElement>('[data-tour="account"]'),
+      title: t('tour.steps.account.title'),
+      description: t('tour.steps.account.description'),
+    },
+  ]
 
   return (
     <div className="space-y-6">
@@ -40,23 +68,29 @@ export function DashboardPage({
         title={t('title')}
         description={t('subtitle')}
         actions={
-          <ToggleGroup
-            type="single"
-            value={String(range)}
-            onValueChange={(value) => {
-              if (value) onRangeChange(Number(value) as DashboardRange)
-            }}
-            variant="outline"
-            size="sm"
-            className="bg-card"
-          >
-            <ToggleGroupItem value="7" className="px-3 text-xs">
-              {t('range.7')}
-            </ToggleGroupItem>
-            <ToggleGroupItem value="30" className="px-3 text-xs">
-              {t('range.30')}
-            </ToggleGroupItem>
-          </ToggleGroup>
+          <>
+            <Button variant="outline" size="sm" onClick={() => setTourOpen(true)}>
+              <Compass className="size-4" />
+              {t('tour.start')}
+            </Button>
+            <ToggleGroup
+              type="single"
+              value={String(range)}
+              onValueChange={(value) => {
+                if (value) onRangeChange(Number(value) as DashboardRange)
+              }}
+              variant="outline"
+              size="sm"
+              className="bg-card"
+            >
+              <ToggleGroupItem value="7" className="px-3 text-xs">
+                {t('range.7')}
+              </ToggleGroupItem>
+              <ToggleGroupItem value="30" className="px-3 text-xs">
+                {t('range.30')}
+              </ToggleGroupItem>
+            </ToggleGroup>
+          </>
         }
       />
 
@@ -121,6 +155,19 @@ export function DashboardPage({
           </div>
         </>
       )}
+
+      <Tour
+        open={tourOpen}
+        onOpenChange={setTourOpen}
+        steps={tourSteps}
+        labels={{
+          next: t('tour.next'),
+          previous: t('tour.previous'),
+          skip: t('tour.skip'),
+          finish: t('tour.finish'),
+          step: (current, total) => t('tour.step', { current, total }),
+        }}
+      />
     </div>
   )
 }

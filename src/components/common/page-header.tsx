@@ -12,7 +12,7 @@ export function PageHeader({
   eyebrow?: string
 }) {
   return (
-    <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <header className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
       <div className="min-w-0 space-y-1.5">
         {eyebrow ? (
           <p className="text-xs font-semibold tracking-[0.14em] text-primary uppercase">

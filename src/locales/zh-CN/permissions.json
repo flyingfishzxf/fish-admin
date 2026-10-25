@@ -17,6 +17,10 @@
   },
   "groups": {
     "dashboard": "工作台",
+    "project": "项目",
+    "file": "资源库",
+    "report": "数据报表",
+    "integration": "集成",
     "user": "用户",
     "role": "角色",
     "audit": "审计日志",

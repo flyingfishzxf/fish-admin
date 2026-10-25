@@ -106,7 +106,7 @@ export function JsonViewer({
   defaultExpandedDepth = 2,
   className,
 }: {
-  value: JsonValue | undefined
+  value: unknown
   ariaLabel: string
   defaultExpandedDepth?: number
   className?: string
@@ -161,7 +161,7 @@ export function JsonViewer({
         ) : (
           <JsonNode
             name=""
-            value={value}
+            value={value as JsonValue}
             depth={0}
             expandedDepth={defaultExpandedDepth}
             rootLabel={ariaLabel}

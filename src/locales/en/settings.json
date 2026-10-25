@@ -42,6 +42,19 @@
     "description": "Full-page states you can wire into your own routing and error handling. Each preview opens in a new tab.",
     "open": "Open preview"
   },
+  "retention": {
+    "title": "Advanced data retention",
+    "description": "Review how long workspace records stay searchable before cleanup.",
+    "rows": {
+      "audit": "Audit log",
+      "auditValue": "90 days",
+      "notifications": "Notifications",
+      "notificationsValue": "30 days",
+      "deliveries": "Webhook deliveries",
+      "deliveriesValue": "14 days"
+    },
+    "note": "Retention policies are illustrative in this demo. In production, configure them on the server so cleanup runs outside the browser."
+  },
   "demo": {
     "title": "Demo data",
     "description": "The demo stores users, roles and activity in your browser. Reset to restore the original seed.",

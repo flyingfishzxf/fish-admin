@@ -12,6 +12,11 @@ test.describe('role-based access control', () => {
       ['Roles', 'Roles'],
       ['Permissions', 'Permissions'],
       ['Audit log', 'Audit log'],
+      ['Projects', 'Projects'],
+      ['Reports', 'Reports'],
+      ['Files', 'Files'],
+      ['Notifications', 'Notifications'],
+      ['Integrations', 'Integrations'],
     ] as const) {
       await page.getByRole('link', { name: label }).click()
       await expect(page.getByRole('heading', { name: heading, level: 1 })).toBeVisible()
@@ -43,6 +48,23 @@ test.describe('role-based access control', () => {
 
     await page.goto('/permissions')
     await expect(page.getByRole('heading', { name: 'Permissions', level: 1 })).toBeVisible()
+
+    await expect(page.getByRole('link', { name: 'Projects' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Files' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Reports' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Integrations' })).toBeVisible()
+
+    await page.goto('/projects')
+    await expect(page.getByRole('button', { name: 'New project' })).toBeVisible()
+
+    await page.goto('/files')
+    await expect(page.getByRole('button', { name: 'Upload files' })).toBeVisible()
+
+    await page.goto('/integrations')
+    await expect(page.getByText('6 connections')).toBeVisible()
+    await expect(page.locator('[data-slot="integration-card"]').first()).toBeVisible()
+    await expect(page.getByRole('button', { name: 'New connection' })).toHaveCount(0)
+    await expect(page.getByRole('switch', { name: /^Toggle / })).toHaveCount(0)
   })
 
   test('viewer gets read-only pages and is blocked from roles', async ({ page }) => {
@@ -69,6 +91,33 @@ test.describe('role-based access control', () => {
     await page.goto('/audit-logs')
     await expect(page.getByRole('heading', { name: 'Audit log', level: 1 })).toBeVisible()
     await expect(page.getByRole('columnheader', { name: 'Action' })).toBeVisible()
+
+    await expect(page.getByRole('link', { name: 'Projects' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Files' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Notifications' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Reports' })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Integrations' })).toBeVisible()
+
+    await page.goto('/projects')
+    await expect(page.getByRole('heading', { name: 'Projects', level: 1 })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'New project' })).toHaveCount(0)
+
+    await page.goto('/files')
+    await expect(page.getByRole('heading', { name: 'Files', level: 1 })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Upload files' })).toHaveCount(0)
+
+    await page.goto('/reports')
+    await expect(page.getByRole('button', { name: 'Export' })).toBeVisible()
+
+    await page.goto('/notifications')
+    await expect(page.getByRole('button', { name: /^Mark all read/ })).toBeVisible()
+
+    await page.goto('/integrations')
+    await expect(page.getByText('6 connections')).toBeVisible()
+    await expect(page.locator('[data-slot="integration-card"]').first()).toBeVisible()
+    await expect(page.getByRole('button', { name: 'New connection' })).toHaveCount(0)
+    await expect(page.getByRole('button', { name: 'Edit' })).toHaveCount(0)
+    await expect(page.getByRole('switch', { name: /^Toggle / })).toHaveCount(0)
   })
 
   test('the mock API rejects unauthorized writes', async ({ page }) => {
@@ -76,29 +125,55 @@ test.describe('role-based access control', () => {
     await page.getByRole('link', { name: 'Users' }).click()
     await expect(page.getByRole('heading', { name: 'Users' })).toBeVisible()
 
-    const status = await page.evaluate(async () => {
+    const statuses = await page.evaluate(async () => {
       const session = localStorage.getItem('fish-admin:session')
       const accessToken = session
         ? (JSON.parse(session) as { state?: { accessToken?: string } }).state?.accessToken
         : undefined
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      }
 
-      const response = await fetch('/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-        },
-        body: JSON.stringify({
+      const post = (path: string, body: unknown) =>
+        fetch(path, { method: 'POST', headers, body: JSON.stringify(body) }).then(
+          (response) => response.status,
+        )
+
+      return Promise.all([
+        post('/api/users', {
           name: 'Blocked User',
           email: 'blocked@fish.dev',
           roleId: 'role_viewer',
           status: 'active',
           department: 'Engineering',
         }),
-      })
-      return response.status
+        post('/api/projects', {
+          name: 'Blocked project',
+          key: 'BLK',
+          description: 'Should not be created.',
+          status: 'planning',
+          priority: 'low',
+          budget: 1000,
+        }),
+        post('/api/files', {
+          name: 'blocked.svg',
+          mime: 'image/svg+xml',
+          size: 120,
+          folderId: 'folder-design',
+        }),
+        post('/api/integrations', {
+          name: 'Blocked hook',
+          provider: 'Slack',
+          endpoint: 'https://hooks.example.com/blocked',
+          event: 'project.created',
+          mode: 'immediate',
+          enabled: false,
+          headers: [],
+        }),
+      ])
     })
 
-    expect(status).toBe(403)
+    expect(statuses).toEqual([403, 403, 403, 403])
   })
 })

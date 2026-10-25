@@ -7,6 +7,32 @@
     "7": "Last 7 days",
     "30": "Last 30 days"
   },
+  "tour": {
+    "start": "Product tour",
+    "next": "Next",
+    "previous": "Back",
+    "skip": "Skip",
+    "finish": "Done",
+    "step": "Step {{current}} of {{total}}",
+    "steps": {
+      "sidebar": {
+        "title": "Navigate the workspace",
+        "description": "Overview, collaboration and management groups hold every page. Collapse the sidebar for more room."
+      },
+      "search": {
+        "title": "Find anything fast",
+        "description": "Jump to pages, people and actions with the command palette. Press ⌘K or Ctrl K."
+      },
+      "notifications": {
+        "title": "Stay on top of updates",
+        "description": "Mentions, file shares and integration alerts land in the bell inbox."
+      },
+      "account": {
+        "title": "Manage your account",
+        "description": "Update your profile, review sessions or sign out from the account menu."
+      }
+    }
+  },
   "kpis": {
     "revenue": "Revenue",
     "activeUsers": "Active users",

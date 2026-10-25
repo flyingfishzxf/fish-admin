@@ -1,18 +1,24 @@
 {
   "groups": {
     "overview": "Overview",
+    "collaboration": "Collaboration",
     "management": "Management",
     "account": "Account"
   },
   "items": {
     "dashboard": "Dashboard",
+    "reports": "Reports",
     "ui": "UI Kit",
     "components": "Components",
+    "projects": "Projects",
+    "files": "Files",
+    "notifications": "Notifications",
     "users": "Users",
     "departments": "Departments",
     "roles": "Roles",
     "permissions": "Permissions",
     "auditLogs": "Audit log",
+    "integrations": "Integrations",
     "profile": "Profile",
     "security": "Security",
     "settings": "Settings"

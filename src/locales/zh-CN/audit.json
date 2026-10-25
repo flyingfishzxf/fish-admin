@@ -36,13 +36,25 @@
     "department.created": "创建部门",
     "department.updated": "更新部门",
     "auth.login": "登录",
-    "profile.updated": "更新个人资料"
+    "profile.updated": "更新个人资料",
+    "project.created": "创建项目",
+    "project.updated": "更新项目",
+    "project.archived": "归档项目",
+    "file.uploaded": "上传文件",
+    "file.updated": "更新文件",
+    "file.deleted": "删除文件",
+    "integration.created": "创建集成",
+    "integration.updated": "更新集成",
+    "integration.deleted": "删除集成"
   },
   "entities": {
     "user": "用户",
     "role": "角色",
     "department": "部门",
-    "auth": "身份认证"
+    "auth": "身份认证",
+    "project": "项目",
+    "file": "文件",
+    "integration": "集成"
   },
   "detail": {
     "title": "事件详情",

@@ -1,8 +1,31 @@
-import type { AuditAction, AuditEntityType, UserStatus } from '@/types'
+import type {
+  AuditAction,
+  AuditEntityType,
+  FileFolder,
+  Integration,
+  IntegrationDelivery,
+  NotificationPreferences,
+  ProjectMilestone,
+  ProjectRecord,
+  ProjectTask,
+  UserStatus,
+  WorkspaceFile,
+  WorkspaceNotification,
+} from '@/types'
 
-export const MOCK_DB_VERSION = 3
+export const MOCK_DB_VERSION = 4
 // The storage key stays stable so earlier demo databases can be migrated in place.
 export const MOCK_DB_STORAGE_KEY = 'fish-admin:db:v1'
+
+export type MockProjectRecord = ProjectRecord
+export type MockTaskRecord = ProjectTask
+export type MockMilestoneRecord = ProjectMilestone
+export type MockFileFolderRecord = FileFolder
+export type MockFileRecord = Omit<WorkspaceFile, 'uploadedByName'>
+export type MockIntegrationRecord = Integration
+export type MockDeliveryRecord = IntegrationDelivery
+export type MockNotificationRecord = WorkspaceNotification
+export type MockNotificationPreferences = NotificationPreferences
 
 export interface MockUserRecord {
   id: string
@@ -110,4 +133,13 @@ export interface MockDb {
   verificationTokens: MockTokenRecord[]
   passwordResetTokens: MockTokenRecord[]
   invites: MockInvite[]
+  notifications: MockNotificationRecord[]
+  notificationPreferences: Record<string, MockNotificationPreferences>
+  projects: MockProjectRecord[]
+  tasks: MockTaskRecord[]
+  milestones: MockMilestoneRecord[]
+  fileFolders: MockFileFolderRecord[]
+  files: MockFileRecord[]
+  integrations: MockIntegrationRecord[]
+  deliveries: MockDeliveryRecord[]
 }

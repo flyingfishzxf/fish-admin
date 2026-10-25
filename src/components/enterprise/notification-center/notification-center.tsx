@@ -18,6 +18,9 @@ export function NotificationCenter({
   items,
   onItemClick,
   onMarkAllRead,
+  unreadCount,
+  onViewAll,
+  viewAllLabel,
   ariaLabel,
   title,
   markAllLabel,
@@ -27,6 +30,9 @@ export function NotificationCenter({
   items: NotificationItem[]
   onItemClick?: (item: NotificationItem) => void
   onMarkAllRead?: () => void
+  unreadCount?: number
+  onViewAll?: () => void
+  viewAllLabel?: string
   ariaLabel?: string
   title?: string
   markAllLabel?: string
@@ -34,7 +40,7 @@ export function NotificationCenter({
   className?: string
 }) {
   const { t } = useTranslation('common')
-  const unread = items.filter((item) => !item.read).length
+  const unread = unreadCount ?? items.filter((item) => !item.read).length
   const label = ariaLabel ?? t('enterprise.notifications')
 
   return (
@@ -122,6 +128,13 @@ export function NotificationCenter({
             </ul>
           )}
         </div>
+        {onViewAll ? (
+          <div className="border-t p-2">
+            <Button type="button" variant="ghost" size="sm" className="w-full" onClick={onViewAll}>
+              {viewAllLabel ?? t('enterprise.viewAllNotifications')}
+            </Button>
+          </div>
+        ) : null}
       </PopoverContent>
     </Popover>
   )

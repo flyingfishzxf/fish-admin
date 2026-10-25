@@ -6,8 +6,8 @@ export interface ComponentEntry {
   category: ComponentCategory
   /** Anchor to the component's live demo, e.g. `/components#demo-button`. */
   demo?: string
-  /** Screen in the running app that already exercises the component. */
-  usedIn?: string
+  /** Business screen in the running app that exercises the component. */
+  usedIn: string
   /** Badge for components added in the most recent release. */
   isNew?: boolean
 }
@@ -15,25 +15,69 @@ export interface ComponentEntry {
 export const COMPONENT_CATEGORIES: ComponentCategory[] = ['primitive', 'enterprise', 'pro']
 
 export const COMPONENTS: ComponentEntry[] = [
-  { id: 'accordion', name: 'Accordion', category: 'primitive', demo: '/components#demo-accordion' },
-  { id: 'alert', name: 'Alert', category: 'primitive', demo: '/components#demo-alert' },
   {
+    usedIn: '/projects/$id',
+    id: 'accordion',
+    name: 'Accordion',
+    category: 'primitive',
+    demo: '/components#demo-accordion',
+  },
+  {
+    usedIn: '/reports',
+    id: 'alert',
+    name: 'Alert',
+    category: 'primitive',
+    demo: '/components#demo-alert',
+  },
+  {
+    usedIn: '/users',
     id: 'alert-dialog',
     name: 'Alert Dialog',
     category: 'primitive',
     demo: '/components#demo-alert-dialog',
   },
-  { id: 'avatar', name: 'Avatar', category: 'primitive', demo: '/components#demo-avatar' },
-  { id: 'badge', name: 'Badge', category: 'primitive', demo: '/components#demo-badge' },
   {
+    usedIn: '/',
+    id: 'avatar',
+    name: 'Avatar',
+    category: 'primitive',
+    demo: '/components#demo-avatar',
+  },
+  {
+    usedIn: '/projects',
+    id: 'badge',
+    name: 'Badge',
+    category: 'primitive',
+    demo: '/components#demo-badge',
+  },
+  {
+    usedIn: '/files',
     id: 'breadcrumb',
     name: 'Breadcrumb',
     category: 'primitive',
     demo: '/components#demo-breadcrumb',
   },
-  { id: 'button', name: 'Button', category: 'primitive', demo: '/components#demo-button' },
-  { id: 'calendar', name: 'Calendar', category: 'primitive', demo: '/components#demo-calendar' },
-  { id: 'card', name: 'Card', category: 'primitive', demo: '/components#demo-card' },
+  {
+    usedIn: '/',
+    id: 'button',
+    name: 'Button',
+    category: 'primitive',
+    demo: '/components#demo-button',
+  },
+  {
+    usedIn: '/projects/$id',
+    id: 'calendar',
+    name: 'Calendar',
+    category: 'primitive',
+    demo: '/components#demo-calendar',
+  },
+  {
+    usedIn: '/',
+    id: 'card',
+    name: 'Card',
+    category: 'primitive',
+    demo: '/components#demo-card',
+  },
   {
     id: 'chart',
     demo: '/components#demo-chart',
@@ -41,14 +85,22 @@ export const COMPONENTS: ComponentEntry[] = [
     category: 'primitive',
     usedIn: '/',
   },
-  { id: 'checkbox', name: 'Checkbox', category: 'primitive', demo: '/components#demo-checkbox' },
   {
+    usedIn: '/files',
+    id: 'checkbox',
+    name: 'Checkbox',
+    category: 'primitive',
+    demo: '/components#demo-checkbox',
+  },
+  {
+    usedIn: '/settings',
     id: 'collapsible',
     demo: '/components#demo-collapsible',
     name: 'Collapsible',
     category: 'primitive',
   },
   {
+    usedIn: '/reports',
     id: 'color-picker',
     name: 'Color Picker',
     category: 'primitive',
@@ -63,20 +115,35 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/',
   },
   {
+    usedIn: '/projects',
     id: 'context-menu',
     name: 'Context Menu',
     category: 'primitive',
     demo: '/components#demo-context-menu',
   },
-  { id: 'dialog', name: 'Dialog', category: 'primitive', demo: '/components#demo-dialog' },
-  { id: 'drawer', name: 'Drawer', category: 'primitive', demo: '/components#demo-drawer' },
   {
+    usedIn: '/users',
+    id: 'dialog',
+    name: 'Dialog',
+    category: 'primitive',
+    demo: '/components#demo-dialog',
+  },
+  {
+    usedIn: '/integrations',
+    id: 'drawer',
+    name: 'Drawer',
+    category: 'primitive',
+    demo: '/components#demo-drawer',
+  },
+  {
+    usedIn: '/reports',
     id: 'dropdown-menu',
     name: 'Dropdown Menu',
     category: 'primitive',
     demo: '/components#demo-dropdown-menu',
   },
   {
+    usedIn: '/projects',
     id: 'empty',
     name: 'Empty',
     category: 'primitive',
@@ -91,52 +158,112 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/users',
   },
   {
+    usedIn: '/notifications',
     id: 'hover-card',
     name: 'Hover Card',
     category: 'primitive',
     demo: '/components#demo-hover-card',
   },
-  { id: 'input', name: 'Input', category: 'primitive', demo: '/components#demo-input' },
   {
+    usedIn: '/users',
+    id: 'input',
+    name: 'Input',
+    category: 'primitive',
+    demo: '/components#demo-input',
+  },
+  {
+    usedIn: '/reports',
     id: 'input-number',
     name: 'Input Number',
     category: 'primitive',
     demo: '/components#demo-input-number',
     isNew: true,
   },
-  { id: 'input-otp', name: 'Input OTP', category: 'primitive', demo: '/components#demo-input-otp' },
-  { id: 'label', name: 'Label', category: 'primitive', demo: '/components#demo-label' },
   {
+    usedIn: '/login',
+    id: 'input-otp',
+    name: 'Input OTP',
+    category: 'primitive',
+    demo: '/components#demo-input-otp',
+  },
+  {
+    usedIn: '/users',
+    id: 'label',
+    name: 'Label',
+    category: 'primitive',
+    demo: '/components#demo-label',
+  },
+  {
+    usedIn: '/reports',
     id: 'pagination',
     name: 'Pagination',
     category: 'primitive',
     demo: '/components#demo-pagination',
   },
-  { id: 'popover', name: 'Popover', category: 'primitive', demo: '/components#demo-popover' },
-  { id: 'progress', name: 'Progress', category: 'primitive', demo: '/components#demo-progress' },
   {
+    usedIn: '/notifications',
+    id: 'popover',
+    name: 'Popover',
+    category: 'primitive',
+    demo: '/components#demo-popover',
+  },
+  {
+    usedIn: '/projects',
+    id: 'progress',
+    name: 'Progress',
+    category: 'primitive',
+    demo: '/components#demo-progress',
+  },
+  {
+    usedIn: '/reports',
     id: 'radio-group',
     name: 'Radio Group',
     category: 'primitive',
     demo: '/components#demo-radio-group',
   },
-  { id: 'resizable', name: 'Resizable', category: 'primitive', demo: '/components#demo-resizable' },
   {
+    usedIn: '/files',
+    id: 'resizable',
+    name: 'Resizable',
+    category: 'primitive',
+    demo: '/components#demo-resizable',
+  },
+  {
+    usedIn: '/notifications',
     id: 'scroll-area',
     name: 'Scroll Area',
     category: 'primitive',
     demo: '/components#demo-scroll-area',
   },
   {
+    usedIn: '/reports',
     id: 'segmented',
     name: 'Segmented',
     category: 'primitive',
     demo: '/components#demo-segmented',
     isNew: true,
   },
-  { id: 'select', name: 'Select', category: 'primitive', demo: '/components#demo-select' },
-  { id: 'separator', name: 'Separator', category: 'primitive', demo: '/components#demo-separator' },
-  { id: 'sheet', name: 'Sheet', category: 'primitive', demo: '/components#demo-sheet' },
+  {
+    usedIn: '/users',
+    id: 'select',
+    name: 'Select',
+    category: 'primitive',
+    demo: '/components#demo-select',
+  },
+  {
+    usedIn: '/',
+    id: 'separator',
+    name: 'Separator',
+    category: 'primitive',
+    demo: '/components#demo-separator',
+  },
+  {
+    usedIn: '/audit-logs',
+    id: 'sheet',
+    name: 'Sheet',
+    category: 'primitive',
+    demo: '/components#demo-sheet',
+  },
   {
     id: 'sidebar',
     demo: '/components#demo-sidebar',
@@ -144,8 +271,15 @@ export const COMPONENTS: ComponentEntry[] = [
     category: 'primitive',
     usedIn: '/',
   },
-  { id: 'skeleton', name: 'Skeleton', category: 'primitive', demo: '/components#demo-skeleton' },
   {
+    usedIn: '/',
+    id: 'skeleton',
+    name: 'Skeleton',
+    category: 'primitive',
+    demo: '/components#demo-skeleton',
+  },
+  {
+    usedIn: '/reports',
     id: 'slider',
     name: 'Slider',
     category: 'primitive',
@@ -160,26 +294,65 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/',
   },
   {
+    usedIn: '/projects',
     id: 'spinner',
     name: 'Spinner',
     category: 'primitive',
     demo: '/components#demo-spinner',
     isNew: true,
   },
-  { id: 'switch', name: 'Switch', category: 'primitive', demo: '/components#demo-switch' },
-  { id: 'table', name: 'Table', category: 'primitive', demo: '/components#demo-table' },
-  { id: 'tabs', name: 'Tabs', category: 'primitive', demo: '/components#demo-tabs' },
-  { id: 'textarea', name: 'Textarea', category: 'primitive', demo: '/components#demo-textarea' },
-  { id: 'toggle', name: 'Toggle', category: 'primitive', demo: '/components#demo-toggle' },
   {
+    usedIn: '/security',
+    id: 'switch',
+    name: 'Switch',
+    category: 'primitive',
+    demo: '/components#demo-switch',
+  },
+  {
+    usedIn: '/users',
+    id: 'table',
+    name: 'Table',
+    category: 'primitive',
+    demo: '/components#demo-table',
+  },
+  {
+    usedIn: '/users/$id',
+    id: 'tabs',
+    name: 'Tabs',
+    category: 'primitive',
+    demo: '/components#demo-tabs',
+  },
+  {
+    usedIn: '/users',
+    id: 'textarea',
+    name: 'Textarea',
+    category: 'primitive',
+    demo: '/components#demo-textarea',
+  },
+  {
+    usedIn: '/files',
+    id: 'toggle',
+    name: 'Toggle',
+    category: 'primitive',
+    demo: '/components#demo-toggle',
+  },
+  {
+    usedIn: '/',
     id: 'toggle-group',
     name: 'Toggle Group',
     category: 'primitive',
     demo: '/components#demo-toggle-group',
   },
-  { id: 'tooltip', name: 'Tooltip', category: 'primitive', demo: '/components#demo-tooltip' },
+  {
+    usedIn: '/reports',
+    id: 'tooltip',
+    name: 'Tooltip',
+    category: 'primitive',
+    demo: '/components#demo-tooltip',
+  },
 
   {
+    usedIn: '/reports',
     id: 'anchor-nav',
     name: 'Anchor Nav',
     category: 'enterprise',
@@ -187,6 +360,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/files',
     id: 'auto-complete',
     name: 'Auto Complete',
     category: 'enterprise',
@@ -194,6 +368,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/reports',
     id: 'back-top',
     name: 'Back Top',
     category: 'enterprise',
@@ -201,6 +376,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/projects',
     id: 'carousel',
     name: 'Carousel',
     category: 'enterprise',
@@ -208,6 +384,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/files',
     id: 'cascader',
     name: 'Cascader',
     category: 'enterprise',
@@ -215,6 +392,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/integrations',
     id: 'combobox',
     name: 'Combobox',
     category: 'enterprise',
@@ -222,6 +400,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/projects',
     id: 'date-picker',
     name: 'Date Picker',
     category: 'enterprise',
@@ -250,6 +429,7 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/profile',
   },
   {
+    usedIn: '/files',
     id: 'image-preview',
     name: 'Image Preview',
     category: 'enterprise',
@@ -257,6 +437,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/audit-logs',
     id: 'json-viewer',
     name: 'JSON Viewer',
     category: 'enterprise',
@@ -264,6 +445,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/integrations',
     id: 'list',
     name: 'List',
     category: 'enterprise',
@@ -271,6 +453,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/notifications',
     id: 'notification-center',
     name: 'Notification Center',
     category: 'enterprise',
@@ -278,6 +461,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/reports',
     id: 'page-container',
     name: 'Page Container',
     category: 'enterprise',
@@ -285,6 +469,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/integrations',
     id: 'popconfirm',
     name: 'Popconfirm',
     category: 'enterprise',
@@ -292,6 +477,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/projects/$id',
     id: 'rate',
     name: 'Rate',
     category: 'enterprise',
@@ -306,6 +492,7 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/users/$id',
   },
   {
+    usedIn: '/reports',
     id: 'statistic',
     name: 'Statistic',
     category: 'enterprise',
@@ -327,6 +514,7 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/users/$id',
   },
   {
+    usedIn: '/integrations',
     id: 'time-picker',
     name: 'Time Picker',
     category: 'enterprise',
@@ -341,6 +529,7 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/users/$id',
   },
   {
+    usedIn: '/',
     id: 'tour',
     name: 'Tour',
     category: 'enterprise',
@@ -362,6 +551,7 @@ export const COMPONENTS: ComponentEntry[] = [
     usedIn: '/departments',
   },
   {
+    usedIn: '/projects',
     id: 'tree-select',
     name: 'Tree Select',
     category: 'enterprise',
@@ -369,6 +559,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/reports',
     id: 'trend',
     name: 'Trend',
     category: 'enterprise',
@@ -376,6 +567,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/files',
     id: 'upload',
     name: 'Upload',
     category: 'enterprise',
@@ -383,6 +575,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/files',
     id: 'watermark',
     name: 'Watermark',
     category: 'enterprise',
@@ -391,6 +584,7 @@ export const COMPONENTS: ComponentEntry[] = [
   },
 
   {
+    usedIn: '/projects/$id',
     id: 'detail-page',
     name: 'Detail Page',
     category: 'pro',
@@ -398,6 +592,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/integrations',
     id: 'editable-table',
     name: 'Editable Table',
     category: 'pro',
@@ -405,6 +600,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/users',
     id: 'import-wizard',
     name: 'Import Wizard',
     category: 'pro',
@@ -412,6 +608,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/integrations',
     id: 'pro-form',
     name: 'ProForm',
     category: 'pro',
@@ -419,6 +616,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/users',
     id: 'pro-table',
     name: 'ProTable',
     category: 'pro',
@@ -426,6 +624,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
+    usedIn: '/projects',
     id: 'query-filter',
     name: 'Query Filter',
     category: 'pro',

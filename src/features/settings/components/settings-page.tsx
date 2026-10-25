@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
 import {
   Check,
+  ChevronDown,
   Database,
   ExternalLink,
   Info,
@@ -32,6 +33,7 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
   Select,
   SelectContent,
@@ -276,6 +278,52 @@ export function SettingsPage() {
             </Card>
           </Can>
         ) : null}
+
+        <Card className="shadow-soft lg:col-span-3">
+          <Collapsible>
+            <CollapsibleTrigger asChild>
+              <button
+                type="button"
+                className="group w-full rounded-xl p-6 text-left transition-colors hover:bg-muted/30 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1.5">
+                    <span className="flex items-center gap-2 font-semibold">
+                      <Database className="size-4" />
+                      {t('settings:retention.title')}
+                    </span>
+                    <span className="block text-sm text-muted-foreground">
+                      {t('settings:retention.description')}
+                    </span>
+                  </div>
+                  <ChevronDown
+                    aria-hidden
+                    className="mt-0.5 size-4 shrink-0 text-muted-foreground transition-transform group-data-[state=open]:rotate-180"
+                  />
+                </div>
+              </button>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <div className="space-y-4 border-t px-6 py-4">
+                <dl className="grid gap-3 sm:grid-cols-3">
+                  {(['audit', 'notifications', 'deliveries'] as const).map((row) => (
+                    <div key={row} className="rounded-xl border p-3">
+                      <dt className="text-xs text-muted-foreground">
+                        {t(`settings:retention.rows.${row}`)}
+                      </dt>
+                      <dd className="mt-1 text-sm font-medium">
+                        {t(`settings:retention.rows.${row}Value`)}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  {t('settings:retention.note')}
+                </p>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        </Card>
 
         <Card className="shadow-soft lg:col-span-3">
           <CardHeader>

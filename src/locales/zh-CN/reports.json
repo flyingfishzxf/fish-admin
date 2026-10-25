@@ -1,0 +1,104 @@
+{
+  "title": "数据报表",
+  "subtitle": "使用量、收入与转化趋势，并支持导出明细。",
+  "range": {
+    "label": "日期范围",
+    "placeholder": "选择日期",
+    "last7": "最近 7 天",
+    "last30": "最近 30 天",
+    "last90": "最近 90 天"
+  },
+  "granularity": {
+    "label": "粒度",
+    "day": "按日",
+    "week": "按周",
+    "month": "按月"
+  },
+  "export": {
+    "label": "导出",
+    "summary": "导出汇总 CSV",
+    "detail": "导出明细 CSV",
+    "toast": "报表已导出为 CSV。"
+  },
+  "anchors": {
+    "label": "报表分区",
+    "overview": "概览",
+    "trend": "趋势",
+    "channels": "渠道",
+    "detail": "明细"
+  },
+  "overview": {
+    "title": "核心指标"
+  },
+  "kpis": {
+    "revenue": "收入",
+    "orders": "订单",
+    "conversion": "转化率",
+    "refunds": "退款"
+  },
+  "definitions": {
+    "revenue": "所选范围内记录的总收入，未扣除退款。",
+    "orders": "范围内的已付款订单，退款订单仍计入。",
+    "conversion": "同一范围内订单数除以会话数。",
+    "refunds": "范围内被退款的订单金额。"
+  },
+  "comparison": "较上一周期",
+  "targetAlert": {
+    "title": "{{count}} 个周期低于目标",
+    "description": "{{total}} 个周期中有 {{count}} 个的日均收入低于 {{target}}。",
+    "okTitle": "所有周期均达标",
+    "okDescription": "每个周期的日均收入都不低于 {{target}}。"
+  },
+  "trend": {
+    "title": "收入趋势",
+    "description": "所选范围内每个周期的日均值。",
+    "metric": {
+      "label": "图表指标"
+    },
+    "metrics": {
+      "revenue": "日均收入",
+      "orders": "日均订单"
+    },
+    "color": {
+      "label": "系列颜色",
+      "aria": "系列颜色"
+    },
+    "targetLine": "目标"
+  },
+  "target": {
+    "label": "日均收入目标",
+    "hint": "用于对比日均收入。"
+  },
+  "channels": {
+    "title": "渠道构成",
+    "description": "按获客渠道划分的收入占比。",
+    "emptyTitle": "暂无渠道数据",
+    "emptyDescription": "当前范围没有可展示的渠道数据。",
+    "names": {
+      "direct": "直接访问",
+      "organic": "自然搜索",
+      "referral": "外部推荐",
+      "social": "社交媒体",
+      "email": "邮件"
+    }
+  },
+  "detail": {
+    "title": "明细",
+    "description": "按日期与渠道列出的收入、订单和退款。",
+    "showing": "显示 {{count}} / {{total}} 行",
+    "emptyTitle": "当前范围暂无数据",
+    "emptyDescription": "尝试扩大日期范围或切换粒度。",
+    "loading": "正在加载报表",
+    "columns": {
+      "date": "日期",
+      "channel": "渠道",
+      "revenue": "收入",
+      "orders": "订单",
+      "refunds": "退款"
+    }
+  },
+  "errors": {
+    "title": "报表暂不可用",
+    "description": "无法生成该报表，请重试。"
+  }
+}

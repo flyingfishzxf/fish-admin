@@ -1,10 +1,19 @@
 import {
+  Archive,
   Building,
   Building2,
+  FileCog,
+  FolderCog,
+  FolderPlus,
   LogIn,
+  Plug,
+  PlugZap,
   ShieldCheck,
   ShieldMinus,
   ShieldPlus,
+  Trash2,
+  Unplug,
+  Upload,
   UserCheck,
   UserCog,
   UserPlus,
@@ -27,9 +36,26 @@ export const AUDIT_ACTIONS: AuditAction[] = [
   'department.updated',
   'auth.login',
   'profile.updated',
+  'project.created',
+  'project.updated',
+  'project.archived',
+  'file.uploaded',
+  'file.updated',
+  'file.deleted',
+  'integration.created',
+  'integration.updated',
+  'integration.deleted',
 ]
 
-export const AUDIT_ENTITY_TYPES: AuditEntityType[] = ['user', 'role', 'department', 'auth']
+export const AUDIT_ENTITY_TYPES: AuditEntityType[] = [
+  'user',
+  'role',
+  'department',
+  'auth',
+  'project',
+  'file',
+  'integration',
+]
 
 export type AuditTone = 'success' | 'info' | 'warning' | 'destructive' | 'neutral'
 
@@ -45,6 +71,15 @@ export const AUDIT_ACTION_TONES: Record<AuditAction, AuditTone> = {
   'department.updated': 'info',
   'auth.login': 'neutral',
   'profile.updated': 'info',
+  'project.created': 'success',
+  'project.updated': 'info',
+  'project.archived': 'warning',
+  'file.uploaded': 'success',
+  'file.updated': 'info',
+  'file.deleted': 'destructive',
+  'integration.created': 'success',
+  'integration.updated': 'info',
+  'integration.deleted': 'destructive',
 }
 
 export const AUDIT_ACTION_ICONS: Record<AuditAction, LucideIcon> = {
@@ -59,6 +94,15 @@ export const AUDIT_ACTION_ICONS: Record<AuditAction, LucideIcon> = {
   'department.updated': Building,
   'auth.login': LogIn,
   'profile.updated': UserRound,
+  'project.created': FolderPlus,
+  'project.updated': FolderCog,
+  'project.archived': Archive,
+  'file.uploaded': Upload,
+  'file.updated': FileCog,
+  'file.deleted': Trash2,
+  'integration.created': Plug,
+  'integration.updated': PlugZap,
+  'integration.deleted': Unplug,
 }
 
 export const AUDIT_TONE_BADGE_CLASSES: Record<AuditTone, string> = {

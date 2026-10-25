@@ -1,0 +1,104 @@
+{
+  "title": "Reports",
+  "subtitle": "Usage, revenue and conversion trends with exportable detail.",
+  "range": {
+    "label": "Date range",
+    "placeholder": "Select dates",
+    "last7": "Last 7 days",
+    "last30": "Last 30 days",
+    "last90": "Last 90 days"
+  },
+  "granularity": {
+    "label": "Granularity",
+    "day": "Daily",
+    "week": "Weekly",
+    "month": "Monthly"
+  },
+  "export": {
+    "label": "Export",
+    "summary": "Export summary CSV",
+    "detail": "Export detail CSV",
+    "toast": "Report exported as CSV."
+  },
+  "anchors": {
+    "label": "Report sections",
+    "overview": "Overview",
+    "trend": "Trend",
+    "channels": "Channels",
+    "detail": "Detail"
+  },
+  "overview": {
+    "title": "Highlights"
+  },
+  "kpis": {
+    "revenue": "Revenue",
+    "orders": "Orders",
+    "conversion": "Conversion rate",
+    "refunds": "Refunds"
+  },
+  "definitions": {
+    "revenue": "Total revenue recorded in the selected range, before refunds.",
+    "orders": "Paid orders in the range. Refunded orders stay counted.",
+    "conversion": "Orders divided by sessions for the same range.",
+    "refunds": "Value of refunded orders inside the range."
+  },
+  "comparison": "vs previous period",
+  "targetAlert": {
+    "title": "{{count}} periods below target",
+    "description": "{{count}} of {{total}} periods averaged under {{target}} per day.",
+    "okTitle": "All periods on target",
+    "okDescription": "Every period averaged at least {{target}} per day."
+  },
+  "trend": {
+    "title": "Revenue trend",
+    "description": "Daily average per period across the selected range.",
+    "metric": {
+      "label": "Chart metric"
+    },
+    "metrics": {
+      "revenue": "Daily revenue",
+      "orders": "Daily orders"
+    },
+    "color": {
+      "label": "Series colour",
+      "aria": "Series colour"
+    },
+    "targetLine": "Target"
+  },
+  "target": {
+    "label": "Daily revenue target",
+    "hint": "Applies to average daily revenue."
+  },
+  "channels": {
+    "title": "Channel mix",
+    "description": "Revenue share by acquisition channel.",
+    "emptyTitle": "No channel breakdown",
+    "emptyDescription": "This range has no channel data to display.",
+    "names": {
+      "direct": "Direct",
+      "organic": "Organic search",
+      "referral": "Referral",
+      "social": "Social",
+      "email": "Email"
+    }
+  },
+  "detail": {
+    "title": "Detail",
+    "description": "Revenue, orders and refunds by date and channel.",
+    "showing": "Showing {{count}} of {{total}} rows",
+    "emptyTitle": "No rows for this range",
+    "emptyDescription": "Try a wider date range or a different granularity.",
+    "loading": "Loading report",
+    "columns": {
+      "date": "Date",
+      "channel": "Channel",
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "refunds": "Refunds"
+    }
+  },
+  "errors": {
+    "title": "Report unavailable",
+    "description": "We couldn't generate this report. Please try again."
+  }
+}

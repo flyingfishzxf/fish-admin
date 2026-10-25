@@ -50,7 +50,7 @@ describe('mock database migrations', () => {
     localStorage.clear()
   })
 
-  it('migrates a v1 database to v3 without losing users', () => {
+  it('migrates a v1 database to v4 without losing users', () => {
     seedStorage({
       version: 1,
       seededAt: '2024-01-01T00:00:00.000Z',
@@ -75,12 +75,20 @@ describe('mock database migrations', () => {
     })
     expect(db.sessions).toHaveLength(1)
     expect(db.departments.length).toBeGreaterThan(0)
-    expect(db.auditEvents).toHaveLength(2)
-    expect(db.auditEvents[0]).toMatchObject({
-      action: 'user.updated',
-      entityType: 'user',
-      entityLabel: 'Morgan Lee',
-    })
+    expect(db.auditEvents).toHaveLength(62)
+    expect(db.auditEvents).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          action: 'user.updated',
+          entityType: 'user',
+          entityLabel: 'Morgan Lee',
+        }),
+      ]),
+    )
+    expect(db.projects.length).toBeGreaterThan(0)
+    expect(db.files.length).toBeGreaterThan(0)
+    expect(db.integrations.length).toBeGreaterThan(0)
+    expect(db.notifications.length).toBeGreaterThan(0)
     expect(db).not.toHaveProperty('activity')
     expect(db).not.toHaveProperty('refreshTokens')
   })
@@ -117,13 +125,82 @@ describe('mock database migrations', () => {
     expect(db.users[0]?.tags).toEqual([])
     expect(db.sessions).toHaveLength(1)
     expect(db.invites).toEqual([])
-    expect(db.auditEvents).toHaveLength(2)
+    expect(db.auditEvents).toHaveLength(62)
 
     const stored = JSON.parse(localStorage.getItem(MOCK_DB_STORAGE_KEY) ?? '{}')
     expect(stored.version).toBe(MOCK_DB_VERSION)
+    expect(stored.projects).toHaveLength(db.projects.length)
   })
 
-  it('resets unknown versions and incomplete v3 payloads', () => {
+  it('migrates a v3 database and merges the new permission codes', () => {
+    seedStorage({
+      version: 3,
+      seededAt: '2024-01-01T00:00:00.000Z',
+      users: [{ ...V1_USER, tags: [], emailVerified: true, twoFactorEnabled: false }],
+      roles: [
+        ROLE,
+        {
+          id: 'viewer',
+          name: 'Viewer',
+          description: 'Read only',
+          permissions: ['dashboard:read'],
+          isSystem: true,
+        },
+      ],
+      departments: [],
+      auditEvents: [],
+      sessions: [],
+      loginAttempts: {},
+      mfaChallenges: {},
+      verificationTokens: [],
+      passwordResetTokens: [],
+      invites: [],
+    })
+
+    const db = readDb()
+
+    expect(db.version).toBe(MOCK_DB_VERSION)
+    expect(db.users).toHaveLength(1)
+    expect(db.departments).toEqual([])
+    expect(db.projects).toHaveLength(12)
+    expect(db.tasks).toHaveLength(72)
+    expect(db.milestones).toHaveLength(48)
+    expect(db.files).toHaveLength(18)
+    expect(db.integrations).toHaveLength(6)
+    expect(db.roles.find((role) => role.id === 'viewer')?.permissions).toEqual(
+      expect.arrayContaining(['dashboard:read', 'project:read', 'file:read', 'report:read']),
+    )
+    expect(db.roles.find((role) => role.id === 'viewer')?.permissions).not.toContain(
+      'project:manage',
+    )
+    expect(db.notificationPreferences['user-admin']).toBeDefined()
+  })
+
+  it('treats a migrated v4 database as complete on the next read', () => {
+    seedStorage({
+      version: 3,
+      seededAt: '2024-01-01T00:00:00.000Z',
+      users: [{ ...V1_USER, tags: [], emailVerified: true, twoFactorEnabled: false }],
+      roles: [ROLE],
+      departments: [],
+      auditEvents: [],
+      sessions: [],
+      loginAttempts: {},
+      mfaChallenges: {},
+      verificationTokens: [],
+      passwordResetTokens: [],
+      invites: [],
+    })
+
+    const first = readDb()
+    const second = readDb()
+
+    expect(second.projects).toEqual(first.projects)
+    expect(second.auditEvents).toEqual(first.auditEvents)
+    expect(second.notifications).toEqual(first.notifications)
+  })
+
+  it('resets unknown versions and incomplete payloads', () => {
     seedStorage({
       version: 99,
       seededAt: '2024-01-01T00:00:00.000Z',
@@ -152,7 +229,7 @@ describe('mock database migrations', () => {
     expect(fromIncomplete.departments.length).toBeGreaterThan(0)
   })
 
-  it('keeps a complete v3 database untouched', () => {
+  it('keeps a complete v4 database untouched', () => {
     const seeded = {
       version: MOCK_DB_VERSION,
       seededAt: '2024-01-01T00:00:00.000Z',
@@ -166,6 +243,15 @@ describe('mock database migrations', () => {
       verificationTokens: [],
       passwordResetTokens: [],
       invites: [],
+      notifications: [],
+      notificationPreferences: {},
+      projects: [],
+      tasks: [],
+      milestones: [],
+      fileFolders: [],
+      files: [],
+      integrations: [],
+      deliveries: [],
     }
     seedStorage(seeded)
 
@@ -173,5 +259,6 @@ describe('mock database migrations', () => {
 
     expect(db.users).toHaveLength(1)
     expect(db.departments).toEqual([])
+    expect(db.projects).toEqual([])
   })
 })

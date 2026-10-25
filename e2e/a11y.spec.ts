@@ -27,6 +27,17 @@ async function expectNoViolations(page: Page, context: string) {
 }
 
 test.describe('accessibility', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => {
+      document.addEventListener('DOMContentLoaded', () => {
+        const style = document.createElement('style')
+        style.textContent =
+          '*,*::before,*::after{animation:none!important;transition:none!important}'
+        document.head.appendChild(style)
+      })
+    })
+  })
+
   test('login page, light and dark', async ({ page }) => {
     await page.goto('/login')
     await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible()
@@ -120,6 +131,82 @@ test.describe('accessibility', () => {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
     await waitForData(page)
     await expectNoViolations(page, 'preferences settings')
+  })
+
+  test('projects board, create dialog and project detail', async ({ page }) => {
+    await signInAs(page, 'admin')
+    await page.goto('/projects')
+    await expect(page.getByRole('heading', { name: 'Projects', level: 1 })).toBeVisible()
+    await waitForData(page)
+    await expectNoViolations(page, 'projects board')
+
+    await page.getByRole('button', { name: 'New project' }).click()
+    await expect(page.getByRole('dialog')).toBeVisible()
+    await expectNoViolations(page, 'project create dialog')
+    await page.keyboard.press('Escape')
+
+    await page.goto('/projects/project-atl')
+    await expect(page.getByRole('heading', { name: 'Atlas Design System', level: 1 })).toBeVisible()
+    await waitForData(page)
+    await expectNoViolations(page, 'project detail')
+  })
+
+  test('file library, upload drawer and preview', async ({ page }) => {
+    await signInAs(page, 'admin')
+    await page.goto('/files')
+    await expect(page.getByRole('heading', { name: 'Files', level: 1 })).toBeVisible()
+    await waitForData(page)
+    await expectNoViolations(page, 'file library')
+
+    await page.getByRole('button', { name: 'Upload files' }).click()
+    await expect(page.getByRole('dialog')).toBeVisible()
+    await expectNoViolations(page, 'file upload drawer')
+    await page.getByRole('button', { name: 'Close' }).click()
+
+    await page
+      .getByRole('button', { name: /^Open / })
+      .first()
+      .click()
+    await expect(page.getByText('File metadata').first()).toBeVisible()
+    await expectNoViolations(page, 'file preview')
+  })
+
+  test('notification inbox, detail and preferences', async ({ page }) => {
+    await signInAs(page, 'admin')
+    await page.goto('/notifications')
+    await expect(page.getByRole('heading', { name: 'Notifications', level: 1 })).toBeVisible()
+    await waitForData(page)
+    await expectNoViolations(page, 'notification inbox')
+
+    await page
+      .getByRole('list', { name: 'Notifications' })
+      .getByRole('listitem')
+      .first()
+      .getByRole('button')
+      .first()
+      .click()
+    await expect(page.getByRole('dialog')).toBeVisible()
+    await expectNoViolations(page, 'notification detail drawer')
+  })
+
+  test('reports anchors and integration form', async ({ page }) => {
+    await signInAs(page, 'admin')
+    await page.goto('/reports')
+    await expect(page.getByRole('heading', { name: 'Reports', level: 1 })).toBeVisible()
+    await waitForData(page)
+    await expectNoViolations(page, 'reports')
+
+    await page.getByRole('button', { name: 'Detail' }).click()
+    await expectNoViolations(page, 'reports after anchor jump')
+
+    await page.goto('/integrations')
+    await expect(page.getByRole('heading', { name: 'Integrations', level: 1 })).toBeVisible()
+    await waitForData(page)
+    await expectNoViolations(page, 'integrations list')
+
+    await page.getByRole('button', { name: 'New connection' }).click()
+    await expect(page.getByRole('heading', { name: 'New connection' })).toBeVisible()
+    await expectNoViolations(page, 'integration form drawer')
   })
 
   test('component catalog and ui playground', async ({ page }) => {

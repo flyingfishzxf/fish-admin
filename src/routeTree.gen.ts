@@ -21,8 +21,13 @@ import { Route as App403RouteImport } from './routes/_app/403'
 import { Route as AppAuditLogsRouteImport } from './routes/_app/audit-logs'
 import { Route as AppComponentsRouteImport } from './routes/_app/components'
 import { Route as AppDepartmentsRouteImport } from './routes/_app/departments'
+import { Route as AppFilesRouteImport } from './routes/_app/files'
+import { Route as AppIntegrationsRouteImport } from './routes/_app/integrations'
+import { Route as AppNotificationsRouteImport } from './routes/_app/notifications'
 import { Route as AppPermissionsRouteImport } from './routes/_app/permissions'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
+import { Route as AppProjectsRouteImport } from './routes/_app/projects'
+import { Route as AppReportsRouteImport } from './routes/_app/reports'
 import { Route as AppRolesRouteImport } from './routes/_app/roles'
 import { Route as AppSecurityRouteImport } from './routes/_app/security'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
@@ -35,6 +40,7 @@ import { Route as AuthOtpRouteImport } from './routes/_auth/otp'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email'
+import { Route as AppProjectsIdRouteImport } from './routes/_app/projects_.$id'
 import { Route as AppRolesMatrixRouteImport } from './routes/_app/roles_.matrix'
 import { Route as AppUsersIdRouteImport } from './routes/_app/users_.$id'
 
@@ -96,6 +102,21 @@ const AppDepartmentsRoute = AppDepartmentsRouteImport.update({
   path: '/departments',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppFilesRoute = AppFilesRouteImport.update({
+  id: '/files',
+  path: '/files',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppIntegrationsRoute = AppIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppNotificationsRoute = AppNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppPermissionsRoute = AppPermissionsRouteImport.update({
   id: '/permissions',
   path: '/permissions',
@@ -104,6 +125,16 @@ const AppPermissionsRoute = AppPermissionsRouteImport.update({
 const AppProfileRoute = AppProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppProjectsRoute = AppProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppRolesRoute = AppRolesRouteImport.update({
@@ -166,6 +197,11 @@ const AuthVerifyEmailRoute = AuthVerifyEmailRouteImport.update({
   path: '/verify-email',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AppProjectsIdRoute = AppProjectsIdRouteImport.update({
+  id: '/projects_/$id',
+  path: '/projects/$id',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppRolesMatrixRoute = AppRolesMatrixRouteImport.update({
   id: '/roles_/matrix',
   path: '/roles/matrix',
@@ -188,8 +224,13 @@ export interface FileRoutesByFullPath {
   '/audit-logs': typeof AppAuditLogsRoute
   '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
+  '/files': typeof AppFilesRoute
+  '/integrations': typeof AppIntegrationsRoute
+  '/notifications': typeof AppNotificationsRoute
   '/permissions': typeof AppPermissionsRoute
   '/profile': typeof AppProfileRoute
+  '/projects': typeof AppProjectsRoute
+  '/reports': typeof AppReportsRoute
   '/roles': typeof AppRolesRoute
   '/security': typeof AppSecurityRoute
   '/settings': typeof AppSettingsRoute
@@ -202,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/projects/$id': typeof AppProjectsIdRoute
   '/roles/matrix': typeof AppRolesMatrixRoute
   '/users/$id': typeof AppUsersIdRoute
 }
@@ -216,8 +258,13 @@ export interface FileRoutesByTo {
   '/audit-logs': typeof AppAuditLogsRoute
   '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
+  '/files': typeof AppFilesRoute
+  '/integrations': typeof AppIntegrationsRoute
+  '/notifications': typeof AppNotificationsRoute
   '/permissions': typeof AppPermissionsRoute
   '/profile': typeof AppProfileRoute
+  '/projects': typeof AppProjectsRoute
+  '/reports': typeof AppReportsRoute
   '/roles': typeof AppRolesRoute
   '/security': typeof AppSecurityRoute
   '/settings': typeof AppSettingsRoute
@@ -230,6 +277,7 @@ export interface FileRoutesByTo {
   '/register': typeof AuthRegisterRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/verify-email': typeof AuthVerifyEmailRoute
+  '/projects/$id': typeof AppProjectsIdRoute
   '/roles/matrix': typeof AppRolesMatrixRoute
   '/users/$id': typeof AppUsersIdRoute
 }
@@ -246,8 +294,13 @@ export interface FileRoutesById {
   '/_app/audit-logs': typeof AppAuditLogsRoute
   '/_app/components': typeof AppComponentsRoute
   '/_app/departments': typeof AppDepartmentsRoute
+  '/_app/files': typeof AppFilesRoute
+  '/_app/integrations': typeof AppIntegrationsRoute
+  '/_app/notifications': typeof AppNotificationsRoute
   '/_app/permissions': typeof AppPermissionsRoute
   '/_app/profile': typeof AppProfileRoute
+  '/_app/projects': typeof AppProjectsRoute
+  '/_app/reports': typeof AppReportsRoute
   '/_app/roles': typeof AppRolesRoute
   '/_app/security': typeof AppSecurityRoute
   '/_app/settings': typeof AppSettingsRoute
@@ -261,6 +314,7 @@ export interface FileRoutesById {
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_auth/verify-email': typeof AuthVerifyEmailRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/projects_/$id': typeof AppProjectsIdRoute
   '/_app/roles_/matrix': typeof AppRolesMatrixRoute
   '/_app/users_/$id': typeof AppUsersIdRoute
 }
@@ -277,8 +331,13 @@ export interface FileRouteTypes {
     | '/audit-logs'
     | '/components'
     | '/departments'
+    | '/files'
+    | '/integrations'
+    | '/notifications'
     | '/permissions'
     | '/profile'
+    | '/projects'
+    | '/reports'
     | '/roles'
     | '/security'
     | '/settings'
@@ -291,6 +350,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/projects/$id'
     | '/roles/matrix'
     | '/users/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -305,8 +365,13 @@ export interface FileRouteTypes {
     | '/audit-logs'
     | '/components'
     | '/departments'
+    | '/files'
+    | '/integrations'
+    | '/notifications'
     | '/permissions'
     | '/profile'
+    | '/projects'
+    | '/reports'
     | '/roles'
     | '/security'
     | '/settings'
@@ -319,6 +384,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/reset-password'
     | '/verify-email'
+    | '/projects/$id'
     | '/roles/matrix'
     | '/users/$id'
   id:
@@ -334,8 +400,13 @@ export interface FileRouteTypes {
     | '/_app/audit-logs'
     | '/_app/components'
     | '/_app/departments'
+    | '/_app/files'
+    | '/_app/integrations'
+    | '/_app/notifications'
     | '/_app/permissions'
     | '/_app/profile'
+    | '/_app/projects'
+    | '/_app/reports'
     | '/_app/roles'
     | '/_app/security'
     | '/_app/settings'
@@ -349,6 +420,7 @@ export interface FileRouteTypes {
     | '/_auth/reset-password'
     | '/_auth/verify-email'
     | '/_app/'
+    | '/_app/projects_/$id'
     | '/_app/roles_/matrix'
     | '/_app/users_/$id'
   fileRoutesById: FileRoutesById
@@ -448,6 +520,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDepartmentsRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/files': {
+      id: '/_app/files'
+      path: '/files'
+      fullPath: '/files'
+      preLoaderRoute: typeof AppFilesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/integrations': {
+      id: '/_app/integrations'
+      path: '/integrations'
+      fullPath: '/integrations'
+      preLoaderRoute: typeof AppIntegrationsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/notifications': {
+      id: '/_app/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AppNotificationsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/permissions': {
       id: '/_app/permissions'
       path: '/permissions'
@@ -460,6 +553,20 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/projects': {
+      id: '/_app/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof AppProjectsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/_app/reports': {
+      id: '/_app/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/roles': {
@@ -546,6 +653,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthVerifyEmailRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_app/projects_/$id': {
+      id: '/_app/projects_/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof AppProjectsIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/roles_/matrix': {
       id: '/_app/roles_/matrix'
       path: '/roles/matrix'
@@ -569,14 +683,20 @@ interface AppRouteRouteChildren {
   AppAuditLogsRoute: typeof AppAuditLogsRoute
   AppComponentsRoute: typeof AppComponentsRoute
   AppDepartmentsRoute: typeof AppDepartmentsRoute
+  AppFilesRoute: typeof AppFilesRoute
+  AppIntegrationsRoute: typeof AppIntegrationsRoute
+  AppNotificationsRoute: typeof AppNotificationsRoute
   AppPermissionsRoute: typeof AppPermissionsRoute
   AppProfileRoute: typeof AppProfileRoute
+  AppProjectsRoute: typeof AppProjectsRoute
+  AppReportsRoute: typeof AppReportsRoute
   AppRolesRoute: typeof AppRolesRoute
   AppSecurityRoute: typeof AppSecurityRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppUiRoute: typeof AppUiRoute
   AppUsersRoute: typeof AppUsersRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppProjectsIdRoute: typeof AppProjectsIdRoute
   AppRolesMatrixRoute: typeof AppRolesMatrixRoute
   AppUsersIdRoute: typeof AppUsersIdRoute
 }
@@ -587,14 +707,20 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAuditLogsRoute: AppAuditLogsRoute,
   AppComponentsRoute: AppComponentsRoute,
   AppDepartmentsRoute: AppDepartmentsRoute,
+  AppFilesRoute: AppFilesRoute,
+  AppIntegrationsRoute: AppIntegrationsRoute,
+  AppNotificationsRoute: AppNotificationsRoute,
   AppPermissionsRoute: AppPermissionsRoute,
   AppProfileRoute: AppProfileRoute,
+  AppProjectsRoute: AppProjectsRoute,
+  AppReportsRoute: AppReportsRoute,
   AppRolesRoute: AppRolesRoute,
   AppSecurityRoute: AppSecurityRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppUiRoute: AppUiRoute,
   AppUsersRoute: AppUsersRoute,
   AppIndexRoute: AppIndexRoute,
+  AppProjectsIdRoute: AppProjectsIdRoute,
   AppRolesMatrixRoute: AppRolesMatrixRoute,
   AppUsersIdRoute: AppUsersIdRoute,
 }

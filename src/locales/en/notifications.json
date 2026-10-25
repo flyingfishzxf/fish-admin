@@ -1,0 +1,112 @@
+{
+  "title": "Notifications",
+  "subtitle": "Mentions, project updates and workspace alerts in one inbox.",
+  "bell": {
+    "label": "Notifications",
+    "title": "Latest activity"
+  },
+  "filters": {
+    "label": "Filter notifications",
+    "all": "All",
+    "unread": "Unread",
+    "mention": "Mentions"
+  },
+  "actions": {
+    "markAllRead": "Mark all read",
+    "viewAll": "View all notifications",
+    "markSelected": "Mark as read ({{count}})",
+    "markRead": "Mark as read",
+    "markUnread": "Mark as unread",
+    "openEntity": "Open {{entity}}",
+    "savePreferences": "Save preferences",
+    "resetPreferences": "Reset"
+  },
+  "list": {
+    "ariaLabel": "Notifications",
+    "selectAll": "Select all notifications on this page",
+    "selectOne": "Select {{title}}",
+    "markAllSuccess": "Updated {{count}} notifications.",
+    "markSelectedSuccess": "Marked {{count}} notifications as read.",
+    "markOneSuccess": "Notification updated.",
+    "emptyTitle": "No notifications",
+    "emptyDescription": "New mentions and updates will appear here.",
+    "loading": "Loading notifications",
+    "selectedCount": "{{count}} selected",
+    "hoverActor": "From {{actor}}",
+    "hoverEntity": "Related to {{entity}}",
+    "unreadLabel": "Unread"
+  },
+  "empty": {
+    "title": "You're all caught up.",
+    "description": "New mentions, project updates and alerts will land here."
+  },
+  "detail": {
+    "title": "Notification detail",
+    "kind": "Type",
+    "actor": "From",
+    "entity": "Related to",
+    "received": "Received",
+    "open": "Open related item",
+    "system": "FishAdmin"
+  },
+  "preferences": {
+    "title": "Delivery preferences",
+    "description": "Choose when and where FishAdmin reaches you.",
+    "quietHours": "Quiet hours",
+    "quietHelp": "Notifications are muted between these times; digests resume afterwards.",
+    "quietStart": "Quiet hours start",
+    "quietEnd": "Quiet hours end",
+    "digest": "Digest",
+    "digests": {
+      "off": "Off",
+      "daily": "Daily",
+      "weekly": "Weekly"
+    },
+    "channels": "Channels",
+    "channelLabels": {
+      "inApp": "In-app",
+      "email": "Email",
+      "push": "Push"
+    },
+    "channelDescriptions": {
+      "inApp": "Inbox and header bell",
+      "email": "Daily summary to your work email",
+      "push": "Browser and desktop alerts"
+    },
+    "saved": "Preferences saved.",
+    "saveFailed": "Could not save preferences."
+  },
+  "kinds": {
+    "unknownActor": "Someone",
+    "somewhere": "a workspace item",
+    "mention": {
+      "label": "Mention",
+      "title": "{{actor}} mentioned you in {{entity}}",
+      "summary": "You were mentioned in a project discussion.",
+      "body": "{{actor}} mentioned you while reviewing {{entity}}. Open the project to reply to the thread."
+    },
+    "project": {
+      "label": "Project update",
+      "title": "{{actor}} updated {{entity}}",
+      "summary": "A tracked project changed status.",
+      "body": "{{actor}} moved {{entity}} to a new status. Review the milestone plan to keep delivery on track."
+    },
+    "invite": {
+      "label": "File share",
+      "title": "{{actor}} shared {{entity}} with you",
+      "summary": "A new file is available in your workspace.",
+      "body": "{{actor}} shared the file {{entity}} with your team. It is available in the resource library."
+    },
+    "system": {
+      "label": "System alert",
+      "title": "{{entity}} needs attention",
+      "summary": "An integration delivery requires review.",
+      "body": "The integration {{entity}} reported a failed delivery. Check the request log and replay it when the endpoint recovers."
+    }
+  },
+  "errors": {
+    "title": "Notifications unavailable",
+    "description": "We could not load this inbox. Try again in a moment.",
+    "retry": "Try again"
+  }
+}

@@ -1,4 +1,13 @@
-import { Building2, LogIn, ShieldCheck, UserRound, type LucideIcon } from 'lucide-react'
+import {
+  Building2,
+  FileText,
+  FolderKanban,
+  LogIn,
+  Plug,
+  ShieldCheck,
+  UserRound,
+  type LucideIcon,
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { ErrorState } from '@/components/common/error-state'
@@ -28,6 +37,9 @@ const ENTITY_ICONS: Record<AuditEntityType, LucideIcon> = {
   role: ShieldCheck,
   department: Building2,
   auth: LogIn,
+  project: FolderKanban,
+  file: FileText,
+  integration: Plug,
 }
 
 export function UserActivityTab({ userId }: { userId: string }) {

@@ -1,3 +1,4 @@
+import { createRouter } from '@tanstack/react-router'
 import { existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 
@@ -9,6 +10,7 @@ import {
 } from '@/features/playground/components/component-catalog-demo-map'
 import enCatalog from '@/locales/en/catalog.json'
 import zhCatalog from '@/locales/zh-CN/catalog.json'
+import { routeTree } from '@/routeTree.gen'
 
 import {
   COMPONENTS,
@@ -19,6 +21,15 @@ import {
 } from './components'
 
 const ROOT = resolve(process.cwd())
+const router = createRouter({ routeTree })
+const NEW_ROUTES = [
+  '/projects',
+  '/projects/$id',
+  '/reports',
+  '/files',
+  '/notifications',
+  '/integrations',
+]
 
 describe('component registry', () => {
   it('tracks 83 shared components across three layers', () => {
@@ -79,9 +90,30 @@ describe('component registry', () => {
     expect(COMPONENTS.filter((entry) => entry.isNew)).toHaveLength(33)
   })
 
-  it('uses app-relative routes for usedIn hints', () => {
+  it('points every component at a real business route', () => {
     for (const entry of COMPONENTS) {
-      if (entry.usedIn) expect(entry.usedIn.startsWith('/')).toBe(true)
+      const route = entry.usedIn
+      expect(route, `${entry.id} usedIn`).toBeTruthy()
+      expect(route.startsWith('/'), `${entry.id} should use an absolute route`).toBe(true)
+      expect(route, `${entry.id} should not point at the catalog`).not.toMatch(
+        /^\/(components|ui)(\/|$)/,
+      )
+
+      const path = route.split(/[?#]/)[0]
+      const routeIds = router.matchRoutes(path).map((match) => match.routeId)
+      expect(routeIds.length, `${entry.id} usedIn ${path} should resolve`).toBeGreaterThan(0)
+      expect(routeIds, `${entry.id} usedIn ${path} should not fall through`).not.toContain(
+        '/_app/$',
+      )
+    }
+  })
+
+  it('surfaces the six demo business screens in the catalog', () => {
+    for (const route of NEW_ROUTES) {
+      expect(
+        COMPONENTS.filter((entry) => entry.usedIn === route).length,
+        `${route} should have at least one component`,
+      ).toBeGreaterThan(0)
     }
   })
 })

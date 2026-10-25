@@ -1,18 +1,24 @@
 {
   "groups": {
     "overview": "概览",
+    "collaboration": "协作",
     "management": "管理",
     "account": "账户"
   },
   "items": {
     "dashboard": "工作台",
+    "reports": "数据报表",
     "ui": "组件库",
     "components": "组件目录",
+    "projects": "项目",
+    "files": "资源库",
+    "notifications": "通知",
     "users": "用户",
     "departments": "组织架构",
     "roles": "角色",
     "permissions": "权限",
     "auditLogs": "审计日志",
+    "integrations": "集成中心",
     "profile": "个人中心",
     "security": "账户安全",
     "settings": "设置"

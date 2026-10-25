@@ -2,14 +2,9 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { enUS, zhCN } from 'date-fns/locale'
 import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-import {
-  DateLib,
-  DayPicker,
-  getDefaultClassNames,
-  type DayButton,
-  type Labels,
-} from 'react-day-picker'
+import { DayPicker, getDefaultClassNames, type DayButton, type Labels } from 'react-day-picker'
 import { useTranslation } from 'react-i18next'
 
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -23,12 +18,24 @@ function Calendar({
   formatters,
   components,
   labels,
+  locale,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>['variant']
 }) {
   const defaultClassNames = getDefaultClassNames()
-  const { t } = useTranslation('common')
+  const { t, i18n } = useTranslation('common')
+  const language = i18n.resolvedLanguage ?? i18n.language ?? 'en'
+  const dayFormatter = React.useMemo(
+    () =>
+      new Intl.DateTimeFormat(language, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }),
+    [language],
+  )
 
   const localizedLabels: Partial<Labels> = {
     labelNav: () => t('calendar.nav'),
@@ -37,8 +44,8 @@ function Calendar({
     labelMonthDropdown: () => t('calendar.month'),
     labelYearDropdown: () => t('calendar.year'),
     // No ordinal suffix ("27th"), so the accessible name always contains the visible day number.
-    labelDayButton: (date, modifiers, options, dateLib) => {
-      const formatted = (dateLib ?? new DateLib(options)).format(date, 'EEEE, MMMM d, yyyy')
+    labelDayButton: (date, modifiers) => {
+      const formatted = dayFormatter.format(date)
       if (modifiers.today && modifiers.selected) {
         return t('calendar.todaySelected', { date: formatted })
       }
@@ -46,8 +53,8 @@ function Calendar({
       if (modifiers.selected) return t('calendar.selected', { date: formatted })
       return formatted
     },
-    labelGridcell: (date, modifiers, options, dateLib) => {
-      const formatted = (dateLib ?? new DateLib(options)).format(date, 'EEEE, MMMM d, yyyy')
+    labelGridcell: (date, modifiers) => {
+      const formatted = dayFormatter.format(date)
       return modifiers?.today ? t('calendar.today', { date: formatted }) : formatted
     },
   }
@@ -62,9 +69,10 @@ function Calendar({
         className,
       )}
       captionLayout={captionLayout}
+      locale={locale ?? (language.toLowerCase().startsWith('zh') ? zhCN : enUS)}
       labels={{ ...localizedLabels, ...labels }}
       formatters={{
-        formatMonthDropdown: (date) => date.toLocaleString('default', { month: 'short' }),
+        formatMonthDropdown: (date) => date.toLocaleString(language, { month: 'short' }),
         ...formatters,
       }}
       classNames={{

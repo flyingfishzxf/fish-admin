@@ -36,13 +36,25 @@
     "department.created": "Created department",
     "department.updated": "Updated department",
     "auth.login": "Signed in",
-    "profile.updated": "Updated profile"
+    "profile.updated": "Updated profile",
+    "project.created": "Created project",
+    "project.updated": "Updated project",
+    "project.archived": "Archived project",
+    "file.uploaded": "Uploaded file",
+    "file.updated": "Updated file",
+    "file.deleted": "Deleted file",
+    "integration.created": "Created integration",
+    "integration.updated": "Updated integration",
+    "integration.deleted": "Deleted integration"
   },
   "entities": {
     "user": "User",
     "role": "Role",
     "department": "Department",
-    "auth": "Authentication"
+    "auth": "Authentication",
+    "project": "Project",
+    "file": "File",
+    "integration": "Integration"
   },
   "detail": {
     "title": "Event details",
