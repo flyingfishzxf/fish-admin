@@ -53,6 +53,8 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 
 环境要求：**Node.js >= 22**（推荐 24 LTS）、**pnpm 9.1.1**（`corepack enable` 即可）。
 
+### 从演示开始
+
 ```bash
 git clone <repository-url>
 cd fish-admin
@@ -61,6 +63,16 @@ pnpm dev
 ```
 
 打开 http://localhost:5173。开发环境会自动启动 Mock API。
+
+### 从你自己的名字开始
+
+```bash
+git clone <repository-url> my-app && cd my-app
+pnpm install
+pnpm scaffold
+```
+
+它会重写品牌信息，并可以删掉组件 catalog、多余语言，以及 mock API 和依赖它的 Playwright 套件。先跑 `pnpm scaffold --dry-run` 可以看到完整计划，详见 [docs/zh-CN/scaffold.md](docs/zh-CN/scaffold.md)。
 
 ### 演示账号
 
@@ -264,6 +276,7 @@ docs/{en,zh-CN}/           # 文档
 
 | 命令                                | 说明                                  |
 | ----------------------------------- | ------------------------------------- |
+| `pnpm scaffold`                     | 重写品牌信息，并删掉不需要的部分      |
 | `pnpm dev`                          | 启动开发服务器（Mock 开启）           |
 | `pnpm build`                        | 类型检查并构建生产包（默认关闭 Mock） |
 | `pnpm build:demo`                   | 开启 Mock 构建演示包                  |
@@ -316,6 +329,7 @@ CI 在每次 push 和 pull request 上运行五道门禁：
 - [接入 API](docs/zh-CN/api-integration.md) —— 接口契约、鉴权流程、替换 Mock。
 - [部署指南](docs/zh-CN/deployment.md) —— Vercel、Docker、nginx 与 Service Worker 注意事项。
 - [安全响应头](docs/zh-CN/security-headers.md) —— 完整的 CSP 取值、`script-src 'self'` 改动了哪些代码、以及如何验证。
+- [脚手架](docs/zh-CN/scaffold.md) —— 把一份 clone 变成你自己的应用：改名、去掉 catalog、去掉多余语言、去掉 Mock API。
 - [English docs](docs/en/architecture.md)
 
 ## 参与贡献

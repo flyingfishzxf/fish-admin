@@ -53,6 +53,8 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 
 Requirements: **Node.js >= 22** (24 LTS recommended) and **pnpm 9.1.1** (`corepack enable` is enough).
 
+### Start from the demo
+
 ```bash
 git clone <repository-url>
 cd fish-admin
@@ -61,6 +63,16 @@ pnpm dev
 ```
 
 Open http://localhost:5173. The mock API starts automatically in development.
+
+### Start from your own name
+
+```bash
+git clone <repository-url> my-app && cd my-app
+pnpm install
+pnpm scaffold
+```
+
+It rebrands the app and can drop the component catalog, the extra locales, and the mock API with the Playwright suite that drives it. `pnpm scaffold --dry-run` prints the plan first. See [docs/en/scaffold.md](docs/en/scaffold.md).
 
 ### Demo accounts
 
@@ -264,6 +276,7 @@ docs/{en,zh-CN}/           # Documentation
 
 | Command                             | Description                                               |
 | ----------------------------------- | --------------------------------------------------------- |
+| `pnpm scaffold`                     | Rebrand the clone and drop the parts you do not want      |
 | `pnpm dev`                          | Start Vite with the mock API enabled                      |
 | `pnpm build`                        | Type-check and build for production (mock off by default) |
 | `pnpm build:demo`                   | Build with the mock API enabled, as used by the live demo |
@@ -317,6 +330,7 @@ Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).
 - [API integration](docs/en/api-integration.md) — contract, auth flow, replacing the mock.
 - [Deployment](docs/en/deployment.md) — Vercel, Docker, nginx and service-worker pitfalls.
 - [Security headers](docs/en/security-headers.md) — the exact CSP, what `script-src 'self'` forced in the code, and how to verify it.
+- [Scaffold](docs/en/scaffold.md) — turn a clone into your own app: rebrand, drop the catalog, drop the locales, drop the mock API.
 - [中文文档](docs/zh-CN/architecture.md)
 
 ## Contributing

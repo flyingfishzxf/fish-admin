@@ -30,6 +30,20 @@ Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
 - **`docs/en/security-headers.md` and `docs/zh-CN/security-headers.md`** explain every directive,
   the two documented concessions, what `script-src 'self'` forced in the code and how to roll the
   policy out behind a real API.
+- **`pnpm scaffold`** (`scripts/scaffold.mjs`) turns a clone into the skeleton of your own app. It
+  rebrands `package.json`, the `<title>` and six Open Graph / Twitter tags, the boot screen,
+  `APP_NAME` / `APP_TAGLINE`, the per-locale `app.*` strings, the Docker Compose service and image
+  and the `fish-admin:` storage prefix across the ten files that read or write it, and can remove the
+  component catalog (`/ui`, `/components`, `src/features/playground`, their nav entries, `AppPath`
+  members, specs, baseline and locale bundles), any locale except the `en` fallback, and the mock API
+  together with `src/config/demo.ts`, the MSW worker, the demo-account UI and the Playwright subsystem
+  that drove it. Every edit is buffered and applied atomically, `--dry-run` prints the plan, and
+  `.scaffold.json` records what was applied.
+- **`scripts/scaffold.test.mjs`** validates every anchor in that plan against the template in three
+  shapes — rename-only, catalog and locale strip, and full strip including the mock API — so a
+  reformatted target fails `pnpm test` instead of shipping a scaffolded app that cannot build.
+- **`docs/en/scaffold.md` and `docs/zh-CN/scaffold.md`** document both starting points, every flag,
+  what each step rewrites and what the scaffold deliberately leaves alone.
 
 ### Changed
 
@@ -52,6 +66,13 @@ Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
 - **Startup validates the environment.** `src/config/env.ts` throws on a set-but-unparseable
   `VITE_ENABLE_MOCK`, `VITE_MOCK_LATENCY`, `VITE_REQUEST_TIMEOUT` or `VITE_UPLOAD_TIMEOUT` instead of
   silently falling back to the documented default.
+- **The language controls follow the installed locales.** `src/lib/i18n.ts` gained
+  `nextLanguage()` and `currentLanguage()`, the command palette hides its language action and
+  `LanguageToggle` unmounts when a build ships a single locale, replacing three hard-coded
+  `resolvedLanguage === 'zh-CN' ? 'en' : 'zh-CN'` reads. `src/config/nav.test.ts` and
+  `src/lib/locales.test.ts` now discover locales and catalog sources through `import.meta.glob`
+  instead of listing them, so the gates shrink with the app rather than failing on a locale the
+  adopter removed.
 - `docs/en/api-integration.md` and `docs/zh-CN/api-integration.md` gained the timeout options, the
   `status: 0` client-side codes and the `REQUEST_FAILED` fallback; the architecture docs now walk the
   client through its six steps.
