@@ -355,6 +355,56 @@ Returns the registry:
 ]
 ```
 
+## Navigation
+
+### `GET /menu`
+
+Returns the sidebar for the signed-in user. The sidebar, the command palette, the breadcrumbs and the `/403` decision all read this one payload:
+
+```json
+{
+  "groups": [
+    {
+      "titleKey": "nav:groups.management",
+      "items": [
+        {
+          "titleKey": "nav:items.users",
+          "path": "/users",
+          "icon": "users",
+          "permission": "user:read"
+        },
+        {
+          "titleKey": "nav:items.roles",
+          "path": "/roles",
+          "icon": "shield-check",
+          "permission": "role:read",
+          "children": [
+            { "titleKey": "nav:items.auditLogs", "path": "/audit-logs", "icon": "scroll-text" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+| Field        | Rule                                                                                                                                                                                                                                                                                                                                   |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `titleKey`   | An i18n key rendered with `t()`. A key no locale carries shows the key itself, so reuse `nav:groups.*` / `nav:items.*` or ship the translations in every locale.                                                                                                                                                                       |
+| `path`       | Must be a route this build has: `/`, `/reports`, `/ui`, `/components`, `/projects`, `/files`, `/notifications`, `/users`, `/departments`, `/roles`, `/permissions`, `/audit-logs`, `/integrations`, `/profile`, `/security`, `/settings`. Anything else is dropped.                                                                    |
+| `icon`       | One of the 17 names in `src/features/navigation/menu-icons.ts`: `bar-chart-3`, `bell`, `boxes`, `circle-dot`, `folder-kanban`, `folder-open`, `key-round`, `layout-dashboard`, `lock-keyhole`, `network`, `palette`, `plug`, `scroll-text`, `settings-2`, `shield-check`, `user-round`, `users`. An unknown name renders `circle-dot`. |
+| `permission` | Optional code, intersected with the session's permissions exactly as the static nav is — an entry the menu sends and the session lacks never renders.                                                                                                                                                                                  |
+| `children`   | Optional one-level list, rendered as an indented sub-menu. The parent stays a link.                                                                                                                                                                                                                                                    |
+
+How the client treats it (`src/features/navigation/resolve.ts`, `menu-access.ts`):
+
+- Whatever the menu does not carry is not navigable: a directly typed URL to a dropped `path` lands on `/403`, which is how you retire a page without deleting the route. Detail routes follow their parent, so keeping `/users` in the menu keeps `/users/42` reachable.
+- A request that fails, answers with a non-JSON body, or exceeds the 2-second budget falls back to `NAV_GROUPS` in `src/config/nav.ts`. An API that has not implemented the endpoint yet — or no network at all — still gives a working app.
+- The payload is cached under the `['menu']` query key for five minutes and cleared with the session, so signing in as another role refetches it.
+- The demo serializes this endpoint from `NAV_GROUPS` (`src/mocks/menu.ts`) so the mock and the offline fallback cannot drift; the one thing only the server decides there is `/ui` and `/components`, which the full-access demo role gets and no one else does.
+
+> A server-driven menu changes what the interface shows, nothing more. The payload goes to a client that already holds a token, and every page it lists still answers to anyone who asks. Keep the server authoritative for data — see [RBAC](./rbac.md).
+
 ## Departments
 
 ### `GET /departments`

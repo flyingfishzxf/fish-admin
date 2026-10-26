@@ -44,6 +44,17 @@ Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
   reformatted target fails `pnpm test` instead of shipping a scaffolded app that cannot build.
 - **`docs/en/scaffold.md` and `docs/zh-CN/scaffold.md`** document both starting points, every flag,
   what each step rewrites and what the scaffold deliberately leaves alone.
+- **The sidebar can now come from the server.** `GET /menu` is a documented contract
+  (`{ groups: [{ titleKey, items: [{ titleKey, path, icon, permission?, children? }] }] }`), answered
+  by `src/mocks/handlers/navigation.ts`, and `src/features/navigation/` turns the payload into the same
+  `NavGroup[]` the static config produces: `menu-icons.ts` maps 17 kebab-case names to `LucideIcon`s
+  through an explicit registry — a namespace import would have put all ~1600 lucide icons in the
+  first-paint graph — and degrades an unknown name to `circle-dot`; `resolve.ts` drops entries whose
+  `path` this build does not have and falls back to `NAV_GROUPS` when the request fails, answers
+  non-JSON or exceeds its 2-second budget, so an API without the endpoint and a laptop with no network
+  both keep a working app; `menu-access.ts` is the route guard that reads it. `docs/en/api-integration.md`
+  and `docs/zh-CN/api-integration.md` specify the payload, the icon registry and the fallback, and both
+  RBAC docs record that a server-side menu is still only a UX layer.
 
 ### Changed
 
@@ -73,6 +84,14 @@ Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
   `src/lib/locales.test.ts` now discover locales and catalog sources through `import.meta.glob`
   instead of listing them, so the gates shrink with the app rather than failing on a locale the
   adopter removed.
+- **One tree decides what is navigable.** `AppSidebar`, `AppBreadcrumbs`, the command palette and the
+  `_app` route guard all read `useMenuNavGroups()`, so the menu a role is served, the routes it can
+  open and the `/403` it lands on come from the same list; a page the menu dropped is unreachable by
+  typed URL, while `/403`, `/404` and unmanaged routes are never redirected back into that decision.
+  `filterNavGroups()` now filters `children` recursively, `flattenNavItems()` is shared by the lookups,
+  and `isAppPath()` accepts any nav path rather than a flat list. The demo serves `/ui` and
+  `/components` only to the full-access role, which is the one thing in the sidebar no permission code
+  hides.
 - `docs/en/api-integration.md` and `docs/zh-CN/api-integration.md` gained the timeout options, the
   `status: 0` client-side codes and the `REQUEST_FAILED` fallback; the architecture docs now walk the
   client through its six steps.

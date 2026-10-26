@@ -150,7 +150,7 @@ pnpm scaffold
 | 经理   | `dashboard:read`、`project:read`、`project:manage`、`file:read`、`file:manage`、`report:read`、`integration:read`、`user:read`、`user:create`、`user:update`、`role:read`、`role:create`、`role:update`、`audit:read`、`department:read`、`department:manage`、`permission:read` |
 | 访客   | `dashboard:read`、`project:read`、`file:read`、`report:read`、`integration:read`、`user:read`、`audit:read`、`department:read`                                                                                                                                                   |
 
-路由守卫位于各叶子路由的 `beforeLoad`；菜单在 [`src/config/nav.ts`](src/config/nav.ts) 中按权限过滤；按钮使用 `<Can permission="user:delete">`。新增权限的四步说明见 [docs/zh-CN/rbac.md](docs/zh-CN/rbac.md)。
+路由守卫位于各叶子路由的 `beforeLoad`；侧边栏以 `GET /menu` 返回的列表为准，再按同一套权限码过滤，接口缺失时回落到 [`src/config/nav.ts`](src/config/nav.ts)；按钮使用 `<Can permission="user:delete">`。新增权限的四步说明见 [docs/zh-CN/rbac.md](docs/zh-CN/rbac.md)。
 
 ### Mock API
 

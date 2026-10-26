@@ -355,6 +355,56 @@
 ]
 ```
 
+## 导航
+
+### `GET /menu`
+
+返回当前登录用户的侧边栏。侧边栏、命令面板、面包屑和 `/403` 判定都读同一份载荷：
+
+```json
+{
+  "groups": [
+    {
+      "titleKey": "nav:groups.management",
+      "items": [
+        {
+          "titleKey": "nav:items.users",
+          "path": "/users",
+          "icon": "users",
+          "permission": "user:read"
+        },
+        {
+          "titleKey": "nav:items.roles",
+          "path": "/roles",
+          "icon": "shield-check",
+          "permission": "role:read",
+          "children": [
+            { "titleKey": "nav:items.auditLogs", "path": "/audit-logs", "icon": "scroll-text" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+| 字段         | 规则                                                                                                                                                                                                                                                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `titleKey`   | 交给 `t()` 渲染的 i18n key。任何语言包都没有的 key 会直接显示 key 本身，因此请复用 `nav:groups.*` / `nav:items.*`，或在每种语言里补齐翻译。                                                                                                                                                                                          |
+| `path`       | 必须是本次构建真实存在的路由：`/`、`/reports`、`/ui`、`/components`、`/projects`、`/files`、`/notifications`、`/users`、`/departments`、`/roles`、`/permissions`、`/audit-logs`、`/integrations`、`/profile`、`/security`、`/settings`。其余一律丢弃。                                                                               |
+| `icon`       | `src/features/navigation/menu-icons.ts` 注册表里的 17 个名字之一：`bar-chart-3`、`bell`、`boxes`、`circle-dot`、`folder-kanban`、`folder-open`、`key-round`、`layout-dashboard`、`lock-keyhole`、`network`、`palette`、`plug`、`scroll-text`、`settings-2`、`shield-check`、`user-round`、`users`。不认识的名字降级为 `circle-dot`。 |
+| `permission` | 可选权限码，与静态导航一样会和会话权限求交集——菜单发了但会话没有的条目不会渲染。                                                                                                                                                                                                                                                     |
+| `children`   | 可选的一层子项，渲染成缩进的子菜单；父项本身仍然是链接。                                                                                                                                                                                                                                                                             |
+
+客户端的处理方式（`src/features/navigation/resolve.ts`、`menu-access.ts`）：
+
+- 菜单里没有的就进不去：直接输入被丢弃 `path` 的 URL 会落到 `/403`，这是下线某个页面却不必删除路由的做法。详情路由跟随父级，所以菜单保留 `/users` 时 `/users/42` 依然可达。
+- 请求失败、返回非 JSON 或超过 2 秒预算时，回落到 `src/config/nav.ts` 的 `NAV_GROUPS`。后端还没实现这个接口、甚至完全离线，应用照样可用。
+- 载荷以 `['menu']` 缓存五分钟，并随会话一起清空，所以换角色登录会重新拉取。
+- 演示环境里这个接口由 `NAV_GROUPS` 序列化而来（`src/mocks/menu.ts`），保证 mock 与离线回落不会走偏；其中只有 `/ui` 和 `/components` 是纯服务端决定的——只发给拥有全部权限的演示角色。
+
+> 服务端驱动的菜单改变的只是界面展示。这份载荷发给了已经持有令牌的客户端，它列出的每个页面依旧对任何请求者敞开。数据权限仍必须由服务端把关——见 [RBAC](./rbac.md)。
+
 ## 部门
 
 ### `GET /departments`

@@ -150,7 +150,7 @@ Permissions use a `resource:action` format and are defined in [`src/config/permi
 | Manager       | `dashboard:read`, `project:read`, `project:manage`, `file:read`, `file:manage`, `report:read`, `integration:read`, `user:read`, `user:create`, `user:update`, `role:read`, `role:create`, `role:update`, `audit:read`, `department:read`, `department:manage`, `permission:read` |
 | Viewer        | `dashboard:read`, `project:read`, `file:read`, `report:read`, `integration:read`, `user:read`, `audit:read`, `department:read`                                                                                                                                                   |
 
-The route guard lives in each leaf route's `beforeLoad`; menu entries are filtered in [`src/config/nav.ts`](src/config/nav.ts); buttons use `<Can permission="user:delete">`. See [docs/en/rbac.md](docs/en/rbac.md) for the four-step guide to adding a permission.
+The route guard lives in each leaf route's `beforeLoad`; the sidebar is the list `GET /menu` returns, filtered by the same permission codes and falling back to [`src/config/nav.ts`](src/config/nav.ts) when the endpoint is missing; buttons use `<Can permission="user:delete">`. See [docs/en/rbac.md](docs/en/rbac.md) for the four-step guide to adding a permission.
 
 ### Mock API
 
