@@ -14,7 +14,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command'
 import { NAV_GROUPS } from '@/config/nav'
-import { changeLanguage, type SupportedLanguage } from '@/lib/i18n'
+import { changeLanguage, nextLanguage } from '@/lib/i18n'
 import { filterNavGroups } from '@/lib/permissions'
 import { useResolvedTheme } from '@/lib/theme'
 import { useAuthStore } from '@/stores/auth-store'
@@ -50,9 +50,10 @@ export function CommandMenu() {
     action()
   }
 
+  const otherLanguage = nextLanguage(i18n.resolvedLanguage)
+
   function toggleLanguage() {
-    const next: SupportedLanguage = i18n.resolvedLanguage === 'zh-CN' ? 'en' : 'zh-CN'
-    void changeLanguage(next)
+    if (otherLanguage) void changeLanguage(otherLanguage)
   }
 
   async function signOut() {
@@ -61,8 +62,6 @@ export function CommandMenu() {
     toast.success(t('auth:signedOut'))
     navigate({ to: '/login', replace: true })
   }
-
-  const otherLanguage = i18n.resolvedLanguage === 'zh-CN' ? t('language.en') : t('language.zh-CN')
 
   return (
     <CommandDialog
@@ -101,10 +100,12 @@ export function CommandMenu() {
             <MonitorCog />
             {t('command.actions.toggleTheme')}
           </CommandItem>
-          <CommandItem value="language" onSelect={() => runAction(toggleLanguage)}>
-            <Languages />
-            {t('command.actions.toggleLanguage', { language: otherLanguage })}
-          </CommandItem>
+          {otherLanguage ? (
+            <CommandItem value="language" onSelect={() => runAction(toggleLanguage)}>
+              <Languages />
+              {t('command.actions.toggleLanguage', { language: t(`language.${otherLanguage}`) })}
+            </CommandItem>
+          ) : null}
           <CommandItem
             value="profile"
             onSelect={() => runAction(() => navigate({ to: '/profile' }))}

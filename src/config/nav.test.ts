@@ -1,37 +1,23 @@
 import { createRouter } from '@tanstack/react-router'
 import { describe, expect, it } from 'vitest'
 
-import {
-  ALL_NAV_ITEMS,
-  NAV_GROUPS,
-  findNavGroup,
-  findNavItem,
-  isPathActive,
-  type AppPath,
-} from '@/config/nav'
-import enNav from '@/locales/en/nav.json'
-import zhNav from '@/locales/zh-CN/nav.json'
+import { ALL_NAV_ITEMS, NAV_GROUPS, findNavGroup, findNavItem, isPathActive } from '@/config/nav'
 import { routeTree } from '@/routeTree.gen'
 
 const router = createRouter({ routeTree })
 
-const EXPECTED_ROUTE_IDS: Record<AppPath, string> = {
-  '/': '/_app/',
-  '/ui': '/_app/ui',
-  '/components': '/_app/components',
-  '/projects': '/_app/projects',
-  '/reports': '/_app/reports',
-  '/files': '/_app/files',
-  '/notifications': '/_app/notifications',
-  '/users': '/_app/users',
-  '/departments': '/_app/departments',
-  '/roles': '/_app/roles',
-  '/permissions': '/_app/permissions',
-  '/audit-logs': '/_app/audit-logs',
-  '/integrations': '/_app/integrations',
-  '/profile': '/_app/profile',
-  '/security': '/_app/security',
-  '/settings': '/_app/settings',
+// Discovered rather than listed so a scaffolded copy that keeps only one locale
+// still fails if a label goes missing, and does not fail because a locale the
+// adopter removed is not imported here.
+const navResources = Object.entries(
+  import.meta.glob('../locales/*/nav.json', { eager: true, import: 'default' }) as Record<
+    string,
+    Record<string, unknown>
+  >,
+)
+
+function expectedRouteId(path: string) {
+  return path === '/' ? '/_app/' : `/_app${path}`
 }
 
 function lookup(source: Record<string, unknown>, key: string): unknown {
@@ -56,28 +42,27 @@ describe('navigation config', () => {
       const routeIds = matches.map((match) => match.routeId)
 
       expect(routeIds).toContain('/_app')
-      expect(routeIds).toContain(EXPECTED_ROUTE_IDS[to])
+      expect(routeIds).toContain(expectedRouteId(to))
       expect(routeIds).not.toContain('/_app/$')
     },
   )
 
+  it('ships the nav bundle in every locale', () => {
+    expect(navResources.length).toBeGreaterThan(0)
+  })
+
   it.each(
-    ALL_NAV_ITEMS.flatMap((item) => [
-      [item.titleKey, enNav] as const,
-      [item.titleKey, zhNav] as const,
-    ]),
+    ALL_NAV_ITEMS.flatMap((item) =>
+      navResources.map(([, resource]) => [item.titleKey, resource] as const),
+    ),
   )('has a translated label for %s', (titleKey, resource) => {
-    expect(typeof lookup(resource as Record<string, unknown>, titleKey.replace(/^nav:/, ''))).toBe(
-      'string',
-    )
+    expect(typeof lookup(resource, titleKey.replace(/^nav:/, ''))).toBe('string')
   })
 
   it('has a translated group label for every group', () => {
     for (const group of NAV_GROUPS) {
-      for (const resource of [enNav, zhNav]) {
-        expect(
-          typeof lookup(resource as Record<string, unknown>, group.titleKey.replace(/^nav:/, '')),
-        ).toBe('string')
+      for (const [, resource] of navResources) {
+        expect(typeof lookup(resource, group.titleKey.replace(/^nav:/, ''))).toBe('string')
       }
     }
   })

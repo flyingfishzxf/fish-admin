@@ -15,6 +15,8 @@ import { changeLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n'
 export function LanguageToggle() {
   const { t, i18n } = useTranslation('common')
 
+  if (SUPPORTED_LANGUAGES.length < 2) return null
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

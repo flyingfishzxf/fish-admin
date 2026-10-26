@@ -16,13 +16,40 @@ export const SUPPORTED_LANGUAGES = [
 
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number]['code']
 
+/** The language on screen, clamped to one this build actually ships. */
+export function currentLanguage(): SupportedLanguage {
+  const resolved = i18n.resolvedLanguage
+  return (SUPPORTED_LANGUAGES.find((language) => language.code === resolved)?.code ??
+    SUPPORTED_LANGUAGES[0].code) as SupportedLanguage
+}
+
+/**
+ * The other language the app ships, or `undefined` when only one is installed —
+ * then the shell hides its language switches instead of switching to the current
+ * one. `scripts/scaffold.mjs` removes locale entries, so this cannot be a
+ * hard-coded pair.
+ */
+export function nextLanguage(current: string | undefined): SupportedLanguage | undefined {
+  if (SUPPORTED_LANGUAGES.length < 2) return undefined
+  return SUPPORTED_LANGUAGES.find((language) => language.code !== current)?.code
+}
+
 const LANGUAGE_STORAGE_KEY = 'fish-admin:lang'
 const lazyResources = import.meta.glob('../locales/*/*.json')
 
 function resolveInitialLanguage(): SupportedLanguage {
+  const codes = SUPPORTED_LANGUAGES.map((language) => language.code)
   const stored = localStorage.getItem(LANGUAGE_STORAGE_KEY)
-  if (stored === 'en' || stored === 'zh-CN') return stored
-  return navigator.language.toLowerCase().startsWith('zh') ? 'zh-CN' : 'en'
+  if (stored && codes.includes(stored as SupportedLanguage)) return stored as SupportedLanguage
+
+  // A browser asking for `zh-TW` still gets `zh-CN` if that is what the app
+  // ships, so the match is on the primary subtag.
+  const browser = navigator.language.toLowerCase()
+  const match = SUPPORTED_LANGUAGES.find((language) =>
+    browser.startsWith(language.code.toLowerCase().split('-')[0]),
+  )
+
+  return (match?.code ?? codes[0]) as SupportedLanguage
 }
 
 const initialLanguage = resolveInitialLanguage()

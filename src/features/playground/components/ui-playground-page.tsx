@@ -196,7 +196,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { COMPONENT_COUNTS } from '@/config/components'
 import { ACCENTS, THEME_MODES, type ThemeMode } from '@/config/theme'
 import { useDocumentTitle } from '@/lib/document-title'
-import { changeLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
+import { changeLanguage, currentLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { useThemeStore } from '@/stores/theme-store'
 
@@ -308,14 +308,14 @@ function DemoBlock({
 }
 
 export function UiPlaygroundPage() {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   useDocumentTitle(t('ui:title'))
 
   const mode = useThemeStore((state) => state.mode)
   const accent = useThemeStore((state) => state.accent)
   const setMode = useThemeStore((state) => state.setMode)
   const setAccent = useThemeStore((state) => state.setAccent)
-  const language: SupportedLanguage = i18n.resolvedLanguage === 'zh-CN' ? 'zh-CN' : 'en'
+  const language = currentLanguage()
 
   const sectionItems = useMemo<AnchorItem[]>(
     () =>

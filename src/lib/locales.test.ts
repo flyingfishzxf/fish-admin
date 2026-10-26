@@ -1,19 +1,7 @@
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
-
 import { describe, expect, it } from 'vitest'
 
 import { ALL_NAV_ITEMS, NAV_GROUPS } from '@/config/nav'
 import { PERMISSIONS, PERMISSION_GROUPS } from '@/config/permissions'
-
-const CATALOG_DEMO_FILES = [
-  'src/features/playground/components/component-catalog-demos.tsx',
-  'src/features/playground/components/component-catalog-demos-wave2.tsx',
-  'src/features/playground/components/component-catalog-demos-wave3.tsx',
-  'src/features/playground/components/component-catalog-demos-wave4.tsx',
-  'src/features/playground/components/component-catalog-demos-wave5.tsx',
-  'src/features/playground/components/component-catalog-demos-wave6.tsx',
-]
 
 type JsonObject = Record<string, unknown>
 
@@ -21,6 +9,13 @@ const resources = import.meta.glob('../locales/*/*.json', {
   eager: true,
   import: 'default',
 }) as Record<string, JsonObject>
+
+// Read as source so the catalog check follows the file set: a scaffolded copy
+// without the playground has nothing to scan and stays green.
+const catalogDemoSources = import.meta.glob(
+  '../features/playground/components/component-catalog-demos*.tsx',
+  { eager: true, query: '?raw', import: 'default' },
+) as Record<string, string>
 
 const locales = new Map<string, Map<string, JsonObject>>()
 
@@ -31,6 +26,8 @@ for (const [path, resource] of Object.entries(resources)) {
   if (!locales.has(language)) locales.set(language, new Map())
   locales.get(language)?.set(namespace, resource)
 }
+
+const LOCALES = [...locales.keys()].sort()
 
 function flattenKeys(value: unknown, prefix = ''): string[] {
   if (!value || typeof value !== 'object' || Array.isArray(value)) {
@@ -59,24 +56,34 @@ function lookup(language: string, key: string): unknown {
 }
 
 describe('locale resources', () => {
-  it('loads both languages with the same namespaces', () => {
-    expect([...locales.keys()].sort()).toEqual(['en', 'zh-CN'])
+  it('loads every locale with the same namespaces', () => {
+    expect(LOCALES.length).toBeGreaterThan(0)
 
-    const enNamespaces = [...(locales.get('en')?.keys() ?? [])].sort()
-    const zhNamespaces = [...(locales.get('zh-CN')?.keys() ?? [])].sort()
+    const reference = [...(locales.get(LOCALES[0])?.keys() ?? [])].sort()
+    expect(reference.length, `no namespaces in ${LOCALES[0]}`).toBeGreaterThan(0)
 
-    expect(zhNamespaces).toEqual(enNamespaces)
-    expect(enNamespaces.length).toBeGreaterThan(0)
+    for (const locale of LOCALES) {
+      const namespaces = [...(locales.get(locale)?.keys() ?? [])].sort()
+
+      expect(namespaces.length, `no namespaces in ${locale}`).toBeGreaterThan(0)
+      expect(namespaces, `namespace drift in ${locale}`).toEqual(reference)
+    }
   })
 
   it('keeps translation keys in sync between languages', () => {
-    for (const [namespace, resource] of locales.get('en') ?? []) {
-      const zhResource = locales.get('zh-CN')?.get(namespace)
+    const reference = locales.get(LOCALES[0])
 
-      expect(zhResource, `missing namespace: ${namespace}`).toBeDefined()
-      expect(flattenKeys(zhResource).sort(), `namespace: ${namespace}`).toEqual(
-        flattenKeys(resource).sort(),
-      )
+    for (const [locale, namespaces] of locales) {
+      if (locale === LOCALES[0]) continue
+
+      for (const [namespace, keys] of reference ?? []) {
+        const other = namespaces.get(namespace)
+
+        expect(other, `missing namespace: ${locale}/${namespace}`).toBeDefined()
+        expect(flattenKeys(other).sort(), `namespace: ${locale}/${namespace}`).toEqual(
+          flattenKeys(keys).sort(),
+        )
+      }
     }
   })
 
@@ -105,7 +112,7 @@ describe('locale resources', () => {
   })
 
   it('translates every permission label and description', () => {
-    for (const language of ['en', 'zh-CN']) {
+    for (const language of LOCALES) {
       for (const permission of PERMISSIONS) {
         expect(lookup(language, permission.labelKey), permission.labelKey).toEqual(
           expect.any(String),
@@ -118,7 +125,7 @@ describe('locale resources', () => {
   })
 
   it('translates every permission group', () => {
-    for (const language of ['en', 'zh-CN']) {
+    for (const language of LOCALES) {
       for (const group of PERMISSION_GROUPS) {
         const key = `permissions:groups.${group}`
         expect(lookup(language, key), key).toEqual(expect.any(String))
@@ -127,12 +134,10 @@ describe('locale resources', () => {
   })
 
   it('translates every literal key used by the catalog demos', () => {
-    for (const file of CATALOG_DEMO_FILES) {
-      const source = readFileSync(resolve(process.cwd(), file), 'utf8')
-
+    for (const [file, source] of Object.entries(catalogDemoSources)) {
       for (const match of source.matchAll(/\bt\('(catalog:[^']+)'/g)) {
         const key = match[1]
-        for (const language of ['en', 'zh-CN']) {
+        for (const language of LOCALES) {
           expect(lookup(language, key), `${file}: ${key}`).toEqual(expect.any(String))
         }
       }
@@ -140,7 +145,7 @@ describe('locale resources', () => {
   })
 
   it('translates every navigation title', () => {
-    for (const language of ['en', 'zh-CN']) {
+    for (const language of LOCALES) {
       for (const group of NAV_GROUPS) {
         expect(lookup(language, group.titleKey), group.titleKey).toEqual(expect.any(String))
       }
