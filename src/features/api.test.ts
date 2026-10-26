@@ -5,6 +5,7 @@ const { apiRequestMock } = vi.hoisted(() => ({ apiRequestMock: vi.fn() }))
 vi.mock('@/lib/api-client', () => ({ apiRequest: apiRequestMock }))
 
 import { fetchDashboard } from '@/features/dashboard/api'
+import { fetchMenu } from '@/features/navigation/api'
 import { fetchPermissions } from '@/features/permissions/api'
 import { updateProfile } from '@/features/profile/api'
 import { fetchRoleOptions, fetchRoles, updateRolePermissions } from '@/features/roles/api'
@@ -129,6 +130,12 @@ describe('feature API clients', () => {
     resetDemoData()
 
     expect(apiRequestMock).toHaveBeenCalledWith('/__mock/reset', { method: 'POST' })
+  })
+
+  it('requests the menu with the caller signal and budget', () => {
+    fetchMenu(signal, 2_000)
+
+    expect(apiRequestMock).toHaveBeenCalledWith('/menu', { signal, timeoutMs: 2_000 })
   })
 
   it('sends user bulk actions', () => {

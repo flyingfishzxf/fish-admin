@@ -43,6 +43,7 @@ export interface NavItem {
   to: AppPath
   icon: LucideIcon
   permission?: PermissionCode
+  children?: NavItem[]
 }
 
 export interface NavGroup {
@@ -165,18 +166,42 @@ export const NAV_GROUPS: NavGroup[] = [
 
 export const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((group) => group.items)
 
+export function flattenNavItems(groups: NavGroup[]): NavItem[] {
+  return groups.flatMap((group) => group.items.flatMap((item) => [item, ...(item.children ?? [])]))
+}
+
+// The menu a server sends can only point at a route this build actually has:
+// anything else renders the shell's 404, so the scaffolded copies that drop the
+// playground also drop its paths here and the resolver follows automatically.
+const NAV_PATHS: readonly string[] = flattenNavItems(NAV_GROUPS).map((item) => item.to)
+
+export function isAppPath(value: unknown): value is AppPath {
+  return typeof value === 'string' && NAV_PATHS.includes(value)
+}
+
+/**
+ * Whether a page is one the menu owns. Detail routes match their parent, so
+ * hiding `/users` also makes `/users/42` unreachable; the 403 screen and the
+ * 404 catch-all are not menu pages and are never redirected back to 403.
+ */
+export function isManagedNavPath(pathname: string) {
+  return flattenNavItems(NAV_GROUPS).some((item) => isPathActive(pathname, item.to))
+}
+
 export function isPathActive(pathname: string, path: AppPath) {
   if (path === '/') return pathname === '/'
   return pathname === path || pathname.startsWith(`${path}/`)
 }
 
-export function findNavGroup(pathname: string) {
-  const item = findNavItem(pathname)
-  return item ? NAV_GROUPS.find((group) => group.items.includes(item)) : undefined
+export function findNavGroup(pathname: string, groups: NavGroup[] = NAV_GROUPS) {
+  const item = findNavItem(pathname, groups)
+  return item
+    ? groups.find((group) => flattenNavItems([group]).some((candidate) => candidate.to === item.to))
+    : undefined
 }
 
-export function findNavItem(pathname: string) {
-  return ALL_NAV_ITEMS.filter((item) => isPathActive(pathname, item.to)).sort(
-    (a, b) => b.to.length - a.to.length,
-  )[0]
+export function findNavItem(pathname: string, groups: NavGroup[] = NAV_GROUPS) {
+  return flattenNavItems(groups)
+    .filter((item) => isPathActive(pathname, item.to))
+    .sort((a, b) => b.to.length - a.to.length)[0]
 }

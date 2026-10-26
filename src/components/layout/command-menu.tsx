@@ -13,26 +13,23 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command'
-import { NAV_GROUPS } from '@/config/nav'
+import { flattenNavItems } from '@/config/nav'
+import { useMenuNavGroups } from '@/features/navigation/queries'
 import { changeLanguage, nextLanguage } from '@/lib/i18n'
-import { filterNavGroups } from '@/lib/permissions'
 import { useResolvedTheme } from '@/lib/theme'
 import { useAuthStore } from '@/stores/auth-store'
 import { useThemeStore } from '@/stores/theme-store'
 import { useUiStore } from '@/stores/ui-store'
-
-const NO_PERMISSIONS: string[] = []
 
 export function CommandMenu() {
   const { t, i18n } = useTranslation()
   const navigate = useNavigate()
   const open = useUiStore((state) => state.commandOpen)
   const setOpen = useUiStore((state) => state.setCommandOpen)
-  const permissions = useAuthStore((state) => state.user?.permissions ?? NO_PERMISSIONS)
   const logout = useAuthStore((state) => state.logout)
   const setMode = useThemeStore((state) => state.setMode)
   const resolvedTheme = useResolvedTheme()
-  const groups = filterNavGroups(NAV_GROUPS, permissions)
+  const groups = useMenuNavGroups()
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
@@ -76,7 +73,7 @@ export function CommandMenu() {
         <CommandEmpty>{t('command.empty')}</CommandEmpty>
         {groups.map((group) => (
           <CommandGroup key={group.titleKey} heading={t(group.titleKey)}>
-            {group.items.map((item) => {
+            {flattenNavItems([group]).map((item) => {
               const Icon = item.icon
               return (
                 <CommandItem

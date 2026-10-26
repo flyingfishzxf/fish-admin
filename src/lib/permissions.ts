@@ -1,4 +1,4 @@
-import type { NavGroup } from '@/config/nav'
+import type { NavGroup, NavItem } from '@/config/nav'
 
 export function hasPermission(
   granted: readonly string[] | null | undefined,
@@ -12,11 +12,16 @@ export function hasPermission(
   return Boolean(resource) && granted.includes(`${resource}:*`)
 }
 
+function filterItems(items: NavItem[], granted: readonly string[]): NavItem[] {
+  return items
+    .filter((item) => hasPermission(granted, item.permission))
+    .map((item) =>
+      item.children ? { ...item, children: filterItems(item.children, granted) } : item,
+    )
+}
+
 export function filterNavGroups(groups: NavGroup[], granted: readonly string[]): NavGroup[] {
   return groups
-    .map((group) => ({
-      ...group,
-      items: group.items.filter((item) => hasPermission(granted, item.permission)),
-    }))
+    .map((group) => ({ ...group, items: filterItems(group.items, granted) }))
     .filter((group) => group.items.length > 0)
 }

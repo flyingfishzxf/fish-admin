@@ -1,8 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-const { apiRequestMock } = vi.hoisted(() => ({ apiRequestMock: vi.fn() }))
+const { apiRequestMock, session } = vi.hoisted(() => ({
+  apiRequestMock: vi.fn(),
+  session: { accessToken: 'access-token' as string | null },
+}))
 
 vi.mock('@/lib/api-client', () => ({ apiRequest: apiRequestMock }))
+vi.mock('@/stores/auth-store', () => ({ useAuthStore: { getState: () => session } }))
 
 import { dashboardQueryOptions } from '@/features/dashboard/queries'
 import { fileFoldersQueryOptions, fileListQueryOptions } from '@/features/files/queries'
@@ -16,6 +20,7 @@ import {
   notificationPreferencesQueryOptions,
   notificationSummaryQueryOptions,
 } from '@/features/notifications/queries'
+import { menuQueryOptions } from '@/features/navigation/queries'
 import { permissionsQueryOptions } from '@/features/permissions/queries'
 import {
   projectDetailQueryOptions,
@@ -38,6 +43,7 @@ describe('query options', () => {
   beforeEach(() => {
     apiRequestMock.mockReset()
     apiRequestMock.mockResolvedValue([])
+    session.accessToken = 'access-token'
   })
 
   it('keys the user list by its parameters', async () => {
@@ -189,5 +195,28 @@ describe('query options', () => {
       '/integrations/integration-1/deliveries',
       withSignal,
     )
+  })
+
+  it('keys the menu once for the session and forwards its signal', async () => {
+    const menu = menuQueryOptions()
+    const budgeted = menuQueryOptions(2_000)
+
+    expect(menu.queryKey).toEqual(['menu'])
+    expect(menu.retry).toBe(false)
+
+    await menu.queryFn?.(context)
+    await budgeted.queryFn?.(context)
+
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/menu', withSignal)
+    expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/menu', {
+      signal: controller.signal,
+      timeoutMs: 2_000,
+    })
+
+    // The cache clear on logout wakes this observer with no token; a signed-out
+    // client resolves to the shipped nav instead of asking for a 401.
+    session.accessToken = null
+    expect(await menu.queryFn?.(context)).toBeNull()
+    expect(apiRequestMock).toHaveBeenCalledTimes(2)
   })
 })

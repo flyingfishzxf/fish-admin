@@ -14,23 +14,22 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarRail,
   useSidebar,
 } from '@/components/ui/sidebar'
 import { APP_VERSION } from '@/config/app'
-import { findNavItem, NAV_GROUPS } from '@/config/nav'
-import { filterNavGroups } from '@/lib/permissions'
-import { useAuthStore } from '@/stores/auth-store'
-
-const NO_PERMISSIONS: string[] = []
+import { findNavItem, isPathActive } from '@/config/nav'
+import { useMenuNavGroups } from '@/features/navigation/queries'
 
 export function AppSidebar() {
   const { t } = useTranslation()
   const { isMobile, setOpenMobile } = useSidebar()
   const pathname = useRouterState({ select: (state) => state.location.pathname })
-  const permissions = useAuthStore((state) => state.user?.permissions ?? NO_PERMISSIONS)
-  const groups = filterNavGroups(NAV_GROUPS, permissions)
-  const activeItem = findNavItem(pathname)
+  const groups = useMenuNavGroups()
+  const activeItem = findNavItem(pathname, groups)
   const closeMobileSidebar = () => {
     if (isMobile) setOpenMobile(false)
   }
@@ -61,11 +60,12 @@ export function AppSidebar() {
               <SidebarMenu className="gap-0.5">
                 {group.items.map((item) => {
                   const Icon = item.icon
+                  const children = item.children ?? []
                   return (
                     <SidebarMenuItem key={item.to}>
                       <SidebarMenuButton
                         asChild
-                        isActive={activeItem?.to === item.to}
+                        isActive={isPathActive(pathname, item.to)}
                         tooltip={t(item.titleKey)}
                       >
                         <Link to={item.to} onClick={closeMobileSidebar}>
@@ -73,6 +73,19 @@ export function AppSidebar() {
                           <span>{t(item.titleKey)}</span>
                         </Link>
                       </SidebarMenuButton>
+                      {children.length > 0 ? (
+                        <SidebarMenuSub>
+                          {children.map((child) => (
+                            <SidebarMenuSubItem key={child.to}>
+                              <SidebarMenuSubButton asChild isActive={activeItem?.to === child.to}>
+                                <Link to={child.to} onClick={closeMobileSidebar}>
+                                  <span>{t(child.titleKey)}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      ) : null}
                     </SidebarMenuItem>
                   )
                 })}

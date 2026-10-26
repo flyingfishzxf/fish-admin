@@ -11,12 +11,14 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import { findNavGroup, findNavItem } from '@/config/nav'
+import { useMenuNavGroups } from '@/features/navigation/queries'
 
 export function AppBreadcrumbs() {
   const { t } = useTranslation()
   const pathname = useRouterState({ select: (state) => state.location.pathname })
-  const group = findNavGroup(pathname)
-  const item = findNavItem(pathname)
+  const groups = useMenuNavGroups()
+  const group = findNavGroup(pathname, groups)
+  const item = findNavItem(pathname, groups)
 
   return (
     <Breadcrumb className="hidden sm:block">
