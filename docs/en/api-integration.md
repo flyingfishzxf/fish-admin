@@ -4,11 +4,15 @@ The app talks to its backend through `src/lib/api-client.ts`. The demo backend i
 
 ## Switch the environment
 
-| Variable            | Default | Meaning                                                                                    |
-| ------------------- | ------- | ------------------------------------------------------------------------------------------ |
-| `VITE_API_BASE_URL` | `/api`  | Prefix for every request. No trailing slash needed.                                        |
-| `VITE_ENABLE_MOCK`  | `false` | Starts the MSW Service Worker when `true`. Vite dev enables it through `.env.development`. |
-| `VITE_MOCK_LATENCY` | `300`   | Artificial delay in milliseconds for mock responses.                                       |
+| Variable               | Default | Meaning                                                                                                        |
+| ---------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `VITE_API_BASE_URL`    | `/api`  | Prefix for every request. No trailing slash needed.                                                            |
+| `VITE_ENABLE_MOCK`     | `false` | Starts the MSW Service Worker when `true`. Vite dev enables it through `.env.development`.                     |
+| `VITE_MOCK_LATENCY`    | `300`   | Artificial delay in milliseconds for mock responses.                                                           |
+| `VITE_REQUEST_TIMEOUT` | `15000` | Milliseconds before a request is aborted as `REQUEST_TIMEOUT`. Valid range 1000–300000.                        |
+| `VITE_UPLOAD_TIMEOUT`  | `60000` | Milliseconds allowed for the two base64 upload calls (`/files`, project attachments). Valid range 1000–600000. |
+
+An unset variable keeps its default; one that is set but unparseable throws at startup instead of silently falling back (validated in `src/config/env.ts`).
 
 To run against a real backend:
 
@@ -27,7 +31,7 @@ Every non-2xx response should return JSON:
 { "code": "FORBIDDEN", "message": "Missing permission: user:delete" }
 ```
 
-The client wraps this in `ApiError` with `status`, `code` and `message`. Any `401` triggers the refresh flow described below; other statuses are surfaced to TanStack Query and shown in the UI.
+The client wraps this in `ApiError` with `status`, `code` and `message`. A `401` on an authenticated request triggers the refresh flow described below; a `401` from a pre-session endpoint such as `/auth/login` is surfaced as-is, and every other status goes to TanStack Query and the UI.
 
 | Status | When                                                                                                                                                                     |
 | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -38,6 +42,36 @@ The client wraps this in `ApiError` with `status`, `code` and `message`. Any `40
 | `409`  | Conflict (`EMAIL_TAKEN`, `ALREADY_ENABLED`, `ROLE_NAME_TAKEN`, `ROLE_IN_USE`, `DEPARTMENT_NAME_TAKEN`)                                                                   |
 | `410`  | Invitation already used or expired (`INVITE_USED`, `INVITE_EXPIRED`)                                                                                                     |
 | `429`  | Too many failed sign-ins (`ACCOUNT_LOCKED`)                                                                                                                              |
+
+A non-2xx response that does not follow this contract — an HTML error page from a proxy, for example — still becomes an `ApiError`: `code` falls back to `REQUEST_FAILED` and `message` to the HTTP status text.
+
+### Client-side failures
+
+Requests that never produced an HTTP response use the same `ApiError` with `status: 0`:
+
+| Code              | When                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------- |
+| `REQUEST_TIMEOUT` | No response within `VITE_REQUEST_TIMEOUT` milliseconds.                                                 |
+| `NETWORK_ERROR`   | `fetch` rejected before reaching the API: offline, DNS failure, blocked CORS, mismatched mixed content. |
+
+Both are treated as transient by `src/lib/query-client.ts` and retried at most twice, alongside `5xx`.
+
+A caller-owned cancellation is never converted. When TanStack Query aborts a superseded fetch, the original `AbortError` is rethrown so the query is discarded instead of shown as an error. Each read function takes an optional trailing `signal`, and every `queryFn` forwards the one it receives.
+
+### Request options
+
+`apiRequest(path, options)` is the only code that touches the network:
+
+| Option      | Default                | Purpose                                                                                                                                 |
+| ----------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `method`    | `GET`                  | HTTP verb.                                                                                                                              |
+| `body`      | –                      | Serialized as JSON with `Content-Type: application/json`.                                                                               |
+| `headers`   | –                      | Extra headers, merged last.                                                                                                             |
+| `signal`    | –                      | Caller-owned cancellation.                                                                                                              |
+| `auth`      | `true`                 | Attach the session token and allow the refresh flow. Pre-session endpoints (`/auth/login`, `/auth/refresh`, `/auth/me`, …) set `false`. |
+| `token`     | –                      | Explicit bearer for a call made before the session exists.                                                                              |
+| `retry`     | `true`                 | Allow exactly one refresh-and-retry after a `401`.                                                                                      |
+| `timeoutMs` | `VITE_REQUEST_TIMEOUT` | Per-request override. The two upload calls pass `VITE_UPLOAD_TIMEOUT` instead.                                                          |
 
 ## Auth
 
@@ -160,6 +194,8 @@ Returns the signed-in user with resolved permissions:
 3. If refresh fails, clear the session and Query cache, emit an unauthorized event and redirect to `/login?redirect=…`.
 
 Your refresh endpoint should return `401` for invalid, expired or revoked refresh tokens. Do not return `403`, which the client treats as a permission error.
+
+Requests sent with `auth: false` — `/auth/login`, `/auth/mfa/verify`, `/auth/refresh`, `/auth/me` and the register/invite/reset flows — skip this path entirely, so a wrong password reaches the form instead of clearing the session and starting a refresh.
 
 ## Users
 

@@ -4,6 +4,35 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
+
+### Changed
+
+- **One request client.** `src/features/auth/api.ts` kept a private `fetch` wrapper for its eleven
+  pre-session endpoints — login, MFA verify, register, verify-email, forgot/reset password, invite
+  preview, accept invite, refresh, logout and `/auth/me` — so those calls had no deadline, no
+  cancellation and a second, divergent error parser. They now call `apiRequest`, and the only
+  remaining network primitive in `src/` is `src/lib/api-client.ts`. The option `auth: false` keeps a
+  `401` from an unauthenticated endpoint out of the refresh flow, so a rejected login can never
+  clear a session or trigger a token refresh.
+- **Every request has a deadline.** `apiRequest` composes the caller's signal with
+  `AbortSignal.timeout()`, so a stalled backend can no longer hang a page. The budget is
+  `VITE_REQUEST_TIMEOUT` (default 15000 ms); the two base64 upload endpoints use
+  `VITE_UPLOAD_TIMEOUT` (default 60000 ms). A blown deadline becomes `ApiError(0, 'REQUEST_TIMEOUT')`
+  and an API that never answered becomes `NETWORK_ERROR` — both are retried like a `5xx`, and neither
+  leaks a `DOMException` into a toast.
+- **Superseded reads are cancelled.** All 26 `queryFn` sites now forward TanStack Query's signal to
+  the fetch function, so paging, filtering or a background refetch aborts the request it replaced.
+  A caller-driven abort is rethrown untouched and discarded instead of rendered as an error.
+- **Startup validates the environment.** `src/config/env.ts` throws on a set-but-unparseable
+  `VITE_ENABLE_MOCK`, `VITE_MOCK_LATENCY`, `VITE_REQUEST_TIMEOUT` or `VITE_UPLOAD_TIMEOUT` instead of
+  silently falling back to the documented default.
+- `docs/en/api-integration.md` and `docs/zh-CN/api-integration.md` gained the timeout options, the
+  `status: 0` client-side codes and the `REQUEST_FAILED` fallback; the architecture docs now walk the
+  client through its six steps.
+
 ## [1.5.0] - 2026-10-25
 
 ### Added

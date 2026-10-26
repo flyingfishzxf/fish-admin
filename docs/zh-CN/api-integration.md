@@ -4,11 +4,15 @@
 
 ## 切换环境
 
-| 变量                | 默认值  | 含义                                                                               |
-| ------------------- | ------- | ---------------------------------------------------------------------------------- |
-| `VITE_API_BASE_URL` | `/api`  | 所有请求的前缀，末尾无需斜杠                                                       |
-| `VITE_ENABLE_MOCK`  | `false` | 为 `true` 时启动 MSW Service Worker；Vite 开发环境通过 `.env.development` 默认开启 |
-| `VITE_MOCK_LATENCY` | `300`   | Mock 响应的模拟延迟（毫秒）                                                        |
+| 变量                   | 默认值  | 含义                                                                               |
+| ---------------------- | ------- | ---------------------------------------------------------------------------------- |
+| `VITE_API_BASE_URL`    | `/api`  | 所有请求的前缀，末尾无需斜杠                                                       |
+| `VITE_ENABLE_MOCK`     | `false` | 为 `true` 时启动 MSW Service Worker；Vite 开发环境通过 `.env.development` 默认开启 |
+| `VITE_MOCK_LATENCY`    | `300`   | Mock 响应的模拟延迟（毫秒）                                                        |
+| `VITE_REQUEST_TIMEOUT` | `15000` | 请求超时后被中止并转为 `REQUEST_TIMEOUT` 的毫秒数，有效范围 1000–300000            |
+| `VITE_UPLOAD_TIMEOUT`  | `60000` | 两个 base64 上传接口（`/files`、项目附件）的超时上限（毫秒），有效范围 1000–600000 |
+
+变量未设置时使用默认值；设置了但无法解析时会在启动阶段直接抛错，而不是静默回退（校验位于 `src/config/env.ts`）。
 
 接入真实后端的步骤：
 
@@ -27,7 +31,7 @@
 { "code": "FORBIDDEN", "message": "Missing permission: user:delete" }
 ```
 
-客户端会包装成带 `status`、`code`、`message` 的 `ApiError`。任何 `401` 都会触发下文所述的刷新流程；其他状态码交给 TanStack Query，并在界面中展示。
+客户端会包装成带 `status`、`code`、`message` 的 `ApiError`。已认证请求返回 `401` 会触发下文所述的刷新流程；`/auth/login` 这类会话建立之前的端点返回 `401` 会原样抛出；其他状态码交给 TanStack Query，并在界面中展示。
 
 | 状态码 | 场景                                                                                                                                                             |
 | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -38,6 +42,36 @@
 | `409`  | 冲突（`EMAIL_TAKEN`、`ALREADY_ENABLED`、`ROLE_NAME_TAKEN`、`ROLE_IN_USE`、`DEPARTMENT_NAME_TAKEN`）                                                              |
 | `410`  | 邀请已被使用或已过期（`INVITE_USED`、`INVITE_EXPIRED`）                                                                                                          |
 | `429`  | 登录失败次数过多（`ACCOUNT_LOCKED`）                                                                                                                             |
+
+非 2xx 响应若不符合这份契约（例如代理返回的 HTML 错误页），同样会被包装成 `ApiError`：`code` 退回 `REQUEST_FAILED`，`message` 使用 HTTP 状态描述文本。
+
+### 客户端侧失败
+
+没有拿到任何 HTTP 响应的请求，同样使用 `ApiError`，但 `status` 为 `0`：
+
+| 码                | 场景                                                                         |
+| ----------------- | ---------------------------------------------------------------------------- |
+| `REQUEST_TIMEOUT` | 在 `VITE_REQUEST_TIMEOUT` 毫秒内没有收到响应。                               |
+| `NETWORK_ERROR`   | `fetch` 在到达 API 之前就失败：离线、DNS 故障、CORS 被拦截、混合内容被阻止。 |
+
+这两者与 `5xx` 一样被 `src/lib/query-client.ts` 视为可恢复错误，最多重试两次。
+
+调用方自己的取消不会被转换：当 TanStack Query 中止被替换的请求时，原始 `AbortError` 会原样抛出，使该查询被丢弃而不是显示成错误。因此每个读取函数都接收一个可选的末位 `signal` 参数，且所有 `queryFn` 都会把拿到的 signal 继续传下去。
+
+### 请求选项
+
+`apiRequest(path, options)` 是唯一接触网络的地方：
+
+| 选项        | 默认值                 | 用途                                                                                  |
+| ----------- | ---------------------- | ------------------------------------------------------------------------------------- |
+| `method`    | `GET`                  | HTTP 方法。                                                                           |
+| `body`      | –                      | 以 JSON 序列化，并带上 `Content-Type: application/json`。                             |
+| `headers`   | –                      | 追加的请求头，最后合并。                                                              |
+| `signal`    | –                      | 调用方持有的取消信号。                                                                |
+| `auth`      | `true`                 | 附带会话令牌并允许刷新流程。`/auth/login`、`/auth/refresh`、`/auth/me` 等传 `false`。 |
+| `token`     | –                      | 会话尚未建立时使用的显式 bearer。                                                     |
+| `retry`     | `true`                 | 允许在 `401` 之后刷新并重试一次。                                                     |
+| `timeoutMs` | `VITE_REQUEST_TIMEOUT` | 单请求覆盖；两个上传接口改用 `VITE_UPLOAD_TIMEOUT`。                                  |
 
 ## 认证
 
@@ -160,6 +194,8 @@
 3. 刷新失败则清空会话与 Query 缓存，触发未授权事件并跳转 `/login?redirect=…`。
 
 刷新接口在 token 无效、过期或被撤销时应返回 `401`，不要返回 `403`——客户端会把后者当成权限错误。
+
+以 `auth: false` 发出的请求（`/auth/login`、`/auth/mfa/verify`、`/auth/refresh`、`/auth/me` 以及注册/邀请/重置流程）完全不走这条路径，因此密码错误只会被反馈到表单，而不会清掉会话并触发刷新。
 
 ## 用户
 

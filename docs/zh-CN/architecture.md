@@ -96,12 +96,16 @@ Vite 插件排在 React 与 Tailwind 插件之前，并启用了 `autoCodeSplitt
 
 ### API 客户端
 
-[`src/lib/api-client.ts`](../../src/lib/api-client.ts) 中的 `apiRequest`：
+[`src/lib/api-client.ts`](../../src/lib/api-client.ts) 中的 `apiRequest` 是唯一调用 `fetch` 的地方：
 
-1. 从 auth store 读取 access token，附加 `Authorization: Bearer …`。
-2. 收到 `401` 时调用一次 `refreshSession()`。store 对并发刷新做单飞处理，多个并行 401 只会产生一个 `/auth/refresh` 请求。
-3. 用新令牌重试原请求一次。
-4. 刷新失败则清空会话与 Query 缓存，触发未授权事件并抛出 `ApiError`。
+1. 从 auth store 读取 access token——会话尚未建立时改用显式的 `token` 选项——并附加 `Authorization: Bearer …`。
+2. 把调用方的 `AbortSignal` 与 `AbortSignal.timeout(VITE_REQUEST_TIMEOUT)` 组合，请求不会无限挂起。
+3. 调用方主动取消会原样抛出，让 TanStack Query 丢弃被替换的请求而不是显示错误；超时或 `fetch` 失败则包装为 `status: 0` 的 `ApiError`，码为 `REQUEST_TIMEOUT` / `NETWORK_ERROR`，两者都会被查询默认策略重试。
+4. 收到 `401` 时调用一次 `refreshSession()`。store 对并发刷新做单飞处理，多个并行 401 只会产生一个 `/auth/refresh` 请求。
+5. 用新令牌重试原请求一次。
+6. 刷新失败则清空会话与 Query 缓存，触发未授权事件并抛出 `ApiError`。
+
+标记为 `auth: false` 的请求（会话建立之前的认证端点）跳过第 4 到第 6 步，因此登录被拒时只会反馈到表单，不会拆掉当前会话。
 
 `bootstrap()` 同样做了单飞处理，避免 React StrictMode 的重复 effect 与并行路由预加载造成重复请求。
 
@@ -112,7 +116,7 @@ Vite 插件排在 React 与 Tailwind 插件之前，并启用了 `autoCodeSplitt
 ```text
 features/users/
 ├─ api.ts          fetchUsers、fetchUser、createUser、updateUser、updateUserProfile、deleteUser、bulk*、restoreUsers
-├─ queries.ts      userListQueryOptions、userDetailQueryOptions、userAuditQueryOptions
+├─ queries.ts      userListQueryOptions、userDetailQueryOptions、userActivityQueryOptions
 ├─ schemas.ts      createUserSchema(t)
 ├─ search.ts       表格的 URL search 校验
 └─ components/     UsersPage、UserDetailPage、UserFormDrawer、DeleteUserDialog、SavedViewsMenu、UserContextMenu、columns

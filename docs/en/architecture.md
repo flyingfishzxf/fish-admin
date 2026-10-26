@@ -96,12 +96,16 @@ The Vite plugin runs before the React and Tailwind plugins and enables `autoCode
 
 ### API client
 
-`apiRequest` in [`src/lib/api-client.ts`](../../src/lib/api-client.ts):
+`apiRequest` in [`src/lib/api-client.ts`](../../src/lib/api-client.ts) is the only code that calls `fetch`:
 
-1. Reads the access token from the auth store and adds `Authorization: Bearer …`.
-2. On `401`, calls `refreshSession()` once. The store single-flights concurrent refreshes, so parallel 401s produce one `/auth/refresh` request.
-3. Retries the original request once with the new token.
-4. If the refresh fails, clears the session and Query cache, emits an unauthorized event, and throws an `ApiError`.
+1. Reads the access token from the auth store — or the explicit `token` option for a call made before the session exists — and adds `Authorization: Bearer …`.
+2. Composes the caller's `AbortSignal` with `AbortSignal.timeout(VITE_REQUEST_TIMEOUT)` so no request can hang forever.
+3. A caller-driven abort is rethrown untouched, so TanStack Query discards the superseded fetch instead of showing an error. A timeout or a `fetch` rejection becomes an `ApiError` with `status: 0` and code `REQUEST_TIMEOUT` / `NETWORK_ERROR`, both retried by the query defaults.
+4. On `401`, calls `refreshSession()` once. The store single-flights concurrent refreshes, so parallel 401s produce one `/auth/refresh` request.
+5. Retries the original request once with the new token.
+6. If the refresh fails, clears the session and Query cache, emits an unauthorized event, and throws an `ApiError`.
+
+Requests marked `auth: false` — the pre-session auth endpoints — skip steps 4 to 6, so a rejected sign-in reaches the form instead of tearing down the session.
 
 `bootstrap()` is also single-flight. This keeps React StrictMode double effects and parallel route preloads from duplicating work.
 
@@ -112,7 +116,7 @@ Each feature keeps its API calls, query options, schemas and components together
 ```text
 features/users/
 ├─ api.ts          fetchUsers, fetchUser, createUser, updateUser, updateUserProfile, deleteUser, bulk*, restoreUsers
-├─ queries.ts      userListQueryOptions, userDetailQueryOptions, userAuditQueryOptions
+├─ queries.ts      userListQueryOptions, userDetailQueryOptions, userActivityQueryOptions
 ├─ schemas.ts      createUserSchema(t)
 ├─ search.ts       URL search validation for the table
 └─ components/     UsersPage, UserDetailPage, UserFormDrawer, DeleteUserDialog, SavedViewsMenu, UserContextMenu, columns
