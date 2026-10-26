@@ -20,7 +20,7 @@ export interface UserListParams {
   order?: string
 }
 
-export function fetchUsers(params: UserListParams) {
+export function fetchUsers(params: UserListParams, signal?: AbortSignal) {
   const search = new URLSearchParams()
   search.set('page', String(params.page))
   search.set('pageSize', String(params.pageSize))
@@ -32,7 +32,7 @@ export function fetchUsers(params: UserListParams) {
   if (params.sort) search.set('sort', params.sort)
   if (params.order) search.set('order', params.order)
 
-  return apiRequest<PaginatedResult<User>>(`/users?${search.toString()}`)
+  return apiRequest<PaginatedResult<User>>(`/users?${search.toString()}`, { signal })
 }
 
 export function createUser(input: UserInput) {
@@ -58,8 +58,8 @@ export function importUsers(rows: UserImportRow[]) {
   })
 }
 
-export function fetchUser(id: string) {
-  return apiRequest<User>(`/users/${encodeURIComponent(id)}`)
+export function fetchUser(id: string, signal?: AbortSignal) {
+  return apiRequest<User>(`/users/${encodeURIComponent(id)}`, { signal })
 }
 
 export function updateUser(id: string, input: UserInput) {
@@ -70,14 +70,14 @@ export function updateUserProfile(id: string, input: UserProfileInput) {
   return apiRequest<User>(`/users/${encodeURIComponent(id)}`, { method: 'PATCH', body: input })
 }
 
-export function fetchUserActivity(id: string, limit = 20) {
+export function fetchUserActivity(id: string, limit = 20, signal?: AbortSignal) {
   const search = new URLSearchParams({
     entityType: 'user',
     entityId: id,
     page: '1',
     pageSize: String(limit),
   })
-  return apiRequest<PaginatedResult<AuditEvent>>(`/audit-events?${search.toString()}`)
+  return apiRequest<PaginatedResult<AuditEvent>>(`/audit-events?${search.toString()}`, { signal })
 }
 
 export function deleteUser(id: string) {

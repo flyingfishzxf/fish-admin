@@ -7,7 +7,7 @@ import { fetchDepartments } from './api'
 export const departmentsQueryOptions = () =>
   queryOptions({
     queryKey: ['departments'],
-    queryFn: fetchDepartments,
+    queryFn: ({ signal }) => fetchDepartments(signal),
     select: (data): Department[] => data.items,
   })
 

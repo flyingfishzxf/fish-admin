@@ -1,4 +1,5 @@
 import type { FileFolder, FileVisibility, PaginatedResult, WorkspaceFile } from '@/types'
+import { env } from '@/config/env'
 import { apiRequest } from '@/lib/api-client'
 
 import type { FileKind, FileOrder, FileSort } from './search'
@@ -26,11 +27,11 @@ export interface FileFolderStats {
   favorites: number
 }
 
-export function fetchFileFolders() {
-  return apiRequest<FileFolderStats>('/file-folders')
+export function fetchFileFolders(signal?: AbortSignal) {
+  return apiRequest<FileFolderStats>('/file-folders', { signal })
 }
 
-export function fetchFiles(params: FileListParams) {
+export function fetchFiles(params: FileListParams, signal?: AbortSignal) {
   const search = new URLSearchParams()
   search.set('page', String(params.page))
   search.set('pageSize', String(params.pageSize))
@@ -43,7 +44,7 @@ export function fetchFiles(params: FileListParams) {
   if (params.order) search.set('order', params.order)
   if (params.updatedAfter) search.set('updatedAfter', params.updatedAfter)
 
-  return apiRequest<PaginatedResult<WorkspaceFile>>(`/files?${search.toString()}`)
+  return apiRequest<PaginatedResult<WorkspaceFile>>(`/files?${search.toString()}`, { signal })
 }
 
 export interface FileUploadInput {
@@ -56,7 +57,11 @@ export interface FileUploadInput {
 }
 
 export function uploadFile(input: FileUploadInput) {
-  return apiRequest<WorkspaceFile>('/files', { method: 'POST', body: input })
+  return apiRequest<WorkspaceFile>('/files', {
+    method: 'POST',
+    body: input,
+    timeoutMs: env.uploadTimeout,
+  })
 }
 
 export interface FileUpdateInput {

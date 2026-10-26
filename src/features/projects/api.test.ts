@@ -18,43 +18,49 @@ import {
 } from './api'
 
 describe('project API client', () => {
+  const signal = new AbortController().signal
+
   beforeEach(() => {
     apiRequestMock.mockReset()
     apiRequestMock.mockResolvedValue(undefined)
   })
 
   it('serializes the project list query', () => {
-    fetchProjects({
-      page: 2,
-      pageSize: 6,
-      q: 'atlas launch',
-      status: 'active',
-      priority: 'high',
-      ownerId: 'user-ada',
-      departmentId: 'dept-engineering',
-      archived: true,
-      sort: 'dueDate',
-      order: 'asc',
-    })
+    fetchProjects(
+      {
+        page: 2,
+        pageSize: 6,
+        q: 'atlas launch',
+        status: 'active',
+        priority: 'high',
+        ownerId: 'user-ada',
+        departmentId: 'dept-engineering',
+        archived: true,
+        sort: 'dueDate',
+        order: 'asc',
+      },
+      signal,
+    )
 
     expect(apiRequestMock).toHaveBeenCalledWith(
       '/projects?page=2&pageSize=6&q=atlas+launch&status=active&priority=high&ownerId=user-ada&departmentId=dept-engineering&archived=1&sort=dueDate&order=asc',
+      { signal },
     )
   })
 
   it('omits empty project filters', () => {
-    fetchProjects({ page: 1, pageSize: 6 })
+    fetchProjects({ page: 1, pageSize: 6 }, signal)
 
-    expect(apiRequestMock).toHaveBeenCalledWith('/projects?page=1&pageSize=6')
+    expect(apiRequestMock).toHaveBeenCalledWith('/projects?page=1&pageSize=6', { signal })
   })
 
   it('encodes project and nested resource ids', () => {
-    fetchProject('project/atl')
+    fetchProject('project/atl', signal)
     updateProject('project/atl', { rating: 4 })
     toggleMilestone('project/atl', 'milestone/1', true)
     updateProjectTask('project/atl', 'task/1', { status: 'done' })
 
-    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/projects/project%2Fatl')
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/projects/project%2Fatl', { signal })
     expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/projects/project%2Fatl', {
       method: 'PATCH',
       body: { rating: 4 },
@@ -114,6 +120,7 @@ describe('project API client', () => {
     expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/projects/project-atl/attachments', {
       method: 'POST',
       body: input,
+      timeoutMs: 60_000,
     })
     expect(apiRequestMock).toHaveBeenNthCalledWith(
       2,

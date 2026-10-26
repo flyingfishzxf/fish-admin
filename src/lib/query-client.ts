@@ -9,7 +9,8 @@ export const queryClient = new QueryClient({
       refetchOnWindowFocus: false,
       retry: (failureCount, error) => {
         if (failureCount >= 2) return false
-        if (error instanceof ApiError) return error.status >= 500
+        // Status 0 is client-side: the request never landed or timed out. Both are transient.
+        if (error instanceof ApiError) return error.status >= 500 || error.status === 0
         return true
       },
     },

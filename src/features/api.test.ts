@@ -31,33 +31,39 @@ const userInput = {
 }
 
 describe('feature API clients', () => {
+  const signal = new AbortController().signal
+
   beforeEach(() => {
     apiRequestMock.mockReset()
     apiRequestMock.mockResolvedValue(undefined)
   })
 
   it('serializes the user list query', () => {
-    fetchUsers({
-      page: 2,
-      pageSize: 20,
-      q: 'ada lovelace',
-      roleId: 'role_admin',
-      status: 'active',
-      departmentId: 'dept-engineering',
-      includeDescendants: true,
-      sort: 'name',
-      order: 'asc',
-    })
+    fetchUsers(
+      {
+        page: 2,
+        pageSize: 20,
+        q: 'ada lovelace',
+        roleId: 'role_admin',
+        status: 'active',
+        departmentId: 'dept-engineering',
+        includeDescendants: true,
+        sort: 'name',
+        order: 'asc',
+      },
+      signal,
+    )
 
     expect(apiRequestMock).toHaveBeenCalledWith(
       '/users?page=2&pageSize=20&q=ada+lovelace&roleId=role_admin&status=active&departmentId=dept-engineering&includeDescendants=1&sort=name&order=asc',
+      { signal },
     )
   })
 
   it('omits empty user filters', () => {
-    fetchUsers({ page: 1, pageSize: 10 })
+    fetchUsers({ page: 1, pageSize: 10 }, signal)
 
-    expect(apiRequestMock).toHaveBeenCalledWith('/users?page=1&pageSize=10')
+    expect(apiRequestMock).toHaveBeenCalledWith('/users?page=1&pageSize=10', { signal })
   })
 
   it('sends user mutations', () => {
@@ -77,11 +83,11 @@ describe('feature API clients', () => {
   })
 
   it('loads a user detail, updates the profile and fetches user activity', () => {
-    fetchUser('user_1')
+    fetchUser('user_1', signal)
     updateUserProfile('user_1', { tags: ['design'], jobTitle: 'Lead' })
-    fetchUserActivity('user_1', 5)
+    fetchUserActivity('user_1', 5, signal)
 
-    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/users/user_1')
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/users/user_1', { signal })
     expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/users/user_1', {
       method: 'PATCH',
       body: { tags: ['design'], jobTitle: 'Lead' },
@@ -89,16 +95,17 @@ describe('feature API clients', () => {
     expect(apiRequestMock).toHaveBeenNthCalledWith(
       3,
       '/audit-events?entityType=user&entityId=user_1&page=1&pageSize=5',
+      { signal },
     )
   })
 
   it('loads roles and saves role permissions', () => {
-    fetchRoles()
-    fetchRoleOptions()
+    fetchRoles(signal)
+    fetchRoleOptions(signal)
     updateRolePermissions('role_manager', ['user:read'])
 
-    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/roles')
-    expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/roles/options')
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/roles', { signal })
+    expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/roles/options', { signal })
     expect(apiRequestMock).toHaveBeenNthCalledWith(3, '/roles/role_manager/permissions', {
       method: 'PUT',
       body: { permissions: ['user:read'] },
@@ -106,12 +113,12 @@ describe('feature API clients', () => {
   })
 
   it('loads permissions, dashboard data and updates the profile', () => {
-    fetchPermissions()
-    fetchDashboard(30)
+    fetchPermissions(signal)
+    fetchDashboard(30, signal)
     updateProfile({ name: 'Ada', bio: 'Math' })
 
-    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/permissions')
-    expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/dashboard?range=30')
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/permissions', { signal })
+    expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/dashboard?range=30', { signal })
     expect(apiRequestMock).toHaveBeenNthCalledWith(3, '/profile', {
       method: 'PATCH',
       body: { name: 'Ada', bio: 'Math' },

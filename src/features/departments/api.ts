@@ -6,8 +6,8 @@ export interface DepartmentInput {
   parentId?: string | null
 }
 
-export function fetchDepartments() {
-  return apiRequest<{ items: Department[] }>('/departments')
+export function fetchDepartments(signal?: AbortSignal) {
+  return apiRequest<{ items: Department[] }>('/departments', { signal })
 }
 
 export function createDepartment(input: DepartmentInput) {

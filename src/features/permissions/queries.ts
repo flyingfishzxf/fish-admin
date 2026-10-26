@@ -5,7 +5,7 @@ import { fetchPermissions } from './api'
 export const permissionsQueryOptions = () =>
   queryOptions({
     queryKey: ['permissions'],
-    queryFn: fetchPermissions,
+    queryFn: ({ signal }) => fetchPermissions(signal),
   })
 
 export function usePermissionsQuery(enabled = true) {

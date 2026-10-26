@@ -7,7 +7,7 @@ import { fetchDashboard } from './api'
 export const dashboardQueryOptions = (range: DashboardRange) =>
   queryOptions({
     queryKey: ['dashboard', range],
-    queryFn: () => fetchDashboard(range),
+    queryFn: ({ signal }) => fetchDashboard(range, signal),
     placeholderData: keepPreviousData,
   })
 

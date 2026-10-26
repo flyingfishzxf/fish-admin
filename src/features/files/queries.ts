@@ -5,7 +5,7 @@ import { fetchFileFolders, fetchFiles, type FileListParams } from './api'
 export const fileFoldersQueryOptions = () =>
   queryOptions({
     queryKey: ['files', 'folders'],
-    queryFn: fetchFileFolders,
+    queryFn: ({ signal }) => fetchFileFolders(signal),
     staleTime: 30_000,
   })
 
@@ -16,7 +16,7 @@ export function useFileFoldersQuery() {
 export const fileListQueryOptions = (params: FileListParams) =>
   queryOptions({
     queryKey: ['files', 'list', params],
-    queryFn: () => fetchFiles(params),
+    queryFn: ({ signal }) => fetchFiles(params, signal),
     placeholderData: keepPreviousData,
   })
 

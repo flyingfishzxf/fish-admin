@@ -5,7 +5,7 @@ import { fetchReport, type ReportParams } from './api'
 export const reportQueryOptions = (params: ReportParams) =>
   queryOptions({
     queryKey: ['reports', params],
-    queryFn: () => fetchReport(params),
+    queryFn: ({ signal }) => fetchReport(params, signal),
     placeholderData: keepPreviousData,
     staleTime: 60_000,
   })

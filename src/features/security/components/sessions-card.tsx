@@ -41,7 +41,10 @@ export function SessionsCard() {
   const { t, i18n } = useTranslation()
   const language = i18n.resolvedLanguage ?? 'en'
   const queryClient = useQueryClient()
-  const sessionsQuery = useQuery({ queryKey: SESSIONS_KEY, queryFn: getSessionsRequest })
+  const sessionsQuery = useQuery({
+    queryKey: SESSIONS_KEY,
+    queryFn: ({ signal }) => getSessionsRequest(signal),
+  })
   const [revokeTarget, setRevokeTarget] = useState<AuthSession | null>(null)
   const [revokeOthersOpen, setRevokeOthersOpen] = useState(false)
 

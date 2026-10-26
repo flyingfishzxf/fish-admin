@@ -10,7 +10,7 @@ import {
 export const integrationListQueryOptions = (params: IntegrationListParams) =>
   queryOptions({
     queryKey: ['integrations', params],
-    queryFn: () => fetchIntegrations(params),
+    queryFn: ({ signal }) => fetchIntegrations(params, signal),
     placeholderData: keepPreviousData,
   })
 
@@ -21,7 +21,7 @@ export function useIntegrationListQuery(params: IntegrationListParams) {
 export const recentDeliveriesQueryOptions = (limit: number) =>
   queryOptions({
     queryKey: ['integrations', 'deliveries', 'recent', limit],
-    queryFn: () => fetchRecentDeliveries(limit),
+    queryFn: ({ signal }) => fetchRecentDeliveries(limit, signal),
     staleTime: 30_000,
   })
 
@@ -32,7 +32,7 @@ export function useRecentDeliveriesQuery(limit = 8) {
 export const integrationDeliveriesQueryOptions = (id: string | null) =>
   queryOptions({
     queryKey: ['integrations', 'deliveries', id],
-    queryFn: () => fetchIntegrationDeliveries(id as string),
+    queryFn: ({ signal }) => fetchIntegrationDeliveries(id as string, signal),
     enabled: Boolean(id),
   })
 

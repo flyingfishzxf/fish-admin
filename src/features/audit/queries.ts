@@ -5,7 +5,7 @@ import { fetchAuditEvent, fetchAuditEvents, type AuditListParams } from './api'
 export const auditListQueryOptions = (params: AuditListParams) =>
   queryOptions({
     queryKey: ['audit-events', 'list', params],
-    queryFn: () => fetchAuditEvents(params),
+    queryFn: ({ signal }) => fetchAuditEvents(params, signal),
     placeholderData: keepPreviousData,
   })
 
@@ -16,7 +16,7 @@ export function useAuditListQuery(params: AuditListParams) {
 export const auditEventQueryOptions = (id: string | null) =>
   queryOptions({
     queryKey: ['audit-events', 'detail', id],
-    queryFn: () => fetchAuditEvent(id as string),
+    queryFn: ({ signal }) => fetchAuditEvent(id as string, signal),
     enabled: Boolean(id),
   })
 

@@ -28,25 +28,27 @@ export interface RecentDelivery extends IntegrationDelivery {
   integrationName: string
 }
 
-export function fetchIntegrations(params: IntegrationListParams) {
+export function fetchIntegrations(params: IntegrationListParams, signal?: AbortSignal) {
   const search = new URLSearchParams()
   search.set('page', String(params.page))
   search.set('pageSize', String(params.pageSize))
   if (params.provider) search.set('provider', params.provider)
   if (params.enabled !== undefined) search.set('enabled', params.enabled ? '1' : '0')
 
-  return apiRequest<PaginatedResult<Integration>>(`/integrations?${search.toString()}`)
+  return apiRequest<PaginatedResult<Integration>>(`/integrations?${search.toString()}`, { signal })
 }
 
-export function fetchRecentDeliveries(limit: number) {
+export function fetchRecentDeliveries(limit: number, signal?: AbortSignal) {
   return apiRequest<{ items: RecentDelivery[]; total: number }>(
     `/integrations/deliveries?limit=${limit}`,
+    { signal },
   )
 }
 
-export function fetchIntegrationDeliveries(id: string) {
+export function fetchIntegrationDeliveries(id: string, signal?: AbortSignal) {
   return apiRequest<{ integrationId: string; items: IntegrationDelivery[] }>(
     `/integrations/${encodeURIComponent(id)}/deliveries`,
+    { signal },
   )
 }
 

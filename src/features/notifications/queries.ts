@@ -10,7 +10,7 @@ import {
 export const notificationListQueryOptions = (params: NotificationListParams) =>
   queryOptions({
     queryKey: ['notifications', params],
-    queryFn: () => fetchNotifications(params),
+    queryFn: ({ signal }) => fetchNotifications(params, signal),
     placeholderData: keepPreviousData,
   })
 
@@ -21,7 +21,7 @@ export function useNotificationListQuery(params: NotificationListParams) {
 export const notificationSummaryQueryOptions = () =>
   queryOptions({
     queryKey: ['notifications', 'summary'],
-    queryFn: () => fetchNotifications({ page: 1, pageSize: 5, filter: 'all' }),
+    queryFn: ({ signal }) => fetchNotifications({ page: 1, pageSize: 5, filter: 'all' }, signal),
     staleTime: 60_000,
   })
 
@@ -32,7 +32,7 @@ export function useNotificationSummaryQuery() {
 export const notificationDetailQueryOptions = (id?: string) =>
   queryOptions({
     queryKey: ['notifications', 'detail', id],
-    queryFn: () => fetchNotification(id as string),
+    queryFn: ({ signal }) => fetchNotification(id as string, signal),
     enabled: Boolean(id),
   })
 
@@ -43,7 +43,7 @@ export function useNotificationDetailQuery(id?: string) {
 export const notificationPreferencesQueryOptions = () =>
   queryOptions({
     queryKey: ['notifications', 'preferences'],
-    queryFn: fetchNotificationPreferences,
+    queryFn: ({ signal }) => fetchNotificationPreferences(signal),
   })
 
 export function useNotificationPreferencesQuery() {

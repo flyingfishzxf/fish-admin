@@ -7,7 +7,7 @@ import { fetchProject, fetchProjects, type ProjectListParams } from './api'
 export const projectListQueryOptions = (params: ProjectListParams) =>
   queryOptions({
     queryKey: ['projects', params],
-    queryFn: () => fetchProjects(params),
+    queryFn: ({ signal }) => fetchProjects(params, signal),
     placeholderData: keepPreviousData,
   })
 
@@ -18,7 +18,7 @@ export function useProjectListQuery(params: ProjectListParams) {
 export const projectOverviewQueryOptions = () =>
   queryOptions({
     queryKey: ['projects', 'overview'],
-    queryFn: () => fetchProjects({ page: 1, pageSize: 50, archived: false }),
+    queryFn: ({ signal }) => fetchProjects({ page: 1, pageSize: 50, archived: false }, signal),
     select: (data) => data.items,
     staleTime: 30_000,
   })
@@ -30,7 +30,7 @@ export function useProjectOverviewQuery() {
 export const projectDetailQueryOptions = (id: string) =>
   queryOptions({
     queryKey: ['projects', 'detail', id],
-    queryFn: () => fetchProject(id),
+    queryFn: ({ signal }) => fetchProject(id, signal),
   })
 
 export function useProjectDetailQuery(id: string) {
@@ -40,7 +40,8 @@ export function useProjectDetailQuery(id: string) {
 export const projectUserOptionsQueryOptions = () =>
   queryOptions({
     queryKey: ['projects', 'user-options'],
-    queryFn: () => fetchUsers({ page: 1, pageSize: 100, sort: 'name', order: 'asc' }),
+    queryFn: ({ signal }) =>
+      fetchUsers({ page: 1, pageSize: 100, sort: 'name', order: 'asc' }, signal),
     select: (data) =>
       data.items.map((user) => ({
         id: user.id,

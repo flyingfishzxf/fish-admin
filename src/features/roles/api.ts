@@ -12,12 +12,12 @@ export interface RoleUpdateInput {
   description?: string
 }
 
-export function fetchRoles() {
-  return apiRequest<Role[]>('/roles')
+export function fetchRoles(signal?: AbortSignal) {
+  return apiRequest<Role[]>('/roles', { signal })
 }
 
-export function fetchRoleOptions() {
-  return apiRequest<RoleOption[]>('/roles/options')
+export function fetchRoleOptions(signal?: AbortSignal) {
+  return apiRequest<RoleOption[]>('/roles/options', { signal })
 }
 
 export function createRole(input: RoleInput) {

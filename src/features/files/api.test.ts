@@ -14,40 +14,46 @@ import {
 } from './api'
 
 describe('files API client', () => {
+  const signal = new AbortController().signal
+
   beforeEach(() => {
     apiRequestMock.mockReset()
     apiRequestMock.mockResolvedValue(undefined)
   })
 
   it('loads folders', () => {
-    fetchFileFolders()
+    fetchFileFolders(signal)
 
-    expect(apiRequestMock).toHaveBeenCalledWith('/file-folders')
+    expect(apiRequestMock).toHaveBeenCalledWith('/file-folders', { signal })
   })
 
   it('serializes the file list query', () => {
-    fetchFiles({
-      page: 2,
-      pageSize: 24,
-      folderId: 'folder-design',
-      q: 'logo',
-      kind: 'image',
-      visibility: 'team',
-      favorite: true,
-      sort: 'size',
-      order: 'asc',
-      updatedAfter: '2026-10-01',
-    })
+    fetchFiles(
+      {
+        page: 2,
+        pageSize: 24,
+        folderId: 'folder-design',
+        q: 'logo',
+        kind: 'image',
+        visibility: 'team',
+        favorite: true,
+        sort: 'size',
+        order: 'asc',
+        updatedAfter: '2026-10-01',
+      },
+      signal,
+    )
 
     expect(apiRequestMock).toHaveBeenCalledWith(
       '/files?page=2&pageSize=24&folderId=folder-design&q=logo&kind=image&visibility=team&favorite=1&sort=size&order=asc&updatedAfter=2026-10-01',
+      { signal },
     )
   })
 
   it('omits the default file kind and optional filters', () => {
-    fetchFiles({ page: 1, pageSize: 12, kind: 'all' })
+    fetchFiles({ page: 1, pageSize: 12, kind: 'all' }, signal)
 
-    expect(apiRequestMock).toHaveBeenCalledWith('/files?page=1&pageSize=12')
+    expect(apiRequestMock).toHaveBeenCalledWith('/files?page=1&pageSize=12', { signal })
   })
 
   it('uploads a file with metadata and an optional preview', () => {
@@ -70,6 +76,7 @@ describe('files API client', () => {
         visibility: 'team',
         dataUrl: 'data:image/svg+xml;base64,PHN2Zy8+',
       },
+      timeoutMs: 60_000,
     })
   })
 

@@ -5,13 +5,13 @@ import { fetchRoleOptions, fetchRoles } from './api'
 export const rolesQueryOptions = () =>
   queryOptions({
     queryKey: ['roles'],
-    queryFn: fetchRoles,
+    queryFn: ({ signal }) => fetchRoles(signal),
   })
 
 export const roleOptionsQueryOptions = () =>
   queryOptions({
     queryKey: ['roles', 'options'],
-    queryFn: fetchRoleOptions,
+    queryFn: ({ signal }) => fetchRoleOptions(signal),
   })
 
 export function useRolesQuery() {

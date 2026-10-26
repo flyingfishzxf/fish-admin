@@ -38,7 +38,7 @@ export function AcceptInvitePage({ token }: { token?: string }) {
   const { t } = useTranslation()
   const inviteQuery = useQuery({
     queryKey: ['auth', 'invite', token],
-    queryFn: () => getInviteRequest(token!),
+    queryFn: ({ signal }) => getInviteRequest(token!, signal),
     enabled: Boolean(token),
     retry: false,
   })

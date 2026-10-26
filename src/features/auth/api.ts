@@ -1,5 +1,3 @@
-import { env } from '@/config/env'
-import { ApiError } from '@/lib/api-error'
 import { apiRequest } from '@/lib/api-client'
 import type { AuthSession, AuthUser, InvitePreview } from '@/types'
 
@@ -31,108 +29,89 @@ export interface ResetPasswordInput {
   password: string
 }
 
-interface RequestOptions {
-  method?: string
-  body?: unknown
-  token?: string
-}
-
-async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', body, token } = options
-  const response = await fetch(`${env.apiBaseUrl}${path}`, {
-    method,
-    headers: {
-      ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  })
-
-  if (!response.ok) {
-    const payload = (await response.json().catch(() => null)) as {
-      code?: string
-      message?: string
-    } | null
-    throw new ApiError(
-      response.status,
-      payload?.code ?? 'REQUEST_FAILED',
-      payload?.message ?? response.statusText,
-    )
-  }
-
-  if (response.status === 204) return undefined as T
-  return (await response.json()) as T
-}
-
+// Every pre-session endpoint sets `auth: false`: no bearer is attached, and a 401
+// must surface as a plain error instead of clearing the session and starting a refresh.
 export function loginRequest(email: string, password: string) {
-  return request<LoginResponse>('/auth/login', {
+  return apiRequest<LoginResponse>('/auth/login', {
     method: 'POST',
     body: { email, password },
+    auth: false,
   })
 }
 
 export function verifyMfaRequest(challengeId: string, code: string) {
-  return request<TokenPair>('/auth/mfa/verify', {
+  return apiRequest<TokenPair>('/auth/mfa/verify', {
     method: 'POST',
     body: { challengeId, code },
+    auth: false,
   })
 }
 
 export function registerRequest(input: RegisterInput) {
-  return request<{ email: string; verificationToken: string }>('/auth/register', {
+  return apiRequest<{ email: string; verificationToken: string }>('/auth/register', {
     method: 'POST',
     body: input,
+    auth: false,
   })
 }
 
 export function verifyEmailRequest(token: string) {
-  return request<{ email: string }>('/auth/verify-email', {
+  return apiRequest<{ email: string }>('/auth/verify-email', {
     method: 'POST',
     body: { token },
+    auth: false,
   })
 }
 
 export function forgotPasswordRequest(email: string) {
-  return request<{ demoResetToken?: string }>('/auth/forgot-password', {
+  return apiRequest<{ demoResetToken?: string }>('/auth/forgot-password', {
     method: 'POST',
     body: { email },
+    auth: false,
   })
 }
 
-export async function resetPasswordRequest(input: ResetPasswordInput) {
-  await request<void>('/auth/reset-password', {
+export function resetPasswordRequest(input: ResetPasswordInput) {
+  return apiRequest<void>('/auth/reset-password', {
     method: 'POST',
     body: input,
+    auth: false,
   })
 }
 
-export function getInviteRequest(token: string) {
-  return request<InvitePreview>(`/auth/invites/${encodeURIComponent(token)}`)
+export function getInviteRequest(token: string, signal?: AbortSignal) {
+  return apiRequest<InvitePreview>(`/auth/invites/${encodeURIComponent(token)}`, {
+    signal,
+    auth: false,
+  })
 }
 
 export function acceptInviteRequest(input: RegisterInput & { token: string }) {
-  return request<TokenPair>('/auth/accept-invite', {
+  return apiRequest<TokenPair>('/auth/accept-invite', {
     method: 'POST',
     body: input,
+    auth: false,
   })
 }
 
 export function refreshRequest(refreshToken: string) {
-  return request<TokenPair>('/auth/refresh', {
+  return apiRequest<TokenPair>('/auth/refresh', {
     method: 'POST',
     body: { refreshToken },
+    auth: false,
   })
 }
 
-export async function logoutRequest(refreshToken: string) {
-  await request<void>('/auth/logout', {
+export function logoutRequest(refreshToken: string) {
+  return apiRequest<void>('/auth/logout', {
     method: 'POST',
     body: { refreshToken },
+    auth: false,
   })
 }
 
 export function meRequest(accessToken: string) {
-  return request<AuthUser>('/auth/me', { token: accessToken })
+  return apiRequest<AuthUser>('/auth/me', { token: accessToken, auth: false })
 }
 
 export function changePasswordRequest(currentPassword: string, newPassword: string) {
@@ -142,8 +121,8 @@ export function changePasswordRequest(currentPassword: string, newPassword: stri
   })
 }
 
-export function getSessionsRequest() {
-  return apiRequest<AuthSession[]>('/auth/sessions')
+export function getSessionsRequest(signal?: AbortSignal) {
+  return apiRequest<AuthSession[]>('/auth/sessions', { signal })
 }
 
 export function revokeSessionRequest(sessionId: string) {

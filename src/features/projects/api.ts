@@ -1,3 +1,4 @@
+import { env } from '@/config/env'
 import { apiRequest } from '@/lib/api-client'
 import type {
   PaginatedResult,
@@ -25,7 +26,7 @@ export interface ProjectListParams {
   order?: 'asc' | 'desc'
 }
 
-export function fetchProjects(params: ProjectListParams) {
+export function fetchProjects(params: ProjectListParams, signal?: AbortSignal) {
   const search = new URLSearchParams()
   search.set('page', String(params.page))
   search.set('pageSize', String(params.pageSize))
@@ -38,11 +39,11 @@ export function fetchProjects(params: ProjectListParams) {
   if (params.sort) search.set('sort', params.sort)
   if (params.order) search.set('order', params.order)
 
-  return apiRequest<PaginatedResult<Project>>(`/projects?${search.toString()}`)
+  return apiRequest<PaginatedResult<Project>>(`/projects?${search.toString()}`, { signal })
 }
 
-export function fetchProject(id: string) {
-  return apiRequest<ProjectDetail>(`/projects/${encodeURIComponent(id)}`)
+export function fetchProject(id: string, signal?: AbortSignal) {
+  return apiRequest<ProjectDetail>(`/projects/${encodeURIComponent(id)}`, { signal })
 }
 
 export function createProject(input: ProjectInput) {
@@ -110,7 +111,7 @@ export function uploadProjectAttachment(
 ) {
   return apiRequest<{ file: WorkspaceFile; project: Project }>(
     `/projects/${encodeURIComponent(projectId)}/attachments`,
-    { method: 'POST', body: input },
+    { method: 'POST', body: input, timeoutMs: env.uploadTimeout },
   )
 }
 

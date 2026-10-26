@@ -22,28 +22,32 @@ const preferences = {
 }
 
 describe('notification API client', () => {
+  const signal = new AbortController().signal
+
   beforeEach(() => {
     apiRequestMock.mockReset()
     apiRequestMock.mockResolvedValue(undefined)
   })
 
   it('serializes the notification list query', () => {
-    fetchNotifications({ page: 2, pageSize: 20, filter: 'unread' })
+    fetchNotifications({ page: 2, pageSize: 20, filter: 'unread' }, signal)
 
-    expect(apiRequestMock).toHaveBeenCalledWith('/notifications?page=2&pageSize=20&filter=unread')
+    expect(apiRequestMock).toHaveBeenCalledWith('/notifications?page=2&pageSize=20&filter=unread', {
+      signal,
+    })
   })
 
   it('omits the filter when it is not set', () => {
-    fetchNotifications({ page: 1, pageSize: 5 })
+    fetchNotifications({ page: 1, pageSize: 5 }, signal)
 
-    expect(apiRequestMock).toHaveBeenCalledWith('/notifications?page=1&pageSize=5')
+    expect(apiRequestMock).toHaveBeenCalledWith('/notifications?page=1&pageSize=5', { signal })
   })
 
   it('reads and updates a single notification', () => {
-    fetchNotification('notification/1')
+    fetchNotification('notification/1', signal)
     updateNotification('notification/1', true)
 
-    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/notifications/notification%2F1')
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/notifications/notification%2F1', { signal })
     expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/notifications/notification%2F1', {
       method: 'PATCH',
       body: { read: true },
@@ -64,10 +68,10 @@ describe('notification API client', () => {
   })
 
   it('loads and saves preferences', () => {
-    fetchNotificationPreferences()
+    fetchNotificationPreferences(signal)
     updateNotificationPreferences(preferences)
 
-    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/notifications/preferences')
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/notifications/preferences', { signal })
     expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/notifications/preferences', {
       method: 'PUT',
       body: preferences,

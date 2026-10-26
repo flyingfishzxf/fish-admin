@@ -12,7 +12,7 @@ export interface AuditListParams {
   to?: string
 }
 
-export function fetchAuditEvents(params: AuditListParams) {
+export function fetchAuditEvents(params: AuditListParams, signal?: AbortSignal) {
   const search = new URLSearchParams()
   search.set('page', String(params.page))
   search.set('pageSize', String(params.pageSize))
@@ -23,7 +23,7 @@ export function fetchAuditEvents(params: AuditListParams) {
   if (params.from) search.set('from', params.from)
   if (params.to) search.set('to', params.to)
 
-  return apiRequest<PaginatedResult<AuditEvent>>(`/audit-events?${search.toString()}`)
+  return apiRequest<PaginatedResult<AuditEvent>>(`/audit-events?${search.toString()}`, { signal })
 }
 
 export interface AuditEventDetail {
@@ -31,6 +31,6 @@ export interface AuditEventDetail {
   related: AuditEvent[]
 }
 
-export function fetchAuditEvent(id: string) {
-  return apiRequest<AuditEventDetail>(`/audit-events/${encodeURIComponent(id)}`)
+export function fetchAuditEvent(id: string, signal?: AbortSignal) {
+  return apiRequest<AuditEventDetail>(`/audit-events/${encodeURIComponent(id)}`, { signal })
 }
