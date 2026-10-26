@@ -39,7 +39,11 @@ The remaining three headers travel with it: `X-Content-Type-Options: nosniff`,
 `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
 
 `Strict-Transport-Security` is added only on Vercel, because that is the layer
-with TLS. `upgrade-insecure-requests` is absent on purpose: the container is
+with TLS. Measured on the live demo, all six headers arrive on `/`, `/login`, a
+file from `public/` and the SPA fallback for an unknown path. The edge cache can
+still serve a response from before a deployment, so add a cache-busting query
+parameter before concluding that a header is missing.
+`upgrade-insecure-requests` is absent on purpose: the container is
 served over plain http on localhost and the directive would rewrite those
 requests to an https origin that does not answer.
 

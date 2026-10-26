@@ -36,7 +36,9 @@ frame-ancestors 'self'
 `Referrer-Policy: strict-origin-when-cross-origin` 和
 `Permissions-Policy: camera=(), microphone=(), geolocation=()`。
 
-`Strict-Transport-Security` 只在 Vercel 上加，因为只有那一层有 TLS。
+`Strict-Transport-Security` 只在 Vercel 上加，因为只有那一层有 TLS。线上实测：`/`、`/login`、
+`public/` 下的文件以及未知路径的 SPA 回落都完整带上这六条头。边缘缓存可能还在返回上一次部署的
+响应，所以某条头看着缺失时，先加一个 cache-busting 查询参数再判断。
 `upgrade-insecure-requests` 是刻意不加的：容器在 localhost 上是纯 http，这条指令会把请求
 改写成不会应答的 https 源。
 
