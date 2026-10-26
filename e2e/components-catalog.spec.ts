@@ -140,10 +140,17 @@ test.describe('component catalog', () => {
     await expect(combobox.getByRole('combobox', { name: 'Demo combobox' })).toContainText('Design')
 
     const cascader = page.locator('#demo-cascader')
+    const cascaderPanel = page.locator('[data-slot="popover-content"]')
     await cascader.getByRole('button', { name: 'Demo cascader' }).click()
-    await page.getByRole('button', { name: 'Europe', exact: true }).click()
-    await page.getByRole('button', { name: 'Germany', exact: true }).click()
-    await page.getByRole('button', { name: 'Berlin', exact: true }).click()
+    // Each pick widens the panel, so Floating UI re-anchors it while the columns
+    // are being clicked; the stability check then races the reposition under load.
+    await cascaderPanel.getByRole('button', { name: 'Europe', exact: true }).click({ force: true })
+    await cascaderPanel.getByRole('button', { name: 'Germany', exact: true }).click({
+      force: true,
+    })
+    await cascaderPanel.getByRole('button', { name: 'Berlin', exact: true }).click({
+      force: true,
+    })
     await expect(cascader.getByRole('button', { name: 'Demo cascader' })).toContainText(
       'Europe / Germany / Berlin',
     )

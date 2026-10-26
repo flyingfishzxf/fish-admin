@@ -4,9 +4,9 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.6.0] - 2026-10-26
 
-Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
+Delivered against the [1.6.0 plan](./docs/plans/1.6.0.md).
 
 ### Added
 
@@ -387,7 +387,8 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.2.0...v1.3.0
