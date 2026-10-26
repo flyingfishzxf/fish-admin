@@ -8,6 +8,29 @@ All notable changes to this project are documented here. The format is based on
 
 Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
 
+### Added
+
+- **A Content Security Policy on every response.** `src/config/security-headers.ts` is the single
+  definition of the header set — a CSP with `default-src 'self'`, `script-src 'self'`,
+  `object-src 'none'`, `base-uri 'self'`, `form-action 'self'` and `frame-ancestors 'self'`, plus
+  `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` and `Permissions-Policy` — and all
+  four delivery layers serve it: `vite preview`, `security-headers.conf` for nginx, `vercel.json` for
+  the hosted demo, and the unit tests in `src/config/security-headers.test.ts` that fail if the three
+  literal copies drift apart. `Strict-Transport-Security` is added only on Vercel, because the
+  container serves plain HTTP.
+- **`e2e/security.spec.ts`** compares the headers of `/`, `/index.html`, a hashed asset and the two
+  shell files, then walks sign-in, dashboard, users, reports, files, the component catalog and
+  settings with a `securitypolicyviolation` listener that must stay empty — including the theme
+  switch and reload, which is where a first-paint script belongs.
+- **Supply-chain gates.** `.github/dependabot.yml` opens grouped minor/patch and major pull requests
+  weekly for npm and for the actions; `.github/workflows/codeql.yml` analyses JavaScript and
+  TypeScript on every push, pull request and Monday schedule; the quality job fails on
+  `pnpm audit --audit-level=high`; every workflow declares `permissions: contents: read`; the build
+  job uploads the `dist/` it measured; and CI can be started manually with `workflow_dispatch`.
+- **`docs/en/security-headers.md` and `docs/zh-CN/security-headers.md`** explain every directive,
+  the two documented concessions, what `script-src 'self'` forced in the code and how to roll the
+  policy out behind a real API.
+
 ### Changed
 
 - **One request client.** `src/features/auth/api.ts` kept a private `fetch` wrapper for its eleven
@@ -46,6 +69,23 @@ Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
   tracked. The mock flag falls back to the Vite mode instead — on for `pnpm dev`, off for
   `pnpm build` — so a bare clone behaves exactly as before without any env file, and an explicit
   `VITE_ENABLE_MOCK` still wins over the fallback in both directions.
+- **The boot shell left `index.html`.** The inline theme script and the inline `<style>` became
+  `public/theme-bootstrap.js` and `public/boot.css`, linked from the document head, because
+  `script-src 'self'` rejects the inline script and a theme flash on the first paint was the
+  alternative. They live in `public/` rather than `src/` so the URLs stay stable and because Vite's
+  dev server answers `/src/**.css` as `text/javascript`, which a `<link>` cannot consume. The budget
+  script counts both: first paint now includes the blocking shell chunk, and the CSS total includes
+  `/boot.css`.
+- **Zod runs jitless.** Zod v4 compiles each validator with `new Function`; under `script-src 'self'`
+  the refusal is swallowed by the library but still reported as a `securitypolicyviolation`, so three
+  schema chunks triggered it on every load. `src/config/validation.ts` now calls
+  `z.config({ jitless: true })` and re-exports `z`, an ESLint `no-restricted-imports` rule keeps
+  `src/` importing from there instead of from `zod` directly, and the fix is a config switch rather
+  than `'unsafe-eval'`.
+- **nginx sends the headers from one snippet.** `add_header` is not inherited into a `location` that
+  declares its own, so the previous config left `/` without any header and repeated four lines in the
+  two static blocks; every `location` now includes `/etc/nginx/snippets/security-headers.conf`, with
+  `always` so a 404 carries the same policy as a 200.
 
 ## [1.5.0] - 2026-10-25
 

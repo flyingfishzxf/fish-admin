@@ -97,7 +97,9 @@ docker build \
 - `try_files $uri $uri/ /index.html` for SPA deep links.
 - Serves `/mockServiceWorker.js` with `no-cache` so browsers pick up a new worker.
 - Caches `/assets/` immutably because Vite fingerprints file names.
-- Adds basic gzip and security headers.
+- Adds gzip and, in every location, `include /etc/nginx/snippets/security-headers.conf`.
+
+The last one is not decoration. nginx does not inherit a parent's `add_header` into a location that declares its own, so headers set at `server` level silently disappear from `/assets/` and from the `no-cache` routes. The snippet lives in `/etc/nginx/snippets/` rather than `conf.d/` because `conf.d/*.conf` is included into the `http` context, and each line ends with `always` so a 404 carries the same headers as a 200.
 
 `GET /healthz` answers `ok` with access logging off, and the image declares a `HEALTHCHECK` against it, so `docker ps` shows the real state of the container.
 
@@ -116,19 +118,19 @@ If the app lives at `https://example.com/admin/`, set `base: '/admin/'` in `vite
 
 ## Bundle layout
 
-`autoCodeSplitting` gives each route its own chunk, so the chart library, the `/components` catalog, the `/ui` playground and the mock API are only fetched when something actually needs them. `pnpm size` enforces that split; the figures below are measured by the budget script (gzip level 9) at v1.5.0.
+`autoCodeSplitting` gives each route its own chunk, so the chart library, the `/components` catalog, the `/ui` playground and the mock API are only fetched when something actually needs them. `pnpm size` enforces that split; the figures below are measured by the budget script (gzip level 9) at v1.6.0.
 
-| Measure                                     | `pnpm build` | `pnpm build:demo` | Budget              |
-| ------------------------------------------- | ------------ | ----------------- | ------------------- |
-| First paint: entry script + `modulepreload` | 165 kB       | 165 kB            | 180 kB              |
-| Entry chunk `index-*`                       | 295 kB (90)  | 301 kB (92)       | counted in the line |
-| Largest lazy chunk `chart-*`                | 322 kB (96)  | 322 kB (96)       | 115 kB              |
-| Every JavaScript chunk                      | 750 kB       | 1,079 kB          | 800 kB              |
-| Every CSS chunk                             | 144 kB (22)  | 144 kB (22)       | 30 kB               |
+| Measure                                      | `pnpm build`  | `pnpm build:demo` | Budget              |
+| -------------------------------------------- | ------------- | ----------------- | ------------------- |
+| First paint: entry + `modulepreload` + shell | 165.5 kB      | 166.2 kB          | 180 kB              |
+| Entry chunk `index-*`                        | 295 kB (90)   | 301 kB (92)       | counted in the line |
+| Largest lazy chunk `chart-*`                 | 322 kB (96)   | 322 kB (96)       | 115 kB              |
+| Every JavaScript chunk                       | 751 kB        | 1,083 kB          | 800 kB              |
+| Every CSS chunk                              | 145 kB (22.8) | 145 kB (22.8)     | 30 kB               |
 
 Two things about that table are deliberate.
 
-The first-paint budget counts the entry chunk _and_ the 23 `modulepreload` tags Vite writes into `dist/index.html`, because the browser downloads all of them before it paints. The entry file alone is 90 kB, so a budget on `index-*` only would pass while the real cost crept up.
+The first-paint budget counts the entry chunk, _every_ `modulepreload` chunk Vite writes into `dist/index.html` and the blocking `/theme-bootstrap.js` shell script — 25 chunks at v1.6.0 — because the browser downloads all of them before it paints. The entry file alone is 90 kB, so a budget on `index-*` only would pass while the real cost crept up. The CSS budget likewise counts the linked `/boot.css`, not just the Tailwind chunk.
 
 The budgets are enforced against `pnpm build`, not the demo build. The demo build adds `browser-*` (907 kB, 327 gzip — MSW plus the seeded workspace database), which on its own breaks the largest-chunk and total-JS budgets. First paint is identical in both builds, because that chunk is lazy and `src/main.tsx` imports it only behind the mock flag: an explicit `VITE_ENABLE_MOCK` wins, otherwise the dev server turns it on and a build turns it off. `pnpm build` tree-shakes the branch away and drops `mockServiceWorker.js` from the output, so `ls dist/assets | grep browser`, `ls dist | grep mock` and `grep -r mockServiceWorker dist` all come back empty. Vite still prints a chunk-size warning for it in a demo build, which is expected.
 
@@ -153,6 +155,10 @@ If the flag is off, `main.tsx` never imports the mock module, so MSW and Faker a
 
 ## Security headers
 
-The bundled nginx config sets `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` and `Permissions-Policy`. Adjust them for your infrastructure and add a Content Security Policy appropriate to your API origins. Remember that the demo's client-side RBAC is **not** an authorization mechanism — enforce permissions on the server.
+Every response ships the same header set — a Content Security Policy, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy` and `Permissions-Policy` — from all four layers: `securityHeaders` in [`src/config/security-headers.ts`](../../src/config/security-headers.ts) is the source of truth, `vite preview` serves it, [`security-headers.conf`](../../security-headers.conf) is the nginx snippet every location includes, and [`vercel.json`](../../vercel.json) repeats the same values on the `/(.*)` rule. `e2e/security.spec.ts` asserts the delivery, and [`docs/en/security-headers.md`](security-headers.md) explains each directive, the two concessions (`style-src 'unsafe-inline'`, `img-src data: blob:`) and what `script-src 'self'` forced in the code.
+
+HSTS is the one exception: nginx does not send it, because the container serves plain HTTP, and `vercel.json` adds it only on the Vercel deployment where TLS is terminated at the edge.
+
+Remember that the demo's client-side RBAC is **not** an authorization mechanism — enforce permissions on the server. A CSP constrains which origins can run code; it does not authenticate anyone.
 
 The hosted demo also runs the mock in the browser, so `/auth/register` and `/auth/forgot-password` return verification and reset tokens in the response body, and 2FA uses a fixed code. That is intentional for a sandbox where every account is public; a real deployment must email the link, keep the token server-side and generate TOTP codes from a secret.

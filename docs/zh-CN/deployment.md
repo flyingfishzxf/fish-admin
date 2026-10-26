@@ -97,7 +97,9 @@ docker build \
 - 用 `try_files $uri $uri/ /index.html` 支持 SPA 深链接。
 - 以 `no-cache` 提供 `/mockServiceWorker.js`，确保浏览器获取新的 worker。
 - 因为 Vite 文件名带指纹，对 `/assets/` 使用不可变长缓存。
-- 开启基础 gzip 与安全响应头。
+- 开启 gzip，并在每个 `location` 里 `include /etc/nginx/snippets/security-headers.conf`。
+
+最后一条不是装饰。nginx 不会把上层的 `add_header` 继承到自己声明过 `add_header` 的 `location`，所以写在 `server` 层的响应头会在 `/assets/` 和几条 `no-cache` 路由上悄悄消失。这段 snippet 放在 `/etc/nginx/snippets/` 而不是 `conf.d/`，因为 `conf.d/*.conf` 是被 include 进 `http` 上下文的；每一行都以 `always` 结尾，404 因此与 200 携带同样的头。
 
 `GET /healthz` 返回 `ok` 且关闭访问日志，镜像的 `HEALTHCHECK` 就是打这个地址，因此 `docker ps` 显示的健康状态真实可用。
 
@@ -116,19 +118,19 @@ docker build \
 
 ## 打包产物结构
 
-`autoCodeSplitting` 让每个路由都有独立的 chunk，图表库、`/components` 组件目录、`/ui` 组件演练场与 Mock API 只在真正被用到时才发起请求。`pnpm size` 正是按这个边界做门禁的；下表数字由预算脚本测得（gzip level 9），取自 v1.5.0。
+`autoCodeSplitting` 让每个路由都有独立的 chunk，图表库、`/components` 组件目录、`/ui` 组件演练场与 Mock API 只在真正被用到时才发起请求。`pnpm size` 正是按这个边界做门禁的；下表数字由预算脚本测得（gzip level 9），取自 v1.6.0。
 
-| 指标                             | `pnpm build` | `pnpm build:demo` | 预算         |
-| -------------------------------- | ------------ | ----------------- | ------------ |
-| 首屏：入口脚本 + `modulepreload` | 165 kB       | 165 kB            | 180 kB       |
-| 入口 chunk `index-*`             | 295 kB (90)  | 301 kB (92)       | 已计入上一行 |
-| 最大懒加载 chunk `chart-*`       | 322 kB (96)  | 322 kB (96)       | 115 kB       |
-| 全部 JavaScript chunk            | 750 kB       | 1,079 kB          | 800 kB       |
-| 全部 CSS chunk                   | 144 kB (22)  | 144 kB (22)       | 30 kB        |
+| 指标                                | `pnpm build`  | `pnpm build:demo` | 预算         |
+| ----------------------------------- | ------------- | ----------------- | ------------ |
+| 首屏：入口 + `modulepreload` + 外壳 | 165.5 kB      | 166.2 kB          | 180 kB       |
+| 入口 chunk `index-*`                | 295 kB (90)   | 301 kB (92)       | 已计入上一行 |
+| 最大懒加载 chunk `chart-*`          | 322 kB (96)   | 322 kB (96)       | 115 kB       |
+| 全部 JavaScript chunk               | 751 kB        | 1,083 kB          | 800 kB       |
+| 全部 CSS chunk                      | 145 kB (22.8) | 145 kB (22.8)     | 30 kB        |
 
 这张表里有两处是有意为之的。
 
-其一，首屏预算统计的是入口 chunk，加上 Vite 写进 `dist/index.html` 的 23 个 `modulepreload` 标签——浏览器在首次绘制前会把这些全部下载。入口文件本身只有 90 kB，如果只对它设预算，真实首屏成本偷偷涨掉 70 kB 也照样能过。
+其一，首屏预算统计的是入口 chunk、Vite 写进 `dist/index.html` 的每一个 `modulepreload` chunk，再加上首屏阻塞的 `/theme-bootstrap.js` 外壳脚本——v1.6.0 一共 25 个 chunk，浏览器在首次绘制前会把它们全部下载。入口文件本身只有 90 kB，如果只对它设预算，真实首屏成本偷偷涨掉 70 kB 也照样能过。CSS 预算同理，也把 `<link>` 引入的 `/boot.css` 算在内。
 
 其二，预算只作用于 `pnpm build`，不作用于演示构建。演示构建会多出 `browser-*`（907 kB，gzip 327 —— MSW 加上预置的业务数据库种子），单这一块就会同时撑破「最大 chunk」与「JS 总量」两条预算。两种构建的首屏完全一致，因为这个 chunk 是懒加载的，而 `src/main.tsx` 只在 mock 开关打开时 import 它：显式设置的 `VITE_ENABLE_MOCK` 优先，未设置时 dev 开、构建关。`pnpm build` 会把整条分支摇掉，并让 `vite.config.ts` 从产物中删掉 `mockServiceWorker.js`，因此 `ls dist/assets | grep browser`、`ls dist | grep mock` 与 `grep -r mockServiceWorker dist` 都是空的。演示构建里 Vite 仍会为它打印 chunk 体积警告，这属于预期。
 
@@ -153,6 +155,10 @@ docker build \
 
 ## 安全响应头
 
-内置的 nginx 配置设置了 `X-Content-Type-Options`、`X-Frame-Options`、`Referrer-Policy` 与基础的 `Permissions-Policy`。请按你的基础设施调整，并补充适合 API 源的 Content Security Policy。切记：演示的客户端 RBAC **不是**授权机制，权限必须在服务端执行。
+内置 nginx 配置里的头由 [`security-headers.conf`](../../security-headers.conf) 提供，四条 `location` 共用同一段 snippet。响应头的唯一定义源是 [`src/config/security-headers.ts`](../../src/config/security-headers.ts)：`vite preview` 从那里读取，nginx snippet 与 [`vercel.json`](../../vercel.json) 的 `/(.*)` 规则写出同样的字面值，`e2e/security.spec.ts` 负责校验送达结果。每条指令的含义、两处妥协（`style-src 'unsafe-inline'` 与 `img-src data: blob:`）以及 `script-src 'self'` 改掉了哪些代码，见 [docs/zh-CN/security-headers.md](security-headers.md)。
+
+HSTS 是唯一的例外：容器提供的是明文 HTTP，所以 nginx 不发这一条，`vercel.json` 只在 TLS 于边缘终止的 Vercel 部署上添加它。
+
+切记：演示的客户端 RBAC **不是**授权机制，权限必须在服务端执行。CSP 约束的是哪些来源可以运行代码，它不做身份认证。
 
 托管的演示还在浏览器中运行 Mock，因此 `/auth/register` 与 `/auth/forgot-password` 会在响应体里直接返回验证令牌和重置令牌，2FA 也使用固定的验证码。对于所有账号都公开的沙箱环境，这是有意为之；真实部署必须通过邮件发送链接、把令牌保留在服务端，并用密钥生成 TOTP 动态码。

@@ -280,12 +280,14 @@ docs/{en,zh-CN}/           # 文档
 
 ## 质量门禁
 
-CI 在每次 push 和 pull request 上运行四道门禁：
+CI 在每次 push 和 pull request 上运行五道门禁：
 
 - **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描十三个流程（登录页的浅色、深色与中文，仪表盘浅色与深色，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，项目看板/新建弹窗/详情，文件库/上传抽屉/预览，通知中心与偏好，报表与集成表单，组件目录与 UI 演练场）。出现任何违规即失败。
-- **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签——v1.5.0 是 24 个 chunk、共 164.7 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。
+- **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签，再算上首屏阻塞的 `/theme-bootstrap.js`——现在是 25 个 chunk、共 165.5 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。CSS 总量同样计入通过 `<link>` 引入的 `/boot.css`。
 - **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
 - **视觉回归** —— 十六张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、组件目录首屏、项目看板、项目详情、资源库、报表浅色与深色、通知中心与集成中心）与 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的基线比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。
+- **安全响应头** —— `e2e/security.spec.ts` 先比对 `/`、`/index.html`、一个带 hash 的资源与两个外壳文件的响应头是否完全一致，再带着 `securitypolicyviolation` 监听器走完登录、仪表盘、用户、报表、文件、组件目录与设置，监听器必须始终为空。详见 [docs/zh-CN/security-headers.md](docs/zh-CN/security-headers.md)。
+- **依赖供应链** —— `pnpm audit --audit-level=high` 有高危漏洞就让质量 job 失败，CodeQL 在每次 push、pull request 与每周定时任务中分析 JavaScript 和 TypeScript，[`.github/dependabot.yml`](.github/dependabot.yml) 为 npm 与 actions 分别开分组后的 minor/patch 和 major 升级 PR，所有 workflow 使用只读 token（`permissions: contents: read`），构建 job 还会上传被度量的产物。
 
 基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。
 
@@ -313,6 +315,7 @@ CI 在每次 push 和 pull request 上运行四道门禁：
 - [账号生命周期](docs/zh-CN/account-lifecycle.md) —— 注册、邮箱验证、二次验证、会话、异常页面与离线处理。
 - [接入 API](docs/zh-CN/api-integration.md) —— 接口契约、鉴权流程、替换 Mock。
 - [部署指南](docs/zh-CN/deployment.md) —— Vercel、Docker、nginx 与 Service Worker 注意事项。
+- [安全响应头](docs/zh-CN/security-headers.md) —— 完整的 CSP 取值、`script-src 'self'` 改动了哪些代码、以及如何验证。
 - [English docs](docs/en/architecture.md)
 
 ## 参与贡献

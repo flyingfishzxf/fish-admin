@@ -280,12 +280,15 @@ docs/{en,zh-CN}/           # Documentation
 
 ## Quality gates
 
-Every push and pull request runs four gates in CI:
+Every push and pull request runs five gates in CI:
 
 - **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans thirteen flows (login in light, dark and Simplified Chinese; dashboard in both themes; users list and create dialog; user detail; roles and permission matrix; audit log; security and settings; projects board, create dialog and project detail; file library, upload drawer and preview; notification inbox and preferences; reports and the integration form; component catalog and UI playground) against WCAG 2.1 A/AA with axe. Any violation fails the run.
-- **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html` — 24 chunks totalling 164.7 KB at v1.5.0 — because that set, not the entry file alone, is what the browser downloads before it paints.
+- **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html`, together with the shell's blocking `/theme-bootstrap.js` — 25 chunks totalling 165.5 KB — because that set, not the entry file alone, is what the browser downloads before it paints. The CSS total counts the linked `/boot.css` as well.
 - **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
 - **Visual regression** — sixteen screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, catalog hero, projects, project detail, files, reports in both themes, notifications and integrations) are compared against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable.
+
+- **Security headers** — `e2e/security.spec.ts` checks that `/`, `/index.html`, a hashed asset and the two shell files all carry the identical header set, then walks sign-in, dashboard, users, reports, files, the component catalog and settings with a `securitypolicyviolation` listener that must stay empty. See [docs/en/security-headers.md](docs/en/security-headers.md).
+- **Supply chain** — `pnpm audit --audit-level=high` fails the quality job, CodeQL analyses JavaScript and TypeScript on every push, pull request and weekly schedule, [`.github/dependabot.yml`](.github/dependabot.yml) opens grouped minor/patch and major pull requests for npm and for the actions, every workflow runs on a read-scoped token (`permissions: contents: read`), and the build job uploads the bundle it measured.
 
 Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`.
 
@@ -313,6 +316,7 @@ Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).
 - [Account lifecycle](docs/en/account-lifecycle.md) — sign-up, verification, 2FA, sessions, failure screens and offline behaviour.
 - [API integration](docs/en/api-integration.md) — contract, auth flow, replacing the mock.
 - [Deployment](docs/en/deployment.md) — Vercel, Docker, nginx and service-worker pitfalls.
+- [Security headers](docs/en/security-headers.md) — the exact CSP, what `script-src 'self'` forced in the code, and how to verify it.
 - [中文文档](docs/zh-CN/architecture.md)
 
 ## Contributing

@@ -25,7 +25,7 @@ FishAdmin 是一个单页 React 应用。仓库中不包含服务端：演示 AP
 4. 注册 `apiRequest` 使用的全局未授权处理器。
 5. 挂载 React：`QueryClientProvider` → `RouterProvider` + `Toaster`。
 
-`index.html` 中有一段内联脚本，在 React 加载前读取持久化的主题并写入 `<html>` 的 `.dark` 类与强调色属性，保证首屏即为正确主题。应用挂载期间由一个极简的 CSS 加载指示器占位。
+React 加载之前，`index.html` 会引用两个放在 `public/` 下的文件，这样它们的 URL 在构建前后都保持稳定：`/theme-bootstrap.js` 是首屏阻塞的传统脚本，读取持久化主题并把 `.dark` 类与强调色属性写到 `<html>` 上；`/boot.css` 负责这段首屏的样式，并用一个极简的 CSS 加载指示器占位应用挂载的间隙。它们之所以是两个文件而不是一段内联 `<script>` 与 `<style>`，是因为生产环境使用 `script-src 'self'`，内联脚本会被拒绝——否则就要用一次错误的主题闪回来换这条策略。详见[安全响应头](security-headers.md)。
 
 ## 路由与守卫
 
@@ -211,5 +211,5 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 - 单元测试覆盖权限解析与通配展开、导航到路由的解析（含最长前缀匹配）、用户、审计、项目、文件、报表与集成的 URL search 校验、用户与所有认证表单的 Zod schema、密码强度、主题应用、locale key 对齐、API 客户端、query key、单飞刷新、已保存视图持久化、在线状态、`<Can>`、树工具函数、穿梭框选择、标签输入、通知偏好、集成请求头与确定性报表生成。
 - 组件注册表测试要求 83 个条目全部声明 `usedIn`，拒绝 `/components` 与 `/ui`，通过生成的 route tree 解析每个路由，并检查每个新业务路由至少被引用一次。
 - 数据库迁移测试会把 v1、v2、v3 数据重放到 v4，验证用户、会话与令牌保留、新权限合并、重复迁移幂等；损坏的存储会重置而不是崩溃。
-- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、CSV 导入、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与 JSON 详情抽屉、项目筛选/创建向导/归档/详情 tabs/任务/成员/预算/复盘、文件上传/预览/水印/移动/删除、通知已读与偏好、报表区间/锚点/CSV 导出、集成创建/启停/payload/重放、主题与语言持久化、`/components` 组件目录与 `/ui` 演练场，以及状态页与离线画面。
-- CI 并行执行格式检查、lint、类型检查、覆盖率、生产构建与 E2E。
+- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、CSV 导入、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与 JSON 详情抽屉、项目筛选/创建向导/归档/详情 tabs/任务/成员/预算/复盘、文件上传/预览/水印/移动/删除、通知已读与偏好、报表区间/锚点/CSV 导出、集成创建/启停/payload/重放、主题与语言持久化、`/components` 组件目录与 `/ui` 演练场，以及状态页与离线画面；`e2e/security.spec.ts` 在同一段导航路径上补上响应头比对与 `securitypolicyviolation` 扫描。
+- CI 并行执行格式检查、lint、类型检查、覆盖率、`pnpm audit --audit-level=high`、生产构建与 E2E，构建 job 还会上传被度量的 `dist/`；CodeQL 单独按 push、pull request 与每周定时运行，dependabot 负责 npm 依赖与 actions 的更新。
