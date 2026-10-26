@@ -19,7 +19,15 @@ import { router } from './router'
 async function start() {
   await i18nReady
 
-  if (import.meta.env.VITE_ENABLE_MOCK === 'true') {
+  // Inlined instead of reading `env.enableMock` so the bundler can evaluate the
+  // test from literals: a runtime value keeps the whole MSW chunk in every
+  // production bundle. An unset flag means a bare clone, where the dev server
+  // still gets mocks.
+  const mockFlag = import.meta.env.VITE_ENABLE_MOCK
+  const mocksEnabled =
+    mockFlag === undefined ? import.meta.env.MODE === 'development' : mockFlag === 'true'
+
+  if (mocksEnabled) {
     try {
       const { worker } = await import('./mocks/browser')
       await worker.start({

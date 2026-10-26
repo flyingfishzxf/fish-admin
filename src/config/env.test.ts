@@ -47,6 +47,20 @@ describe('startup environment', () => {
     })
   })
 
+  it('turns mocks on for a development mode that sets no flag', async () => {
+    vi.stubEnv('MODE', 'development')
+    vi.stubEnv('VITE_ENABLE_MOCK', '')
+
+    await expect(loadEnv()).resolves.toMatchObject({ enableMock: true })
+  })
+
+  it('keeps an explicit flag ahead of the development default', async () => {
+    vi.stubEnv('MODE', 'development')
+    vi.stubEnv('VITE_ENABLE_MOCK', 'false')
+
+    await expect(loadEnv()).resolves.toMatchObject({ enableMock: false })
+  })
+
   it('rejects an out-of-range or malformed timeout at startup', async () => {
     vi.stubEnv('VITE_REQUEST_TIMEOUT', '999')
     await expect(loadEnv()).rejects.toThrow(/VITE_REQUEST_TIMEOUT="999"/)

@@ -36,7 +36,13 @@ const apiBaseUrl = (rawBaseUrl ? rawBaseUrl : '/api').replace(/\/+$/, '')
 
 export const env = {
   apiBaseUrl,
-  enableMock: readBoolean('VITE_ENABLE_MOCK', import.meta.env.VITE_ENABLE_MOCK, false),
+  // `MODE` rather than `DEV` keeps the test runner on the safe default: Vitest
+  // reports `DEV === true` while `MODE === 'test'`.
+  enableMock: readBoolean(
+    'VITE_ENABLE_MOCK',
+    import.meta.env.VITE_ENABLE_MOCK,
+    import.meta.env.MODE === 'development',
+  ),
   mockLatency: readNumber('VITE_MOCK_LATENCY', import.meta.env.VITE_MOCK_LATENCY, 0, 60_000, 300),
   requestTimeout: readNumber(
     'VITE_REQUEST_TIMEOUT',
