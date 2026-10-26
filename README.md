@@ -291,7 +291,7 @@ Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required)
 
 ## Connect your own backend
 
-1. Set `VITE_ENABLE_MOCK=false` and `VITE_API_BASE_URL=https://your-api.example.com`.
+1. Set `VITE_API_BASE_URL=https://your-api.example.com`, and `VITE_ENABLE_MOCK=false` too if you want the dev server to stop mocking — builds already leave it off.
 2. Remove the mock bootstrap block in `src/main.tsx`, then delete `src/mocks` and `public/mockServiceWorker.js`.
 3. Implement the endpoints in [docs/en/api-integration.md](docs/en/api-integration.md). You can keep the response shapes and adjust only the base URL while developing.
 4. Enforce every permission on the server. The client checks improve UX; they do not protect your data.
@@ -301,7 +301,7 @@ If you keep the demo mock in a production build, set `VITE_ENABLE_MOCK=true` at 
 ## Deployment
 
 - **Vercel** — import the repository. [`vercel.json`](vercel.json) builds `pnpm build:demo`, rewrites SPA routes and keeps the service worker revalidated. Use `pnpm build` instead if you connect a real API.
-- **Docker** — `docker compose up --build` and open http://localhost:8080. The image builds with the demo API enabled; pass `--build-arg VITE_ENABLE_MOCK=false` to produce an API-only image.
+- **Docker** — `docker build -t fish-admin . && docker run --rm -p 8080:8080 fish-admin` gives an API-only image: nginx runs as uid 101 on `8080`, and no mock code ships. `docker compose up --build` is the demo path (it passes `VITE_ENABLE_MOCK=true`); add `--build-arg VITE_ENABLE_MOCK=true` to get the same image without Compose.
 - **Any static host** — serve `dist/`, rewrite unknown paths to `index.html`, and do not cache `mockServiceWorker.js`.
 
 Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).

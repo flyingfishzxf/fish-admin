@@ -20,7 +20,7 @@ FishAdmin is a single-page React application. There is no server in this reposit
 [`src/main.tsx`](../../src/main.tsx) coordinates startup so route guards never run against an unknown session:
 
 1. Wait for `i18nReady`, which loads the bundled `common`, `nav` and `errors` namespaces.
-2. If `VITE_ENABLE_MOCK` is `true`, dynamically import `src/mocks/browser` and start the Service Worker. The worker URL is resolved from `import.meta.env.BASE_URL`, so subpath deployments work. Unhandled requests pass through.
+2. Resolve the mock flag: an explicit `VITE_ENABLE_MOCK` wins, otherwise it is `true` on the dev server and `false` in a build. When it is on, dynamically import `src/mocks/browser` and start the Service Worker. The worker URL is resolved from `import.meta.env.BASE_URL`, so subpath deployments work. Unhandled requests pass through. The test reads `import.meta.env` literals rather than `env.enableMock` on purpose, so a mock-free build tree-shakes the whole MSW chunk away.
 3. Call `useAuthStore.getState().bootstrap()`. With no refresh token the state becomes `anonymous`; otherwise the store refreshes tokens and loads `/auth/me`.
 4. Register the global unauthorized handler used by `apiRequest`.
 5. Mount React: `QueryClientProvider` → `RouterProvider` + `Toaster`.

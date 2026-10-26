@@ -4,15 +4,15 @@ The app talks to its backend through `src/lib/api-client.ts`. The demo backend i
 
 ## Switch the environment
 
-| Variable               | Default | Meaning                                                                                                        |
-| ---------------------- | ------- | -------------------------------------------------------------------------------------------------------------- |
-| `VITE_API_BASE_URL`    | `/api`  | Prefix for every request. No trailing slash needed.                                                            |
-| `VITE_ENABLE_MOCK`     | `false` | Starts the MSW Service Worker when `true`. Vite dev enables it through `.env.development`.                     |
-| `VITE_MOCK_LATENCY`    | `300`   | Artificial delay in milliseconds for mock responses.                                                           |
-| `VITE_REQUEST_TIMEOUT` | `15000` | Milliseconds before a request is aborted as `REQUEST_TIMEOUT`. Valid range 1000–300000.                        |
-| `VITE_UPLOAD_TIMEOUT`  | `60000` | Milliseconds allowed for the two base64 upload calls (`/files`, project attachments). Valid range 1000–600000. |
+| Variable               | Default                      | Meaning                                                                                                        |
+| ---------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `VITE_API_BASE_URL`    | `/api`                       | Prefix for every request. No trailing slash needed.                                                            |
+| `VITE_ENABLE_MOCK`     | dev: `true` / build: `false` | Starts the MSW Service Worker when `true`. Left unset, `pnpm dev` turns it on and `pnpm build` turns it off.   |
+| `VITE_MOCK_LATENCY`    | `300`                        | Artificial delay in milliseconds for mock responses.                                                           |
+| `VITE_REQUEST_TIMEOUT` | `15000`                      | Milliseconds before a request is aborted as `REQUEST_TIMEOUT`. Valid range 1000–300000.                        |
+| `VITE_UPLOAD_TIMEOUT`  | `60000`                      | Milliseconds allowed for the two base64 upload calls (`/files`, project attachments). Valid range 1000–600000. |
 
-An unset variable keeps its default; one that is set but unparseable throws at startup instead of silently falling back (validated in `src/config/env.ts`).
+An unset variable keeps its default; one that is set but unparseable throws at startup instead of silently falling back (validated in `src/config/env.ts`). Only `.env.example` is tracked by git — every other `.env*` file is ignored, so a fresh clone starts from the mode defaults above.
 
 To run against a real backend:
 

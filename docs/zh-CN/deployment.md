@@ -4,11 +4,12 @@ FishAdmin 构建为静态文件。演示构建还会附带 Service Worker（MSW�
 
 ## 构建命令
 
-| 命令              | Mock API                                           | 用途                           |
-| ----------------- | -------------------------------------------------- | ------------------------------ |
-| `pnpm build`      | 关闭（除非构建时显式设置 `VITE_ENABLE_MOCK=true`） | 对接真实后端的生产环境         |
-| `pnpm build:demo` | 开启                                               | 公开演示、Docker、Preview 部署 |
-| `pnpm preview`    | 预览最近一次构建                                   | 本地检查生产产物               |
+| 命令              | Mock API                                           | 用途                    |
+| ----------------- | -------------------------------------------------- | ----------------------- |
+| `pnpm dev`        | 默认开启                                           | 无后端时的本地开发      |
+| `pnpm build`      | 关闭（除非构建时显式设置 `VITE_ENABLE_MOCK=true`） | 对接真实后端的生产环境  |
+| `pnpm build:demo` | 开启                                               | 公开演示与 Preview 部署 |
+| `pnpm preview`    | 预览最近一次构建                                   | 本地检查生产产物        |
 
 `pnpm build` 会先执行 `tsc --noEmit`，类型错误会直接导致构建失败。
 
@@ -16,11 +17,13 @@ FishAdmin 构建为静态文件。演示构建还会附带 Service Worker（MSW�
 
 Vite 在构建时内联变量。请在托管平台的构建设置或 `.env.*` 文件中配置；修改变量后需要重新构建。
 
-| 变量                | 示例                      | 说明                                       |
-| ------------------- | ------------------------- | ------------------------------------------ |
-| `VITE_ENABLE_MOCK`  | `true`                    | 在浏览器中启动 MSW，切勿在真实数据环境开启 |
-| `VITE_API_BASE_URL` | `https://api.example.com` | 默认 `/api`                                |
-| `VITE_MOCK_LATENCY` | `300`                     | 仅 Mock 使用的模拟延迟                     |
+仓库只跟踪 [`.env.example`](../../.env.example)。`.env.development`、`.env.production` 已被 git 忽略且不再必要——上述默认值来自 `src/config/env.ts`，它读取变量后按 Vite 模式兜底。想把值同时在开发与构建上固定，就复制该示例为 `.env.local`。
+
+| 变量                | 示例                      | 说明                                                                |
+| ------------------- | ------------------------- | ------------------------------------------------------------------- |
+| `VITE_ENABLE_MOCK`  | `true`                    | 在浏览器中启动 MSW；不设置时 dev 开、构建关。切勿在真实数据环境开启 |
+| `VITE_API_BASE_URL` | `https://api.example.com` | 默认 `/api`                                                         |
+| `VITE_MOCK_LATENCY` | `300`                     | 仅 Mock 使用的模拟延迟                                              |
 
 ## Vercel
 
@@ -48,45 +51,55 @@ Rewrite 会把未知路径交给 `index.html`，因此 `/users?status=active` �
 
 ## Docker
 
-多阶段 [`Dockerfile`](../../Dockerfile) 使用 Node 24 构建、nginx 提供服务。
+多阶段 [`Dockerfile`](../../Dockerfile) 用 Node 24 构建，产物由 nginx 提供；运行时容器以 uid 101 监听 8080，既不用 root，也不占特权端口。两个阶段的基础镜像都按 digest 固定，重建不会悄悄换掉 Node 或 nginx 版本。
+
+直接 `docker build` 得到的是「仅 API」镜像：`VITE_ENABLE_MOCK` 默认为 `false`，`src/main.tsx` 里的 mock 分支会被折叠掉，`dist/` 中不存在 MSW chunk，连从 `public/` 复制出去的 worker 脚本也会被移除。
+
+```bash
+docker build -t fish-admin .
+docker run --rm -p 8080:8080 fish-admin
+```
+
+演示版走 Compose，因为 `docker-compose.yml` 显式传入了这个开关：
 
 ```bash
 docker compose up --build
 # → http://localhost:8080
 ```
 
-不使用 Compose：
-
-```bash
-docker build -t fish-admin .
-docker run --rm -p 8080:80 fish-admin
-```
-
 构建参数：
 
-| 参数                | 默认值 | 说明                         |
-| ------------------- | ------ | ---------------------------- |
-| `VITE_ENABLE_MOCK`  | `true` | 设为 `false` 得到仅 API 镜像 |
-| `VITE_API_BASE_URL` | `/api` | 打包进产物的基地址           |
-| `VITE_MOCK_LATENCY` | `300`  | Mock 延迟                    |
+| 参数                | 默认值  | 说明                     |
+| ------------------- | ------- | ------------------------ |
+| `VITE_ENABLE_MOCK`  | `false` | 设为 `true` 得到演示镜像 |
+| `VITE_API_BASE_URL` | `/api`  | 打包进产物的基地址       |
+| `VITE_MOCK_LATENCY` | `300`   | Mock 延迟                |
 
-对接真实 API 的示例：
+不用 Compose 构建演示镜像：
 
 ```bash
 docker build \
-  --build-arg VITE_ENABLE_MOCK=false \
+  --build-arg VITE_ENABLE_MOCK=true \
+  -t fish-admin-demo .
+```
+
+构建指向自有服务端的仅 API 镜像：
+
+```bash
+docker build \
   --build-arg VITE_API_BASE_URL=https://api.example.com \
   -t fish-admin .
 ```
 
-[`nginx.conf`](../../nginx.conf) 完成四件事：
+[`nginx.conf`](../../nginx.conf) 完成五件事：
 
+- 监听 `8080`，非特权镜像里的 uid 101 才能绑定。
 - 用 `try_files $uri $uri/ /index.html` 支持 SPA 深链接。
 - 以 `no-cache` 提供 `/mockServiceWorker.js`，确保浏览器获取新的 worker。
 - 因为 Vite 文件名带指纹，对 `/assets/` 使用不可变长缓存。
 - 开启基础 gzip 与安全响应头。
 
-容器包含针对 `/` 的健康检查。
+`GET /healthz` 返回 `ok` 且关闭访问日志，镜像的 `HEALTHCHECK` 就是打这个地址，因此 `docker ps` 显示的健康状态真实可用。
 
 ## 任意静态托管
 
@@ -117,7 +130,7 @@ docker build \
 
 其一，首屏预算统计的是入口 chunk，加上 Vite 写进 `dist/index.html` 的 23 个 `modulepreload` 标签——浏览器在首次绘制前会把这些全部下载。入口文件本身只有 90 kB，如果只对它设预算，真实首屏成本偷偷涨掉 70 kB 也照样能过。
 
-其二，预算只作用于 `pnpm build`，不作用于演示构建。演示构建会多出 `browser-*`（907 kB，gzip 327 —— MSW 加上预置的业务数据库种子），单这一块就会同时撑破「最大 chunk」与「JS 总量」两条预算。两种构建的首屏完全一致，因为这个 chunk 是懒加载的，且 `src/main.tsx` 只在 `VITE_ENABLE_MOCK` 打开时才 import 它；`pnpm build` 会把整条分支摇掉，所以 `ls dist/assets | grep browser` 与 `grep -r mockServiceWorker dist` 都是空的。演示构建里 Vite 仍会为它打印 chunk 体积警告，这属于预期。
+其二，预算只作用于 `pnpm build`，不作用于演示构建。演示构建会多出 `browser-*`（907 kB，gzip 327 —— MSW 加上预置的业务数据库种子），单这一块就会同时撑破「最大 chunk」与「JS 总量」两条预算。两种构建的首屏完全一致，因为这个 chunk 是懒加载的，而 `src/main.tsx` 只在 mock 开关打开时 import 它：显式设置的 `VITE_ENABLE_MOCK` 优先，未设置时 dev 开、构建关。`pnpm build` 会把整条分支摇掉，并让 `vite.config.ts` 从产物中删掉 `mockServiceWorker.js`，因此 `ls dist/assets | grep browser`、`ls dist | grep mock` 与 `grep -r mockServiceWorker dist` 都是空的。演示构建里 Vite 仍会为它打印 chunk 体积警告，这属于预期。
 
 其余较大的懒加载 chunk 也在意料之中：`chart-*` 是 recharts，由工作台、`/reports` 以及 `/components` 里的图表演示共用；组件目录与演练场各自拆成独立的演示 chunk。打开 `/users` 时它们一个都不会被下载。
 
@@ -125,9 +138,9 @@ docker build \
 
 ## 在生产环境关闭 Mock
 
-1. 使用 `VITE_ENABLE_MOCK=false` 构建（`pnpm build` 的默认行为）。
+1. 构建时不要设置 `VITE_ENABLE_MOCK`——`pnpm build` 与默认的 `docker build` 都会把它解析为 `false`。如果此前用某个 `.env*` 文件把它固定成 `true`，需要显式改掉。
 2. 设置 `VITE_API_BASE_URL`。
-3. 可选：删除 `src/mocks`、`public/mockServiceWorker.js` 以及 `src/main.tsx` 中的 mock 代码，进一步减小包体。
+3. `dist/` 本身已不含 mock 代码：开关关闭时 `vite.config.ts` 会删除复制出来的 `mockServiceWorker.js`。只有想把源码一并清掉时，才需要删除 `src/mocks` 和 `src/main.tsx` 里的 mock 代码块。
 
 开关关闭时，`main.tsx` 不会 import mock 模块，MSW 与 Faker 不会进入用户下载的产物。
 

@@ -291,7 +291,7 @@ CI 在每次 push 和 pull request 上运行四道门禁：
 
 ## 接入真实后端
 
-1. 设置 `VITE_ENABLE_MOCK=false` 与 `VITE_API_BASE_URL=https://your-api.example.com`。
+1. 设置 `VITE_API_BASE_URL=https://your-api.example.com`；若也要让开发服务器停止 Mock，再加 `VITE_ENABLE_MOCK=false`——构建产物本来就不含 Mock。
 2. 删除 `src/main.tsx` 中的 Mock 启动块，然后删除 `src/mocks` 与 `public/mockServiceWorker.js`。
 3. 按 [docs/zh-CN/api-integration.md](docs/zh-CN/api-integration.md) 实现接口。开发阶段可先保持响应结构，只替换 base URL。
 4. 在服务端校验所有权限。前端判断只改善体验，不能保护数据。
@@ -301,7 +301,7 @@ CI 在每次 push 和 pull request 上运行四道门禁：
 ## 部署
 
 - **Vercel** —— 导入仓库即可。[`vercel.json`](vercel.json) 使用 `pnpm build:demo` 构建，配置 SPA rewrite，并让 Service Worker 保持可重新验证。接入真实 API 时改用 `pnpm build`。
-- **Docker** —— `docker compose up --build`，打开 http://localhost:8080。镜像默认开启演示 Mock；传入 `--build-arg VITE_ENABLE_MOCK=false` 可构建纯 API 版本。
+- **Docker** —— `docker build -t fish-admin . && docker run --rm -p 8080:8080 fish-admin` 得到仅 API 镜像：nginx 以 uid 101 监听 `8080`，产物不含任何 mock 代码。`docker compose up --build` 是演示路径（它会传入 `VITE_ENABLE_MOCK=true`）；不想用 Compose 就加 `--build-arg VITE_ENABLE_MOCK=true`。
 - **任意静态托管** —— 部署 `dist/`，将未知路径 rewrite 到 `index.html`，且不要缓存 `mockServiceWorker.js`。
 
 子路径部署与常见 Service Worker 坑见 [docs/zh-CN/deployment.md](docs/zh-CN/deployment.md)。

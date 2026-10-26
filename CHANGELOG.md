@@ -32,6 +32,20 @@ Work in progress against the [1.6.0 plan](./docs/plans/1.6.0.md).
 - `docs/en/api-integration.md` and `docs/zh-CN/api-integration.md` gained the timeout options, the
   `status: 0` client-side codes and the `REQUEST_FAILED` fallback; the architecture docs now walk the
   client through its six steps.
+- **A default `docker build` is API-only.** The `VITE_ENABLE_MOCK` build arg flipped from `true` to
+  `false`, so the image nobody customizes no longer ships 73 mock handlers; the demo is now the
+  explicit path — `docker compose up --build`, or `--build-arg VITE_ENABLE_MOCK=true`. A mock-free
+  build also drops `mockServiceWorker.js` from `dist/`, so nothing in the output references the demo
+  backend.
+- **The container runs unprivileged.** The runtime stage is `nginxinc/nginx-unprivileged`: nginx
+  serves on `8080` as uid 101 instead of root on `80`, `GET /healthz` answers `ok`, and the image's
+  `HEALTHCHECK` targets it. Both stages pin their base images by digest, so a rebuild cannot
+  silently change the Node or nginx version the gates ran against. Map `8080:8080` when you
+  `docker run`.
+- **`.env.development` and `.env.production` are no longer committed.** Only `.env.example` is
+  tracked. The mock flag falls back to the Vite mode instead — on for `pnpm dev`, off for
+  `pnpm build` — so a bare clone behaves exactly as before without any env file, and an explicit
+  `VITE_ENABLE_MOCK` still wins over the fallback in both directions.
 
 ## [1.5.0] - 2026-10-25
 

@@ -4,11 +4,12 @@ FishAdmin builds to static files. The demo build also ships a Service Worker (MS
 
 ## Build commands
 
-| Command           | Mock API                                           | Use for                                  |
-| ----------------- | -------------------------------------------------- | ---------------------------------------- |
-| `pnpm build`      | Off (unless `VITE_ENABLE_MOCK=true` at build time) | Production with a real backend           |
-| `pnpm build:demo` | On                                                 | Public demo, Docker, preview deployments |
-| `pnpm preview`    | Serves the last build                              | Local check of the production output     |
+| Command           | Mock API                                           | Use for                              |
+| ----------------- | -------------------------------------------------- | ------------------------------------ |
+| `pnpm dev`        | On by default                                      | Local development without a backend  |
+| `pnpm build`      | Off (unless `VITE_ENABLE_MOCK=true` at build time) | Production with a real backend       |
+| `pnpm build:demo` | On                                                 | Public demo and preview deployments  |
+| `pnpm preview`    | Serves the last build                              | Local check of the production output |
 
 `pnpm build` runs `tsc --noEmit` first, so a type error fails the build.
 
@@ -16,11 +17,13 @@ FishAdmin builds to static files. The demo build also ships a Service Worker (MS
 
 Vite inlines variables at build time. Set them in the hosting provider's build settings or in `.env.*` files; changing them requires a rebuild.
 
-| Variable            | Example                   | Notes                                                         |
-| ------------------- | ------------------------- | ------------------------------------------------------------- |
-| `VITE_ENABLE_MOCK`  | `true`                    | Starts MSW in the browser. Never enable it against real data. |
-| `VITE_API_BASE_URL` | `https://api.example.com` | Defaults to `/api`.                                           |
-| `VITE_MOCK_LATENCY` | `300`                     | Mock-only artificial delay.                                   |
+Only [`.env.example`](../../.env.example) is tracked. `.env.development` and `.env.production` are gitignored and unnecessary — the defaults above come from `src/config/env.ts`, which reads the flag and falls back to the Vite mode. Copy the example to `.env.local` when you want to pin a value for both dev and build.
+
+| Variable            | Example                   | Notes                                                                                                             |
+| ------------------- | ------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `VITE_ENABLE_MOCK`  | `true`                    | Starts MSW in the browser. On for `pnpm dev`, off for `pnpm build` when unset. Never enable it against real data. |
+| `VITE_API_BASE_URL` | `https://api.example.com` | Defaults to `/api`.                                                                                               |
+| `VITE_MOCK_LATENCY` | `300`                     | Mock-only artificial delay.                                                                                       |
 
 ## Vercel
 
@@ -48,45 +51,55 @@ The rewrite sends unknown paths to `index.html` so deep links such as `/users?st
 
 ## Docker
 
-A multi-stage [`Dockerfile`](../../Dockerfile) builds with Node 24 and serves with nginx.
+A multi-stage [`Dockerfile`](../../Dockerfile) builds with Node 24 and serves the result with nginx running as uid 101 on port 8080 — no root, no privileged port. Both base images are pinned by digest, so a rebuild cannot silently pick up a different Node or nginx.
+
+A plain `docker build` produces an API-only image: `VITE_ENABLE_MOCK` defaults to `false`, the mock branch in `src/main.tsx` is folded away so no MSW chunk lands in `dist/`, and the worker script copied out of `public/` is stripped from the output too.
+
+```bash
+docker build -t fish-admin .
+docker run --rm -p 8080:8080 fish-admin
+```
+
+The demo is the Compose path, because `docker-compose.yml` passes the flag explicitly:
 
 ```bash
 docker compose up --build
 # → http://localhost:8080
 ```
 
-Or without Compose:
-
-```bash
-docker build -t fish-admin .
-docker run --rm -p 8080:80 fish-admin
-```
-
 Build arguments:
 
-| Argument            | Default | Notes                                |
-| ------------------- | ------- | ------------------------------------ |
-| `VITE_ENABLE_MOCK`  | `true`  | Set to `false` for an API-only image |
-| `VITE_API_BASE_URL` | `/api`  | Base URL baked into the bundle       |
-| `VITE_MOCK_LATENCY` | `300`   | Mock delay                           |
+| Argument            | Default | Notes                          |
+| ------------------- | ------- | ------------------------------ |
+| `VITE_ENABLE_MOCK`  | `false` | Set to `true` to ship the demo |
+| `VITE_API_BASE_URL` | `/api`  | Base URL baked into the bundle |
+| `VITE_MOCK_LATENCY` | `300`   | Mock delay                     |
 
-Example for a real API:
+Demo image without Compose:
 
 ```bash
 docker build \
-  --build-arg VITE_ENABLE_MOCK=false \
+  --build-arg VITE_ENABLE_MOCK=true \
+  -t fish-admin-demo .
+```
+
+API-only image pointed at your own server:
+
+```bash
+docker build \
   --build-arg VITE_API_BASE_URL=https://api.example.com \
   -t fish-admin .
 ```
 
-[`nginx.conf`](../../nginx.conf) does four things:
+[`nginx.conf`](../../nginx.conf) does five things:
 
+- Listens on `8080`, which the unprivileged runtime image can bind as uid 101.
 - `try_files $uri $uri/ /index.html` for SPA deep links.
 - Serves `/mockServiceWorker.js` with `no-cache` so browsers pick up a new worker.
 - Caches `/assets/` immutably because Vite fingerprints file names.
 - Adds basic gzip and security headers.
 
-The container includes a healthcheck against `/`.
+`GET /healthz` answers `ok` with access logging off, and the image declares a `HEALTHCHECK` against it, so `docker ps` shows the real state of the container.
 
 ## Any static host
 
@@ -117,7 +130,7 @@ Two things about that table are deliberate.
 
 The first-paint budget counts the entry chunk _and_ the 23 `modulepreload` tags Vite writes into `dist/index.html`, because the browser downloads all of them before it paints. The entry file alone is 90 kB, so a budget on `index-*` only would pass while the real cost crept up.
 
-The budgets are enforced against `pnpm build`, not the demo build. The demo build adds `browser-*` (907 kB, 327 gzip — MSW plus the seeded workspace database), which on its own breaks the largest-chunk and total-JS budgets. First paint is identical in both builds, because that chunk is lazy and `src/main.tsx` imports it only behind `VITE_ENABLE_MOCK`; `pnpm build` tree-shakes the branch away, so `ls dist/assets | grep browser` and `grep -r mockServiceWorker dist` both come back empty. Vite still prints a chunk-size warning for it in a demo build, which is expected.
+The budgets are enforced against `pnpm build`, not the demo build. The demo build adds `browser-*` (907 kB, 327 gzip — MSW plus the seeded workspace database), which on its own breaks the largest-chunk and total-JS budgets. First paint is identical in both builds, because that chunk is lazy and `src/main.tsx` imports it only behind the mock flag: an explicit `VITE_ENABLE_MOCK` wins, otherwise the dev server turns it on and a build turns it off. `pnpm build` tree-shakes the branch away and drops `mockServiceWorker.js` from the output, so `ls dist/assets | grep browser`, `ls dist | grep mock` and `grep -r mockServiceWorker dist` all come back empty. Vite still prints a chunk-size warning for it in a demo build, which is expected.
 
 The other large lazy chunks are the ones you would expect: `chart-*` is recharts, shared by the dashboard, `/reports` and the chart demos on `/components`; the catalog and the playground split into their own demo chunks. None of them is fetched on the way to `/users`.
 
@@ -125,11 +138,11 @@ Run `pnpm build && pnpm preview` and check the Network panel before shipping: th
 
 ## Turning the mock off in production
 
-1. Build with `VITE_ENABLE_MOCK=false` (the default for `pnpm build`).
+1. Leave `VITE_ENABLE_MOCK` unset in a build — `pnpm build` and a default `docker build` both resolve it to `false`. Set it explicitly if a previous `.env*` file pinned it to `true`.
 2. Set `VITE_API_BASE_URL`.
-3. Optionally delete `src/mocks`, `public/mockServiceWorker.js` and the mock block in `src/main.tsx` to keep the bundle lean.
+3. `dist/` already contains no mock code: `vite.config.ts` removes the copied `mockServiceWorker.js` when the flag is off. Delete `src/mocks` and the mock block in `src/main.tsx` only if you want the source gone as well.
 
-If the flag is off, `main.tsx` never imports the mock module, so MSW and Faker are not shipped to users.
+If the flag is off, `main.tsx` never imports the mock module, so MSW and Faker are not shipped to users. The worker script that `public/mockServiceWorker.js` contributes to `dist/` stays inert: nothing registers it.
 
 ## Caching and updates
 

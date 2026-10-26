@@ -20,7 +20,7 @@ FishAdmin 是一个单页 React 应用。仓库中不包含服务端：演示 AP
 [`src/main.tsx`](../../src/main.tsx) 负责编排启动顺序，确保路由守卫不会在会话状态未知时运行：
 
 1. 等待 `i18nReady`，加载内置的 `common`、`nav`、`errors` namespace。
-2. 当 `VITE_ENABLE_MOCK` 为 `true` 时，动态 import `src/mocks/browser` 并启动 Service Worker。worker 地址由 `import.meta.env.BASE_URL` 推导，因此支持子路径部署；未匹配的请求直接放行。
+2. 解析 mock 开关：显式设置的 `VITE_ENABLE_MOCK` 优先，未设置时开发服务器为 `true`、构建产物为 `false`。开关为真时动态 import `src/mocks/browser` 并启动 Service Worker。worker 地址由 `import.meta.env.BASE_URL` 推导，因此支持子路径部署；未匹配的请求直接放行。这里的判断刻意直接读 `import.meta.env` 字面量而不是 `env.enableMock`，这样不含 mock 的构建能把整个 MSW chunk 摇掉。
 3. 调用 `useAuthStore.getState().bootstrap()`。没有 refresh token 时状态为 `anonymous`；否则刷新令牌并请求 `/auth/me`。
 4. 注册 `apiRequest` 使用的全局未授权处理器。
 5. 挂载 React：`QueryClientProvider` → `RouterProvider` + `Toaster`。
