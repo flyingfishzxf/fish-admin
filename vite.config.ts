@@ -8,6 +8,8 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 
+import { securityHeaders } from './src/config/security-headers'
+
 const packageJson = createRequire(import.meta.url)('./package.json') as { version: string }
 
 export default defineConfig(({ mode }) => {
@@ -47,6 +49,11 @@ export default defineConfig(({ mode }) => {
     },
     preview: {
       port: 4173,
+      // The header policy `e2e/security.spec.ts` asserts is served from here, so
+      // what the suite checks is what nginx and Vercel ship. The dev server stays
+      // without a CSP because Vite's dev HTML injects an inline React Refresh
+      // preamble, and `script-src 'self'` would stop hot module reload.
+      headers: { ...securityHeaders },
     },
   }
 })

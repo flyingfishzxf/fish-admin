@@ -10,8 +10,9 @@ const BUDGETS = {
   totalCss: 30 * KB,
 }
 
-const ASSETS = path.resolve('dist', 'assets')
-const html = await readFile(path.resolve('dist', 'index.html'), 'utf8')
+const DIST = path.resolve('dist')
+const ASSETS = path.join(DIST, 'assets')
+const html = await readFile(path.join(DIST, 'index.html'), 'utf8')
 
 const hrefs = (pattern) =>
   [...html.matchAll(pattern)].map((match) => path.basename(match[1])).filter(Boolean)
@@ -21,24 +22,33 @@ const hrefs = (pattern) =>
 const firstPaint = new Set([
   ...hrefs(/<script type="module"[^>]*\ssrc="([^"]+)"/g),
   ...hrefs(/<link rel="modulepreload"[^>]*\shref="([^"]+)"/g),
+  // A classic script without defer/async blocks the parser, so the shell's
+  // /theme-bootstrap.js is first-paint cost as well.
+  ...hrefs(/<script(?![^>]*(?:defer|async))[^>]*\ssrc="([^"]+)"/g),
 ])
 
 if (firstPaint.size === 0) {
   throw new Error('No entry script in dist/index.html — run `pnpm build` first.')
 }
 
-const files = await readdir(ASSETS)
+const files = [
+  ...(await readdir(ASSETS)).map((file) => path.join(ASSETS, file)),
+  // A stylesheet can also sit at the web root: index.html links /boot.css out of
+  // public/, and the browser downloads it before it paints, so the CSS budget has
+  // to see it too.
+  ...(await readdir(DIST)).map((file) => path.join(DIST, file)),
+]
 const chunks = []
 
-for (const file of files) {
-  const extension = path.extname(file)
+for (const abs of files) {
+  const extension = path.extname(abs)
   if (extension !== '.js' && extension !== '.css') continue
-  const content = await readFile(path.join(ASSETS, file))
+  const content = await readFile(abs)
   chunks.push({
-    file,
+    file: path.basename(abs),
     kind: extension === '.js' ? 'js' : 'css',
     gzip: gzipSync(content, { level: 9 }).length,
-    firstPaint: firstPaint.has(file),
+    firstPaint: firstPaint.has(path.basename(abs)),
   })
 }
 
@@ -66,7 +76,7 @@ for (const [name, budget] of Object.entries(BUDGETS)) {
   )
 }
 
-console.log(`\nFirst paint (${eagerJs.length} chunks: entry script + modulepreload)`)
+console.log(`\nFirst paint (${eagerJs.length} chunks: module graph + shell script)`)
 for (const chunk of [...eagerJs].sort((a, b) => b.gzip - a.gzip).slice(0, 6)) {
   console.log(`  ${format(chunk.gzip).padStart(9)}  ${chunk.file}`)
 }

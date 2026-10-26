@@ -1,5 +1,6 @@
 import type { TFunction } from 'i18next'
-import { z } from 'zod'
+
+import { z } from '@/config/validation'
 
 export function createProfileSchema(t: TFunction) {
   const name = t('profile:form.name')

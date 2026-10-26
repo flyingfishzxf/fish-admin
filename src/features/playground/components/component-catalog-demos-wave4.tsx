@@ -19,7 +19,6 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 import { toast } from 'sonner'
-import { z } from 'zod'
 
 import {
   Accordion,
@@ -27,6 +26,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { z } from '@/config/validation'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
   AlertDialog,

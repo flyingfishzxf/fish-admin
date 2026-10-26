@@ -5,6 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+# Nothing here publishes anything, so the default write-scoped token is a larger
+# blast radius than a failing dependency check deserves.
+permissions:
+  contents: read
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -31,6 +37,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies
+        # High and critical only — a moderate advisory in a dev-only transitive
+        # package should not hold a template release hostage.
+        run: pnpm audit --audit-level=high
 
       - name: Check formatting
         run: pnpm format:check
@@ -64,6 +75,15 @@ jobs:
 
       - name: Build and check bundle size budgets
         run: pnpm size
+
+      - name: Upload the mock-free bundle
+        # The artifact is what `pnpm size` measured, so a budget question can be
+        # answered from the run instead of by rebuilding locally.
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7
 
   e2e:
     name: E2E

@@ -47,6 +47,28 @@ export default tseslint.config(
     },
   },
   {
+    // The CSP in src/config/security-headers.ts grants no 'unsafe-eval', and zod's
+    // default validator compiler calls `new Function` on first parse. Every schema
+    // has to arrive through the module that pins zod to jitless mode.
+    files: ['src/**/*.{ts,tsx}'],
+    ignores: ['src/config/validation.ts'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'zod',
+              allowTypeImports: true,
+              message:
+                "Import z from '@/config/validation' — it pins zod's jitless mode, which `script-src 'self'` requires.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     files: ['src/components/ui/**/*.tsx', 'src/routes/**/*.tsx'],
     rules: {
       'react-refresh/only-export-components': 'off',

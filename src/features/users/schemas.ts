@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next'
-import { z } from 'zod'
 
+import { z } from '@/config/validation'
 import type { UserStatus } from '@/types'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
