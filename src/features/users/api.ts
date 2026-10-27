@@ -18,6 +18,7 @@ export interface UserListParams {
   includeDescendants?: boolean
   sort?: string
   order?: string
+  dataset?: 'large'
 }
 
 export function fetchUsers(params: UserListParams, signal?: AbortSignal) {
@@ -31,6 +32,7 @@ export function fetchUsers(params: UserListParams, signal?: AbortSignal) {
   if (params.includeDescendants) search.set('includeDescendants', '1')
   if (params.sort) search.set('sort', params.sort)
   if (params.order) search.set('order', params.order)
+  if (params.dataset) search.set('dataset', params.dataset)
 
   return apiRequest<PaginatedResult<User>>(`/users?${search.toString()}`, { signal })
 }

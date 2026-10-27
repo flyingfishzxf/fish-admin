@@ -21,8 +21,47 @@ export interface Department {
   createdAt: string
 }
 
+export interface DictionaryType {
+  id: string
+  code: string
+  name: string
+  description: string
+  isSystem: boolean
+  itemCount: number
+  referenceCount: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface DictionaryItem {
+  id: string
+  dictionaryId: string
+  label: string
+  value: string
+  description: string
+  sortOrder: number
+  enabled: boolean
+  isSystem: boolean
+  referenceCount: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface DictionaryDetail {
+  dictionary: DictionaryType
+  items: DictionaryItem[]
+}
+
 export type AuditEntityType =
-  'user' | 'role' | 'department' | 'auth' | 'project' | 'file' | 'integration'
+  | 'user'
+  | 'role'
+  | 'department'
+  | 'auth'
+  | 'project'
+  | 'file'
+  | 'integration'
+  | 'workflow'
+  | 'dictionary'
 
 export type AuditAction =
   | 'user.created'
@@ -45,6 +84,12 @@ export type AuditAction =
   | 'integration.created'
   | 'integration.updated'
   | 'integration.deleted'
+  | 'workflow.approved'
+  | 'workflow.rejected'
+  | 'workflow.transferred'
+  | 'dictionary.created'
+  | 'dictionary.updated'
+  | 'dictionary.deleted'
 
 export interface AuditEvent {
   id: string

@@ -29,6 +29,9 @@ const NEW_ROUTES = [
   '/files',
   '/notifications',
   '/integrations',
+  '/workflows',
+  '/workflows/$id',
+  '/dictionaries',
 ]
 
 describe('component registry', () => {
@@ -108,7 +111,7 @@ describe('component registry', () => {
     }
   })
 
-  it('surfaces the six demo business screens in the catalog', () => {
+  it('surfaces the nine demo business screens in the catalog', () => {
     for (const route of NEW_ROUTES) {
       expect(
         COMPONENTS.filter((entry) => entry.usedIn === route).length,

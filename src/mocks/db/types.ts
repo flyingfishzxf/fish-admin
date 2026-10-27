@@ -9,11 +9,14 @@ import type {
   ProjectRecord,
   ProjectTask,
   UserStatus,
+  WorkflowComment,
+  WorkflowInstanceRecord,
+  WorkflowStep,
   WorkspaceFile,
   WorkspaceNotification,
 } from '@/types'
 
-export const MOCK_DB_VERSION = 4
+export const MOCK_DB_VERSION = 6
 // The storage key stays stable so earlier demo databases can be migrated in place.
 export const MOCK_DB_STORAGE_KEY = 'fish-admin:db:v1'
 
@@ -26,6 +29,9 @@ export type MockIntegrationRecord = Integration
 export type MockDeliveryRecord = IntegrationDelivery
 export type MockNotificationRecord = WorkspaceNotification
 export type MockNotificationPreferences = NotificationPreferences
+export type MockWorkflowRecord = WorkflowInstanceRecord
+export type MockWorkflowStepRecord = WorkflowStep
+export type MockWorkflowCommentRecord = WorkflowComment
 
 export interface MockUserRecord {
   id: string
@@ -63,6 +69,29 @@ export interface MockDepartmentRecord {
   managerId?: string
   sortOrder: number
   createdAt: string
+}
+
+export interface MockDictionaryTypeRecord {
+  id: string
+  code: string
+  name: string
+  description: string
+  isSystem: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+export interface MockDictionaryItemRecord {
+  id: string
+  dictionaryId: string
+  label: string
+  value: string
+  description: string
+  sortOrder: number
+  enabled: boolean
+  isSystem: boolean
+  createdAt: string
+  updatedAt: string
 }
 
 export interface MockAuditEvent {
@@ -142,4 +171,9 @@ export interface MockDb {
   files: MockFileRecord[]
   integrations: MockIntegrationRecord[]
   deliveries: MockDeliveryRecord[]
+  workflows: MockWorkflowRecord[]
+  workflowSteps: MockWorkflowStepRecord[]
+  workflowComments: MockWorkflowCommentRecord[]
+  dictionaryTypes: MockDictionaryTypeRecord[]
+  dictionaryItems: MockDictionaryItemRecord[]
 }

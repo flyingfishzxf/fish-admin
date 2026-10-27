@@ -3,15 +3,25 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 
-function Table({ className, ...props }: React.ComponentProps<'table'>) {
+function Table({
+  className,
+  container = true,
+  ...props
+}: React.ComponentProps<'table'> & { container?: boolean }) {
+  const table = (
+    <table
+      data-slot="table"
+      className={cn('w-full caption-bottom text-sm', className)}
+      {...props}
+    />
+  )
+
+  if (!container) return table
+
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the scroll container must be reachable so keyboard users can scroll wide tables
     <div data-slot="table-container" tabIndex={0} className="relative w-full overflow-x-auto">
-      <table
-        data-slot="table"
-        className={cn('w-full caption-bottom text-sm', className)}
-        {...props}
-      />
+      {table}
     </div>
   )
 }

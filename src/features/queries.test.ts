@@ -9,6 +9,11 @@ vi.mock('@/lib/api-client', () => ({ apiRequest: apiRequestMock }))
 vi.mock('@/stores/auth-store', () => ({ useAuthStore: { getState: () => session } }))
 
 import { dashboardQueryOptions } from '@/features/dashboard/queries'
+import {
+  dictionaryDetailQueryOptions,
+  dictionaryListQueryOptions,
+  dictionaryOptionsQueryOptions,
+} from '@/features/dictionaries/queries'
 import { fileFoldersQueryOptions, fileListQueryOptions } from '@/features/files/queries'
 import {
   integrationDeliveriesQueryOptions,
@@ -195,6 +200,66 @@ describe('query options', () => {
       '/integrations/integration-1/deliveries',
       withSignal,
     )
+  })
+
+  it('keys dictionaries by list and detail, and exposes enabled options only', async () => {
+    const list = dictionaryListQueryOptions()
+    const detail = dictionaryDetailQueryOptions('user_tag')
+    const options = dictionaryOptionsQueryOptions('user_tag')
+
+    expect(list.queryKey).toEqual(['dictionaries', 'list'])
+    expect(detail.queryKey).toEqual(['dictionaries', 'detail', 'user_tag'])
+    expect(options.queryKey).toEqual(detail.queryKey)
+
+    await list.queryFn?.(context)
+    await detail.queryFn?.(context)
+
+    expect(apiRequestMock).toHaveBeenNthCalledWith(1, '/dictionaries', withSignal)
+    expect(apiRequestMock).toHaveBeenNthCalledWith(2, '/dictionaries/user_tag', withSignal)
+
+    const selected = options.select?.({
+      dictionary: {
+        id: 'dict-user-tag',
+        code: 'user_tag',
+        name: 'User tags',
+        description: '',
+        isSystem: true,
+        itemCount: 3,
+        referenceCount: 1,
+        createdAt: '2026-01-05T09:00:00.000Z',
+        updatedAt: '2026-01-05T09:00:00.000Z',
+      },
+      items: [
+        {
+          id: 'item-owner',
+          dictionaryId: 'dict-user-tag',
+          label: 'Owner',
+          value: 'owner',
+          description: '',
+          sortOrder: 0,
+          enabled: true,
+          isSystem: true,
+          referenceCount: 1,
+          createdAt: '2026-01-05T09:00:00.000Z',
+          updatedAt: '2026-01-05T09:00:00.000Z',
+        },
+        {
+          id: 'item-remote',
+          dictionaryId: 'dict-user-tag',
+          label: 'Remote',
+          value: 'remote',
+          description: '',
+          sortOrder: 1,
+          enabled: false,
+          isSystem: true,
+          referenceCount: 0,
+          createdAt: '2026-01-05T09:00:00.000Z',
+          updatedAt: '2026-01-05T09:00:00.000Z',
+        },
+      ],
+    })
+
+    expect(selected).toEqual([{ label: 'Owner', value: 'owner' }])
   })
 
   it('keys the menu once for the session and forwards its signal', async () => {

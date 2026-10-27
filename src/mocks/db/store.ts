@@ -12,7 +12,10 @@ import type {
 } from '@/types'
 
 import { createDemoDepartments, createDemoInvite, createSeedDb } from '../seed'
+import { createDictionarySeed } from '../seed-dictionaries'
+import { createWorkflowSeed } from '../seed-workflows'
 import { createWorkspaceSeed } from '../seed-workspace'
+import { syntheticUserRecords } from './synthetic-users'
 import {
   MOCK_DB_STORAGE_KEY,
   MOCK_DB_VERSION,
@@ -67,6 +70,22 @@ interface LegacyDbV3 {
   invites: MockInvite[]
 }
 
+type LegacyDbV4 = Omit<
+  MockDb,
+  | 'version'
+  | 'workflows'
+  | 'workflowSteps'
+  | 'workflowComments'
+  | 'dictionaryTypes'
+  | 'dictionaryItems'
+> & {
+  version: 4
+}
+
+type LegacyDbV5 = Omit<MockDb, 'version' | 'dictionaryTypes' | 'dictionaryItems'> & {
+  version: 5
+}
+
 const ACTIVITY_ACTIONS = new Set<ActivityAction>([
   'user.created',
   'user.updated',
@@ -90,6 +109,8 @@ function activityEntityType(action: AuditAction | ActivityAction): AuditEntityTy
   if (action.startsWith('role.')) return 'role'
   if (action.startsWith('department.')) return 'department'
   if (action.startsWith('project.')) return 'project'
+  if (action.startsWith('workflow.')) return 'workflow'
+  if (action.startsWith('dictionary.')) return 'dictionary'
   if (action.startsWith('file.')) return 'file'
   if (action.startsWith('integration.')) return 'integration'
   return 'user'
@@ -178,14 +199,14 @@ function mergeRolePermissions(role: MockRoleRecord): MockRoleRecord {
   }
 }
 
-function migrateV3(legacy: LegacyDbV3): MockDb {
+function migrateV3(legacy: LegacyDbV3): LegacyDbV4 {
   const workspace = createWorkspaceSeed(legacy.users, legacy.departments)
   const auditEvents = [...workspace.auditEvents, ...legacy.auditEvents]
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .slice(0, 500)
 
   return {
-    version: MOCK_DB_VERSION,
+    version: 4,
     seededAt: legacy.seededAt,
     users: legacy.users,
     roles: legacy.roles.map(mergeRolePermissions),
@@ -209,6 +230,36 @@ function migrateV3(legacy: LegacyDbV3): MockDb {
   }
 }
 
+/**
+ * Re-seeds the workflow collections instead of inventing instances from the
+ * surviving audit trail: the v4 database has no approval chain to reconstruct.
+ * Users, roles, sessions and the whole workspace are carried over untouched.
+ */
+function migrateV4(legacy: LegacyDbV4): LegacyDbV5 {
+  const workflow = createWorkflowSeed(legacy.users)
+
+  return {
+    ...legacy,
+    version: 5,
+    roles: legacy.roles.map(mergeRolePermissions),
+    workflows: workflow.workflows,
+    workflowSteps: workflow.workflowSteps,
+    workflowComments: workflow.workflowComments,
+  }
+}
+
+/** Dictionaries are demo reference data, so a v5 database gets the seed as-is. */
+function migrateV5(legacy: LegacyDbV5): MockDb {
+  const dictionary = createDictionarySeed()
+
+  return {
+    ...legacy,
+    version: MOCK_DB_VERSION,
+    dictionaryTypes: dictionary.types,
+    dictionaryItems: dictionary.items,
+  }
+}
+
 export function readDb(): MockDb {
   if (!hasStorage()) {
     memoryDb ??= createSeedDb()
@@ -223,19 +274,33 @@ export function readDb(): MockDb {
     if (!parsed || typeof parsed !== 'object') return resetDb()
 
     if (parsed.version === 1) {
-      const migrated = migrateV3(migrateV2(migrateV1(parsed as unknown as LegacyDbV1)))
+      const migrated = migrateV5(
+        migrateV4(migrateV3(migrateV2(migrateV1(parsed as unknown as LegacyDbV1)))),
+      )
       writeDb(migrated)
       return migrated
     }
 
     if (parsed.version === 2) {
-      const migrated = migrateV3(migrateV2(parsed as unknown as LegacyDbV2))
+      const migrated = migrateV5(migrateV4(migrateV3(migrateV2(parsed as unknown as LegacyDbV2))))
       writeDb(migrated)
       return migrated
     }
 
     if (parsed.version === 3) {
-      const migrated = migrateV3(parsed as unknown as LegacyDbV3)
+      const migrated = migrateV5(migrateV4(migrateV3(parsed as unknown as LegacyDbV3)))
+      writeDb(migrated)
+      return migrated
+    }
+
+    if (parsed.version === 4) {
+      const migrated = migrateV5(migrateV4(parsed as unknown as LegacyDbV4))
+      writeDb(migrated)
+      return migrated
+    }
+
+    if (parsed.version === 5) {
+      const migrated = migrateV5(parsed as unknown as LegacyDbV5)
       writeDb(migrated)
       return migrated
     }
@@ -255,6 +320,11 @@ export function readDb(): MockDb {
       !Array.isArray(parsed.files) ||
       !Array.isArray(parsed.integrations) ||
       !Array.isArray(parsed.deliveries) ||
+      !Array.isArray(parsed.workflows) ||
+      !Array.isArray(parsed.workflowSteps) ||
+      !Array.isArray(parsed.workflowComments) ||
+      !Array.isArray(parsed.dictionaryTypes) ||
+      !Array.isArray(parsed.dictionaryItems) ||
       !parsed.notificationPreferences ||
       typeof parsed.notificationPreferences !== 'object'
     ) {
@@ -454,19 +524,22 @@ export interface UserListQuery {
   includeDescendants?: boolean
   sort?: string
   order?: string
+  dataset?: string
 }
 
 type SortKey = 'name' | 'email' | 'role' | 'createdAt' | 'lastActiveAt'
 export function queryUsers(db: MockDb, query: UserListQuery): PaginatedResult<User> {
-  const pageSize = Math.min(Math.max(query.pageSize ?? 10, 1), 100)
+  const large = query.dataset === 'large'
+  const pageSize = Math.min(Math.max(query.pageSize ?? 10, 1), large ? 5000 : 100)
   const search = query.q?.trim().toLowerCase() ?? ''
   const departmentIds = query.departmentId
     ? query.includeDescendants
       ? departmentSubtreeIds(db, query.departmentId)
       : new Set([query.departmentId])
     : null
+  const source = large ? syntheticUserRecords(db) : db.users
 
-  let filtered = db.users.filter((user) => {
+  let filtered = source.filter((user) => {
     if (user.deletedAt) return false
     if (query.roleId && user.roleId !== query.roleId) return false
     if (query.status && user.status !== query.status) return false

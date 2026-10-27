@@ -1,0 +1,120 @@
+{
+  "title": "审批中心",
+  "subtitle": "按固定审批链流转的申请，每一次决定都留有记录。",
+  "searchPlaceholder": "搜索编号、标题或人员…",
+  "loadError": "审批列表加载失败。",
+  "views": {
+    "label": "审批视图",
+    "mine": "我发起",
+    "pending": "待我审批",
+    "all": "全部"
+  },
+  "columns": {
+    "request": "申请",
+    "type": "类型",
+    "status": "状态",
+    "initiator": "发起人",
+    "approver": "当前审批人",
+    "closed": "已结束",
+    "amount": "金额",
+    "updated": "更新时间",
+    "open": "打开申请"
+  },
+  "columnGroups": {
+    "request": "申请信息",
+    "state": "类型与状态",
+    "people": "人员",
+    "details": "明细"
+  },
+  "tableRegion": "审批队列表格",
+  "status": {
+    "pending": "待审批",
+    "approved": "已通过",
+    "rejected": "已驳回"
+  },
+  "types": {
+    "purchase": "采购",
+    "leave": "请假",
+    "seal": "用印",
+    "change": "变更"
+  },
+  "filters": {
+    "status": "状态",
+    "allStatuses": "全部状态",
+    "type": "类型",
+    "allTypes": "全部类型",
+    "initiator": "发起人",
+    "allInitiators": "全部发起人",
+    "dateRange": "时间范围",
+    "clear": "清除筛选"
+  },
+  "presets": {
+    "today": "今天",
+    "last7": "近 7 天",
+    "last30": "近 30 天",
+    "last90": "近 90 天",
+    "thisMonth": "本月"
+  },
+  "empty": {
+    "filteredTitle": "没有匹配的审批",
+    "filteredDescription": "试试其他状态、类型或时间范围。",
+    "clear": "清除筛选",
+    "mineTitle": "还没有发起记录",
+    "mineDescription": "你发起的申请会出现在这里。",
+    "pendingTitle": "暂时没有待办",
+    "pendingDescription": "当申请流转到你这一步时，会出现在这里。",
+    "allTitle": "还没有审批",
+    "allDescription": "提交后的申请会连同完整时间线出现在这里。"
+  },
+  "detail": {
+    "back": "返回审批中心",
+    "notFoundTitle": "审批不存在",
+    "notFoundDescription": "该申请可能已被删除，或链接有误。",
+    "notFoundAction": "返回审批中心",
+    "initiatedBy": "发起人：{{name}}",
+    "createdAt": "提交于 {{date}}",
+    "waitingFor": "等待 {{name}} 处理",
+    "closed": "已结束",
+    "formTitle": "表单快照",
+    "formDescription": "提交时的字段原样保留。",
+    "timelineTitle": "时间线",
+    "timelineDescription": "提交与每一次决定，按顺序排列。",
+    "snapshotTitle": "原始快照",
+    "snapshotDescription": "下游系统会收到的数据。",
+    "snapshotRaw": "审批快照"
+  },
+  "timeline": {
+    "submitted": "{{name}} 提交申请",
+    "approved": "{{name}} 同意",
+    "rejected": "{{name}} 驳回",
+    "transferred": "{{name}} 转交给 {{approver}}"
+  },
+  "actions": {
+    "title": "处理审批",
+    "description": "同意、驳回，或把这一步交给其他审批人。",
+    "note": "处理意见",
+    "notePlaceholder": "可选，会随本次决定保留…",
+    "approve": "同意",
+    "approveTitle": "同意该申请？",
+    "approveDescription": "流程进入下一步；若已是最后一步则直接通过。",
+    "reject": "驳回",
+    "rejectTitle": "驳回该申请？",
+    "rejectDescription": "申请将结束，并通知发起人。",
+    "transfer": "转交",
+    "transferTitle": "转交这一步？",
+    "transferDescription": "该步骤的审批人将变为 {{name}}。",
+    "transferPlaceholder": "请先选择新的审批人",
+    "transferTo": "转交给",
+    "done": "已记录审批决定。",
+    "failed": "审批决定未能记录。"
+  },
+  "comments": {
+    "title": "评论",
+    "description": "随申请一起保留的上下文。",
+    "empty": "还没有评论。",
+    "label": "添加评论",
+    "placeholder": "给下一位审批人补充说明…",
+    "submit": "评论",
+    "failed": "评论添加失败。"
+  }
+}

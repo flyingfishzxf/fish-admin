@@ -166,6 +166,70 @@ export interface NotificationPreferences {
   }
 }
 
+export type WorkflowType = 'purchase' | 'leave' | 'seal' | 'change'
+export type WorkflowStatus = 'pending' | 'approved' | 'rejected'
+export type WorkflowDecision = 'approve' | 'reject' | 'transfer'
+export type WorkflowStepAction = 'submitted' | 'approved' | 'rejected' | 'transferred'
+
+export interface WorkflowFormField {
+  label: string
+  value: string
+}
+
+export interface WorkflowInstanceRecord {
+  id: string
+  code: string
+  type: WorkflowType
+  title: string
+  summary: string
+  initiatorId: string
+  status: WorkflowStatus
+  amount?: number
+  form: WorkflowFormField[]
+  /** Ordered approval chain. `currentStep` indexes the approver awaiting action. */
+  approverIds: string[]
+  currentStep: number
+  createdAt: string
+  updatedAt: string
+  completedAt?: string
+}
+
+export interface WorkflowInstance extends WorkflowInstanceRecord {
+  initiatorName: string
+  approverNames: string[]
+  currentApproverId?: string
+  currentApproverName?: string
+  commentCount: number
+}
+
+export interface WorkflowStep {
+  id: string
+  instanceId: string
+  action: WorkflowStepAction
+  actorId: string
+  actorName: string
+  /** The approver the action targeted: the first approver when submitted, the new owner when transferred. */
+  approverId?: string
+  approverName?: string
+  comment?: string
+  createdAt: string
+}
+
+export interface WorkflowComment {
+  id: string
+  instanceId: string
+  authorId: string
+  authorName: string
+  body: string
+  createdAt: string
+}
+
+export interface WorkflowDetail {
+  instance: WorkflowInstance
+  steps: WorkflowStep[]
+  comments: WorkflowComment[]
+}
+
 export interface ReportKpi {
   id: 'revenue' | 'orders' | 'conversion' | 'refunds'
   value: number

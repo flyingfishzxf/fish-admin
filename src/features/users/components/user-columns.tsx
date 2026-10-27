@@ -87,6 +87,8 @@ export function createUserColumns({
           ),
           meta: {
             className: 'w-11',
+            group: 'identity',
+            groupLabel: t('users:columnGroups.identity'),
           },
         },
       ]
@@ -95,13 +97,15 @@ export function createUserColumns({
   columns.push(
     {
       accessorKey: 'name',
-      size: 250,
+      size: 220,
       minSize: 160,
       header: sortableHeader('name', t('users:columns.name')),
       enableHiding: false,
       meta: {
         label: t('users:columns.name'),
         className: 'min-w-[160px]',
+        group: 'identity',
+        groupLabel: t('users:columnGroups.identity'),
       },
       cell: ({ row }) => {
         const user = row.original
@@ -129,13 +133,15 @@ export function createUserColumns({
     },
     {
       accessorKey: 'email',
-      size: 230,
+      size: 200,
       minSize: 160,
       header: sortableHeader('email', t('users:columns.email')),
       meta: {
         label: t('users:columns.email'),
         className: 'hidden md:table-cell',
         headerClassName: 'hidden md:table-cell',
+        group: 'contact',
+        groupLabel: t('users:columnGroups.contact'),
       },
       cell: ({ row }) => (
         <span className="block truncate text-sm text-muted-foreground">{row.original.email}</span>
@@ -149,6 +155,8 @@ export function createUserColumns({
       header: sortableHeader('role', t('users:columns.role')),
       meta: {
         label: t('users:columns.role'),
+        group: 'access',
+        groupLabel: t('users:columnGroups.access'),
       },
       cell: ({ row }) => (
         <Badge variant="secondary" className="font-normal">
@@ -170,6 +178,8 @@ export function createUserColumns({
         label: t('users:columns.department'),
         className: 'hidden lg:table-cell',
         headerClassName: 'hidden lg:table-cell',
+        group: 'access',
+        groupLabel: t('users:columnGroups.access'),
       },
       cell: ({ row }) => (
         <span className="text-sm text-muted-foreground">
@@ -191,6 +201,8 @@ export function createUserColumns({
       enableSorting: false,
       meta: {
         label: t('users:columns.status'),
+        group: 'access',
+        groupLabel: t('users:columnGroups.access'),
       },
       cell: ({ row }) => <StatusBadge status={row.original.status} />,
     },
@@ -203,6 +215,8 @@ export function createUserColumns({
         label: t('users:columns.createdAt'),
         className: 'hidden xl:table-cell whitespace-nowrap',
         headerClassName: 'hidden xl:table-cell',
+        group: 'activity',
+        groupLabel: t('users:columnGroups.activity'),
       },
       cell: ({ row }) => (
         <span className="text-sm text-muted-foreground">
@@ -219,6 +233,8 @@ export function createUserColumns({
         label: t('users:columns.lastActive'),
         className: 'hidden xl:table-cell whitespace-nowrap',
         headerClassName: 'hidden xl:table-cell',
+        group: 'activity',
+        groupLabel: t('users:columnGroups.activity'),
       },
       cell: ({ row }) => (
         <span className="text-sm text-muted-foreground">
@@ -241,6 +257,8 @@ export function createUserColumns({
       meta: {
         label: t('users:columns.actions'),
         className: 'text-right',
+        group: 'actions',
+        groupLabel: '',
       },
       cell: ({ row }) => {
         const user = row.original

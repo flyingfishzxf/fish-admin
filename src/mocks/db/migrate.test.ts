@@ -176,6 +176,100 @@ describe('mock database migrations', () => {
     expect(db.notificationPreferences['user-admin']).toBeDefined()
   })
 
+  it('migrates a v4 database and seeds the approval inbox', () => {
+    seedStorage({
+      version: 4,
+      seededAt: '2024-01-01T00:00:00.000Z',
+      users: [{ ...V1_USER, tags: [], emailVerified: true, twoFactorEnabled: false }],
+      roles: [
+        ROLE,
+        {
+          id: 'manager',
+          name: 'Manager',
+          description: 'Team lead',
+          permissions: ['user:read'],
+          isSystem: true,
+        },
+      ],
+      departments: [],
+      auditEvents: [],
+      sessions: [],
+      loginAttempts: {},
+      mfaChallenges: {},
+      verificationTokens: [],
+      passwordResetTokens: [],
+      invites: [],
+      notifications: [],
+      notificationPreferences: {},
+      projects: [],
+      tasks: [],
+      milestones: [],
+      fileFolders: [],
+      files: [],
+      integrations: [],
+      deliveries: [],
+    })
+
+    const db = readDb()
+
+    expect(db.version).toBe(MOCK_DB_VERSION)
+    expect(db.workflows).toHaveLength(8)
+    expect(db.workflows.find((entry) => entry.id === 'workflow-pur-1')).toMatchObject({
+      status: 'pending',
+      currentStep: 0,
+    })
+    expect(db.workflowSteps.length).toBeGreaterThan(8)
+    expect(db.workflowComments.length).toBeGreaterThan(0)
+    expect(db.dictionaryTypes).toHaveLength(3)
+    expect(db.dictionaryItems.length).toBeGreaterThan(10)
+    expect(db.roles.find((role) => role.id === 'manager')?.permissions).toEqual(
+      expect.arrayContaining(['user:read', 'workflow:read', 'workflow:approve']),
+    )
+  })
+
+  it('migrates a v5 database and seeds the dictionaries', () => {
+    seedStorage({
+      version: 5,
+      seededAt: '2024-01-01T00:00:00.000Z',
+      users: [{ ...V1_USER, tags: [], emailVerified: true, twoFactorEnabled: false }],
+      roles: [ROLE],
+      departments: [],
+      auditEvents: [],
+      sessions: [],
+      loginAttempts: {},
+      mfaChallenges: {},
+      verificationTokens: [],
+      passwordResetTokens: [],
+      invites: [],
+      notifications: [],
+      notificationPreferences: {},
+      projects: [],
+      tasks: [],
+      milestones: [],
+      fileFolders: [],
+      files: [],
+      integrations: [],
+      deliveries: [],
+      workflows: [],
+      workflowSteps: [],
+      workflowComments: [],
+    })
+
+    const db = readDb()
+
+    expect(db.version).toBe(MOCK_DB_VERSION)
+    expect(db.workflows).toEqual([])
+    expect(db.dictionaryTypes.map((entry) => entry.code)).toEqual([
+      'user_tag',
+      'expense_category',
+      'approval_priority',
+    ])
+    expect(db.dictionaryItems.find((entry) => entry.value === 'on-call')).toMatchObject({
+      dictionaryId: 'dict-user-tag',
+      enabled: true,
+    })
+  })
+
   it('treats a migrated v4 database as complete on the next read', () => {
     seedStorage({
       version: 3,
@@ -229,7 +323,7 @@ describe('mock database migrations', () => {
     expect(fromIncomplete.departments.length).toBeGreaterThan(0)
   })
 
-  it('keeps a complete v4 database untouched', () => {
+  it('keeps a complete v6 database untouched', () => {
     const seeded = {
       version: MOCK_DB_VERSION,
       seededAt: '2024-01-01T00:00:00.000Z',
@@ -252,6 +346,11 @@ describe('mock database migrations', () => {
       files: [],
       integrations: [],
       deliveries: [],
+      workflows: [],
+      workflowSteps: [],
+      workflowComments: [],
+      dictionaryTypes: [],
+      dictionaryItems: [],
     }
     seedStorage(seeded)
 
@@ -260,5 +359,7 @@ describe('mock database migrations', () => {
     expect(db.users).toHaveLength(1)
     expect(db.departments).toEqual([])
     expect(db.projects).toEqual([])
+    expect(db.workflows).toEqual([])
+    expect(db.dictionaryTypes).toEqual([])
   })
 })

@@ -1,6 +1,7 @@
 import {
   BarChart3,
   Bell,
+  BookMarked,
   Boxes,
   CircleDot,
   FolderKanban,
@@ -16,6 +17,7 @@ import {
   ShieldCheck,
   UserRound,
   Users,
+  Workflow,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -27,6 +29,7 @@ import {
 const MENU_ICONS: Record<string, LucideIcon> = {
   'bar-chart-3': BarChart3,
   bell: Bell,
+  'book-marked': BookMarked,
   boxes: Boxes,
   'circle-dot': CircleDot,
   'folder-kanban': FolderKanban,
@@ -42,6 +45,7 @@ const MENU_ICONS: Record<string, LucideIcon> = {
   'shield-check': ShieldCheck,
   'user-round': UserRound,
   users: Users,
+  workflow: Workflow,
 }
 
 const ICON_NAMES = new Map<LucideIcon, string>(

@@ -11,6 +11,7 @@
     "ui": "UI Kit",
     "components": "Components",
     "projects": "Projects",
+    "workflows": "Approvals",
     "files": "Files",
     "notifications": "Notifications",
     "users": "Users",
@@ -21,7 +22,8 @@
     "integrations": "Integrations",
     "profile": "Profile",
     "security": "Security",
-    "settings": "Settings"
+    "settings": "Settings",
+    "dictionaries": "Dictionaries"
   },
   "breadcrumbs": {
     "home": "Home"

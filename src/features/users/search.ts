@@ -11,6 +11,7 @@ export interface UsersSearch {
   status?: UserStatus
   sort: UserSortKey
   order: SortOrder
+  dataset?: 'large'
 }
 
 const SORT_KEYS: UserSortKey[] = ['name', 'email', 'role', 'createdAt', 'lastActiveAt']
@@ -33,15 +34,21 @@ export function validateUsersSearch(search: Record<string, unknown>): UsersSearc
   const status = STATUSES.includes(search.status as UserStatus)
     ? (search.status as UserStatus)
     : undefined
+  const dataset = search.dataset === 'large' ? 'large' : undefined
 
   return {
     page: Number.isFinite(page) && page >= 1 ? Math.floor(page) : 1,
     pageSize:
-      Number.isFinite(pageSize) && pageSize >= 5 && pageSize <= 100 ? Math.floor(pageSize) : 10,
+      dataset === 'large'
+        ? 5000
+        : Number.isFinite(pageSize) && pageSize >= 5 && pageSize <= 100
+          ? Math.floor(pageSize)
+          : 10,
     q: typeof search.q === 'string' && search.q.trim() ? search.q.trim() : undefined,
     roleId: typeof search.roleId === 'string' && search.roleId ? search.roleId : undefined,
     status,
     sort,
     order,
+    ...(dataset ? { dataset } : {}),
   }
 }

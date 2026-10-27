@@ -302,7 +302,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
-    usedIn: '/security',
+    usedIn: '/dictionaries',
     id: 'switch',
     name: 'Switch',
     category: 'primitive',
@@ -316,7 +316,7 @@ export const COMPONENTS: ComponentEntry[] = [
     demo: '/components#demo-table',
   },
   {
-    usedIn: '/users/$id',
+    usedIn: '/workflows',
     id: 'tabs',
     name: 'Tabs',
     category: 'primitive',
@@ -412,7 +412,7 @@ export const COMPONENTS: ComponentEntry[] = [
     demo: '/components#demo-date-range-picker',
     name: 'Date Range Picker',
     category: 'enterprise',
-    usedIn: '/audit-logs',
+    usedIn: '/workflows',
   },
   {
     id: 'descriptions',
@@ -469,7 +469,7 @@ export const COMPONENTS: ComponentEntry[] = [
     isNew: true,
   },
   {
-    usedIn: '/integrations',
+    usedIn: '/workflows/$id',
     id: 'popconfirm',
     name: 'Popconfirm',
     category: 'enterprise',
@@ -526,7 +526,7 @@ export const COMPONENTS: ComponentEntry[] = [
     demo: '/components#demo-timeline',
     name: 'Timeline',
     category: 'enterprise',
-    usedIn: '/users/$id',
+    usedIn: '/workflows/$id',
   },
   {
     usedIn: '/',

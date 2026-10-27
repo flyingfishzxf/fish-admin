@@ -348,6 +348,15 @@
   }
 }
 
+/* Density scales Tailwind's spacing unit instead of overriding individual
+   paddings: every `px-*`, `gap-*` and `size-*` utility resolves through
+   `--spacing`, so one variable compacts the whole shell — including portal
+   menus, which is why the attribute sits on <html>. */
+html[data-density='compact'] {
+  --spacing: 0.21rem;
+  --sidebar-width: 15rem;
+}
+
 @supports (scrollbar-gutter: stable) {
   html {
     scrollbar-gutter: stable;

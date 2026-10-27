@@ -1,10 +1,14 @@
 import {
   Archive,
+  BookMarked,
   Building,
   Building2,
+  CheckCheck,
+  CircleX,
   FileCog,
   FolderCog,
   FolderPlus,
+  Forward,
   LogIn,
   Plug,
   PlugZap,
@@ -45,6 +49,12 @@ export const AUDIT_ACTIONS: AuditAction[] = [
   'integration.created',
   'integration.updated',
   'integration.deleted',
+  'workflow.approved',
+  'workflow.rejected',
+  'workflow.transferred',
+  'dictionary.created',
+  'dictionary.updated',
+  'dictionary.deleted',
 ]
 
 export const AUDIT_ENTITY_TYPES: AuditEntityType[] = [
@@ -55,6 +65,8 @@ export const AUDIT_ENTITY_TYPES: AuditEntityType[] = [
   'project',
   'file',
   'integration',
+  'workflow',
+  'dictionary',
 ]
 
 export type AuditTone = 'success' | 'info' | 'warning' | 'destructive' | 'neutral'
@@ -80,6 +92,12 @@ export const AUDIT_ACTION_TONES: Record<AuditAction, AuditTone> = {
   'integration.created': 'success',
   'integration.updated': 'info',
   'integration.deleted': 'destructive',
+  'workflow.approved': 'success',
+  'workflow.rejected': 'destructive',
+  'workflow.transferred': 'info',
+  'dictionary.created': 'success',
+  'dictionary.updated': 'info',
+  'dictionary.deleted': 'destructive',
 }
 
 export const AUDIT_ACTION_ICONS: Record<AuditAction, LucideIcon> = {
@@ -103,6 +121,12 @@ export const AUDIT_ACTION_ICONS: Record<AuditAction, LucideIcon> = {
   'integration.created': Plug,
   'integration.updated': PlugZap,
   'integration.deleted': Unplug,
+  'workflow.approved': CheckCheck,
+  'workflow.rejected': CircleX,
+  'workflow.transferred': Forward,
+  'dictionary.created': BookMarked,
+  'dictionary.updated': BookMarked,
+  'dictionary.deleted': Trash2,
 }
 
 export const AUDIT_TONE_BADGE_CLASSES: Record<AuditTone, string> = {

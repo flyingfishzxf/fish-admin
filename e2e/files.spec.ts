@@ -10,6 +10,11 @@ const UPLOAD_SVG = [
 ].join('')
 
 test.describe('file asset library', () => {
+  // The preview panel is a 560px inner scroller that starts below the fold at
+  // 1280x720: its lower half is outside the window, which cannot scroll, so a
+  // popover anchored near its bottom lands off screen.
+  test.use({ viewport: { width: 1280, height: 1000 } })
+
   test('uploads, previews and manages a file through the preview panel', async ({ page }) => {
     const suffix = Date.now().toString(36)
     const name = `e2e-artwork-${suffix}.svg`
@@ -50,6 +55,10 @@ test.describe('file asset library', () => {
     )
 
     const move = page.getByRole('button', { name: /^Move file to folder:/ })
+    // The preview panel scrolls on its own: clicking a trigger that sits below
+    // the fold lets the panel move while the popover is still anchoring.
+    await move.scrollIntoViewIfNeeded()
+    await expect(move).toBeInViewport()
     await move.click()
     await page
       .getByRole('list', { name: 'Move file to folder 1' })

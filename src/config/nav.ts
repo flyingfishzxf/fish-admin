@@ -1,6 +1,7 @@
 import {
   BarChart3,
   Bell,
+  BookMarked,
   Boxes,
   FolderKanban,
   FolderOpen,
@@ -15,6 +16,7 @@ import {
   ShieldCheck,
   UserRound,
   Users,
+  Workflow,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -25,6 +27,7 @@ export type AppPath =
   | '/ui'
   | '/components'
   | '/projects'
+  | '/workflows'
   | '/reports'
   | '/files'
   | '/notifications'
@@ -32,6 +35,7 @@ export type AppPath =
   | '/departments'
   | '/roles'
   | '/permissions'
+  | '/dictionaries'
   | '/audit-logs'
   | '/integrations'
   | '/profile'
@@ -89,6 +93,12 @@ export const NAV_GROUPS: NavGroup[] = [
         permission: PERMISSION_CODES.projectRead,
       },
       {
+        titleKey: 'nav:items.workflows',
+        to: '/workflows',
+        icon: Workflow,
+        permission: PERMISSION_CODES.workflowRead,
+      },
+      {
         titleKey: 'nav:items.files',
         to: '/files',
         icon: FolderOpen,
@@ -127,6 +137,12 @@ export const NAV_GROUPS: NavGroup[] = [
         to: '/permissions',
         icon: KeyRound,
         permission: PERMISSION_CODES.permissionRead,
+      },
+      {
+        titleKey: 'nav:items.dictionaries',
+        to: '/dictionaries',
+        icon: BookMarked,
+        permission: PERMISSION_CODES.dictionaryRead,
       },
       {
         titleKey: 'nav:items.auditLogs',

@@ -20,6 +20,17 @@
     "lastActive": "Last active",
     "actions": "Actions"
   },
+  "columnGroups": {
+    "identity": "Identity",
+    "contact": "Contact",
+    "access": "Access",
+    "activity": "Activity"
+  },
+  "tableRegion": "Users table",
+  "dataset": {
+    "largeBadge": "Demo dataset · {{count}} rows",
+    "largeHint": "Synthetic rows live in memory only. Remove dataset=large from the URL to return to the regular list."
+  },
   "form": {
     "createTitle": "Add a new user",
     "createDescription": "Invite a teammate and choose their initial role.",

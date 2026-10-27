@@ -89,5 +89,14 @@ test.describe('user table bulk actions', () => {
     await expect
       .poll(() => header.evaluate((element) => element.getBoundingClientRect().width))
       .toBeGreaterThan(before + 30)
+
+    await expect
+      .poll(() => page.evaluate(() => localStorage.getItem('fish-admin:users-table-layout') ?? ''))
+      .toContain('sizing')
+
+    await page.reload()
+    await expect
+      .poll(() => header.evaluate((element) => element.getBoundingClientRect().width))
+      .toBeGreaterThan(before + 30)
   })
 })

@@ -163,6 +163,18 @@
     "builtWith": "基于 React、TanStack Router 与 shadcn/ui 构建。",
     "license": "MIT 许可证"
   },
+  "tabs": {
+    "label": "已打开的页面",
+    "pin": "固定页签",
+    "unpin": "取消固定",
+    "reload": "重新加载数据",
+    "close": "关闭页签",
+    "closeTitle": "关闭 {{title}}",
+    "closeOthers": "关闭其他页签",
+    "closeRight": "关闭右侧页签",
+    "closeAll": "全部关闭",
+    "menu": "{{title}} 的更多"
+  },
   "units": {
     "percent": "{{value}}%",
     "new": "新增",
@@ -188,6 +200,7 @@
     "notificationsWithUnread": "{{label}}，{{count}} 条未读",
     "markAllRead": "全部标为已读",
     "noNotifications": "没有新的通知。",
-    "viewAllNotifications": "查看全部通知"
+    "viewAllNotifications": "查看全部通知",
+    "suggestedTag": "添加「{{tag}}」"
   }
 }

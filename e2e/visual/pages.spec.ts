@@ -164,4 +164,35 @@ test.describe('visual regression', () => {
     await expect(page.locator('[data-slot="integration-card"]').first()).toBeVisible()
     await expect(page).toHaveScreenshot('integrations.png', { fullPage: true })
   })
+
+  test('approval center', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/workflows')
+    await expect(page.getByRole('heading', { name: 'Approvals', level: 1 })).toBeVisible()
+    await expect(page.getByRole('row').filter({ hasText: 'WF-2026-0142' })).toBeVisible()
+    await expect(page).toHaveScreenshot('workflows.png', { fullPage: true })
+  })
+
+  test('approval detail', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/workflows/workflow-pur-1')
+    await expect(
+      page.getByRole('heading', { name: 'MacBook Pro for the design team', level: 1 }),
+    ).toBeVisible()
+    await expect(page.getByText('Timeline')).toBeVisible()
+    await expect(page.locator('[data-slot="skeleton"]')).toHaveCount(0)
+    await expect(page).toHaveScreenshot('approval-detail.png', { fullPage: true })
+  })
+
+  test('dictionary settings', async ({ page }) => {
+    await signIn(page)
+    await visit(page, '/dictionaries')
+    await expect(page.getByRole('heading', { name: 'Dictionaries', level: 1 })).toBeVisible()
+    await expect(page.getByRole('button', { name: /User tags/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await expect(page.getByRole('row', { name: /Owner/ })).toBeVisible()
+    await expect(page).toHaveScreenshot('dictionaries.png', { fullPage: true })
+  })
 })

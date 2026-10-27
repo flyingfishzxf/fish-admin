@@ -21,11 +21,13 @@
     "file": "资源库",
     "report": "数据报表",
     "integration": "集成",
+    "workflow": "审批",
     "user": "用户",
     "role": "角色",
     "audit": "审计日志",
     "department": "组织架构",
     "permission": "权限",
+    "dictionary": "数据字典",
     "demo": "演示工具"
   }
 }

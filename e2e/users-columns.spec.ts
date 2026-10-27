@@ -47,5 +47,18 @@ test.describe('user table column settings', () => {
     await panel.getByRole('checkbox', { name: 'Department' }).click()
     await page.keyboard.press('Escape')
     await expect(page.getByRole('columnheader', { name: 'Department' })).toBeVisible()
+
+    await expect
+      .poll(() => page.evaluate(() => localStorage.getItem('fish-admin:users-table-layout') ?? ''))
+      .toContain('department')
+
+    await page.reload()
+    await page.getByRole('button', { name: 'Columns' }).click()
+    await expect
+      .poll(order)
+      .toEqual(['email', 'status', 'role', 'department', 'createdAt', 'lastActiveAt'])
+    await expect(panel.getByRole('checkbox', { name: 'Department' })).toBeChecked()
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('columnheader', { name: 'Department' })).toBeVisible()
   })
 })

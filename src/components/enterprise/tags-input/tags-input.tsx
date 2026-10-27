@@ -15,6 +15,7 @@ export function TagsInput({
   maxTags = 8,
   maxLength = 24,
   disabled = false,
+  suggestions,
   className,
 }: {
   id?: string
@@ -26,6 +27,7 @@ export function TagsInput({
   maxTags?: number
   maxLength?: number
   disabled?: boolean
+  suggestions?: { label: string; value: string }[]
   className?: string
 }) {
   const { t } = useTranslation('common')
@@ -103,6 +105,22 @@ export function TagsInput({
         }}
         className="h-6 min-w-24 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed"
       />
+      {suggestions && suggestions.length > 0 ? (
+        <div className="mt-0.5 flex w-full flex-wrap items-center gap-1 border-t pt-1.5">
+          {suggestions.map((suggestion) => (
+            <button
+              key={suggestion.value}
+              type="button"
+              disabled={disabled || atLimit}
+              aria-label={t('enterprise.suggestedTag', { tag: suggestion.label })}
+              onClick={() => commit(suggestion.value)}
+              className="rounded-full border border-dashed px-2 py-0.5 text-xs text-muted-foreground outline-none hover:border-primary/40 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50"
+            >
+              + {suggestion.label}
+            </button>
+          ))}
+        </div>
+      ) : null}
     </div>
   )
 }

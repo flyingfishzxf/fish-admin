@@ -45,7 +45,13 @@
     "file.deleted": "Deleted file",
     "integration.created": "Created integration",
     "integration.updated": "Updated integration",
-    "integration.deleted": "Deleted integration"
+    "integration.deleted": "Deleted integration",
+    "workflow.approved": "Approved workflow",
+    "workflow.rejected": "Rejected workflow",
+    "workflow.transferred": "Transferred workflow",
+    "dictionary.created": "Created dictionary",
+    "dictionary.updated": "Updated dictionary",
+    "dictionary.deleted": "Deleted dictionary"
   },
   "entities": {
     "user": "User",
@@ -54,7 +60,9 @@
     "auth": "Authentication",
     "project": "Project",
     "file": "File",
-    "integration": "Integration"
+    "integration": "Integration",
+    "workflow": "Workflow",
+    "dictionary": "Dictionary"
   },
   "detail": {
     "title": "Event details",

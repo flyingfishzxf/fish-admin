@@ -18,6 +18,12 @@ import {
   writeDb,
   type UserListQuery,
 } from '../db/store'
+import {
+  deleteSyntheticUsers,
+  isSyntheticUserId,
+  restoreSyntheticUsers,
+  updateSyntheticUserStatus,
+} from '../db/synthetic-users'
 import type { MockDb, MockUserRecord } from '../db/types'
 import { HttpError, readJson, run, runNoContent } from '../http'
 
@@ -174,6 +180,7 @@ export const userHandlers = [
         includeDescendants: url.searchParams.get('includeDescendants') === '1',
         sort: url.searchParams.get('sort') ?? undefined,
         order: url.searchParams.get('order') ?? undefined,
+        dataset: url.searchParams.get('dataset') ?? undefined,
       }
       return queryUsers(db, query)
     }),
@@ -329,8 +336,15 @@ export const userHandlers = [
 
       const updated: string[] = []
       const skipped: string[] = []
+      const syntheticUpdated = new Set(updateSyntheticUserStatus(ids, status))
 
       for (const id of ids) {
+        if (isSyntheticUserId(id)) {
+          if (syntheticUpdated.has(id)) updated.push(id)
+          else skipped.push(id)
+          continue
+        }
+
         const user = findUserById(db, id)
         if (!user || user.deletedAt || user.id === actor.user.id) {
           skipped.push(id)
@@ -367,8 +381,15 @@ export const userHandlers = [
       const deleted: string[] = []
       const skipped: string[] = []
       const now = new Date().toISOString()
+      const syntheticDeleted = new Set(deleteSyntheticUsers(ids))
 
       for (const id of ids) {
+        if (isSyntheticUserId(id)) {
+          if (syntheticDeleted.has(id)) deleted.push(id)
+          else skipped.push(id)
+          continue
+        }
+
         const user = findUserById(db, id)
         if (!user || user.deletedAt || user.id === actor.user.id) {
           skipped.push(id)
@@ -397,9 +418,11 @@ export const userHandlers = [
       const body = (await readJson<BulkBody>(request)) ?? {}
       const ids = readIds(body)
 
-      const restored: User[] = []
+      const restored: User[] = restoreSyntheticUsers(ids).map((record) => serializeUser(db, record))
 
       for (const id of ids) {
+        if (isSyntheticUserId(id)) continue
+
         const user = findUserById(db, id)
         if (!user || !user.deletedAt) continue
 

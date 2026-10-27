@@ -2,6 +2,8 @@ export const PERMISSION_CODES = {
   dashboardRead: 'dashboard:read',
   projectRead: 'project:read',
   projectManage: 'project:manage',
+  workflowRead: 'workflow:read',
+  workflowApprove: 'workflow:approve',
   fileRead: 'file:read',
   fileManage: 'file:manage',
   reportRead: 'report:read',
@@ -19,6 +21,8 @@ export const PERMISSION_CODES = {
   departmentRead: 'department:read',
   departmentManage: 'department:manage',
   permissionRead: 'permission:read',
+  dictionaryRead: 'dictionary:read',
+  dictionaryManage: 'dictionary:manage',
   demoReset: 'demo:reset',
 } as const
 
@@ -27,6 +31,7 @@ export type PermissionCode = (typeof PERMISSION_CODES)[keyof typeof PERMISSION_C
 export const PERMISSION_GROUPS = [
   'dashboard',
   'project',
+  'workflow',
   'file',
   'report',
   'integration',
@@ -35,6 +40,7 @@ export const PERMISSION_GROUPS = [
   'audit',
   'department',
   'permission',
+  'dictionary',
   'demo',
 ] as const
 
@@ -65,6 +71,18 @@ export const PERMISSIONS: PermissionDefinition[] = [
     group: 'project',
     labelKey: 'roles:permissionItems.projectManage',
     descriptionKey: 'roles:permissionItems.projectManageDescription',
+  },
+  {
+    code: PERMISSION_CODES.workflowRead,
+    group: 'workflow',
+    labelKey: 'roles:permissionItems.workflowRead',
+    descriptionKey: 'roles:permissionItems.workflowReadDescription',
+  },
+  {
+    code: PERMISSION_CODES.workflowApprove,
+    group: 'workflow',
+    labelKey: 'roles:permissionItems.workflowApprove',
+    descriptionKey: 'roles:permissionItems.workflowApproveDescription',
   },
   {
     code: PERMISSION_CODES.fileRead,
@@ -169,6 +187,18 @@ export const PERMISSIONS: PermissionDefinition[] = [
     descriptionKey: 'roles:permissionItems.permissionReadDescription',
   },
   {
+    code: PERMISSION_CODES.dictionaryRead,
+    group: 'dictionary',
+    labelKey: 'roles:permissionItems.dictionaryRead',
+    descriptionKey: 'roles:permissionItems.dictionaryReadDescription',
+  },
+  {
+    code: PERMISSION_CODES.dictionaryManage,
+    group: 'dictionary',
+    labelKey: 'roles:permissionItems.dictionaryManage',
+    descriptionKey: 'roles:permissionItems.dictionaryManageDescription',
+  },
+  {
     code: PERMISSION_CODES.demoReset,
     group: 'demo',
     labelKey: 'roles:permissionItems.demoReset',
@@ -184,6 +214,8 @@ export const DEMO_ROLE_PERMISSIONS: Record<string, string[]> = {
     PERMISSION_CODES.dashboardRead,
     PERMISSION_CODES.projectRead,
     PERMISSION_CODES.projectManage,
+    PERMISSION_CODES.workflowRead,
+    PERMISSION_CODES.workflowApprove,
     PERMISSION_CODES.fileRead,
     PERMISSION_CODES.fileManage,
     PERMISSION_CODES.reportRead,
@@ -198,6 +230,8 @@ export const DEMO_ROLE_PERMISSIONS: Record<string, string[]> = {
     PERMISSION_CODES.departmentRead,
     PERMISSION_CODES.departmentManage,
     PERMISSION_CODES.permissionRead,
+    PERMISSION_CODES.dictionaryRead,
+    PERMISSION_CODES.dictionaryManage,
   ],
   viewer: [
     PERMISSION_CODES.dashboardRead,
@@ -208,5 +242,6 @@ export const DEMO_ROLE_PERMISSIONS: Record<string, string[]> = {
     PERMISSION_CODES.userRead,
     PERMISSION_CODES.auditRead,
     PERMISSION_CODES.departmentRead,
+    PERMISSION_CODES.dictionaryRead,
   ],
 }

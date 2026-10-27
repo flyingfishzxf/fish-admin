@@ -63,4 +63,14 @@ describe('validateUsersSearch', () => {
     expect(validateUsersSearch({ roleId: 'role_admin' }).roleId).toBe('role_admin')
     expect(validateUsersSearch({ roleId: '' }).roleId).toBeUndefined()
   })
+
+  it('enables the 5 000-row demo dataset only when asked', () => {
+    expect(validateUsersSearch({ dataset: 'large' })).toMatchObject({
+      dataset: 'large',
+      pageSize: 5000,
+    })
+    expect(validateUsersSearch({ dataset: 'large', pageSize: '5000' }).pageSize).toBe(5000)
+    expect(validateUsersSearch({ dataset: 'large', pageSize: '500' }).pageSize).toBe(5000)
+    expect(validateUsersSearch({ dataset: 'huge' })).not.toHaveProperty('dataset')
+  })
 })

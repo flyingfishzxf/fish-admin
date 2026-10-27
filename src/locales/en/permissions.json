@@ -21,11 +21,13 @@
     "file": "Files",
     "report": "Reports",
     "integration": "Integrations",
+    "workflow": "Approvals",
     "user": "Users",
     "role": "Roles",
     "audit": "Audit log",
     "department": "Departments",
     "permission": "Permissions",
+    "dictionary": "Dictionaries",
     "demo": "Demo tools"
   }
 }

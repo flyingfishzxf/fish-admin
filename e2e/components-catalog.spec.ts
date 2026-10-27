@@ -39,7 +39,7 @@ test.describe('component catalog', () => {
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(page.getByText('83 of 83 components')).toBeVisible()
 
-    await expect(page.locator('#demo-timeline').getByText('Used in /users/$id')).toBeVisible()
+    await expect(page.locator('#demo-timeline').getByText('Used in /workflows/$id')).toBeVisible()
 
     const collapsible = page.locator('#demo-collapsible')
     await expect(collapsible.getByText('Keep CSV exports for 30 days')).toHaveCount(0)

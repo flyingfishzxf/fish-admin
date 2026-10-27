@@ -1,0 +1,96 @@
+{
+  "title": "Dictionaries",
+  "description": "Maintain the two-level reference data that forms and filters read from.",
+  "typesTitle": "Dictionary types",
+  "typeCount_one": "{{count}} type",
+  "typeCount_other": "{{count}} types",
+  "newType": "New type",
+  "empty": {
+    "title": "No dictionary selected",
+    "description": "Pick a dictionary type on the left, or create one to get started."
+  },
+  "type": {
+    "items_one": "{{count}} item",
+    "items_other": "{{count}} items",
+    "references_one": "{{count}} reference",
+    "references_other": "{{count}} references",
+    "system": "Seeded",
+    "custom": "Custom",
+    "edit": "Edit type",
+    "delete": "Delete type",
+    "deleteTitle": "Delete {{name}}?",
+    "deleteDescription": "The type must be empty before it can be deleted.",
+    "createTitle": "New dictionary type",
+    "editTitle": "Edit dictionary type",
+    "code": "Code",
+    "codeHint": "Lowercase letters, digits and underscores. Codes cannot change later.",
+    "name": "Name",
+    "descriptionField": "Description",
+    "created": "Dictionary type created.",
+    "updated": "Dictionary type updated.",
+    "deleted": "Dictionary type deleted."
+  },
+  "item": {
+    "title": "Items",
+    "new": "New item",
+    "edit": "Edit item",
+    "delete": "Delete item",
+    "label": "Label",
+    "value": "Value",
+    "descriptionField": "Description",
+    "usage": "Used by",
+    "status": "Status",
+    "order": "Order",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "createTitle": "New dictionary item",
+    "editTitle": "Edit dictionary item",
+    "created": "Item created.",
+    "updated": "Item updated.",
+    "deleted": "Item deleted.",
+    "enabledToast": "Item enabled.",
+    "disabledToast": "Item disabled.",
+    "deleteTitle": "Delete {{label}}?",
+    "deleteDescription": "Removing a referenced value would break the screens that read it.",
+    "deleteBlocked": "Seeded items can be disabled, not deleted.",
+    "inUse": "Used {{count}} times; disable it instead.",
+    "valueLocked": "This value is referenced by records and cannot change.",
+    "reorderHint": "Drag the handle, or use the arrow keys, to change the order.",
+    "moved": "Order saved.",
+    "empty": "No items yet.",
+    "referenceCount_one": "{{count}} user",
+    "referenceCount_other": "{{count}} users",
+    "reorder": "Reorder {{label}}",
+    "toggle": "Toggle {{label}}"
+  },
+  "usage": {
+    "user_tag": "User profile tag suggestions",
+    "none": "Stored for reference; not consumed by a demo screen yet"
+  },
+  "seedTypes": {
+    "user_tag": {
+      "name": "User tags",
+      "description": "Labels offered as suggestions on the user profile."
+    },
+    "expense_category": {
+      "name": "Expense categories",
+      "description": "Categories for reimbursement and purchase requests."
+    },
+    "approval_priority": {
+      "name": "Approval priority",
+      "description": "Priority levels shown alongside an approval request."
+    }
+  },
+  "errors": {
+    "invalidCode": "Use lowercase letters, digits and underscores, starting with a letter.",
+    "invalidValue": "Use lowercase letters, digits, dashes or underscores.",
+    "codeTaken": "This code is already in use.",
+    "labelTaken": "This label is already in use.",
+    "valueTaken": "This value is already in use.",
+    "inUse": "This value is still referenced by records.",
+    "protected": "Seeded records cannot be deleted.",
+    "notEmpty": "Delete the items first.",
+    "notFound": "This dictionary no longer exists.",
+    "unknown": "The change could not be saved. Try again."
+  }
+}

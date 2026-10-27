@@ -4,16 +4,25 @@ import {
   Check,
   ChevronDown,
   Database,
+  Expand,
   ExternalLink,
   Info,
   Languages,
+  LayoutTemplate,
   Loader2,
   LockKeyhole,
+  Maximize,
   Monitor,
   Moon,
+  PanelLeft,
+  PanelTop,
   PanelsTopLeft,
+  RectangleHorizontal,
   RotateCcw,
+  Rows3,
+  Rows4,
   Sun,
+  type LucideIcon,
 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -44,12 +53,21 @@ import {
 import { APP_VERSION } from '@/config/app'
 import { env } from '@/config/env'
 import { PERMISSION_CODES } from '@/config/permissions'
+import {
+  SHELL_CONTENT_WIDTH_OPTIONS,
+  SHELL_DENSITY_OPTIONS,
+  SHELL_LAYOUT_OPTIONS,
+  type ShellContentWidth,
+  type ShellDensity,
+  type ShellLayout,
+} from '@/config/shell'
 import { ACCENTS, THEME_MODES, type ThemeMode } from '@/config/theme'
 import { useDocumentTitle } from '@/lib/document-title'
 import { changeLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
 import { cn } from '@/lib/utils'
 import { useAuthStore } from '@/stores/auth-store'
 import { useThemeStore } from '@/stores/theme-store'
+import { useUiStore } from '@/stores/ui-store'
 
 import { resetDemoData } from '../api'
 
@@ -58,6 +76,23 @@ const MODE_ICONS = {
   dark: Moon,
   system: Monitor,
 } satisfies Record<ThemeMode, typeof Sun>
+
+const LAYOUT_ICONS = {
+  sidebar: PanelLeft,
+  header: PanelTop,
+  mixed: LayoutTemplate,
+} satisfies Record<ShellLayout, LucideIcon>
+
+const DENSITY_ICONS = {
+  default: Rows3,
+  compact: Rows4,
+} satisfies Record<ShellDensity, LucideIcon>
+
+const CONTENT_WIDTH_ICONS = {
+  contained: RectangleHorizontal,
+  wide: Expand,
+  full: Maximize,
+} satisfies Record<ShellContentWidth, LucideIcon>
 
 const STATUS_PREVIEWS = [
   { to: '/401', code: '401', titleKey: 'errors:status.unauthorized.title' },
@@ -76,6 +111,12 @@ export function SettingsPage() {
   const accent = useThemeStore((state) => state.accent)
   const setMode = useThemeStore((state) => state.setMode)
   const setAccent = useThemeStore((state) => state.setAccent)
+  const layout = useUiStore((state) => state.layout)
+  const density = useUiStore((state) => state.density)
+  const contentWidth = useUiStore((state) => state.contentWidth)
+  const setLayout = useUiStore((state) => state.setLayout)
+  const setDensity = useUiStore((state) => state.setDensity)
+  const setContentWidth = useUiStore((state) => state.setContentWidth)
   const [resetOpen, setResetOpen] = useState(false)
 
   const resetMutation = useMutation({
@@ -251,6 +292,42 @@ export function SettingsPage() {
           </Card>
         </div>
 
+        <Card className="shadow-soft lg:col-span-3">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <LayoutTemplate className="size-4" />
+              {t('settings:shell.title')}
+            </CardTitle>
+            <CardDescription>{t('settings:shell.description')}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            <ShellOptionRow
+              labelKey="settings:shell.layout"
+              hintKey="settings:shell.layoutDescription"
+              options={SHELL_LAYOUT_OPTIONS}
+              current={layout}
+              onSelect={setLayout}
+              icons={LAYOUT_ICONS}
+            />
+            <ShellOptionRow
+              labelKey="settings:shell.density"
+              hintKey="settings:shell.densityDescription"
+              options={SHELL_DENSITY_OPTIONS}
+              current={density}
+              onSelect={setDensity}
+              icons={DENSITY_ICONS}
+            />
+            <ShellOptionRow
+              labelKey="settings:shell.contentWidth"
+              hintKey="settings:shell.contentWidthDescription"
+              options={SHELL_CONTENT_WIDTH_OPTIONS}
+              current={contentWidth}
+              onSelect={setContentWidth}
+              icons={CONTENT_WIDTH_ICONS}
+            />
+          </CardContent>
+        </Card>
+
         {env.enableMock ? (
           <Can permission={PERMISSION_CODES.demoReset}>
             <Card className="shadow-soft lg:col-span-3">
@@ -377,6 +454,62 @@ export function SettingsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </div>
+  )
+}
+
+interface ShellOptionRowProps<V extends string> {
+  labelKey: string
+  hintKey: string
+  options: readonly { value: V; labelKey: string; descriptionKey: string }[]
+  current: V
+  onSelect: (value: V) => void
+  icons: Record<V, LucideIcon>
+}
+
+function ShellOptionRow<V extends string>({
+  labelKey,
+  hintKey,
+  options,
+  current,
+  onSelect,
+  icons,
+}: ShellOptionRowProps<V>) {
+  const { t } = useTranslation()
+
+  return (
+    <div className="space-y-3">
+      <div className="space-y-1">
+        <p className="text-sm font-medium">{t(labelKey)}</p>
+        <p className="text-xs text-muted-foreground">{t(hintKey)}</p>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {options.map((option) => {
+          const Icon: LucideIcon = icons[option.value]
+          const active = current === option.value
+          return (
+            <button
+              key={option.value}
+              type="button"
+              aria-pressed={active}
+              onClick={() => onSelect(option.value)}
+              className={cn(
+                'rounded-xl border p-4 text-left transition-colors',
+                active ? 'border-primary bg-primary/5 ring-1 ring-primary/30' : 'hover:bg-muted/50',
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <Icon className={cn('size-4', active && 'text-primary')} />
+                {active ? <Check className="size-4 text-primary" /> : null}
+              </div>
+              <p className="mt-3 text-sm font-medium">{t(option.labelKey)}</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                {t(option.descriptionKey)}
+              </p>
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }

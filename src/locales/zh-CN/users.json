@@ -20,6 +20,17 @@
     "lastActive": "最近活跃",
     "actions": "操作"
   },
+  "columnGroups": {
+    "identity": "身份",
+    "contact": "联系方式",
+    "access": "权限",
+    "activity": "动态"
+  },
+  "tableRegion": "用户表格",
+  "dataset": {
+    "largeBadge": "演示数据集 · {{count}} 行",
+    "largeHint": "合成数据只存在于内存；从 URL 移除 dataset=large 即可返回常规列表。"
+  },
   "form": {
     "createTitle": "添加新用户",
     "createDescription": "邀请一位同事并为其分配初始角色。",

@@ -94,6 +94,7 @@
   "groups": {
     "dashboard": "Dashboard",
     "project": "Projects",
+    "workflow": "Approvals",
     "file": "Files",
     "report": "Reports",
     "integration": "Integrations",
@@ -102,7 +103,8 @@
     "audit": "Audit log",
     "department": "Departments",
     "permission": "Permissions",
-    "demo": "Demo tools"
+    "demo": "Demo tools",
+    "dictionary": "Dictionaries"
   },
   "permissionItems": {
     "dashboardRead": "View dashboard",
@@ -111,6 +113,10 @@
     "projectReadDescription": "Browse the project portfolio and open project workspaces.",
     "projectManage": "Manage projects",
     "projectManageDescription": "Create projects, move tasks and change status.",
+    "workflowRead": "View approvals",
+    "workflowReadDescription": "Browse approval instances, timelines and comments.",
+    "workflowApprove": "Act on approvals",
+    "workflowApproveDescription": "Approve, reject or transfer a request assigned to you.",
     "fileRead": "View files",
     "fileReadDescription": "Browse folders and preview shared assets.",
     "fileManage": "Manage files",
@@ -145,6 +151,10 @@
     "departmentManageDescription": "Create and rename departments.",
     "permissionRead": "View permissions",
     "permissionReadDescription": "Inspect the permission registry.",
+    "dictionaryRead": "View dictionaries",
+    "dictionaryReadDescription": "Browse dictionary types and their items.",
+    "dictionaryManage": "Manage dictionaries",
+    "dictionaryManageDescription": "Create, reorder, disable and delete dictionary types and items.",
     "demoReset": "Reset demo data",
     "demoResetDescription": "Restore the demo workspace to its seeded state."
   },

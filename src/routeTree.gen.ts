@@ -21,6 +21,7 @@ import { Route as App403RouteImport } from './routes/_app/403'
 import { Route as AppAuditLogsRouteImport } from './routes/_app/audit-logs'
 import { Route as AppComponentsRouteImport } from './routes/_app/components'
 import { Route as AppDepartmentsRouteImport } from './routes/_app/departments'
+import { Route as AppDictionariesRouteImport } from './routes/_app/dictionaries'
 import { Route as AppFilesRouteImport } from './routes/_app/files'
 import { Route as AppIntegrationsRouteImport } from './routes/_app/integrations'
 import { Route as AppNotificationsRouteImport } from './routes/_app/notifications'
@@ -33,6 +34,7 @@ import { Route as AppSecurityRouteImport } from './routes/_app/security'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
 import { Route as AppUiRouteImport } from './routes/_app/ui'
 import { Route as AppUsersRouteImport } from './routes/_app/users'
+import { Route as AppWorkflowsRouteImport } from './routes/_app/workflows'
 import { Route as AuthAcceptInviteRouteImport } from './routes/_auth/accept-invite'
 import { Route as AuthForgotPasswordRouteImport } from './routes/_auth/forgot-password'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
@@ -43,6 +45,7 @@ import { Route as AuthVerifyEmailRouteImport } from './routes/_auth/verify-email
 import { Route as AppProjectsIdRouteImport } from './routes/_app/projects_.$id'
 import { Route as AppRolesMatrixRouteImport } from './routes/_app/roles_.matrix'
 import { Route as AppUsersIdRouteImport } from './routes/_app/users_.$id'
+import { Route as AppWorkflowsIdRouteImport } from './routes/_app/workflows_.$id'
 
 const R401Route = R401RouteImport.update({
   id: '/401',
@@ -100,6 +103,11 @@ const AppComponentsRoute = AppComponentsRouteImport.update({
 const AppDepartmentsRoute = AppDepartmentsRouteImport.update({
   id: '/departments',
   path: '/departments',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppDictionariesRoute = AppDictionariesRouteImport.update({
+  id: '/dictionaries',
+  path: '/dictionaries',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppFilesRoute = AppFilesRouteImport.update({
@@ -162,6 +170,11 @@ const AppUsersRoute = AppUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppWorkflowsRoute = AppWorkflowsRouteImport.update({
+  id: '/workflows',
+  path: '/workflows',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AuthAcceptInviteRoute = AuthAcceptInviteRouteImport.update({
   id: '/accept-invite',
   path: '/accept-invite',
@@ -212,6 +225,11 @@ const AppUsersIdRoute = AppUsersIdRouteImport.update({
   path: '/users/$id',
   getParentRoute: () => AppRouteRoute,
 } as any)
+const AppWorkflowsIdRoute = AppWorkflowsIdRouteImport.update({
+  id: '/workflows_/$id',
+  path: '/workflows/$id',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
@@ -224,6 +242,7 @@ export interface FileRoutesByFullPath {
   '/audit-logs': typeof AppAuditLogsRoute
   '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
+  '/dictionaries': typeof AppDictionariesRoute
   '/files': typeof AppFilesRoute
   '/integrations': typeof AppIntegrationsRoute
   '/notifications': typeof AppNotificationsRoute
@@ -236,6 +255,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AppSettingsRoute
   '/ui': typeof AppUiRoute
   '/users': typeof AppUsersRoute
+  '/workflows': typeof AppWorkflowsRoute
   '/accept-invite': typeof AuthAcceptInviteRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
@@ -246,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/projects/$id': typeof AppProjectsIdRoute
   '/roles/matrix': typeof AppRolesMatrixRoute
   '/users/$id': typeof AppUsersIdRoute
+  '/workflows/$id': typeof AppWorkflowsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
@@ -258,6 +279,7 @@ export interface FileRoutesByTo {
   '/audit-logs': typeof AppAuditLogsRoute
   '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
+  '/dictionaries': typeof AppDictionariesRoute
   '/files': typeof AppFilesRoute
   '/integrations': typeof AppIntegrationsRoute
   '/notifications': typeof AppNotificationsRoute
@@ -270,6 +292,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AppSettingsRoute
   '/ui': typeof AppUiRoute
   '/users': typeof AppUsersRoute
+  '/workflows': typeof AppWorkflowsRoute
   '/accept-invite': typeof AuthAcceptInviteRoute
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/login': typeof AuthLoginRoute
@@ -280,6 +303,7 @@ export interface FileRoutesByTo {
   '/projects/$id': typeof AppProjectsIdRoute
   '/roles/matrix': typeof AppRolesMatrixRoute
   '/users/$id': typeof AppUsersIdRoute
+  '/workflows/$id': typeof AppWorkflowsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -294,6 +318,7 @@ export interface FileRoutesById {
   '/_app/audit-logs': typeof AppAuditLogsRoute
   '/_app/components': typeof AppComponentsRoute
   '/_app/departments': typeof AppDepartmentsRoute
+  '/_app/dictionaries': typeof AppDictionariesRoute
   '/_app/files': typeof AppFilesRoute
   '/_app/integrations': typeof AppIntegrationsRoute
   '/_app/notifications': typeof AppNotificationsRoute
@@ -306,6 +331,7 @@ export interface FileRoutesById {
   '/_app/settings': typeof AppSettingsRoute
   '/_app/ui': typeof AppUiRoute
   '/_app/users': typeof AppUsersRoute
+  '/_app/workflows': typeof AppWorkflowsRoute
   '/_auth/accept-invite': typeof AuthAcceptInviteRoute
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/login': typeof AuthLoginRoute
@@ -317,6 +343,7 @@ export interface FileRoutesById {
   '/_app/projects_/$id': typeof AppProjectsIdRoute
   '/_app/roles_/matrix': typeof AppRolesMatrixRoute
   '/_app/users_/$id': typeof AppUsersIdRoute
+  '/_app/workflows_/$id': typeof AppWorkflowsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -331,6 +358,7 @@ export interface FileRouteTypes {
     | '/audit-logs'
     | '/components'
     | '/departments'
+    | '/dictionaries'
     | '/files'
     | '/integrations'
     | '/notifications'
@@ -343,6 +371,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/ui'
     | '/users'
+    | '/workflows'
     | '/accept-invite'
     | '/forgot-password'
     | '/login'
@@ -353,6 +382,7 @@ export interface FileRouteTypes {
     | '/projects/$id'
     | '/roles/matrix'
     | '/users/$id'
+    | '/workflows/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -365,6 +395,7 @@ export interface FileRouteTypes {
     | '/audit-logs'
     | '/components'
     | '/departments'
+    | '/dictionaries'
     | '/files'
     | '/integrations'
     | '/notifications'
@@ -377,6 +408,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/ui'
     | '/users'
+    | '/workflows'
     | '/accept-invite'
     | '/forgot-password'
     | '/login'
@@ -387,6 +419,7 @@ export interface FileRouteTypes {
     | '/projects/$id'
     | '/roles/matrix'
     | '/users/$id'
+    | '/workflows/$id'
   id:
     | '__root__'
     | '/_app'
@@ -400,6 +433,7 @@ export interface FileRouteTypes {
     | '/_app/audit-logs'
     | '/_app/components'
     | '/_app/departments'
+    | '/_app/dictionaries'
     | '/_app/files'
     | '/_app/integrations'
     | '/_app/notifications'
@@ -412,6 +446,7 @@ export interface FileRouteTypes {
     | '/_app/settings'
     | '/_app/ui'
     | '/_app/users'
+    | '/_app/workflows'
     | '/_auth/accept-invite'
     | '/_auth/forgot-password'
     | '/_auth/login'
@@ -423,6 +458,7 @@ export interface FileRouteTypes {
     | '/_app/projects_/$id'
     | '/_app/roles_/matrix'
     | '/_app/users_/$id'
+    | '/_app/workflows_/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -520,6 +556,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDepartmentsRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/dictionaries': {
+      id: '/_app/dictionaries'
+      path: '/dictionaries'
+      fullPath: '/dictionaries'
+      preLoaderRoute: typeof AppDictionariesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_app/files': {
       id: '/_app/files'
       path: '/files'
@@ -604,6 +647,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUsersRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/workflows': {
+      id: '/_app/workflows'
+      path: '/workflows'
+      fullPath: '/workflows'
+      preLoaderRoute: typeof AppWorkflowsRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/_auth/accept-invite': {
       id: '/_auth/accept-invite'
       path: '/accept-invite'
@@ -674,6 +724,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppUsersIdRouteImport
       parentRoute: typeof AppRouteRoute
     }
+    '/_app/workflows_/$id': {
+      id: '/_app/workflows_/$id'
+      path: '/workflows/$id'
+      fullPath: '/workflows/$id'
+      preLoaderRoute: typeof AppWorkflowsIdRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
   }
 }
 
@@ -683,6 +740,7 @@ interface AppRouteRouteChildren {
   AppAuditLogsRoute: typeof AppAuditLogsRoute
   AppComponentsRoute: typeof AppComponentsRoute
   AppDepartmentsRoute: typeof AppDepartmentsRoute
+  AppDictionariesRoute: typeof AppDictionariesRoute
   AppFilesRoute: typeof AppFilesRoute
   AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppNotificationsRoute: typeof AppNotificationsRoute
@@ -695,10 +753,12 @@ interface AppRouteRouteChildren {
   AppSettingsRoute: typeof AppSettingsRoute
   AppUiRoute: typeof AppUiRoute
   AppUsersRoute: typeof AppUsersRoute
+  AppWorkflowsRoute: typeof AppWorkflowsRoute
   AppIndexRoute: typeof AppIndexRoute
   AppProjectsIdRoute: typeof AppProjectsIdRoute
   AppRolesMatrixRoute: typeof AppRolesMatrixRoute
   AppUsersIdRoute: typeof AppUsersIdRoute
+  AppWorkflowsIdRoute: typeof AppWorkflowsIdRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
@@ -707,6 +767,7 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppAuditLogsRoute: AppAuditLogsRoute,
   AppComponentsRoute: AppComponentsRoute,
   AppDepartmentsRoute: AppDepartmentsRoute,
+  AppDictionariesRoute: AppDictionariesRoute,
   AppFilesRoute: AppFilesRoute,
   AppIntegrationsRoute: AppIntegrationsRoute,
   AppNotificationsRoute: AppNotificationsRoute,
@@ -719,10 +780,12 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppSettingsRoute: AppSettingsRoute,
   AppUiRoute: AppUiRoute,
   AppUsersRoute: AppUsersRoute,
+  AppWorkflowsRoute: AppWorkflowsRoute,
   AppIndexRoute: AppIndexRoute,
   AppProjectsIdRoute: AppProjectsIdRoute,
   AppRolesMatrixRoute: AppRolesMatrixRoute,
   AppUsersIdRoute: AppUsersIdRoute,
+  AppWorkflowsIdRoute: AppWorkflowsIdRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

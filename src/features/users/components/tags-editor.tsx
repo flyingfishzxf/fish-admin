@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { TagsInput } from '@/components/enterprise/tags-input/tags-input'
+import { useDictionaryOptionsQuery } from '@/features/dictionaries/queries'
 import type { User } from '@/types'
 
 import { updateUserProfile } from '../api'
@@ -14,6 +15,7 @@ export function TagsEditor({ user, canEdit }: { user: User; canEdit: boolean }) 
   const { t } = useTranslation()
   const queryClient = useQueryClient()
   const [tags, setTags] = useState<string[]>(user.tags)
+  const tagOptions = useDictionaryOptionsQuery('user_tag', canEdit)
 
   useEffect(() => {
     setTags(user.tags)
@@ -55,6 +57,9 @@ export function TagsEditor({ user, canEdit }: { user: User; canEdit: boolean }) 
         ariaLabel={t('users:detail.tags')}
         placeholder={t('users:detail.tags')}
         disabled={!canEdit || mutation.isPending}
+        suggestions={(tagOptions.data ?? []).filter(
+          (option) => !tags.some((tag) => tag.toLowerCase() === option.value.toLowerCase()),
+        )}
       />
     </section>
   )

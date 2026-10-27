@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable,
   type ColumnOrderState,
+  type ColumnSizingState,
   type RowSelectionState,
   type VisibilityState,
 } from '@tanstack/react-table'
@@ -41,6 +42,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -91,6 +93,15 @@ import { UserContextMenu } from './user-context-menu'
 import { UserFormDrawer } from './user-form-drawer'
 
 const DENSITY_KEY = 'fish-admin:users-density'
+const LAYOUT_KEY = 'fish-admin:users-table-layout'
+
+const DEFAULT_VISIBILITY: VisibilityState = { department: false }
+
+interface UsersTableLayout {
+  visibility: VisibilityState
+  order: ColumnOrderState
+  sizing: ColumnSizingState
+}
 
 const IMPORT_SAMPLE = `name,email,role,department
 Harper Lin,harper.lin@example.com,viewer,Design
@@ -100,6 +111,30 @@ Riley Chen,riley.chen@example.com,viewer,Engineering
 
 function readDensity(): DataTableDensity {
   return localStorage.getItem(DENSITY_KEY) === 'compact' ? 'compact' : 'comfortable'
+}
+
+function readTableLayout(): UsersTableLayout {
+  const fallback: UsersTableLayout = {
+    visibility: DEFAULT_VISIBILITY,
+    order: [],
+    sizing: {},
+  }
+
+  try {
+    const raw = localStorage.getItem(LAYOUT_KEY)
+    if (!raw) return fallback
+    const parsed = JSON.parse(raw) as Partial<UsersTableLayout>
+    return {
+      visibility:
+        parsed.visibility && typeof parsed.visibility === 'object'
+          ? parsed.visibility
+          : DEFAULT_VISIBILITY,
+      order: Array.isArray(parsed.order) ? parsed.order : [],
+      sizing: parsed.sizing && typeof parsed.sizing === 'object' ? parsed.sizing : {},
+    }
+  } catch {
+    return fallback
+  }
 }
 
 export function UsersPage({
@@ -117,11 +152,13 @@ export function UsersPage({
   const canDelete = useCan(PERMISSION_CODES.userDelete)
   const selectable = canEdit || canDelete
 
+  const [initialLayout] = useState(readTableLayout)
   const [searchValue, setSearchValue] = useState(search.q ?? '')
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    department: false,
-  })
-  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+    initialLayout.visibility,
+  )
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>(initialLayout.order)
+  const [columnSizing, setColumnSizing] = useState<ColumnSizingState>(initialLayout.sizing)
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [density, setDensity] = useState<DataTableDensity>(readDensity)
   const [formOpen, setFormOpen] = useState(false)
@@ -205,6 +242,7 @@ export function UsersPage({
     [t],
   )
 
+  const isLargeDataset = search.dataset === 'large'
   const query = useUserListQuery({
     page: search.page,
     pageSize: search.pageSize,
@@ -213,6 +251,7 @@ export function UsersPage({
     status: search.status,
     sort: search.sort,
     order: search.order,
+    dataset: search.dataset,
   })
   const roleOptions = useRoleOptionsQuery()
 
@@ -310,7 +349,19 @@ export function UsersPage({
     search.status,
     search.sort,
     search.order,
+    search.dataset,
   ])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        LAYOUT_KEY,
+        JSON.stringify({ visibility: columnVisibility, order: columnOrder, sizing: columnSizing }),
+      )
+    } catch {
+      // Storage can be blocked; the table keeps working with in-memory layout for this session.
+    }
+  }, [columnVisibility, columnOrder, columnSizing])
 
   const handleSort = useCallback(
     (key: UserSortKey) => {
@@ -408,9 +459,10 @@ export function UsersPage({
   const table = useReactTable({
     data: rows,
     columns,
-    state: { columnVisibility, columnOrder, rowSelection },
+    state: { columnVisibility, columnOrder, columnSizing, rowSelection },
     onColumnVisibilityChange: setColumnVisibility,
     onColumnOrderChange: setColumnOrder,
+    onColumnSizingChange: setColumnSizing,
     onRowSelectionChange: setRowSelection,
     enableRowSelection: selectable,
     enableColumnResizing: true,
@@ -428,23 +480,29 @@ export function UsersPage({
     setExporting(true)
     try {
       const collected: User[] = []
-      let page = 1
-      let totalPages = 1
+      const filters = {
+        q: search.q,
+        roleId: search.roleId,
+        status: search.status,
+        sort: search.sort,
+        order: search.order,
+        dataset: search.dataset,
+      }
 
-      do {
-        const result = await fetchUsers({
-          page,
-          pageSize: 100,
-          q: search.q,
-          roleId: search.roleId,
-          status: search.status,
-          sort: search.sort,
-          order: search.order,
-        })
+      if (isLargeDataset) {
+        const result = await fetchUsers({ page: 1, pageSize: 5000, ...filters })
         collected.push(...result.items)
-        totalPages = result.pageCount
-        page += 1
-      } while (page <= totalPages)
+      } else {
+        let page = 1
+        let totalPages = 1
+
+        do {
+          const result = await fetchUsers({ page, pageSize: 100, ...filters })
+          collected.push(...result.items)
+          totalPages = result.pageCount
+          page += 1
+        } while (page <= totalPages)
+      }
 
       const csv = toCsv(
         collected.map((user) => ({
@@ -538,6 +596,10 @@ export function UsersPage({
           fetchingLabel={t('common:states.loading')}
           density={density}
           empty={emptyState}
+          virtualized
+          virtualRowHeight={density === 'compact' ? 48 : 60}
+          virtualMaxHeight={isLargeDataset ? 560 : 800}
+          scrollLabel={t('users:tableRegion')}
           search={{
             value: searchValue,
             onChange: setSearchValue,
@@ -603,6 +665,15 @@ export function UsersPage({
           }
           actions={
             <>
+              {isLargeDataset ? (
+                <Badge
+                  variant="secondary"
+                  className="h-6 font-normal"
+                  title={t('users:dataset.largeHint')}
+                >
+                  {t('users:dataset.largeBadge', { count: total })}
+                </Badge>
+              ) : null}
               <SavedViewsMenu
                 key={currentUser?.id ?? 'anonymous'}
                 userId={currentUser?.id ?? 'anonymous'}
@@ -641,15 +712,19 @@ export function UsersPage({
               <DataTableViewOptions table={table} />
             </>
           }
-          pagination={{
-            page: query.data?.page ?? search.page,
-            pageCount: Math.max(pageCount, 1),
-            total,
-            pageSize: search.pageSize,
-            onPageChange: (page) => onSearchChange((previous) => ({ ...previous, page })),
-            onPageSizeChange: (pageSize) =>
-              onSearchChange((previous) => ({ ...previous, pageSize, page: 1 })),
-          }}
+          pagination={
+            isLargeDataset
+              ? undefined
+              : {
+                  page: query.data?.page ?? search.page,
+                  pageCount: Math.max(pageCount, 1),
+                  total,
+                  pageSize: search.pageSize,
+                  onPageChange: (page) => onSearchChange((previous) => ({ ...previous, page })),
+                  onPageSizeChange: (pageSize) =>
+                    onSearchChange((previous) => ({ ...previous, pageSize, page: 1 })),
+                }
+          }
           selection={
             selectedCount > 0
               ? {

@@ -23,6 +23,38 @@
       "rose": "玫瑰红"
     }
   },
+  "shell": {
+    "title": "界面",
+    "description": "按屏幕安排导航位置、间距与内容宽度。",
+    "layout": "导航布局",
+    "layoutDescription": "主导航所在的位置。",
+    "layouts": {
+      "sidebar": "侧边栏",
+      "sidebarHint": "导航收纳在左侧可折叠栏。",
+      "header": "顶部导航",
+      "headerHint": "导航按分组排在顶部菜单。",
+      "mixed": "图标栏 + 标签",
+      "mixedHint": "左侧只留图标，当前分组排在页头下方。"
+    },
+    "density": "密度",
+    "densityDescription": "控件占用的空间大小。",
+    "densities": {
+      "default": "标准",
+      "defaultHint": "默认的内边距与间距。",
+      "compact": "紧凑",
+      "compactHint": "间距收紧，同屏显示更多行。"
+    },
+    "contentWidth": "内容宽度",
+    "contentWidthDescription": "页面主体可扩展到的宽度。",
+    "contentWidths": {
+      "contained": "适中",
+      "containedHint": "最宽 1280px 并居中。",
+      "wide": "宽",
+      "wideHint": "最宽 1600px，适合密集表格。",
+      "full": "满屏",
+      "fullHint": "占满整个视口。"
+    }
+  },
   "language": {
     "title": "语言",
     "description": "界面语言。日期与数字也会使用相同的区域设置。",

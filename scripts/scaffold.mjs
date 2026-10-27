@@ -453,6 +453,7 @@ function brandStep({ editor, options }) {
     'src/lib/i18n.ts',
     'src/stores/auth-store.ts',
     'src/stores/theme-store.ts',
+    'src/stores/ui-store.ts',
     'src/features/users/components/users-page.tsx',
     'src/features/users/components/saved-views-menu.tsx',
     'src/features/users/components/saved-views-menu.test.tsx',

@@ -163,6 +163,18 @@
     "builtWith": "Built with React, TanStack Router and shadcn/ui.",
     "license": "MIT License"
   },
+  "tabs": {
+    "label": "Open pages",
+    "pin": "Keep this tab",
+    "unpin": "Release this tab",
+    "reload": "Reload data",
+    "close": "Close tab",
+    "closeTitle": "Close {{title}}",
+    "closeOthers": "Close other tabs",
+    "closeRight": "Close tabs to the right",
+    "closeAll": "Close all",
+    "menu": "More for {{title}}"
+  },
   "units": {
     "percent": "{{value}}%",
     "new": "New",
@@ -188,6 +200,7 @@
     "notificationsWithUnread": "{{label}}, {{count}} unread",
     "markAllRead": "Mark all read",
     "noNotifications": "You're all caught up.",
-    "viewAllNotifications": "View all notifications"
+    "viewAllNotifications": "View all notifications",
+    "suggestedTag": "Add {{tag}}"
   }
 }

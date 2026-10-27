@@ -84,7 +84,9 @@ export function AnchorNav({
       data-orientation={orientation}
       aria-label={ariaLabel}
       className={cn(
-        horizontal ? 'flex items-stretch gap-1 overflow-x-auto' : 'flex flex-col border-l',
+        horizontal
+          ? 'flex items-stretch gap-1 overflow-x-auto overflow-y-hidden'
+          : 'flex flex-col border-l',
         className,
       )}
     >

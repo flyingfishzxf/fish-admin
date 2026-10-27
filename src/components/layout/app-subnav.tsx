@@ -1,0 +1,43 @@
+import { Link, useRouterState } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
+
+import { findNavItem, isPathActive } from '@/config/nav'
+import { useMenuNavGroups } from '@/features/navigation/queries'
+import { cn } from '@/lib/utils'
+
+/** The second row of the `mixed` shell: the active group, spread out as chips. */
+export function AppSubnav() {
+  const { t } = useTranslation()
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const groups = useMenuNavGroups()
+  const activeItem = findNavItem(pathname, groups)
+  const group = groups.find((candidate) =>
+    candidate.items.some((item) =>
+      [item, ...(item.children ?? [])].some((entry) => entry.to === activeItem?.to),
+    ),
+  )
+
+  if (!group) return null
+
+  return (
+    <nav
+      aria-label={t(group.titleKey)}
+      className="flex shrink-0 items-center gap-1 overflow-x-auto border-b px-4 py-2 sm:px-6"
+    >
+      {group.items.map((item) => (
+        <Link
+          key={item.to}
+          to={item.to}
+          className={cn(
+            'shrink-0 rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+            isPathActive(pathname, item.to)
+              ? 'border-primary bg-primary/10 text-foreground'
+              : 'text-muted-foreground hover:bg-muted/60',
+          )}
+        >
+          {t(item.titleKey)}
+        </Link>
+      ))}
+    </nav>
+  )
+}

@@ -1,0 +1,96 @@
+{
+  "title": "数据字典",
+  "description": "维护表单与筛选读取的两级参照数据。",
+  "typesTitle": "字典类型",
+  "typeCount_one": "{{count}} 个类型",
+  "typeCount_other": "{{count}} 个类型",
+  "newType": "新建类型",
+  "empty": {
+    "title": "尚未选择字典",
+    "description": "从左侧选择一个字典类型，或先新建一个。"
+  },
+  "type": {
+    "items_one": "{{count}} 个条目",
+    "items_other": "{{count}} 个条目",
+    "references_one": "{{count}} 处引用",
+    "references_other": "{{count}} 处引用",
+    "system": "内置",
+    "custom": "自定义",
+    "edit": "编辑类型",
+    "delete": "删除类型",
+    "deleteTitle": "删除「{{name}}」？",
+    "deleteDescription": "类型下的条目清空后才能删除。",
+    "createTitle": "新建字典类型",
+    "editTitle": "编辑字典类型",
+    "code": "编码",
+    "codeHint": "小写字母、数字与下划线，创建后不可修改。",
+    "name": "名称",
+    "descriptionField": "描述",
+    "created": "字典类型已创建。",
+    "updated": "字典类型已更新。",
+    "deleted": "字典类型已删除。"
+  },
+  "item": {
+    "title": "字典项",
+    "new": "新建条目",
+    "edit": "编辑条目",
+    "delete": "删除条目",
+    "label": "显示名",
+    "value": "值",
+    "descriptionField": "描述",
+    "usage": "引用方",
+    "status": "状态",
+    "order": "排序",
+    "enabled": "已启用",
+    "disabled": "已停用",
+    "createTitle": "新建字典项",
+    "editTitle": "编辑字典项",
+    "created": "条目已创建。",
+    "updated": "条目已更新。",
+    "deleted": "条目已删除。",
+    "enabledToast": "条目已启用。",
+    "disabledToast": "条目已停用。",
+    "deleteTitle": "删除「{{label}}」？",
+    "deleteDescription": "删除仍被引用的值会让读取它的页面失效。",
+    "deleteBlocked": "内置条目只能停用，不能删除。",
+    "inUse": "已被引用 {{count}} 次，请改为停用。",
+    "valueLocked": "该值已被业务数据引用，不能修改。",
+    "reorderHint": "拖动左侧手柄，或使用方向键调整顺序。",
+    "moved": "排序已保存。",
+    "empty": "暂无条目。",
+    "referenceCount_one": "{{count}} 位用户",
+    "referenceCount_other": "{{count}} 位用户",
+    "reorder": "调整「{{label}}」排序",
+    "toggle": "切换「{{label}}」状态"
+  },
+  "usage": {
+    "user_tag": "用户资料页的标签建议",
+    "none": "仅作演示存储，暂未被页面读取"
+  },
+  "seedTypes": {
+    "user_tag": {
+      "name": "用户标签",
+      "description": "用户资料页展示的标签建议。"
+    },
+    "expense_category": {
+      "name": "费用类别",
+      "description": "报销与采购申请使用的类别。"
+    },
+    "approval_priority": {
+      "name": "审批优先级",
+      "description": "审批申请旁的优先级。"
+    }
+  },
+  "errors": {
+    "invalidCode": "请使用小写字母、数字与下划线，并以字母开头。",
+    "invalidValue": "请使用小写字母、数字、短横线或下划线。",
+    "codeTaken": "该编码已被占用。",
+    "labelTaken": "该显示名已被占用。",
+    "valueTaken": "该值已被占用。",
+    "inUse": "该值仍被业务数据引用。",
+    "protected": "内置记录不能删除。",
+    "notEmpty": "请先删除类型下的条目。",
+    "notFound": "该字典已不存在。",
+    "unknown": "保存失败，请重试。"
+  }
+}

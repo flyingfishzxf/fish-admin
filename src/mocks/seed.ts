@@ -14,6 +14,8 @@ import {
   type MockSession,
   type MockUserRecord,
 } from './db/types'
+import { createDictionarySeed } from './seed-dictionaries'
+import { createWorkflowSeed } from './seed-workflows'
 import { createWorkspaceSeed } from './seed-workspace'
 
 const SEED = 2026
@@ -290,6 +292,8 @@ export function createSeedDb(): MockDb {
   }
 
   const workspace = createWorkspaceSeed(users, departments)
+  const workflow = createWorkflowSeed(users)
+  const dictionary = createDictionarySeed()
 
   return {
     version: MOCK_DB_VERSION,
@@ -315,5 +319,10 @@ export function createSeedDb(): MockDb {
     files: workspace.files,
     integrations: workspace.integrations,
     deliveries: workspace.deliveries,
+    workflows: workflow.workflows,
+    workflowSteps: workflow.workflowSteps,
+    workflowComments: workflow.workflowComments,
+    dictionaryTypes: dictionary.types,
+    dictionaryItems: dictionary.items,
   }
 }

@@ -11,6 +11,7 @@
     "ui": "组件库",
     "components": "组件目录",
     "projects": "项目",
+    "workflows": "审批中心",
     "files": "资源库",
     "notifications": "通知",
     "users": "用户",
@@ -21,7 +22,8 @@
     "integrations": "集成中心",
     "profile": "个人中心",
     "security": "账户安全",
-    "settings": "设置"
+    "settings": "设置",
+    "dictionaries": "数据字典"
   },
   "breadcrumbs": {
     "home": "首页"

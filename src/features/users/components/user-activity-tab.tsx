@@ -1,4 +1,5 @@
 import {
+  BookMarked,
   Building2,
   FileText,
   FolderKanban,
@@ -6,6 +7,7 @@ import {
   Plug,
   ShieldCheck,
   UserRound,
+  Workflow,
   type LucideIcon,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
@@ -40,6 +42,8 @@ const ENTITY_ICONS: Record<AuditEntityType, LucideIcon> = {
   project: FolderKanban,
   file: FileText,
   integration: Plug,
+  workflow: Workflow,
+  dictionary: BookMarked,
 }
 
 export function UserActivityTab({ userId }: { userId: string }) {

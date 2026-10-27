@@ -45,7 +45,13 @@
     "file.deleted": "删除文件",
     "integration.created": "创建集成",
     "integration.updated": "更新集成",
-    "integration.deleted": "删除集成"
+    "integration.deleted": "删除集成",
+    "workflow.approved": "同意审批",
+    "workflow.rejected": "驳回审批",
+    "workflow.transferred": "转交审批",
+    "dictionary.created": "创建数据字典",
+    "dictionary.updated": "更新数据字典",
+    "dictionary.deleted": "删除数据字典"
   },
   "entities": {
     "user": "用户",
@@ -54,7 +60,9 @@
     "auth": "身份认证",
     "project": "项目",
     "file": "文件",
-    "integration": "集成"
+    "integration": "集成",
+    "workflow": "审批",
+    "dictionary": "数据字典"
   },
   "detail": {
     "title": "事件详情",

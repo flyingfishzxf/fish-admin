@@ -1,0 +1,120 @@
+{
+  "title": "Approvals",
+  "subtitle": "Requests that move through a fixed approval chain, with every decision on the record.",
+  "searchPlaceholder": "Search code, title or person…",
+  "loadError": "The approval list could not be loaded.",
+  "views": {
+    "label": "Approval views",
+    "mine": "Initiated by me",
+    "pending": "Waiting for me",
+    "all": "All approvals"
+  },
+  "columns": {
+    "request": "Request",
+    "type": "Type",
+    "status": "Status",
+    "initiator": "Initiator",
+    "approver": "Current approver",
+    "closed": "Closed",
+    "amount": "Amount",
+    "updated": "Updated",
+    "open": "Open request"
+  },
+  "columnGroups": {
+    "request": "Request information",
+    "state": "Type & status",
+    "people": "People",
+    "details": "Details"
+  },
+  "tableRegion": "Approval queue table",
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "types": {
+    "purchase": "Purchase",
+    "leave": "Leave",
+    "seal": "Seal",
+    "change": "Change"
+  },
+  "filters": {
+    "status": "Status",
+    "allStatuses": "All statuses",
+    "type": "Type",
+    "allTypes": "All types",
+    "initiator": "Initiator",
+    "allInitiators": "All initiators",
+    "dateRange": "Date range",
+    "clear": "Clear filters"
+  },
+  "presets": {
+    "today": "Today",
+    "last7": "Last 7 days",
+    "last30": "Last 30 days",
+    "last90": "Last 90 days",
+    "thisMonth": "This month"
+  },
+  "empty": {
+    "filteredTitle": "No approvals match",
+    "filteredDescription": "Try a different status, type or date range.",
+    "clear": "Clear filters",
+    "mineTitle": "Nothing initiated yet",
+    "mineDescription": "Requests you create will appear here.",
+    "pendingTitle": "Nothing waiting for you",
+    "pendingDescription": "When a request reaches your step, it shows up here.",
+    "allTitle": "No approvals yet",
+    "allDescription": "Submitted requests will appear here with their full timeline."
+  },
+  "detail": {
+    "back": "Back to approvals",
+    "notFoundTitle": "Approval not found",
+    "notFoundDescription": "This request may have been removed or the link is wrong.",
+    "notFoundAction": "Back to approvals",
+    "initiatedBy": "Initiated by {{name}}",
+    "createdAt": "Submitted {{date}}",
+    "waitingFor": "Waiting for {{name}}",
+    "closed": "Closed",
+    "formTitle": "Form snapshot",
+    "formDescription": "The fields exactly as they were submitted.",
+    "timelineTitle": "Timeline",
+    "timelineDescription": "Submission and every decision, in order.",
+    "snapshotTitle": "Raw snapshot",
+    "snapshotDescription": "The payload a downstream system would receive.",
+    "snapshotRaw": "Approval snapshot"
+  },
+  "timeline": {
+    "submitted": "{{name}} submitted the request",
+    "approved": "{{name}} approved",
+    "rejected": "{{name}} rejected",
+    "transferred": "{{name}} transferred to {{approver}}"
+  },
+  "actions": {
+    "title": "Your decision",
+    "description": "Approve, reject or hand this request to another approver.",
+    "note": "Decision note",
+    "notePlaceholder": "Optional note kept with your decision…",
+    "approve": "Approve",
+    "approveTitle": "Approve this request?",
+    "approveDescription": "The chain moves to the next step, or closes as approved on the final step.",
+    "reject": "Reject",
+    "rejectTitle": "Reject this request?",
+    "rejectDescription": "The request closes and the initiator is notified.",
+    "transfer": "Transfer",
+    "transferTitle": "Transfer this step?",
+    "transferDescription": "{{name}} becomes the approver for this step.",
+    "transferPlaceholder": "Pick a new approver first",
+    "transferTo": "Transfer to",
+    "done": "Decision recorded.",
+    "failed": "The decision could not be recorded."
+  },
+  "comments": {
+    "title": "Comments",
+    "description": "Context that stays with the request.",
+    "empty": "No comments yet.",
+    "label": "Add a comment",
+    "placeholder": "Share context for the next approver…",
+    "submit": "Comment",
+    "failed": "The comment could not be added."
+  }
+}

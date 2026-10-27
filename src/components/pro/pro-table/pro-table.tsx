@@ -51,6 +51,10 @@ export type ProTableProps<TData> = {
   fetchingLabel?: string
   rowContextMenu?: (row: TData) => ReactNode
   onRowClick?: (row: TData) => void
+  virtualized?: boolean
+  virtualRowHeight?: number
+  virtualMaxHeight?: number
+  scrollLabel?: string
 }
 
 export function ProTable<TData>({
@@ -68,6 +72,10 @@ export function ProTable<TData>({
   fetchingLabel,
   rowContextMenu,
   onRowClick,
+  virtualized = false,
+  virtualRowHeight,
+  virtualMaxHeight,
+  scrollLabel,
 }: ProTableProps<TData>) {
   const defaultToolbar =
     search || filters || actions || fetching ? (
@@ -141,6 +149,10 @@ export function ProTable<TData>({
         }
         rowContextMenu={rowContextMenu}
         onRowClick={onRowClick}
+        virtualized={virtualized}
+        virtualRowHeight={virtualRowHeight}
+        virtualMaxHeight={virtualMaxHeight}
+        scrollLabel={scrollLabel}
       />
 
       {selection && selection.count > 0 ? (

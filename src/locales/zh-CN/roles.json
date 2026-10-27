@@ -94,6 +94,7 @@
   "groups": {
     "dashboard": "工作台",
     "project": "项目",
+    "workflow": "审批",
     "file": "资源库",
     "report": "数据报表",
     "integration": "集成",
@@ -102,7 +103,8 @@
     "audit": "审计日志",
     "department": "组织架构",
     "permission": "权限",
-    "demo": "演示工具"
+    "demo": "演示工具",
+    "dictionary": "数据字典"
   },
   "permissionItems": {
     "dashboardRead": "查看工作台",
@@ -111,6 +113,10 @@
     "projectReadDescription": "浏览项目组合并打开项目工作台。",
     "projectManage": "管理项目",
     "projectManageDescription": "创建项目、调整任务与状态。",
+    "workflowRead": "查看审批",
+    "workflowReadDescription": "浏览审批实例、时间线与评论。",
+    "workflowApprove": "处理审批",
+    "workflowApproveDescription": "对指派给自己的审批执行同意、驳回或转交。",
     "fileRead": "查看资源",
     "fileReadDescription": "浏览文件夹并预览共享资源。",
     "fileManage": "管理资源",
@@ -145,6 +151,10 @@
     "departmentManageDescription": "新建与重命名部门。",
     "permissionRead": "查看权限",
     "permissionReadDescription": "查看权限注册表。",
+    "dictionaryRead": "查看数据字典",
+    "dictionaryReadDescription": "浏览字典类型及其条目。",
+    "dictionaryManage": "管理数据字典",
+    "dictionaryManageDescription": "新建、排序、停用与删除字典类型和条目。",
     "demoReset": "重置演示数据",
     "demoResetDescription": "将演示工作区恢复到初始种子数据。"
   },

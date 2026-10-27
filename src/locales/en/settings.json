@@ -23,6 +23,38 @@
       "rose": "Rose"
     }
   },
+  "shell": {
+    "title": "Shell",
+    "description": "Arrange the navigation, spacing and content width for your screen.",
+    "layout": "Navigation layout",
+    "layoutDescription": "Where the primary navigation lives.",
+    "layouts": {
+      "sidebar": "Sidebar",
+      "sidebarHint": "Navigation in a collapsible left rail.",
+      "header": "Top bar",
+      "headerHint": "Navigation in grouped menus across the top.",
+      "mixed": "Rail + chips",
+      "mixedHint": "Icon rail on the left, the active group below the header."
+    },
+    "density": "Density",
+    "densityDescription": "How much space controls take.",
+    "densities": {
+      "default": "Comfortable",
+      "defaultHint": "The default padding and gaps.",
+      "compact": "Compact",
+      "compactHint": "Tighter spacing, more rows on screen."
+    },
+    "contentWidth": "Content width",
+    "contentWidthDescription": "How wide the page body may grow.",
+    "contentWidths": {
+      "contained": "Contained",
+      "containedHint": "Capped at 1280px and centred.",
+      "wide": "Wide",
+      "wideHint": "Capped at 1600px for dense tables.",
+      "full": "Full",
+      "fullHint": "Uses the whole viewport."
+    }
+  },
   "language": {
     "title": "Language",
     "description": "Interface language. Dates and numbers follow the same locale.",
