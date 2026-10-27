@@ -28,7 +28,9 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 ## Features
 
 - **Full account lifecycle** — login, registration with email verification, forgot/reset password, invitation links, TOTP-style two-factor sign-in, five-attempt lockout, password change and a per-device session list. Session restore uses single-flight refresh-token rotation, deep-link redirect after login and global 401 handling.
-- **Three-level RBAC** — navigation, route guards and button-level `<Can>` checks derived from one permission registry. Twenty-one permission codes cover projects, files, reports, integrations, users, roles, departments and audit. Admin, Manager and Viewer accounts are ready to compare.
+- **Three-level RBAC** — navigation, route guards and button-level `<Can>` checks derived from one permission registry. Twenty-five permission codes cover projects, approvals, files, reports, integrations, users, roles, departments, dictionaries and audit. Admin, Manager and Viewer accounts are ready to compare.
+- **Three shells and a tabbed workbench** — sidebar, header or mixed navigation, compact density and a content-width cap, all persisted per browser. Opened pages become tabs you can pin, reload with the query intact, close to the right or close all; paths the server menu hides never leave a tab behind. The layout switch lives in Settings.
+- **Approval center** — `/workflows` splits requests into My requests, Awaiting me and All, with filters that survive the tab. A request opens a snapshot, decision panel, timeline and comments; approve/reject advances a mock state machine and writes an audit event. See [Approval center](docs/en/workflows.md).
 - **Realistic mock API** — MSW, a seeded in-memory database persisted to `localStorage`, 60 users across a 10-node department tree, 12 projects with 72 tasks and 48 milestones, 18 files in an 8-node folder tree, 6 integrations with 24 delivery records, a notification inbox with preferences, 220 audit events, pagination, filtering, sorting, fake JWTs, refresh tokens, `403` responses and a demo-data reset.
 - **Project delivery workspace** — `/projects` combines a URL-driven filter bar, board/list switch, featured-project carousel, create wizard, context menus, archive confirmations and paging. Each project opens at `/projects/$id` with overview, task board, milestone calendar, member transfer, budget editing, attachments and a retrospective stepper.
 - **File library** — `/files` pairs a folder tree and breadcrumb with grid/list views, upload queue, resizable preview pane with watermark, image carousel, JSON metadata, bulk selection and move/delete flows. Uploads are read client-side and stored as data URLs; large files keep metadata only.
@@ -36,6 +38,8 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 - **Integrations and user import** — `/integrations` manages webhook connections, headers, delivery history payloads and replay, while `/users` gains a bulk import wizard and `/audit-logs` renders raw event JSON with links for project, file and integration entities.
 - **Guided tour** — the dashboard header starts a `Tour` that walks through the sidebar, search, notification bell and account menu.
 - **Advanced users table** — URL-driven search, filters, sorting and paging; row selection with bulk status changes and bulk delete/restore (undo from the toast); column visibility, drag-to-reorder, pinning and resizing; two densities; per-row context menu; saved views; CSV export; drawer forms with React Hook Form + Zod; loading, empty and error states.
+- **Tables that survive volume** — `/users` and `/workflows` window their rows with sticky grouped headers and pinned columns. `?dataset=large` renders 5 000 mock rows while keeping at most ~80 in the DOM; visibility, column order and widths persist per user. The synthetic rows are generated in memory and never touch `localStorage`. See [Large tables](docs/en/tables.md).
+- **Dictionaries and reference data** — `/dictionaries` maintains two-level types and items with drag or keyboard reordering, enabled switches, reference counts and protection rules. The user profile reads enabled `user_tag` items as tag suggestions, so editing a dictionary has a visible effect. See [Dictionaries](docs/en/dictionaries.md).
 - **User detail and history** — `/users/$id` combines an overview, inline tag editing, an avatar dropzone and a per-user activity timeline, with a not-found Result state.
 - **Organization tree** — `/departments` renders a keyboard-navigable department tree with member counts, plus create/rename actions and deep-linkable selection.
 - **Role governance** — system and custom roles, a two-step create-role wizard, and a `/roles/matrix` permission matrix with grouped checkboxes, sticky headers and an explicit save bar.
@@ -114,11 +118,14 @@ More things to try:
 | `/ui`                | UI playground: 40 primitive demos, states and overlays       | signed in           |
 | `/projects`          | Project portfolio: filters, board/list, wizard and paging    | `project:read`      |
 | `/projects/$id`      | Project workspace: tasks, calendar, budget and retrospective | `project:read`      |
+| `/workflows`         | Approval center: my requests, awaiting me and all            | `workflow:read`     |
+| `/workflows/$id`     | Approval snapshot, decision, timeline and comments           | `workflow:read`     |
 | `/files`             | Asset library: folders, upload, preview, move and delete     | `file:read`         |
 | `/notifications`     | Notification inbox, bulk read and channel preferences        | signed in           |
 | `/users`             | Users table, CRUD, bulk operations and CSV import            | `user:read`         |
 | `/users/$id`         | User overview, tags, avatar and activity timeline            | `user:read`         |
 | `/departments`       | Department tree, members and create/rename actions           | `department:read`   |
+| `/dictionaries`      | Two-level dictionaries, ordering, references and protection  | `dictionary:read`   |
 | `/roles`             | Role cards and permission editor                             | `role:read`         |
 | `/roles/matrix`      | Permission matrix across every role                          | `role:read`         |
 | `/permissions`       | Read-only permission registry                                | `permission:read`   |
@@ -296,9 +303,9 @@ docs/{en,zh-CN}/           # Documentation
 Every push and pull request runs five gates in CI:
 
 - **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans thirteen flows (login in light, dark and Simplified Chinese; dashboard in both themes; users list and create dialog; user detail; roles and permission matrix; audit log; security and settings; projects board, create dialog and project detail; file library, upload drawer and preview; notification inbox and preferences; reports and the integration form; component catalog and UI playground) against WCAG 2.1 A/AA with axe. Any violation fails the run.
-- **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html`, together with the shell's blocking `/theme-bootstrap.js` — 25 chunks totalling 165.5 KB — because that set, not the entry file alone, is what the browser downloads before it paints. The CSS total counts the linked `/boot.css` as well.
+- **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html`, together with the shell's blocking `/theme-bootstrap.js` — 27 chunks totalling 172.4 KB — because that set, not the entry file alone, is what the browser downloads before it paints. The CSS total counts the linked `/boot.css` as well.
 - **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
-- **Visual regression** — sixteen screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, catalog hero, projects, project detail, files, reports in both themes, notifications and integrations) are compared against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable.
+- **Visual regression** — nineteen screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, catalog hero, projects, project detail, files, reports in both themes, notifications, integrations, approval center, approval detail and dictionaries) are compared against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable.
 
 - **Security headers** — `e2e/security.spec.ts` checks that `/`, `/index.html`, a hashed asset and the two shell files all carry the identical header set, then walks sign-in, dashboard, users, reports, files, the component catalog and settings with a `securitypolicyviolation` listener that must stay empty. See [docs/en/security-headers.md](docs/en/security-headers.md).
 - **Supply chain** — `pnpm audit --audit-level=high` fails the quality job, CodeQL analyses JavaScript and TypeScript on every push, pull request and weekly schedule, [`.github/dependabot.yml`](.github/dependabot.yml) opens grouped minor/patch and major pull requests for npm and for the actions, every workflow runs on a read-scoped token (`permissions: contents: read`), and the build job uploads the bundle it measured.
@@ -327,6 +334,9 @@ Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).
 - [Architecture](docs/en/architecture.md) — boot sequence, routing, data flow, theming and i18n.
 - [RBAC](docs/en/rbac.md) — permission model, guards, adding a permission.
 - [Account lifecycle](docs/en/account-lifecycle.md) — sign-up, verification, 2FA, sessions, failure screens and offline behaviour.
+- [Approval center](docs/en/workflows.md) — multi-step chains, decisions, timeline and the server-side transaction a real backend owes.
+- [Large tables](docs/en/tables.md) — windowing, grouped headers, pinned columns, persisted layout and the 5 000-row mock demo.
+- [Dictionaries](docs/en/dictionaries.md) — two-level reference data, reference counts, protected records and what a real backend must enforce.
 - [API integration](docs/en/api-integration.md) — contract, auth flow, replacing the mock.
 - [Deployment](docs/en/deployment.md) — Vercel, Docker, nginx and service-worker pitfalls.
 - [Security headers](docs/en/security-headers.md) — the exact CSP, what `script-src 'self'` forced in the code, and how to verify it.

@@ -28,7 +28,9 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 ## 功能
 
 - **完整账号生命周期** —— 登录、注册与邮箱验证、忘记密码/重置、邀请链接、两步验证登录（TOTP 风格）、连续五次失败锁定、修改密码与多设备会话列表。会话恢复包含单飞刷新令牌轮换、登录后深链回跳与全局 401 处理。
-- **三级 RBAC** —— 导航、路由守卫与按钮级 `<Can>` 全部由同一份权限注册表派生。21 个权限码覆盖项目、文件、报表、集成、用户、角色、部门与审计，管理员、经理、访客三种账号可一键切换对比。
+- **三级 RBAC** —— 导航、路由守卫与按钮级 `<Can>` 全部由同一份权限注册表派生。25 个权限码覆盖项目、审批、文件、报表、集成、用户、角色、部门、字典与审计，管理员、经理、访客三种账号可一键切换对比。
+- **三种壳层与页签工作台** —— 侧边栏、顶栏或混合导航，配紧凑密度与内容宽度上限，全部按浏览器持久化。访问过的页面成为页签，可固定、带 query 刷新、关闭右侧或全部关闭；被服务端菜单隐藏的路径不会留下页签。布局切换在设置页。
+- **审批中心** —— `/workflows` 把申请分成我发起、待我审批与全部三视图，筛选条件跨页签保留；打开申请可查看快照、决定面板、时间线与评论，通过/驳回推进 Mock 状态机并写入审计事件。详见[审批中心](docs/zh-CN/workflows.md)。
 - **真实感 Mock API** —— MSW + 固定种子的内存数据库（同步到 `localStorage`），60 个用户分布在 10 个部门节点，12 个项目含 72 条任务与 48 个里程碑，18 个文件分布在 8 个文件夹节点，6 个集成连接与 24 条投递记录，通知中心与偏好设置，220 条审计事件，支持分页、筛选、排序、假 JWT、刷新令牌、`403` 与演示数据重置。
 - **项目交付工作台** —— `/projects` 组合 URL 驱动的筛选栏、看板/列表切换、精选项目轮播、创建向导、右键菜单、归档确认与分页；进入 `/projects/$id` 后可查看概览、任务、里程碑日历、成员转移、预算编辑、附件与复盘步骤条。
 - **资源库** —— `/files` 将文件夹树与面包屑、网格/列表视图、上传队列、可拖拽预览分栏与水印、图片轮播、JSON 元数据、批量选择以及移动/删除串成一条流程。上传文件在客户端读成 data URL；大文件只保留元数据。
@@ -36,6 +38,8 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 - **集成中心与用户导入** —— `/integrations` 管理 Webhook 连接、请求头、投递记录 payload 与重放；`/users` 新增批量导入向导，`/audit-logs` 可在详情抽屉查看原始事件 JSON，并跳转到项目、文件或集成实体。
 - **产品导览** —— 工作台页头的导览按钮会依次指向侧边栏、搜索、通知铃铛与账户菜单。
 - **高级用户表格** —— URL 驱动搜索、筛选、排序、分页；行选择与批量改状态、批量删除/恢复（Toast 可撤销）；列显隐、列拖动排序、列固定与列宽拖拽；两种行高密度；行右键菜单；保存视图；CSV 导出；Drawer 表单（RHF + Zod）；加载、空态与错误态齐全。
+- **撑得住数据量的表格** —— `/users` 与 `/workflows` 采用窗口化渲染，表头分组吸顶、列可固定；`?dataset=large` 展示 5 000 行 Mock 数据时，DOM 中最多约 80 行。显隐、列序与列宽按用户持久化；合成数据只在内存生成，不写入 `localStorage`。详见[大表格](docs/zh-CN/tables.md)。
+- **数据字典与参数配置** —— `/dictionaries` 维护两级字典类型与字典项，支持拖动或键盘排序、启停开关、引用计数与保护规则。用户详情把启用的 `user_tag` 项读作标签建议，改字典能直接看到效果。详见[数据字典](docs/zh-CN/dictionaries.md)。
 - **用户详情与动态** —— `/users/$id` 汇总概览、标签即时编辑、头像拖拽上传与该用户的活动时间线，未知 ID 显示 Result 空状态。
 - **组织架构树** —— `/departments` 提供可键盘导航的部门树、成员计数，以及新建子部门 / 重命名与可深链的选中态。
 - **角色治理** —— 系统角色与自定义角色、两步创建向导，以及 `/roles/matrix` 权限矩阵：分组勾选、冻结表头与显式保存条。
@@ -114,11 +118,14 @@ pnpm scaffold
 | `/ui`                | 组件演练场：40 个原语演示、状态与浮层    | 已登录             |
 | `/projects`          | 项目组合：筛选、看板/列表、向导与分页    | `project:read`     |
 | `/projects/$id`      | 项目工作台：任务、日历、预算与复盘       | `project:read`     |
+| `/workflows`         | 审批中心：我发起、待我审批与全部         | `workflow:read`    |
+| `/workflows/$id`     | 审批快照、决定、时间线与评论             | `workflow:read`    |
 | `/files`             | 资源库：文件夹、上传、预览、移动与删除   | `file:read`        |
 | `/notifications`     | 通知中心、批量已读与渠道偏好             | 已登录             |
 | `/users`             | 用户表格、CRUD、批量操作与 CSV 导入      | `user:read`        |
 | `/users/$id`         | 用户概览、标签、头像与动态时间线         | `user:read`        |
 | `/departments`       | 部门树、成员与新建/重命名                | `department:read`  |
+| `/dictionaries`      | 两级字典、排序、引用计数与保护规则       | `dictionary:read`  |
 | `/roles`             | 角色卡片与权限编辑                       | `role:read`        |
 | `/roles/matrix`      | 跨角色权限矩阵                           | `role:read`        |
 | `/permissions`       | 只读权限注册表                           | `permission:read`  |
@@ -296,9 +303,9 @@ docs/{en,zh-CN}/           # 文档
 CI 在每次 push 和 pull request 上运行五道门禁：
 
 - **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描十三个流程（登录页的浅色、深色与中文，仪表盘浅色与深色，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，项目看板/新建弹窗/详情，文件库/上传抽屉/预览，通知中心与偏好，报表与集成表单，组件目录与 UI 演练场）。出现任何违规即失败。
-- **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签，再算上首屏阻塞的 `/theme-bootstrap.js`——现在是 25 个 chunk、共 165.5 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。CSS 总量同样计入通过 `<link>` 引入的 `/boot.css`。
+- **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签，再算上首屏阻塞的 `/theme-bootstrap.js`——现在是 27 个 chunk、共 172.4 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。CSS 总量同样计入通过 `<link>` 引入的 `/boot.css`。
 - **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
-- **视觉回归** —— 十六张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、组件目录首屏、项目看板、项目详情、资源库、报表浅色与深色、通知中心与集成中心）与 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的基线比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。
+- **视觉回归** —— 十九张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、组件目录首屏、项目看板、项目详情、资源库、报表浅色与深色、通知中心、集成中心、审批中心、审批详情与数据字典）与 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的基线比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。
 - **安全响应头** —— `e2e/security.spec.ts` 先比对 `/`、`/index.html`、一个带 hash 的资源与两个外壳文件的响应头是否完全一致，再带着 `securitypolicyviolation` 监听器走完登录、仪表盘、用户、报表、文件、组件目录与设置，监听器必须始终为空。详见 [docs/zh-CN/security-headers.md](docs/zh-CN/security-headers.md)。
 - **依赖供应链** —— `pnpm audit --audit-level=high` 有高危漏洞就让质量 job 失败，CodeQL 在每次 push、pull request 与每周定时任务中分析 JavaScript 和 TypeScript，[`.github/dependabot.yml`](.github/dependabot.yml) 为 npm 与 actions 分别开分组后的 minor/patch 和 major 升级 PR，所有 workflow 使用只读 token（`permissions: contents: read`），构建 job 还会上传被度量的产物。
 
@@ -326,6 +333,9 @@ CI 在每次 push 和 pull request 上运行五道门禁：
 - [架构说明](docs/zh-CN/architecture.md) —— 启动流程、路由、数据流、主题与国际化。
 - [权限系统](docs/zh-CN/rbac.md) —— 权限模型、守卫、新增权限步骤。
 - [账号生命周期](docs/zh-CN/account-lifecycle.md) —— 注册、邮箱验证、二次验证、会话、异常页面与离线处理。
+- [审批中心](docs/zh-CN/workflows.md) —— 多步审批链、决定、时间线，以及真实后端必须承担的事务。
+- [大表格](docs/zh-CN/tables.md) —— 窗口化渲染、分组表头、列固定、布局持久化与 5 000 行 Mock 演示。
+- [数据字典](docs/zh-CN/dictionaries.md) —— 两级参照数据、引用计数、受保护记录，以及真实后端必须承担的校验。
 - [接入 API](docs/zh-CN/api-integration.md) —— 接口契约、鉴权流程、替换 Mock。
 - [部署指南](docs/zh-CN/deployment.md) —— Vercel、Docker、nginx 与 Service Worker 注意事项。
 - [安全响应头](docs/zh-CN/security-headers.md) —— 完整的 CSP 取值、`script-src 'self'` 改动了哪些代码、以及如何验证。
