@@ -55,12 +55,7 @@ function componentFile(id) {
 }
 
 function stableMessage(message) {
-  return message
-    .split(repoRoot)
-    .join('<repo>')
-    .replaceAll('\\', '/')
-    .replace(/\s+/g, ' ')
-    .trim()
+  return message.split(repoRoot).join('<repo>').replaceAll('\\', '/').replace(/\s+/g, ' ').trim()
 }
 
 function buildApi(registry) {
@@ -95,9 +90,7 @@ function buildApi(registry) {
           : String(prop.defaultValue.value),
       description: prop.description ?? '',
     }))
-    const events = allProps.filter(
-      (prop) => /^on[A-Z]/.test(prop.name) && prop.type.includes('=>'),
-    )
+    const events = allProps.filter((prop) => /^on[A-Z]/.test(prop.name) && prop.type.includes('=>'))
     const props = allProps.filter((prop) => !events.some((event) => event.name === prop.name))
     const slots = props.some((prop) => prop.name === 'children') ? ['children'] : []
     const unresolved = [...(EXTRA_UNRESOLVED[entry.id] ?? [])]

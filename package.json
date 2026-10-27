@@ -25,7 +25,7 @@
     "gen-api:check": "node scripts/gen-api.mjs --check",
     "test:docs": "pnpm docs:build && playwright test -c playwright.docs.config.ts",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && pnpm --filter @fish-admin/react typecheck && pnpm --filter @fish-admin/docs typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

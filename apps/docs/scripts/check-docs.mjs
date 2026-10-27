@@ -46,7 +46,9 @@ function checkRegistry() {
   const api = readJson(path.join(docsRoot, 'generated/api.json'))
   if (source.length !== 83) fail(`components.ts has ${source.length} entries, expected 83`)
   if (generated.components.length !== source.length) {
-    fail(`generated/registry.json has ${generated.components.length} entries, expected ${source.length}`)
+    fail(
+      `generated/registry.json has ${generated.components.length} entries, expected ${source.length}`,
+    )
   } else if (JSON.stringify(source) !== JSON.stringify(generated.components)) {
     fail('generated/registry.json is stale; run pnpm gen-api')
   }
@@ -65,7 +67,8 @@ function checkDemos(registry) {
   const ids = new Set(registry.map((entry) => entry.id))
   const registered = new Set()
   for (const demo of demos) {
-    if (!ids.has(demo.component)) fail(`demo ${demo.id} targets unknown component "${demo.component}"`)
+    if (!ids.has(demo.component))
+      fail(`demo ${demo.id} targets unknown component "${demo.component}"`)
     if (!demo.file.startsWith(`demos/${demo.component}/`)) {
       fail(`demo ${demo.id} file "${demo.file}" is outside demos/${demo.component}/`)
     }
@@ -150,9 +153,7 @@ function checkPilotPages(demos) {
       const demoImports = [...source.matchAll(/from '@docs\/demos\/([^']+)'/g)].map(
         (match) => match[1],
       )
-      const componentImports = demoImports.filter((target) =>
-        target.startsWith(`${pilot.id}/`),
-      )
+      const componentImports = demoImports.filter((target) => target.startsWith(`${pilot.id}/`))
       if (componentImports.length < 2) {
         fail(`${rel(file)}: expected at least two imports from @docs/demos/${pilot.id}/`)
       }
@@ -164,7 +165,10 @@ function checkPilotPages(demos) {
         }
       }
       for (const heading of headings) {
-        const pattern = new RegExp(`^##\\s+${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'm')
+        const pattern = new RegExp(
+          `^##\\s+${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`,
+          'm',
+        )
         if (!pattern.test(body)) fail(`${rel(file)}: missing heading "## ${heading}"`)
       }
       if (!source.includes(`<ApiTable component="${pilot.id}" />`)) {

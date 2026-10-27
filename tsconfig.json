@@ -32,10 +32,12 @@
   "include": [
     "src",
     "e2e",
+    "e2e-docs",
     "vite.config.ts",
     "vite.shared.ts",
     "vitest.config.ts",
     "playwright.config.ts",
-    "playwright.visual.config.ts"
+    "playwright.visual.config.ts",
+    "playwright.docs.config.ts"
   ]
 }

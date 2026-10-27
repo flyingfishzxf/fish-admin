@@ -28,21 +28,13 @@ import statesSource from '@docs/demos/button/states.tsx?raw'
 
 ## 基础用法
 
-<Demo
-  title="主按钮、次按钮、描边与幽灵"
-  filename="demos/button/basic.tsx"
-  source={basicSource}
->
+<Demo title="主按钮、次按钮、描边与幽灵" filename="demos/button/basic.tsx" source={basicSource}>
   <ButtonBasic />
 </Demo>
 
 ## 变体与状态
 
-<Demo
-  title="尺寸、禁用与加载"
-  filename="demos/button/states.tsx"
-  source={statesSource}
->
+<Demo title="尺寸、禁用与加载" filename="demos/button/states.tsx" source={statesSource}>
   <ButtonStates />
 </Demo>
 
@@ -59,9 +51,9 @@ import statesSource from '@docs/demos/button/states.tsx?raw'
 
 ## 无障碍
 
-| 按键          | 行为                 |
-| ------------- | -------------------- |
-| Enter / Space | 激活当前聚焦的按钮。 |
+| 按键          | 行为                   |
+| ------------- | ---------------------- |
+| Enter / Space | 激活当前聚焦的按钮。   |
 | Tab           | 将焦点移到下一个控件。 |
 
 未使用 `asChild` 时，底层元素是原生 `<button>`。禁用按钮会被浏览器移出 Tab 顺序；不要指望
