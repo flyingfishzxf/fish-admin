@@ -1,0 +1,9 @@
+---
+title: Components
+description: All 83 components in @fish-admin/react.
+---
+
+# Components
+
+83 components ship from one barrel. Three pages are live in this milestone; the rest arrive in
+the next waves. Every listed component can already be imported from `@fish-admin/react`.

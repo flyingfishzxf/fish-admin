@@ -1,0 +1,6 @@
+[
+  { "type": "dir", "name": "guide" },
+  { "type": "dir", "name": "components" },
+  { "type": "dir", "name": "template" },
+  "versions"
+]

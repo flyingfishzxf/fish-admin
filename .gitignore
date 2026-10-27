@@ -18,3 +18,7 @@ Thumbs.db
 !.vscode/extensions.json
 .pnpm-store
 scripts/.check-package
+apps/docs/doc_build
+apps/docs/.rspress
+apps/docs/docs/en/template
+apps/docs/docs/zh/template
