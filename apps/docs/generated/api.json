@@ -1,0 +1,3843 @@
+{
+  "version": 1,
+  "components": {
+    "accordion": {
+      "name": "Accordion",
+      "exportName": "Accordion",
+      "source": "packages/ui/src/components/ui/accordion.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "alert": {
+      "name": "Alert",
+      "exportName": "Alert",
+      "source": "packages/ui/src/components/ui/alert.tsx",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"default\" | \"destructive\" | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "alert-dialog": {
+      "name": "Alert Dialog",
+      "exportName": "AlertDialog",
+      "source": "packages/ui/src/components/ui/alert-dialog.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "avatar": {
+      "name": "Avatar",
+      "exportName": "Avatar",
+      "source": "packages/ui/src/components/ui/avatar.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "badge": {
+      "name": "Badge",
+      "exportName": "Badge",
+      "source": "packages/ui/src/components/ui/badge.tsx",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"default\" | \"secondary\" | \"destructive\" | \"outline\" | \"ghost\" | \"link\" | null",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "breadcrumb": {
+      "name": "Breadcrumb",
+      "exportName": "Breadcrumb",
+      "source": "packages/ui/src/components/ui/breadcrumb.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "button": {
+      "name": "Button",
+      "exportName": "Button",
+      "source": "packages/ui/src/components/ui/button.tsx",
+      "props": [
+        {
+          "name": "variant",
+          "type": "\"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | \"link\" | null",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        },
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": [
+        "Inherits native button attributes (React.ButtonHTMLAttributes<HTMLButtonElement>)."
+      ]
+    },
+    "calendar": {
+      "name": "Calendar",
+      "exportName": "Calendar",
+      "source": "packages/ui/src/components/ui/calendar.tsx",
+      "props": [
+        {
+          "name": "buttonVariant",
+          "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
+          "required": false,
+          "defaultValue": "ghost",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "card": {
+      "name": "Card",
+      "exportName": "Card",
+      "source": "packages/ui/src/components/ui/card.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "chart": {
+      "name": "Chart",
+      "exportName": "ChartContainer",
+      "source": "packages/ui/src/components/ui/chart.tsx",
+      "props": [
+        {
+          "name": "config",
+          "type": "ChartConfig",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "initialDimension",
+          "type": "{ width: number; height: number; }",
+          "required": false,
+          "defaultValue": "{ width: 320, height: 200 } as const",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "checkbox": {
+      "name": "Checkbox",
+      "exportName": "Checkbox",
+      "source": "packages/ui/src/components/ui/checkbox.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "collapsible": {
+      "name": "Collapsible",
+      "exportName": "Collapsible",
+      "source": "packages/ui/src/components/ui/collapsible.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "color-picker": {
+      "name": "Color Picker",
+      "exportName": "ColorPicker",
+      "source": "packages/ui/src/components/ui/color-picker.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "defaultValue": "#6366f1",
+          "description": ""
+        },
+        {
+          "name": "presets",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": "[\n  '#6366f1',\n  '#8b5cf6',\n  '#ec4899',\n  '#f97316',\n  '#eab308',\n  '#10b981',\n  '#0ea5e9',\n  '#64748b',\n]",
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "hexLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "pickerLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "presetsLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "command": {
+      "name": "Command",
+      "exportName": "Command",
+      "source": "packages/ui/src/components/ui/command.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Accessible label for this command menu. Not shown visibly."
+        },
+        {
+          "name": "shouldFilter",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optionally set to `false` to turn off the automatic filtering and sorting.\nIf `false`, you must conditionally render valid items based on the search query yourself."
+        },
+        {
+          "name": "filter",
+          "type": "CommandFilter",
+          "required": false,
+          "defaultValue": null,
+          "description": "Custom filter function for whether each command menu item should matches the given search query.\nIt should return a number between 0 and 1, with 1 being the best match and 0 being hidden entirely.\nBy default, uses the `command-score` library."
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optional controlled state of the selected command menu item."
+        },
+        {
+          "name": "loop",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optionally set to `true` to turn on looping around when using the arrow keys."
+        },
+        {
+          "name": "disablePointerSelection",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Optionally set to `true` to disable selection via pointer events."
+        },
+        {
+          "name": "vimBindings",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Set to `false` to disable ctrl+n/j/p/k shortcuts. Defaults to `true`."
+        }
+      ],
+      "events": [
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Event handler called when the selected item of the menu changes."
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "context-menu": {
+      "name": "Context Menu",
+      "exportName": "ContextMenu",
+      "source": "packages/ui/src/components/ui/context-menu.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "dialog": {
+      "name": "Dialog",
+      "exportName": "Dialog",
+      "source": "packages/ui/src/components/ui/dialog.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "drawer": {
+      "name": "Drawer",
+      "exportName": "Drawer",
+      "source": "packages/ui/src/components/ui/drawer.tsx",
+      "props": [
+        {
+          "name": "activeSnapPoint",
+          "type": "string | number | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "setActiveSnapPoint",
+          "type": "((snapPoint: string | number | null) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "closeThreshold",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.25",
+          "description": "Number between 0 and 1 that determines when the drawer should be closed.\nExample: threshold of 0.5 would close the drawer if the user swiped for 50% of the height of the drawer or more."
+        },
+        {
+          "name": "noBodyStyles",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `true` the `body` doesn't get any styles assigned from Vaul"
+        },
+        {
+          "name": "shouldScaleBackground",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "setBackgroundColorOnScale",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "When `false` we don't change body's background color when the drawer is open."
+        },
+        {
+          "name": "scrollLockTimeout",
+          "type": "number",
+          "required": false,
+          "defaultValue": "500ms",
+          "description": "Duration for which the drawer is not draggable after scrolling content inside of the drawer."
+        },
+        {
+          "name": "fixed",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "When `true`, don't move the drawer upwards if there's space, but rather only change it's height so it's fully scrollable when the keyboard is open"
+        },
+        {
+          "name": "handleOnly",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "When `true` only allows the drawer to be dragged by the `<Drawer.Handle />` component."
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "When `false` dragging, clicking outside, pressing esc, etc. will not close the drawer.\nUse this in comination with the `open` prop, otherwise you won't be able to open/close the drawer."
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": "When `false` it allows to interact with elements outside of the drawer without closing it."
+        },
+        {
+          "name": "nested",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "direction",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "'bottom'",
+          "description": "Direction of the drawer. Can be `top` or `bottom`, `left`, `right`."
+        },
+        {
+          "name": "defaultOpen",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Opened by default, skips initial enter animation. Still reacts to `open` state changes"
+        },
+        {
+          "name": "disablePreventScroll",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "When set to `true` prevents scrolling on the document body on mount, and restores it on unmount."
+        },
+        {
+          "name": "repositionInputs",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true when {@link snapPoints } is defined",
+          "description": "When `true` Vaul will reposition inputs rather than scroll then into view if the keyboard is in the way.\nSetting it to `false` will fall back to the default browser behavior."
+        },
+        {
+          "name": "snapToSequentialPoint",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": "Disabled velocity based swiping for snap points.\nThis means that a snap point won't be skipped even if the velocity is high enough.\nUseful if each snap point in a drawer is equally important."
+        },
+        {
+          "name": "container",
+          "type": "HTMLElement | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "preventScrollRestoration",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "autoFocus",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onOpenChange",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onDrag",
+          "type": "((event: PointerEvent<HTMLDivElement>, percentageDragged: number) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onRelease",
+          "type": "((event: PointerEvent<HTMLDivElement>, open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onClose",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onAnimationEnd",
+          "type": "((open: boolean) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Gets triggered after the open or close animation ends, it receives an `open` argument with the `open` state of the drawer by the time the function was triggered.\nUseful to revert any state changes for example."
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "dropdown-menu": {
+      "name": "Dropdown Menu",
+      "exportName": "DropdownMenu",
+      "source": "packages/ui/src/components/ui/dropdown-menu.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "empty": {
+      "name": "Empty",
+      "exportName": "Empty",
+      "source": "packages/ui/src/components/ui/empty.tsx",
+      "props": [
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "form": {
+      "name": "Form",
+      "exportName": "FormItem",
+      "source": "packages/ui/src/components/ui/form.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "hover-card": {
+      "name": "Hover Card",
+      "exportName": "HoverCard",
+      "source": "packages/ui/src/components/ui/hover-card.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "input": {
+      "name": "Input",
+      "exportName": "Input",
+      "source": "packages/ui/src/components/ui/input.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "input-number": {
+      "name": "Input Number",
+      "exportName": "InputNumber",
+      "source": "packages/ui/src/components/ui/input-number.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "number | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": ""
+        },
+        {
+          "name": "precision",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "inputClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onValueChange",
+          "type": "((value: number | null) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "input-otp": {
+      "name": "Input OTP",
+      "exportName": "InputOTP",
+      "source": "packages/ui/src/components/ui/input-otp.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "maxLength",
+          "type": "number",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "textAlign",
+          "type": "enum",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "pushPasswordManagerStrategy",
+          "type": "enum",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "pasteTransformer",
+          "type": "((pasted: string) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "containerClassName",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "noScriptCSSFallback",
+          "type": "string | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "nonce",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "render",
+          "type": "InputOTPRenderFn",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "((newValue: string) => unknown)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onComplete",
+          "type": "((...args: any[]) => unknown)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "label": {
+      "name": "Label",
+      "exportName": "Label",
+      "source": "packages/ui/src/components/ui/label.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "pagination": {
+      "name": "Pagination",
+      "exportName": "Pagination",
+      "source": "packages/ui/src/components/ui/pagination.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "popover": {
+      "name": "Popover",
+      "exportName": "Popover",
+      "source": "packages/ui/src/components/ui/popover.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "progress": {
+      "name": "Progress",
+      "exportName": "Progress",
+      "source": "packages/ui/src/components/ui/progress.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "radio-group": {
+      "name": "Radio Group",
+      "exportName": "RadioGroup",
+      "source": "packages/ui/src/components/ui/radio-group.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "resizable": {
+      "name": "Resizable",
+      "exportName": "ResizablePanelGroup",
+      "source": "packages/ui/src/components/ui/resizable.tsx",
+      "props": [
+        {
+          "name": "defaultLayout",
+          "type": "Layout",
+          "required": false,
+          "defaultValue": null,
+          "description": "Default layout for the Group.\n\nℹ️ This value allows layouts to be remembered between page reloads.\n\n⚠️ Slight layout shift may occur when server-rendering panels with percentage-based default sizes.\nRefer to the documentation for suggestions on how to minimize the impact of this."
+        },
+        {
+          "name": "disableCursor",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "This library sets custom mouse cursor styles to indicate drag state.\nUse this prop to disable that behavior for Panels and Separators in this group."
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": "Disable resize functionality."
+        },
+        {
+          "name": "elementRef",
+          "type": "Ref<HTMLDivElement | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Ref attached to the root `HTMLDivElement`."
+        },
+        {
+          "name": "groupRef",
+          "type": "Ref<GroupImperativeHandle | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": "Exposes the following imperative API:\n- `getLayout(): Layout`\n- `setLayout(layout: Layout): Layout`\n\nℹ️ The `useGroupRef` and `useGroupCallbackRef` hooks are exported for convenience use in TypeScript projects."
+        },
+        {
+          "name": "resizePreviewMode",
+          "type": "enum",
+          "required": false,
+          "defaultValue": null,
+          "description": "Controls whether pointer dragging updates `Panel` sizes immediately,\nor renders overlay separator previews until the pointer is released.\n\nDefaults to `\"panel\"` (immediate resizing); `\"separator\"` defers resizing until release.\n\nCustomize previews using the `SeparatorOverlay` component."
+        },
+        {
+          "name": "resizeTargetMinimumSize",
+          "type": "{ coarse: number; fine: number; }",
+          "required": false,
+          "defaultValue": null,
+          "description": "Minimum size of the resizable hit target area (either `Separator` or `Panel` edge).\nThis threshold ensures targets are large enough to avoid mis-clicks.\n\n- Coarse inputs (typically a finger on a touchscreen) have reduced accuracy;\nto ensure accessibility and ease of use, hit targets should be larger to prevent mis-clicks.\n- Fine inputs (typically a mouse) can be smaller\n\nℹ️ [Apple interface guidelines](https://developer.apple.com/design/human-interface-guidelines/accessibility) suggest `20pt` (`27px`) on desktops and `28pt` (`37px`) for touch devices.\nIn practice this seems to be much larger than many of their own applications use though."
+        },
+        {
+          "name": "orientation",
+          "type": "enum",
+          "required": false,
+          "defaultValue": null,
+          "description": "Specifies the resizable orientation (\"horizontal\" or \"vertical\"); defaults to \"horizontal\""
+        }
+      ],
+      "events": [
+        {
+          "name": "onLayoutChange",
+          "type": "((layout: Layout) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called when the Group's layout is changing.\n\n⚠️ For layout changes caused by pointer events, this method is called each time the pointer is moved.\nFor most cases, it is recommended to use the `onLayoutChanged` callback instead."
+        },
+        {
+          "name": "onLayoutChanged",
+          "type": "((layout: Layout, meta: LayoutChangedMeta<Layout>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": "Called after the Group's layout has been changed.\n\nℹ️ For layout changes caused by pointer events, this method is not called until the pointer has been released.\nThis method is recommended when saving layouts to some storage api.\n\nℹ️ The second argument contains meta information about the layout change.\nThe `isUserInteraction` attribute signals whether the resize was caused by direct user input.\nIt is true for resizes caused by pointer or keyboard input\nand false for other triggers (e.g. imperative API calls, initial mount, etc.)\nThe `requestedLayout` attribute is the layout before constraints were applied for the current Group size;\nprefer it when persisting layouts."
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "scroll-area": {
+      "name": "Scroll Area",
+      "exportName": "ScrollArea",
+      "source": "packages/ui/src/components/ui/scroll-area.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "segmented": {
+      "name": "Segmented",
+      "exportName": "Segmented",
+      "source": "packages/ui/src/components/ui/segmented.tsx",
+      "props": [
+        {
+          "name": "options",
+          "type": "SegmentedOption[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "aria-label",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "select": {
+      "name": "Select",
+      "exportName": "Select",
+      "source": "packages/ui/src/components/ui/select.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "defaultValue",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onValueChange",
+          "type": "((value: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "separator": {
+      "name": "Separator",
+      "exportName": "Separator",
+      "source": "packages/ui/src/components/ui/separator.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "sheet": {
+      "name": "Sheet",
+      "exportName": "Sheet",
+      "source": "packages/ui/src/components/ui/sheet.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "sidebar": {
+      "name": "Sidebar",
+      "exportName": "Sidebar",
+      "source": "packages/ui/src/components/ui/sidebar.tsx",
+      "props": [
+        {
+          "name": "side",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "left",
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "sidebar",
+          "description": ""
+        },
+        {
+          "name": "collapsible",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "offcanvas",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "skeleton": {
+      "name": "Skeleton",
+      "exportName": "Skeleton",
+      "source": "packages/ui/src/components/ui/skeleton.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "slider": {
+      "name": "Slider",
+      "exportName": "Slider",
+      "source": "packages/ui/src/components/ui/slider.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "thumbLabels",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "sonner": {
+      "name": "Sonner",
+      "exportName": "Toaster",
+      "source": "packages/ui/src/components/ui/sonner.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "spinner": {
+      "name": "Spinner",
+      "exportName": "Spinner",
+      "source": "packages/ui/src/components/ui/spinner.tsx",
+      "props": [
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "switch": {
+      "name": "Switch",
+      "exportName": "Switch",
+      "source": "packages/ui/src/components/ui/switch.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "default",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "table": {
+      "name": "Table",
+      "exportName": "Table",
+      "source": "packages/ui/src/components/ui/table.tsx",
+      "props": [
+        {
+          "name": "container",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "tabs": {
+      "name": "Tabs",
+      "exportName": "Tabs",
+      "source": "packages/ui/src/components/ui/tabs.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "textarea": {
+      "name": "Textarea",
+      "exportName": "Textarea",
+      "source": "packages/ui/src/components/ui/textarea.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "toggle": {
+      "name": "Toggle",
+      "exportName": "Toggle",
+      "source": "packages/ui/src/components/ui/toggle.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "\"default\" | \"outline\" | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "\"default\" | \"sm\" | \"lg\" | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "toggle-group": {
+      "name": "Toggle Group",
+      "exportName": "ToggleGroup",
+      "source": "packages/ui/src/components/ui/toggle-group.tsx",
+      "props": [
+        {
+          "name": "asChild",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "variant",
+          "type": "\"default\" | \"outline\" | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "size",
+          "type": "\"default\" | \"sm\" | \"lg\" | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "spacing",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "tooltip": {
+      "name": "Tooltip",
+      "exportName": "Tooltip",
+      "source": "packages/ui/src/components/ui/tooltip.tsx",
+      "props": [],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "anchor-nav": {
+      "name": "Anchor Nav",
+      "exportName": "AnchorNav",
+      "source": "packages/ui/src/components/enterprise/anchor-nav/anchor-nav.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "AnchorItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "rootRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "offset",
+          "type": "number",
+          "required": false,
+          "defaultValue": "88",
+          "description": ""
+        },
+        {
+          "name": "orientation",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "vertical",
+          "description": "Sticky section bars use the horizontal variant; in-page rails keep the default."
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "auto-complete": {
+      "name": "Auto Complete",
+      "exportName": "AutoComplete",
+      "source": "packages/ui/src/components/enterprise/auto-complete/auto-complete.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "AutoCompleteOption[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "loadingLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "openOnFocus",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onValueChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onSelect",
+          "type": "((option: AutoCompleteOption) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "back-top": {
+      "name": "Back Top",
+      "exportName": "BackTop",
+      "source": "packages/ui/src/components/enterprise/back-top/back-top.tsx",
+      "props": [
+        {
+          "name": "targetRef",
+          "type": "RefObject<HTMLElement | null>",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "threshold",
+          "type": "number",
+          "required": false,
+          "defaultValue": "400",
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "carousel": {
+      "name": "Carousel",
+      "exportName": "Carousel",
+      "source": "packages/ui/src/components/enterprise/carousel/carousel.tsx",
+      "props": [
+        {
+          "name": "slides",
+          "type": "CarouselSlide[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "previousLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "nextLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "goToLabel",
+          "type": "(index: number) => string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "cascader": {
+      "name": "Cascader",
+      "exportName": "Cascader",
+      "source": "packages/ui/src/components/enterprise/cascader/cascader.tsx",
+      "props": [
+        {
+          "name": "options",
+          "type": "CascaderOption[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": "[]",
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(value: string[]) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onClear",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "combobox": {
+      "name": "Combobox",
+      "exportName": "Combobox",
+      "source": "packages/ui/src/components/enterprise/combobox/combobox.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "options",
+          "type": "ComboboxOption[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(value: string) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onClear",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "date-picker": {
+      "name": "Date Picker",
+      "exportName": "DatePicker",
+      "source": "packages/ui/src/components/enterprise/date-picker/date-picker.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(value: string | undefined) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "date-range-picker": {
+      "name": "Date Range Picker",
+      "exportName": "DateRangePicker",
+      "source": "packages/ui/src/components/enterprise/date-range-picker/date-range-picker.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "DateRangeValue",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "presets",
+          "type": "DateRangePreset[]",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(value: DateRangeValue) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "descriptions": {
+      "name": "Descriptions",
+      "exportName": "Descriptions",
+      "source": "packages/ui/src/components/enterprise/descriptions/descriptions.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "DescriptionItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "columns",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "2",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "dropzone": {
+      "name": "Dropzone",
+      "exportName": "Dropzone",
+      "source": "packages/ui/src/components/enterprise/dropzone/dropzone.tsx",
+      "props": [
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "hint",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "browseLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "preview",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onFile",
+          "type": "((file: File) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onFiles",
+          "type": "((files: File[]) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "image-preview": {
+      "name": "Image Preview",
+      "exportName": "ImagePreview",
+      "source": "packages/ui/src/components/enterprise/image-preview/image-preview.tsx",
+      "props": [
+        {
+          "name": "images",
+          "type": "PreviewImage[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "json-viewer": {
+      "name": "JSON Viewer",
+      "exportName": "JsonViewer",
+      "source": "packages/ui/src/components/enterprise/json-viewer/json-viewer.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "unknown",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "defaultExpandedDepth",
+          "type": "number",
+          "required": false,
+          "defaultValue": "2",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "list": {
+      "name": "List",
+      "exportName": "List",
+      "source": "packages/ui/src/components/enterprise/list/list.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "ListItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "selectedId",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onItemClick",
+          "type": "((item: ListItem) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "notification-center": {
+      "name": "Notification Center",
+      "exportName": "NotificationCenter",
+      "source": "packages/ui/src/components/enterprise/notification-center/notification-center.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "NotificationItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "unreadCount",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "viewAllLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "markAllLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onItemClick",
+          "type": "((item: NotificationItem) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onMarkAllRead",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onViewAll",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "page-container": {
+      "name": "Page Container",
+      "exportName": "PageContainer",
+      "source": "packages/ui/src/components/enterprise/page-container/page-container.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "eyebrow",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "tabs",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "stickyHeader",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "popconfirm": {
+      "name": "Popconfirm",
+      "exportName": "Popconfirm",
+      "source": "packages/ui/src/components/enterprise/popconfirm/popconfirm.tsx",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "confirmLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "cancelLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "pending",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "destructive",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "side",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "top",
+          "description": ""
+        },
+        {
+          "name": "align",
+          "type": "enum",
+          "required": false,
+          "defaultValue": "center",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onConfirm",
+          "type": "() => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "rate": {
+      "name": "Rate",
+      "exportName": "Rate",
+      "source": "packages/ui/src/components/enterprise/rate/rate.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0",
+          "description": ""
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "required": false,
+          "defaultValue": "5",
+          "description": ""
+        },
+        {
+          "name": "readOnly",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "allowClear",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "true",
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "((value: number) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "result": {
+      "name": "Result",
+      "exportName": "Result",
+      "source": "packages/ui/src/components/enterprise/result/result.tsx",
+      "props": [
+        {
+          "name": "status",
+          "type": "enum",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "type": "ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "description",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "extra",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "statistic": {
+      "name": "Statistic",
+      "exportName": "Statistic",
+      "source": "packages/ui/src/components/enterprise/statistic/statistic.tsx",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | number",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "precision",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "prefix",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "suffix",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "trend",
+          "type": "{ value: number; label?: string; }",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "icon",
+          "type": "LucideIcon",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "stepper": {
+      "name": "Stepper",
+      "exportName": "Stepper",
+      "source": "packages/ui/src/components/enterprise/stepper/stepper.tsx",
+      "props": [
+        {
+          "name": "steps",
+          "type": "StepperStep[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "current",
+          "type": "number",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onStepClick",
+          "type": "((index: number) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "tags-input": {
+      "name": "Tags Input",
+      "exportName": "TagsInput",
+      "source": "packages/ui/src/components/enterprise/tags-input/tags-input.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "maxTags",
+          "type": "number",
+          "required": false,
+          "defaultValue": "8",
+          "description": ""
+        },
+        {
+          "name": "maxLength",
+          "type": "number",
+          "required": false,
+          "defaultValue": "24",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "suggestions",
+          "type": "{ label: string; value: string; }[]",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(value: string[]) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "time-picker": {
+      "name": "Time Picker",
+      "exportName": "TimePicker",
+      "source": "packages/ui/src/components/enterprise/time-picker/time-picker.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "minuteStep",
+          "type": "number",
+          "required": false,
+          "defaultValue": "5",
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(value: string | undefined) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "timeline": {
+      "name": "Timeline",
+      "exportName": "Timeline",
+      "source": "packages/ui/src/components/enterprise/timeline/timeline.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "TimelineItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "tour": {
+      "name": "Tour",
+      "exportName": "Tour",
+      "source": "packages/ui/src/components/enterprise/tour/tour.tsx",
+      "props": [
+        {
+          "name": "steps",
+          "type": "TourStep[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "TourLabels",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onOpenChange",
+          "type": "(open: boolean) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onFinish",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "transfer": {
+      "name": "Transfer",
+      "exportName": "Transfer",
+      "source": "packages/ui/src/components/enterprise/transfer/transfer.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "TransferLike[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "sourceTitle",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "targetTitle",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "searchPlaceholder",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptySourceLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyTargetLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(value: string[]) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "tree": {
+      "name": "Tree",
+      "exportName": "Tree",
+      "source": "packages/ui/src/components/enterprise/tree/tree.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "TreeItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "selectedId",
+          "type": "string | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "expandedIds",
+          "type": "ReadonlySet<string>",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "defaultExpanded",
+          "type": "string[]",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onSelect",
+          "type": "((id: string) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onExpandedChange",
+          "type": "((ids: Set<string>) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "tree-select": {
+      "name": "Tree Select",
+      "exportName": "TreeSelect",
+      "source": "packages/ui/src/components/enterprise/tree-select/tree-select.tsx",
+      "props": [
+        {
+          "name": "id",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "items",
+          "type": "TreeItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "string | null",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "clearLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "emptyLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "aria-invalid",
+          "type": "boolean | \"false\" | \"true\" | \"grammar\" | \"spelling\"",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "aria-describedby",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(id: string) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onClear",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "trend": {
+      "name": "Trend",
+      "exportName": "Trend",
+      "source": "packages/ui/src/components/enterprise/trend/trend.tsx",
+      "props": [
+        {
+          "name": "value",
+          "type": "number",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "suffix",
+          "type": "string",
+          "required": false,
+          "defaultValue": "%",
+          "description": ""
+        },
+        {
+          "name": "precision",
+          "type": "number",
+          "required": false,
+          "defaultValue": "1",
+          "description": ""
+        },
+        {
+          "name": "invert",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "upload": {
+      "name": "Upload",
+      "exportName": "Upload",
+      "source": "packages/ui/src/components/enterprise/upload/upload.tsx",
+      "props": [
+        {
+          "name": "items",
+          "type": "UploadItem[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "hint",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "browseLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "maxSize",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "maxSizeLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "removeLabel",
+          "type": "((item: UploadItem) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "retryLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onFiles",
+          "type": "(files: File[]) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onRemove",
+          "type": "((item: UploadItem) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onRetry",
+          "type": "((item: UploadItem) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "watermark": {
+      "name": "Watermark",
+      "exportName": "Watermark",
+      "source": "packages/ui/src/components/enterprise/watermark/watermark.tsx",
+      "props": [
+        {
+          "name": "text",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "opacity",
+          "type": "number",
+          "required": false,
+          "defaultValue": "0.08",
+          "description": ""
+        },
+        {
+          "name": "fontSize",
+          "type": "number",
+          "required": false,
+          "defaultValue": "14",
+          "description": ""
+        },
+        {
+          "name": "rotate",
+          "type": "number",
+          "required": false,
+          "defaultValue": "-20",
+          "description": ""
+        },
+        {
+          "name": "gap",
+          "type": "number",
+          "required": false,
+          "defaultValue": "96",
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "detail-page": {
+      "name": "Detail Page",
+      "exportName": "DetailPage",
+      "source": "packages/ui/src/components/pro/detail-page/detail-page.tsx",
+      "props": [
+        {
+          "name": "back",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "avatar",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "title",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "subtitle",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "badges",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "meta",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "tabs",
+          "type": "DetailPageTab[]",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "defaultTab",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "tabsLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "footer",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [],
+      "slots": [],
+      "unresolved": []
+    },
+    "editable-table": {
+      "name": "Editable Table",
+      "exportName": "EditableTable",
+      "source": "packages/ui/src/components/pro/editable-table/editable-table.tsx",
+      "props": [
+        {
+          "name": "columns",
+          "type": "EditableTableColumn[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "rows",
+          "type": "EditableTableRow[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "addRow",
+          "type": "(() => EditableTableRow)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "rowLabel",
+          "type": "((row: EditableTableRow) => string)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "EditableTableLabels",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onRowsChange",
+          "type": "(rows: EditableTableRow[]) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "import-wizard": {
+      "name": "Import Wizard",
+      "exportName": "ImportWizard",
+      "source": "packages/ui/src/components/pro/import-wizard/import-wizard.tsx",
+      "props": [
+        {
+          "name": "fields",
+          "type": "ImportField[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "ImportWizardLabels",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "sample",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "sampleName",
+          "type": "string",
+          "required": false,
+          "defaultValue": "sample.csv",
+          "description": ""
+        },
+        {
+          "name": "accept",
+          "type": "string",
+          "required": false,
+          "defaultValue": ".csv,text/csv",
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onImport",
+          "type": "(rows: Record<string, unknown>[]) => void | Promise<void>",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "pro-form": {
+      "name": "ProForm",
+      "exportName": "ProForm",
+      "source": "packages/ui/src/components/pro/pro-form/pro-form.tsx",
+      "props": [
+        {
+          "name": "fields",
+          "type": "ProFormField[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "defaultValues",
+          "type": "Partial<ProFormValues>",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "validateMessage",
+          "type": "(rule: ProFormRule, label: string, limit?: number | undefined) => string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "submitLabel",
+          "type": "string",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "resetLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "ariaLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onSubmit",
+          "type": "(values: ProFormValues) => void | Promise<void>",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    },
+    "pro-table": {
+      "name": "ProTable",
+      "exportName": "ProTable",
+      "source": "packages/ui/src/components/pro/pro-table/pro-table.tsx",
+      "props": [
+        {
+          "name": "table",
+          "type": "Table<TData>",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "empty",
+          "type": "ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "density",
+          "type": "enum",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "search",
+          "type": "ProTableSearchConfig",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "filters",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "actions",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "toolbar",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "selection",
+          "type": "ProTableSelectionConfig",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "pagination",
+          "type": "ProTablePaginationConfig",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "fetching",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "fetchingLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "rowContextMenu",
+          "type": "((row: TData) => ReactNode)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "virtualized",
+          "type": "boolean",
+          "required": false,
+          "defaultValue": "false",
+          "description": ""
+        },
+        {
+          "name": "virtualRowHeight",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "virtualMaxHeight",
+          "type": "number",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "scrollLabel",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onRowClick",
+          "type": "((row: TData) => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": [
+        "The table instance prop comes from @tanstack/react-table; see its Table API."
+      ]
+    },
+    "query-filter": {
+      "name": "Query Filter",
+      "exportName": "QueryFilter",
+      "source": "packages/ui/src/components/pro/query-filter/query-filter.tsx",
+      "props": [
+        {
+          "name": "fields",
+          "type": "FilterField[]",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "value",
+          "type": "FilterValue",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "labels",
+          "type": "{ reset: string; more: string; less: string; }",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "maxVisible",
+          "type": "number",
+          "required": false,
+          "defaultValue": "3",
+          "description": ""
+        },
+        {
+          "name": "extra",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "className",
+          "type": "string",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "events": [
+        {
+          "name": "onChange",
+          "type": "(next: FilterValue) => void",
+          "required": true,
+          "defaultValue": null,
+          "description": ""
+        },
+        {
+          "name": "onReset",
+          "type": "(() => void)",
+          "required": false,
+          "defaultValue": null,
+          "description": ""
+        }
+      ],
+      "slots": [],
+      "unresolved": []
+    }
+  }
+}
