@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { findNavItem, isPathActive } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'
-import { cn } from '@/lib/utils'
+import { cn } from '@fish-admin/react'
 
 /** The second row of the `mixed` shell: the active group, spread out as chips. */
 export function AppSubnav() {

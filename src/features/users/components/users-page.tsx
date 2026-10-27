@@ -27,13 +27,14 @@ import { toast } from 'sonner'
 import { Can } from '@/components/common/can'
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { PageHeader } from '@/components/common/page-header'
-import type { DataTableDensity } from '@/components/data-table/data-table'
-import { DataTableViewOptions } from '@/components/data-table/data-table-view-options'
-import { ImportWizard, type ImportWizardLabels } from '@/components/pro/import-wizard/import-wizard'
-import type { ImportField } from '@/components/pro/import-wizard/import-wizard-utils'
-import { ProTable } from '@/components/pro/pro-table/pro-table'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
+import { type DataTableDensity, DataTableViewOptions } from '@fish-admin/react/internal/data-table'
+
 import {
+  ImportWizard,
+  type ImportWizardLabels,
+  type ImportField,
+  ProTable,
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
@@ -41,35 +42,31 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import {
+  Badge,
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useCan } from '@/hooks/use-can'
-import { downloadCsv, toCsv } from '@/lib/csv'
+import { downloadCsv, toCsv } from '@fish-admin/react/internal/csv'
 import { useDocumentTitle } from '@/lib/document-title'
 import { formatDate } from '@/lib/format'
 import { useAuthStore } from '@/stores/auth-store'

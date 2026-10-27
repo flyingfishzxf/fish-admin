@@ -1,15 +1,16 @@
 import { Check, Monitor, Moon, Sun } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@fish-admin/react'
+
 import { THEME_MODES, type ThemeMode } from '@/config/theme'
 import { useThemeStore } from '@/stores/theme-store'
 

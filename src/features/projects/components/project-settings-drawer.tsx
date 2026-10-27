@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { TagsInput } from '@/components/enterprise/tags-input/tags-input'
-import { TimePicker } from '@/components/enterprise/time-picker/time-picker'
-import { Button } from '@/components/ui/button'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import {
+  Popconfirm,
+  TagsInput,
+  TimePicker,
+  Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -17,8 +19,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
-import { Label } from '@/components/ui/label'
+  Label,
+} from '@fish-admin/react'
+
 import type { Project } from '@/types'
 
 import { archiveProject, updateProject } from '../api'

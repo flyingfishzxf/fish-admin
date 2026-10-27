@@ -3,8 +3,8 @@ import { AlertTriangle, CheckCircle2, Loader2, MailCheck } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
+import { Alert, AlertDescription, Button } from '@fish-admin/react'
+
 import { ApiError } from '@/lib/api-error'
 
 import { verifyEmailRequest } from '../api'

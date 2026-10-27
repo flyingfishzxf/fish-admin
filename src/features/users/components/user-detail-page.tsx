@@ -5,18 +5,24 @@ import { useTranslation } from 'react-i18next'
 
 import { ErrorState } from '@/components/common/error-state'
 import { StatusBadge } from '@/components/common/status-badge'
-import { Result } from '@/components/enterprise/result/result'
-import { DetailPage } from '@/components/pro/detail-page/detail-page'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Result,
+  DetailPage,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  Skeleton,
+  getInitials,
+} from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useRoleOptionsQuery } from '@/features/roles/queries'
 import { useCan } from '@/hooks/use-can'
 import { ApiError } from '@/lib/api-error'
 import { useDocumentTitle } from '@/lib/document-title'
 import { formatDate } from '@/lib/format'
-import { getInitials } from '@/lib/utils'
+
 import { useAuthStore } from '@/stores/auth-store'
 
 import { useUserDetailQuery } from '../queries'

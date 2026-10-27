@@ -3,12 +3,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Rate } from '@/components/enterprise/rate/rate'
-import { Stepper } from '@/components/enterprise/stepper/stepper'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
+import { Rate, Stepper, Button, Card, CardContent, Label, Textarea } from '@fish-admin/react'
+
 import type { ProjectDetail } from '@/types'
 
 import { updateProject } from '../api'

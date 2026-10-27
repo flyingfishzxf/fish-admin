@@ -2,8 +2,7 @@ import { useTranslation } from 'react-i18next'
 
 import { AppBreadcrumbs } from '@/components/layout/app-breadcrumbs'
 import { HeaderActions } from '@/components/layout/header-actions'
-import { Separator } from '@/components/ui/separator'
-import { SidebarTrigger } from '@/components/ui/sidebar'
+import { Separator, SidebarTrigger } from '@fish-admin/react'
 
 export function AppHeader() {
   const { t } = useTranslation('common')

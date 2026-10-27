@@ -1,8 +1,8 @@
 import { ShieldAlert } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { PageHeader } from '@/components/common/page-header'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
+import { Alert, AlertDescription, AlertTitle } from '@fish-admin/react'
 import { useDocumentTitle } from '@/lib/document-title'
 
 import { ChangePasswordCard } from './change-password-card'

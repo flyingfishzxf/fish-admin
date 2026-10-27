@@ -5,21 +5,23 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { ErrorState } from '@/components/common/error-state'
-import { Stepper } from '@/components/enterprise/stepper/stepper'
-import { Transfer, type TransferItem } from '@/components/enterprise/transfer/transfer'
-import { Button } from '@/components/ui/button'
 import {
+  Stepper,
+  Transfer,
+  type TransferItem,
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Textarea } from '@/components/ui/textarea'
+  Input,
+  Label,
+  Skeleton,
+  Textarea,
+} from '@fish-admin/react'
+
 import { usePermissionsQuery } from '@/features/permissions/queries'
 import { ApiError } from '@/lib/api-error'
 import type { Role } from '@/types'

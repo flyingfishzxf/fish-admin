@@ -12,7 +12,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-} from '@/components/ui/command'
+} from '@fish-admin/react'
 import { flattenNavItems } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'
 import { changeLanguage, nextLanguage } from '@/lib/i18n'

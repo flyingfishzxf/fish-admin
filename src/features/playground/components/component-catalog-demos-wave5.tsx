@@ -19,11 +19,11 @@ import { useState, type CSSProperties, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
 import {
+  Badge,
+  Button,
+  Checkbox,
+  Label,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -31,22 +31,23 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Progress } from '@/components/ui/progress'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Segmented } from '@/components/ui/segmented'
-import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Progress,
+  RadioGroup,
+  RadioGroupItem,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  ScrollArea,
+  Segmented,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Separator } from '@/components/ui/separator'
-import {
+  Separator,
   Sheet,
   SheetClose,
   SheetContent,
@@ -55,8 +56,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet'
-import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -68,25 +67,31 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarProvider,
-} from '@/components/ui/sidebar'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Slider } from '@/components/ui/slider'
-import { LoadingOverlay, Spinner } from '@/components/ui/spinner'
-import { Switch } from '@/components/ui/switch'
-import {
+  Skeleton,
+  Slider,
+  LoadingOverlay,
+  Spinner,
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Textarea } from '@/components/ui/textarea'
-import { Toggle } from '@/components/ui/toggle'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Textarea,
+  Toggle,
+  ToggleGroup,
+  ToggleGroupItem,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  cn,
+} from '@fish-admin/react'
 
 function DemoSurface({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={cn('rounded-lg border bg-muted/20 p-4', className)}>{children}</div>

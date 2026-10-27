@@ -29,7 +29,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { Can } from '@/components/common/can'
-import { PageHeader } from '@/components/common/page-header'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -38,18 +38,24 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+  cn,
+} from '@fish-admin/react'
+
 import { APP_VERSION } from '@/config/app'
 import { env } from '@/config/env'
 import { PERMISSION_CODES } from '@/config/permissions'
@@ -64,7 +70,7 @@ import {
 import { ACCENTS, THEME_MODES, type ThemeMode } from '@/config/theme'
 import { useDocumentTitle } from '@/lib/document-title'
 import { changeLanguage, SUPPORTED_LANGUAGES, type SupportedLanguage } from '@/lib/i18n'
-import { cn } from '@/lib/utils'
+
 import { useAuthStore } from '@/stores/auth-store'
 import { useThemeStore } from '@/stores/theme-store'
 import { useUiStore } from '@/stores/ui-store'

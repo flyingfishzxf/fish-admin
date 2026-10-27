@@ -1,4 +1,4 @@
-import type { CascaderOption } from '@/components/enterprise/cascader/cascader'
+import { type CascaderOption } from '@fish-admin/react'
 
 import type { FileFolderSummary } from './api'
 

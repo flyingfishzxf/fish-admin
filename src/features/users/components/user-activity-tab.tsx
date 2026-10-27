@@ -17,9 +17,14 @@ import {
   Timeline,
   type TimelineItem,
   type TimelineTone,
-} from '@/components/enterprise/timeline/timeline'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton,
+} from '@fish-admin/react'
+
 import { AUDIT_ACTION_TONES, type AuditTone } from '@/config/audit'
 import { formatDateTime } from '@/lib/format'
 import type { AuditEntityType } from '@/types'

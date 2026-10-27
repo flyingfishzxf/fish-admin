@@ -12,7 +12,7 @@ test.describe('component catalog', () => {
     ).toBeVisible()
     await expect(page.getByText('83 of 83 components')).toBeVisible()
     await expect(page.getByText('New', { exact: true })).toHaveCount(33)
-    await expect(page.locator('#demo-button').getByText('@/components/ui/button')).toBeVisible()
+    await expect(page.locator('#demo-button').getByText('@fish-admin/react')).toBeVisible()
 
     const search = page.getByRole('textbox', { name: 'Search components' })
     const filters = page.locator('[data-slot="segmented"]')
@@ -52,10 +52,10 @@ test.describe('component catalog', () => {
     const pathButton = page
       .locator('#demo-input-number')
       .locator('[data-slot="card-footer"] button')
-    await expect(pathButton).toContainText('@/components/ui/input-number')
+    await expect(pathButton).toContainText('@fish-admin/react')
     await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
     await pathButton.click()
-    await expect(page.getByText('Copied @/components/ui/input-number')).toBeVisible()
+    await expect(page.getByText('Copied @fish-admin/react')).toBeVisible()
 
     await page.getByRole('link', { name: 'UI Playground' }).click()
     await expect(page).toHaveURL(/\/ui$/)

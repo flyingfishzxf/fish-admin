@@ -14,11 +14,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
+  Alert,
+  AlertDescription,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@fish-admin/react'
 import { z } from '@/config/validation'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
 import { changePasswordRequest } from '@/features/auth/api'
 import { PasswordInput } from '@/features/auth/components/password-input'
 import { PasswordStrength } from '@/features/auth/components/password-strength'

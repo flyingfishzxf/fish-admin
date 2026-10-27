@@ -4,22 +4,27 @@ import { useTranslation } from 'react-i18next'
 
 import { ErrorState } from '@/components/common/error-state'
 import { StatusBadge } from '@/components/common/status-badge'
-import { DataTablePagination } from '@/components/data-table/data-table-pagination'
-import { Descriptions } from '@/components/enterprise/descriptions/descriptions'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { DataTablePagination } from '@fish-admin/react/internal/data-table'
 import {
+  Descriptions,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@fish-admin/react'
+
 import { formatDate } from '@/lib/format'
-import { treePath } from '@/lib/tree'
+import { treePath } from '@fish-admin/react/internal/tree'
 import type { Department } from '@/types'
 
 import { useUserListQuery } from '@/features/users/queries'

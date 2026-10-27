@@ -7,11 +7,9 @@ import { toast } from 'sonner'
 
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { PageHeader } from '@/components/common/page-header'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Skeleton } from '@/components/ui/skeleton'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
+import { Badge, Button, Checkbox, Skeleton } from '@fish-admin/react'
+
 import {
   PERMISSION_CODES,
   type PermissionDefinition,

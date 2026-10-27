@@ -4,18 +4,22 @@ import { ChevronDown, Pin, RefreshCw, X } from 'lucide-react'
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  cn,
+} from '@fish-admin/react'
+
 import { findNavItem, flattenNavItems, type AppPath } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'
-import { cn } from '@/lib/utils'
+
 import { useUiStore, type ShellTab } from '@/stores/ui-store'
 
 /**

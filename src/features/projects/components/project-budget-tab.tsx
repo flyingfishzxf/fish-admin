@@ -6,10 +6,14 @@ import { toast } from 'sonner'
 import {
   EditableTable,
   type EditableTableRow,
-} from '@/components/pro/editable-table/editable-table'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Progress,
+} from '@fish-admin/react'
+
 import { formatCurrency } from '@/lib/format'
 import type { ProjectDetail } from '@/types'
 

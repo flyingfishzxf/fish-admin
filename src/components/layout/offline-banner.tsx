@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@fish-admin/react'
 import { useOnlineStatus } from '@/lib/online'
 
 export function OfflineBanner() {

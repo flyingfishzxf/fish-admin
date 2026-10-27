@@ -2,26 +2,29 @@ import { Pencil, Star, Trash2 } from 'lucide-react'
 import { useState, useRef, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Carousel } from '@/components/enterprise/carousel/carousel'
-import { Cascader } from '@/components/enterprise/cascader/cascader'
-import { JsonViewer } from '@/components/enterprise/json-viewer/json-viewer'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Watermark } from '@/components/enterprise/watermark/watermark'
-import { EmptyState } from '@/components/common/empty-state'
-import { Button } from '@/components/ui/button'
 import {
+  Carousel,
+  Cascader,
+  JsonViewer,
+  Popconfirm,
+  Watermark,
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
+  Input,
+  Label,
+  Switch,
+  cn,
+} from '@fish-admin/react'
+
+import { EmptyState } from '@/components/common/empty-state'
+
 import { formatDate, formatDateTime } from '@/lib/format'
-import { cn } from '@/lib/utils'
+
 import type { WorkspaceFile } from '@/types'
 
 import type { FileFolderSummary } from '../api'

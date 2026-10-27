@@ -16,31 +16,31 @@ import { toast } from 'sonner'
 
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { AutoComplete } from '@/components/enterprise/auto-complete/auto-complete'
-import { Combobox } from '@/components/enterprise/combobox/combobox'
-import { DatePicker } from '@/components/enterprise/date-picker/date-picker'
-import { PageContainer } from '@/components/enterprise/page-container/page-container'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Tree, type TreeItem } from '@/components/enterprise/tree/tree'
 import {
+  AutoComplete,
+  Combobox,
+  DatePicker,
+  PageContainer,
+  Popconfirm,
+  Tree,
+  type TreeItem,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
-import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -48,18 +48,22 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Segmented } from '@/components/ui/segmented'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Spinner } from '@/components/ui/spinner'
-import { Toggle } from '@/components/ui/toggle'
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  ScrollArea,
+  Segmented,
+  Skeleton,
+  Spinner,
+  Toggle,
+  useIsCompact,
+} from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useCan } from '@/hooks/use-can'
-import { useIsCompact } from '@/hooks/use-mobile'
+
 import { useDocumentTitle } from '@/lib/document-title'
-import { treePath } from '@/lib/tree'
+import { treePath } from '@fish-admin/react/internal/tree'
 import type { WorkspaceFile } from '@/types'
 
 import { deleteFile, deleteFiles, updateFile, type FileUpdateInput } from '../api'

@@ -18,18 +18,23 @@ import { toast } from 'sonner'
 import { Can } from '@/components/common/can'
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { PageHeader } from '@/components/common/page-header'
-import type { CascaderOption } from '@/components/enterprise/cascader/cascader'
-import { Cascader } from '@/components/enterprise/cascader/cascader'
-import { Carousel, type CarouselSlide } from '@/components/enterprise/carousel/carousel'
-import { Combobox } from '@/components/enterprise/combobox/combobox'
-import { Statistic } from '@/components/enterprise/statistic/statistic'
-import { Trend } from '@/components/enterprise/trend/trend'
-import { QueryFilter } from '@/components/pro/query-filter/query-filter'
-import type { FilterField, FilterValue } from '@/components/pro/query-filter/query-filter-types'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
 import {
+  type CascaderOption,
+  Cascader,
+  Carousel,
+  type CarouselSlide,
+  Combobox,
+  Statistic,
+  Trend,
+  QueryFilter,
+  type FilterField,
+  type FilterValue,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -37,19 +42,18 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination'
-import { Progress } from '@/components/ui/progress'
-import { Segmented } from '@/components/ui/segmented'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Spinner } from '@/components/ui/spinner'
-import {
+  Progress,
+  Segmented,
+  Skeleton,
+  Spinner,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useDepartmentsQuery } from '@/features/departments/queries'
 import { useCan } from '@/hooks/use-can'

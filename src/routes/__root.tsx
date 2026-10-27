@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { BrandMark } from '@/components/common/brand'
 import { ThemeSync } from '@/components/common/theme-sync'
-import { Button } from '@/components/ui/button'
+import { Button } from '@fish-admin/react'
 import { useDocumentTitle } from '@/lib/document-title'
 
 export const Route = createRootRoute({

@@ -3,12 +3,20 @@ import { lazy, Suspense, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ErrorState } from '@/components/common/error-state'
-import { PageHeader } from '@/components/common/page-header'
-import { Tour } from '@/components/enterprise/tour/tour'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
+import {
+  Tour,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton,
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@fish-admin/react'
+
 import { useDocumentTitle } from '@/lib/document-title'
 import type { DashboardRange } from '@/types'
 

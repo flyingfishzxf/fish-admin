@@ -4,28 +4,31 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Combobox } from '@/components/enterprise/combobox/combobox'
-import { DatePicker } from '@/components/enterprise/date-picker/date-picker'
-import { Stepper } from '@/components/enterprise/stepper/stepper'
-import { TagsInput } from '@/components/enterprise/tags-input/tags-input'
-import type { TreeItem } from '@/components/enterprise/tree/tree'
-import { TreeSelect } from '@/components/enterprise/tree-select/tree-select'
-import { ProForm, type ProFormField, type ProFormValues } from '@/components/pro/pro-form/pro-form'
-import { Button } from '@/components/ui/button'
 import {
+  Combobox,
+  DatePicker,
+  Stepper,
+  TagsInput,
+  type TreeItem,
+  TreeSelect,
+  ProForm,
+  type ProFormField,
+  type ProFormValues,
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
+  Input,
+  Label,
+  Switch,
+} from '@fish-admin/react'
+
 import { useDepartmentsQuery } from '@/features/departments/queries'
 import { ApiError } from '@/lib/api-error'
-import { formatDayValue } from '@/lib/date'
+import { formatDayValue } from '@fish-admin/react/internal/date'
 import type { Department, ProjectPriority, ProjectStatus } from '@/types'
 
 import { createProject } from '../api'

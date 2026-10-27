@@ -4,10 +4,9 @@ import { useTranslation } from 'react-i18next'
 
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { PageHeader } from '@/components/common/page-header'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
+import { Button, Card, CardContent, Skeleton } from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useCan } from '@/hooks/use-can'
 import { useDocumentTitle } from '@/lib/document-title'

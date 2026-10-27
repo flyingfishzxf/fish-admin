@@ -14,39 +14,38 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { PageContainer } from '@/components/enterprise/page-container/page-container'
-import { Statistic } from '@/components/enterprise/statistic/statistic'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
+  PageContainer,
+  Statistic,
+  Badge,
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {
   Empty,
   EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from '@/components/ui/empty'
-import { Input } from '@/components/ui/input'
-import { Segmented } from '@/components/ui/segmented'
+  Input,
+  Segmented,
+  cn,
+} from '@fish-admin/react'
+
 import {
   COMPONENTS,
   COMPONENT_CATEGORIES,
   COMPONENT_COUNTS,
+  COMPONENT_IMPORT_PATH,
   DEMOED_COMPONENTS,
-  getComponentModulePath,
   type ComponentCategory,
   type ComponentEntry,
 } from '@/config/components'
 import { useDocumentTitle } from '@/lib/document-title'
-import { cn } from '@/lib/utils'
 
 import { CATALOG_DEMOS } from './component-catalog-demo-map'
 
@@ -299,7 +298,7 @@ function ComponentCard({ entry }: { entry: ComponentEntry }) {
       )}
 
       <CardFooter className="mt-auto flex flex-wrap items-center justify-between gap-2 pt-0">
-        <CopyModulePath entry={entry} />
+        <CopyModulePath />
         {entry.usedIn ? (
           <span className="shrink-0 text-[11px] text-muted-foreground">
             {t('catalog:card.usedIn', { route: entry.usedIn })}
@@ -310,9 +309,9 @@ function ComponentCard({ entry }: { entry: ComponentEntry }) {
   )
 }
 
-function CopyModulePath({ entry }: { entry: ComponentEntry }) {
+function CopyModulePath() {
   const { t } = useTranslation()
-  const modulePath = getComponentModulePath(entry)
+  const modulePath = COMPONENT_IMPORT_PATH
 
   const copy = () => {
     void navigator.clipboard

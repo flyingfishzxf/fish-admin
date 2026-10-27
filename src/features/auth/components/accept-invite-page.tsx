@@ -9,20 +9,22 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { z } from '@/config/validation'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
+  Alert,
+  AlertDescription,
+  Badge,
+  Button,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Skeleton } from '@/components/ui/skeleton'
+  Input,
+  Label,
+  Skeleton,
+} from '@fish-admin/react'
+
 import { ApiError } from '@/lib/api-error'
 import { formatDate } from '@/lib/format'
 import { useAuthStore } from '@/stores/auth-store'

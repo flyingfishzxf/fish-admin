@@ -11,7 +11,7 @@ import {
   ContextMenuSub,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
-} from '@/components/ui/context-menu'
+} from '@fish-admin/react'
 import type { User, UserStatus } from '@/types'
 
 import { USER_STATUSES } from '../schemas'

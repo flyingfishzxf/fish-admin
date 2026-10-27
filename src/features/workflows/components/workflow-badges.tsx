@@ -1,5 +1,5 @@
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
+import { Badge, cn } from '@fish-admin/react'
+
 import type { WorkflowStatus, WorkflowType } from '@/types'
 
 const STATUS_CLASSES: Record<WorkflowStatus, string> = {

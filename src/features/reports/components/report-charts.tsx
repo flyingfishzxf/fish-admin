@@ -16,7 +16,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from '@/components/ui/chart'
+} from '@fish-admin/react'
 import {
   formatCompactNumber,
   formatCurrency,

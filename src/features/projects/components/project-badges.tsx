@@ -1,5 +1,5 @@
-import { Badge } from '@/components/ui/badge'
-import { cn } from '@/lib/utils'
+import { Badge, cn } from '@fish-admin/react'
+
 import type { ProjectPriority, ProjectStatus } from '@/types'
 
 const STATUS_CLASSES: Record<ProjectStatus, string> = {

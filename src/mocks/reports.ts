@@ -1,4 +1,4 @@
-import { formatDayValue, parseDay } from '@/lib/date'
+import { formatDayValue, parseDay } from '@fish-admin/react/internal/date'
 import type {
   ReportChannel,
   ReportData,

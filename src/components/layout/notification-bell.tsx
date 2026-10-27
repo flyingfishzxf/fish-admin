@@ -2,10 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
-import {
-  NotificationCenter,
-  type NotificationItem,
-} from '@/components/enterprise/notification-center/notification-center'
+import { NotificationCenter, type NotificationItem } from '@fish-admin/react'
 import { formatRelativeTime } from '@/lib/format'
 
 import { markAllNotificationsRead, updateNotification } from '@/features/notifications/api'

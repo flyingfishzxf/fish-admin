@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next'
 
-import { Badge } from '@/components/ui/badge'
+import { Badge, cn } from '@fish-admin/react'
 import { AUDIT_ACTION_ICONS, AUDIT_ACTION_TONES, AUDIT_TONE_BADGE_CLASSES } from '@/config/audit'
-import { cn } from '@/lib/utils'
+
 import type { AuditEvent } from '@/types'
 
 export function AuditActionBadge({

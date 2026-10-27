@@ -3,9 +3,10 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Transfer, type TransferItem } from '@/components/enterprise/transfer/transfer'
-import { Button } from '@/components/ui/button'
 import {
+  Transfer,
+  type TransferItem,
+  Button,
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -13,7 +14,8 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
+} from '@fish-admin/react'
+
 import type { Project } from '@/types'
 
 import { updateProject } from '../api'

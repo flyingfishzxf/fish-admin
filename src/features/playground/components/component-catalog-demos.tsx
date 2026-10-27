@@ -10,27 +10,29 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { EmptyState } from '@/components/common/empty-state'
-import { DatePicker } from '@/components/enterprise/date-picker/date-picker'
-import { PageContainer } from '@/components/enterprise/page-container/page-container'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Statistic } from '@/components/enterprise/statistic/statistic'
-import { TimePicker } from '@/components/enterprise/time-picker/time-picker'
-import { ProTable } from '@/components/pro/pro-table/pro-table'
-import { QueryFilter } from '@/components/pro/query-filter/query-filter'
-import type { FilterField, FilterValue } from '@/components/pro/query-filter/query-filter-types'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
+  DatePicker,
+  PageContainer,
+  Popconfirm,
+  Statistic,
+  TimePicker,
+  ProTable,
+  QueryFilter,
+  type FilterField,
+  type FilterValue,
+  Badge,
+  Button,
+  Checkbox,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Segmented } from '@/components/ui/segmented'
-import { formatDayDisplay } from '@/lib/date'
-import { cn } from '@/lib/utils'
+  Segmented,
+  cn,
+} from '@fish-admin/react'
+
+import { formatDayDisplay } from '@fish-admin/react/internal/date'
 
 function DemoSurface({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={cn('rounded-lg border bg-muted/20 p-4', className)}>{children}</div>

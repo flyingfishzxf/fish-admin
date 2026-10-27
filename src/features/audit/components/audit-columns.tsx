@@ -2,7 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import type { TFunction } from 'i18next'
 import { ChevronRight } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@fish-admin/react'
 import { formatDateTime, formatRelativeTime } from '@/lib/format'
 import type { AuditEvent } from '@/types'
 

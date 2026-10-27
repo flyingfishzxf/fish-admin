@@ -1,15 +1,16 @@
 import { Link } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
 import {
+  Button,
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
+} from '@fish-admin/react'
+
 import { DEFAULT_FILES_SEARCH } from '@/features/files/search'
 import { DEFAULT_INTEGRATIONS_SEARCH } from '@/features/integrations/search'
 import { formatDateTime } from '@/lib/format'

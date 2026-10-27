@@ -4,25 +4,24 @@ import { useTranslation } from 'react-i18next'
 
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { PageHeader } from '@/components/common/page-header'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
 import {
+  Badge,
+  Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Skeleton } from '@/components/ui/skeleton'
-import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@fish-admin/react'
+
 import { PERMISSION_GROUPS, type PermissionGroup } from '@/config/permissions'
 import { useDocumentTitle } from '@/lib/document-title'
 

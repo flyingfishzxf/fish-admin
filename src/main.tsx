@@ -4,9 +4,10 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { toast } from 'sonner'
 
-import { Toaster } from '@/components/ui/sonner'
+import { Toaster } from '@fish-admin/react'
 import i18n from 'i18next'
 
+import { AppUIProvider } from '@/components/common/app-ui-provider'
 import { setUnauthorizedHandler } from '@/lib/auth-events'
 import { i18nReady } from '@/lib/i18n'
 import { queryClient } from '@/lib/query-client'
@@ -52,10 +53,12 @@ async function start() {
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster position="top-right" richColors closeButton />
-      </QueryClientProvider>
+      <AppUIProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <Toaster position="top-right" richColors closeButton />
+        </QueryClientProvider>
+      </AppUIProvider>
     </StrictMode>,
   )
 }

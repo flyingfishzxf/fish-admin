@@ -19,7 +19,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from '@/components/ui/chart'
+} from '@fish-admin/react'
 import { formatCompactNumber, formatDate } from '@/lib/format'
 import type { ChannelPoint, RevenuePoint, TrafficPoint } from '@/types'
 

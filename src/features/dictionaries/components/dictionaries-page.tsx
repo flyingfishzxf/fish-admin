@@ -5,16 +5,28 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { ErrorState } from '@/components/common/error-state'
-import { PageContainer } from '@/components/enterprise/page-container/page-container'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { Skeleton } from '@/components/ui/skeleton'
+import {
+  PageContainer,
+  Popconfirm,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  Skeleton,
+  cn,
+} from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { ApiError } from '@/lib/api-error'
-import { cn } from '@/lib/utils'
+
 import type { DictionaryItem, DictionaryType } from '@/types'
 import { useCan } from '@/hooks/use-can'
 

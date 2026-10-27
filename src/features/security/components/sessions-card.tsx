@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
+  Alert,
+  AlertDescription,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -14,11 +15,17 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Skeleton,
+  cn,
+} from '@fish-admin/react'
+
 import {
   getSessionsRequest,
   revokeOtherSessionsRequest,
@@ -26,7 +33,6 @@ import {
 } from '@/features/auth/api'
 import type { AuthSession } from '@/types'
 import { formatDateTime, formatRelativeTime } from '@/lib/format'
-import { cn } from '@/lib/utils'
 
 const SESSIONS_KEY = ['auth', 'sessions'] as const
 

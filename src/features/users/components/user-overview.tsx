@@ -1,10 +1,17 @@
 import { useTranslation } from 'react-i18next'
 
 import { StatusBadge } from '@/components/common/status-badge'
-import { Descriptions } from '@/components/enterprise/descriptions/descriptions'
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
+import {
+  Descriptions,
+  Badge,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Separator,
+} from '@fish-admin/react'
+
 import { formatDate, formatRelativeTime } from '@/lib/format'
 import type { User } from '@/types'
 

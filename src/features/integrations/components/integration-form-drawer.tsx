@@ -3,21 +3,22 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { useState } from 'react'
 
-import { Combobox } from '@/components/enterprise/combobox/combobox'
 import {
+  Combobox,
   EditableTable,
   type EditableTableColumn,
   type EditableTableRow,
-} from '@/components/pro/editable-table/editable-table'
-import { ProForm, type ProFormField, type ProFormValues } from '@/components/pro/pro-form/pro-form'
-import {
+  ProForm,
+  type ProFormField,
+  type ProFormValues,
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
-import { Label } from '@/components/ui/label'
+  Label,
+} from '@fish-admin/react'
+
 import { INTEGRATION_EVENTS, INTEGRATION_PROVIDERS } from '@/config/integrations'
 import type { Integration, IntegrationMode } from '@/types'
 

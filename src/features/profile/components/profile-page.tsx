@@ -7,27 +7,36 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { PageHeader } from '@/components/common/page-header'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
 import {
+  Alert,
+  AlertDescription,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
-import { Textarea } from '@/components/ui/textarea'
+  Input,
+  Separator,
+  Textarea,
+  getInitials,
+} from '@fish-admin/react'
+
 import { PERMISSIONS, type PermissionDefinition } from '@/config/permissions'
 import { useDocumentTitle } from '@/lib/document-title'
 import { createAvatarDataUrl, validateAvatarFile } from '@/lib/image'
-import { getInitials } from '@/lib/utils'
+
 import { useAuthStore } from '@/stores/auth-store'
 
 import { updateProfile } from '../api'

@@ -1,8 +1,16 @@
 import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Tree, type TreeItem } from '@/components/enterprise/tree/tree'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Tree,
+  type TreeItem,
+} from '@fish-admin/react'
+
 import type { Department } from '@/types'
 
 export function DepartmentTreePanel({

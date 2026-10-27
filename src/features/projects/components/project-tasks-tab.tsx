@@ -4,35 +4,32 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { AutoComplete } from '@/components/enterprise/auto-complete/auto-complete'
-import { Combobox } from '@/components/enterprise/combobox/combobox'
-import { DatePicker } from '@/components/enterprise/date-picker/date-picker'
 import {
+  AutoComplete,
+  Combobox,
+  DatePicker,
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
-import {
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { Progress } from '@/components/ui/progress'
-import {
+  Label,
+  Progress,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@fish-admin/react'
+
 import { formatDate } from '@/lib/format'
-import { parseDay } from '@/lib/date'
+import { parseDay } from '@fish-admin/react/internal/date'
 import type { ProjectDetail, ProjectTask, ProjectTaskStatus } from '@/types'
 
 import { createProjectTask, updateProjectTask } from '../api'

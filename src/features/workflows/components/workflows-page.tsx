@@ -6,10 +6,9 @@ import { useTranslation } from 'react-i18next'
 
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { PageHeader } from '@/components/common/page-header'
-import { ProTable } from '@/components/pro/pro-table/pro-table'
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
+import { ProTable, Button, Tabs, TabsList, TabsTrigger } from '@fish-admin/react'
+
 import { useDocumentTitle } from '@/lib/document-title'
 import type { WorkflowInstance } from '@/types'
 

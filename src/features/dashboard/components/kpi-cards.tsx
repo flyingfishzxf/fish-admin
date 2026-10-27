@@ -1,10 +1,10 @@
 import { TrendingDown, TrendingUp, UserPlus, Users, Target, Wallet } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { Card, CardContent } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Card, CardContent, Skeleton, cn } from '@fish-admin/react'
+
 import { formatCurrency, formatNumber, formatPercent } from '@/lib/format'
-import { cn } from '@/lib/utils'
+
 import type { DashboardKpi } from '@/types'
 
 const KPI_META = {

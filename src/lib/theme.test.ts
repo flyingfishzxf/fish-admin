@@ -1,6 +1,8 @@
+import { renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { applyTheme } from '@/lib/theme'
+import { applyTheme, useResolvedTheme } from '@/lib/theme'
+import { useThemeStore } from '@/stores/theme-store'
 
 function mockPrefersDark(matches: boolean) {
   vi.mocked(window.matchMedia).mockImplementation((query: string) => ({
@@ -64,5 +66,24 @@ describe('applyTheme', () => {
     mockPrefersDark(false)
     applyTheme('system', 'violet')
     expect(document.documentElement.classList.contains('dark')).toBe(false)
+  })
+})
+
+describe('useResolvedTheme', () => {
+  afterEach(() => {
+    useThemeStore.setState({ mode: 'system' })
+  })
+
+  it('returns an explicit mode as-is', () => {
+    useThemeStore.setState({ mode: 'dark' })
+    const { result } = renderHook(() => useResolvedTheme())
+    expect(result.current).toBe('dark')
+  })
+
+  it('resolves system mode from the media query', () => {
+    mockPrefersDark(true)
+    useThemeStore.setState({ mode: 'system' })
+    const { result } = renderHook(() => useResolvedTheme())
+    expect(result.current).toBe('dark')
   })
 })

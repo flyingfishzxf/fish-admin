@@ -2,7 +2,7 @@ import { http } from 'msw'
 
 import { env } from '@/config/env'
 import { PERMISSION_CODES } from '@/config/permissions'
-import { formatDayValue, parseDay } from '@/lib/date'
+import { formatDayValue, parseDay } from '@fish-admin/react/internal/date'
 import type { ReportGranularity } from '@/types'
 
 import { authorize } from '../auth'

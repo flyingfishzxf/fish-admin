@@ -6,22 +6,19 @@ import { ErrorState } from '@/components/common/error-state'
 import {
   Descriptions,
   type DescriptionItem,
-} from '@/components/enterprise/descriptions/descriptions'
-import { JsonViewer } from '@/components/enterprise/json-viewer/json-viewer'
-import {
+  JsonViewer,
   Timeline,
   type TimelineItem,
   type TimelineTone,
-} from '@/components/enterprise/timeline/timeline'
-import { Button } from '@/components/ui/button'
-import {
+  Button,
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from '@/components/ui/sheet'
-import { Skeleton } from '@/components/ui/skeleton'
+  Skeleton,
+} from '@fish-admin/react'
+
 import { AUDIT_ACTION_ICONS, AUDIT_ACTION_TONES, type AuditTone } from '@/config/audit'
 import { DEFAULT_FILES_SEARCH } from '@/features/files/search'
 import { DEFAULT_INTEGRATIONS_SEARCH } from '@/features/integrations/search'

@@ -2,18 +2,21 @@ import { Link } from '@tanstack/react-router'
 import { Archive, ArrowUpRight, CalendarClock, Users } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
 import {
+  Popconfirm,
+  Button,
+  Card,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from '@/components/ui/context-menu'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { Progress } from '@/components/ui/progress'
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Progress,
+} from '@fish-admin/react'
+
 import { formatCurrency, formatDate } from '@/lib/format'
 import type { Project } from '@/types'
 

@@ -3,9 +3,11 @@ import { ChevronDown, LockKeyhole, LogOut, Settings2, UserRound } from 'lucide-r
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -13,8 +15,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { getInitials } from '@/lib/utils'
+  getInitials,
+} from '@fish-admin/react'
+
 import { useAuthStore } from '@/stores/auth-store'
 
 export function UserMenu() {

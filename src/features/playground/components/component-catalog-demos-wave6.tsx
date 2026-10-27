@@ -17,20 +17,25 @@ import {
   DateRangePicker,
   type DateRangePreset,
   type DateRangeValue,
-} from '@/components/enterprise/date-range-picker/date-range-picker'
-import { Descriptions } from '@/components/enterprise/descriptions/descriptions'
-import { Dropzone } from '@/components/enterprise/dropzone/dropzone'
-import { Result } from '@/components/enterprise/result/result'
-import { Stepper, type StepperStep } from '@/components/enterprise/stepper/stepper'
-import { TagsInput } from '@/components/enterprise/tags-input/tags-input'
-import { Timeline, type TimelineItem } from '@/components/enterprise/timeline/timeline'
-import { Transfer, type TransferItem } from '@/components/enterprise/transfer/transfer'
-import { Tree, type TreeItem } from '@/components/enterprise/tree/tree'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { formatDayDisplay, formatDayValue } from '@/lib/date'
-import { cn } from '@/lib/utils'
+  Descriptions,
+  Dropzone,
+  Result,
+  Stepper,
+  type StepperStep,
+  TagsInput,
+  Timeline,
+  type TimelineItem,
+  Transfer,
+  type TransferItem,
+  Tree,
+  type TreeItem,
+  Badge,
+  Button,
+  Label,
+  cn,
+} from '@fish-admin/react'
+
+import { formatDayDisplay, formatDayValue } from '@fish-admin/react/internal/date'
 
 function DemoSurface({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={cn('rounded-lg border bg-muted/20 p-4', className)}>{children}</div>

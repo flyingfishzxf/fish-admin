@@ -1,15 +1,16 @@
 import { Check, Languages } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { Button } from '@/components/ui/button'
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@fish-admin/react'
+
 import { changeLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n'
 
 export function LanguageToggle() {

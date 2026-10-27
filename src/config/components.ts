@@ -643,15 +643,5 @@ export const COMPONENT_COUNTS = COMPONENT_CATEGORIES.reduce(
 
 export const DEMOED_COMPONENTS = COMPONENTS.filter((entry) => entry.demo)
 
-const MODULE_DIRECTORY: Record<ComponentCategory, string> = {
-  primitive: 'ui',
-  enterprise: 'enterprise',
-  pro: 'pro',
-}
-
-/** Import specifier a consumer types to reach the component, e.g. `@/components/ui/button`. */
-export function getComponentModulePath(entry: Pick<ComponentEntry, 'id' | 'category'>) {
-  const directory = MODULE_DIRECTORY[entry.category]
-  const nested = entry.category === 'primitive' ? '' : `/${entry.id}`
-  return `@/components/${directory}/${entry.id}${nested}`
-}
+/** Every catalog entry ships from the shared package's root entry. */
+export const COMPONENT_IMPORT_PATH = '@fish-admin/react'

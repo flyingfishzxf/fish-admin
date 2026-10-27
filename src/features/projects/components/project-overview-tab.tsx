@@ -4,18 +4,28 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Descriptions } from '@/components/enterprise/descriptions/descriptions'
-import { ImagePreview } from '@/components/enterprise/image-preview/image-preview'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Timeline, type TimelineItem } from '@/components/enterprise/timeline/timeline'
-import { Upload, type UploadItem } from '@/components/enterprise/upload/upload'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { Separator } from '@/components/ui/separator'
+import {
+  Descriptions,
+  ImagePreview,
+  Popconfirm,
+  Timeline,
+  type TimelineItem,
+  Upload,
+  type UploadItem,
+  Badge,
+  Button,
+  Calendar,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Checkbox,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Separator,
+} from '@fish-admin/react'
+
 import { AUDIT_ACTION_ICONS, AUDIT_ACTION_TONES } from '@/config/audit'
 import { useAuditListQuery } from '@/features/audit/queries'
 import { formatDate, formatDateTime } from '@/lib/format'

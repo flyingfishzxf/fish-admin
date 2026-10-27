@@ -2,20 +2,24 @@ import { GripVertical, Pencil, Trash2 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/components/ui/empty'
-import { Switch } from '@/components/ui/switch'
 import {
+  Popconfirm,
+  Badge,
+  Button,
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { cn } from '@/lib/utils'
+  cn,
+} from '@fish-admin/react'
+
 import type { DictionaryItem } from '@/types'
 
 function moveId(order: string[], sourceId: string, targetId: string) {

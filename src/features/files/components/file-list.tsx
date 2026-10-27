@@ -2,27 +2,27 @@ import { Copy, Eye, Lock, Star, Trash2 } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
+  Popconfirm,
+  Badge,
+  Button,
+  Checkbox,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from '@/components/ui/context-menu'
-import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+  cn,
+} from '@fish-admin/react'
+
 import { formatDate } from '@/lib/format'
-import { cn } from '@/lib/utils'
+
 import type { WorkspaceFile } from '@/types'
 
 import type { FilesView } from '../search'

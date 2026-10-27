@@ -13,30 +13,37 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { ErrorState } from '@/components/common/error-state'
-import { AnchorNav, type AnchorItem } from '@/components/enterprise/anchor-nav/anchor-nav'
-import { BackTop } from '@/components/enterprise/back-top/back-top'
-import { ColorPicker } from '@/components/ui/color-picker'
 import {
+  AnchorNav,
+  type AnchorItem,
+  BackTop,
+  ColorPicker,
   DateRangePicker,
   type DateRangePreset,
   type DateRangeValue,
-} from '@/components/enterprise/date-range-picker/date-range-picker'
-import { PageContainer } from '@/components/enterprise/page-container/page-container'
-import { Statistic } from '@/components/enterprise/statistic/statistic'
-import { Trend } from '@/components/enterprise/trend/trend'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
+  PageContainer,
+  Statistic,
+  Trend,
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/components/ui/empty'
-import { InputNumber } from '@/components/ui/input-number'
-import { Label } from '@/components/ui/label'
-import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  InputNumber,
+  Label,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -44,24 +51,27 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Segmented } from '@/components/ui/segmented'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Slider } from '@/components/ui/slider'
-import { Spinner } from '@/components/ui/spinner'
-import {
+  RadioGroup,
+  RadioGroupItem,
+  Segmented,
+  Skeleton,
+  Slider,
+  Spinner,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@fish-admin/react'
+
 import { useDocumentTitle } from '@/lib/document-title'
 import { formatCurrency } from '@/lib/format'
-import { formatDayDisplay, formatDayValue } from '@/lib/date'
+import { formatDayDisplay, formatDayValue } from '@fish-admin/react/internal/date'
 import type { ReportGranularity, ReportKpi, ReportRow } from '@/types'
 
 import { downloadCsv } from '../csv'

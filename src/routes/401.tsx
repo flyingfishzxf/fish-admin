@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { StatusScreen } from '@/components/common/status-screen'
-import { Button } from '@/components/ui/button'
+import { Button } from '@fish-admin/react'
 import { useDocumentTitle } from '@/lib/document-title'
 import { useAuthStore } from '@/stores/auth-store'
 

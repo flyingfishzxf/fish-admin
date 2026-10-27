@@ -9,7 +9,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
+} from '@fish-admin/react'
 import { findNavGroup, findNavItem } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'
 

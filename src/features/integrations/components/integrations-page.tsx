@@ -22,16 +22,23 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { ErrorState } from '@/components/common/error-state'
-import { Combobox } from '@/components/enterprise/combobox/combobox'
-import { PageContainer } from '@/components/enterprise/page-container/page-container'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Result } from '@/components/enterprise/result/result'
-import { Timeline, type TimelineItem } from '@/components/enterprise/timeline/timeline'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import {
+  Combobox,
+  PageContainer,
+  Popconfirm,
+  Result,
+  Timeline,
+  type TimelineItem,
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -39,10 +46,11 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination'
-import { Segmented } from '@/components/ui/segmented'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Switch } from '@/components/ui/switch'
+  Segmented,
+  Skeleton,
+  Switch,
+} from '@fish-admin/react'
+
 import { INTEGRATION_PROVIDERS } from '@/config/integrations'
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useCan } from '@/hooks/use-can'

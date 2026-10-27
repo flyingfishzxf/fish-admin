@@ -3,21 +3,21 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Combobox } from '@/components/enterprise/combobox/combobox'
 import {
+  Combobox,
   ImagePreview,
   type PreviewImage,
-} from '@/components/enterprise/image-preview/image-preview'
-import { Upload, type UploadItem } from '@/components/enterprise/upload/upload'
-import { Button } from '@/components/ui/button'
-import {
+  Upload,
+  type UploadItem,
+  Button,
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
+} from '@fish-admin/react'
+
 import type { WorkspaceFile } from '@/types'
 
 import { uploadFile } from '../api'

@@ -1,5 +1,4 @@
 import { createRequire } from 'node:module'
-import { fileURLToPath, URL } from 'node:url'
 import { rmSync } from 'node:fs'
 import { resolve } from 'node:path'
 
@@ -9,6 +8,7 @@ import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 
 import { securityHeaders } from './src/config/security-headers'
+import { aliases } from './vite.shared.ts'
 
 const packageJson = createRequire(import.meta.url)('./package.json') as { version: string }
 
@@ -40,9 +40,7 @@ export default defineConfig(({ mode }) => {
       },
     ],
     resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
-      },
+      alias: aliases,
     },
     server: {
       port: 5173,

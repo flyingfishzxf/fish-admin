@@ -1,7 +1,7 @@
 import { Fish } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@fish-admin/react'
 
 export function BrandMark({ className }: { className?: string }) {
   return (

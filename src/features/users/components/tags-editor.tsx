@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Button } from '@/components/ui/button'
-import { TagsInput } from '@/components/enterprise/tags-input/tags-input'
+import { Button, TagsInput } from '@fish-admin/react'
+
 import { useDictionaryOptionsQuery } from '@/features/dictionaries/queries'
 import type { User } from '@/types'
 

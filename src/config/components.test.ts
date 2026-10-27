@@ -1,8 +1,8 @@
 import { createRouter } from '@tanstack/react-router'
-import { existsSync } from 'node:fs'
-import { resolve } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
+
+import * as ui from '@fish-admin/react'
 
 import {
   CATALOG_DEMOS,
@@ -16,12 +16,29 @@ import {
   COMPONENTS,
   COMPONENT_CATEGORIES,
   COMPONENT_COUNTS,
+  COMPONENT_IMPORT_PATH,
   DEMOED_COMPONENTS,
-  getComponentModulePath,
 } from './components'
 
-const ROOT = resolve(process.cwd())
 const router = createRouter({ routeTree })
+
+// Registry ids -> package export names; these four ids do not map by PascalCase.
+const EXPORT_NAME_OVERRIDES: Record<string, string> = {
+  chart: 'ChartContainer',
+  'input-otp': 'InputOTP',
+  resizable: 'ResizablePanelGroup',
+  sonner: 'Toaster',
+}
+
+function componentExportName(id: string) {
+  return (
+    EXPORT_NAME_OVERRIDES[id] ??
+    id
+      .split('-')
+      .map((word) => word[0].toUpperCase() + word.slice(1))
+      .join('')
+  )
+}
 const NEW_ROUTES = [
   '/projects',
   '/projects/$id',
@@ -51,13 +68,13 @@ describe('component registry', () => {
     for (const entry of COMPONENTS) expect(entry.name.trim()).not.toBe('')
   })
 
-  it('publishes an import specifier that resolves to the component file', () => {
-    for (const entry of COMPONENTS) {
-      const specifier = getComponentModulePath(entry)
-      expect(specifier.startsWith('@/components/'), `${entry.id} specifier`).toBe(true)
+  it('publishes every component from the shared package', () => {
+    expect(COMPONENT_IMPORT_PATH).toBe('@fish-admin/react')
 
-      const file = resolve(ROOT, `${specifier.replace('@/', 'src/')}.tsx`)
-      expect(existsSync(file), `${entry.id} should exist at ${file}`).toBe(true)
+    const packageExports = ui as Record<string, unknown>
+    for (const entry of COMPONENTS) {
+      const exportName = componentExportName(entry.id)
+      expect(packageExports[exportName], `${entry.id} should export ${exportName}`).toBeTruthy()
     }
   })
 

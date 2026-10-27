@@ -5,7 +5,7 @@ import type { ReactNode } from 'react'
 import { BrandMark } from '@/components/common/brand'
 import { LanguageToggle } from '@/components/common/language-toggle'
 import { ThemeToggle } from '@/components/common/theme-toggle'
-import { cn } from '@/lib/utils'
+import { cn } from '@fish-admin/react'
 
 const TONES = {
   primary: 'bg-primary/10 text-primary',

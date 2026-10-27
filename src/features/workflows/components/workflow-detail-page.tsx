@@ -8,26 +8,29 @@ import { toast } from 'sonner'
 
 import { Can } from '@/components/common/can'
 import { ErrorState } from '@/components/common/error-state'
-import { Descriptions } from '@/components/enterprise/descriptions/descriptions'
-import { JsonViewer } from '@/components/enterprise/json-viewer/json-viewer'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
 import {
+  Descriptions,
+  JsonViewer,
+  Popconfirm,
   Timeline,
   type TimelineItem,
   type TimelineTone,
-} from '@/components/enterprise/timeline/timeline'
-import { DetailPage } from '@/components/pro/detail-page/detail-page'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import {
+  DetailPage,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Textarea } from '@/components/ui/textarea'
+  Skeleton,
+  Textarea,
+} from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { formatCurrency, formatDateTime, formatRelativeTime } from '@/lib/format'
 import { useDocumentTitle } from '@/lib/document-title'

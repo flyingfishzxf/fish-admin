@@ -8,11 +8,12 @@ import tseslint from 'typescript-eslint'
 export default tseslint.config(
   {
     ignores: [
-      'dist',
+      '**/dist',
       'coverage',
       'node_modules',
       'playwright-report',
       'test-results',
+      'scripts/.check-package',
       'src/routeTree.gen.ts',
       'public/mockServiceWorker.js',
     ],
@@ -69,7 +70,12 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/components/ui/**/*.tsx', 'src/routes/**/*.tsx'],
+    files: [
+      'src/components/ui/**/*.tsx',
+      'src/routes/**/*.tsx',
+      'packages/ui/src/components/ui/**/*.tsx',
+      'packages/ui/src/i18n.tsx',
+    ],
     rules: {
       'react-refresh/only-export-components': 'off',
     },

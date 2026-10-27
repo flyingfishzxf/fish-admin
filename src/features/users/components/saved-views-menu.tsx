@@ -3,10 +3,8 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Badge, Button, Input, Popover, PopoverContent, PopoverTrigger } from '@fish-admin/react'
+
 import type { UsersSearch } from '../search'
 
 export interface SavedView {

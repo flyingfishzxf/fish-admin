@@ -5,17 +5,19 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { ErrorState } from '@/components/common/error-state'
-import { Transfer, type TransferItem } from '@/components/enterprise/transfer/transfer'
-import { Button } from '@/components/ui/button'
 import {
+  Transfer,
+  type TransferItem,
+  Button,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Skeleton } from '@/components/ui/skeleton'
+  Skeleton,
+} from '@fish-admin/react'
+
 import { ApiError } from '@/lib/api-error'
 import { useAuthStore } from '@/stores/auth-store'
 import type { Role } from '@/types'

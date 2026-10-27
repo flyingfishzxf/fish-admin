@@ -49,16 +49,17 @@ import { useMemo, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { PageHeader } from '@/components/common/page-header'
-import { AnchorNav, type AnchorItem } from '@/components/enterprise/anchor-nav/anchor-nav'
+import { PageHeader } from '@fish-admin/react/internal/page-header'
 import {
+  AnchorNav,
+  type AnchorItem,
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -68,35 +69,31 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import {
   Avatar,
   AvatarBadge,
   AvatarFallback,
   AvatarGroup,
   AvatarGroupCount,
-} from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import {
+  Badge,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import {
+  Button,
+  Calendar,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Checkbox,
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
   ContextMenuSeparator,
   ContextMenuTrigger,
-} from '@/components/ui/context-menu'
-import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -105,8 +102,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import {
   Drawer,
   DrawerClose,
   DrawerContent,
@@ -115,28 +110,26 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from '@/components/ui/drawer'
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import {
   Empty,
   EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from '@/components/ui/empty'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { Input } from '@/components/ui/input'
-import { InputNumber } from '@/components/ui/input-number'
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
-import { Label } from '@/components/ui/label'
-import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  Input,
+  InputNumber,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  Label,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -144,29 +137,26 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination'
-import {
   Popover,
   PopoverContent,
   PopoverDescription,
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
-} from '@/components/ui/popover'
-import { Progress } from '@/components/ui/progress'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import {
+  Progress,
+  RadioGroup,
+  RadioGroupItem,
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+  ScrollArea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Segmented } from '@/components/ui/segmented'
-import { Separator } from '@/components/ui/separator'
-import {
+  Segmented,
+  Separator,
   Sheet,
   SheetClose,
   SheetContent,
@@ -175,29 +165,37 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet'
-import { Skeleton } from '@/components/ui/skeleton'
-import { Slider } from '@/components/ui/slider'
-import { LoadingOverlay, Spinner } from '@/components/ui/spinner'
-import { Switch } from '@/components/ui/switch'
-import {
+  Skeleton,
+  Slider,
+  LoadingOverlay,
+  Spinner,
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Textarea } from '@/components/ui/textarea'
-import { Toggle } from '@/components/ui/toggle'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Textarea,
+  Toggle,
+  ToggleGroup,
+  ToggleGroupItem,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  cn,
+} from '@fish-admin/react'
+
 import { COMPONENT_COUNTS } from '@/config/components'
 import { ACCENTS, THEME_MODES, type ThemeMode } from '@/config/theme'
 import { useDocumentTitle } from '@/lib/document-title'
 import { changeLanguage, currentLanguage, SUPPORTED_LANGUAGES } from '@/lib/i18n'
-import { cn } from '@/lib/utils'
+
 import { useThemeStore } from '@/stores/theme-store'
 
 const UI_SECTIONS = [

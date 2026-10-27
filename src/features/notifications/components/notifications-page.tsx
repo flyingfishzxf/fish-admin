@@ -6,12 +6,15 @@ import { toast } from 'sonner'
 
 import { EmptyState } from '@/components/common/empty-state'
 import { ErrorState } from '@/components/common/error-state'
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card'
-import { PageContainer } from '@/components/enterprise/page-container/page-container'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  PageContainer,
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -19,13 +22,15 @@ import {
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
-} from '@/components/ui/pagination'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Segmented } from '@/components/ui/segmented'
-import { Spinner } from '@/components/ui/spinner'
+  ScrollArea,
+  Segmented,
+  Spinner,
+  cn,
+} from '@fish-admin/react'
+
 import { useDocumentTitle } from '@/lib/document-title'
 import { formatDateTime, formatRelativeTime } from '@/lib/format'
-import { cn } from '@/lib/utils'
+
 import type { NotificationFilter, WorkspaceNotification } from '@/types'
 
 import { markAllNotificationsRead, markNotificationsRead, updateNotification } from '../api'

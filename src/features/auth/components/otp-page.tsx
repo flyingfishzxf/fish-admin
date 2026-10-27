@@ -5,9 +5,15 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
+import {
+  Alert,
+  AlertDescription,
+  Button,
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@fish-admin/react'
+
 import { DEMO_MFA_CODE } from '@/config/demo'
 import { ApiError } from '@/lib/api-error'
 import { sanitizeRedirect } from '@/lib/auth'

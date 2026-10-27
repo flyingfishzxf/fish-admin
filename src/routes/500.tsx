@@ -3,7 +3,7 @@ import { RotateCw, ServerCrash } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { StatusScreen } from '@/components/common/status-screen'
-import { Button } from '@/components/ui/button'
+import { Button } from '@fish-admin/react'
 import { useDocumentTitle } from '@/lib/document-title'
 
 export const Route = createFileRoute('/500')({

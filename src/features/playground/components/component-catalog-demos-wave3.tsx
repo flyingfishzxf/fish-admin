@@ -6,25 +6,29 @@ import { toast } from 'sonner'
 import {
   AutoComplete,
   type AutoCompleteOption,
-} from '@/components/enterprise/auto-complete/auto-complete'
-import { Carousel, type CarouselSlide } from '@/components/enterprise/carousel/carousel'
-import { List, type ListItem } from '@/components/enterprise/list/list'
-import { Tour, type TourStep } from '@/components/enterprise/tour/tour'
-import { DetailPage, type DetailPageTab } from '@/components/pro/detail-page/detail-page'
-import {
+  Carousel,
+  type CarouselSlide,
+  List,
+  type ListItem,
+  Tour,
+  type TourStep,
+  DetailPage,
+  type DetailPageTab,
   EditableTable,
   type EditableTableColumn,
   type EditableTableLabels,
   type EditableTableRow,
-} from '@/components/pro/editable-table/editable-table'
-import { ImportWizard, type ImportWizardLabels } from '@/components/pro/import-wizard/import-wizard'
-import type { ImportField } from '@/components/pro/import-wizard/import-wizard-utils'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { ColorPicker } from '@/components/ui/color-picker'
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
+  ImportWizard,
+  type ImportWizardLabels,
+  type ImportField,
+  Avatar,
+  AvatarFallback,
+  Badge,
+  Button,
+  ColorPicker,
+  Input,
+  cn,
+} from '@fish-admin/react'
 
 function DemoSurface({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={cn('rounded-lg border bg-muted/20 p-4', className)}>{children}</div>

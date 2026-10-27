@@ -4,20 +4,24 @@ import { Link } from '@tanstack/react-router'
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 
 import { StatusBadge } from '@/components/common/status-badge'
-import { SortableHeader } from '@/components/data-table/sortable-header'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
+import { SortableHeader } from '@fish-admin/react/internal/data-table'
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Checkbox,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+  getInitials,
+} from '@fish-admin/react'
+
 import { formatDate, formatRelativeTime } from '@/lib/format'
-import { getInitials } from '@/lib/utils'
+
 import type { User } from '@/types'
 
 import type { SortOrder, UserSortKey, UsersSearch } from '../search'

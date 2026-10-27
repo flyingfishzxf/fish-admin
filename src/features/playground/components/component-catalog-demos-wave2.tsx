@@ -3,32 +3,32 @@ import { useMemo, useRef, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { AnchorNav, type AnchorItem } from '@/components/enterprise/anchor-nav/anchor-nav'
-import { BackTop } from '@/components/enterprise/back-top/back-top'
-import { Cascader, type CascaderOption } from '@/components/enterprise/cascader/cascader'
-import { Combobox, type ComboboxOption } from '@/components/enterprise/combobox/combobox'
 import {
+  AnchorNav,
+  type AnchorItem,
+  BackTop,
+  Cascader,
+  type CascaderOption,
+  Combobox,
+  type ComboboxOption,
   ImagePreview,
   type PreviewImage,
-} from '@/components/enterprise/image-preview/image-preview'
-import { JsonViewer } from '@/components/enterprise/json-viewer/json-viewer'
-import {
+  JsonViewer,
   NotificationCenter,
   type NotificationItem,
-} from '@/components/enterprise/notification-center/notification-center'
-import { Rate } from '@/components/enterprise/rate/rate'
-import { Trend } from '@/components/enterprise/trend/trend'
-import { TreeSelect } from '@/components/enterprise/tree-select/tree-select'
-import type { TreeItem } from '@/components/enterprise/tree/tree'
-import { Upload, type UploadItem } from '@/components/enterprise/upload/upload'
-import { Watermark } from '@/components/enterprise/watermark/watermark'
-import {
+  Rate,
+  Trend,
+  TreeSelect,
+  type TreeItem,
+  Upload,
+  type UploadItem,
+  Watermark,
   ProForm,
   type ProFormField,
   type ProFormRule,
   type ProFormValues,
-} from '@/components/pro/pro-form/pro-form'
-import { cn } from '@/lib/utils'
+  cn,
+} from '@fish-admin/react'
 
 function DemoSurface({ children, className }: { children: ReactNode; className?: string }) {
   return <div className={cn('rounded-lg border bg-muted/20 p-4', className)}>{children}</div>

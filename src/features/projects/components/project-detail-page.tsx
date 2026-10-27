@@ -6,10 +6,8 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { ErrorState } from '@/components/common/error-state'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { DetailPage } from '@/components/pro/detail-page/detail-page'
-import { Button } from '@/components/ui/button'
-import { Skeleton } from '@/components/ui/skeleton'
+import { Popconfirm, DetailPage, Button, Skeleton } from '@fish-admin/react'
+
 import { PERMISSION_CODES } from '@/config/permissions'
 import { useCan } from '@/hooks/use-can'
 import { useDocumentTitle } from '@/lib/document-title'

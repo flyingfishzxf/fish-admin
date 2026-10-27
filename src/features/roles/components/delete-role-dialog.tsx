@@ -12,8 +12,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
+  Button,
+} from '@fish-admin/react'
+
 import { ApiError } from '@/lib/api-error'
 import type { Role } from '@/types'
 

@@ -19,7 +19,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
   useSidebar,
-} from '@/components/ui/sidebar'
+} from '@fish-admin/react'
 import { APP_VERSION } from '@/config/app'
 import { findNavItem, isPathActive } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'

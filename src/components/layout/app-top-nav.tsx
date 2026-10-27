@@ -4,15 +4,16 @@ import { useTranslation } from 'react-i18next'
 
 import { BrandMark } from '@/components/common/brand'
 import { HeaderActions } from '@/components/layout/header-actions'
-import { Button } from '@/components/ui/button'
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from '@fish-admin/react'
+
 import { findNavItem, isPathActive } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'
 

@@ -4,22 +4,23 @@ import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { DatePicker } from '@/components/enterprise/date-picker/date-picker'
-import { JsonViewer } from '@/components/enterprise/json-viewer/json-viewer'
-import { List } from '@/components/enterprise/list/list'
-import { Popconfirm } from '@/components/enterprise/popconfirm/popconfirm'
-import { Result } from '@/components/enterprise/result/result'
-import { TimePicker } from '@/components/enterprise/time-picker/time-picker'
-import { Button } from '@/components/ui/button'
 import {
+  DatePicker,
+  JsonViewer,
+  List,
+  Popconfirm,
+  Result,
+  TimePicker,
+  Button,
   Drawer,
   DrawerContent,
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-} from '@/components/ui/drawer'
-import { Label } from '@/components/ui/label'
-import { Spinner } from '@/components/ui/spinner'
+  Label,
+  Spinner,
+} from '@fish-admin/react'
+
 import { formatDateTime, formatRelativeTime } from '@/lib/format'
 import type { Integration } from '@/types'
 

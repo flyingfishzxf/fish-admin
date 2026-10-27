@@ -19,7 +19,13 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@fish-admin/react": ["./packages/ui/src/index.ts"],
+      "@fish-admin/react/internal/data-table": ["./packages/ui/src/internal/data-table.ts"],
+      "@fish-admin/react/internal/page-header": ["./packages/ui/src/internal/page-header.ts"],
+      "@fish-admin/react/internal/date": ["./packages/ui/src/internal/date.ts"],
+      "@fish-admin/react/internal/tree": ["./packages/ui/src/internal/tree.ts"],
+      "@fish-admin/react/internal/csv": ["./packages/ui/src/internal/csv.ts"]
     },
     "types": ["vite/client", "node"]
   },
@@ -27,6 +33,7 @@
     "src",
     "e2e",
     "vite.config.ts",
+    "vite.shared.ts",
     "vitest.config.ts",
     "playwright.config.ts",
     "playwright.visual.config.ts"

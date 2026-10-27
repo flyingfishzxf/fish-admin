@@ -4,11 +4,17 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { Dropzone } from '@/components/enterprise/dropzone/dropzone'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import {
+  Dropzone,
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
+  getInitials,
+} from '@fish-admin/react'
+
 import { createAvatarDataUrl, validateAvatarFile } from '@/lib/image'
-import { getInitials } from '@/lib/utils'
+
 import type { User } from '@/types'
 
 import { updateUserProfile } from '../api'

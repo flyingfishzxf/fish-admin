@@ -5,8 +5,8 @@ import { LanguageToggle } from '@/components/common/language-toggle'
 import { ThemeToggle } from '@/components/common/theme-toggle'
 import { NotificationBell } from '@/components/layout/notification-bell'
 import { UserMenu } from '@/components/layout/user-menu'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+import { Button, Separator } from '@fish-admin/react'
+
 import { useUiStore } from '@/stores/ui-store'
 
 export function HeaderActions() {
