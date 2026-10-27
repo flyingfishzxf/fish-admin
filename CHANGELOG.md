@@ -4,6 +4,47 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2026-10-27
+
+Delivered against the [1.7.0 plan](./docs/plans/1.7.0.md).
+
+### Added
+
+- **Configurable shell.** `ui-store` gains `layout: 'sidebar' | 'header' | 'mixed'`, compact density,
+  a content-width cap and `followSystemTheme`, all persisted under the `fish-admin:` prefix. Settings
+  gets a Layout section, and the mixed shell renders the active group as a second navigation row.
+- **Multi-tab workbench.** Visited routes open as tabs that survive reloads; tabs can be pinned,
+  reloaded with their query string intact, and closed by other/right/all. The list is pruned against
+  the server-provided menu, so a Viewer never keeps a hidden route in the bar. Covered by
+  `e2e/shell.spec.ts`.
+- **Approval center.** `/workflows` splits requests into My requests, Awaiting me and All with
+  URL-synced filters and pagination. Each request opens a snapshot, decision panel, timeline and
+  comments; approve, reject, reassign and withdraw run through a mock state machine that appends
+  audit events. `workflow:read` and `workflow:approve` raise the registry to 23 permissions. See
+  [Approval center](docs/en/workflows.md).
+- **Windowed tables.** ProTable windows fixed-height rows on `/users` and `/workflows`, keeps grouped
+  headers and the pinned title column sticky, and renders 5 000 synthetic rows (`?dataset=large`)
+  while keeping roughly 80 in the DOM. Column visibility, order and widths persist per user. See
+  [Large tables](docs/en/tables.md).
+- **Dictionaries.** `/dictionaries` maintains two-level types and items with pointer and keyboard
+  reordering, enable switches, reference counts and protection rules; the user profile consumes
+  enabled `user_tag` items as tag suggestions. `dictionary:read` and `dictionary:manage` bring the
+  registry to 25 permissions, and the mock database moves to v6. See
+  [Dictionaries](docs/en/dictionaries.md).
+
+### Changed
+
+- The persisted mock database upgrades to v6: workflows and dictionaries layer onto the v5 payload,
+  and unknown or incomplete snapshots reset instead of crashing the app.
+- README, feature docs and Linux visual baselines were refreshed for the new routes, and the first
+  paint grows to 27 chunks / 172.4 kB within the unchanged 180 kB budget.
+
+### Fixed
+
+- Horizontal section navigation — the `/ui` playground, the `/reports` anchors and the catalog demo —
+  no longer shows a vertical scrollbar at its right edge. The 1 px active-underline offset used to
+  make `overflow-x-auto` also scroll vertically; the axis is now clipped.
+
 ## [1.6.0] - 2026-10-26
 
 Delivered against the [1.6.0 plan](./docs/plans/1.6.0.md).
@@ -387,7 +428,8 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.7.0...HEAD
+[1.7.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.3.0...v1.4.0
