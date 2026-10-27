@@ -29,7 +29,13 @@ export default function ApiTable({ component }: { component: string }) {
   return (
     <div>
       <h3>
-        {entry.name} <code>{entry.exportName}</code>
+        {entry.name}
+        {entry.exportName !== entry.name ? (
+          <>
+            {' '}
+            <code>{entry.exportName}</code>
+          </>
+        ) : null}
       </h3>
       {rows.length === 0 ? (
         <p className="fish-demo__placeholder">{text.apiNone}</p>

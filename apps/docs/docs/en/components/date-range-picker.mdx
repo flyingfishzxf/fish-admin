@@ -1,0 +1,89 @@
+---
+title: Date Range Picker
+description: Pick a start and end date from one calendar, with optional quick presets.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import Demo from '@docs/theme/Demo'
+import DateRangePickerBasic from '@docs/demos/date-range-picker/basic'
+import basicSource from '@docs/demos/date-range-picker/basic.tsx?raw'
+import DateRangePickerPresets from '@docs/demos/date-range-picker/presets'
+import presetsSource from '@docs/demos/date-range-picker/presets.tsx?raw'
+
+# Date Range Picker
+
+A controlled range picker built on two `Popover` → `Calendar` layers. The value is a pair of
+`YYYY-MM-DD` strings, and the trigger formats them with the active `UIProvider` locale.
+
+## When to use
+
+- Filtering a list or report by a start and end date.
+- Selecting a booking or audit window where both ends matter.
+- Offering quick ranges (last 7 days, this quarter) next to the calendar.
+
+## When not to use
+
+- A single date: use `Date Picker`.
+- A date and a time: use separate date and time pickers.
+- A free-form text range: use `Input`.
+
+## Basic usage
+
+<Demo
+  title="From and to on one calendar"
+  filename="demos/date-range-picker/basic.tsx"
+  source={basicSource}
+>
+  <DateRangePickerBasic />
+</Demo>
+
+## Quick presets
+
+<Demo
+  title="Presets next to the calendar"
+  filename="demos/date-range-picker/presets.tsx"
+  source={presetsSource}
+>
+  <DateRangePickerPresets />
+</Demo>
+
+## API
+
+<ApiTable component="date-range-picker" />
+
+## Design guidance
+
+- The value is always `YYYY-MM-DD` strings, not `Date` objects; convert at your data boundary.
+- The trigger shows a localized range, for example "Sep 28, 2026 – Oct 27, 2026".
+- Presets are plain `{ label, from, to }` objects; highlight one only when it matches the value.
+- Keep the placeholder action-oriented: "Filter by date", not "Select".
+- Clearing is built in: the popover footer resets the value to `{}`.
+
+## Accessibility
+
+- The trigger is a `Button` with an `aria-label` that combines `ariaLabel` and the current display
+  value, so screen readers announce the selection without opening the popover.
+- The calendar is keyboard navigable: arrow keys move by day, Page Up/Down by month, Home/End to
+  the edges of the week.
+- Focus moves into the calendar when the popover opens.
+- Each preset is a real button in the tab order.
+
+Known gap: the picker does not validate that `from` is before `to` when a value arrives from
+outside; the calendar itself always produces an ordered range.
+
+## FAQ
+
+**Why strings instead of `Date`?** Strings survive JSON, URL search params and server round trips
+without timezone drift.
+
+**Can a range be partially filled?** Yes — `{ from }` or `{ to }` formats as "… – Oct 27, 2026" and
+still opens on the selected month.
+
+**How do I localize it?** Wrap the page in `UIProvider`; the docs page passes the Rspress language
+through, so Chinese pages format dates in Chinese.
+
+## Related
+
+- `Date Picker` for a single day.
+- `Calendar` when the picker is always visible.
+- [Used in the template](https://fish-admin.vercel.app/workflows)

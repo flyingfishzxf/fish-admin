@@ -1,0 +1,87 @@
+---
+title: Date Range Picker 日期范围选择器
+description: 在一个日历中选择起止日期，并可附带快捷预设。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import Demo from '@docs/theme/Demo'
+import DateRangePickerBasic from '@docs/demos/date-range-picker/basic'
+import basicSource from '@docs/demos/date-range-picker/basic.tsx?raw'
+import DateRangePickerPresets from '@docs/demos/date-range-picker/presets'
+import presetsSource from '@docs/demos/date-range-picker/presets.tsx?raw'
+
+# Date Range Picker 日期范围选择器
+
+受控的日期范围选择器，由 `Popover` 与 `Calendar` 两层组合而成。值是 `YYYY-MM-DD` 字符串对，
+触发器会按当前 `UIProvider` 的语言格式化显示。
+
+## 何时使用
+
+- 按起止日期筛选列表或报表。
+- 选择预订、审计等两端都重要的时间窗口。
+- 需要在日历旁提供“最近 7 天”“本季度”等快捷范围。
+
+## 何时不使用
+
+- 单个日期：使用 `Date Picker`。
+- 日期与时间：分别使用日期选择器与时间选择器。
+- 自由文本范围：使用 `Input`。
+
+## 基础用法
+
+<Demo
+  title="在同一个日历中选择起止日期"
+  filename="demos/date-range-picker/basic.tsx"
+  source={basicSource}
+>
+  <DateRangePickerBasic />
+</Demo>
+
+## 快捷预设
+
+<Demo
+  title="日历旁的预设"
+  filename="demos/date-range-picker/presets.tsx"
+  source={presetsSource}
+>
+  <DateRangePickerPresets />
+</Demo>
+
+## API
+
+<ApiTable component="date-range-picker" />
+
+## 设计指引
+
+- 值始终是 `YYYY-MM-DD` 字符串，而不是 `Date` 对象；请在数据边界处转换。
+- 触发器显示本地化范围，例如“2026年9月28日 – 2026年10月27日”。
+- 预设就是 `{ label, from, to }` 对象；仅当与当前值一致时高亮。
+- 占位文案要面向操作：“按日期筛选”，而不是“请选择”。
+- 清除能力已内置：弹层底部的按钮会把值重置为 `{}`。
+
+## 无障碍
+
+- 触发器是 `Button`，其 `aria-label` 组合了 `ariaLabel` 与当前显示值，读屏无需打开弹层即可
+  获知选择结果。
+- 日历支持键盘操作：方向键按天移动，Page Up/Down 按月移动，Home/End 跳到一周的两端。
+- 弹层打开后焦点进入日历。
+- 每个预设都是 Tab 顺序中的真实按钮。
+
+已知缺口：外部传入的值不会校验 `from` 是否早于 `to`；日历自身产生的范围始终有序。
+
+## FAQ
+
+**为什么用字符串而不是 `Date`？** 字符串可以直接经过 JSON、URL 查询参数与服务端往返，不会
+发生时区漂移。
+
+**可以只填一端吗？** 可以——`{ from }` 或 `{ to }` 会显示为“… – 2026年10月27日”，并仍会打开
+所选月份。
+
+**如何本地化？** 用 `UIProvider` 包裹页面；文档页会透传 Rspress 语言，因此中文页面会以中文
+格式化日期。
+
+## 相关
+
+- `Date Picker`：选择单个日期。
+- 选择器常驻页面时使用 `Calendar`。
+- [在模板中的用法](https://fish-admin.vercel.app/workflows)

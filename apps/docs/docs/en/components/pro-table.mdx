@@ -1,0 +1,87 @@
+---
+title: ProTable
+description: A table shell for TanStack Table with search, bulk actions, pagination and virtualization.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import Demo from '@docs/theme/Demo'
+import ProTableBasic from '@docs/demos/pro-table/basic'
+import basicSource from '@docs/demos/pro-table/basic.tsx?raw'
+import ProTableSelection from '@docs/demos/pro-table/selection'
+import selectionSource from '@docs/demos/pro-table/selection.tsx?raw'
+
+# ProTable
+
+`ProTable` adds the template's table chrome — search, filters, bulk actions, pagination and
+virtualization — on top of a TanStack `Table` instance you create and own.
+
+## When to use
+
+- A list page with a search box, filters and a paged data set.
+- A table whose rows can be selected for bulk actions.
+- A long list that needs virtualization instead of pagination.
+
+## When not to use
+
+- A handful of static rows: use the plain `Table` primitives.
+- A data grid that needs editing inside cells: use `EditableTable`.
+- A two-column summary: use `Descriptions`.
+
+## Basic usage
+
+<Demo title="Searchable member list" filename="demos/pro-table/basic.tsx" source={basicSource}>
+  <ProTableBasic />
+</Demo>
+
+## Row selection
+
+<Demo
+  title="Select rows and act on them"
+  filename="demos/pro-table/selection.tsx"
+  source={selectionSource}
+>
+  <ProTableSelection />
+</Demo>
+
+## API
+
+<ApiTable component="pro-table" />
+
+## Design guidance
+
+- ProTable is a view: filtering, sorting and pagination logic stay in your data layer.
+- `selection.label` is the badge text — include the count, for example "3 rows selected".
+- Put the primary action in `actions`, destructive bulk actions in `selection.children`.
+- Use `density="compact"` for dense operational screens and the default for reading-heavy lists.
+- Prefer pagination for server-backed data; use `virtualized` for long client-side lists.
+- Reserve `onRowClick` for navigation or opening details; keep row actions in a menu.
+
+## Accessibility
+
+- The table keeps native table semantics: header cells, row grouping and caption support come from
+  the primitives underneath.
+- When `virtualized` is set, the scroll container is a labelled `region`; pass `scrollLabel`.
+- Search has a visible label through `search.ariaLabel`, and the clear button has `clearLabel`.
+- Selection checkboxes are Radix checkboxes; they expose checked state and take a per-row
+  accessible name.
+- Rows are focusable and respond to Enter and Space only when `onRowClick` is provided.
+
+## FAQ
+
+**Does ProTable fetch data?** No. It renders the `table` you pass in; see the template's
+`architecture` guide for the repository pattern used in FishAdmin.
+
+**Why do I need TanStack Table?** Column definitions, row models and selection state already live
+there. ProTable stays a thin, styleable shell instead of inventing a second table API.
+
+**How do I paginate server data?** Pass `pagination` with the current page, page count, total and
+change handlers; ProTable renders the footer and nothing else.
+
+**Can the bulk bar be customised?** Yes — `selection.children` renders your own action buttons.
+
+## Related
+
+- `Table` primitives when you need a plain semantic table.
+- `EditableTable` when cells are inputs.
+- `QueryFilter` for filter bars above tables.
+- [Used in the template](https://fish-admin.vercel.app/users)

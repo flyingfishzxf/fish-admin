@@ -1,0 +1,82 @@
+---
+title: Button 按钮
+description: 用符合模板密度与状态的按钮触发操作。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import Demo from '@docs/theme/Demo'
+import ButtonBasic from '@docs/demos/button/basic'
+import basicSource from '@docs/demos/button/basic.tsx?raw'
+import ButtonStates from '@docs/demos/button/states'
+import statesSource from '@docs/demos/button/states.tsx?raw'
+
+# Button 按钮
+
+按钮用于触发操作。同一区域内只放一个主按钮，次要操作保持更弱的视觉层级。
+
+## 何时使用
+
+- 提交表单或确认对话框。
+- 进入向导的下一步。
+- 触发表格行或工具栏中的行内操作。
+
+## 何时不使用
+
+- 页面之间的跳转：请使用链接。
+- 在互斥选项中做选择：请使用 `Radio Group` 或 `Segmented`。
+- 需要二次确认的危险操作：请将按钮与 `Alert Dialog` 搭配使用。
+
+## 基础用法
+
+<Demo
+  title="主按钮、次按钮、描边与幽灵"
+  filename="demos/button/basic.tsx"
+  source={basicSource}
+>
+  <ButtonBasic />
+</Demo>
+
+## 变体与状态
+
+<Demo
+  title="尺寸、禁用与加载"
+  filename="demos/button/states.tsx"
+  source={statesSource}
+>
+  <ButtonStates />
+</Demo>
+
+## API
+
+<ApiTable component="button" />
+
+## 设计指引
+
+- 默认高度为 36 px；`size="sm"` 为 32 px，`size="lg"` 为 40 px。
+- 仅在不可逆操作中使用 `variant="destructive"`。
+- 文案要短，并以动词开头：“新建项目”，而不是“确定”。
+- 纯图标按钮必须提供无障碍名称。
+
+## 无障碍
+
+| 按键          | 行为                 |
+| ------------- | -------------------- |
+| Enter / Space | 激活当前聚焦的按钮。 |
+| Tab           | 将焦点移到下一个控件。 |
+
+未使用 `asChild` 时，底层元素是原生 `<button>`。禁用按钮会被浏览器移出 Tab 顺序；不要指望
+禁用按钮来解释操作为何不可用——请把原因渲染在按钮旁边。
+
+已知缺口：目前没有内置的加载状态；请像第二个示例那样，把 Spinner 作为子元素传入并自行禁用按钮。
+
+## FAQ
+
+**可以渲染一个看起来像按钮的链接吗？** 可以——使用 `asChild` 并以 `<a>` 作为子元素，语义仍然是链接。
+
+**为什么没有 `isLoading` 属性？** 加载通常是页面级关注点；通过组合 `Spinner`，按钮布局的控制权留在你手里。
+
+## 相关
+
+- `Spinner`：与按钮无关的进度提示。
+- `Alert Dialog`：操作需要确认时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/)

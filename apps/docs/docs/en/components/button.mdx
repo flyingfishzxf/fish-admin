@@ -1,0 +1,86 @@
+---
+title: Button
+description: Trigger an action with a button that matches the template's density and states.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import Demo from '@docs/theme/Demo'
+import ButtonBasic from '@docs/demos/button/basic'
+import basicSource from '@docs/demos/button/basic.tsx?raw'
+import ButtonStates from '@docs/demos/button/states'
+import statesSource from '@docs/demos/button/states.tsx?raw'
+
+# Button
+
+Buttons trigger an action. Use one primary button per region; secondary actions stay quieter.
+
+## When to use
+
+- Submitting a form or confirming a dialog.
+- Moving to the next step of a wizard.
+- Triggering an inline action in a table row or toolbar.
+
+## When not to use
+
+- Navigating between pages: use a link.
+- Choosing among mutually exclusive options: use `Radio Group` or `Segmented`.
+- Destructive actions that need confirmation: pair the button with `Alert Dialog`.
+
+## Basic usage
+
+<Demo
+  title="Primary, secondary, outline and ghost"
+  filename="demos/button/basic.tsx"
+  source={basicSource}
+>
+  <ButtonBasic />
+</Demo>
+
+## Variants and states
+
+<Demo
+  title="Sizes, disabled and loading"
+  filename="demos/button/states.tsx"
+  source={statesSource}
+>
+  <ButtonStates />
+</Demo>
+
+## API
+
+<ApiTable component="button" />
+
+## Design guidance
+
+- Default height is 36 px; `size="sm"` is 32 px and `size="lg"` is 40 px.
+- Use `variant="destructive"` only for irreversible actions.
+- Keep the label short and verb-first: "Create project", not "OK".
+- Icon-only buttons need an accessible name.
+
+## Accessibility
+
+| Key           | Behavior                      |
+| ------------- | ----------------------------- |
+| Enter / Space | Activates the focused button. |
+| Tab           | Moves focus to the next control. |
+
+The underlying element is a native `<button>` unless `asChild` is used. Disabled buttons are
+removed from the tab order by the browser; do not rely on a disabled button to explain why an
+action is unavailable — render the reason next to it.
+
+Known gap: there is no built-in loading state; pass a spinner as the child and disable the button
+yourself, as the second demo does.
+
+## FAQ
+
+**Can I render a link that looks like a button?** Yes — use `asChild` with an `<a>` child, so the
+semantics stay a link.
+
+**Why is there no `isLoading` prop?** Loading is usually a page-level concern; composing `Spinner`
+keeps the button's layout under your control.
+
+## Related
+
+- `Spinner` for progress that is not tied to a button.
+- `Alert Dialog` when the action needs confirmation.
+- [Used in the template](https://fish-admin.vercel.app/)

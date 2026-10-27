@@ -1,0 +1,85 @@
+---
+title: ProTable 数据表格
+description: 为 TanStack Table 提供搜索、批量操作、分页与虚拟化的表格外壳。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import Demo from '@docs/theme/Demo'
+import ProTableBasic from '@docs/demos/pro-table/basic'
+import basicSource from '@docs/demos/pro-table/basic.tsx?raw'
+import ProTableSelection from '@docs/demos/pro-table/selection'
+import selectionSource from '@docs/demos/pro-table/selection.tsx?raw'
+
+# ProTable 数据表格
+
+`ProTable` 在你自行创建并持有的 TanStack `Table` 实例之上，补齐模板的表格外观：搜索、筛选、
+批量操作、分页与虚拟化。
+
+## 何时使用
+
+- 带搜索框、筛选器和分页数据集的列表页。
+- 需要选中行并执行批量操作的表格。
+- 用虚拟化代替分页的超长列表。
+
+## 何时不使用
+
+- 只有少量静态行：使用基础的 `Table` 组件。
+- 需要在单元格内编辑的数据网格：使用 `EditableTable`。
+- 两列摘要信息：使用 `Descriptions`。
+
+## 基础用法
+
+<Demo title="可搜索的成员列表" filename="demos/pro-table/basic.tsx" source={basicSource}>
+  <ProTableBasic />
+</Demo>
+
+## 行选择
+
+<Demo
+  title="选中行并执行操作"
+  filename="demos/pro-table/selection.tsx"
+  source={selectionSource}
+>
+  <ProTableSelection />
+</Demo>
+
+## API
+
+<ApiTable component="pro-table" />
+
+## 设计指引
+
+- ProTable 只负责视图：筛选、排序与分页逻辑留在你的数据层。
+- `selection.label` 是徽标文案——要包含数量，例如“已选择 3 行”。
+- 主操作放在 `actions`，危险的批量操作放在 `selection.children`。
+- 密集的运营页面使用 `density="compact"`，阅读为主的列表保持默认密度。
+- 服务端数据优先分页；长客户端列表使用 `virtualized`。
+- `onRowClick` 只用于跳转或打开详情；行内操作放进菜单。
+
+## 无障碍
+
+- 表格保留原生语义：表头单元格、行分组与标题支持都来自底层组件。
+- 设置 `virtualized` 后，滚动容器是带标签的 `region`；请传入 `scrollLabel`。
+- 搜索框通过 `search.ariaLabel` 获得可见标签，清除按钮使用 `clearLabel`。
+- 选择框是 Radix Checkbox；它们暴露选中状态，并为每一行提供无障碍名称。
+- 只有传入 `onRowClick` 时，行才会获得焦点并响应 Enter 与 Space。
+
+## FAQ
+
+**ProTable 会请求数据吗？** 不会。它只渲染传入的 `table`；FishAdmin 模板使用的仓储模式见
+`architecture` 指南。
+
+**为什么一定要用 TanStack Table？** 列定义、行模型与选择状态本来就在那里。ProTable 保持为一个
+可样式化的薄外壳，而不是再造一套表格 API。
+
+**如何做服务端分页？** 传入 `pagination`，提供当前页、总页数、总数与变更回调；ProTable 只负责
+渲染页脚。
+
+**批量操作栏可以定制吗？** 可以——`selection.children` 会渲染你自己的操作按钮。
+
+## 相关
+
+- 需要纯语义表格时使用 `Table` 基础组件。
+- 单元格是输入框时使用 `EditableTable`。
+- 表格上方的筛选栏使用 `QueryFilter`。
+- [在模板中的用法](https://fish-admin.vercel.app/users)

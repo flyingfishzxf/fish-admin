@@ -1,6 +1,6 @@
 [
-  { "type": "dir", "name": "guide" },
-  { "type": "dir", "name": "components" },
-  { "type": "dir", "name": "template" },
+  { "type": "dir", "name": "guide", "label": "Guide" },
+  { "type": "dir", "name": "components", "label": "Components" },
+  { "type": "dir", "name": "template", "label": "Template" },
   "versions"
 ]
