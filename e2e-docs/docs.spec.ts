@@ -1,0 +1,161 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
+import AxeBuilder from '@axe-core/playwright'
+import { expect, test, type Page } from '@playwright/test'
+
+const registry = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), 'apps/docs/generated/registry.json'), 'utf8'),
+) as { components: Array<{ id: string; name: string }> }
+
+const AXE_ROUTES = [
+  '/',
+  '/components/button',
+  '/components/pro-table',
+  '/components/date-range-picker',
+  '/zh/components/button',
+]
+
+function watchConsole(page: Page): string[] {
+  const errors: string[] = []
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text())
+  })
+  page.on('pageerror', (error) => errors.push(error.message))
+  return errors
+}
+
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => window.localStorage.setItem('rspress-visited', '1'))
+})
+
+async function axeViolations(page: Page) {
+  const results = await new AxeBuilder({ page }).analyze()
+  return results.violations.map((violation) => ({
+    id: violation.id,
+    impact: violation.impact,
+    help: violation.help,
+    targets: violation.nodes.flatMap((node) => node.target),
+  }))
+}
+
+test('the home page shows the hero, install command and three actions', async ({ page }) => {
+  const errors = watchConsole(page)
+  await page.goto('/')
+  await expect(page.locator('.rp-home-hero__title')).toContainText('FishAdmin UI')
+  await expect(page.locator('.rp-home-hero__tagline')).toHaveText('npm install @fish-admin/react')
+  const actions = page.locator('.rp-home-hero__action')
+  await expect(actions).toHaveCount(3)
+  await expect(actions.nth(0)).toHaveText('Browse components')
+  await expect(actions.nth(0)).toHaveAttribute('href', '/components')
+  await page.waitForLoadState('networkidle')
+  expect(errors).toEqual([])
+})
+
+test('the component index lists all 83 components and links the three pilots', async ({ page }) => {
+  await page.goto('/components')
+  await expect(page.locator('.fish-index__item')).toHaveCount(registry.components.length)
+  const names = await page.locator('.fish-index__name').allTextContents()
+  expect([...names].sort()).toEqual(registry.components.map((entry) => entry.name).sort())
+  await expect(page.locator('a.fish-index__item')).toHaveCount(3)
+  const hrefs = await page
+    .locator('a.fish-index__item')
+    .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href')))
+  expect(hrefs.sort()).toEqual([
+    '/components/button.html',
+    '/components/date-range-picker.html',
+    '/components/pro-table.html',
+  ])
+})
+
+test('the button page renders both demos, their source and the template link', async ({ page }) => {
+  await page.goto('/components/button')
+  await expect(page.locator('[data-demo^="button/"]')).toHaveCount(2)
+  for (const id of ['button/basic', 'button/states']) {
+    const demo = page.locator(`[data-demo="${id}"]`)
+    await expect(demo.locator('button').first()).toBeVisible()
+    await expect(demo.locator('.fish-demo__source')).toContainText('export default function')
+  }
+  await expect(page.locator('[data-demo="button/basic"] .fish-demo__source')).toContainText(
+    'ButtonBasic',
+  )
+  await expect(
+    page.locator('[data-demo="button/basic"] a', { hasText: 'Used in the template' }),
+  ).toHaveAttribute('href', 'https://fish-admin.vercel.app/')
+})
+
+test('the ProTable demos filter rows and track the selection count', async ({ page }) => {
+  await page.goto('/components/pro-table')
+  const basic = page.locator('[data-demo="pro-table/basic"]')
+  const basicRows = basic.locator('[data-slot="table-body"] [data-slot="table-row"]')
+  await expect(basicRows).toHaveCount(5)
+  await basic.getByLabel('Search members').fill('Ada')
+  await expect(basicRows).toHaveCount(1)
+  await expect(basic.getByText('Ada Lovelace')).toBeVisible()
+
+  const selection = page.locator('[data-demo="pro-table/selection"]')
+  await selection.getByRole('checkbox', { name: 'Select Ada Lovelace' }).click()
+  await expect(selection.getByText('1 row selected')).toBeVisible()
+  await selection.getByRole('checkbox', { name: 'Select Grace Hopper' }).click()
+  await expect(selection.getByText('2 rows selected')).toBeVisible()
+  await selection.getByRole('button', { name: 'Clear selection' }).click()
+  await expect(selection.getByText(/rows selected/)).toHaveCount(0)
+})
+
+test('the date range demos open the calendar and apply presets', async ({ page }) => {
+  await page.goto('/components/date-range-picker')
+  const basic = page.locator('[data-demo="date-range-picker/basic"]')
+  await basic.getByRole('button', { name: /Report date range/ }).click()
+  await expect(page.getByRole('grid')).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(page.getByRole('grid')).toHaveCount(0)
+
+  const presets = page.locator('[data-demo="date-range-picker/presets"]')
+  await presets.getByRole('button', { name: /Audit log date range/ }).click()
+  // Radix portals the popover outside the demo container.
+  await page.getByRole('button', { name: 'Last 7 days' }).click()
+  await expect(presets.getByText('Selected 2026-10-21 – 2026-10-27')).toBeVisible()
+})
+
+test('the Chinese button page is localized', async ({ page }) => {
+  await page.goto('/zh/components/button')
+  await expect(page).toHaveTitle(/Button 按钮/)
+  await expect(page.getByRole('heading', { name: '何时使用' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '主按钮、次按钮、描边与幽灵' })).toBeVisible()
+  await expect(page.locator('[data-demo="button/basic"]')).toHaveCount(1)
+})
+
+test('dark mode switches the document and the demo surface', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/components/button')
+  const preview = page.locator('[data-demo="button/basic"] .fish-demo__preview')
+  const before = await preview.evaluate((element) => getComputedStyle(element).backgroundColor)
+  await page.locator('.rp-switch-appearance').first().click()
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.classList.contains('dark')))
+    .toBe(true)
+  await expect
+    .poll(() => preview.evaluate((element) => getComputedStyle(element).backgroundColor))
+    .not.toBe(before)
+})
+
+test('search finds the Button component page', async ({ page }) => {
+  await page.goto('/')
+  await page.locator('.rp-search-button').first().click()
+  const input = page.locator('input[aria-label="SearchPanelInput"]')
+  await expect(input).toBeVisible()
+  await input.fill('Button')
+  await expect(
+    page.locator('.rp-search-panel__results a[href*="/components/button"]').first(),
+  ).toBeVisible()
+})
+
+test('the pilot pages have no axe violations', async ({ page }) => {
+  for (const route of AXE_ROUTES) {
+    await test.step(route, async () => {
+      await page.goto(route)
+      await page.waitForLoadState('networkidle')
+      expect(await axeViolations(page), `axe violations on ${route}`).toEqual([])
+    })
+  }
+})

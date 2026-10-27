@@ -28,12 +28,9 @@ export default defineConfig({
   themeConfig: {
     darkMode: true,
     search: true,
-    socialLinks: [
-      { icon: 'github', mode: 'link', content: 'https://github.com/flyingfishzxf/fish-admin' },
-    ],
     footer: {
       message:
-        'MIT Licensed · <a href="https://fish-admin.vercel.app" target="_blank" rel="noreferrer">Live demo</a> · Vue 3 planned',
+        'MIT Licensed · <a href="https://fish-admin.vercel.app" target="_blank" rel="noreferrer">Live demo</a> · <a href="https://github.com/flyingfishzxf/fish-admin" target="_blank" rel="noreferrer">GitHub</a> · Vue 3 planned',
     },
   },
   globalStyles: path.join(root, 'theme/styles/index.css'),
