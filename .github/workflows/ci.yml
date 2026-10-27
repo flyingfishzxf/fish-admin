@@ -117,6 +117,65 @@ jobs:
           path: playwright-report
           retention-days: 7
 
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.1.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check generated API pages
+        run: pnpm gen-api:check
+
+      - name: Build the docs site
+        run: pnpm docs:build
+
+      - name: Check the docs structure
+        run: pnpm docs:check
+
+  docs-e2e:
+    name: Docs E2E
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.1.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Build the docs site and run the docs tests
+        run: pnpm test:docs
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-playwright-report
+          path: playwright-report/docs
+          retention-days: 7
+
   visual:
     name: Visual regression
     runs-on: ubuntu-latest

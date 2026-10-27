@@ -22,6 +22,24 @@ updates:
         update-types:
           - major
 
+  - package-ecosystem: npm
+    directory: /packages/ui
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+    labels:
+      - dependencies
+
+  - package-ecosystem: npm
+    directory: /apps/docs
+    schedule:
+      interval: weekly
+      day: monday
+      time: '05:00'
+    labels:
+      - dependencies
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
