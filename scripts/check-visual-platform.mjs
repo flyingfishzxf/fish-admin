@@ -4,14 +4,15 @@ import { existsSync } from 'node:fs'
 // Baselines are rendered inside mcr.microsoft.com/playwright:v1.64.1-noble.
 // Running elsewhere silently produces screenshots whose fonts do not match.
 if (process.platform !== 'linux') {
+  const dockerCommand = process.argv.slice(2).join(' ') || 'pnpm test:visual:docker'
   console.error(
     [
       `Visual tests render screenshots on Linux; you are on ${process.platform}.`,
       'Committed baselines are *-linux.png, so this run cannot compare against them.',
       '',
       'Run the suite through Docker instead:',
-      '  pnpm test:visual:docker',
-      '  pnpm test:visual:docker --update',
+      `  ${dockerCommand}`,
+      `  ${dockerCommand} --update`,
     ].join('\n'),
   )
   process.exit(1)

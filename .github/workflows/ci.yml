@@ -210,3 +210,34 @@ jobs:
             playwright-report/visual
             test-results
           retention-days: 7
+
+  docs-visual:
+    name: Docs visual regression
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001 --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          corepack enable --install-directory "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --store-dir /tmp/pnpm-store
+
+      - name: Compare docs screenshots
+        run: pnpm test:docs:visual
+
+      - name: Upload docs visual diff report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-visual-report
+          path: |
+            playwright-report/docs-visual
+            test-results
+          retention-days: 7

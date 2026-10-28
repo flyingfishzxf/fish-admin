@@ -147,12 +147,12 @@ Two build regressions the wave introduced and how they were closed:
 - Create: `playwright.docs-visual.config.ts`, `e2e-docs/visual.spec.ts` (+ baselines), `scripts/visual-regression-docs.mjs` (reuse the template's Docker image)
 - Modify: `docs/plans/component-library.md` (M2 execution record)
 
-- [ ] **Step 1:** `docs:check --complete` — all 83 × 2 pages, ≥166 demos, en/zh parity.
-- [ ] **Step 2:** full demo sweep (`e2e-docs/sweep.spec.ts` over 83 pages) with console-error capture; fix everything it finds.
-- [ ] **Step 3:** full axe scan gated by `DOCS_FULL_AXE=1`; fix violations; record pass counts.
-- [ ] **Step 4:** docs visual baselines: 4 routes (home, installation, button, pro-table) × light/dark at 1440×900, captured in the Playwright Docker image, zero diff on re-run.
-- [ ] **Step 5:** raise the `gen-api` coverage floor to the measured M2 value (floored to 0.1%), record build time, CSS/JS totals, search index sizes, demo count and page count.
-- [ ] **Step 6:** fill the M2 execution record; run the full gate set once more; commit `docs: complete the component library coverage`.
+- [x] **Step 1:** `docs:check --complete` — 83 registry entries, 83 documented components, 167 demos, 20 template pages.
+- [x] **Step 2:** full demo sweep (`e2e-docs/sweep.spec.ts` over 83 pages) with console-error capture; fix everything it finds.
+- [x] **Step 3:** full axe scan gated by `DOCS_FULL_AXE=1`; 166 pages, zero violations, zero console errors.
+- [x] **Step 4:** docs visual baselines: `playwright.docs-visual.config.ts` + `e2e-docs/visual.spec.ts` + `scripts/visual-regression-docs.mjs` — 4 routes × light/dark at 1440×900, 8 `-linux.png` baselines captured in `mcr.microsoft.com/playwright:v1.64.1-noble`, 8 passed / zero diff on re-run. `playwright.docs.config.ts` ignores `visual.spec.ts` so the functional run cannot write `-win32` baselines; CI gained a `docs-visual` job.
+- [x] **Step 5:** `gen-api` floor raised 0.00% → 78.70% (measured 78.80%, 301/382 props); build 22 s, `doc_build` 911 files / 30.6 MB (HTML 201 pages 13369.7 kB, JS 16071.3 kB, CSS 187.4 kB), search index en 492.5 kB / zh 473.8 kB, 167 demos, 83 × 2 pages.
+- [x] **Step 6:** M2 execution record filled in `docs/plans/component-library.md`; full gate set re-run green (format, lint, typecheck, coverage, `test:ui`, `check:package`, size, `test:e2e` 85, `test:visual:docker` 17 zero-diff, `docs:check`, `gen-api:check`, `test:docs` 263).
 
 ---
 

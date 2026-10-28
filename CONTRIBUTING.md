@@ -52,6 +52,13 @@ pnpm test:visual:docker            # verify a change did not move anything else
 
 The mock database is seeded and each test freezes the clock, so dates and chart series stay stable. Review the regenerated `.png` files before committing them — an unexpected diff is usually the bug.
 
+The docs site has its own baseline set: `e2e-docs/visual.spec.ts` compares four routes (home, installation, button, pro-table) in light and dark against baselines from the same image, served on port 4175.
+
+```bash
+pnpm test:docs:visual:docker --update   # regenerate the docs baselines
+pnpm test:docs:visual:docker            # verify a docs change did not move anything
+```
+
 Husky runs lint-staged on commit and commitlint on the commit message. Do not bypass the hooks with `--no-verify`; fix the underlying problem instead.
 
 ## Commit messages

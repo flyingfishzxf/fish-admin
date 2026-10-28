@@ -435,7 +435,65 @@ M1 只证明管道能跑。真正的产品是 83 个页面 × 两种语言：每
 
 ### 执行记录
 
-（待实现后填写：每波页数、demo 数、API 覆盖率、构建时间、索引体积、偏差）
+**规模**
+
+- 4 波共 83 个组件页 × 2 语言 = 166 页（M1 的 3 个试点 + Wave 1 的 23 + Wave 2 的 23 +
+  Wave 3 的 19 + Wave 4 的 15）。
+- Demo 167 个：每页 ≥2 个，button 3 个。每个组件目录一份 `meta.json`，由
+  `scripts/build-manifests.mjs` 汇总出 `demos/registry.json`、
+  `docs/{en,zh}/components/_meta.json`、`generated/documented.json`，`--check` 挡漂移。
+- JSDoc props 覆盖：M1 7.67% → Wave 3 49.21% → Wave 4 78.80%（301/382，余 81 条未注释）；
+  `scripts/gen-api-floor.json` 的 CI 下限从 0.00% 抬到 78.70%。
+
+**构建与体积（本地 Windows、Node 22.21.1）**
+
+- `pnpm docs:build` 22 s（含 `packages/ui` 预构建、manifests、模板文档同步）；Rspress 自身
+  web 8.00 s / node 7.66 s，201 个 HTML 页面渲染 2146 ms。
+- `doc_build` 911 个文件 / 30.6 MB：HTML 201 页 13369.7 kB（gzip 2135.7 kB）、
+  JS 603 个 16071.3 kB（gzip 3603.5 kB）、CSS 1 个 187.4 kB（gzip 31.9 kB）；Rspress 自报
+  web 资源合计 17638.4 kB / gzip 4048.5 kB。
+- 201 页 = 首页 2 + 指南 6 + 组件 168（83 页 + 索引，×2）+ 模板 22（索引 + 10 篇，×2）+
+  版本 2 + 根 404。
+- 搜索索引 en 492.5 kB（gzip 151.7 kB）、zh 473.8 kB（gzip 166.5 kB）；M1 只有 3 个组件页时是
+  138.5 / 133.7 kB。83 页后索引仍是按需拉取、不进首屏，未做字段裁剪。
+
+**门禁结果（本地全绿）**
+
+- `docs:check --complete`：83 registry 条目、83 documented 组件、167 demos、20 模板页，
+  双语小节、demo id 与 API 行一致。
+- `DOCS_FULL_AXE=1 pnpm test:docs` 共 263 条：内容与交互用例、375 px 布局、83 页 demo 全量
+  sweep（每个 `[data-demo]` 有可见子节点、源码块含 `export default`、console 零错误）、
+  166 页全量 axe 零违规。
+- 视觉基线 8 张（home / installation / button / pro-table × 深浅色，1440×900）在
+  `mcr.microsoft.com/playwright:v1.64.1-noble` 内生成，复跑 8 条零 diff。
+- 模板侧无回归：`test:e2e --workers=1` 85 条、`test:visual:docker` 17 条零 diff、
+  `test:coverage`、`@fish-admin/react` 测试、`check:package`（83 个导出）。
+- 预算无回归：firstPaintJs 174.4 / 180 KB、largestAsyncJs 95.6 / 115 KB、
+  totalJs 778.8 / 800 KB、totalCss 23.1 / 30 KB。
+- `format:check`、`lint`、`typecheck`（模板 + 包 + docs 三段）、`gen-api:check` 全过。
+
+**偏差与新增门禁**
+
+- demo 167 个，高于「≥166」：button 作为试点保留了第 3 个变体。
+- 新增 `playwright.docs-visual.config.ts`、`e2e-docs/visual.spec.ts`、
+  `scripts/visual-regression-docs.mjs`，端口 4175，与功能用例（4174）分开跑。
+  `playwright.docs.config.ts` 加了 `testIgnore: '**/visual.spec.ts'`：两者共用 `testDir`，
+  不排除会让 Windows 上的 `pnpm test:docs` 去写 `-win32` 基线。
+- `scripts/check-visual-platform.mjs` 现在接收要提示的 Docker 命令作为参数，两条视觉链路各自
+  给出正确的 `:docker` 提示。
+- CI 新增 `docs-visual` job，与 `visual` 并列（同一镜像、uid 1001、
+  `--store-dir /tmp/pnpm-store`）。
+- 深浅色不靠点主题切换按钮：Rspress 从 localStorage `rspress-theme-appearance` 取主题，
+  用例用 init script 在首帧前写入，同时写 `rspress-visited` 关掉提示条，避免中间态进基线。
+- Wave 4 暴露的两类构建回归（正文里的裸 `<tag>` 占位、把基础 demo 命名成 `Demo` 覆盖主题组件）
+  已由 `check-docs.mjs` 的 JSX import 规则挡在门禁里。
+
+**未验证 / 留给 M3**
+
+- 文档站尚未部署：Vercel 项目、线上 headers 与搜索索引实际下载体积未测（需单独确认）。
+- npm 包未发布，真实消费者安装路径未验证。
+- 移动端只有 375 px 布局断言，没有截图基线；视觉基线只覆盖 4 条桌面路由。
+- 81 条 props 仍缺 JSDoc，M3 不承诺补完，但下限已锁住不回退。
 
 ---
 
