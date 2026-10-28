@@ -1,0 +1,113 @@
+---
+title: Input OTP
+description: A fixed-length one-time-code field built on input-otp, with grouped slot styling.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import InputOtpBasic from '@docs/demos/input-otp/basic'
+import basicSource from '@docs/demos/input-otp/basic.tsx?raw'
+import InputOtpResend from '@docs/demos/input-otp/resend'
+import resendSource from '@docs/demos/input-otp/resend.tsx?raw'
+
+# Input OTP
+
+`Input OTP` wraps the `input-otp` field and renders its single input as a row of styled boxes.
+`InputOTPGroup`, `InputOTPSlot` and `InputOTPSeparator` read the slot state from context, while the
+value and `onChange` stay under your control.
+
+<ComponentMeta id="input-otp" />
+
+## When to use
+
+- A short verification code sent by email or SMS, typically four to eight characters.
+- Two-factor confirmation during sign-in or a sensitive action.
+- Short invite or recovery codes where one character per box makes typing easier to check.
+
+## When not to use
+
+- Passwords or any secret the user should be able to reveal: use `Input type="password"`.
+- Long tokens or API keys: a single `Input` is easier to paste and inspect.
+- Free-form alphanumeric text with an unknown length: use `Input`.
+
+## Basic usage
+
+<Demo
+  title="Six-digit code with a completion hint"
+  filename="demos/input-otp/basic.tsx"
+  source={basicSource}
+>
+  <InputOtpBasic />
+</Demo>
+
+## Verification with resend
+
+<Demo
+  title="Grouped slots, onComplete confirmation and a resend action"
+  filename="demos/input-otp/resend.tsx"
+  source={resendSource}
+>
+  <InputOtpResend />
+</Demo>
+
+## API
+
+<ApiTable component="input-otp" />
+
+## Design guidance
+
+- The wrapper is a flex row with a 0.5 rem gap (`gap-2`); a disabled wrapper fades to 50% opacity.
+- Each slot is 36 × 36 px (`h-9 w-9`) with 14 px text. Slots share 1 px `border-input` edges: every
+  slot has top, bottom and right borders, the first adds the left border and `rounded-l-md`, the last
+  gets `rounded-r-md`.
+- The active slot rises with `z-10`, switches to `border-ring` and adds the same 3 px
+  `ring-ring/50` ring as other inputs. While the field is focused and the slot is empty, a 1 px ×
+  16 px caret blinks with `animate-caret-blink` over 1 s.
+- `maxLength` is required. Render exactly that many `InputOTPSlot`s and pass each `index`; a
+  three-plus-three layout is just two `InputOTPGroup`s around an `InputOTPSeparator`, which renders a
+  lucide minus icon with `role="separator"`.
+- There is no built-in label, description or error text. The underlying `input-otp` input defaults to
+  `inputMode="numeric"` and a one-time-code autocomplete token, and extra props such as `pattern` are
+  forwarded to it.
+
+## Accessibility
+
+| Key             | Behavior                                                        |
+| --------------- | --------------------------------------------------------------- |
+| Character keys  | Append to the single controlled value; the slots re-render.     |
+| Backspace       | Edits the value like any text input; the slots follow.          |
+| Ctrl / Cmd + V  | Pastes into the remaining slots; `input-otp` handles the paste. |
+| Tab / Shift+Tab | Moves focus to and from the one focusable field.                |
+| Enter           | A surrounding form submits if it has a submit control.          |
+
+There is one real `<input>`, so assistive technology sees a single text field with the value you pass
+— the six boxes are presentation only. `aria-label` is forwarded to that input, which is why the demos
+name it "Six-digit verification code".
+
+Known gap: invalid styling is defined on each slot (`aria-invalid:border-destructive`), but the root
+does not apply it. Set `aria-invalid` on every `InputOTPSlot` yourself if the code is rejected. Known
+gap: the visible slot characters are plain `<div>` text and are not hidden from assistive technology,
+so browse mode may read each digit separately from the input value.
+
+## FAQ
+
+**How do I accept digits only?** Pass `pattern="^\d+$"`; `InputOTP` forwards it to the underlying
+field. Without a pattern, any character is accepted.
+
+**Why are my slots empty?** Check that `maxLength` equals the number of slots you render and that every
+slot receives its `index` starting at 0.
+
+**How do I react when the code is complete?** Use `onComplete` for the finished string, or compare
+`code.length` with `maxLength` inside `onChange`; the resend demo does both.
+
+**Can I split the code into groups?** Yes. Use two `InputOTPGroup`s around an `InputOTPSeparator` and
+keep the slot indexes continuous.
+
+## Related
+
+- `Input` for ordinary text and password fields.
+- `Label` for a persistent name above the field.
+- `Button` for the verify and resend actions.
+- `Form` when the code is part of a validated form.
+- [Used in the template](https://fish-admin.vercel.app/login)

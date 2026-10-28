@@ -1,0 +1,95 @@
+---
+title: Collapsible 折叠区域
+description: 无样式触发器与面板，按需展开可选内容。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CollapsibleBasic from '@docs/demos/collapsible/basic'
+import basicSource from '@docs/demos/collapsible/basic.tsx?raw'
+import CollapsibleChevron from '@docs/demos/collapsible/chevron'
+import chevronSource from '@docs/demos/collapsible/chevron.tsx?raw'
+
+# Collapsible 折叠区域
+
+`Collapsible` 是展开/收起的基础原语：一个触发按钮，以及只在展开时挂载的面板。它自带的内边距、
+描边、图标与动画都为零，因此触发器和面板的外观完全取决于你放进去的元素。
+
+<ComponentMeta id="collapsible" />
+
+## 何时使用
+
+- 展开一块次要细节，例如高级保留策略或导出详情。
+- 在卡片或设置表单中放置显示/隐藏区块。
+- 只有一个可选面板，用不上折叠面板的兄弟协作。
+
+## 何时不使用
+
+- 多个相互协调的堆叠区块：使用 `Accordion`。
+- 在平级面板之间切换：使用 `Tabs`。
+- 需要覆盖页面的内容：使用 `Dialog` 或 `Popover`。
+- 路由跳转：使用链接或 `Sidebar`。
+
+## 基础用法
+
+<Demo title="整行触发器后的高级设置" filename="demos/collapsible/basic.tsx" source={basicSource}>
+  <CollapsibleBasic />
+</Demo>
+
+## 受控与旋转箭头
+
+`open` 与 `onOpenChange` 让面板变为受控，触发器因此可以表达状态——这里用 150 ms 旋转 180° 的
+箭头代替显示/隐藏文字。
+
+<Demo title="受控的导出详情" filename="demos/collapsible/chevron.tsx" source={chevronSource}>
+  <CollapsibleChevron />
+</Demo>
+
+## API
+
+<ApiTable component="collapsible" />
+
+## 设计指引
+
+- 三个部件只添加 `data-slot`，没有默认内边距、颜色、描边或动画。示例把触发器包进 `Button`，
+  面板自行加上 1 px `var(--border)` 描边、8 px 圆角与 12 px 内边距。
+- `CollapsibleContent` 在收起时卸载（Radix `Presence`），因此面板内部的状态在关闭后丢失，除非放
+  在父级；`forceMount` 可以让子树在收起时继续挂载。
+- 触发器是原生 `<button>`，带 `aria-expanded` 与 `aria-controls`；根节点与触发器都会暴露
+  `data-state="open" | "closed"`，可用于旋转、高度或透明度规则。
+- 非受控的 `open` 默认为 `false`；传入 `open` 与 `onOpenChange` 即为受控。根节点 `disabled`
+  时触发器仍在原位但不可交互。
+- 组件不带展开/收起图标，也没有高度过渡。箭头示例用内联 `transform` 旋转，并用 `marginTop`
+  在面板上方留出 8 px。
+
+## 无障碍
+
+| 按键          | 行为                             |
+| ------------- | -------------------------------- |
+| Enter / Space | 在聚焦的触发器上展开或收起面板。 |
+| Tab           | 移到触发器，展开时继续进入面板。 |
+
+触发器是真正的按钮，暴露 `aria-expanded`（展开时另有 `aria-controls`），收起状态会被宣告。面板
+是没有自身角色的普通容器，收起的内容会被卸载而不只是隐藏。
+
+已知缺口：两个部件都不提供标题或地标语义，因此成片使用折叠区域不会产生大纲，面板也无法通过
+地标导航到达。请在触发器外包一层标题，并在面板较长时加上 `role="region"` 与 `aria-label`。
+
+## FAQ
+
+**为什么面板里的表单被重置了？** 收起的内容会被卸载，非受控输入随之丢失取值。请把状态提升到
+`Collapsible` 之上，或传入 `forceMount`。
+
+**如何给高度加动画？** 组件不会替你加动画，面板也没有过渡类。可以基于 `data-state` 属性控制
+`height`、`grid-template-rows` 或透明度，或自行给内容加动画。
+
+**它不就是只有一项的折叠面板吗？** 结构相似但职责不同：`Collapsible` 是单个展开区域，没有兄弟
+协调、没有标题元素，也没有项之间的方向键导航。
+
+## 相关
+
+- `Accordion`：一组相互协调的面板。
+- `Tabs`：切换可见面板。
+- `Card`：外层容器。
+- [在模板中的用法](https://fish-admin.vercel.app/settings)

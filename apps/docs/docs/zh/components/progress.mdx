@@ -1,0 +1,96 @@
+---
+title: Progress 进度条
+description: 把数值映射到主色指示条上的确定性进度条。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ProgressBasic from '@docs/demos/progress/basic'
+import basicSource from '@docs/demos/progress/basic.tsx?raw'
+import ProgressValues from '@docs/demos/progress/values'
+import valuesSource from '@docs/demos/progress/values.tsx?raw'
+
+# Progress 进度条
+
+`Progress` 是基于 Radix Progress 的确定性进度条。它渲染一条 8 px 高的轨道，并按
+`100 - value` 的百分比平移主色指示条；标签与数值文案仍由你的页面提供。
+
+<ComponentMeta id="progress" />
+
+## 何时使用
+
+- 完成度可以衡量的任务：引导流程、上传、导入或配额使用。
+- 需要让用户看到还剩多少的多步流程。
+- 与百分比并排展示的汇总条，如示例所示。
+
+## 何时不使用
+
+- 时长未知：使用 `Spinner`，占位内容使用 `Skeleton`。
+- 数值可由用户调整：使用 `Slider`。
+- 只有状态、没有量级：使用 `Badge` 或 `Alert`。
+
+## 基础用法
+
+<Demo title="带标签的引导进度" filename="demos/progress/basic.tsx" source={basicSource}>
+  <ProgressBasic />
+</Demo>
+
+## 多值进度
+
+<Demo
+  title="三个任务进度分别为 100%、64% 与 0%"
+  filename="demos/progress/values.tsx"
+  source={valuesSource}
+>
+  <ProgressValues />
+</Demo>
+
+## API
+
+<ApiTable component="progress" />
+
+## 设计指引
+
+- 轨道高 8 px（`h-2`）、占满宽度并使用 `rounded-full`，填充色为 `bg-primary/20`。指示条为
+  实色 `bg-primary`，带 `transition-all`。
+- 指示条使用 `transform: translateX(-(100 - value)%)`，因此 `value={0}` 显示空轨道，
+  `value={100}` 完全填满，中间值线性映射。
+- 组件没有变体或尺寸属性。可通过 `className` 覆盖高度（例如 `h-1`），用 `bg-*` 覆盖颜色；
+  这些类会与默认值合并。
+- 组件不渲染标签或百分比。请自行搭配文案，并让可见数字与 `aria-valuenow` 保持一致，示例即
+  如此。
+- `value` 在类型上是可选的，但省略它只会得到空轨道，而不是来回移动的不确定进度条。
+
+## 无障碍
+
+`Progress` 渲染 `role="progressbar"`，带有 `aria-valuemin="0"`、`aria-valuemax`（Radix 默认
+为 100），数值为数字时还会带 `aria-valuenow`。Radix 还会把 `aria-valuetext` 计算为四舍五入
+的百分比，64 的进度会被朗读为“64%”。
+
+进度条不可聚焦、没有键盘行为，是只读状态。请用 `aria-label` 或 `aria-labelledby` 给它一个
+无障碍名称——基础示例指向了可见标题。
+
+已知缺口：组件没有 live region，数值变化不会被读屏主动播报。如果完成状态很重要，请把百分比
+放进 `aria-live` 元素。已知缺口：省略 `value` 时指示条会平移到 -100%（视觉上为空），尽管
+Radix 已设置 `data-state="indeterminate"`；组件没有不确定态的动画。已知缺口：不要修改
+`max`——填充按 `100 - value` 计算，换成其他最大值时，进度条与朗读的百分比会不一致。
+
+## FAQ
+
+**为什么 0 的时候进度条是空的？** 指示条按 `100 - value` 平移，0 会把它完全移出视野。排队中
+的任务直接渲染 `value={0}`，只显示轨道就是正确的视觉效果。
+
+**如何让进度条更细？** 通过 `className` 传入高度类，例如 `className="h-1"`，指示条会自动填满
+轨道高度。
+
+**可以有动画吗？** 指示条本身带 `transition-all`，改变 `value` 就会过渡。组件没有内置的不确定
+态动画，总量未知时请改用 `Spinner`。
+
+## 相关
+
+- `Spinner`：时长未知的工作。
+- `Skeleton`：占位布局。
+- `Badge`：没有量级的紧凑状态。
+- `Card`：包裹进度汇总。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

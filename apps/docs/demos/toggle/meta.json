@@ -1,0 +1,28 @@
+[
+  {
+    "id": "toggle/basic",
+    "component": "toggle",
+    "file": "demos/toggle/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A formatting toolbar whose bold, italic and underline toggles drive a live preview.",
+      "zh": "格式工具栏：加粗、斜体与下划线开关实时驱动预览。"
+    }
+  },
+  {
+    "id": "toggle/variants",
+    "component": "toggle",
+    "file": "demos/toggle/variants.tsx",
+    "title": {
+      "en": "Variants, sizes and disabled",
+      "zh": "变体、尺寸与禁用"
+    },
+    "description": {
+      "en": "Outline toggles at small, default and large sizes, plus the borderless default variant.",
+      "zh": "小、中、大三种尺寸的描边开关，以及无边框的默认变体。"
+    }
+  }
+]

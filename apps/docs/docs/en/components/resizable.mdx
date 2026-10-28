@@ -1,0 +1,112 @@
+---
+title: Resizable
+description: Adjustable horizontal or vertical panel splits with a themed, keyboard-operable separator.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ResizableBasic from '@docs/demos/resizable/basic'
+import basicSource from '@docs/demos/resizable/basic.tsx?raw'
+import ResizableVertical from '@docs/demos/resizable/vertical'
+import verticalSource from '@docs/demos/resizable/vertical.tsx?raw'
+
+# Resizable
+
+`Resizable` wraps react-resizable-panels 4 with the template's separator styling: `ResizablePanelGroup`
+lays panels out in a row or column, `ResizablePanel` holds the content and `ResizableHandle` is the
+divider dragged between two panels.
+
+<ComponentMeta id="resizable" />
+
+## When to use
+
+- Master–detail layouts where users trade space between a list and its preview — the files page uses
+  this for its list/detail split.
+- Editor-and-preview or request-and-response consoles that read better side by side or stacked.
+- Dashboards where two panes have no single correct width.
+
+## When not to use
+
+- Fixed proportions that never need adjusting: use a CSS grid.
+- Alternative content in one slot: use `Tabs`.
+- Narrow viewports: the files page replaces the group with a single column below `xl`.
+- Resizable app chrome such as navigation: use `Sidebar` or `Sheet`.
+
+## Basic usage
+
+<Demo title="Ticket queue and details" filename="demos/resizable/basic.tsx" source={basicSource}>
+  <ResizableBasic />
+</Demo>
+
+## Vertical split
+
+Set `orientation="vertical"` to stack the panels and move the divider from a vertical line to a
+horizontal one.
+
+<Demo
+  title="Request above response"
+  filename="demos/resizable/vertical.tsx"
+  source={verticalSource}
+>
+  <ResizableVertical />
+</Demo>
+
+## API
+
+<ApiTable component="resizable" />
+
+## Design guidance
+
+- The group is `flex h-full w-full` and flips to `flex-col` for `orientation="vertical"` through
+  `aria-[orientation=vertical]`. It creates no height of its own, so give it a definite one: 240 px
+  and 280 px in these demos, 560 px on the files page.
+- Sizes follow react-resizable-panels 4: numbers are pixels, strings are percentages.
+  `defaultSize="38"` means 38%. Always set `minSize` so neither pane can be dragged shut.
+- The separator is 1 px thick — `w-px` in a row group, `h-px` in a column — painted with
+  `bg-border`; an invisible `after:w-1` strip widens the pointer target to 4 px.
+- `withHandle` adds a 12 × 16 px grip (`h-4 w-3`) containing a 10 px icon; the icon is rotated 90
+  degrees inside a vertical group.
+- Focus paints a 1 px `ring-ring` ring with a 1 px offset. The group and panels bring no border,
+  radius or padding, so add them on the group as the demos do.
+- Each pane needs `height: 100%` and its own `overflow: auto`; the files page composes `ScrollArea`
+  for exactly this reason.
+
+## Accessibility
+
+| Key             | Behavior                                                                           |
+| --------------- | ---------------------------------------------------------------------------------- |
+| Tab / Shift+Tab | Moves focus onto each enabled separator (`tabIndex` 0; disabled handles drop out). |
+| Arrow keys      | Moves the divider 5% along the group's orientation; cross-axis arrows are ignored. |
+| Home / End      | Pushes the divider to either end of its range.                                     |
+| Enter           | Toggles a neighbouring `collapsible` panel between collapsed and expanded.         |
+| F6 / Shift+F6   | Cycles focus through the group's enabled separators.                               |
+| Double-click    | Resets the nearest panel to its default size (`disableDoubleClick` opts out).      |
+
+Every separator is a `role="separator"` element carrying `aria-orientation`, `aria-valuemin`,
+`aria-valuemax`, `aria-valuenow` and `aria-controls` for the panels it resizes; a disabled handle is
+`aria-disabled` and skipped by Tab. The panes themselves are plain `div`s: the demo wraps each
+scrollable pane in a labelled, focusable `role="region"` so keyboard users can scroll it.
+
+Known gap: the panels expose no landmark, heading or accessible name, so a screen-reader user hears
+the separator's value without knowing which pane it belongs to. Put a real heading inside each panel
+and describe the split in the surrounding copy.
+
+## FAQ
+
+**Why did my percentage sizes become pixels?** In react-resizable-panels 4 a numeric
+`defaultSize`/`minSize` is pixels. Pass `"40"` or `"40%"` for a percentage.
+
+**Can a panel collapse completely?** Yes — set `collapsible` and `collapsedSize` on the panel;
+dragging past `minSize` collapses it and Enter on the separator toggles it back.
+
+**How do I remember the split?** The group forwards the library's `onLayoutChanged`; store
+`requestedLayout` and feed it back as `defaultLayout`, with stable `id`s on the panels.
+
+## Related
+
+- `Scroll Area` for the content inside each pane.
+- `Tabs` when only one pane is visible at a time.
+- `Table` for the list side of a master–detail layout.
+- `Sidebar` for persistent navigation rather than a content split.
+- [Used in the template](https://fish-admin.vercel.app/files)

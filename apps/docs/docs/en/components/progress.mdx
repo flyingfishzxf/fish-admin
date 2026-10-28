@@ -1,0 +1,99 @@
+---
+title: Progress
+description: A determinate progress bar that maps a value onto a primary-coloured indicator.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ProgressBasic from '@docs/demos/progress/basic'
+import basicSource from '@docs/demos/progress/basic.tsx?raw'
+import ProgressValues from '@docs/demos/progress/values'
+import valuesSource from '@docs/demos/progress/values.tsx?raw'
+
+# Progress
+
+`Progress` is a determinate bar built on Radix Progress. It renders an 8 px track and translates a
+primary-coloured indicator by `100 - value` percent; the label and the numeric readout stay in your
+markup.
+
+<ComponentMeta id="progress" />
+
+## When to use
+
+- A task whose completion can be measured: onboarding, uploads, imports or quota usage.
+- Multi-step flows where people need to see how much is left.
+- A summary bar next to a percentage, as in the demos.
+
+## When not to use
+
+- Unknown duration: use `Spinner`, or `Skeleton` for placeholder content.
+- A value the user can change: use `Slider`.
+- A single status with no magnitude: use `Badge` or an `Alert`.
+
+## Basic usage
+
+<Demo title="Labelled onboarding progress" filename="demos/progress/basic.tsx" source={basicSource}>
+  <ProgressBasic />
+</Demo>
+
+## Multiple values
+
+<Demo
+  title="Three task bars at 100%, 64% and 0%"
+  filename="demos/progress/values.tsx"
+  source={valuesSource}
+>
+  <ProgressValues />
+</Demo>
+
+## API
+
+<ApiTable component="progress" />
+
+## Design guidance
+
+- The track is 8 px high (`h-2`), full width and `rounded-full`, filled with `bg-primary/20`. The
+  indicator is solid `bg-primary` with `transition-all`.
+- The indicator uses `transform: translateX(-(100 - value)%)`, so `value={0}` shows an empty track and
+  `value={100}` fills it. Values in between map linearly.
+- There is no variant or size prop. Override the height through `className` (for example `h-1`) and
+  the colours with `bg-*` utilities; both merge with the defaults.
+- No label or percentage is rendered. Pair the bar with your own text and keep the visible number and
+  `aria-valuenow` in sync, as the demos do.
+- `value` is optional at the type level, but omitting it produces an empty track rather than a
+  moving indeterminate bar.
+
+## Accessibility
+
+`Progress` renders `role="progressbar"` with `aria-valuemin="0"`, `aria-valuemax` (Radix's default is 100) and `aria-valuenow` when the value is a number. Radix also computes `aria-valuetext` as a rounded
+percentage, so a bar at 64 announces "64%".
+
+The bar is not focusable and has no keyboard behaviour; it is a read-only status. Give it an
+accessible name with `aria-label` or `aria-labelledby` — the basic demo points at its visible title.
+
+Known gap: there is no live region, so a screen-reader user is not told when the value changes. Put the
+percentage in an `aria-live` element if completion matters. Known gap: omitting `value` leaves the
+indicator translated by -100% (visually empty), even though Radix sets
+`data-state="indeterminate"`; there is no indeterminate animation. Known gap: do not change `max` —
+the fill is calculated from `100 - value`, so with any other maximum the bar and the announced
+percentage disagree.
+
+## FAQ
+
+**Why is the bar empty at 0?** The indicator is translated by `100 - value` percent, so 0 hides it
+completely. Render `value={0}` for a queued task; the track alone is the correct visual.
+
+**How do I make a thinner bar?** Pass a height class through `className`, for example `className="h-1"`.
+The indicator fills the track height automatically.
+
+**Can I animate it?** The indicator already has `transition-all`, so changing `value` animates the
+fill. There is no built-in indeterminate animation, so show a `Spinner` while the total is unknown.
+
+## Related
+
+- `Spinner` for unknown-duration work.
+- `Skeleton` for placeholder layouts.
+- `Badge` for a compact status without magnitude.
+- `Card` for wrapping a progress summary.
+- [Used in the template](https://fish-admin.vercel.app/projects)

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "resizable/basic",
+    "component": "resizable",
+    "file": "demos/resizable/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A support inbox split into a ticket queue and the selected ticket at 240 px tall.",
+      "zh": "支持工单收件箱：左侧队列、右侧所选工单，整体高 240 px。"
+    }
+  },
+  {
+    "id": "resizable/vertical",
+    "component": "resizable",
+    "file": "demos/resizable/vertical.tsx",
+    "title": {
+      "en": "Vertical split",
+      "zh": "垂直分割"
+    },
+    "description": {
+      "en": "An API console with the request payload above the response payload.",
+      "zh": "API 控制台：请求负载在上，响应负载在下。"
+    }
+  }
+]

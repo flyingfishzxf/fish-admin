@@ -1,0 +1,112 @@
+---
+title: Scroll Area
+description: A focusable Radix scroll viewport with a thin custom scrollbar, for lists and panels with a bounded height.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ScrollAreaBasic from '@docs/demos/scroll-area/basic'
+import basicSource from '@docs/demos/scroll-area/basic.tsx?raw'
+import ScrollAreaVisibility from '@docs/demos/scroll-area/visibility'
+import visibilitySource from '@docs/demos/scroll-area/visibility.tsx?raw'
+
+# Scroll Area
+
+`ScrollArea` is a Radix scroll viewport with a 10 px custom bar: the content lives inside a focusable
+viewport and the native scrollbar is hidden, so the thumb looks the same in every browser.
+
+<ComponentMeta id="scroll-area" />
+
+## When to use
+
+- A list or activity feed inside a card that must not grow with its content.
+- A panel with a fixed height where the native scrollbar clashes with the surrounding UI.
+- Sidebars or preview panes that need an independent scroll position.
+
+## When not to use
+
+- Page-level scrolling: let the document scroll instead.
+- Tables that need sticky headers or virtualised rows: use `Table` or `Pro Table`.
+- Content that must always be visible when printing.
+
+## Basic usage
+
+<Demo
+  title="Activity feed with unread markers"
+  filename="demos/scroll-area/basic.tsx"
+  source={basicSource}
+>
+  <ScrollAreaBasic />
+</Demo>
+
+## Scrollbar visibility
+
+Radix defaults to `type="hover"`; pass `type="always"` when overflow must stay obvious.
+
+<Demo
+  title="Hover bar beside an always-on bar"
+  filename="demos/scroll-area/visibility.tsx"
+  source={visibilitySource}
+>
+  <ScrollAreaVisibility />
+</Demo>
+
+## API
+
+<ApiTable component="scroll-area" />
+
+## Design guidance
+
+- The root only sets `relative`; the viewport is `size-full max-h-[inherit]`, so the height must come
+  from the root — 200 px in the first demo, 132 px beside a 200 px width in the second, and
+  `max-h-[520px]` on the notifications page.
+- The vertical bar is 10 px wide (`w-2.5`) with 1 px padding and a `rounded-full` thumb painted with
+  `bg-border`. A horizontal bar is 10 px tall (`h-2.5`) when composed manually.
+- The viewport is focusable (`tabIndex` 0) and paints a 3 px `ring-ring/50` ring plus a 1 px outline
+  on focus.
+- Radix's default `type` is `hover`: the bar appears on hover or scroll and hides 600 ms
+  (`scrollHideDelay`) after the pointer leaves. `always`, `scroll` and `auto` are the other modes.
+- Children render inside the viewport, which is why padding belongs on your own wrapper rather than
+  on `ScrollArea` — otherwise it scrolls away with the content.
+
+## Accessibility
+
+| Key                       | Behavior                                                           |
+| ------------------------- | ------------------------------------------------------------------ |
+| Tab / Shift+Tab           | Moves focus into the viewport, then through any focusable content. |
+| Arrow keys                | Scrolls by a line while the viewport itself has focus.             |
+| Page Up / Page Down       | Scrolls roughly one viewport height.                               |
+| Home / End                | Jumps to the start or end of the content.                          |
+| Wheel, trackpad, bar drag | Scrolls with the pointer; the thumb is draggable.                  |
+
+The viewport keeps the content in DOM order and exposes no extra roles, so headings and links inside
+remain navigable by screen readers.
+
+Known gap: the custom scrollbar is a pointer-only decoration — it has no `role="scrollbar"`, no
+`aria-valuenow` and cannot be focused or dragged from the keyboard; keyboard users scroll the focused
+viewport instead. The viewport itself is also unnamed, and `ScrollArea` forwards `aria-*` props to the
+root rather than the viewport, so label the surrounding card with a heading.
+
+Known gap: `ScrollArea` always renders one vertical `ScrollBar` after the viewport. A horizontal bar
+has to be composed from `ScrollAreaPrimitive.Root` directly.
+
+## FAQ
+
+**How do I get a horizontal scrollbar?** Not through this wrapper: children are inserted inside the
+viewport, so a `ScrollBar orientation="horizontal"` passed as a child would be nested in the wrong
+place. Compose the Radix primitive for card rails.
+
+**Why is the scrollbar invisible until I hover?** Radix defaults to `type="hover"`. Pass
+`type="always"` to keep the thumb painted, as in the second demo.
+
+**How do I size the panel?** Set a height or max-height on `ScrollArea` itself; the viewport inherits
+it through `max-h-[inherit]` and `size-full`.
+
+## Related
+
+- `Table` for tabular data that needs its own scroll container.
+- `Card` for the panel that frames a scroll area.
+- `Sheet` and `Sidebar` for off-canvas panels with independent scrolling.
+- `Tabs` when long content can be split instead of scrolled.
+- [Used in the template](https://fish-admin.vercel.app/notifications)

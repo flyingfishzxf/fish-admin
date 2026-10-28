@@ -9,17 +9,23 @@ import { cn } from '../../lib/utils'
 type SegmentedOption = {
   value: string
   label: React.ReactNode
+  /** Lucide icon rendered before the label; hidden from assistive technology. */
   icon?: LucideIcon
+  /** Keep the option visible but refuse selection. @default false */
   disabled?: boolean
 }
 
 type SegmentedProps = {
   options: SegmentedOption[]
   value: string
+  /** Called with the next value; empty values are ignored. */
   onValueChange: (value: string) => void
+  /** Accessible name of the radiogroup; required. */
   'aria-label': string
+  /** Item height: sm is 28 px, default 32 px. @default 'default' */
   size?: 'sm' | 'default'
   className?: string
+  /** Disable every option in the group. @default false */
   disabled?: boolean
 }
 

@@ -9,19 +9,33 @@ import { cn } from '../../lib/utils'
 type InputNumberSize = 'sm' | 'default'
 
 type InputNumberProps = {
+  /** Current value; `null` renders an empty field. */
   value?: number | null
+  /** Called with the committed value, or `null` when the field is cleared. */
   onValueChange?: (value: number | null) => void
+  /** Lower bound; the decrement button disables at this value. */
   min?: number
+  /** Upper bound; the increment button disables at this value. */
   max?: number
+  /** Amount added or subtracted per step. @default 1 */
   step?: number
+  /** Decimal places used for display, rounding and blur normalisation. */
   precision?: number
+  /** Disables the input and both stepper buttons. */
   disabled?: boolean
+  /** Placeholder shown while the draft is empty. */
   placeholder?: string
+  /** Id forwarded to the inner input for pairing with a `Label`. */
   id?: string
+  /** Name forwarded to the inner input for form submission. */
   name?: string
+  /** Classes applied to the outer wrapper. */
   className?: string
+  /** Classes applied to the inner input. */
   inputClassName?: string
+  /** Accessible name for the spinbutton. */
   'aria-label'?: string
+  /** Control height, 36 px by default or 32 px for `sm`. @default 'default' */
   size?: InputNumberSize
 }
 

@@ -1,0 +1,103 @@
+---
+title: Resizable 可调整面板
+description: 可水平或垂直调整的面板分割，分隔条沿用模板样式并支持键盘操作。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ResizableBasic from '@docs/demos/resizable/basic'
+import basicSource from '@docs/demos/resizable/basic.tsx?raw'
+import ResizableVertical from '@docs/demos/resizable/vertical'
+import verticalSource from '@docs/demos/resizable/vertical.tsx?raw'
+
+# Resizable 可调整面板
+
+`Resizable` 为 react-resizable-panels 4 套上模板的分隔条样式：`ResizablePanelGroup` 按行或列排布面板，
+`ResizablePanel` 承载内容，`ResizableHandle` 是两块面板之间可拖动的分隔条。
+
+<ComponentMeta id="resizable" />
+
+## 何时使用
+
+- 列表与预览需要在宽度上互相让步的主从布局——文件页就用它实现列表/详情分栏。
+- 编辑器与预览、请求与响应这类并排或上下对照更易读的控制台。
+- 两块面板都没有唯一正确宽度的仪表盘。
+
+## 何时不使用
+
+- 比例固定、无需调整：使用 CSS Grid。
+- 同一区域切换不同内容：使用 `Tabs`。
+- 窄视口：文件页在 `xl` 以下会把分栏替换为单列。
+- 需要可调整的应用外壳（如导航）：使用 `Sidebar` 或 `Sheet`。
+
+## 基础用法
+
+<Demo title="工单队列与详情" filename="demos/resizable/basic.tsx" source={basicSource}>
+  <ResizableBasic />
+</Demo>
+
+## 垂直分割
+
+设置 `orientation="vertical"` 即可上下堆叠面板，分隔条也从竖线变为横线。
+
+<Demo title="请求在上，响应在下" filename="demos/resizable/vertical.tsx" source={verticalSource}>
+  <ResizableVertical />
+</Demo>
+
+## API
+
+<ApiTable component="resizable" />
+
+## 设计指引
+
+- 分组为 `flex h-full w-full`，`orientation="vertical"` 时通过 `aria-[orientation=vertical]` 切换为
+  `flex-col`。它本身不产生高度，因此必须给出确定高度：两个示例分别为 240 px 与 280 px，文件页为
+  560 px。
+- 尺寸遵循 react-resizable-panels 4：数字是像素，字符串是百分比。`defaultSize="38"` 表示 38%。
+  请始终设置 `minSize`，避免任一面板被拖到消失。
+- 分隔条宽/高 1 px（行布局为 `w-px`，列布局为 `h-px`），用 `bg-border` 绘制；不可见的
+  `after:w-1` 扩展条把指针命中区域扩大到 4 px。
+- `withHandle` 会增加 12 × 16 px 的握柄（`h-4 w-3`），内含 10 px 图标；在垂直分组中图标旋转
+  90 度。
+- 聚焦时显示 1 px 的 `ring-ring` 描边并偏移 1 px。分组与面板本身不带边框、圆角或内边距，需要在
+  分组上自行添加（如示例所示）。
+- 每个面板都需要 `height: 100%` 和各自的 `overflow: auto`；文件页正是为此组合了 `ScrollArea`。
+
+## 无障碍
+
+| 按键            | 行为                                                              |
+| --------------- | ----------------------------------------------------------------- |
+| Tab / Shift+Tab | 将焦点移到每个可用分隔条（`tabIndex` 为 0；禁用分隔条会被跳过）。 |
+| 方向键          | 沿分组方向移动分隔条 5%；另一轴向的方向键无效。                   |
+| Home / End      | 将分隔条推到范围的起点或终点。                                    |
+| Enter           | 在折叠与展开之间切换相邻的 `collapsible` 面板。                   |
+| F6 / Shift+F6   | 在分组内可用的分隔条之间循环焦点。                                |
+| 双击            | 将最近的面板恢复到默认尺寸（`disableDoubleClick` 可关闭）。       |
+
+每个分隔条都是 `role="separator"` 元素，带有 `aria-orientation`、`aria-valuemin`、`aria-valuemax`、
+`aria-valuenow`，并用 `aria-controls` 指向它调整的面板；禁用的分隔条带 `aria-disabled` 且不可 Tab
+聚焦。面板本身只是普通 `div`：示例为每个可滚动面板加了带名称、可获得焦点的 `role="region"`，键盘
+用户可以滚动内容。
+
+已知缺口：面板没有 landmark、标题或无障碍名称，读屏用户只能听到分隔条数值，却不知道它属于哪块面板。
+请在每个面板内放置真实标题，并在周边文案中说明分栏关系。
+
+## FAQ
+
+**为什么百分比尺寸变成了像素？** 在 react-resizable-panels 4 中，数字形式的 `defaultSize` /
+`minSize` 代表像素。需要百分比时传 `"40"` 或 `"40%"`。
+
+**面板可以完全折叠吗？** 可以——在面板上设置 `collapsible` 与 `collapsedSize`；拖过 `minSize`
+即折叠，在分隔条上按 Enter 可再次展开。
+
+**如何记住用户的拖拽比例？** 分组会透传库的 `onLayoutChanged`；保存 `requestedLayout`，再作为
+`defaultLayout` 传回，并给面板设置稳定的 `id`。
+
+## 相关
+
+- `Scroll Area`：用于每个面板内部的内容滚动。
+- `Tabs`：同一时间只展示一块内容时使用。
+- `Table`：主从布局中的列表一侧。
+- `Sidebar`：用于常驻导航，而非内容分栏。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

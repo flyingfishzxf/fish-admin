@@ -1,0 +1,111 @@
+---
+title: Sidebar 侧边栏
+description: 完整的应用导航栏，支持三种折叠模式、移动端抽屉、菜单原语与键盘开关。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SidebarBasic from '@docs/demos/sidebar/basic'
+import basicSource from '@docs/demos/sidebar/basic.tsx?raw'
+import SidebarNested from '@docs/demos/sidebar/nested-menu'
+import nestedSource from '@docs/demos/sidebar/nested-menu.tsx?raw'
+
+# Sidebar 侧边栏
+
+`Sidebar` 是模板的应用导航栏：`SidebarProvider` 持有展开状态、Tooltip 与移动端抽屉；`Sidebar` 渲染
+面板；头部、内容、分组与菜单原语负责组合导航。在默认折叠模式下，同一棵树在 768 px 以下会变成
+18 rem 的抽屉。
+
+<ComponentMeta id="sidebar" />
+
+## 何时使用
+
+- 工作区、控制台或后台的主导航。
+- 桌面端可以缩成图标栏、同时保持所有入口可达的常驻侧栏。
+- 需要在小屏自动收进抽屉、而不想维护第二套组件树的导航。
+
+## 何时不使用
+
+- 顶栏或卡片里的短菜单：使用 `Dropdown Menu` 或 `Tabs`。
+- 页面级筛选：使用 `Segmented`、`Select` 或 `Checkbox`。
+- 非导航的临时面板：使用 `Sheet` 或 `Drawer`。
+
+## 基础用法
+
+<Demo title="带折叠触发器的工作区侧栏" filename="demos/sidebar/basic.tsx" source={basicSource}>
+  <SidebarBasic />
+</Demo>
+
+示例被放进 320 px 高的框架并加上 `transform: translateZ(0)`：桌面端的折叠模式会挂载一个
+`position: fixed` 容器，因此框架必须成为它的包含块。在真实外壳中，Provider 直接位于页面顶层。
+
+## 嵌套菜单与可折叠分组
+
+`SidebarGroupAction` 折叠分组，`SidebarMenuAction` 打开子菜单，`SidebarMenuBadge` 展示计数。
+
+<Demo
+  title="分组开关、Projects 子菜单与徽标"
+  filename="demos/sidebar/nested-menu.tsx"
+  source={nestedSource}
+>
+  <SidebarNested />
+</Demo>
+
+## API
+
+<ApiTable component="sidebar" />
+
+## 设计指引
+
+- 宽度来自 Provider 的 CSS 变量：`--sidebar-width` 为 16 rem，`--sidebar-width-icon` 为 3 rem；
+  移动端抽屉为 18 rem。两个示例都通过 `style` 覆盖为 13 rem / 14 rem，模板外壳也是如此。
+- `collapsible="offcanvas"`（默认）把面板滑出视野，`"icon"` 保留 3 rem 图标栏，`"none"` 渲染静态的
+  `w-(--sidebar-width)` 列——嵌套示例使用 `"none"`，以便留在框架内。
+- `variant` 改变外壳：`sidebar` 在内侧边缘画边框，`floating` 增加 8 px 内边距、圆角边框与
+  `shadow-sm`，`inset` 还会从 `md` 断点起给 `SidebarInset` 加上 `m-2`、`rounded-xl` 与 `shadow-sm`。
+- 宽度与左右偏移以 200 ms `ease-linear` 过渡。分组标签通过 `-mt-8` 与 `opacity-0` 收起；菜单徽标高
+  20 px，带 `min-w-5`。
+- `SidebarMenuButton` 在 `default` 下高 32 px，`sm` 28 px，`lg` 48 px；图标 16 px，折叠时保持
+  32 × 32 px 的图标位。`isActive` 会绘制 `bg-sidebar-accent` 并使用中等字重。
+- `SidebarProvider` 会写入 7 天有效的 `sidebar_state` cookie，并绑定 Ctrl/Cmd+B。传入 `embedded` 时
+  两者都会跳过，文档预览用的就是这种方式。
+- 桌面外壳为 `hidden md:block`；`useIsMobile`（< 768 px）会把 `Sidebar` 切换为 18 rem 抽屉，因此
+  这些预览中的侧栏是桌面端形态。
+
+## 无障碍
+
+| 按键/操作          | 行为                                                |
+| ------------------ | --------------------------------------------------- |
+| Tab / Shift+Tab    | 依次到达触发器、菜单按钮、分组操作与子菜单链接。    |
+| Enter / 空格       | 激活当前聚焦的按钮或链接。                          |
+| Ctrl / Cmd + B     | 切换侧栏，除非 Provider 为 `embedded`。             |
+| 点击侧栏边缘的轨道 | 切换侧栏；轨道不在 Tab 顺序中（`tabIndex` 为 -1）。 |
+| 悬停或聚焦图标     | 桌面端折叠时显示菜单按钮的 Tooltip。                |
+
+`SidebarTrigger` 是一个 ghost 图标按钮，由 `UIProvider` 提供的视觉隐藏文案 “Toggle sidebar” 命名；
+轨道带相同名称与 `title`。移动端面板变为抽屉，并带有视觉隐藏的标题与描述。折叠后标签仍保留在 DOM
+中，因此读屏用户依然能获得菜单名称。
+
+已知缺口：触发器没有 `aria-expanded` 或 `aria-controls`，激活的菜单按钮只设置 `data-active`，没有
+`aria-current="page"`。当侧栏是页面上唯一的导航时，请自行补上这两个属性。
+
+## FAQ
+
+**为什么示例里 Ctrl/Cmd+B 没反应？** Provider 传入了 `embedded`，会跳过快捷键与状态 cookie，避免预览
+影响文档外壳。
+
+**菜单按钮可以是路由链接吗？** 可以——使用 `asChild` 配合 `isActive`，模板的 `AppSidebar` 就是这样与
+TanStack Router 的 `Link` 组合的。`SidebarMenuSubButton` 支持同样的写法。
+
+**把侧栏放进卡片时为什么会盖住页面？** 除 `"none"` 外，桌面端折叠模式都会渲染一个按视口尺寸定位的
+`fixed inset-y-0` 容器；请把它放在真实外壳中，或像本示例一样为祖先提供包含块，或改用
+`collapsible="none"`。
+
+## 相关
+
+- `Sheet`：`Sidebar` 内部使用的移动端面板。
+- `Tooltip`：折叠后的图标标签。
+- `Dropdown Menu`：页头或页脚中的账户与工作区切换。
+- `Tabs`：在内容区切换视图。
+- [在模板中的用法](https://fish-admin.vercel.app/)

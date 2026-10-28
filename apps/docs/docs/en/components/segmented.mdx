@@ -1,0 +1,99 @@
+---
+title: Segmented
+description: A compact single-select control for two to four mutually exclusive views, with optional icons and per-option disabling.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SegmentedBasic from '@docs/demos/segmented/basic'
+import basicSource from '@docs/demos/segmented/basic.tsx?raw'
+import SegmentedSizes from '@docs/demos/segmented/sizes'
+import sizesSource from '@docs/demos/segmented/sizes.tsx?raw'
+
+# Segmented
+
+`Segmented` is a single-select Radix toggle group styled as a muted track: options are plain data with
+a label, an optional Lucide icon and an optional `disabled` flag, and exactly one value is active.
+
+<ComponentMeta id="segmented" />
+
+## When to use
+
+- Two to four mutually exclusive views of the same data, such as a grid/list switch.
+- A dense toolbar where the selection applies immediately, without a submit step.
+- Filters next to a search field, as on the notifications and integrations pages.
+
+## When not to use
+
+- More than about five options, or long labels: use `Select`.
+- Multi-select: build a `Toggle Group` or use `Checkbox`.
+- Navigating between panels or routes: use `Tabs`.
+- A setting that needs a description per option: use `Radio Group`.
+
+## Basic usage
+
+<Demo title="Members and invoices" filename="demos/segmented/basic.tsx" source={basicSource}>
+  <SegmentedBasic />
+</Demo>
+
+## Sizes and a disabled option
+
+Both heights on one screen: `size="default"` and `size="sm"`, each with a disabled option.
+
+<Demo title="Default and small tracks" filename="demos/segmented/sizes.tsx" source={sizesSource}>
+  <SegmentedSizes />
+</Demo>
+
+## API
+
+<ApiTable component="segmented" />
+
+## Design guidance
+
+- The track is `inline-flex w-fit gap-1 rounded-lg bg-muted p-1`; items are `rounded-md`, so the
+  selected pill is inset 4 px from the track edge.
+- `size="default"` items are 32 px tall (`h-8`) with `px-3` and 14 px text; `size="sm"` items are
+  28 px (`h-7`) with `px-2.5` and 12 px text. Icons default to 16 px and drop to 14 px on `sm`.
+- Icon and label sit 6 px apart (`gap-1.5`). Icons are `aria-hidden`, so the label carries the name.
+- The selected item paints `bg-background` with `shadow-sm`; unselected items are
+  `text-muted-foreground` and darken to `text-foreground` on hover.
+- A disabled option or a disabled group renders at 50% opacity with `pointer-events: none`.
+- Labels never wrap (`whitespace-nowrap`) and the track is `w-fit`; keep options to one short word
+  and let the track size itself.
+
+## Accessibility
+
+| Key             | Behavior                                                          |
+| --------------- | ----------------------------------------------------------------- |
+| Tab / Shift+Tab | Enters and leaves the group at the selected option.               |
+| Arrow keys      | Moves focus to the previous or next option; it wraps at the ends. |
+| Home / End      | Moves focus to the first or last option.                          |
+| Space / Enter   | Selects the focused option.                                       |
+| Click           | Selects an option directly.                                       |
+
+The root is a `role="radiogroup"` named by the required `aria-label`, and every option is a
+`role="radio"` with `aria-checked`. Only the selected option is in the Tab order (roving tabindex);
+disabled options are skipped by both Tab and the arrow keys and are announced as disabled.
+
+Known gap: the group renders no visible label and has no hidden input, so its value never appears in
+`FormData`. Mirror the value into a hidden field if the surrounding form must submit it.
+
+## FAQ
+
+**Can the control start with nothing selected?** No. `value` is a required string and
+`onValueChange` ignores an empty value, so always start with one option selected.
+
+**How do I disable a single option?** Set `disabled: true` on that entry in `options`; pass the
+`disabled` prop to lock the whole group.
+
+**Does it support more than one selection?** No — the group is rendered as `type="single"`. Use a
+checkbox group or a multi-select `Toggle Group` instead.
+
+## Related
+
+- `Tabs` when the options switch panels rather than filters.
+- `Select` for longer lists that need a popover.
+- `Radio Group` when each option needs a description.
+- `Dropdown Menu` for view options that also contain commands.
+- [Used in the template](https://fish-admin.vercel.app/reports)

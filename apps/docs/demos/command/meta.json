@@ -1,0 +1,28 @@
+[
+  {
+    "id": "command/basic",
+    "component": "command",
+    "file": "demos/command/basic.tsx",
+    "title": {
+      "en": "Inline command menu",
+      "zh": "内联命令菜单"
+    },
+    "description": {
+      "en": "A searchable list of grouped commands with shortcut hints and an empty state.",
+      "zh": "可搜索的分组命令列表，带快捷键提示与空状态。"
+    }
+  },
+  {
+    "id": "command/palette",
+    "component": "command",
+    "file": "demos/command/palette.tsx",
+    "title": {
+      "en": "Command palette in a dialog",
+      "zh": "对话框中的命令面板"
+    },
+    "description": {
+      "en": "A controlled CommandDialog opened from a button, with project and action groups.",
+      "zh": "由按钮打开的受控 CommandDialog，包含项目与操作分组。"
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "sidebar/basic",
+    "component": "sidebar",
+    "file": "demos/sidebar/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Workspace navigation in a 320 px frame that collapses to a 3 rem icon rail.",
+      "zh": "320 px 高框架内的工作区导航，可折叠为 3 rem 图标栏。"
+    }
+  },
+  {
+    "id": "sidebar/nested-menu",
+    "component": "sidebar",
+    "file": "demos/sidebar/nested-menu.tsx",
+    "title": {
+      "en": "Nested menu and collapsible group",
+      "zh": "嵌套菜单与可折叠分组"
+    },
+    "description": {
+      "en": "A static rail with a collapsible group, a Projects submenu, a badge and menu actions.",
+      "zh": "静态侧栏：可折叠分组、Projects 子菜单、徽标与菜单操作。"
+    }
+  }
+]

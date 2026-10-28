@@ -151,8 +151,11 @@ function Sidebar({
   children,
   ...props
 }: React.ComponentProps<'div'> & {
+  /** Edge the rail attaches to. @default 'left' */
   side?: 'left' | 'right'
+  /** Chrome around the panel: plain border, floating card or inset content. @default 'sidebar' */
   variant?: 'sidebar' | 'floating' | 'inset'
+  /** Desktop behaviour: slide away, shrink to the icon rail, or stay static. @default 'offcanvas' */
   collapsible?: 'offcanvas' | 'icon' | 'none'
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar()
@@ -487,7 +490,9 @@ function SidebarMenuButton({
   ...props
 }: React.ComponentProps<'button'> & {
   asChild?: boolean
+  /** Paint the active background and medium weight. @default false */
   isActive?: boolean
+  /** Tooltip content shown only while the desktop rail is collapsed. */
   tooltip?: string | React.ComponentProps<typeof TooltipContent>
 } & VariantProps<typeof sidebarMenuButtonVariants>) {
   const Comp = asChild ? Slot.Root : 'button'
@@ -534,6 +539,7 @@ function SidebarMenuAction({
   ...props
 }: React.ComponentProps<'button'> & {
   asChild?: boolean
+  /** Only reveal the action on hover or focus at md and up. @default false */
   showOnHover?: boolean
 }) {
   const Comp = asChild ? Slot.Root : 'button'
@@ -583,6 +589,7 @@ function SidebarMenuSkeleton({
   showIcon = false,
   ...props
 }: React.ComponentProps<'div'> & {
+  /** Render an icon-sized skeleton before the text. @default false */
   showIcon?: boolean
 }) {
   // Random width between 50 to 90%.

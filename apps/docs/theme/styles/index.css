@@ -107,6 +107,11 @@ body .rp-search-button__hotkey > span {
   overflow-x: auto;
 }
 
+/* The package ships without Tailwind preflight, so bare buttons would keep the UA button face. */
+.fish-demo__preview button:not([class*='bg-']) {
+  background-color: transparent;
+}
+
 .fish-demo__source {
   margin-top: 0.75rem;
 }

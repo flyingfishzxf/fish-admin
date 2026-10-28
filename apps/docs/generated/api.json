@@ -148,7 +148,7 @@
           "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
           "required": false,
           "defaultValue": "ghost",
-          "description": ""
+          "description": "Button variant used for the month navigation arrows."
         }
       ],
       "events": [],
@@ -176,14 +176,14 @@
           "type": "ChartConfig",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Series keys, labels and colours turned into the chart's CSS variables."
         },
         {
           "name": "initialDimension",
           "type": "{ width: number; height: number; }",
           "required": false,
           "defaultValue": "{ width: 320, height: 200 } as const",
-          "description": ""
+          "description": "Size reserved before the container is measured."
         }
       ],
       "events": [],
@@ -236,70 +236,70 @@
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Id applied to the trigger button."
         },
         {
           "name": "value",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Controlled colour; omit it to let the component hold the value."
         },
         {
           "name": "defaultValue",
           "type": "string",
           "required": false,
           "defaultValue": "#6366f1",
-          "description": ""
+          "description": "Colour used when uncontrolled."
         },
         {
           "name": "presets",
           "type": "string[]",
           "required": false,
           "defaultValue": "[\n  '#6366f1',\n  '#8b5cf6',\n  '#ec4899',\n  '#f97316',\n  '#eab308',\n  '#10b981',\n  '#0ea5e9',\n  '#64748b',\n]",
-          "description": ""
+          "description": "Swatches offered in the popover."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the trigger, and the fallback for the three labels below."
         },
         {
           "name": "hexLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the hex field; falls back to ariaLabel."
         },
         {
           "name": "pickerLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the native colour input; falls back to ariaLabel."
         },
         {
           "name": "presetsLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the preset group; falls back to ariaLabel."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disable the trigger and every control in the popover."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the trigger button."
         }
       ],
       "events": [
@@ -308,7 +308,7 @@
           "type": "((value: string) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with a lowercase six-digit hex whenever a value is committed."
         }
       ],
       "slots": [],
@@ -625,7 +625,7 @@
           "type": "enum",
           "required": false,
           "defaultValue": "default",
-          "description": ""
+          "description": "`outline` adds a dashed border around the state."
         }
       ],
       "events": [],
@@ -673,91 +673,91 @@
           "type": "number | null",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Current value; `null` renders an empty field."
         },
         {
           "name": "min",
           "type": "number",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Lower bound; the decrement button disables at this value."
         },
         {
           "name": "max",
           "type": "number",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Upper bound; the increment button disables at this value."
         },
         {
           "name": "step",
           "type": "number",
           "required": false,
           "defaultValue": "1",
-          "description": ""
+          "description": "Amount added or subtracted per step."
         },
         {
           "name": "precision",
           "type": "number",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Decimal places used for display, rounding and blur normalisation."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Disables the input and both stepper buttons."
         },
         {
           "name": "placeholder",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Placeholder shown while the draft is empty."
         },
         {
           "name": "id",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Id forwarded to the inner input for pairing with a `Label`."
         },
         {
           "name": "name",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Name forwarded to the inner input for form submission."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Classes applied to the outer wrapper."
         },
         {
           "name": "inputClassName",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Classes applied to the inner input."
         },
         {
           "name": "aria-label",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the spinbutton."
         },
         {
           "name": "size",
           "type": "enum",
           "required": false,
           "defaultValue": "default",
-          "description": ""
+          "description": "Control height, 36 px by default or 32 px for `sm`."
         }
       ],
       "events": [
@@ -766,7 +766,7 @@
           "type": "((value: number | null) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the committed value, or `null` when the field is cleared."
         }
       ],
       "slots": [],
@@ -817,7 +817,7 @@
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Classes applied to the OTP container element."
         },
         {
           "name": "noScriptCSSFallback",
@@ -1055,14 +1055,14 @@
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the radiogroup; required."
         },
         {
           "name": "size",
           "type": "enum",
           "required": false,
           "defaultValue": "default",
-          "description": ""
+          "description": "Item height: sm is 28 px, default 32 px."
         },
         {
           "name": "className",
@@ -1075,8 +1075,8 @@
           "name": "disabled",
           "type": "boolean",
           "required": false,
-          "defaultValue": null,
-          "description": ""
+          "defaultValue": "false",
+          "description": "Disable every option in the group."
         }
       ],
       "events": [
@@ -1085,7 +1085,7 @@
           "type": "(value: string) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the next value; empty values are ignored."
         }
       ],
       "slots": [],
@@ -1166,21 +1166,21 @@
           "type": "enum",
           "required": false,
           "defaultValue": "left",
-          "description": ""
+          "description": "Edge the rail attaches to."
         },
         {
           "name": "variant",
           "type": "enum",
           "required": false,
           "defaultValue": "sidebar",
-          "description": ""
+          "description": "Chrome around the panel: plain border, floating card or inset content."
         },
         {
           "name": "collapsible",
           "type": "enum",
           "required": false,
           "defaultValue": "offcanvas",
-          "description": ""
+          "description": "Desktop behaviour: slide away, shrink to the icon rail, or stay static."
         }
       ],
       "events": [],
@@ -1215,7 +1215,7 @@
           "type": "string[]",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for each thumb, matched to the thumb by index."
         }
       ],
       "events": [],
@@ -1397,7 +1397,7 @@
           "type": "number",
           "required": false,
           "defaultValue": "0",
-          "description": ""
+          "description": "Gap between items in spacing units; 0 joins them into one control."
         }
       ],
       "events": [],

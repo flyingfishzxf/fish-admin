@@ -1,0 +1,28 @@
+[
+  {
+    "id": "progress/basic",
+    "component": "progress",
+    "file": "demos/progress/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A labelled onboarding bar stepped through 25, 50, 75 and 100 percent.",
+      "zh": "带标签的引导进度条，可在 25、50、75 与 100 之间切换。"
+    }
+  },
+  {
+    "id": "progress/values",
+    "component": "progress",
+    "file": "demos/progress/values.tsx",
+    "title": {
+      "en": "Multiple values",
+      "zh": "多值进度"
+    },
+    "description": {
+      "en": "Three task bars at 100%, 64% and 0%, with a control that advances the middle one.",
+      "zh": "三个任务进度条分别为 100%、64% 与 0%，并有按钮推进中间一项。"
+    }
+  }
+]

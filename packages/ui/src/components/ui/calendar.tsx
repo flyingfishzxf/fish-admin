@@ -21,6 +21,7 @@ function Calendar({
   locale,
   ...props
 }: React.ComponentProps<typeof DayPicker> & {
+  /** Button variant used for the month navigation arrows. @default 'ghost' */
   buttonVariant?: React.ComponentProps<typeof Button>['variant']
 }) {
   const defaultClassNames = getDefaultClassNames()

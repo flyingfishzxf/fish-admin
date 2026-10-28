@@ -1,0 +1,114 @@
+---
+title: Slider
+description: Pick a number or a range by dragging one or two thumbs along a track.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SliderBasic from '@docs/demos/slider/basic'
+import basicSource from '@docs/demos/slider/basic.tsx?raw'
+import SliderRange from '@docs/demos/slider/range'
+import rangeSource from '@docs/demos/slider/range.tsx?raw'
+
+# Slider
+
+`Slider` wraps Radix Slider and paints the track, the filled range and 16 px thumbs with the
+template's tokens. It accepts an array value so one component can render a two-thumb range, and
+`thumbLabels` names each thumb for assistive technology.
+
+<ComponentMeta id="slider" />
+
+## When to use
+
+- Choosing an approximate number where the neighbourhood matters more than the exact figure, such as
+  a monthly budget.
+- Filtering a result list by an interval, like a price or size range, with two thumbs.
+- Adjusting a value whose effect is visible immediately, such as volume or opacity.
+
+## When not to use
+
+- An exact value that must be typed or validated: use `Input Number`.
+- A handful of discrete options: use `Radio Group` or `Segmented`.
+- A binary on/off setting: use `Switch`.
+- A value that should only apply on submit — a slider reports every step through `onValueChange`,
+  so a plain form field is often kinder.
+
+## Basic usage
+
+<Demo title="Controlled budget slider" filename="demos/slider/basic.tsx" source={basicSource}>
+  <SliderBasic />
+</Demo>
+
+`value` and `onValueChange` make the slider controlled; the readout above the track renders the same
+state. Use `defaultValue` instead to let the slider keep its own state.
+
+## Range and stepped values
+
+<Demo
+  title="Two-thumb range and a 25 % step"
+  filename="demos/slider/range.tsx"
+  source={rangeSource}
+>
+  <SliderRange />
+</Demo>
+
+A two-entry array renders two thumbs on one track; `step={25}` snaps the second slider to five
+positions without any extra code.
+
+## API
+
+<ApiTable component="slider" />
+
+## Design guidance
+
+- The track is 6 px tall (`h-1.5`) and fills its container; the thumb is 16 px (`size-4`) with a
+  `border-primary` outline, a `bg-background` fill and a 4 px `ring-ring/50` on hover and keyboard
+  focus.
+- The root is `w-full`, so width comes from the parent — the demos wrap each slider in a 300 px
+  block. Vertical sliders switch the track to `w-1.5` and need `min-h-44` (176 px) to be usable.
+- Defaults are `min` 0, `max` 100 and Radix's `step` 1. The component renders no tick marks, units or
+  value text; the demos draw the number themselves, right-aligned with tabular figures.
+- Pass arrays. `value` and `defaultValue` are read as arrays; a scalar falls back to a single thumb
+  at `min`, and only an array produces more than one thumb.
+- `thumbLabels` is index-matched, so in a range the second label belongs to the upper value.
+- Disabled drops the root to 50 % opacity and removes the thumbs from pointer and keyboard input.
+
+## Accessibility
+
+| Key                       | Behavior                                             |
+| ------------------------- | ---------------------------------------------------- |
+| Tab / Shift+Tab           | Moves focus to the next thumb and out of the slider. |
+| ArrowRight / ArrowUp      | Increases the value by one `step`.                   |
+| ArrowLeft / ArrowDown     | Decreases the value by one `step`.                   |
+| Shift+Arrow, Page Up/Down | Moves ten steps at a time.                           |
+| Home / End                | Jumps to `min` / `max`.                              |
+
+Each thumb is a `role="slider"` span with `aria-valuemin`, `aria-valuemax`, `aria-valuenow` and
+`aria-orientation` supplied by Radix; the component test asserts that ArrowRight moves 25 to 26 and
+ArrowLeft moves it back. Every thumb is its own tab stop, so Tab walks through both thumbs of a
+range. The name comes from `thumbLabels[index]`; when it is omitted Radix names the two thumbs
+"Minimum" and "Maximum" but leaves a single thumb unnamed.
+
+Known gap: the wrapper forwards only `aria-label` to the thumb, so there is no `aria-valuetext`
+passthrough — a formatted "$1,800" is still announced as "1800", and there is no rendered value
+label or tick marks to fall back on.
+
+## FAQ
+
+**How do I get two thumbs?** Pass an array to `value` or `defaultValue` — two entries plus two
+`thumbLabels`. The thumb count follows the array length; a bare number renders one thumb at `min`.
+
+**Why did the thumb jump back when I released it?** Passing `value` makes the slider controlled, so
+without `onValueChange` the value never changes. Switch to `defaultValue` if the slider should own
+its state.
+
+**Can the readout show a price with a currency symbol?** Format the text yourself, as the demos do.
+The component only draws the track and thumbs, and screen readers read the raw numeric value.
+
+## Related
+
+- `Input Number` when the value must be typed exactly.
+- `Switch` for a binary setting.
+- `Select` for a short list of discrete options.
+- [Used in the template](https://fish-admin.vercel.app/reports)

@@ -1,0 +1,102 @@
+---
+title: Chart
+description: Themed chart wrappers over Recharts, with config-driven colours, tooltip and legend.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ChartBasic from '@docs/demos/chart/basic'
+import basicSource from '@docs/demos/chart/basic.tsx?raw'
+import ChartAreaLegend from '@docs/demos/chart/area-legend'
+import areaLegendSource from '@docs/demos/chart/area-legend.tsx?raw'
+
+# Chart
+
+`Chart` is a styling layer over Recharts: `ChartContainer` measures its parent and turns a
+`ChartConfig` into `--color-<key>` CSS variables, while `ChartTooltipContent` and
+`ChartLegendContent` render the template's tooltip and legend. The marks themselves are Recharts
+components.
+
+<ComponentMeta id="chart" />
+
+## When to use
+
+- A monthly revenue or traffic trend on a dashboard or report page.
+- Comparing two or three series over the same category axis.
+- A compact chart inside a `Card` where the theme's chart palette should apply.
+
+## When not to use
+
+- Reading exact values for many rows: use `Table`.
+- A single headline number: use `Statistic`.
+- Progress towards one target: use `Progress`.
+- More than about five series: split the charts instead of adding colours.
+
+## Basic usage
+
+<Demo title="Monthly revenue bars" filename="demos/chart/basic.tsx" source={basicSource}>
+  <ChartBasic />
+</Demo>
+
+## Area chart with a legend
+
+Swap the chart component for `AreaChart` and add `ChartLegend` with `ChartLegendContent` when a
+second series needs a key. The tooltip switches to the `line` indicator and both series keep their
+`--color-<key>` fills.
+
+<Demo
+  title="Two series with a shared legend"
+  filename="demos/chart/area-legend.tsx"
+  source={areaLegendSource}
+>
+  <ChartAreaLegend />
+</Demo>
+
+## API
+
+<ApiTable component="chart" />
+
+## Design guidance
+
+- `ChartContainer` is `aspect-video` and 12 px text by default, and wraps its children in a
+  `ResponsiveContainer` seeded with 320 × 200 px (`initialDimension`). Give it an explicit height
+  when the card needs a fixed slot — both demos use 240 px at full width.
+- Each `ChartConfig` key becomes a `--color-<key>` variable scoped to the chart, and `fill`/`stroke`
+  read that variable (`fill="var(--color-revenue)"`). The palette lives in the theme tokens
+  `--chart-1` … `--chart-5`; a key can supply `{ light, dark }` colours instead of one value.
+- The tooltip is at least 128 px wide (`min-w-[8rem]`), `rounded-lg`, bordered at 50% and
+  `shadow-xl`, with 10 px horizontal and 6 px vertical padding. Values are `toLocaleString`-formatted
+  in `tabular-nums`, and the series indicator defaults to a 10 px dot; `indicator="line"` draws a
+  4 px bar and `"dashed"` a 1.5 px dashed border.
+- The legend sits below the plot with 16 px gaps, 8 px swatches and 12 px of padding; it moves above
+  the plot (`pb-3` instead of `pt-3`) when its `verticalAlign` is `top`.
+- Axis ticks inherit `muted-foreground`, grid lines inherit the border at 50% opacity, and the demos
+  dash the horizontal grid with `strokeDasharray="4 4"`.
+
+## Accessibility
+
+Charts have no keyboard operation: the tooltip appears on hover, and the SVG marks are not
+focusable. The wrapper is a plain `div`, and no data table is generated.
+
+Known gap: there is no built-in text alternative. Extra props on `ChartContainer` land on its
+wrapper, so pass `role="img"` with an `aria-label` summarising the trend, and repeat the values in a
+`Table` or an adjacent summary for screen-reader users.
+
+## FAQ
+
+**Do I need to install Recharts?** No. It is already a dependency of the package; import the chart
+components (`BarChart`, `Bar`, `XAxis`, …) from `recharts`.
+
+**Why is my series grey?** The `fill`/`stroke` must reference `var(--color-<key>)` with the same key
+as the `ChartConfig` entry and the `dataKey`. A mistyped key leaves the CSS variable undefined.
+
+**How do I format tooltip values?** Pass `formatter` to `ChartTooltipContent`; otherwise numbers use
+`toLocaleString()`.
+
+## Related
+
+- `Card` for the chart frame and heading.
+- `Table` for the same data in a readable grid.
+- `Statistic` for a single KPI beside the chart.
+- [Used in the template](https://fish-admin.vercel.app/)

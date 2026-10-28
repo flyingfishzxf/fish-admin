@@ -3,6 +3,7 @@ import * as React from 'react'
 import { cn } from '../../lib/utils'
 
 type EmptyProps = React.ComponentProps<'div'> & {
+  /** `outline` adds a dashed border around the state. @default 'default' */
   variant?: 'default' | 'outline'
 }
 
@@ -32,6 +33,7 @@ function EmptyHeader({ className, ...props }: React.ComponentProps<'div'>) {
 }
 
 type EmptyMediaProps = React.ComponentProps<'div'> & {
+  /** `icon` wraps the child in a 40 px muted tile. @default 'default' */
   variant?: 'default' | 'icon'
 }
 

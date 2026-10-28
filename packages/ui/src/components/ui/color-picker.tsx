@@ -43,16 +43,27 @@ export function ColorPicker({
   disabled = false,
   className,
 }: {
+  /** Id applied to the trigger button. */
   id?: string
+  /** Controlled colour; omit it to let the component hold the value. */
   value?: string
+  /** Colour used when uncontrolled. @default '#6366f1' */
   defaultValue?: string
+  /** Called with a lowercase six-digit hex whenever a value is committed. */
   onValueChange?: (value: string) => void
+  /** Swatches offered in the popover. @default eight template colours */
   presets?: string[]
+  /** Accessible name for the trigger, and the fallback for the three labels below. */
   ariaLabel: string
+  /** Accessible name for the hex field; falls back to ariaLabel. */
   hexLabel?: string
+  /** Accessible name for the native colour input; falls back to ariaLabel. */
   pickerLabel?: string
+  /** Accessible name for the preset group; falls back to ariaLabel. */
   presetsLabel?: string
+  /** Disable the trigger and every control in the popover. @default false */
   disabled?: boolean
+  /** Extra classes for the trigger button. */
   className?: string
 }) {
   const [internal, setInternal] = useState(() => normalizeHex(defaultValue) ?? '#6366f1')

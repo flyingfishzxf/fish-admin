@@ -1,0 +1,96 @@
+---
+title: Breadcrumb 面包屑
+description: 以导航地标展示当前页面的层级路径，祖先层级可点击。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import BreadcrumbBasic from '@docs/demos/breadcrumb/basic'
+import basicSource from '@docs/demos/breadcrumb/basic.tsx?raw'
+import BreadcrumbOverflow from '@docs/demos/breadcrumb/overflow'
+import overflowSource from '@docs/demos/breadcrumb/overflow.tsx?raw'
+
+# Breadcrumb 面包屑
+
+`Breadcrumb` 在 `<nav>` 地标中渲染有序的祖先链接与当前页面。分隔符是 14 px 的箭头，当前项是一个
+不可导航的 span 并标记 `aria-current="page"`，地标名称随 UI 语言变化（"Breadcrumb" /
+"面包屑导航"）。
+
+<ComponentMeta id="breadcrumb" />
+
+## 何时使用
+
+- 记录层级达到三层以上、读者需要看到路径，例如工作区 → 成员下的某个成员资料。
+- 希望不离开页面即可一键跳回上层列表。
+- 在详情页页头或工具栏顶部提供位置参照。
+
+## 何时不使用
+
+- 顺序固定的线性流程：使用 `Stepper`。
+- 路由之间的平级切换：使用 `Sidebar` 或 `Tabs`。
+- 只有一个返回入口：返回 `Button` 比两项路径更清晰。
+- 侧边栏已经显示当前位置的扁平页面。
+
+## 基础用法
+
+<Demo title="成员资料路径" filename="demos/breadcrumb/basic.tsx" source={basicSource}>
+  <BreadcrumbBasic />
+</Demo>
+
+## 省略号与下拉菜单
+
+路径过长时，用 `BreadcrumbEllipsis` 配合 `DropdownMenu` 隐藏中间层级。省略号是 36 px 的方框，
+内含 16 px 的"更多"图标，菜单中放被折叠的文件夹。
+
+<Demo title="被菜单收起的文件夹" filename="demos/breadcrumb/overflow.tsx" source={overflowSource}>
+  <BreadcrumbOverflow />
+</Demo>
+
+## API
+
+<ApiTable component="breadcrumb" />
+
+## 设计指引
+
+- 列表为 `text-sm` 并带弱化色，间距 6 px，从 `sm` 断点起加宽到 10 px；它是 `flex-wrap`，长路径
+  会折成两行而不是溢出。
+- 条目内文字与分隔符之间保留 6 px。分隔符带 `role="presentation"` 与 `aria-hidden`，默认渲染
+  14 px（`size-3.5`）箭头，也可以传入其他子元素。
+- `BreadcrumbEllipsis` 为 36 × 36 px（`size-9`），内含 16 px 图标与 `sr-only` 文案。该 span 是
+  `aria-hidden`，因此包裹它的触发器必须自带无障碍名称。
+- 当前页面为 `font-normal text-foreground`；祖先保持弱化色，仅在悬停时变为 `text-foreground`，
+  带颜色过渡且不加下划线。
+- `BreadcrumbLink` 支持 `asChild`，可以用路由的 `<Link>` 替换默认 `<a>` 并保留同样的样式。
+
+## 无障碍
+
+| 按键            | 行为                     |
+| --------------- | ------------------------ |
+| Tab / Shift+Tab | 在祖先链接之间移动焦点。 |
+| Enter           | 打开当前聚焦的祖先链接。 |
+
+整条路径是一个带本地化名称的 `nav` 地标，内部为有序列表。祖先层级是真正的链接；当前页面是带
+`role="link"`、`aria-disabled="true"` 与 `aria-current="page"` 的 `span`，会被宣告为当前页面且
+无法激活。
+
+已知缺口：`BreadcrumbEllipsis` 带 `aria-hidden`，其内置的"更多"文案不会到达辅助技术。请为下拉
+触发器提供明确的 `aria-label`（示例中使用 "Show hidden folders"）。
+
+## FAQ
+
+**可以修改地标名称吗？** 可以——`Breadcrumb` 的默认 `aria-label` 之后会展开 props，传入
+`aria-label` 即可覆盖本地化文案。溢出示例传入 `aria-label="File path"`，让同页的两条路径不会撞名。
+
+**会自动折叠过长路径吗？** 不会。`BreadcrumbEllipsis` 只渲染图标，隐藏哪些层级、菜单里放什么
+由你决定。
+
+**如何配合 React Router 使用？** 使用
+`<BreadcrumbLink asChild><Link to="…">…</Link></BreadcrumbLink>`，路由链接会继承面包屑样式。
+
+## 相关
+
+- `Sidebar`：路由导航。
+- `Dropdown Menu`：收起的中间层级。
+- `Button`：单纯的返回操作。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

@@ -1,0 +1,109 @@
+---
+title: Collapsible
+description: An unstyled trigger and panel pair for showing optional detail on demand.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CollapsibleBasic from '@docs/demos/collapsible/basic'
+import basicSource from '@docs/demos/collapsible/basic.tsx?raw'
+import CollapsibleChevron from '@docs/demos/collapsible/chevron'
+import chevronSource from '@docs/demos/collapsible/chevron.tsx?raw'
+
+# Collapsible
+
+`Collapsible` is the disclosure primitive: a trigger button and a panel that mounts only while open.
+It ships no padding, border, icon or animation, so the trigger and panel look exactly like the
+elements you put inside them.
+
+<ComponentMeta id="collapsible" />
+
+## When to use
+
+- Revealing one block of secondary detail, such as advanced retention settings or export details.
+- A show/hide section inside a card or settings form.
+- A single optional panel where an accordion's sibling coordination would be overkill.
+
+## When not to use
+
+- Several stacked sections that coordinate: use `Accordion`.
+- Switching between peers: use `Tabs`.
+- Content that must overlay the page: use `Dialog` or `Popover`.
+- Route navigation: links or `Sidebar`.
+
+## Basic usage
+
+<Demo
+  title="Advanced settings behind a full-width trigger"
+  filename="demos/collapsible/basic.tsx"
+  source={basicSource}
+>
+  <CollapsibleBasic />
+</Demo>
+
+## Controlled with a rotating chevron
+
+`open` and `onOpenChange` make the panel controlled, which lets the trigger render state — here a
+chevron that rotates 180° in 150 ms instead of a Show/Hide label.
+
+<Demo
+  title="Controlled export details"
+  filename="demos/collapsible/chevron.tsx"
+  source={chevronSource}
+>
+  <CollapsibleChevron />
+</Demo>
+
+## API
+
+<ApiTable component="collapsible" />
+
+## Design guidance
+
+- The three parts add only a `data-slot`; there are no default paddings, colours, borders or
+  animations. The demos wrap the trigger in `Button` and style the panel with a 1 px
+  `var(--border)` frame, an 8 px radius and 12 px padding.
+- `CollapsibleContent` unmounts when collapsed (Radix `Presence`), so any state inside the panel is
+  lost on close unless it lives in the parent; `forceMount` keeps the subtree mounted while closed.
+- The trigger is a native `<button>` carrying `aria-expanded` and `aria-controls`, and both root and
+  trigger expose `data-state="open" | "closed"` — use it for rotation, height or opacity rules.
+- Uncontrolled `open` defaults to `false`; pass `open` with `onOpenChange` for a controlled panel.
+  A `disabled` root leaves the trigger in place but inert.
+- There is no built-in open/close icon or height transition. The chevron demo rotates an inline
+  `transform` and adds 8 px above the panel with `marginTop`.
+
+## Accessibility
+
+| Key           | Behavior                                                    |
+| ------------- | ----------------------------------------------------------- |
+| Enter / Space | Toggles the panel from the focused trigger.                 |
+| Tab           | Moves to the trigger, then into the panel while it is open. |
+
+The trigger is a real button exposing `aria-expanded` (plus `aria-controls` while the panel is
+open), so the collapsed state is announced. The panel is a plain container with no role of its own,
+and collapsed content is unmounted rather than merely hidden.
+
+Known gap: neither part adds heading or landmark semantics, so a page of collapsibles produces no
+outline and the panel cannot be reached by landmark navigation. Add your own heading around the
+trigger, and `role="region"` with an `aria-label` when the panel is long enough to need one.
+
+## FAQ
+
+**Why does a form inside the panel reset?** Collapsed content unmounts, so uncontrolled inputs lose
+their values. Lift the state above `Collapsible` or pass `forceMount`.
+
+**How do I animate the height?** Nothing is animated for you; the panel has no transition classes.
+Drive `height`, `grid-template-rows` or opacity from the `data-state` attribute, or animate the
+content yourself.
+
+**Is it just a one-item accordion?** Similar markup, different scope: `Collapsible` is a single
+disclosure with no sibling coordination, no heading element and no arrow-key navigation between
+items.
+
+## Related
+
+- `Accordion` for a group of coordinated panels.
+- `Tabs` for switching visible panels.
+- `Card` for the surrounding frame.
+- [Used in the template](https://fish-admin.vercel.app/settings)

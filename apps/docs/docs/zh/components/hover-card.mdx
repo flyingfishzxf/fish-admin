@@ -1,0 +1,98 @@
+---
+title: Hover Card 悬浮卡片
+description: 在触发器被悬停或聚焦时，用一张小型浮层预览人物、链接或列表行的信息。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import HoverCardBasic from '@docs/demos/hover-card/basic'
+import basicSource from '@docs/demos/hover-card/basic.tsx?raw'
+import HoverCardProfile from '@docs/demos/hover-card/profile'
+import profileSource from '@docs/demos/hover-card/profile.tsx?raw'
+
+# Hover Card 悬浮卡片
+
+`HoverCard` 在触发器被悬停或聚焦时显示一张只读的小型预览。它封装 Radix 悬浮卡片：一个触发器，
+以及通过传送门渲染、沿用模板浮层样式的内容，默认宽 256 px。
+
+<ComponentMeta id="hover-card" />
+
+## 何时使用
+
+- 从 @提及、负责人或头像预览某个人的信息。
+- 在用户决定打开链接或列表行之前，先展示它的元数据。
+- 提供帮助用户做判断的补充信息，而不离开当前页面。
+
+## 何时不使用
+
+- 用户完成任务所必需的信息：直接渲染在页面里。
+- 链接、按钮、表单等可交互内容：使用 `Popover`。
+- 为图标提供一行说明：使用 `Tooltip`。
+- 触屏优先的布局：没有悬停，预览容易被错过。
+
+## 基础用法
+
+<Demo title="提及预览" filename="demos/hover-card/basic.tsx" source={basicSource}>
+  <HoverCardBasic />
+</Demo>
+
+## 完整的个人资料预览
+
+内容接受 `align`、`sideOffset` 与宽度覆盖，`openDelay` 和 `closeDelay` 会透传给 Radix。封装没有
+设置这两个延迟，因此默认值 700 ms 与 300 ms 生效。
+
+<Demo title="完整的个人资料预览" filename="demos/hover-card/profile.tsx" source={profileSource}>
+  <HoverCardProfile />
+</Demo>
+
+## API
+
+<ApiTable component="hover-card" />
+
+## 设计指引
+
+- 内容默认宽 256 px（`w-64`），内边距 16 px，与触发器偏移 4 px，圆角 8 px，默认在触发器上居中，
+  可用 `align` 调整。需要更宽时通过 `style` 或 `className` 覆盖——资料示例用 288 px。
+- 默认打开延迟 700 ms，关闭延迟 300 ms。模板的通知列表传入 `openDelay={300}`；示例传入 200 ms，
+  让资料卡响应更即时。
+- 指针移入卡片不会关闭：内容内的指针事件会重置关闭计时器，这才让多行卡片可用。
+- 把卡片当作预览而不是操作面板。控制在姓名、职位、一两行简介和几行元数据之内；更长的内容应放在
+  目标页面。
+
+## 无障碍
+
+| 按键                  | 行为                                    |
+| --------------------- | --------------------------------------- |
+| Tab（触发器可聚焦时） | 聚焦触发器并打开预览。                  |
+| Shift+Tab             | 离开触发器，预览随之关闭。              |
+| Escape                | 关闭已打开的卡片。                      |
+| 指针悬停              | 700 ms 后打开；指针离开 300 ms 后关闭。 |
+
+触发器保留你赋予的语义——配合 `asChild` 使用时，`Button` 仍然是按钮。内容通过传送门渲染，
+没有 tooltip 或 dialog 角色，不会锁定焦点，也不会给触发器添加 `aria-describedby` 或
+`aria-expanded`。
+
+已知缺口：不使用 `asChild` 时，触发器是没有 `href` 的 `<a>`，永远不会进入 Tab 顺序；两个示例都
+通过 `asChild` 传入 `Button`，预览才能用键盘到达。此外 Radix 会把内容内所有可聚焦元素强制设为
+`tabindex="-1"`，因此放进预览的链接或按钮永远无法用键盘到达。触发器获得焦点时，预览文本也不会被
+朗读；提示信息必不可少时请用 `Tooltip`，内容可交互时请用 `Popover`。
+
+## FAQ
+
+**为什么手机上没有任何反应？** Radix 在开关时忽略触摸指针（`excludeTouch`），并取消触摸开始的默认
+行为，因此点击不会打开卡片。触屏优先的界面请把元数据直接渲染出来，或改用 `Popover`。
+
+**可以修改延迟吗？** 可以。`openDelay` 与 `closeDelay` 会透传给 Radix 根组件，默认分别为 700 ms
+与 300 ms。
+
+**可以在卡片里放链接吗？** 无障碍上不行。可聚焦子元素会被重置为 `tabindex="-1"`；可点击内容请用
+`Popover`。
+
+## 相关
+
+- `Tooltip`：为单个控件提供一行提示。
+- `Popover`：内容需要用户交互时使用。
+- `Avatar`：资料预览常用的头像。
+- `Card`：在页面内呈现同样的元数据。
+- [在模板中的用法](https://fish-admin.vercel.app/notifications)

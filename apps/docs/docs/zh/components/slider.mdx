@@ -1,0 +1,103 @@
+---
+title: Slider 滑动条
+description: 通过拖动一个或两个滑块，在轨道上选择数值或区间。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SliderBasic from '@docs/demos/slider/basic'
+import basicSource from '@docs/demos/slider/basic.tsx?raw'
+import SliderRange from '@docs/demos/slider/range'
+import rangeSource from '@docs/demos/slider/range.tsx?raw'
+
+# Slider 滑动条
+
+`Slider` 封装 Radix Slider，用模板的设计变量绘制轨道、填充区间与 16 px 的滑块。它接受数组值，
+因此同一个组件既能显示单值，也能显示双滑块区间；`thumbLabels` 为每个滑块提供无障碍名称。
+
+<ComponentMeta id="slider" />
+
+## 何时使用
+
+- 选择一个大致的数值，具体数字不如所处区间重要，例如月度广告预算。
+- 用两个滑块按价格或尺寸区间筛选结果列表。
+- 调整后能立即看到效果的值，例如音量或透明度。
+
+## 何时不使用
+
+- 需要精确输入并校验的数值：使用 `Input Number`。
+- 只有少量离散选项：使用 `Radio Group` 或 `Segmented`。
+- 二值开关：使用 `Switch`。
+- 只想在提交时生效的值——滑动条会通过 `onValueChange` 持续上报每一步，普通表单字段往往更合适。
+
+## 基础用法
+
+<Demo title="受控的预算滑动条" filename="demos/slider/basic.tsx" source={basicSource}>
+  <SliderBasic />
+</Demo>
+
+`value` 与 `onValueChange` 让滑动条变为受控，轨道上方的读数渲染同一份状态。若想让滑动条自己
+管理状态，改用 `defaultValue`。
+
+## 范围与步进值
+
+<Demo title="双滑块区间与 25% 步进" filename="demos/slider/range.tsx" source={rangeSource}>
+  <SliderRange />
+</Demo>
+
+数组含两个元素时，同一个轨道上渲染两个滑块；`step={25}` 让第二个滑动条吸附到五个档位，无需
+额外代码。
+
+## API
+
+<ApiTable component="slider" />
+
+## 设计指引
+
+- 轨道高 6 px（`h-1.5`）并撑满容器；滑块 16 px（`size-4`），带 `border-primary` 描边、
+  `bg-background` 填充，悬停与键盘聚焦时出现 4 px 的 `ring-ring/50` 外圈。
+- 根节点是 `w-full`，宽度由父级决定——示例中每个滑动条都包在 300 px 的容器里。垂直滑动条把轨道
+  改为 `w-1.5`，并需要 `min-h-44`（176 px）才够用。
+- 默认值为 `min` 0、`max` 100，`step` 沿用 Radix 的 1。组件不渲染刻度、单位或数值文本；示例自行
+  绘制数字，并用等宽数字右对齐。
+- 请传数组。`value` 与 `defaultValue` 都按数组读取；传单个数字会退化为 `min` 处的单个滑块，只有
+  数组才会渲染多个滑块。
+- `thumbLabels` 按下标一一对应，因此在区间里第二个标签属于较大的那个值。
+- 禁用时根节点降到 50% 不透明度，滑块同时退出指针与键盘交互。
+
+## 无障碍
+
+| 按键                       | 行为                           |
+| -------------------------- | ------------------------------ |
+| Tab / Shift+Tab            | 聚焦下一个滑块，或移出滑动条。 |
+| ArrowRight / ArrowUp       | 按一个 `step` 增大数值。       |
+| ArrowLeft / ArrowDown      | 按一个 `step` 减小数值。       |
+| Shift+方向键、Page Up/Down | 一次移动十个步长。             |
+| Home / End                 | 跳到 `min` / `max`。           |
+
+每个滑块都是由 Radix 提供的 `role="slider"` 元素，自带 `aria-valuemin`、`aria-valuemax`、
+`aria-valuenow` 与 `aria-orientation`；组件测试断言 ArrowRight 把 25 变为 26，ArrowLeft 再变回。
+每个滑块都是独立的 Tab 停靠点，因此 Tab 会依次经过区间的两个滑块。名称取自
+`thumbLabels[index]`；省略时，双滑块会被 Radix 命名为 “Minimum” 和 “Maximum”，单滑块则没有名称。
+
+已知缺口：包装层只把 `aria-label` 透传给滑块，没有 `aria-valuetext` 通道——格式化为 “$1,800”
+的值仍会被朗读成 “1800”，界面上也没有数值标签或刻度可作补充。
+
+## FAQ
+
+**怎样得到双滑块？** 给 `value` 或 `defaultValue` 传数组——两个元素配两个 `thumbLabels`。滑块数量
+跟随数组长度；只传数字则只在 `min` 处渲染一个滑块。
+
+**为什么松手后滑块又弹回去了？** 传入 `value` 后滑动条即为受控；没有 `onValueChange` 时数值永远
+不变。若希望滑动条自己维护状态，请改用 `defaultValue`。
+
+**读数能带货币符号吗？** 需要自己格式化文本，示例就是这么做的。组件只绘制轨道与滑块，读屏朗读的
+是原始数字。
+
+## 相关
+
+- `Input Number`：需要精确输入数值时使用。
+- `Switch`：二值开关。
+- `Select`：少量离散选项。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

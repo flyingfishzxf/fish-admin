@@ -1,0 +1,96 @@
+---
+title: Segmented 分段控制器
+description: 紧凑的单选控件，用于两到四个互斥视图，支持可选图标与单项禁用。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SegmentedBasic from '@docs/demos/segmented/basic'
+import basicSource from '@docs/demos/segmented/basic.tsx?raw'
+import SegmentedSizes from '@docs/demos/segmented/sizes'
+import sizesSource from '@docs/demos/segmented/sizes.tsx?raw'
+
+# Segmented 分段控制器
+
+`Segmented` 是把 Radix 单选开关组包成一条浅色轨道的组件：选项是纯数据，包含标签、可选 Lucide 图标
+与可选的 `disabled` 标记，始终只有一个值处于选中状态。
+
+<ComponentMeta id="segmented" />
+
+## 何时使用
+
+- 同一份数据的两到四种互斥视图，例如网格/列表切换。
+- 选择后立即生效、无需提交的紧凑工具栏。
+- 搜索框旁的状态筛选，通知页与集成页即如此使用。
+
+## 何时不使用
+
+- 选项超过五个左右，或标签较长：使用 `Select`。
+- 多选：使用 `Toggle Group` 或 `Checkbox`。
+- 在面板或路由之间导航：使用 `Tabs`。
+- 每个选项都需要说明文字的设置项：使用 `Radio Group`。
+
+## 基础用法
+
+<Demo title="成员与账单" filename="demos/segmented/basic.tsx" source={basicSource}>
+  <SegmentedBasic />
+</Demo>
+
+## 尺寸与禁用选项
+
+同一屏展示两种高度：`size="default"` 与 `size="sm"`，各自包含一个禁用选项。
+
+<Demo title="默认与紧凑尺寸" filename="demos/segmented/sizes.tsx" source={sizesSource}>
+  <SegmentedSizes />
+</Demo>
+
+## API
+
+<ApiTable component="segmented" />
+
+## 设计指引
+
+- 轨道为 `inline-flex w-fit gap-1 rounded-lg bg-muted p-1`；选项使用 `rounded-md`，因此选中态与轨道
+  边缘之间留出 4 px 内边距。
+- `size="default"` 的选项高 32 px（`h-8`），`px-3`，14 px 文字；`size="sm"` 高 28 px（`h-7`），
+  `px-2.5`，12 px 文字。图标默认 16 px，`sm` 下为 14 px。
+- 图标与标签间距 6 px（`gap-1.5`）。图标带 `aria-hidden`，名称由标签文本提供。
+- 选中项使用 `bg-background` 与 `shadow-sm`；未选中项为 `text-muted-foreground`，悬停时加深为
+  `text-foreground`。
+- 单个选项或整组禁用时，透明度降为 50%，并设置 `pointer-events: none`。
+- 标签不换行（`whitespace-nowrap`），轨道宽度为 `w-fit`；请让每个选项保持一个短词，由轨道自适应宽度。
+
+## 无障碍
+
+| 按键            | 行为                                |
+| --------------- | ----------------------------------- |
+| Tab / Shift+Tab | 在选中项上进入、离开分组。          |
+| 方向键          | 将焦点移到前一个/后一个选项并循环。 |
+| Home / End      | 将焦点移到第一个/最后一个选项。     |
+| 空格 / Enter    | 选中当前聚焦的选项。                |
+| 点击            | 直接选中某个选项。                  |
+
+根元素是 `role="radiogroup"`，其名称来自必填的 `aria-label`；每个选项是带 `aria-checked` 的
+`role="radio"`。只有选中项进入 Tab 顺序（roving tabindex）；禁用项会被 Tab 和方向键跳过，并被读屏
+宣告为不可用。
+
+已知缺口：分组没有可见标签，也没有隐藏输入，因此其值不会出现在 `FormData` 中。如果所在表单需要提交，
+请自行同步到隐藏字段。
+
+## FAQ
+
+**可以一开始不选中任何一项吗？** 不可以。`value` 是必填字符串，`onValueChange` 会忽略空值，因此务必
+默认选中一项。
+
+**如何只禁用一个选项？** 在 `options` 对应项设置 `disabled: true`；传 `disabled` 属性则锁定整组。
+
+**支持多选吗？** 不支持——分组以 `type="single"` 渲染。多选请使用复选框组或 `Toggle Group`。
+
+## 相关
+
+- `Tabs`：选项用于切换面板而非筛选时使用。
+- `Select`：需要弹出层的长列表。
+- `Radio Group`：每个选项需要说明文字时使用。
+- `Dropdown Menu`：视图选项还需要包含命令时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

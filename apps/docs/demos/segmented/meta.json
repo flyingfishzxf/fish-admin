@@ -1,0 +1,28 @@
+[
+  {
+    "id": "segmented/basic",
+    "component": "segmented",
+    "file": "demos/segmented/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Two icon views with a live hint describing the current selection.",
+      "zh": "两个带图标的视图切换，并实时提示当前选择。"
+    }
+  },
+  {
+    "id": "segmented/sizes",
+    "component": "segmented",
+    "file": "demos/segmented/sizes.tsx",
+    "title": {
+      "en": "Sizes and a disabled option",
+      "zh": "尺寸与禁用选项"
+    },
+    "description": {
+      "en": "Default and sm tracks on one screen, each with one disabled option.",
+      "zh": "同一屏内的默认与 sm 尺寸，各自包含一个禁用选项。"
+    }
+  }
+]

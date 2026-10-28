@@ -1,0 +1,118 @@
+---
+title: Command
+description: Search and run commands from an inline list or a dialog palette, with grouping, shortcuts and an empty state.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CommandBasic from '@docs/demos/command/basic'
+import basicSource from '@docs/demos/command/basic.tsx?raw'
+import CommandPalette from '@docs/demos/command/palette'
+import paletteSource from '@docs/demos/command/palette.tsx?raw'
+
+# Command
+
+`Command` wraps cmdk and ships the input, list, empty, group, item, separator and shortcut parts,
+plus a `CommandDialog` that renders the same list inside a dialog. Typing filters the items and the
+arrow keys move the active option.
+
+<ComponentMeta id="command" />
+
+## When to use
+
+- A global palette that searches projects, pages and actions from one field.
+- An inline action search where typing beats scanning a long menu.
+- Command lists with shortcut hints, grouped by area, where only a few items should match.
+
+## When not to use
+
+- A fixed list of five or fewer links: use `Dropdown Menu` or plain links.
+- Choosing a value for a form field: use `Select` or `Radio Group`.
+- Results that need columns, sorting or pagination: use `Table`.
+- A single destructive confirmation: use `Alert Dialog`.
+
+## Basic usage
+
+<Demo title="Inline command menu" filename="demos/command/basic.tsx" source={basicSource}>
+  <CommandBasic />
+</Demo>
+
+## Grouped commands in a dialog
+
+`CommandDialog` takes Dialog props, so `open` and `onOpenChange` are yours to control. It renders
+its `title` and `description` in a screen-reader-only header, removes the dialog padding and gives
+the search row a 48 px height.
+
+<Demo
+  title="Command palette in a dialog"
+  filename="demos/command/palette.tsx"
+  source={paletteSource}
+>
+  <CommandPalette />
+</Demo>
+
+## API
+
+<ApiTable component="command" />
+
+## Design guidance
+
+- Inline: the search row is 36 px tall (`h-9`) with 12 px horizontal padding, a 16 px search icon at
+  50% opacity and a bottom border; the input itself is `h-10`, so the text keeps a 14 px size on one
+  line.
+- The list caps at 300 px (`max-h-[300px]`). The root is `h-full w-full`, so give it a bordered
+  container when it is not filling a dialog — the demo wraps it in a 1 px border with an 8 px radius.
+- Groups use 4 px padding; headings are 12 px medium muted text with 8 px / 6 px padding. Items are
+  14 px with 6 px vertical and 8 px horizontal padding; the selected item takes `bg-accent` and a
+  disabled item drops to 50% opacity.
+- `CommandShortcut` sits at the far right in 12 px with wide letter spacing. It is decorative text,
+  not a key binding.
+- In the dialog variant the content has no padding, the search row and input are 48 px tall, items
+  gain 12 px vertical padding and icons render at 20 px. The close button stays unless you pass
+  `showCloseButton={false}`.
+- Filtering is cmdk's default scoring over each item's text. Pass `shouldFilter={false}` when you
+  filter on the server and render the matching items yourself.
+
+## Accessibility
+
+| Key                   | Behavior                                                           |
+| --------------------- | ------------------------------------------------------------------ |
+| Character keys        | Filter the list; `CommandEmpty` appears when nothing matches.      |
+| Arrow Down / Arrow Up | Moves to the next or previous option.                              |
+| Ctrl+N / Ctrl+P       | Moves down or up, as do Ctrl+J / Ctrl+K (`vimBindings` is on).     |
+| Alt+Arrow Down / Up   | Jumps to the next or previous group.                               |
+| Home / End            | Moves to the first or last option.                                 |
+| Enter                 | Runs the active item's `onSelect`.                                 |
+| Escape                | Closes `CommandDialog`; an inline list has no open state to close. |
+
+The input is a `combobox` with `aria-controls` pointing at the listbox and `aria-activedescendant`
+following the active item; the list is a `role="listbox"` of `role="option"` items, labelled
+"Suggestions" unless you pass `label`, and each group is labelled by its heading.
+`CommandDialog` traps focus and exposes the `title` and `description` props as the dialog's
+accessible name and description.
+
+Known gap: `Command` itself has no open state, so Escape does not dismiss an inline list and focus
+stays in the search field until the user tabs away. Items are exposed as options rather than
+buttons, so any custom click handler belongs on `onSelect` to keep pointer and keyboard behaviour
+identical.
+
+## FAQ
+
+**Is Cmd+K wired up?** No. The wrapper ships no global listener; the template binds Cmd/Ctrl+K in
+its own layout. Add the same `keydown` listener and toggle `CommandDialog`'s `open` — the dialog demo
+controls the same prop from its trigger button.
+
+**How do I filter the data myself?** Pass `shouldFilter={false}` to `Command` and render only the
+matching items. `CommandEmpty` then never renders, because filtering is what drives its count.
+
+**Can I control which item is selected?** Yes. `Command` accepts cmdk's `value` and `onValueChange`;
+without them the component tracks the active option itself.
+
+## Related
+
+- `Dialog` for the surface behind `CommandDialog`.
+- `Dropdown Menu` for a fixed action list without search.
+- `Input` for a plain search field when there is nothing to select.
+- `Empty` when the whole page, not the list, is empty.
+- [Used in the template](https://fish-admin.vercel.app/)

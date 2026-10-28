@@ -1,0 +1,108 @@
+---
+title: Popover
+description: A trigger-anchored panel rendered in a portal, with header helpers and alignment options.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PopoverBasic from '@docs/demos/popover/basic'
+import basicSource from '@docs/demos/popover/basic.tsx?raw'
+import PopoverForm from '@docs/demos/popover/form'
+import formSource from '@docs/demos/popover/form.tsx?raw'
+
+# Popover
+
+`Popover` pairs a trigger with a floating panel that is portalled to the body. The panel accepts a
+small form or filter set, and `PopoverHeader`, `PopoverTitle` and `PopoverDescription` give it a
+consistent header without imposing content.
+
+<ComponentMeta id="popover" />
+
+## When to use
+
+- A small, contextual panel opened from a button: filters, share options or a quick edit form.
+- Controls that would clutter the page until someone asks for them.
+- Information that needs to stay open while the user interacts inside it, unlike a tooltip.
+
+## When not to use
+
+- A list of actions: use `Dropdown Menu`.
+- A blocking task or confirmation: use `Dialog` or `Alert Dialog`.
+- Long or scrollable content: use `Drawer` or `Sheet`.
+- A one-line hint on hover or focus: use `Tooltip`.
+
+## Basic usage
+
+<Demo
+  title="Notification filters in a popover"
+  filename="demos/popover/basic.tsx"
+  source={basicSource}
+>
+  <PopoverBasic />
+</Demo>
+
+## Form inside a popover
+
+<Demo
+  title="Controlled popover aligned to the trigger start"
+  filename="demos/popover/form.tsx"
+  source={formSource}
+>
+  <PopoverForm />
+</Demo>
+
+## API
+
+<ApiTable component="popover" />
+
+## Design guidance
+
+- `PopoverContent` is portalled and defaults to 288 px wide (`w-72`), 16 px padding (`p-4`),
+  `rounded-md`, a 1 px border, `shadow-md` and `z-50`. The docs theme raises it above the sticky nav.
+- `align` defaults to `center`; `sideOffset` defaults to 4 px. Radix flips and shifts the panel to stay
+  in the viewport. The form demo uses `align="start"` so the panel lines up with the trigger's left
+  edge.
+- Open and close animate with a fade and a 95% zoom, plus an 8 px slide from the side the panel opens
+  on (`data-[side=…]:slide-in-from-…-2`).
+- `PopoverHeader` is a 14 px column with a 4 px gap (`gap-1`). `PopoverTitle` is `font-medium` and
+  `PopoverDescription` uses the muted foreground.
+- There is no arrow and no close button; add a Cancel/Save pair inside the panel as the form demo
+  does. Width can be overridden through `className`.
+
+## Accessibility
+
+| Key             | Behavior                                                                |
+| --------------- | ----------------------------------------------------------------------- |
+| Enter / Space   | Opens the panel when the trigger is focused.                            |
+| Tab / Shift+Tab | Moves through the controls inside; the popover is non-modal by default. |
+| Escape          | Closes the panel and returns focus to the trigger.                      |
+
+The Radix trigger exposes `aria-haspopup="dialog"`, `aria-expanded` and `aria-controls`, and the
+content has `role="dialog"`. The default popover is non-modal: focus is not trapped, and tabbing past
+the last control dismisses it. Pass `modal` to the root if you need a focus-trapped panel.
+
+Known gap: `PopoverTitle` renders a plain `<div>` and does not name the dialog. Give
+`PopoverContent` an `aria-label`, or an `aria-labelledby` pointing at the title's `id`; the form demo
+does the latter.
+
+## FAQ
+
+**How do I close the popover after saving?** Control it with `open` and `onOpenChange`, then call
+`setOpen(false)` in the submit handler, as the form demo does.
+
+**Why is my content too narrow?** The panel is fixed at `w-72`; pass a wider `className` to
+`PopoverContent` when the form needs more room.
+
+**Can the popover contain a select or a date picker?** Any focusable content works. Keep the panel
+short and avoid stacking another portalled overlay on top, which is hard to reach on small screens.
+
+**Is there an arrow?** No arrow part is exported, and the content has no arrow styles.
+
+## Related
+
+- `Tooltip` for short hover and focus hints.
+- `Dropdown Menu` for action lists.
+- `Dialog` for blocking tasks.
+- `Hover Card` for rich previews on hover.
+- [Used in the template](https://fish-admin.vercel.app/notifications)

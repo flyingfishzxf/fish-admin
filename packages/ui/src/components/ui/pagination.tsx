@@ -34,6 +34,7 @@ function PaginationItem({ ...props }: React.ComponentProps<'li'>) {
 }
 
 type PaginationLinkProps = {
+  /** Marks the link as the current page via `aria-current="page"`. */
   isActive?: boolean
 } & Pick<React.ComponentProps<typeof Button>, 'size'> &
   React.ComponentProps<'a'>

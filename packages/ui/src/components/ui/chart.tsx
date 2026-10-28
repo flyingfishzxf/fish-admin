@@ -44,8 +44,10 @@ function ChartContainer({
   initialDimension = INITIAL_DIMENSION,
   ...props
 }: React.ComponentProps<'div'> & {
+  /** Series keys, labels and colours turned into the chart's CSS variables. */
   config: ChartConfig
   children: React.ComponentProps<typeof RechartsPrimitive.ResponsiveContainer>['children']
+  /** Size reserved before the container is measured. @default { width: 320, height: 200 } */
   initialDimension?: {
     width: number
     height: number
@@ -121,10 +123,15 @@ function ChartTooltipContent({
   labelKey,
 }: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
   React.ComponentProps<'div'> & {
+    /** Hides the tooltip header. @default false */
     hideLabel?: boolean
+    /** Hides the colour swatch next to each value. @default false */
     hideIndicator?: boolean
+    /** Shape of the series indicator. @default 'dot' */
     indicator?: 'line' | 'dot' | 'dashed'
+    /** Config key used to resolve series labels. */
     nameKey?: string
+    /** Config key used to resolve the tooltip header. */
     labelKey?: string
   } & Omit<
     RechartsPrimitive.DefaultTooltipContentProps<TooltipValueType, TooltipNameType>,
@@ -253,7 +260,9 @@ function ChartLegendContent({
   verticalAlign = 'bottom',
   nameKey,
 }: React.ComponentProps<'div'> & {
+  /** Renders labels without the colour swatch. @default false */
   hideIcon?: boolean
+  /** Config key used to resolve legend labels. */
   nameKey?: string
 } & RechartsPrimitive.DefaultLegendContentProps) {
   const { config } = useChart()

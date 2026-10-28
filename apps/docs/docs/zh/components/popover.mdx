@@ -1,0 +1,97 @@
+---
+title: Popover 气泡卡片
+description: 从触发器锚定、通过 Portal 渲染的面板，带标题辅助组件与对齐选项。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PopoverBasic from '@docs/demos/popover/basic'
+import basicSource from '@docs/demos/popover/basic.tsx?raw'
+import PopoverForm from '@docs/demos/popover/form'
+import formSource from '@docs/demos/popover/form.tsx?raw'
+
+# Popover 气泡卡片
+
+`Popover` 把触发器与一个渲染到 body 的浮层面板配对。面板可以放一个小表单或筛选器，
+`PopoverHeader`、`PopoverTitle` 与 `PopoverDescription` 提供一致的头部，而不限制内部内容。
+
+<ComponentMeta id="popover" />
+
+## 何时使用
+
+- 从按钮打开的小型上下文面板：筛选、分享选项或快速编辑表单。
+- 平时会干扰页面、只在用户主动需要时才出现的控件。
+- 内容需要在用户与之交互时保持打开，而不是像 Tooltip 那样一闪而过。
+
+## 何时不使用
+
+- 操作列表：使用 `Dropdown Menu`。
+- 阻塞式任务或确认：使用 `Dialog` 或 `Alert Dialog`。
+- 较长或需要滚动的面板：使用 `Drawer` 或 `Sheet`。
+- 悬停或聚焦时的一行提示：使用 `Tooltip`。
+
+## 基础用法
+
+<Demo title="气泡中的通知筛选器" filename="demos/popover/basic.tsx" source={basicSource}>
+  <PopoverBasic />
+</Demo>
+
+## 气泡内的表单
+
+<Demo title="与触发器起始边对齐的受控气泡" filename="demos/popover/form.tsx" source={formSource}>
+  <PopoverForm />
+</Demo>
+
+## API
+
+<ApiTable component="popover" />
+
+## 设计指引
+
+- `PopoverContent` 通过 Portal 渲染，默认宽 288 px（`w-72`）、内边距 16 px（`p-4`），使用
+  `rounded-md`、1 px 边框、`shadow-md` 与 `z-50`。文档主题会把它抬到吸顶导航之上。
+- `align` 默认是 `center`，`sideOffset` 默认是 4 px。Radix 会自动翻转与平移，让面板留在视口
+  内。表单示例使用 `align="start"`，让面板与触发器左边缘对齐。
+- 打开与关闭都带淡入淡出和 95% 缩放的动画，并从面板展开的一侧滑动 8 px
+  （`data-[side=…]:slide-in-from-…-2`）。
+- `PopoverHeader` 是 14 px 文字、4 px 间距（`gap-1`）的纵向布局。`PopoverTitle` 为
+  `font-medium`，`PopoverDescription` 使用弱化前景色。
+- 组件没有箭头，也没有关闭按钮；像表单示例那样在面板内放取消与保存按钮。宽度可以通过
+  `className` 覆盖。
+
+## 无障碍
+
+| 按键            | 行为                                                   |
+| --------------- | ------------------------------------------------------ |
+| Enter / Space   | 触发器聚焦时打开面板。                                 |
+| Tab / Shift+Tab | 在面板内的控件间移动；默认是非模态气泡，焦点不被困住。 |
+| Escape          | 关闭面板并把焦点还给触发器。                           |
+
+Radix 触发器暴露 `aria-haspopup="dialog"`、`aria-expanded` 与 `aria-controls`，内容带有
+`role="dialog"`。默认气泡是非模态的：不锁定焦点，Tab 离开最后一个控件后会将其关闭。如果需要
+锁定焦点的面板，请给根节点传入 `modal`。
+
+已知缺口：`PopoverTitle` 渲染的是普通 `<div>`，不会为对话框提供名称。请给 `PopoverContent`
+传入 `aria-label`，或用 `aria-labelledby` 指向标题的 `id`；表单示例采用了后者。
+
+## FAQ
+
+**保存后如何关闭气泡？** 用 `open` 与 `onOpenChange` 受控，然后在提交处理里调用
+`setOpen(false)`，表单示例即如此。
+
+**为什么内容太窄？** 面板固定为 `w-72`；表单需要更宽时，给 `PopoverContent` 传入更宽的
+`className`。
+
+**气泡里可以放选择器或日期选择器吗？** 任何可聚焦内容都可以。请保持面板简短，避免再叠加一层
+Portal 浮层，在小屏上会很难操作。
+
+**有箭头吗？** 没有导出箭头部件，内容也没有箭头样式。
+
+## 相关
+
+- `Tooltip`：简短的悬停与聚焦提示。
+- `Dropdown Menu`：操作列表。
+- `Dialog`：阻塞式任务。
+- `Hover Card`：悬停时展示富内容预览。
+- [在模板中的用法](https://fish-admin.vercel.app/notifications)

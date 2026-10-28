@@ -1,0 +1,110 @@
+---
+title: Accordion
+description: Stack expandable panels under always-visible headers, one at a time or several at once.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AccordionBasic from '@docs/demos/accordion/basic'
+import basicSource from '@docs/demos/accordion/basic.tsx?raw'
+import AccordionControlled from '@docs/demos/accordion/controlled'
+import controlledSource from '@docs/demos/accordion/controlled.tsx?raw'
+
+# Accordion
+
+`Accordion` stacks headers that expand in place to reveal their panels. It wraps Radix Accordion, so
+single or multiple selection and the `aria-expanded` wiring come from the primitive; the wrapper adds
+the divider, 16 px trigger padding and a rotating chevron.
+
+<ComponentMeta id="accordion" />
+
+## When to use
+
+- Answering a set of FAQs or policy clauses where readers scan headings first.
+- Hiding optional detail so a settings or pricing page stays short until it is needed.
+- Grouping three or more related sections that are read one at a time.
+
+## When not to use
+
+- Panels that must stay visible while switching: use `Tabs`.
+- One independent disclosure block: use `Collapsible`.
+- Content that should always be on screen: use `Card` with a heading.
+- Ordered progress through steps: use `Stepper`.
+
+## Basic usage
+
+<Demo
+  title="FAQ accordion with one open panel"
+  filename="demos/accordion/basic.tsx"
+  source={basicSource}
+>
+  <AccordionBasic />
+</Demo>
+
+## Controlled panels
+
+`type="multiple"` accepts a `string[]` value, so `onValueChange` hands back the next array of open
+items. Keeping that array in state lets a button outside the list collapse every panel at once.
+
+<Demo
+  title="Multiple panels held in state"
+  filename="demos/accordion/controlled.tsx"
+  source={controlledSource}
+>
+  <AccordionControlled />
+</Demo>
+
+## API
+
+<ApiTable component="accordion" />
+
+## Design guidance
+
+- Trigger rows are `py-4` (16 px top and bottom) around 14 px text, roughly 52 px tall; `gap-4`
+  keeps the chevron clear of long labels.
+- Items are separated by a bottom border and the last one drops it (`last:border-b-0`). No radius,
+  background or outer padding is built in, so the demo adds a 1 px `var(--border)` frame, an 8 px
+  radius and 16 px horizontal padding itself.
+- The chevron is fixed at 16 px (`size-4`) and rotates 180° over 200 ms when a panel opens; there is
+  no prop to replace it.
+- Panel text is `text-sm` with `pt-0 pb-4`: it sits directly under the trigger and leaves 16 px
+  before the next divider. Opening and closing animate through the theme's `accordion-down` /
+  `accordion-up` keyframes.
+- Open state is exposed as `data-state="open"`; a disabled trigger drops to 50% opacity and stops
+  receiving pointer events.
+
+## Accessibility
+
+| Key             | Behavior                                             |
+| --------------- | ---------------------------------------------------- |
+| Enter / Space   | Toggles the focused header.                          |
+| Arrow Down / Up | Moves focus to the next or previous header.          |
+| Home / End      | Jumps to the first or last header.                   |
+| Tab             | Leaves the header row and moves into the open panel. |
+
+Each trigger is a native button inside a Radix-generated header exposing `aria-expanded` (and
+`aria-controls` pointing at the panel while it is open); closed panels leave the accessibility tree.
+A `disabled` trigger is skipped.
+
+Known gap: `AccordionTrigger` exposes no prop for the heading element or the chevron, so the heading
+level Radix chooses (`h3` by default) cannot be matched to a page outline that skips `h2`, and the
+chevron is decorative rather than customisable.
+
+## FAQ
+
+**Can several panels be open at once?** Yes: use `type="multiple"` and a `string[]` value, as in the
+second demo; `type="single"` allows only one.
+
+**Can the last open panel be closed?** With `type="single"` add `collapsible`; without it one panel
+always stays open.
+
+**How do I style the open state?** The trigger and content carry `data-state="open" | "closed"`, so
+CSS or a `className` can target them; there is no `openClassName` prop.
+
+## Related
+
+- `Collapsible` for a single disclosure block.
+- `Tabs` for peers where one panel must stay visible.
+- `Card` for content that is always expanded.
+- [Used in the template](https://fish-admin.vercel.app/projects/$id)

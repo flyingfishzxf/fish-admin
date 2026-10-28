@@ -1,0 +1,28 @@
+[
+  {
+    "id": "accordion/basic",
+    "component": "accordion",
+    "file": "demos/accordion/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A single-open FAQ accordion with billing, data residency and SSO questions.",
+      "zh": "单项展开的常见问题折叠面板，包含计费、数据存放与 SSO 三个问题。"
+    }
+  },
+  {
+    "id": "accordion/controlled",
+    "component": "accordion",
+    "file": "demos/accordion/controlled.tsx",
+    "title": {
+      "en": "Controlled with multiple open panels",
+      "zh": "受控与多项展开"
+    },
+    "description": {
+      "en": "A controlled multiple accordion that reports how many panels are open and can collapse them all.",
+      "zh": "受控的多项展开折叠面板，显示已展开数量并可一键全部收起。"
+    }
+  }
+]

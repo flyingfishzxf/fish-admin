@@ -1,0 +1,104 @@
+---
+title: Toggle 切换按钮
+description: 用于文字格式与视图选项的两态按钮，按下后保持选中。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ToggleBasic from '@docs/demos/toggle/basic'
+import basicSource from '@docs/demos/toggle/basic.tsx?raw'
+import ToggleVariants from '@docs/demos/toggle/variants'
+import variantsSource from '@docs/demos/toggle/variants.tsx?raw'
+
+# Toggle 切换按钮
+
+`Toggle` 是一个会保持按下状态的按钮，状态通过 `aria-pressed` 暴露，按下时使用强调色绘制。它提供
+两种变体与三种尺寸，并把内部图标统一为 16 px。
+
+<ComponentMeta id="toggle" />
+
+## 何时使用
+
+- 文本工具栏里的格式按钮，加粗或斜体在再次按下前一直生效。
+- 立即生效的视图选项，例如“显示已归档”。
+- 需要体现按下状态的紧凑图标按钮，例如固定报表。
+
+## 何时不使用
+
+- 表单里需要保存的设置：使用 `Switch` 或 `Checkbox`，它们才是表单控件。
+- 从多个选项中挑选一个：使用 `Toggle Group`（若随表单提交，则用 `Radio Group`）。
+- 不会保持按下的一次性操作：使用 `Button`。
+
+## 基础用法
+
+<Demo title="带动实时预览的格式工具栏" filename="demos/toggle/basic.tsx" source={basicSource}>
+  <ToggleBasic />
+</Demo>
+
+示例把三个布尔值放在状态里，并传入 `pressed` 与 `onPressedChange`；工具栏下方的预览读取同一份
+状态，因此按下样式与渲染结果始终一致。
+
+## 变体、尺寸与禁用
+
+<Demo title="三种尺寸的描边与默认变体" filename="demos/toggle/variants.tsx" source={variantsSource}>
+  <ToggleVariants />
+</Demo>
+
+`variant="outline"` 会增加描边与轻微阴影；默认变体在按下前是透明的。`size` 可选 `sm`、
+`default` 与 `lg`。
+
+## API
+
+<ApiTable component="toggle" />
+
+## 设计指引
+
+- 默认高度 36 px（`h-9`），`size="sm"` 为 32 px（`h-8`），`size="lg"` 为 40 px（`h-10`）；配套的
+  `min-w-*` 防止方形图标按钮被压缩。
+- 水平内边距随尺寸为 8 px（`px-2`）、6 px（`px-1.5`）与 10 px（`px-2.5`）；圆角 6 px
+  （`rounded-md`），文字 14 px 中等字重（`text-sm font-medium`）。
+- 只有两种变体：默认是 `bg-transparent`，描边变体增加 `border-input` 与 `shadow-xs`。纯图标按钮
+  建议使用描边变体，否则未按下时没有任何边界可循。
+- 按下状态的填充使用 `--accent`，图标与文字使用 `--accent-foreground`；悬停使用 `--muted`。图标
+  按钮依赖颜色与按下属性，别把它放进没有空间显示强调色的布局。
+- 图标会被统一为 16 px（`size-4`），除非它本身带有 `size-*` 类；图标与文字的间距为 8 px
+  （`gap-2`）。
+- 禁用时按钮保留占位，降到 50% 不透明度，并不再响应指针事件。
+
+## 无障碍
+
+| 按键  | 行为             |
+| ----- | ---------------- |
+| Tab   | 聚焦下一个按钮。 |
+| Space | 切换当前按钮。   |
+| Enter | 切换当前按钮。   |
+
+根节点是原生 `<button type="button">`，由 Radix 附带 `aria-pressed` 与 `data-state="on|off"`，
+因此状态无需依赖强调色也能被朗读。因为它是真正的按钮，浏览器默认的键盘激活与焦点顺序都适用；每个
+切换按钮都是独立的 Tab 停靠点。按钮内的文字提供名称——纯图标按钮必须传 `aria-label`，两个示例
+都这样做了。禁用的按钮会退出 Tab 顺序，并被朗读为不可用。
+
+已知缺口：组件自身不渲染标签、工具提示或文字，也不是表单控件——表单不会提交任何值，按下状态需要
+你自行持久化。
+
+## FAQ
+
+**`Toggle` 与 `Switch` 有什么区别？** 切换按钮是带 `aria-pressed` 的按钮，适合加粗这类临时状态；
+`Switch` 是带 `role="switch"` 与 `aria-checked` 的表单控件，适合立即保存的设置。
+
+**为什么未按下的切换按钮看不见？** 默认变体是 `bg-transparent` 且没有描边。改用
+`variant="outline"`，或给它文字标签，让文字承担可点击的提示。
+
+**为什么我的 24 px 图标变小了？** 基础样式会把没有 `size-*` 类的 `<svg>` 统一为 16 px。加上
+`className="size-5"`（或其他尺寸类）即可保留自己的尺寸。
+
+**按下状态能随表单提交吗？** 不能，根节点是普通按钮。请把状态同步到隐藏输入框，或保存在自己的
+store 里。
+
+## 相关
+
+- `Toggle Group`：把多个切换按钮组合成可用方向键导航的控件。
+- `Button`：不会保持按下的操作。
+- `Switch`：作为表单值保存的设置。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

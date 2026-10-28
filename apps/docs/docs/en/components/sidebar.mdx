@@ -1,0 +1,122 @@
+---
+title: Sidebar
+description: A full application navigation rail with three collapse modes, a mobile sheet, menu primitives and a keyboard toggle.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SidebarBasic from '@docs/demos/sidebar/basic'
+import basicSource from '@docs/demos/sidebar/basic.tsx?raw'
+import SidebarNested from '@docs/demos/sidebar/nested-menu'
+import nestedSource from '@docs/demos/sidebar/nested-menu.tsx?raw'
+
+# Sidebar
+
+`Sidebar` is the template's application rail: `SidebarProvider` owns the open state, tooltips and the
+mobile sheet; `Sidebar` renders the panel; header, content, group and menu primitives compose the
+navigation. With the default collapse modes the same tree becomes an 18 rem sheet below 768 px.
+
+<ComponentMeta id="sidebar" />
+
+## When to use
+
+- Primary navigation for a workspace, console or admin area.
+- A persistent rail that can shrink to icons on desktop while keeping every destination reachable.
+- Navigation that should close into a sheet on small screens without a second component tree.
+
+## When not to use
+
+- A short menu inside a header or card: use `Dropdown Menu` or `Tabs`.
+- Page-level filters: use `Segmented`, `Select` or `Checkbox`.
+- Temporary panels that are not navigation: use `Sheet` or `Drawer`.
+
+## Basic usage
+
+<Demo
+  title="Workspace rail with a collapse trigger"
+  filename="demos/sidebar/basic.tsx"
+  source={basicSource}
+>
+  <SidebarBasic />
+</Demo>
+
+The demo is fenced into a 320 px frame with `transform: translateZ(0)`: desktop collapse modes mount a
+`position: fixed` container, so the frame has to become its containing block. Inside a real shell the
+provider sits at the top of the page instead.
+
+## Nested menu and collapsible group
+
+`SidebarGroupAction` toggles a group, `SidebarMenuAction` opens a submenu and `SidebarMenuBadge` shows a
+count.
+
+<Demo
+  title="Group toggle, Projects submenu and a badge"
+  filename="demos/sidebar/nested-menu.tsx"
+  source={nestedSource}
+>
+  <SidebarNested />
+</Demo>
+
+## API
+
+<ApiTable component="sidebar" />
+
+## Design guidance
+
+- Widths come from provider CSS variables: `--sidebar-width` is 16 rem and `--sidebar-width-icon` is
+  3 rem; the mobile sheet uses 18 rem. Both demos override the width to 13 rem / 14 rem through
+  `style`, as the template shell does.
+- `collapsible="offcanvas"` (default) slides the panel away, `"icon"` keeps the 3 rem rail and
+  `"none"` renders a static `w-(--sidebar-width)` column — the nested demo uses `"none"` so it stays
+  inside the frame.
+- `variant` changes the chrome: `sidebar` draws a border on the inner edge, `floating` adds 8 px
+  padding, a rounded border and `shadow-sm`, and `inset` also lifts `SidebarInset` with `m-2`,
+  `rounded-xl` and `shadow-sm` from the `md` breakpoint.
+- Width and left/right offsets animate over 200 ms `ease-linear`. Group labels collapse with `-mt-8`
+  and `opacity-0`; menu badges are 20 px tall with `min-w-5`.
+- `SidebarMenuButton` is 32 px tall at `default`, 28 px at `sm` and 48 px at `lg`; icons are 16 px and
+  keep the collapsed rail at 32 × 32 px. `isActive` paints `bg-sidebar-accent` with medium weight.
+- `SidebarProvider` writes the `sidebar_state` cookie for 7 days and binds Ctrl/Cmd+B. Both are skipped
+  with `embedded`, which is what the docs previews use.
+- The desktop shell is `hidden md:block`; `useIsMobile` (< 768 px) switches `Sidebar` to the 18 rem
+  sheet instead, so the rail is a desktop-only surface in these previews.
+
+## Accessibility
+
+| Key                    | Behavior                                                               |
+| ---------------------- | ---------------------------------------------------------------------- |
+| Tab / Shift+Tab        | Reaches the trigger, menu buttons, group actions and submenu links.    |
+| Enter / Space          | Activates the focused button or link.                                  |
+| Ctrl / Cmd + B         | Toggles the sidebar unless the provider is `embedded`.                 |
+| Click on the rail edge | Toggles the sidebar; the rail is not in the Tab order (`tabIndex` -1). |
+| Hover or focus an icon | Shows the menu button tooltip while collapsed on desktop.              |
+
+`SidebarTrigger` is a ghost icon button labelled by a visually hidden "Toggle sidebar" string from
+`UIProvider`; the rail carries the same label plus a `title`. On mobile the panel becomes a sheet with
+a visually hidden title and description. Collapsed labels stay in the DOM, so menu names survive for
+screen readers even when only icons are painted.
+
+Known gaps: the trigger exposes no `aria-expanded` or `aria-controls`, and an active menu button only
+sets `data-active` without `aria-current="page"`. Add both yourself when the rail is the only
+navigation on the page.
+
+## FAQ
+
+**Why does Ctrl/Cmd+B do nothing in these demos?** The providers pass `embedded`, which skips both the
+shortcut and the state cookie so a preview cannot change the docs shell.
+
+**Can the buttons be router links?** Yes — `asChild` with `isActive`, as the template's `AppSidebar`
+does with TanStack Router `Link`. `SidebarMenuSubButton` supports the same pattern.
+
+**Why does the sidebar cover the page when I drop it into a card?** Every desktop collapse mode except
+`"none"` renders a `fixed inset-y-0` container sized to the viewport; either mount it in a real shell,
+give an ancestor a containing block as this demo does, or use `collapsible="none"`.
+
+## Related
+
+- `Sheet` for the mobile panel `Sidebar` renders internally.
+- `Tooltip` for the collapsed icon labels.
+- `Dropdown Menu` for account and workspace switchers in the header or footer.
+- `Tabs` for switching content inside the inset area.
+- [Used in the template](https://fish-admin.vercel.app/)

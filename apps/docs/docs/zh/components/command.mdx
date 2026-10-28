@@ -1,0 +1,105 @@
+---
+title: Command 命令菜单
+description: 在内联列表或对话框命令面板中搜索并执行命令，支持分组、快捷键提示与空状态。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CommandBasic from '@docs/demos/command/basic'
+import basicSource from '@docs/demos/command/basic.tsx?raw'
+import CommandPalette from '@docs/demos/command/palette'
+import paletteSource from '@docs/demos/command/palette.tsx?raw'
+
+# Command 命令菜单
+
+`Command` 封装 cmdk，提供输入框、列表、空状态、分组、条目、分隔线与快捷键提示等部件，并用
+`CommandDialog` 把同一套列表放进对话框。输入即过滤，方向键移动当前选项。
+
+<ComponentMeta id="command" />
+
+## 何时使用
+
+- 全局命令面板：用一个输入框搜索项目、页面与操作。
+- 内联操作搜索：输入比在长菜单里逐个查找更快。
+- 按区域分组、带快捷键提示，且希望只有少数条目命中搜索词。
+
+## 何时不使用
+
+- 只有五个以内的固定链接：使用 `Dropdown Menu` 或普通链接。
+- 为表单字段选择值：使用 `Select` 或 `Radio Group`。
+- 需要列、排序或分页的结果：使用 `Table`。
+- 单次破坏性确认：使用 `Alert Dialog`。
+
+## 基础用法
+
+<Demo title="内联命令菜单" filename="demos/command/basic.tsx" source={basicSource}>
+  <CommandBasic />
+</Demo>
+
+## 对话框中的分组命令
+
+`CommandDialog` 接受 Dialog 的属性，因此 `open` 与 `onOpenChange` 由你控制。它把 `title` 与
+`description` 渲染在仅读屏可见的头部，去掉对话框内边距，并让搜索行高 48 px。
+
+<Demo title="对话框中的命令面板" filename="demos/command/palette.tsx" source={paletteSource}>
+  <CommandPalette />
+</Demo>
+
+## API
+
+<ApiTable component="command" />
+
+## 设计指引
+
+- 内联形态：搜索行高 36 px（`h-9`），左右内边距 12 px，带 50% 不透明度的 16 px 搜索图标和
+  下边框；内部输入框为 `h-10`，文字保持 14 px 单行显示。
+- 列表最高 300 px（`max-h-[300px]`）。根节点为 `h-full w-full`，所以不放在对话框里时请给它一个
+  带描边的容器——示例使用 1 px 描边与 8 px 圆角。
+- 分组内边距 4 px；标题是 12 px 中等字重的弱化文字，内边距 8 px / 6 px。条目字号 14 px，上下
+  内边距 6 px、左右 8 px；选中项使用 `bg-accent`，禁用项降到 50% 不透明度。
+- `CommandShortcut` 靠右显示，字号 12 px、字距加宽。它只是装饰文本，不是真实的按键绑定。
+- 对话框形态下内容无内边距，搜索行与输入框高 48 px，条目上下内边距增至 12 px，图标为 20 px；
+  除非传入 `showCloseButton={false}`，右上角会保留关闭按钮。
+- 过滤使用 cmdk 对条目文本的默认评分。若在服务端过滤并自行渲染命中项，请传
+  `shouldFilter={false}`。
+
+## 无障碍
+
+| 按键            | 行为                                                                  |
+| --------------- | --------------------------------------------------------------------- |
+| 字符键          | 过滤列表；无匹配时显示 `CommandEmpty`。                               |
+| ↓ / ↑           | 移动到下一个或上一个选项。                                            |
+| Ctrl+N / Ctrl+P | 向下 / 向上移动，Ctrl+J / Ctrl+K 同样有效（`vimBindings` 默认开启）。 |
+| Alt+↓ / Alt+↑   | 跳到下一个或上一个分组。                                              |
+| Home / End      | 移动到第一个或最后一个选项。                                          |
+| Enter           | 执行当前条目的 `onSelect`。                                           |
+| Escape          | 关闭 `CommandDialog`；内联列表没有可关闭的打开状态。                  |
+
+输入框是 `combobox`，`aria-controls` 指向列表，`aria-activedescendant` 跟随当前条目；列表是
+由 `role="option"` 条目组成的 `role="listbox"`，默认名称为 “Suggestions”，可用 `label` 覆盖；
+每个分组由自己的标题命名。`CommandDialog` 会锁定焦点，并把 `title`、`description` 暴露为对话框
+的无障碍名称与描述。
+
+已知缺口：`Command` 自身没有打开状态，因此 Escape 不会收起内联列表，焦点会留在搜索框内直到用户
+Tab 离开。条目对外是 option 而不是 button，自定义点击逻辑应放在 `onSelect` 上，才能让鼠标与键盘
+行为保持一致。
+
+## FAQ
+
+**Cmd+K 是内置的吗？** 不是。封装不包含全局监听；模板在自己的布局里绑定了 Cmd/Ctrl+K。你需要
+自行监听 `keydown` 并切换 `CommandDialog` 的 `open`——对话框示例就是通过触发按钮控制同一个属性。
+
+**可以自己过滤数据吗？** 可以。给 `Command` 传 `shouldFilter={false}`，只渲染命中项。此时
+`CommandEmpty` 不会出现，因为它的显示取决于过滤后的计数。
+
+**可以控制当前选中项吗？** 可以。`Command` 接受 cmdk 的 `value` 与 `onValueChange`；不传时组件
+自行维护当前选项。
+
+## 相关
+
+- `Dialog`：`CommandDialog` 背后的对话框层。
+- `Dropdown Menu`：无需搜索的固定操作列表。
+- `Input`：没有可选项、只想搜索时使用。
+- `Empty`：整页为空而不是列表为空时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/)

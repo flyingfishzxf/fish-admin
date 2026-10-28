@@ -37,6 +37,7 @@ function ContextMenuSubTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
+  /** Indent the trigger to line up with a menu that renders icons. */
   inset?: boolean
 }) {
   return (
@@ -95,7 +96,9 @@ function ContextMenuItem({
   variant = 'default',
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
+  /** Indent the item to line up with a menu that renders icons. */
   inset?: boolean
+  /** `destructive` colours the text and icon for irreversible actions. @default 'default' */
   variant?: 'default' | 'destructive'
 }) {
   return (
@@ -167,6 +170,7 @@ function ContextMenuLabel({
   inset,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Label> & {
+  /** Indent the label to line up with a menu that renders icons. */
   inset?: boolean
 }) {
   return (

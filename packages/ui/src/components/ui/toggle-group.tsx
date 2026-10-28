@@ -26,6 +26,7 @@ function ToggleGroup({
   ...props
 }: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
   VariantProps<typeof toggleVariants> & {
+    /** Gap between items in spacing units; 0 joins them into one control. @default 0 */
     spacing?: number
   }) {
   return (

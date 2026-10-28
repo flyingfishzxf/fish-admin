@@ -1,5 +1,31 @@
 [
   {
+    "id": "accordion/basic",
+    "component": "accordion",
+    "file": "demos/accordion/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A single-open FAQ accordion with billing, data residency and SSO questions.",
+      "zh": "单项展开的常见问题折叠面板，包含计费、数据存放与 SSO 三个问题。"
+    }
+  },
+  {
+    "id": "accordion/controlled",
+    "component": "accordion",
+    "file": "demos/accordion/controlled.tsx",
+    "title": {
+      "en": "Controlled with multiple open panels",
+      "zh": "受控与多项展开"
+    },
+    "description": {
+      "en": "A controlled multiple accordion that reports how many panels are open and can collapse them all.",
+      "zh": "受控的多项展开折叠面板，显示已展开数量并可一键全部收起。"
+    }
+  },
+  {
     "id": "alert-dialog/basic",
     "component": "alert-dialog",
     "file": "demos/alert-dialog/basic.tsx",
@@ -104,6 +130,32 @@
     }
   },
   {
+    "id": "breadcrumb/basic",
+    "component": "breadcrumb",
+    "file": "demos/breadcrumb/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Workspace, Members and the current member profile, separated by chevrons.",
+      "zh": "工作区、成员与当前成员资料三级路径，用箭头分隔。"
+    }
+  },
+  {
+    "id": "breadcrumb/overflow",
+    "component": "breadcrumb",
+    "file": "demos/breadcrumb/overflow.tsx",
+    "title": {
+      "en": "Ellipsis and a dropdown",
+      "zh": "省略号与下拉菜单"
+    },
+    "description": {
+      "en": "A collapsed middle segment that opens a menu of hidden folders.",
+      "zh": "收起的中间层级，点击后弹出隐藏文件夹菜单。"
+    }
+  },
+  {
     "id": "button/basic",
     "component": "button",
     "file": "demos/button/basic.tsx",
@@ -143,6 +195,32 @@
     }
   },
   {
+    "id": "calendar/basic",
+    "component": "calendar",
+    "file": "demos/calendar/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Single-date selection used to schedule the next access review.",
+      "zh": "单选日期，用于安排下一次权限复核。"
+    }
+  },
+  {
+    "id": "calendar/range",
+    "component": "calendar",
+    "file": "demos/calendar/range.tsx",
+    "title": {
+      "en": "Range selection",
+      "zh": "区间选择"
+    },
+    "description": {
+      "en": "A maintenance window picked from a start and end date, with a night count and a clear action.",
+      "zh": "通过起止日期选择维护窗口，显示间隔天数并可清空。"
+    }
+  },
+  {
     "id": "card/basic",
     "component": "card",
     "file": "demos/card/basic.tsx",
@@ -169,6 +247,32 @@
     }
   },
   {
+    "id": "chart/area-legend",
+    "component": "chart",
+    "file": "demos/chart/area-legend.tsx",
+    "title": {
+      "en": "Area chart with a legend",
+      "zh": "面积图与图例"
+    },
+    "description": {
+      "en": "Two area series sharing one axis, a chart legend and a line tooltip indicator.",
+      "zh": "两条面积序列共用坐标轴，带图例与线性提示标记。"
+    }
+  },
+  {
+    "id": "chart/basic",
+    "component": "chart",
+    "file": "demos/chart/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Monthly revenue as bars with a themed tooltip and dashed grid.",
+      "zh": "按月收入柱状图，带主题化提示框与虚线网格。"
+    }
+  },
+  {
     "id": "checkbox/basic",
     "component": "checkbox",
     "file": "demos/checkbox/basic.tsx",
@@ -192,6 +296,110 @@
     "description": {
       "en": "Three notification options stored as one controlled array of values.",
       "zh": "三个通知选项，值保存在一个受控数组中。"
+    }
+  },
+  {
+    "id": "collapsible/basic",
+    "component": "collapsible",
+    "file": "demos/collapsible/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Advanced retention settings revealed by a full-width outline trigger.",
+      "zh": "整行宽度的描边触发器，展开高级保留策略设置。"
+    }
+  },
+  {
+    "id": "collapsible/chevron",
+    "component": "collapsible",
+    "file": "demos/collapsible/chevron.tsx",
+    "title": {
+      "en": "Controlled with a rotating chevron",
+      "zh": "受控与旋转箭头"
+    },
+    "description": {
+      "en": "A controlled export-details panel whose chevron rotates with the open state.",
+      "zh": "受控的导出详情面板，箭头随展开状态旋转。"
+    }
+  },
+  {
+    "id": "color-picker/basic",
+    "component": "color-picker",
+    "file": "demos/color-picker/basic.tsx",
+    "title": {
+      "en": "Brand color picker",
+      "zh": "品牌色选择器"
+    },
+    "description": {
+      "en": "A controlled picker with a live preview swatch and a hex readout beneath it.",
+      "zh": "受控的取色器，右侧实时预览色块，下方显示十六进制值。"
+    }
+  },
+  {
+    "id": "color-picker/presets",
+    "component": "color-picker",
+    "file": "demos/color-picker/presets.tsx",
+    "title": {
+      "en": "Custom presets and a disabled picker",
+      "zh": "自定义预设与禁用状态"
+    },
+    "description": {
+      "en": "A five-swatch preset palette for a surface tint, plus a locked workspace color.",
+      "zh": "五个预设色的表面色调选择器，以及一个锁定的工作区颜色。"
+    }
+  },
+  {
+    "id": "command/basic",
+    "component": "command",
+    "file": "demos/command/basic.tsx",
+    "title": {
+      "en": "Inline command menu",
+      "zh": "内联命令菜单"
+    },
+    "description": {
+      "en": "A searchable list of grouped commands with shortcut hints and an empty state.",
+      "zh": "可搜索的分组命令列表，带快捷键提示与空状态。"
+    }
+  },
+  {
+    "id": "command/palette",
+    "component": "command",
+    "file": "demos/command/palette.tsx",
+    "title": {
+      "en": "Command palette in a dialog",
+      "zh": "对话框中的命令面板"
+    },
+    "description": {
+      "en": "A controlled CommandDialog opened from a button, with project and action groups.",
+      "zh": "由按钮打开的受控 CommandDialog，包含项目与操作分组。"
+    }
+  },
+  {
+    "id": "context-menu/basic",
+    "component": "context-menu",
+    "file": "demos/context-menu/basic.tsx",
+    "title": {
+      "en": "Right-click actions",
+      "zh": "右键操作"
+    },
+    "description": {
+      "en": "A project card whose menu opens on right-click, with a label, shortcuts and a separator.",
+      "zh": "在项目卡片上右键打开菜单，包含标题、快捷键与分隔线。"
+    }
+  },
+  {
+    "id": "context-menu/file-actions",
+    "component": "context-menu",
+    "file": "demos/context-menu/file-actions.tsx",
+    "title": {
+      "en": "File actions with a submenu",
+      "zh": "带子菜单的文件操作"
+    },
+    "description": {
+      "en": "File rows with a Move to submenu, a pin toggle and a disabled Delete item.",
+      "zh": "文件行的「移动到」子菜单、置顶勾选项，以及禁用的删除项。"
     }
   },
   {
@@ -299,6 +507,32 @@
     }
   },
   {
+    "id": "empty/basic",
+    "component": "empty",
+    "file": "demos/empty/basic.tsx",
+    "title": {
+      "en": "Empty state with actions",
+      "zh": "带操作的空状态"
+    },
+    "description": {
+      "en": "An outlined empty state with an icon tile, a title, a description and two actions.",
+      "zh": "带虚线描边的空状态，包含图标块、标题、描述与两个操作按钮。"
+    }
+  },
+  {
+    "id": "empty/compact",
+    "component": "empty",
+    "file": "demos/empty/compact.tsx",
+    "title": {
+      "en": "Compact empty inside a panel",
+      "zh": "面板内的紧凑空状态"
+    },
+    "description": {
+      "en": "A filtered activity list that falls back to a smaller empty state with a Clear filter action.",
+      "zh": "带筛选的活动列表，无匹配时显示更紧凑的空状态与「清除筛选」操作。"
+    }
+  },
+  {
     "id": "form/basic",
     "component": "form",
     "file": "demos/form/basic.tsx",
@@ -322,6 +556,84 @@
     "description": {
       "en": "A select and a checkbox wired into the same form, with a submitted summary.",
       "zh": "把选择器与复选框接入同一个表单，并在提交后显示结果摘要。"
+    }
+  },
+  {
+    "id": "hover-card/basic",
+    "component": "hover-card",
+    "file": "demos/hover-card/basic.tsx",
+    "title": {
+      "en": "Mention preview",
+      "zh": "提及预览"
+    },
+    "description": {
+      "en": "A comment with an @ada mention that previews the author on hover or focus.",
+      "zh": "评论中的 @ada 提及，悬停或聚焦时预览作者信息。"
+    }
+  },
+  {
+    "id": "hover-card/profile",
+    "component": "hover-card",
+    "file": "demos/hover-card/profile.tsx",
+    "title": {
+      "en": "Rich profile preview",
+      "zh": "完整的个人资料预览"
+    },
+    "description": {
+      "en": "A wider card with avatar, status, bio and three meta rows, opened after a 200 ms delay.",
+      "zh": "更宽的资料卡，包含头像、状态、简介与三项信息，延迟 200 ms 打开。"
+    }
+  },
+  {
+    "id": "input-number/basic",
+    "component": "input-number",
+    "file": "demos/input-number/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled seat count bounded to 1–50, with a live credit summary.",
+      "zh": "受控的席位数，限制在 1–50，并实时显示积分用量。"
+    }
+  },
+  {
+    "id": "input-number/bounded",
+    "component": "input-number",
+    "file": "demos/input-number/bounded.tsx",
+    "title": {
+      "en": "Steps, precision and bounds",
+      "zh": "步进、精度与边界"
+    },
+    "description": {
+      "en": "Two fields with different step and precision settings, plus a combined price.",
+      "zh": "两个字段使用不同的步进与精度，并合计出价格。"
+    }
+  },
+  {
+    "id": "input-otp/basic",
+    "component": "input-otp",
+    "file": "demos/input-otp/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled six-digit code with a live completion hint.",
+      "zh": "受控的六位验证码，并实时显示输入进度。"
+    }
+  },
+  {
+    "id": "input-otp/resend",
+    "component": "input-otp",
+    "file": "demos/input-otp/resend.tsx",
+    "title": {
+      "en": "Verification with resend",
+      "zh": "验证与重新发送"
+    },
+    "description": {
+      "en": "Six slots split 3 + 3 by a separator, an onComplete confirmation and a resend action.",
+      "zh": "六个槽位由分隔符分成 3 + 3，带 onComplete 确认与重新发送操作。"
     }
   },
   {
@@ -377,6 +689,58 @@
     }
   },
   {
+    "id": "pagination/basic",
+    "component": "pagination",
+    "file": "demos/pagination/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Numbered pages with an ellipsis, active page tracking and Previous/Next links.",
+      "zh": "带省略号、当前页高亮与上一页/下一页链接的页码分页。"
+    }
+  },
+  {
+    "id": "pagination/compact",
+    "component": "pagination",
+    "file": "demos/pagination/compact.tsx",
+    "title": {
+      "en": "Compact pager and page size",
+      "zh": "紧凑分页与每页条数"
+    },
+    "description": {
+      "en": "A page-of-total pager next to a rows-per-page selector built from PaginationLink.",
+      "zh": "“第几页/共几页”式分页，配合用 PaginationLink 组成的每页条数选择器。"
+    }
+  },
+  {
+    "id": "popover/basic",
+    "component": "popover",
+    "file": "demos/popover/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A trigger with a count badge and a checkbox filter panel inside the popover.",
+      "zh": "带数量徽标的触发器，气泡内是复选框筛选面板。"
+    }
+  },
+  {
+    "id": "popover/form",
+    "component": "popover",
+    "file": "demos/popover/form.tsx",
+    "title": {
+      "en": "Form inside a popover",
+      "zh": "气泡内的表单"
+    },
+    "description": {
+      "en": "A controlled popover aligned to the trigger start, holding a one-field form.",
+      "zh": "受控气泡与触发器起始边对齐，内含单字段表单。"
+    }
+  },
+  {
     "id": "pro-table/basic",
     "component": "pro-table",
     "file": "demos/pro-table/basic.tsx",
@@ -403,6 +767,32 @@
     }
   },
   {
+    "id": "progress/basic",
+    "component": "progress",
+    "file": "demos/progress/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A labelled onboarding bar stepped through 25, 50, 75 and 100 percent.",
+      "zh": "带标签的引导进度条，可在 25、50、75 与 100 之间切换。"
+    }
+  },
+  {
+    "id": "progress/values",
+    "component": "progress",
+    "file": "demos/progress/values.tsx",
+    "title": {
+      "en": "Multiple values",
+      "zh": "多值进度"
+    },
+    "description": {
+      "en": "Three task bars at 100%, 64% and 0%, with a control that advances the middle one.",
+      "zh": "三个任务进度条分别为 100%、64% 与 0%，并有按钮推进中间一项。"
+    }
+  },
+  {
     "id": "radio-group/basic",
     "component": "radio-group",
     "file": "demos/radio-group/basic.tsx",
@@ -426,6 +816,84 @@
     "description": {
       "en": "Three cadence options in one row, with the unavailable one disabled and explained.",
       "zh": "一行三个频率选项，其中不可用的一项被禁用并给出说明。"
+    }
+  },
+  {
+    "id": "resizable/basic",
+    "component": "resizable",
+    "file": "demos/resizable/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A support inbox split into a ticket queue and the selected ticket at 240 px tall.",
+      "zh": "支持工单收件箱：左侧队列、右侧所选工单，整体高 240 px。"
+    }
+  },
+  {
+    "id": "resizable/vertical",
+    "component": "resizable",
+    "file": "demos/resizable/vertical.tsx",
+    "title": {
+      "en": "Vertical split",
+      "zh": "垂直分割"
+    },
+    "description": {
+      "en": "An API console with the request payload above the response payload.",
+      "zh": "API 控制台：请求负载在上，响应负载在下。"
+    }
+  },
+  {
+    "id": "scroll-area/basic",
+    "component": "scroll-area",
+    "file": "demos/scroll-area/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A 200 px activity feed with unread markers and a mark-all-read action.",
+      "zh": "高 200 px 的活动列表，带未读标记与全部已读操作。"
+    }
+  },
+  {
+    "id": "scroll-area/visibility",
+    "component": "scroll-area",
+    "file": "demos/scroll-area/visibility.tsx",
+    "title": {
+      "en": "Scrollbar visibility",
+      "zh": "滚动条显示模式"
+    },
+    "description": {
+      "en": "The default hover scrollbar beside the always-on variant using type=\"always\".",
+      "zh": "默认悬停滚动条与 type=\"always\" 常显滚动条的对比。"
+    }
+  },
+  {
+    "id": "segmented/basic",
+    "component": "segmented",
+    "file": "demos/segmented/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Two icon views with a live hint describing the current selection.",
+      "zh": "两个带图标的视图切换，并实时提示当前选择。"
+    }
+  },
+  {
+    "id": "segmented/sizes",
+    "component": "segmented",
+    "file": "demos/segmented/sizes.tsx",
+    "title": {
+      "en": "Sizes and a disabled option",
+      "zh": "尺寸与禁用选项"
+    },
+    "description": {
+      "en": "Default and sm tracks on one screen, each with one disabled option.",
+      "zh": "同一屏内的默认与 sm 尺寸，各自包含一个禁用选项。"
     }
   },
   {
@@ -507,6 +975,32 @@
     }
   },
   {
+    "id": "sidebar/basic",
+    "component": "sidebar",
+    "file": "demos/sidebar/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Workspace navigation in a 320 px frame that collapses to a 3 rem icon rail.",
+      "zh": "320 px 高框架内的工作区导航，可折叠为 3 rem 图标栏。"
+    }
+  },
+  {
+    "id": "sidebar/nested-menu",
+    "component": "sidebar",
+    "file": "demos/sidebar/nested-menu.tsx",
+    "title": {
+      "en": "Nested menu and collapsible group",
+      "zh": "嵌套菜单与可折叠分组"
+    },
+    "description": {
+      "en": "A static rail with a collapsible group, a Projects submenu, a badge and menu actions.",
+      "zh": "静态侧栏：可折叠分组、Projects 子菜单、徽标与菜单操作。"
+    }
+  },
+  {
     "id": "skeleton/basic",
     "component": "skeleton",
     "file": "demos/skeleton/basic.tsx",
@@ -530,6 +1024,58 @@
     "description": {
       "en": "Five skeleton rows that become member rows with avatars and status badges.",
       "zh": "五行骨架屏，加载后变为带头像与状态徽标的成员列表。"
+    }
+  },
+  {
+    "id": "slider/basic",
+    "component": "slider",
+    "file": "demos/slider/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled infrastructure-budget slider with a $100 step and a live readout.",
+      "zh": "受控的基础设施预算滑块，步进 $100，数值实时回显。"
+    }
+  },
+  {
+    "id": "slider/range",
+    "component": "slider",
+    "file": "demos/slider/range.tsx",
+    "title": {
+      "en": "Range and stepped values",
+      "zh": "范围与步进值"
+    },
+    "description": {
+      "en": "A two-thumb price range next to a slider that snaps to 25 % steps.",
+      "zh": "双滑块价格区间，以及按 25% 步进吸附的滑块。"
+    }
+  },
+  {
+    "id": "sonner/actions",
+    "component": "sonner",
+    "file": "demos/sonner/actions.tsx",
+    "title": {
+      "en": "Toasts with an action",
+      "zh": "带操作按钮的提示"
+    },
+    "description": {
+      "en": "Undo and retry actions that stay on screen twice as long as the default.",
+      "zh": "撤销与重试操作，展示时长是默认值的两倍。"
+    }
+  },
+  {
+    "id": "sonner/basic",
+    "component": "sonner",
+    "file": "demos/sonner/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Success, error and neutral toasts fired from three buttons, with Toaster mounted once.",
+      "zh": "三个按钮分别触发成功、错误与普通提示，Toaster 只挂载一次。"
     }
   },
   {
@@ -660,6 +1206,58 @@
     "description": {
       "en": "A disabled summary next to a textarea that turns invalid until the reason is long enough.",
       "zh": "禁用的处理摘要，以及内容过短时变为无效状态的文本域。"
+    }
+  },
+  {
+    "id": "toggle-group/basic",
+    "component": "toggle-group",
+    "file": "demos/toggle-group/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A single-selection layout switcher that reflows the result cards below it.",
+      "zh": "单选布局切换器，实时重排下方结果卡片。"
+    }
+  },
+  {
+    "id": "toggle-group/multiple",
+    "component": "toggle-group",
+    "file": "demos/toggle-group/multiple.tsx",
+    "title": {
+      "en": "Multiple selection and spacing",
+      "zh": "多选与间距"
+    },
+    "description": {
+      "en": "Formatting and notification-channel groups that accept any combination of values.",
+      "zh": "格式与通知渠道两组开关，可任意组合多选。"
+    }
+  },
+  {
+    "id": "toggle/basic",
+    "component": "toggle",
+    "file": "demos/toggle/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A formatting toolbar whose bold, italic and underline toggles drive a live preview.",
+      "zh": "格式工具栏：加粗、斜体与下划线开关实时驱动预览。"
+    }
+  },
+  {
+    "id": "toggle/variants",
+    "component": "toggle",
+    "file": "demos/toggle/variants.tsx",
+    "title": {
+      "en": "Variants, sizes and disabled",
+      "zh": "变体、尺寸与禁用"
+    },
+    "description": {
+      "en": "Outline toggles at small, default and large sizes, plus the borderless default variant.",
+      "zh": "小、中、大三种尺寸的描边开关，以及无边框的默认变体。"
     }
   },
   {

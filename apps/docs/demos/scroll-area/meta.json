@@ -1,0 +1,28 @@
+[
+  {
+    "id": "scroll-area/basic",
+    "component": "scroll-area",
+    "file": "demos/scroll-area/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A 200 px activity feed with unread markers and a mark-all-read action.",
+      "zh": "高 200 px 的活动列表，带未读标记与全部已读操作。"
+    }
+  },
+  {
+    "id": "scroll-area/visibility",
+    "component": "scroll-area",
+    "file": "demos/scroll-area/visibility.tsx",
+    "title": {
+      "en": "Scrollbar visibility",
+      "zh": "滚动条显示模式"
+    },
+    "description": {
+      "en": "The default hover scrollbar beside the always-on variant using type=\"always\".",
+      "zh": "默认悬停滚动条与 type=\"always\" 常显滚动条的对比。"
+    }
+  }
+]

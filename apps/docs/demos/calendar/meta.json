@@ -1,0 +1,28 @@
+[
+  {
+    "id": "calendar/basic",
+    "component": "calendar",
+    "file": "demos/calendar/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Single-date selection used to schedule the next access review.",
+      "zh": "单选日期，用于安排下一次权限复核。"
+    }
+  },
+  {
+    "id": "calendar/range",
+    "component": "calendar",
+    "file": "demos/calendar/range.tsx",
+    "title": {
+      "en": "Range selection",
+      "zh": "区间选择"
+    },
+    "description": {
+      "en": "A maintenance window picked from a start and end date, with a night count and a clear action.",
+      "zh": "通过起止日期选择维护窗口，显示间隔天数并可清空。"
+    }
+  }
+]

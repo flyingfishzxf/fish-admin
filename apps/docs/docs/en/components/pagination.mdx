@@ -1,0 +1,111 @@
+---
+title: Pagination
+description: Navigation for paged results, with Previous and Next links, numbered pages and an ellipsis.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PaginationBasic from '@docs/demos/pagination/basic'
+import basicSource from '@docs/demos/pagination/basic.tsx?raw'
+import PaginationCompact from '@docs/demos/pagination/compact'
+import compactSource from '@docs/demos/pagination/compact.tsx?raw'
+
+# Pagination
+
+`Pagination` lays out a `<nav>` with a `<ul>` of links that reuse the Button styles. It renders the
+structure and the current-page marker only — the page count, the handlers and the active page stay in
+your component.
+
+<ComponentMeta id="pagination" />
+
+## When to use
+
+- A table or list with a known result count that is paged on the client or the server.
+- Report and audit screens where people jump between numbered pages.
+- A compact "page 3 of 13" pager next to a rows-per-page selector.
+
+## When not to use
+
+- Continuous feeds where people keep scrolling: use infinite loading or a "Load more" `Button`.
+- Two or three steps in a wizard: use `Tabs` or plain navigation buttons.
+- Results that fit on one page: hide the control instead of rendering a single page link.
+
+## Basic usage
+
+<Demo
+  title="Numbered pages with an ellipsis"
+  filename="demos/pagination/basic.tsx"
+  source={basicSource}
+>
+  <PaginationBasic />
+</Demo>
+
+## Compact pager and page size
+
+<Demo
+  title="Page-of-total with a rows-per-page selector"
+  filename="demos/pagination/compact.tsx"
+  source={compactSource}
+>
+  <PaginationCompact />
+</Demo>
+
+## API
+
+<ApiTable component="pagination" />
+
+## Design guidance
+
+- The root is a full-width `<nav>` centred with `mx-auto flex justify-center`; the inner list is a
+  flex row with a 4 px gap (`gap-1`). Override the centring with a style or class when the pager sits
+  at the start of a toolbar, as the demos do.
+- `PaginationLink` reuses `buttonVariants` at `size="icon"`: 36 × 36 px. Inactive links are `ghost`,
+  the active link is `outline`, and only the active one gets `aria-current="page"`.
+- `PaginationPrevious` and `PaginationNext` use the default button size (36 px high, 10 px side
+  padding) with a 16 px chevron. Their text labels are hidden below the `sm` breakpoint
+  (`hidden sm:block`), leaving the chevron plus the localised `aria-label`.
+- `PaginationEllipsis` is a 36 × 36 px box holding a 16 px more-horizontal icon. It is marked
+  `aria-hidden`, so the gap is not announced.
+- The links are presentational: pass `href` for real navigation or `onClick` for client state. There
+  is no disabled prop — guard the handlers yourself, as the demos clamp at page 1 and the last page.
+- For a page-size selector, reuse `PaginationLink` with `size="sm"` and `isActive`; no extra prop is
+  needed.
+
+## Accessibility
+
+| Key             | Behavior                                                  |
+| --------------- | --------------------------------------------------------- |
+| Tab / Shift+Tab | Moves through the links one at a time.                    |
+| Enter           | Follows the focused link (or runs its `onClick` handler). |
+
+The `<nav>` is labelled "Pagination" by the UI locale, and `aria-current="page"` marks the active
+link. Previous and Next carry "Go to previous page" and "Go to next page" labels, so the icon-only
+compact layout is still understandable. There is no arrow-key navigation; this is a link list, not a
+toolbar.
+
+Known gap: Previous and Next have no disabled state, so on the first or last page they remain
+focusable and announced as available even when your handler ignores the click. Render the item
+conditionally or set `aria-disabled` and style it yourself.
+
+## FAQ
+
+**Does Pagination calculate page counts?** No. It renders the items you pass; derive the total from
+your data and build the page window, as the basic demo does with an ellipsis.
+
+**Why does "Previous" collapse to a chevron?** The label is wrapped in `hidden sm:block`, so it is
+hidden below 640 px while the `aria-label` remains.
+
+**Can I change the size of a page link?** Yes. `PaginationLink` accepts the Button size tokens
+(`icon` is the default); the compact demo uses `size="sm"` for page sizes.
+
+**Can I render a router link instead of an anchor?** Not through `PaginationLink`, which renders an
+`<a>`. Import `buttonVariants` and apply the same classes to your router's link, or keep the anchor
+and intercept `onClick`.
+
+## Related
+
+- `Table` and `ProTable` for the results being paged.
+- `Select` for a rows-per-page control in a toolbar.
+- `Button` for "Load more" patterns.
+- [Used in the template](https://fish-admin.vercel.app/reports)

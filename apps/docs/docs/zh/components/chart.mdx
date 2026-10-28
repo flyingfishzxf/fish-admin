@@ -1,0 +1,93 @@
+---
+title: Chart 图表
+description: 基于 Recharts 的主题化图表封装，配色、提示框与图例由配置驱动。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ChartBasic from '@docs/demos/chart/basic'
+import basicSource from '@docs/demos/chart/basic.tsx?raw'
+import ChartAreaLegend from '@docs/demos/chart/area-legend'
+import areaLegendSource from '@docs/demos/chart/area-legend.tsx?raw'
+
+# Chart 图表
+
+`Chart` 是 Recharts 之上的样式层：`ChartContainer` 测量父容器并把 `ChartConfig` 转换为
+`--color-<key>` CSS 变量，`ChartTooltipContent` 与 `ChartLegendContent` 渲染模板的提示框与图例。
+图形本身仍由 Recharts 组件绘制。
+
+<ComponentMeta id="chart" />
+
+## 何时使用
+
+- 在仪表盘或报表页展示按月收入、流量等趋势。
+- 在同一类目轴上对比两到三条序列。
+- 在 `Card` 中放置紧凑图表，并希望沿用主题的图表配色。
+
+## 何时不使用
+
+- 需要逐行读取精确数值：使用 `Table`。
+- 只有一个大号数字：使用 `Statistic`。
+- 展示单一目标的完成进度：使用 `Progress`。
+- 序列超过约五条：拆成多张图，而不是继续增加颜色。
+
+## 基础用法
+
+<Demo title="按月收入柱状图" filename="demos/chart/basic.tsx" source={basicSource}>
+  <ChartBasic />
+</Demo>
+
+## 面积图与图例
+
+需要为第二条序列提供图例时，把图表组件换成 `AreaChart`，并加上 `ChartLegend` 与
+`ChartLegendContent`。提示框改用 `line` 指示样式，两条序列各自保留 `--color-<key>` 填充。
+
+<Demo title="共享图例的两条序列" filename="demos/chart/area-legend.tsx" source={areaLegendSource}>
+  <ChartAreaLegend />
+</Demo>
+
+## API
+
+<ApiTable component="chart" />
+
+## 设计指引
+
+- `ChartContainer` 默认使用 `aspect-video` 与 12 px 字号，并用 `initialDimension` 为 320 × 200 的
+  `ResponsiveContainer` 包裹子元素。卡片需要固定高度时请显式指定——两个示例都是整宽 240 px。
+- `ChartConfig` 的每个键都会成为该图表内的 `--color-<key>` 变量，`fill`/`stroke` 读取该变量
+  （如 `fill="var(--color-revenue)"`）。调色板来自主题令牌 `--chart-1` … `--chart-5`；每个键也
+  可以提供 `{ light, dark }` 两种颜色而不是单值。
+- 提示框最小宽度 128 px（`min-w-[8rem]`），`rounded-lg`、50% 描边与 `shadow-xl`，左右内边距
+  10 px、上下 6 px。数值以 `toLocaleString` 格式化并使用 `tabular-nums`；序列指示默认是 10 px
+  圆点，`indicator="line"` 画 4 px 竖条，`"dashed"` 画 1.5 px 虚线边框。
+- 图例位于绘图区下方，间距 16 px、色块 8 px、内边距 12 px；`verticalAlign` 为 `top` 时移到
+  上方（改为 `pb-3` 而不是 `pt-3`）。
+- 坐标轴刻度继承 `muted-foreground`，网格线继承 50% 不透明度的描边色；示例用
+  `strokeDasharray="4 4"` 把横向网格画成虚线。
+
+## 无障碍
+
+图表没有键盘操作：提示框只在悬停时出现，SVG 图形不可聚焦。外层只是普通 `div`，也不会自动生成
+数据表。
+
+已知缺口：组件没有内置的文字替代。`ChartContainer` 上的额外属性会落到外层容器，因此可以传入
+`role="img"` 与概括趋势的 `aria-label`，并把数值用 `Table` 或相邻摘要重复呈现给读屏用户。
+
+## FAQ
+
+**需要额外安装 Recharts 吗？** 不需要。它已是组件包的依赖；从 `recharts` 导入图表组件
+（`BarChart`、`Bar`、`XAxis` 等）即可。
+
+**为什么序列显示成灰色？** `fill`/`stroke` 必须引用 `var(--color-<key>)`，且键名要与
+`ChartConfig` 条目和 `dataKey` 一致。键名写错时该 CSS 变量就是未定义。
+
+**如何格式化提示框数值？** 给 `ChartTooltipContent` 传 `formatter`；否则数字走
+`toLocaleString()`。
+
+## 相关
+
+- `Card`：图表外框与标题。
+- `Table`：同一份数据的可读表格。
+- `Statistic`：图表旁的关键指标。
+- [在模板中的用法](https://fish-admin.vercel.app/)

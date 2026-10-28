@@ -1,0 +1,105 @@
+---
+title: Breadcrumb
+description: Show the path to the current page as a nav landmark with linked ancestors.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import BreadcrumbBasic from '@docs/demos/breadcrumb/basic'
+import basicSource from '@docs/demos/breadcrumb/basic.tsx?raw'
+import BreadcrumbOverflow from '@docs/demos/breadcrumb/overflow'
+import overflowSource from '@docs/demos/breadcrumb/overflow.tsx?raw'
+
+# Breadcrumb
+
+`Breadcrumb` renders a `<nav>` landmark around an ordered list of ancestor links and the current
+page. Separators are 14 px chevrons, the current item is a non-navigable span marked
+`aria-current="page"`, and the landmark label follows the UI locale ("Breadcrumb" / "面包屑导航").
+
+<ComponentMeta id="breadcrumb" />
+
+## When to use
+
+- A record sits three or more levels deep and readers need the path, such as a member profile under
+  Workspace → Members.
+- Providing a one-click jump back to an ancestor list without leaving the page.
+- Topping a detail page header or toolbar with orientation before the page title.
+
+## When not to use
+
+- Linear flows with a fixed order: use `Stepper`.
+- Sibling navigation between routes: use `Sidebar` or `Tabs`.
+- A single way back: a back `Button` is clearer than a two-item trail.
+- A flat page where the sidebar already shows where you are.
+
+## Basic usage
+
+<Demo title="Member profile trail" filename="demos/breadcrumb/basic.tsx" source={basicSource}>
+  <BreadcrumbBasic />
+</Demo>
+
+## Ellipsis and a dropdown
+
+When a path is too long, hide the middle levels behind `BreadcrumbEllipsis` and a `DropdownMenu`.
+The ellipsis is a 36 px box around a 16 px "more" icon; the menu holds the folders that were
+collapsed.
+
+<Demo
+  title="Collapsed folders behind a menu"
+  filename="demos/breadcrumb/overflow.tsx"
+  source={overflowSource}
+>
+  <BreadcrumbOverflow />
+</Demo>
+
+## API
+
+<ApiTable component="breadcrumb" />
+
+## Design guidance
+
+- The list is `text-sm` and muted, with 6 px gaps that widen to 10 px from the `sm` breakpoint; it
+  is `flex-wrap`, so a long path wraps onto a second line instead of overflowing.
+- Items keep a 6 px gap between label and separator. Separators are `role="presentation"` and
+  `aria-hidden`, and render a 14 px (`size-3.5`) chevron unless you pass different children.
+- `BreadcrumbEllipsis` is 36 × 36 px (`size-9`) holding a 16 px icon and an `sr-only` label. The span
+  is `aria-hidden`, so the trigger that wraps it needs its own accessible name.
+- The current page is `font-normal text-foreground`; ancestors stay muted and only shift to
+  `text-foreground` on hover, with a colour transition and no underline.
+- `BreadcrumbLink` accepts `asChild`, so a router `<Link>` can replace the default `<a>` and keep the
+  same styling.
+
+## Accessibility
+
+| Key             | Behavior                                |
+| --------------- | --------------------------------------- |
+| Tab / Shift+Tab | Moves focus through the ancestor links. |
+| Enter           | Follows the focused ancestor link.      |
+
+The trail is a `nav` landmark with a localized label, holding an ordered list. Ancestors are real
+links; the current page is a `span` with `role="link"`, `aria-disabled="true"` and
+`aria-current="page"`, so it is announced as the current page and cannot be activated.
+
+Known gap: `BreadcrumbEllipsis` is `aria-hidden`, so its built-in "More" text never reaches
+assistive technology. Give the dropdown trigger an explicit `aria-label` (the demo uses "Show hidden
+folders").
+
+## FAQ
+
+**Can I change the landmark label?** Yes — `Breadcrumb` spreads props after its default
+`aria-label`, so passing `aria-label` overrides the localized string. The overflow demo passes
+`aria-label="File path"` so two trails on one page stay distinguishable.
+
+**Does it collapse long paths automatically?** No. `BreadcrumbEllipsis` only renders the icon; you
+decide which items to hide and what the menu contains.
+
+**How do I use it with React Router?** Put `<BreadcrumbLink asChild><Link to="…">…</Link></BreadcrumbLink>`
+so the router link keeps the breadcrumb styling.
+
+## Related
+
+- `Sidebar` for route navigation.
+- `Dropdown Menu` for the collapsed middle levels.
+- `Button` for a plain back action.
+- [Used in the template](https://fish-admin.vercel.app/files)

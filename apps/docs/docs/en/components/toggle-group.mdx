@@ -1,0 +1,122 @@
+---
+title: Toggle Group
+description: Join several toggles into one control with single or multiple selection.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ToggleGroupBasic from '@docs/demos/toggle-group/basic'
+import basicSource from '@docs/demos/toggle-group/basic.tsx?raw'
+import ToggleGroupMultiple from '@docs/demos/toggle-group/multiple'
+import multipleSource from '@docs/demos/toggle-group/multiple.tsx?raw'
+
+# Toggle Group
+
+`Toggle Group` wraps Radix Toggle Group: a `type` of `single` or `multiple`, arrow-key focus between
+items and shared `variant`/`size` context, with a `spacing` prop that decides whether the buttons are
+joined into a segmented control or stand apart.
+
+<ComponentMeta id="toggle-group" />
+
+## When to use
+
+- Switching between two to five view modes, such as rows and columns.
+- Multi-select formatting, where bold and italic can be on at once.
+- Compact filters where every option is a toggle rather than a menu entry.
+
+## When not to use
+
+- Six or more options: use `Select`, which keeps the row short.
+- A value that a form submits: use `Radio Group` or `Checkbox Group`, which expose form semantics.
+- A single on/off control: use `Toggle` or `Switch`.
+
+## Basic usage
+
+<Demo
+  title="Single-selection layout switcher"
+  filename="demos/toggle-group/basic.tsx"
+  source={basicSource}
+>
+  <ToggleGroupBasic />
+</Demo>
+
+`type="single"` is required. The demo guards `onValueChange` with `value && setLayout(value)`, because
+a single group reports an empty string when the active item is pressed again.
+
+## Multiple selection and spacing
+
+<Demo
+  title="Multiple selection, joined and separated"
+  filename="demos/toggle-group/multiple.tsx"
+  source={multipleSource}
+>
+  <ToggleGroupMultiple />
+</Demo>
+
+`type="multiple"` keeps an array, so any combination — including none — is valid. The second group adds
+`spacing={1}`, which separates the outline items instead of joining them.
+
+## API
+
+<ApiTable component="toggle-group" />
+
+## Design guidance
+
+- Items share the toggle heights: 36 px (`h-9`) by default, 32 px (`h-8`) at `sm` and 40 px
+  (`h-10`) at `lg`, with 12 px horizontal padding (`px-3`) instead of the toggle's icon-sized
+  padding.
+- The root is `w-fit` and `rounded-md`, so the group hugs its content; size it from a wrapper or your
+  own class rather than expecting it to stretch.
+- `spacing={0}` (the default) joins the items: inner corners are squared, only the first and last are
+  rounded, and outline items drop the shared left border so the outline stays 1 px. A positive
+  `spacing` is multiplied by the 0.25 rem spacing unit — `spacing={1}` is 4 px, `spacing={2}` is 8 px.
+- `variant` and `size` set on the root flow to every item through context; item-level props only act
+  as a fallback when the root leaves them undefined.
+- Selected items use `--accent` and `--accent-foreground`, matching `Toggle`. Focused items get
+  `z-10`, so the 3 px focus ring is not clipped by a neighbour.
+- Icons are sized to 16 px and separated from their label by 8 px (`gap-2`), as in `Toggle`.
+
+## Accessibility
+
+| Key             | Behavior                                                       |
+| --------------- | -------------------------------------------------------------- |
+| Tab / Shift+Tab | Enters the group at the active item and leaves it again.       |
+| ArrowLeft/Right | Moves focus to the previous or next item, wrapping by default. |
+| ArrowUp/Down    | Same movement when the group is vertical.                      |
+| Home / End      | Moves focus to the first or last item.                         |
+| Space / Enter   | Toggles the focused item.                                      |
+
+Focus is roving: only one item is in the tab order, and the arrow keys move within the group. The
+root's role depends on `type` — `radiogroup` for single, `toolbar` for multiple — and single items
+render as `role="radio"` with `aria-checked`, while multiple items are buttons with `aria-pressed`.
+Neither role supplies a name, so pass `aria-label` on the group; both demos do.
+
+Known gap: in a single group the arrow keys only move focus. The item is checked when Space or Enter
+is pressed, which is a deviation from the usual radio-group pattern where arrowing selects. Also, a
+second press on the active item clears the selection, so guard `onValueChange` if one option must
+always be set.
+
+## FAQ
+
+**Why can I deselect the only option in a single group?** Radix treats deselection as a valid single
+state and emits an empty string. The basic demo ignores that value to keep exactly one layout chosen;
+drop the guard if clearing is useful.
+
+**Do I set `variant` and `size` on the group or on each item?** On the group. Items read the context
+first and only fall back to their own props, so setting them per item is redundant unless you want a
+one-off override.
+
+**What exactly does `spacing` change?** `0` merges the items into one segmented control — square inner
+corners, a single outer outline and no per-item shadow. Values above zero add a gap of
+`spacing × 0.25 rem` and keep each item's own border and shadow.
+
+**Why doesn't the group fill its container?** The root is `w-fit`. Wrap it or pass your own class when
+you need a full-width control.
+
+## Related
+
+- `Toggle` for a single two-state button.
+- `Radio Group` when one value must be submitted with a form.
+- `Button` for actions that do not hold state.
+- [Used in the template](https://fish-admin.vercel.app/)

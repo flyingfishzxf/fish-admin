@@ -8,6 +8,7 @@ function InputOTP({
   containerClassName,
   ...props
 }: React.ComponentProps<typeof OTPInput> & {
+  /** Classes applied to the OTP container element. */
   containerClassName?: string
 }) {
   return (
@@ -31,6 +32,7 @@ function InputOTPSlot({
   className,
   ...props
 }: React.ComponentProps<'div'> & {
+  /** Zero-based position of the slot in the code. */
   index: number
 }) {
   const inputOTPContext = React.useContext(OTPInputContext)

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "color-picker/basic",
+    "component": "color-picker",
+    "file": "demos/color-picker/basic.tsx",
+    "title": {
+      "en": "Brand color picker",
+      "zh": "品牌色选择器"
+    },
+    "description": {
+      "en": "A controlled picker with a live preview swatch and a hex readout beneath it.",
+      "zh": "受控的取色器，右侧实时预览色块，下方显示十六进制值。"
+    }
+  },
+  {
+    "id": "color-picker/presets",
+    "component": "color-picker",
+    "file": "demos/color-picker/presets.tsx",
+    "title": {
+      "en": "Custom presets and a disabled picker",
+      "zh": "自定义预设与禁用状态"
+    },
+    "description": {
+      "en": "A five-swatch preset palette for a surface tint, plus a locked workspace color.",
+      "zh": "五个预设色的表面色调选择器，以及一个锁定的工作区颜色。"
+    }
+  }
+]

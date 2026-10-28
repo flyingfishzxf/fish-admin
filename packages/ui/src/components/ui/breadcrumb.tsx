@@ -38,6 +38,7 @@ function BreadcrumbLink({
   className,
   ...props
 }: React.ComponentProps<'a'> & {
+  /** Renders the child element instead of an `<a>`, e.g. a router link. */
   asChild?: boolean
 }) {
   const Comp = asChild ? Slot.Root : 'a'

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "empty/basic",
+    "component": "empty",
+    "file": "demos/empty/basic.tsx",
+    "title": {
+      "en": "Empty state with actions",
+      "zh": "带操作的空状态"
+    },
+    "description": {
+      "en": "An outlined empty state with an icon tile, a title, a description and two actions.",
+      "zh": "带虚线描边的空状态，包含图标块、标题、描述与两个操作按钮。"
+    }
+  },
+  {
+    "id": "empty/compact",
+    "component": "empty",
+    "file": "demos/empty/compact.tsx",
+    "title": {
+      "en": "Compact empty inside a panel",
+      "zh": "面板内的紧凑空状态"
+    },
+    "description": {
+      "en": "A filtered activity list that falls back to a smaller empty state with a Clear filter action.",
+      "zh": "带筛选的活动列表，无匹配时显示更紧凑的空状态与「清除筛选」操作。"
+    }
+  }
+]

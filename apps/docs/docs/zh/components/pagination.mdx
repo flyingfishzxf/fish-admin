@@ -1,0 +1,101 @@
+---
+title: Pagination 分页
+description: 用于分页结果的导航，包含上一页、下一页、页码链接与省略号。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PaginationBasic from '@docs/demos/pagination/basic'
+import basicSource from '@docs/demos/pagination/basic.tsx?raw'
+import PaginationCompact from '@docs/demos/pagination/compact'
+import compactSource from '@docs/demos/pagination/compact.tsx?raw'
+
+# Pagination 分页
+
+`Pagination` 用 `<nav>` 包裹一组复用 Button 样式的 `<ul>` 链接。它只负责结构与当前页标记——
+总页数、事件处理与当前页状态都由你的组件维护。
+
+<ComponentMeta id="pagination" />
+
+## 何时使用
+
+- 结果数量已知、在客户端或服务端分页的表格与列表。
+- 报表、审计页面中需要在编号页之间跳转的场景。
+- 需要“第 3 页 / 共 13 页”的紧凑分页，并配合每页条数选择器。
+
+## 何时不使用
+
+- 用户持续滚动的信息流：使用无限加载或“加载更多”`Button`。
+- 只有两三步的向导：使用 `Tabs` 或普通导航按钮。
+- 结果一页就能放下：直接隐藏控件，而不是渲染一个页码。
+
+## 基础用法
+
+<Demo title="带省略号的编号页码" filename="demos/pagination/basic.tsx" source={basicSource}>
+  <PaginationBasic />
+</Demo>
+
+## 紧凑分页与每页条数
+
+<Demo
+  title="“第几页 / 共几页”配合每页条数选择器"
+  filename="demos/pagination/compact.tsx"
+  source={compactSource}
+>
+  <PaginationCompact />
+</Demo>
+
+## API
+
+<ApiTable component="pagination" />
+
+## 设计指引
+
+- 根节点是占满宽度的 `<nav>`，默认用 `mx-auto flex justify-center` 居中；内部列表是带 4 px
+  间距（`gap-1`）的 flex 行。分页位于工具栏左侧时，用 style 或 class 覆盖居中，示例即如此。
+- `PaginationLink` 以 `size="icon"` 复用 `buttonVariants`，尺寸为 36 × 36 px。非当前页使用
+  `ghost`，当前页使用 `outline`，且只有当前页带 `aria-current="page"`。
+- `PaginationPrevious` 与 `PaginationNext` 使用默认按钮尺寸（高 36 px、左右内边距 10 px）加
+  16 px 箭头。文字标签在 `sm` 断点以下隐藏（`hidden sm:block`），只剩箭头和本地化的
+  `aria-label`。
+- `PaginationEllipsis` 是 36 × 36 px 的盒子，内含 16 px 的横向省略号图标，并标记为
+  `aria-hidden`，因此省略的页码不会被朗读。
+- 链接只负责呈现：真实跳转传 `href`，客户端状态传 `onClick`。组件没有 disabled 属性——边界
+  需要自行处理，示例在第 1 页与末页做了限制。
+- 每页条数选择器可以复用 `PaginationLink` 的 `size="sm"` 与 `isActive`，无需新增属性。
+
+## 无障碍
+
+| 按键            | 行为                                   |
+| --------------- | -------------------------------------- |
+| Tab / Shift+Tab | 逐个链接移动焦点。                     |
+| Enter           | 跟随当前链接（或执行它的 `onClick`）。 |
+
+`<nav>` 使用 UI 语言包中的“Pagination”作为名称，当前页链接带 `aria-current="page"`。上一页与
+下一页带有“Go to previous page”和“Go to next page”标签，因此紧凑布局只显示箭头时仍可理解。
+组件没有方向键导航；它是一组链接，而不是工具栏。
+
+已知缺口：上一页与下一页没有禁用状态，在第一页或末页时仍可聚焦并被朗读为可用，即使处理函数
+忽略了点击。请按需条件渲染该项，或自行设置 `aria-disabled` 并补充样式。
+
+## FAQ
+
+**Pagination 会计算总页数吗？** 不会。它只渲染你传入的项；请根据数据推导总数并生成页码窗口，
+基础示例用省略号做了这件事。
+
+**为什么“Previous”只剩一个箭头？** 文字包在 `hidden sm:block` 中，640 px 以下隐藏，但
+`aria-label` 仍然保留。
+
+**可以修改页码链接的尺寸吗？** 可以。`PaginationLink` 接受 Button 的尺寸标记（默认 `icon`），
+紧凑示例中每页条数使用了 `size="sm"`。
+
+**可以渲染路由链接而不是 `<a>` 吗？** `PaginationLink` 固定渲染 `<a>`，无法替换元素。可以
+导入 `buttonVariants` 把相同样式应用到路由链接上，或保留 `<a>` 并拦截 `onClick`。
+
+## 相关
+
+- `Table` 与 `ProTable`：承载被分页的结果。
+- `Select`：工具栏中的每页条数控件。
+- `Button`：“加载更多”模式。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

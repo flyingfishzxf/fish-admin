@@ -1,0 +1,28 @@
+[
+  {
+    "id": "context-menu/basic",
+    "component": "context-menu",
+    "file": "demos/context-menu/basic.tsx",
+    "title": {
+      "en": "Right-click actions",
+      "zh": "右键操作"
+    },
+    "description": {
+      "en": "A project card whose menu opens on right-click, with a label, shortcuts and a separator.",
+      "zh": "在项目卡片上右键打开菜单，包含标题、快捷键与分隔线。"
+    }
+  },
+  {
+    "id": "context-menu/file-actions",
+    "component": "context-menu",
+    "file": "demos/context-menu/file-actions.tsx",
+    "title": {
+      "en": "File actions with a submenu",
+      "zh": "带子菜单的文件操作"
+    },
+    "description": {
+      "en": "File rows with a Move to submenu, a pin toggle and a disabled Delete item.",
+      "zh": "文件行的「移动到」子菜单、置顶勾选项，以及禁用的删除项。"
+    }
+  }
+]

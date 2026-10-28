@@ -1,0 +1,111 @@
+---
+title: Sonner 轻提示
+description: 由 sonner 渲染、沿用模板设计变量的短暂非阻塞通知。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SonnerBasic from '@docs/demos/sonner/basic'
+import basicSource from '@docs/demos/sonner/basic.tsx?raw'
+import SonnerActions from '@docs/demos/sonner/actions'
+import actionsSource from '@docs/demos/sonner/actions.tsx?raw'
+
+# Sonner 轻提示
+
+`Toaster` 是对 sonner 提示容器的薄封装：它跟随当前 UI 主题，为五种提示状态换上 lucide 图标，并把
+提示面板映射到模板的浮层设计变量。`toast()` 函数本身没有再次导出——请从 `sonner` 包导入。
+
+<ComponentMeta id="sonner" />
+
+## 何时使用
+
+- 操作完成但没有页面跳转时给出确认，例如“已保存”。
+- 报告可以在原地重试的失败。
+- 不需要用户决策的短时信息，例如已复制邀请链接。
+
+## 何时不使用
+
+- 阻塞下一步的错误：在页面里使用 `Alert`，让信息留在原位。
+- 必须让用户确认的内容：使用 `Alert Dialog`。
+- 字段校验：把提示渲染在字段旁，并用 `aria-describedby` 关联。
+- 较长的说明或列表：使用 `Dialog` 或 `Drawer`。
+
+## 基础用法
+
+<Demo title="成功、错误与普通提示" filename="demos/sonner/basic.tsx" source={basicSource}>
+  <SonnerBasic />
+</Demo>
+
+`<Toaster />` 只需挂载一次——模板把它放在应用根部，每个示例也各自挂载一份并带上不同的 `id` 与
+`customAriaLabel`，因此同页的两个示例不会互相重复提示。提示会被传送到视口，因此出现在浏览器窗口
+右下角、预览面板之上；这是 sonner 的布局方式，不是示例出错。
+
+## 带操作按钮的提示
+
+<Demo title="撤销与重试操作" filename="demos/sonner/actions.tsx" source={actionsSource}>
+  <SonnerActions />
+</Demo>
+
+操作由标签和处理函数组成，sonner 会在提示内渲染为按钮。两个示例都传入 `duration: 8000`，让操作
+按钮的可用时间超过默认的 4 秒。
+
+## API
+
+<ApiTable component="sonner" />
+
+## 设计指引
+
+- 每个应用只挂载一个 `<Toaster />`。每个实例都会渲染全部提示，除非给它设置 `id`，并在提示选项里
+  传入相同的 `toasterId`——两个示例同处一页，所以都这样做了。
+- 主题来自 `useUITheme()`，因此会随应用在明暗之间切换；你传入的 `theme` 仍然生效，因为这些属性在
+  默认值之后展开。
+- 内联设置的表面变量：`--normal-bg` 为 `var(--popover)`，`--normal-text` 为
+  `var(--popover-foreground)`，`--normal-border` 为 `var(--border)`，`--border-radius` 为
+  `var(--radius)`。`--success-text` 映射到 `var(--success)`，仅在开启 `richColors` 时使用。
+- 图标为 CircleCheck、Info、TriangleAlert、OctagonX 与旋转的 Loader2，均为 16 px（`size-4`），按
+  状态自动选择。普通 `toast()` 不带图标。
+- sonner 的默认值仍然有效：右下角、宽度 356 px、最多同时显示 3 条、间距 14 px、距视口边缘 24 px、
+  存活 4000 ms，并支持 `alt+T` 快捷键。除非传入 `closeButton`，否则没有关闭按钮。
+- 模板在根部挂载的是 `<Toaster position="top-right" richColors closeButton />`。本文示例沿用 sonner
+  的默认值，因此提示出现在右下角，且没有关闭按钮。
+- 提示宽度固定为 356 px，过长的描述会换行而不会撑宽提示——文案控制在“一行标题 + 一句描述”。
+
+## 无障碍
+
+| 按键   | 行为                                     |
+| ------ | ---------------------------------------- |
+| Tab    | 依次聚焦每条提示，再进入其中的操作按钮。 |
+| Enter  | 触发聚焦的操作按钮。                     |
+| Space  | 触发聚焦的操作按钮。                     |
+| alt+T  | 有提示时把焦点移到提示区域。             |
+| Escape | 收起展开的提示堆叠，并不会关闭提示。     |
+
+sonner 默认把列表渲染为带 `aria-label="Notifications alt+T"` 的 `<section>`（可传
+`customAriaLabel` 整体替换该字符串——示例就是这么做的，否则同页两个 toaster 会产生两个同名地标），
+`aria-live="polite"`、`aria-relevant="additions text"` 与 `aria-atomic="false"`，因此新提示会被礼貌播报，
+不会打断用户正在阅读的内容。提示本身是普通列表项，状态只由文案承载——图标没有文本替代，所以请写
+“已保存”与“保存失败”，而不是只靠图形区分。
+
+已知缺口：不传 `closeButton` 时，键盘无法关闭提示；4 秒的默认存活时间也可能在键盘用户到达操作
+按钮之前就结束。带操作的提示请像第二个示例那样传入更长的 `duration`。
+
+## FAQ
+
+**为什么提示出现在预览框之外？** 提示容器被传送到 document body，并相对视口定位。请在应用外壳中
+挂载一次，而不是放进页面内容里。
+
+**为什么 `@fish-admin/react` 没有导出 `toast`？** 包装层只为主题化 `Toaster`。请从 `sonner` 导入
+`toast`；`@fish-admin/react` 依赖 `sonner ^2.0.8`，请安装匹配的大版本。
+
+**怎样让撤销操作停留更久？** 在提示选项里传入毫秒级的 `duration`——默认 4000，操作示例使用 8000。
+
+**可以先显示加载中、稍后再更新吗？** `toast.loading` 会使用旋转的 Loader2 图标；保留它返回的 id，
+在任务结束后调用 `toast.success('完成', { id })` 即可更新同一条提示。
+
+## 相关
+
+- `Alert`：需要留在页面里的提示。
+- `Alert Dialog`：用户必须先确认或关闭才能继续。
+- `Button`：触发提示的按钮。
+- [在模板中的用法](https://fish-admin.vercel.app/)

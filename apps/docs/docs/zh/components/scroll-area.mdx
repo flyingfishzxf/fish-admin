@@ -1,0 +1,103 @@
+---
+title: Scroll Area 滚动区域
+description: 可聚焦的 Radix 滚动视口，配细自定义滚动条，适用于有高度上限的列表与面板。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ScrollAreaBasic from '@docs/demos/scroll-area/basic'
+import basicSource from '@docs/demos/scroll-area/basic.tsx?raw'
+import ScrollAreaVisibility from '@docs/demos/scroll-area/visibility'
+import visibilitySource from '@docs/demos/scroll-area/visibility.tsx?raw'
+
+# Scroll Area 滚动区域
+
+`ScrollArea` 是带 10 px 自定义滚动条的 Radix 滚动视口：内容位于可聚焦的视口内，原生滚动条被隐藏，
+因此滑块在各浏览器中外观一致。
+
+<ComponentMeta id="scroll-area" />
+
+## 何时使用
+
+- 卡片内的列表或活动流，不应随内容增长而撑高。
+- 高度固定、原生滚动条与周边界面不协调的面板。
+- 需要独立滚动位置的侧栏或预览区。
+
+## 何时不使用
+
+- 页面级滚动：交给文档本身滚动。
+- 需要吸顶表头或虚拟滚动的表格：使用 `Table` 或 `Pro Table`。
+- 打印时必须完整可见的内容。
+
+## 基础用法
+
+<Demo title="带未读标记的活动列表" filename="demos/scroll-area/basic.tsx" source={basicSource}>
+  <ScrollAreaBasic />
+</Demo>
+
+## 滚动条显示模式
+
+Radix 默认 `type="hover"`；当溢出必须始终可见时传 `type="always"`。
+
+<Demo
+  title="悬停滚动条与常显滚动条对照"
+  filename="demos/scroll-area/visibility.tsx"
+  source={visibilitySource}
+>
+  <ScrollAreaVisibility />
+</Demo>
+
+## API
+
+<ApiTable component="scroll-area" />
+
+## 设计指引
+
+- 根元素只设置 `relative`；视口为 `size-full max-h-[inherit]`，因此高度必须由根元素提供——第一个示例
+  为 200 px，第二个示例在 200 px 宽度旁为 132 px，通知页使用 `max-h-[520px]`。
+- 垂直滚动条宽 10 px（`w-2.5`），内边距 1 px，滑块为 `rounded-full` 的 `bg-border`。手动组合时水平
+  滚动条高 10 px（`h-2.5`）。
+- 视口可聚焦（`tabIndex` 为 0），聚焦时显示 3 px 的 `ring-ring/50` 外圈和 1 px 轮廓。
+- Radix 默认 `type` 为 `hover`：悬停或滚动时出现，指针离开 600 ms（`scrollHideDelay`）后隐藏。
+  另有 `always`、`scroll` 与 `auto` 模式。
+- 子元素渲染在视口内部，因此内边距应加在你自己的包裹层上，而不是 `ScrollArea` 上，否则它会随内容
+  一起滚动。
+
+## 无障碍
+
+| 按键                   | 行为                                     |
+| ---------------------- | ---------------------------------------- |
+| Tab / Shift+Tab        | 焦点进入视口，随后经过视口内可聚焦内容。 |
+| 方向键                 | 视口本身获得焦点时，按行滚动。           |
+| Page Up / Page Down    | 大约滚动一屏高度。                       |
+| Home / End             | 跳到内容开头或结尾。                     |
+| 滚轮、触控板、拖动滑块 | 用指针滚动；滑块可拖动。                 |
+
+视口保持内容的 DOM 顺序，不额外添加角色，因此内部标题与链接仍可被读屏正常浏览。
+
+已知缺口：自定义滚动条只是指针装饰——没有 `role="scrollbar"`，没有 `aria-valuenow`，也无法聚焦或
+用键盘拖动；键盘用户通过聚焦视口来滚动。视口本身也没有名称，而 `ScrollArea` 的 `aria-*` 属性会落在
+根元素而不是视口上，请为外层卡片提供标题。
+
+已知缺口：`ScrollArea` 总是在视口之后渲染一个垂直 `ScrollBar`。水平滚动条需要直接组合
+`ScrollAreaPrimitive.Root`。
+
+## FAQ
+
+**如何获得水平滚动条？** 这个封装做不到：子元素会插入视口内部，作为子节点传入的
+`ScrollBar orientation="horizontal"` 会出现在错误的位置。卡片轨道需要直接组合 Radix 原语。
+
+**为什么滚动条不悬停就不显示？** Radix 默认 `type="hover"`。传 `type="always"` 可让滑块常显，
+如第二个示例所示。
+
+**如何设置面板尺寸？** 直接在 `ScrollArea` 上设置 height 或 max-height；视口通过
+`max-h-[inherit]` 与 `size-full` 继承。
+
+## 相关
+
+- `Table`：需要独立滚动容器的表格数据。
+- `Card`：包裹滚动区域的卡片面板。
+- `Sheet` 与 `Sidebar`：需要独立滚动的抽屉与侧栏。
+- `Tabs`：长内容可以拆分而非滚动时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/notifications)

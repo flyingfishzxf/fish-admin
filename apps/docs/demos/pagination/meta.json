@@ -1,0 +1,28 @@
+[
+  {
+    "id": "pagination/basic",
+    "component": "pagination",
+    "file": "demos/pagination/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Numbered pages with an ellipsis, active page tracking and Previous/Next links.",
+      "zh": "带省略号、当前页高亮与上一页/下一页链接的页码分页。"
+    }
+  },
+  {
+    "id": "pagination/compact",
+    "component": "pagination",
+    "file": "demos/pagination/compact.tsx",
+    "title": {
+      "en": "Compact pager and page size",
+      "zh": "紧凑分页与每页条数"
+    },
+    "description": {
+      "en": "A page-of-total pager next to a rows-per-page selector built from PaginationLink.",
+      "zh": "“第几页/共几页”式分页，配合用 PaginationLink 组成的每页条数选择器。"
+    }
+  }
+]

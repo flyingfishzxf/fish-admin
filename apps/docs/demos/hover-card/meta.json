@@ -1,0 +1,28 @@
+[
+  {
+    "id": "hover-card/basic",
+    "component": "hover-card",
+    "file": "demos/hover-card/basic.tsx",
+    "title": {
+      "en": "Mention preview",
+      "zh": "提及预览"
+    },
+    "description": {
+      "en": "A comment with an @ada mention that previews the author on hover or focus.",
+      "zh": "评论中的 @ada 提及，悬停或聚焦时预览作者信息。"
+    }
+  },
+  {
+    "id": "hover-card/profile",
+    "component": "hover-card",
+    "file": "demos/hover-card/profile.tsx",
+    "title": {
+      "en": "Rich profile preview",
+      "zh": "完整的个人资料预览"
+    },
+    "description": {
+      "en": "A wider card with avatar, status, bio and three meta rows, opened after a 200 ms delay.",
+      "zh": "更宽的资料卡，包含头像、状态、简介与三项信息，延迟 200 ms 打开。"
+    }
+  }
+]

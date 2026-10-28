@@ -1,0 +1,104 @@
+---
+title: Hover Card
+description: Preview a person, a link or a row in a small floating card while the trigger is hovered or focused.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import HoverCardBasic from '@docs/demos/hover-card/basic'
+import basicSource from '@docs/demos/hover-card/basic.tsx?raw'
+import HoverCardProfile from '@docs/demos/hover-card/profile'
+import profileSource from '@docs/demos/hover-card/profile.tsx?raw'
+
+# Hover Card
+
+`HoverCard` shows a small, read-only preview next to a trigger while it is hovered or focused. It
+wraps the Radix hover card: a trigger, and content rendered in a portal with the template's popover
+styling, 256 px wide by default.
+
+<ComponentMeta id="hover-card" />
+
+## When to use
+
+- Previewing a person from an @mention, an assignee or an avatar.
+- Showing metadata for a link or a row before the user commits to opening it.
+- Supplementary detail that helps the user decide, without leaving the current page.
+
+## When not to use
+
+- Information the user needs to finish the task: render it inline.
+- Interactive content such as links, buttons or forms: use `Popover`.
+- A single line of explanation for an icon: use `Tooltip`.
+- Touch-first layouts, where nothing hovers and the preview is easy to miss.
+
+## Basic usage
+
+<Demo title="Mention preview" filename="demos/hover-card/basic.tsx" source={basicSource}>
+  <HoverCardBasic />
+</Demo>
+
+## Rich profile preview
+
+The content accepts `align`, `sideOffset` and a width override, while `openDelay` and `closeDelay`
+pass through to Radix. The wrapper sets neither, so the defaults of 700 ms and 300 ms apply.
+
+<Demo title="Rich profile preview" filename="demos/hover-card/profile.tsx" source={profileSource}>
+  <HoverCardProfile />
+</Demo>
+
+## API
+
+<ApiTable component="hover-card" />
+
+## Design guidance
+
+- The content is 256 px wide (`w-64`) with 16 px padding, a 4 px offset from the trigger and an 8 px
+  radius, centred on the trigger unless you pass `align`. Widen it with `style` or `className` — the
+  profile demo uses 288 px.
+- The default open delay is 700 ms and the close delay 300 ms. The template's notification list
+  passes `openDelay={300}`; the demo passes 200 ms so a profile feels immediate.
+- Hovering the card keeps it open: pointer events inside the content reset the close timer, which is
+  what makes a card taller than one line usable.
+- Treat the card as a preview, not a surface for actions. Keep to a name, a role, one or two lines of
+  bio and a few metadata rows; anything longer belongs on the destination page.
+
+## Accessibility
+
+| Key                     | Behavior                                                    |
+| ----------------------- | ----------------------------------------------------------- |
+| Tab (focusable trigger) | Focuses the trigger and opens the preview.                  |
+| Shift+Tab               | Leaves the trigger; the preview closes.                     |
+| Escape                  | Dismisses the open card.                                    |
+| Pointer hover           | Opens after 700 ms; closes 300 ms after the pointer leaves. |
+
+The trigger keeps whatever semantics you give it — a `Button` stays a button when you use
+`asChild`. The content is portalled, carries no tooltip or dialog role, does not trap focus and does
+not add `aria-describedby` or `aria-expanded` to the trigger.
+
+Known gap: without `asChild` the trigger is an `<a>` without `href`, so it never enters the tab
+order; both demos pass a `Button` through `asChild` to make the preview reachable. Radix also forces
+every focusable element inside the content to `tabindex="-1"`, so a link or button placed in the
+preview can never be reached by keyboard. The preview text is not announced when the trigger
+receives focus; use `Tooltip` when the hint is essential and `Popover` when the content is
+interactive.
+
+## FAQ
+
+**Why does nothing happen on my phone?** Radix ignores touch pointers when opening and closing
+(`excludeTouch`) and cancels the default touch start, so a tap does not open the card. Render the
+metadata inline or use `Popover` on touch-first screens.
+
+**Can I change the delay?** Yes. `openDelay` and `closeDelay` are forwarded to the Radix root; they
+default to 700 ms and 300 ms.
+
+**Can I put a link in the card?** Not accessibly. Focusable descendants are reset to `tabindex="-1"`;
+use `Popover` for anything clickable.
+
+## Related
+
+- `Tooltip` for a one-line hint on a single control.
+- `Popover` for content the user can interact with.
+- `Avatar` for the person imagery a profile preview usually shows.
+- `Card` for the same metadata inside the page.
+- [Used in the template](https://fish-admin.vercel.app/notifications)

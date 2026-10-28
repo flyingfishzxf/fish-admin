@@ -1,0 +1,28 @@
+[
+  {
+    "id": "breadcrumb/basic",
+    "component": "breadcrumb",
+    "file": "demos/breadcrumb/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Workspace, Members and the current member profile, separated by chevrons.",
+      "zh": "工作区、成员与当前成员资料三级路径，用箭头分隔。"
+    }
+  },
+  {
+    "id": "breadcrumb/overflow",
+    "component": "breadcrumb",
+    "file": "demos/breadcrumb/overflow.tsx",
+    "title": {
+      "en": "Ellipsis and a dropdown",
+      "zh": "省略号与下拉菜单"
+    },
+    "description": {
+      "en": "A collapsed middle segment that opens a menu of hidden folders.",
+      "zh": "收起的中间层级，点击后弹出隐藏文件夹菜单。"
+    }
+  }
+]

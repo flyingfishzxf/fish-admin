@@ -1,0 +1,101 @@
+---
+title: Calendar 日历
+description: 基于 react-day-picker 的本地化月历，用于选择单个日期或日期区间。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CalendarBasic from '@docs/demos/calendar/basic'
+import basicSource from '@docs/demos/calendar/basic.tsx?raw'
+import CalendarRange from '@docs/demos/calendar/range'
+import rangeSource from '@docs/demos/calendar/range.tsx?raw'
+
+# Calendar 日历
+
+`Calendar` 封装 react-day-picker 的 `DayPicker`，补充模板的 32 px 日期单元、月份导航，以及每个
+日期本地化的无障碍名称。选择模式（`single`、`multiple`、`range`）与取值规则来自底层选择器。
+
+<ComponentMeta id="calendar" />
+
+## 何时使用
+
+- 在表单或筛选中选择单个日期，且日历可以常驻显示。
+- 需要结合上下文安排时间，例如下一次权限复核或维护窗口。
+- 在同一个连续网格中选择起止日期。
+
+## 何时不使用
+
+- 需要把日期区间输入框放进弹出层：使用 `Date Range Picker`。
+- 只是粘贴一个已有的日期：`Input` 比逐月翻页更快。
+- 选择具体时间：使用 `Time Picker`。
+- 需要排除大量互不相关的日期：多选或列表视图更好读。
+
+## 基础用法
+
+<Demo title="为复核选择单个日期" filename="demos/calendar/basic.tsx" source={basicSource}>
+  <CalendarBasic />
+</Demo>
+
+## 区间选择
+
+`mode="range"` 收集 `{ from, to }` 对：第一次点击设置开始，第二次设置结束，第三次重新开始。示例在
+网格外显示所选窗口与间隔天数。
+
+<Demo title="带起止日期的维护窗口" filename="demos/calendar/range.tsx" source={rangeSource}>
+  <CalendarRange />
+</Demo>
+
+## API
+
+<ApiTable component="calendar" />
+
+## 设计指引
+
+- 日期单元为 32 × 32 px（`--cell-size` 解析为 `--spacing(8)`）；根节点再加 12 px 内边距（`p-3`）
+  且为 `w-fit`，因此不会撑满容器。
+- 星期行字号 0.8 rem 并使用弱化色，每周之间留 8 px 顶部间距（`mt-2`）。
+- 单选时当天使用 `bg-primary` / `text-primary-foreground`；区间选择时起止单元用主色，中间日期
+  用 `bg-accent` 并把内侧圆角收方。今天在未选中时显示 `bg-accent`。
+- 相邻月份的日期默认可见（`showOutsideDays` 为 `true`），并以弱化色显示；
+  `captionLayout="dropdown"` 会把月份标签换成月/年下拉，导航按钮样式由 `buttonVariant` 决定
+  （默认 `"ghost"`）。
+- 语言跟随 `UIProvider`：`zh-CN` 使用 `zhCN`，其余使用 `enUS`。日期名称由 `Intl.DateTimeFormat`
+  生成（星期、年、月、日），且刻意不加序数后缀，保证朗读文本始终包含可见的日期数字。
+
+## 无障碍
+
+| 按键                | 行为                         |
+| ------------------- | ---------------------------- |
+| Tab                 | 进入网格，聚焦当前日期。     |
+| 左方向键 / 右方向键 | 前后移动一天。               |
+| 上方向键 / 下方向键 | 前后移动一周。               |
+| Page Up / Page Down | 切换到上个月或下个月。       |
+| Home / End          | 跳到本周的第一天或最后一天。 |
+| Enter / Space       | 选择当前聚焦的日期。         |
+
+选择器渲染 `grid` 网格，星期为列标题，每个日期是一个按钮。选中的日期带 `aria-selected`，日期
+名称在适用时包含"今天"与"已选择"，并使用 UI 语言。月份箭头标注为"转到上个月"/"转到下个月"。
+
+已知缺口：日期单元为 32 px 见方，低于常见的 44 px 触控建议——触控为主的界面可以调大
+`--cell-size`。组件也不会渲染当前选择或约束条件的说明文字；请自行补充（示例使用 `aria-live`
+文案），并用 `disabled` 屏蔽不可选日期。
+
+## FAQ
+
+**如何读取选中的区间？** `mode="range"` 的值为 `{ from, to }`。第二次点击前 `to` 为空，第三次
+点击会重新开始区间。
+
+**中文项目里月份为什么是英文？** 语言来自 `UIProvider`，不在 Provider 内时回退到 `enUS`。可从
+`date-fns/locale` 传入 `locale` 强制指定。
+
+**它是受控组件吗？** 传入 `onSelect` 即为受控：由你持有值并通过 `selected` 回传，两个示例都是这样。
+不传 `onSelect` 时选择状态由选择器内部维护。单选模式下再次点击已选日期会清空选择，除非设置了
+`required`。
+
+## 相关
+
+- `Date Range Picker`：弹出层内的区间选择，并带预设。
+- `Popover`：把日历放进浮层。
+- `Button`：触发器与清空操作。
+- [在模板中的用法](https://fish-admin.vercel.app/projects/$id)

@@ -1,0 +1,127 @@
+---
+title: Sonner
+description: Brief, non-blocking notifications rendered by sonner and themed with the template's tokens.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SonnerBasic from '@docs/demos/sonner/basic'
+import basicSource from '@docs/demos/sonner/basic.tsx?raw'
+import SonnerActions from '@docs/demos/sonner/actions'
+import actionsSource from '@docs/demos/sonner/actions.tsx?raw'
+
+# Sonner
+
+`Toaster` is a thin wrapper around sonner's toaster: it follows the active UI theme, swaps in lucide
+icons for the five toast states and maps the surface to the template's popover tokens. The `toast()`
+function itself is not re-exported — import it from the `sonner` package.
+
+<ComponentMeta id="sonner" />
+
+## When to use
+
+- Confirming an action that finished without a page change, such as "Changes saved".
+- Reporting a failure the user can retry in place.
+- Short-lived information that needs no decision, like a copied invite link.
+
+## When not to use
+
+- Errors that block the next step: use `Alert` in the page, where the message stays put.
+- Anything the user must acknowledge: use `Alert Dialog`.
+- Field validation: render the message next to the field and wire `aria-describedby`.
+- Long instructions or lists: use `Dialog` or `Drawer`.
+
+## Basic usage
+
+<Demo
+  title="Success, error and neutral toasts"
+  filename="demos/sonner/basic.tsx"
+  source={basicSource}
+>
+  <SonnerBasic />
+</Demo>
+
+Mount `<Toaster />` once — the template puts it at the app root, and each demo mounts its own copy
+with a distinct `id` and `customAriaLabel` so the two demos neither repeat each other's toasts nor
+share a landmark name. Toasts are portaled to the
+viewport, so they appear at the bottom right of the browser window, above the preview panel; that is
+sonner's layout, not a bug in the demo.
+
+## Toasts with an action
+
+<Demo title="Undo and retry actions" filename="demos/sonner/actions.tsx" source={actionsSource}>
+  <SonnerActions />
+</Demo>
+
+An action is a label plus a handler; sonner renders it as a button inside the toast. Both examples
+pass `duration: 8000` so the action stays reachable for longer than the 4 s default.
+
+## API
+
+<ApiTable component="sonner" />
+
+## Design guidance
+
+- Mount one `<Toaster />` per app. Every instance renders every toast unless it gets an `id` and the
+  toast options carry the matching `toasterId` — the demos do this because two of them share a page.
+- The theme is read from `useUITheme()`, so the toaster flips between light and dark with the app; a
+  `theme` prop still wins because your props spread after the defaults.
+- Surface tokens set inline: `--normal-bg` is `var(--popover)`, `--normal-text`
+  `var(--popover-foreground)`, `--normal-border` `var(--border)` and `--border-radius`
+  `var(--radius)`. `--success-text` maps to `var(--success)` and is only used when `richColors` is
+  enabled.
+- Icons are CircleCheck, Info, TriangleAlert, OctagonX and a spinning Loader2, each 16 px
+  (`size-4`), applied per state. A plain `toast()` has no icon.
+- sonner's defaults stay in force: bottom-right, 356 px wide, three visible toasts, 14 px gap, 24 px
+  from the viewport edge, a 4000 ms lifetime and the `alt+T` hotkey. There is no close button unless
+  you pass `closeButton`.
+- The template mounts its root toaster as `<Toaster position="top-right" richColors closeButton />`.
+  The demos here keep sonner's defaults, which is why their toasts sit bottom-right without a close
+  button.
+- The toast width is fixed at 356 px, so long descriptions wrap rather than widening the toast — keep
+  copy to one short line plus a description.
+
+## Accessibility
+
+| Key    | Behavior                                                    |
+| ------ | ----------------------------------------------------------- |
+| Tab    | Moves focus to each toast, then on to its action button.    |
+| Enter  | Activates the focused action button.                        |
+| Space  | Activates the focused action button.                        |
+| alt+T  | Moves focus to the toast region while toasts are visible.   |
+| Escape | Collapses an expanded stack; it does not dismiss the toast. |
+
+sonner renders the list as a `<section>` with `aria-label="Notifications alt+T"` by default (pass
+`customAriaLabel` to replace the whole string — the demos do, because two toasters would otherwise
+create two identically named landmarks), `aria-live="polite"`,
+`aria-relevant="additions text"` and `aria-atomic="false"`, so each new toast is announced without
+interrupting what the user is reading. Toasts are ordinary list items, and their state is carried only
+by the message text — the icon has no text alternative, so write "Saved" and "Could not save" rather
+than relying on the glyph.
+
+Known gap: without `closeButton` a toast cannot be dismissed from the keyboard, and the 4 s default
+lifetime can expire before a keyboard user reaches an action. Pass a longer `duration` for toasts with
+actions, as the second demo does.
+
+## FAQ
+
+**Why does the toast appear outside the preview box?** The toaster portals to the document body and is
+positioned against the viewport. Mount it once in your app shell instead of inside page content.
+
+**Why is `toast` not exported from `@fish-admin/react`?** The wrapper only adds theming around
+`Toaster`. Import `toast` from `sonner`; `@fish-admin/react` depends on `sonner ^2.0.8`, so install a
+matching major version.
+
+**How do I keep an undo action around longer?** Pass `duration` in milliseconds in the toast options —
+4000 is the default and the action demo uses 8000.
+
+**Can I show a loading toast and resolve it later?** `toast.loading` uses the spinning Loader2 icon;
+keep the id it returns and call `toast.success('Done', { id })` when the work finishes.
+
+## Related
+
+- `Alert` for a message that stays in the page.
+- `Alert Dialog` when the user must confirm or dismiss before continuing.
+- `Button` for the trigger that fires the toast.
+- [Used in the template](https://fish-admin.vercel.app/)

@@ -1,0 +1,117 @@
+---
+title: Toggle
+description: A two-state button for formatting and view options that stay pressed.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ToggleBasic from '@docs/demos/toggle/basic'
+import basicSource from '@docs/demos/toggle/basic.tsx?raw'
+import ToggleVariants from '@docs/demos/toggle/variants'
+import variantsSource from '@docs/demos/toggle/variants.tsx?raw'
+
+# Toggle
+
+`Toggle` is a button that keeps a pressed state, exposed as `aria-pressed` and painted with the
+accent tokens while it is on. It comes in two variants and three sizes, and sizes any icon inside it
+to 16 px.
+
+<ComponentMeta id="toggle" />
+
+## When to use
+
+- Formatting controls in a text toolbar, where bold or italic stays on until pressed again.
+- View options such as "Show archived" that take effect immediately.
+- A compact icon button whose pressed state matters, like pinning a report.
+
+## When not to use
+
+- A saved setting in a settings form: use `Switch` or `Checkbox`, which are form controls.
+- Picking one of several options: use `Toggle Group` (or `Radio Group` when a form submits it).
+- A one-off action that does not stay on: use `Button`.
+
+## Basic usage
+
+<Demo
+  title="Formatting toolbar with a live preview"
+  filename="demos/toggle/basic.tsx"
+  source={basicSource}
+>
+  <ToggleBasic />
+</Demo>
+
+The demo keeps three booleans in state and passes `pressed` plus `onPressedChange`; the preview below
+the toolbar reads the same state, so the pressed styling and the rendered text always agree.
+
+## Variants, sizes and disabled
+
+<Demo
+  title="Outline and default variants at three sizes"
+  filename="demos/toggle/variants.tsx"
+  source={variantsSource}
+>
+  <ToggleVariants />
+</Demo>
+
+`variant="outline"` adds a border and a small shadow; the default variant is transparent until it is
+pressed. `size` accepts `sm`, `default` and `lg`.
+
+## API
+
+<ApiTable component="toggle" />
+
+## Design guidance
+
+- Height is 36 px by default (`h-9`), 32 px at `size="sm"` (`h-8`) and 40 px at `size="lg"` (`h-10`);
+  the matching `min-w-*` keeps square icon buttons from collapsing.
+- Horizontal padding is 8 px (`px-2`), 6 px (`px-1.5`) and 10 px (`px-2.5`) per size; the radius is
+  6 px (`rounded-md`) and the label is 14 px medium (`text-sm font-medium`).
+- Only two variants exist: the default is `bg-transparent`, while outline adds `border-input` and
+  `shadow-xs`. Prefer `outline` for icon-only toggles, whose off state would otherwise have no
+  boundary.
+- On state uses `--accent` for the fill and `--accent-foreground` for the icon and text; hover uses
+  `--muted`. Icon buttons rely on colour plus the pressed attribute, so avoid layouts with no room
+  for the accent fill.
+- Icons are forced to 16 px (`size-4`) unless they already carry a `size-*` class; the gap between
+  icon and label is 8 px (`gap-2`).
+- Disabled toggles keep their box, drop to 50 % opacity and stop receiving pointer events.
+
+## Accessibility
+
+| Key   | Behavior                        |
+| ----- | ------------------------------- |
+| Tab   | Moves focus to the next toggle. |
+| Space | Toggles the focused button.     |
+| Enter | Toggles the focused button.     |
+
+The root is a native `<button type="button">` with `aria-pressed` and `data-state="on|off"` from
+Radix, so the state is announced without relying on the accent fill. Because it is a real button, the
+browser's default keyboard activation and focus order apply; each toggle is its own tab stop. Text
+inside the toggle provides the name — icon-only toggles must pass `aria-label`, as both demos do. A
+disabled toggle is removed from the tab order and announced as unavailable.
+
+Known gap: the component renders no label, tooltip or text of its own, and it is not a form control —
+nothing is submitted with a form, so persist the pressed state yourself.
+
+## FAQ
+
+**How is `Toggle` different from `Switch`?** A toggle is a button with `aria-pressed` for a temporary
+state such as bold text; a switch is a form control with `role="switch"` and `aria-checked` for a
+setting that is saved immediately.
+
+**Why is my unpressed toggle invisible?** The default variant is `bg-transparent` and has no border.
+Use `variant="outline"`, or give it a label so the text carries the affordance.
+
+**Why did my 24 px icon shrink?** Any `<svg>` without a `size-*` class is forced to 16 px by the base
+styles. Add `className="size-5"` (or another size class) to keep your own dimensions.
+
+**Can I submit the pressed state with a form?** Not through this component; the root is a plain
+button. Mirror the state into a hidden input or keep it in your own store.
+
+## Related
+
+- `Toggle Group` to join several toggles into one keyboard-navigable control.
+- `Button` for actions that do not stay pressed.
+- `Switch` for a setting saved as a form value.
+- [Used in the template](https://fish-admin.vercel.app/files)

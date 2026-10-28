@@ -1,0 +1,28 @@
+[
+  {
+    "id": "collapsible/basic",
+    "component": "collapsible",
+    "file": "demos/collapsible/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Advanced retention settings revealed by a full-width outline trigger.",
+      "zh": "整行宽度的描边触发器，展开高级保留策略设置。"
+    }
+  },
+  {
+    "id": "collapsible/chevron",
+    "component": "collapsible",
+    "file": "demos/collapsible/chevron.tsx",
+    "title": {
+      "en": "Controlled with a rotating chevron",
+      "zh": "受控与旋转箭头"
+    },
+    "description": {
+      "en": "A controlled export-details panel whose chevron rotates with the open state.",
+      "zh": "受控的导出详情面板，箭头随展开状态旋转。"
+    }
+  }
+]

@@ -21,6 +21,7 @@ function ResizableHandle({
   className,
   ...props
 }: ResizablePrimitive.SeparatorProps & {
+  /** Render a grip icon in the middle of the separator. @default false */
   withHandle?: boolean
 }) {
   return (

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "toggle-group/basic",
+    "component": "toggle-group",
+    "file": "demos/toggle-group/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A single-selection layout switcher that reflows the result cards below it.",
+      "zh": "单选布局切换器，实时重排下方结果卡片。"
+    }
+  },
+  {
+    "id": "toggle-group/multiple",
+    "component": "toggle-group",
+    "file": "demos/toggle-group/multiple.tsx",
+    "title": {
+      "en": "Multiple selection and spacing",
+      "zh": "多选与间距"
+    },
+    "description": {
+      "en": "Formatting and notification-channel groups that accept any combination of values.",
+      "zh": "格式与通知渠道两组开关，可任意组合多选。"
+    }
+  }
+]

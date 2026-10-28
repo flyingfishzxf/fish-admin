@@ -1,0 +1,107 @@
+---
+title: Input OTP 验证码输入框
+description: 基于 input-otp 的定长验证码输入框，带分组槽位样式。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import InputOtpBasic from '@docs/demos/input-otp/basic'
+import basicSource from '@docs/demos/input-otp/basic.tsx?raw'
+import InputOtpResend from '@docs/demos/input-otp/resend'
+import resendSource from '@docs/demos/input-otp/resend.tsx?raw'
+
+# Input OTP 验证码输入框
+
+`Input OTP` 包装 `input-otp` 输入，并把它唯一的输入框渲染成一排样式化槽位。
+`InputOTPGroup`、`InputOTPSlot` 与 `InputOTPSeparator` 从 context 读取槽位状态，而值与
+`onChange` 始终由你控制。
+
+<ComponentMeta id="input-otp" />
+
+## 何时使用
+
+- 通过邮件或短信发送的短验证码，通常为 4 到 8 位。
+- 登录或敏感操作中的两步验证。
+- 短邀请码、恢复码，一位一格的展示更便于核对。
+
+## 何时不使用
+
+- 密码或任何需要允许用户查看的机密：使用 `Input type="password"`。
+- 较长的令牌或 API Key：单个 `Input` 更易于粘贴与检查。
+- 长度不固定的自由字母数字文本：使用 `Input`。
+
+## 基础用法
+
+<Demo title="六位验证码并显示完成提示" filename="demos/input-otp/basic.tsx" source={basicSource}>
+  <InputOtpBasic />
+</Demo>
+
+## 验证与重新发送
+
+<Demo
+  title="分组槽位、onComplete 确认与重新发送"
+  filename="demos/input-otp/resend.tsx"
+  source={resendSource}
+>
+  <InputOtpResend />
+</Demo>
+
+## API
+
+<ApiTable component="input-otp" />
+
+## 设计指引
+
+- 外层是带 0.5 rem 间距（`gap-2`）的 flex 行；禁用时外层的透明度降为 50%。
+- 每个槽位为 36 × 36 px（`h-9 w-9`），文字 14 px。槽位之间共用 1 px 的 `border-input`
+  边框：每个槽位都有上、下、右边框，第一个补上左边框并使用 `rounded-l-md`，最后一个使用
+  `rounded-r-md`。
+- 激活槽位提升到 `z-10`，边框切换为 `border-ring`，并加上与其他输入框一致的 3 px
+  `ring-ring/50` 外圈。字段聚焦且槽位为空时，一条 1 px × 16 px 的光标以
+  `animate-caret-blink` 在 1 s 内闪烁。
+- `maxLength` 必填。请渲染相同数量的 `InputOTPSlot` 并传入各自的 `index`；三加三布局只是两个
+  `InputOTPGroup` 中间夹一个 `InputOTPSeparator`，分隔符渲染 lucide 减号图标并带有
+  `role="separator"`。
+- 组件不提供标签、描述或错误文案。底层 `input-otp` 输入默认使用 `inputMode="numeric"` 与
+  one-time-code 自动填充标记，`pattern` 等额外属性会透传给它。
+
+## 无障碍
+
+| 按键            | 行为                                          |
+| --------------- | --------------------------------------------- |
+| 字符键          | 追加到唯一的受控值，槽位随 context 重新渲染。 |
+| Backspace       | 像普通文本输入一样编辑值，槽位同步更新。      |
+| Ctrl / Cmd + V  | 粘贴到剩余槽位，由 `input-otp` 处理粘贴。     |
+| Tab / Shift+Tab | 进入或离开这唯一的可聚焦字段。                |
+| Enter           | 外层表单若有提交控件则提交。                  |
+
+这里只有一个真正的 `<input>`，辅助技术看到的也是一个带有所传值的文本框——六个格子只是表现
+层。`aria-label` 会透传到这个输入框，示例因此把它命名为“Six-digit verification code”。
+
+已知缺口：槽位本身定义了无效样式（`aria-invalid:border-destructive`），但根节点不会自动
+应用。验证码被拒绝时，需要自行在每个 `InputOTPSlot` 上设置 `aria-invalid`。已知缺口：槽位里
+的可见字符是普通 `<div>` 文本，没有对辅助技术隐藏，浏览模式下可能把每一位与输入框的值重复
+朗读。
+
+## FAQ
+
+**如何只接受数字？** 传入 `pattern="^\d+$"`，`InputOTP` 会透传给底层输入。不传 `pattern`
+时任意字符都会被接受。
+
+**为什么槽位是空的？** 检查 `maxLength` 是否等于渲染的槽位数量，并确认每个槽位都从 0 开始
+拿到了自己的 `index`。
+
+**如何在验证码填满时响应？** 用 `onComplete` 获取完整字符串，或在 `onChange` 中比较
+`code.length` 与 `maxLength`；重新发送示例两者都用了。
+
+**可以把验证码分组显示吗？** 可以。两个 `InputOTPGroup` 中间放一个 `InputOTPSeparator`，
+保持槽位索引连续即可。
+
+## 相关
+
+- `Input`：普通文本与密码字段。
+- `Label`：在字段上方提供持久名称。
+- `Button`：用于验证与重新发送操作。
+- `Form`：验证码属于受校验表单时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/login)

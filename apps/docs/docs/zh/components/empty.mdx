@@ -1,0 +1,90 @@
+---
+title: Empty 空状态
+description: 用于无数据列表的居中占位，包含图标块、标题、描述，并为自定义操作留出位置。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import EmptyBasic from '@docs/demos/empty/basic'
+import basicSource from '@docs/demos/empty/basic.tsx?raw'
+import EmptyCompact from '@docs/demos/empty/compact'
+import compactSource from '@docs/demos/empty/compact.tsx?raw'
+
+# Empty 空状态
+
+`Empty` 组合出一个居中的空状态：可选的图标块、标题、描述，以及承载自定义操作的内容区。
+`variant="outline"` 会加上虚线描边，每个部件都是普通 `div`，可以自由覆盖样式或替换。
+
+<ComponentMeta id="empty" />
+
+## 何时使用
+
+- 列表、表格或看板首次进入却没有数据，并提供「新建」作为出路。
+- 筛选或搜索没有命中结果，并提供「清除筛选」操作。
+- 当前角色看不到某个区域的数据，用说明代替空白面板。
+
+## 何时不使用
+
+- 数据仍在加载：使用 `Skeleton` 或 `Spinner`，避免布局先闪出空状态。
+- 请求失败：使用 `Alert` 说明原因并提供重试。
+- 表单或字段内的简短提示：普通文本即可。
+- 整页 404 或无权限页：使用页面级布局，包含标题与导航。
+
+## 基础用法
+
+<Demo title="带操作的空状态" filename="demos/empty/basic.tsx" source={basicSource}>
+  <EmptyBasic />
+</Demo>
+
+## 面板内的紧凑空状态
+
+`Empty` 是会拉伸的纵向 flex 容器（`flex-1`），内边距 24 px，从 `md` 断点起变为 48 px。放进面板时
+可以覆盖内边距、间距与标题字号，并用面板自身的描边替代 `variant="outline"`。
+
+<Demo title="面板内的紧凑空状态" filename="demos/empty/compact.tsx" source={compactSource}>
+  <EmptyCompact />
+</Demo>
+
+## API
+
+<ApiTable component="empty" />
+
+## 设计指引
+
+- 根节点居中，内边距 24 px、间距 24 px，从 `md` 断点起内边距变为 48 px；圆角 8 px。
+  `variant="outline"` 会加上 1 px 虚线 `border-border`，没有背景色。
+- `EmptyHeader` 最大宽度 384 px（`max-w-sm`），间距 8 px，因此标题与描述会在可读的行宽处换行。
+  `EmptyContent` 使用同样的最大宽度，间距 16 px，宽度撑满。
+- `EmptyMedia` 的 icon 变体是 40 px 方块，圆角 8 px，背景 `bg-muted`，图标为弱化色并以 20 px
+  渲染；在头部内带 8 px 底部外边距。
+- 标题为 18 px 中等字重、紧凑字距；描述为 14 px 弱化色，内部链接带下划线，悬停时变为主题色。
+- `Empty` 没有尺寸属性：紧凑面板请用 `style` 覆盖 `padding` 与 `gap`（紧凑示例用 20 px 与 12 px），
+  并把标题降到 16 px。也没有 `actions` 属性——操作按钮请放进 `EmptyContent`。
+
+## 无障碍
+
+`Empty` 不渲染地标、实时区域或交互部件，语义完全来自你传入的文本。标题是 `div` 而不是标题标签，
+因此按标题导航时找不到它。图标块会渲染你传入的任意子元素，lucide 图标默认是装饰性的，但自定义
+`img` 需要自己的 `alt`。
+
+已知缺口：组件没有 `role="status"` 或 `aria-live`，当搜索或筛选导致列表被空状态替换时不会被朗读。
+如果这种变化不伴随页面刷新，请额外加一个带结果数量的实时区域，或把焦点移到标题。
+
+## FAQ
+
+**`Empty` 有操作属性吗？** 没有。把 `Button` 放进 `EmptyContent`，这个容器只负责居中与间距。
+
+**怎样让它更小？** 没有尺寸属性。像紧凑示例那样用 `style` 或 `className` 覆盖 `padding`、`gap` 与
+标题的 `fontSize`。
+
+**标题应该是标题标签吗？** 组件渲染的是 `div`。当空状态代表页面的某个区块时，请给 `EmptyTitle`
+传 `role="heading"` 与 `aria-level`，或自行渲染标题标签。
+
+## 相关
+
+- `Card`：通常承载空状态的面板。
+- `Button`：`EmptyContent` 里的新建或清除操作。
+- `Skeleton` 与 `Spinner`：在此之前出现的加载状态。
+- `Alert`：原因是错误而不是没有数据时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

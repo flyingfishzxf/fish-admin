@@ -1,0 +1,99 @@
+---
+title: Accordion 折叠面板
+description: 在始终可见的标题下展开内容，可单项或多项同时展开。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AccordionBasic from '@docs/demos/accordion/basic'
+import basicSource from '@docs/demos/accordion/basic.tsx?raw'
+import AccordionControlled from '@docs/demos/accordion/controlled'
+import controlledSource from '@docs/demos/accordion/controlled.tsx?raw'
+
+# Accordion 折叠面板
+
+`Accordion` 把一组标题堆叠起来，就地展开对应面板。它封装 Radix Accordion，单项/多项选择与
+`aria-expanded` 关联由底层提供；封装层补充分隔线、16 px 的标题内边距与旋转箭头。
+
+<ComponentMeta id="accordion" />
+
+## 何时使用
+
+- 展示一组常见问题或条款，读者通常先扫标题。
+- 收起次要细节，让设置页或定价页在需要前保持简短。
+- 把三个以上、需要逐个阅读的相关区块分组。
+
+## 何时不使用
+
+- 切换面板时上一块必须保持可见：使用 `Tabs`。
+- 只有一个独立的展开区域：使用 `Collapsible`。
+- 内容应当始终可见：使用带标题的 `Card`。
+- 按顺序推进的步骤：使用 `Stepper`。
+
+## 基础用法
+
+<Demo title="单项展开的常见问题" filename="demos/accordion/basic.tsx" source={basicSource}>
+  <AccordionBasic />
+</Demo>
+
+## 受控与多项展开
+
+`type="multiple"` 的值为 `string[]`，因此 `onValueChange` 会返回新的已展开项数组。把这个数组
+放进 state，列表外部的按钮就能一次性收起全部面板。
+
+<Demo
+  title="由 state 管理多项展开"
+  filename="demos/accordion/controlled.tsx"
+  source={controlledSource}
+>
+  <AccordionControlled />
+</Demo>
+
+## API
+
+<ApiTable component="accordion" />
+
+## 设计指引
+
+- 标题行 `py-4`（上下各 16 px）包裹 14 px 文本，整行约 52 px 高；`gap-4` 让箭头与长标题之间
+  留出间距。
+- 各项之间用底部描边分隔，最后一项去掉该描边（`last:border-b-0`）。组件不自带圆角、背景或
+  外边距，示例自行添加 1 px `var(--border)` 描边、8 px 圆角与 16 px 左右内边距。
+- 箭头固定为 16 px（`size-4`），展开时在 200 ms 内旋转 180°；没有替换箭头的属性。
+- 面板文本为 `text-sm`，内边距 `pt-0 pb-4`：紧贴标题下方，与下一条分隔线之间留 16 px。展开与
+  收起通过主题中的 `accordion-down` / `accordion-up` 关键帧播放动画。
+- 展开状态以 `data-state="open"` 暴露；禁用标题会降到 50% 不透明度并停止响应指针事件。
+
+## 无障碍
+
+| 按键                | 行为                           |
+| ------------------- | ------------------------------ |
+| Enter / Space       | 展开或收起当前标题。           |
+| 下方向键 / 上方向键 | 将焦点移到下一个或上一个标题。 |
+| Home / End          | 跳到第一个或最后一个标题。     |
+| Tab                 | 离开标题行，进入展开的面板。   |
+
+每个标题是 Radix 生成的标题元素内的原生按钮，暴露 `aria-expanded`（展开时另有指向面板的
+`aria-controls`）；收起的面板从无障碍树中移除。禁用的标题会被跳过。
+
+已知缺口：`AccordionTrigger` 没有控制标题元素或箭头的属性，因此 Radix 默认选择的标题层级
+（通常是 `h3`）无法适配跳过 `h2` 的页面大纲，箭头也只是装饰，无法替换。
+
+## FAQ
+
+**可以同时展开多个面板吗？** 可以：使用 `type="multiple"` 和 `string[]` 值，如第二个示例；
+`type="single"` 只能展开一个。
+
+**可以收起最后一个展开的面板吗？** `type="single"` 需要加上 `collapsible`；不加时始终保留一个
+面板。
+
+**如何为展开状态写样式？** 标题与内容都带 `data-state="open" | "closed"`，可用 CSS 或
+`className` 定位；没有 `openClassName` 之类的属性。
+
+## 相关
+
+- `Collapsible`：单个展开区块。
+- `Tabs`：需要保持可见的平级面板。
+- `Card`：始终展开的内容。
+- [在模板中的用法](https://fish-admin.vercel.app/projects/$id)

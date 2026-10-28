@@ -29,6 +29,8 @@ const ALLOWED_IMPORTS = new Set([
   'lucide-react',
   '@tanstack/react-table',
   'react-hook-form',
+  'recharts',
+  'sonner',
 ])
 
 function fail(message) {

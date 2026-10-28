@@ -1,0 +1,28 @@
+[
+  {
+    "id": "popover/basic",
+    "component": "popover",
+    "file": "demos/popover/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A trigger with a count badge and a checkbox filter panel inside the popover.",
+      "zh": "带数量徽标的触发器，气泡内是复选框筛选面板。"
+    }
+  },
+  {
+    "id": "popover/form",
+    "component": "popover",
+    "file": "demos/popover/form.tsx",
+    "title": {
+      "en": "Form inside a popover",
+      "zh": "气泡内的表单"
+    },
+    "description": {
+      "en": "A controlled popover aligned to the trigger start, holding a one-field form.",
+      "zh": "受控气泡与触发器起始边对齐，内含单字段表单。"
+    }
+  }
+]

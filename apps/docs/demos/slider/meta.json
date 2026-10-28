@@ -1,0 +1,28 @@
+[
+  {
+    "id": "slider/basic",
+    "component": "slider",
+    "file": "demos/slider/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled infrastructure-budget slider with a $100 step and a live readout.",
+      "zh": "受控的基础设施预算滑块，步进 $100，数值实时回显。"
+    }
+  },
+  {
+    "id": "slider/range",
+    "component": "slider",
+    "file": "demos/slider/range.tsx",
+    "title": {
+      "en": "Range and stepped values",
+      "zh": "范围与步进值"
+    },
+    "description": {
+      "en": "A two-thumb price range next to a slider that snaps to 25 % steps.",
+      "zh": "双滑块价格区间，以及按 25% 步进吸附的滑块。"
+    }
+  }
+]

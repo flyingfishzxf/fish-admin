@@ -1,0 +1,118 @@
+---
+title: Context Menu
+description: Open a menu of actions at the pointer with a right-click or long press, including submenus, checkbox items and shortcuts.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ContextMenuBasic from '@docs/demos/context-menu/basic'
+import basicSource from '@docs/demos/context-menu/basic.tsx?raw'
+import ContextMenuFileActions from '@docs/demos/context-menu/file-actions'
+import fileActionsSource from '@docs/demos/context-menu/file-actions.tsx?raw'
+
+# Context Menu
+
+`Context Menu` opens a list of actions where the pointer is, usually on a right-click. It wraps the
+Radix context menu and ships items, checkbox and radio items, labels, separators, shortcuts and one
+level of submenu; the content portals with the template's popover styling.
+
+<ComponentMeta id="context-menu" />
+
+## When to use
+
+- Actions attached to an object: a file row, a table row, a board card or a calendar event.
+- Power-user shortcuts that complement visible actions, such as Copy link or Rename.
+- A dense list where a per-row action button would add visual noise.
+
+## When not to use
+
+- The primary action of a screen: keep it a visible `Button`.
+- Flows where the target is not obviously right-clickable, especially on touch: pair the menu with
+  a visible action or use `Dropdown Menu`.
+- Picking a form value: use `Select` or `Radio Group`.
+- Navigation between pages: use links or `Sidebar`.
+
+## Basic usage
+
+<Demo title="Right-click actions" filename="demos/context-menu/basic.tsx" source={basicSource}>
+  <ContextMenuBasic />
+</Demo>
+
+## File actions with a submenu
+
+`ContextMenuSub` opens on hover or with Arrow Right, and `inset` lines up items that have no icon
+with the ones that do. Checkbox items track their own state; disabled items are skipped by the arrow
+keys and typeahead and carry `aria-disabled` so they cannot be activated.
+
+<Demo
+  title="File actions with a submenu"
+  filename="demos/context-menu/file-actions.tsx"
+  source={fileActionsSource}
+>
+  <ContextMenuFileActions />
+</Demo>
+
+## API
+
+<ApiTable component="context-menu" />
+
+## Design guidance
+
+- The content is at least 128 px wide (`min-w-[8rem]`) with 4 px padding and 14 px text, so rows
+  land around 32 px tall. It caps at the available viewport height and scrolls, which keeps long
+  menus usable near the bottom edge.
+- Items use 6 px vertical and 8 px horizontal padding with 8 px between icon and label.
+  `variant="destructive"` recolours the label and icon and tints the focus surface; put it last,
+  after a `ContextMenuSeparator`.
+- `inset` adds 32 px of left padding (`pl-8`) to align icon-less items with labelled rows. Checkbox
+  and radio items always reserve that 32 px: a 14 px indicator slot holding a 16 px check, or an
+  8 px dot, placed 8 px from the left edge.
+- Labels share the item padding at 14 px medium weight. Shortcuts sit at the far right in 12 px with
+  wide tracking and are visual hints only — no binding is registered.
+- The submenu keeps the 128 px minimum width and switches to `shadow-lg`, one step above the
+  parent's `shadow-md`.
+
+## Accessibility
+
+| Key                   | Behavior                                                           |
+| --------------------- | ------------------------------------------------------------------ |
+| Right-click           | Opens the menu at the pointer.                                     |
+| Long press (touch)    | Opens the menu after a 700 ms press; moving or lifting cancels it. |
+| Arrow Down / Arrow Up | Moves to the next or previous item.                                |
+| Home / End            | Moves to the first or last item.                                   |
+| Character keys        | Typeahead: jumps to the next item whose text matches the keys.     |
+| Arrow Right           | On a submenu trigger, opens the submenu.                           |
+| Arrow Left            | Inside a submenu, closes it and returns to the parent item.        |
+| Enter / Space         | Activates the focused item.                                        |
+| Escape                | Closes the menu and returns focus to the trigger.                  |
+
+The content is exposed as `role="menu"`; items are `menuitem`, checkbox items `menuitemcheckbox`
+with `aria-checked`, and radio items `menuitemradio` with `aria-checked`. Submenu triggers carry
+`aria-haspopup` and `aria-expanded`, and disabled items expose `aria-disabled="true"` without being
+activatable.
+
+Known gap: `ContextMenuTrigger` renders a non-focusable `<span>`, adds no `aria-haspopup` or
+`aria-expanded` and registers no key handler. A non-interactive row stays out of the tab order even
+with `asChild`, so the pointer (or a long press) is the only reliable way in. Pair the menu with a
+visible action — a row button or a `Dropdown Menu` — for keyboard-only users.
+
+## FAQ
+
+**Can I open it from a kebab button?** Not as a context menu: Radix anchors the content to the
+pointer, so there is no sensible position. Use `Dropdown Menu` for a trigger button.
+
+**Is the open state controllable?** Yes, the root accepts `open` and `onOpenChange`. Opening it
+before the first interaction anchors the menu to the top-left corner, and Radix logs a warning,
+because no pointer position exists yet.
+
+**Does it work on touch devices?** A 700 ms long press opens it; pointer movement, release or cancel
+clears the timer. Add a visible action anyway, since long press is not discoverable.
+
+## Related
+
+- `Dropdown Menu` for the same actions behind a button.
+- `Button` for the visible action that complements the menu.
+- `Checkbox` for the form-field version of a toggled item.
+- `Alert Dialog` when a destructive item needs confirmation.
+- [Used in the template](https://fish-admin.vercel.app/projects)

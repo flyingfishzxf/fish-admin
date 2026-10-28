@@ -1,0 +1,110 @@
+---
+title: Color Picker
+description: Pick a colour from eight presets, the native picker or a typed hex value, with every valid change normalised and reported.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ColorPickerBasic from '@docs/demos/color-picker/basic'
+import basicSource from '@docs/demos/color-picker/basic.tsx?raw'
+import ColorPickerPresets from '@docs/demos/color-picker/presets'
+import presetsSource from '@docs/demos/color-picker/presets.tsx?raw'
+
+# Color Picker
+
+`ColorPicker` is an outline button that opens a popover with a native colour input, a hex field and
+a preset grid. Every accepted value is normalised to a lowercase six-digit hex string and reported
+through `onValueChange`.
+
+<ComponentMeta id="color-picker" />
+
+## When to use
+
+- Choosing a brand, accent or chart colour inside a settings form.
+- Picking a surface tint from a short list of house colours, with an exact hex as the fallback.
+- Replacing a bare `<input type="color">` with a labelled trigger that shows the current value.
+
+## When not to use
+
+- Choosing from a fixed set of named colours: use `Radio Group` or `Toggle Group`.
+- Entering a non-colour value such as a class name or a token: use `Input`.
+- Free-form CSS colours (`oklch()`, `rgb()`, gradients) or transparency: only 3- and 6-digit hex
+  is accepted and there is no alpha channel.
+- Comparing palettes side by side: render swatches yourself instead of opening one popover at a
+  time.
+
+## Basic usage
+
+<Demo title="Brand color picker" filename="demos/color-picker/basic.tsx" source={basicSource}>
+  <ColorPickerBasic />
+</Demo>
+
+## Custom presets and a disabled picker
+
+Passing `presets` replaces the eight default swatches entirely. `defaultValue` runs the field
+uncontrolled, and `disabled` keeps the trigger visible while blocking the popover.
+
+<Demo
+  title="Custom presets and a disabled picker"
+  filename="demos/color-picker/presets.tsx"
+  source={presetsSource}
+>
+  <ColorPickerPresets />
+</Demo>
+
+## API
+
+<ApiTable component="color-picker" />
+
+## Design guidance
+
+- The trigger is an outline `Button` at the default 36 px height and `w-full`, so its width comes
+  from its container. It shows a 16 px swatch, the uppercase hex in 12 px monospace and a 16 px
+  chevron pinned to the right; the demo constrains it to 176 px.
+- The popover is 256 px wide (`w-64`) with 12 px padding and a 12 px gap between the input row and
+  the presets. The native colour input is a 36 px square; the hex field is 36 px tall.
+- Presets sit in an eight-column grid with 24 px swatches and 6 px gaps. The active swatch gets a
+  2 px ring plus a 1 px offset; more than eight presets wrap onto extra rows.
+- Values accept `#abc` or `#abcdef` in any case, with or without the leading `#`; the stored value
+  is always lowercase six digits, so `#abc` becomes `#aabbcc`. An invalid `value` or
+  `defaultValue` falls back to `#6366f1` for display.
+- A typed draft is validated on blur or Enter. Invalid text is marked with `aria-invalid`, is never
+  committed, and is replaced by the last valid colour.
+
+## Accessibility
+
+| Key             | Behavior                                                                       |
+| --------------- | ------------------------------------------------------------------------------ |
+| Tab / Shift+Tab | Moves focus from the trigger into the popover controls and the preset buttons. |
+| Enter / Space   | Opens the popover from the trigger, chooses a preset, or commits a hex draft.  |
+| Escape          | Closes the popover and returns focus to the trigger.                           |
+
+The trigger's accessible name is `<ariaLabel>: <color>`, so the current value is announced without
+opening the popover. The native colour input, hex field and preset group fall back to `ariaLabel`
+when `pickerLabel`, `hexLabel` or `presetsLabel` are omitted; each preset button is named with the
+preset string as given and carries `aria-pressed` while selected. Invalid hex fields expose
+`aria-invalid`.
+
+Known gap: the component offers no contrast check, so a low-contrast colour is accepted without a
+warning. There is also no alpha channel, and the trigger announces the label and value as one
+string rather than a separate description.
+
+## FAQ
+
+**Can I type a colour without the `#`?** Yes. `normalizeHex` prefixes it, so `6366F1` is stored as
+`#6366f1` and `abc` becomes `#aabbcc`.
+
+**Why did `onValueChange` not fire while I was typing?** A draft is local to the field. The callback
+runs once the text is a valid hex, on blur or Enter; otherwise the draft is discarded.
+
+**Does it work uncontrolled?** Yes. Pass `defaultValue` and omit `value`; the component keeps its own
+state and still calls `onValueChange` on every commit.
+
+## Related
+
+- `Input` for the hex field pattern this component uses.
+- `Popover` for the surface that holds the controls.
+- `Button` for the trigger's outline styling.
+- `Radio Group` when the choice is a fixed, named palette.
+- [Used in the template](https://fish-admin.vercel.app/reports)

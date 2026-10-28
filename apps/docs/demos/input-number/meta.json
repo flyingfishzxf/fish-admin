@@ -1,0 +1,28 @@
+[
+  {
+    "id": "input-number/basic",
+    "component": "input-number",
+    "file": "demos/input-number/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled seat count bounded to 1–50, with a live credit summary.",
+      "zh": "受控的席位数，限制在 1–50，并实时显示积分用量。"
+    }
+  },
+  {
+    "id": "input-number/bounded",
+    "component": "input-number",
+    "file": "demos/input-number/bounded.tsx",
+    "title": {
+      "en": "Steps, precision and bounds",
+      "zh": "步进、精度与边界"
+    },
+    "description": {
+      "en": "Two fields with different step and precision settings, plus a combined price.",
+      "zh": "两个字段使用不同的步进与精度，并合计出价格。"
+    }
+  }
+]

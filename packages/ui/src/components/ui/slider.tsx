@@ -6,6 +6,7 @@ import { Slider as SliderPrimitive } from 'radix-ui'
 import { cn } from '../../lib/utils'
 
 type SliderProps = React.ComponentProps<typeof SliderPrimitive.Root> & {
+  /** Accessible name for each thumb, matched to the thumb by index. */
   thumbLabels?: string[]
 }
 

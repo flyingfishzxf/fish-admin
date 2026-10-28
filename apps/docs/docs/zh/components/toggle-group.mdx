@@ -1,0 +1,110 @@
+---
+title: Toggle Group 切换按钮组
+description: 把多个切换按钮组合为一个控件，支持单选或多选。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ToggleGroupBasic from '@docs/demos/toggle-group/basic'
+import basicSource from '@docs/demos/toggle-group/basic.tsx?raw'
+import ToggleGroupMultiple from '@docs/demos/toggle-group/multiple'
+import multipleSource from '@docs/demos/toggle-group/multiple.tsx?raw'
+
+# Toggle Group 切换按钮组
+
+`Toggle Group` 封装 Radix Toggle Group：`type` 可取 `single` 或 `multiple`，支持用方向键在选项间
+移动焦点，并通过上下文共享 `variant` 与 `size`；`spacing` 决定各按钮是拼成一个分段控件还是彼此
+分开。
+
+<ComponentMeta id="toggle-group" />
+
+## 何时使用
+
+- 在两到五个视图模式之间切换，例如按行或按列。
+- 可同时生效的格式多选，例如加粗与斜体。
+- 每个选项都是开关、而非菜单项的紧凑筛选。
+
+## 何时不使用
+
+- 六个及以上选项：使用 `Select`，避免一行被撑长。
+- 需要随表单提交的值：使用 `Radio Group` 或 `Checkbox Group`，它们具备表单语义。
+- 单一开关：使用 `Toggle` 或 `Switch`。
+
+## 基础用法
+
+<Demo title="单选布局切换器" filename="demos/toggle-group/basic.tsx" source={basicSource}>
+  <ToggleGroupBasic />
+</Demo>
+
+`type="single"` 是必填项。示例用 `value && setLayout(value)` 守住 `onValueChange`，因为在单选组中
+再次按下当前项会回调空字符串。
+
+## 多选与间距
+
+<Demo
+  title="多选，拼接与分离两种形态"
+  filename="demos/toggle-group/multiple.tsx"
+  source={multipleSource}
+>
+  <ToggleGroupMultiple />
+</Demo>
+
+`type="multiple"` 保存数组，因此任意组合——包括一个都不选——都是合法状态。第二个组传入
+`spacing={1}`，让描边按钮彼此分开而不是拼接。
+
+## API
+
+<ApiTable component="toggle-group" />
+
+## 设计指引
+
+- 选项沿用 `Toggle` 的高度：默认 36 px（`h-9`），`sm` 32 px（`h-8`），`lg` 40 px（`h-10`）；水平
+  内边距为 12 px（`px-3`），而不是 `Toggle` 那种图标尺寸的内边距。
+- 根节点是 `w-fit` 且 `rounded-md`，因此按钮组贴合内容宽度；需要更宽时请从外层容器或自己的类入手，
+  它不会自动撑满。
+- `spacing={0}`（默认）会把选项拼在一起：内侧圆角被削平，只有首尾保留圆角，描边选项去掉相邻的左边
+  框，使描边始终为 1 px。正的 `spacing` 会乘以 0.25 rem 的间距单位——`spacing={1}` 为 4 px，
+  `spacing={2}` 为 8 px。
+- 根节点上的 `variant` 与 `size` 会通过上下文下发给每个选项；选项自身的属性只在根节点未设置时兜底。
+- 选中项使用 `--accent` 与 `--accent-foreground`，与 `Toggle` 一致。聚焦项获得 `z-10`，避免 3 px
+  的聚焦外圈被相邻项裁掉。
+- 图标统一为 16 px，与文字的间距为 8 px（`gap-2`），同 `Toggle`。
+
+## 无障碍
+
+| 按键            | 行为                               |
+| --------------- | ---------------------------------- |
+| Tab / Shift+Tab | 从当前选中项进入按钮组，或移出。   |
+| ArrowLeft/Right | 焦点移到前一项或后一项，默认循环。 |
+| ArrowUp/Down    | 垂直布局时同样移动焦点。           |
+| Home / End      | 焦点移到第一项或最后一项。         |
+| Space / Enter   | 切换当前聚焦项。                   |
+
+焦点采用 roving 模式：只有一个选项在 Tab 顺序中，方向键在组内移动。根节点的角色取决于 `type`
+——单选为 `radiogroup`，多选为 `toolbar`；单选选项渲染为带 `aria-checked` 的 `role="radio"`，
+多选选项则是带 `aria-pressed` 的按钮。这两种角色都不会自动提供名称，因此请在组上传入
+`aria-label`，两个示例都这么做。
+
+已知缺口：单选组里方向键只移动焦点，必须按 Space 或 Enter 才会选中，这与常见的单选组“方向键即选中”
+模式不同；另外再次按下当前项会清空选择，如果必须始终有一个选项，请守住 `onValueChange`。
+
+## FAQ
+
+**为什么单选组里唯一的选项也能被取消？** Radix 把取消视为合法的单选状态并回调空字符串。基础示例
+忽略该值以保持恰好一个布局被选中；如果“全部不选”有意义，去掉这个判断即可。
+
+**`variant` 与 `size` 应该设在组上还是每个选项上？** 设在组上。选项优先读取上下文，只在自己的
+属性缺失时兜底，因此逐个设置是多余的，除非你确实想做单点覆盖。
+
+**`spacing` 到底改变了什么？** `0` 把选项合并成一个分段控件——内侧圆角变方、只保留外侧描边、且没有
+单项阴影。大于 0 时按 `spacing × 0.25 rem` 留出间隙，并保留每个选项自己的描边与阴影。
+
+**为什么按钮组没有撑满容器？** 根节点是 `w-fit`。需要通栏控件时，请包一层容器或传入自己的类。
+
+## 相关
+
+- `Toggle`：单个两态按钮。
+- `Radio Group`：需要随表单提交单个值时使用。
+- `Button`：不会保持状态的操作。
+- [在模板中的用法](https://fish-admin.vercel.app/)

@@ -1,0 +1,110 @@
+---
+title: Calendar
+description: A locale-aware month grid for picking a single date or a range, built on react-day-picker.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CalendarBasic from '@docs/demos/calendar/basic'
+import basicSource from '@docs/demos/calendar/basic.tsx?raw'
+import CalendarRange from '@docs/demos/calendar/range'
+import rangeSource from '@docs/demos/calendar/range.tsx?raw'
+
+# Calendar
+
+`Calendar` wraps react-day-picker's `DayPicker` and adds the template's 32 px day cells, month
+navigation and a localized accessible name for every day. Selection modes (`single`, `multiple`,
+`range`) and their values come from the picker itself.
+
+<ComponentMeta id="calendar" />
+
+## When to use
+
+- Picking one date for a form or filter where the calendar can stay visible.
+- Scheduling something with context, such as the next access review or a maintenance window.
+- Choosing a start and end date in one continuous grid.
+
+## When not to use
+
+- A date range field inside a popover: use `Date Range Picker`.
+- Typing a date copied from elsewhere: `Input` is faster than paging through months.
+- Choosing a time of day: use `Time Picker`.
+- Blocking off many unrelated dates: a multi-select or list view reads better.
+
+## Basic usage
+
+<Demo title="Single date for a review" filename="demos/calendar/basic.tsx" source={basicSource}>
+  <CalendarBasic />
+</Demo>
+
+## Range selection
+
+`mode="range"` collects a `{ from, to }` pair: the first click sets the start, the second the end,
+and a third starts over. The demo reports the window and night count outside the grid.
+
+<Demo
+  title="Maintenance window with start and end"
+  filename="demos/calendar/range.tsx"
+  source={rangeSource}
+>
+  <CalendarRange />
+</Demo>
+
+## API
+
+<ApiTable component="calendar" />
+
+## Design guidance
+
+- Day cells are 32 × 32 px (`--cell-size` resolves to `--spacing(8)`); the root adds 12 px padding
+  (`p-3`) and is `w-fit`, so it never stretches to fill its container.
+- The weekday row is 0.8 rem and muted, and every week gets 8 px of top margin (`mt-2`).
+- A single selection paints the day with `bg-primary` / `text-primary-foreground`; a range uses
+  primary on the start and end cells and `bg-accent` for the days in between, with square inner
+  corners. Today gets `bg-accent` when it is not selected.
+- Outside days stay visible by default (`showOutsideDays` is `true`) in a muted colour;
+  `captionLayout="dropdown"` swaps the month label for month and year selects, and the nav buttons
+  take their look from `buttonVariant` (default `"ghost"`).
+- The locale follows `UIProvider`: `zh-CN` renders `zhCN`, everything else `enUS`. Day names are
+  built with `Intl.DateTimeFormat` (weekday, year, month, day) and deliberately omit ordinal
+  suffixes so the spoken label always contains the visible date number.
+
+## Accessibility
+
+| Key                 | Behavior                                         |
+| ------------------- | ------------------------------------------------ |
+| Tab                 | Enters the grid; the focused day receives focus. |
+| Arrow Left / Right  | Moves one day backwards or forwards.             |
+| Arrow Up / Down     | Moves one week backwards or forwards.            |
+| Page Up / Page Down | Moves to the previous or next month.             |
+| Home / End          | Jumps to the first or last day of the week.      |
+| Enter / Space       | Selects the focused day.                         |
+
+The picker renders a `grid` with column headers for weekdays and a button for each day. The selected
+day carries `aria-selected`, and each day's name includes "Today" and "selected" when those states
+apply, using the UI locale. Month arrows are labelled "Go to previous month" / "Go to next month".
+
+Known gap: day targets are 32 px square, below the common 44 px touch recommendation — raise
+`--cell-size` on touch-heavy screens. The component also renders no summary of the current selection
+or the constraints in force; pair it with your own text (the demos use an `aria-live` line) and pass
+`disabled` for blocked dates.
+
+## FAQ
+
+**How do I read the selected range?** With `mode="range"` the value is `{ from, to }`. `to` stays
+empty until the second click, and clicking a third day restarts the range.
+
+**Why is the month in English in my Chinese app?** The locale comes from `UIProvider`; outside a
+provider it falls back to `enUS`. Pass `locale` from `date-fns/locale` to force one.
+
+**Is it controlled?** Passing `onSelect` makes it controlled: keep the value in state and feed it
+back through `selected`, as both demos do. Without `onSelect` the picker keeps the selection
+internally. In single mode a second click on the chosen day clears it unless `required` is set.
+
+## Related
+
+- `Date Range Picker` for a range behind a popover with presets.
+- `Popover` to place the calendar in an overlay.
+- `Button` for the trigger and clear actions.
+- [Used in the template](https://fish-admin.vercel.app/projects/$id)

@@ -1,0 +1,108 @@
+---
+title: Context Menu 上下文菜单
+description: 在指针位置通过右键或长按打开操作菜单，支持子菜单、勾选项与快捷键提示。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ContextMenuBasic from '@docs/demos/context-menu/basic'
+import basicSource from '@docs/demos/context-menu/basic.tsx?raw'
+import ContextMenuFileActions from '@docs/demos/context-menu/file-actions'
+import fileActionsSource from '@docs/demos/context-menu/file-actions.tsx?raw'
+
+# Context Menu 上下文菜单
+
+`Context Menu` 在指针所在位置打开操作列表，通常由右键触发。它封装 Radix 上下文菜单，提供条目、
+勾选项、单选项、标题、分隔线、快捷键提示与一级子菜单；内容通过传送门渲染，沿用模板的浮层样式。
+
+<ComponentMeta id="context-menu" />
+
+## 何时使用
+
+- 操作依附于某个对象：文件行、表格行、看板卡片或日程事件。
+- 作为可见操作的补充，为熟练用户提供「复制链接」「重命名」等快捷入口。
+- 列表很密，逐行放操作按钮会带来视觉噪音时。
+
+## 何时不使用
+
+- 页面主操作：保持为可见的 `Button`。
+- 目标不明显的场景，尤其是触屏：搭配可见操作，或改用 `Dropdown Menu`。
+- 为表单选择值：使用 `Select` 或 `Radio Group`。
+- 页面之间的跳转：使用链接或 `Sidebar`。
+
+## 基础用法
+
+<Demo title="右键操作" filename="demos/context-menu/basic.tsx" source={basicSource}>
+  <ContextMenuBasic />
+</Demo>
+
+## 带子菜单的文件操作
+
+`ContextMenuSub` 在悬停或用右方向键时打开，`inset` 让没有图标的条目与带图标的条目对齐。勾选项
+自行维护状态；禁用项会被方向键与首字母跳转跳过，并带有 `aria-disabled`，无法被激活。
+
+<Demo
+  title="带子菜单的文件操作"
+  filename="demos/context-menu/file-actions.tsx"
+  source={fileActionsSource}
+>
+  <ContextMenuFileActions />
+</Demo>
+
+## API
+
+<ApiTable component="context-menu" />
+
+## 设计指引
+
+- 内容最小宽度 128 px（`min-w-[8rem]`），内边距 4 px，文字 14 px，因此每行约 32 px 高。最大高度
+  跟随可视区域可用高度并可滚动，长菜单在靠近屏幕底部时依然可用。
+- 条目上下内边距 6 px、左右 8 px，图标与文字间距 8 px。`variant="destructive"` 会改写文字与图标
+  颜色并给聚焦底色染色；请放在最后，并在前面加一条 `ContextMenuSeparator`。
+- `inset` 增加 32 px 左内边距（`pl-8`），让无图标条目与有图标条目对齐。勾选项与单选项始终预留
+  这 32 px：距左边缘 8 px 的 14 px 指示器槽位（内含 16 px 勾选图标），或 8 px 圆点。
+- 标题与条目共用内边距，字号 14 px、中等字重。快捷键位于最右侧，字号 12 px、字距加宽，仅作视觉
+  提示——组件不会注册任何按键绑定。
+- 子菜单保持 128 px 最小宽度，阴影从父级的 `shadow-md` 提升为 `shadow-lg`。
+
+## 无障碍
+
+| 按键          | 行为                                   |
+| ------------- | -------------------------------------- |
+| 右键          | 在指针位置打开菜单。                   |
+| 长按（触屏）  | 按住 700 ms 后打开；移动或抬起会取消。 |
+| ↓ / ↑         | 移动到下一个或上一个条目。             |
+| Home / End    | 移动到第一个或最后一个条目。           |
+| 字符键        | 首字母跳转：跳到文本匹配的下一个条目。 |
+| →             | 在子菜单触发器上打开子菜单。           |
+| ←             | 在子菜单内关闭它并回到父条目。         |
+| Enter / Space | 激活当前条目。                         |
+| Escape        | 关闭菜单并把焦点交还给触发器。         |
+
+内容暴露为 `role="menu"`；条目是 `menuitem`，勾选项是带 `aria-checked` 的 `menuitemcheckbox`，
+单选项是带 `aria-checked` 的 `menuitemradio`。子菜单触发器带 `aria-haspopup` 与
+`aria-expanded`，禁用项暴露 `aria-disabled="true"` 且无法激活。
+
+已知缺口：`ContextMenuTrigger` 默认渲染不可聚焦的 `<span>`，不添加 `aria-haspopup` 或
+`aria-expanded`，也不注册任何按键处理。即使配合 `asChild`，非交互的行也不会进入 Tab 顺序，因此指针
+（或长按）是唯一可靠的打开方式。请为键盘用户搭配可见操作——行内按钮或 `Dropdown Menu`。
+
+## FAQ
+
+**可以用更多操作按钮打开吗？** 不适合当作上下文菜单：Radix 会把内容锚定到指针位置，此时没有合理
+落点。触发按钮请使用 `Dropdown Menu`。
+
+**可以控制打开状态吗？** 可以，根组件接受 `open` 与 `onOpenChange`。若在首次交互前就打开，菜单会
+锚定到视口左上角，Radix 也会输出警告，因为还没有指针坐标。
+
+**触屏设备可用吗？** 长按 700 ms 可打开；指针移动、抬起或取消会清除计时器。由于长按不易被发现，
+仍建议提供可见操作。
+
+## 相关
+
+- `Dropdown Menu`：同样的操作放在按钮之后。
+- `Button`：与菜单互补的可见操作。
+- `Checkbox`：勾选条目在表单里的对应控件。
+- `Alert Dialog`：破坏性条目需要二次确认时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

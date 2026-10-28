@@ -1,0 +1,101 @@
+---
+title: Color Picker 颜色选择器
+description: 从八个预设、原生取色器或手输十六进制值中选择颜色，每次有效变更都会归一化后回传。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ColorPickerBasic from '@docs/demos/color-picker/basic'
+import basicSource from '@docs/demos/color-picker/basic.tsx?raw'
+import ColorPickerPresets from '@docs/demos/color-picker/presets'
+import presetsSource from '@docs/demos/color-picker/presets.tsx?raw'
+
+# Color Picker 颜色选择器
+
+`ColorPicker` 是一个描边按钮，点击后弹出包含原生取色器、十六进制输入框与预设色板的浮层。
+所有被接受的值都会归一化为小写六位十六进制，并通过 `onValueChange` 回传。
+
+<ComponentMeta id="color-picker" />
+
+## 何时使用
+
+- 在设置表单里选择品牌色、强调色或图表颜色。
+- 从少量品牌色中挑选表面色调，并保留手输精确十六进制值的方式。
+- 用带标签的触发器替换裸露的 `<input type="color">`，同时始终显示当前颜色。
+
+## 何时不使用
+
+- 从固定的命名色中单选：使用 `Radio Group` 或 `Toggle Group`。
+- 输入类名、token 等非颜色值：使用 `Input`。
+- 需要自由格式的 CSS 颜色（`oklch()`、`rgb()`、渐变）或透明度：这里只接受 3 位和 6 位
+  十六进制，且没有 alpha 通道。
+- 需要并排比较多个色板：直接渲染色块，而不是逐个打开浮层。
+
+## 基础用法
+
+<Demo title="品牌色选择器" filename="demos/color-picker/basic.tsx" source={basicSource}>
+  <ColorPickerBasic />
+</Demo>
+
+## 自定义预设与禁用状态
+
+传入 `presets` 会完整替换默认的八个色块。`defaultValue` 让字段以非受控方式运行，
+`disabled` 则保留触发器但阻止浮层打开。
+
+<Demo title="自定义预设与禁用状态" filename="demos/color-picker/presets.tsx" source={presetsSource}>
+  <ColorPickerPresets />
+</Demo>
+
+## API
+
+<ApiTable component="color-picker" />
+
+## 设计指引
+
+- 触发器是默认 36 px 高的描边 `Button`，宽度为 `w-full`，实际宽度由容器决定。内部依次是
+  16 px 色块、12 px 等宽字体的全大写十六进制值，以及靠右的 16 px 折叠箭头；示例把宽度限制在
+  176 px。
+- 浮层宽 256 px（`w-64`），内边距 12 px，输入行与色板之间间距 12 px。原生取色器为 36 px
+  方形，十六进制输入框高 36 px。
+- 色板是八列网格，色块 24 px、间距 6 px。当前色块带 2 px 描边环和 1 px 偏移；超过八个预设
+  会换行。
+- 值接受任意大小写的 `#abc` 或 `#abcdef`，`#` 可省略；存储值始终是小写六位，因此 `#abc`
+  会变成 `#aabbcc`。无效的 `value` 或 `defaultValue` 会回退到 `#6366f1` 显示。
+- 手输的草稿在失焦或按 Enter 时校验。无效文本会标记 `aria-invalid`，永不提交，并恢复为上一个
+  有效颜色。
+
+## 无障碍
+
+| 按键            | 行为                                                       |
+| --------------- | ---------------------------------------------------------- |
+| Tab / Shift+Tab | 将焦点从触发器移入浮层控件与预设色块之间。                 |
+| Enter / Space   | 从触发器打开浮层、选择预设，或在输入框中提交十六进制草稿。 |
+| Escape          | 关闭浮层并把焦点交还给触发器。                             |
+
+触发器的无障碍名称是 `<ariaLabel>: <color>`，读屏用户无需打开浮层即可听到当前值。原生取色器、
+十六进制输入框与预设组在缺少 `pickerLabel`、`hexLabel`、`presetsLabel` 时都会回退到
+`ariaLabel`；每个预设按钮以传入的预设字符串命名，选中时带 `aria-pressed`。无效的十六进制输入框
+会暴露 `aria-invalid`。
+
+已知缺口：组件不做对比度校验，低对比颜色会被直接接受且没有提示；也没有 alpha 通道；触发器把
+标签与当前值合并成一个字符串朗读，而不是拆成名称与描述。
+
+## FAQ
+
+**可以省略 `#` 输入颜色吗？** 可以。`normalizeHex` 会自动补上，`6366F1` 存为 `#6366f1`，
+`abc` 存为 `#aabbcc`。
+
+**为什么输入过程中 `onValueChange` 没有触发？** 草稿只存在于输入框内。文本成为有效十六进制后，
+在失焦或按 Enter 时才回调；否则草稿会被丢弃。
+
+**可以非受控使用吗？** 可以。传入 `defaultValue` 并省略 `value`，组件自行维护状态，每次提交仍会
+调用 `onValueChange`。
+
+## 相关
+
+- `Input`：本组件使用的十六进制输入框模式。
+- `Popover`：承载这些控件的浮层。
+- `Button`：触发器的描边样式。
+- `Radio Group`：选项是固定的命名色板时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

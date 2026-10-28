@@ -1,0 +1,104 @@
+---
+title: Input Number 数字输入框
+description: 带减/加按钮、边界裁剪与定点小数格式化的有界数字输入框。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import InputNumberBasic from '@docs/demos/input-number/basic'
+import basicSource from '@docs/demos/input-number/basic.tsx?raw'
+import InputNumberBounded from '@docs/demos/input-number/bounded'
+import boundedSource from '@docs/demos/input-number/bounded.tsx?raw'
+
+# Input Number 数字输入框
+
+`Input Number` 渲染一个带减号与加号按钮的数字 spinbutton。输入过程中它保留草稿字符串，通过
+`onValueChange` 发出数字，在失焦时裁剪到边界并重新格式化，还可以按固定小数位取整。
+
+<ComponentMeta id="input-number" />
+
+## 何时使用
+
+- 收集有范围的数量，例如席位数、许可证数量或重试次数。
+- 希望用户用 `step` 微调，而不是每次手动输入数字。
+- 需要固定小数位，例如以 0.5 GB 为步进、只显示一位小数的存储量。
+
+## 何时不使用
+
+- 无边界或带格式的数字，例如带货币符号的金额：使用 `Input`，自行格式化文本。
+- 在较大范围内选择、更关注相对位置的场景：使用 `Slider`。
+- 只是内容恰好为数字的自由文本：使用 `Input`。
+
+## 基础用法
+
+<Demo title="受控席位数并实时显示汇总" filename="demos/input-number/basic.tsx" source={basicSource}>
+  <InputNumberBasic />
+</Demo>
+
+## 步进、精度与边界
+
+<Demo
+  title="不同步进、一位小数精度与合计金额"
+  filename="demos/input-number/bounded.tsx"
+  source={boundedSource}
+>
+  <InputNumberBounded />
+</Demo>
+
+## API
+
+<ApiTable component="input-number" />
+
+## 设计指引
+
+- 外层高 36 px（`h-9`）且占满宽度；`size="sm"` 降为 32 px（`h-8`）。两侧步进按钮宽 36 px
+  （`w-9`），小尺寸为 32 px（`w-8`），与输入框之间用 1 px 的 `border-input` 分隔线隔开。
+- 聚焦样式画在外层：`focus-within:border-ring` 加 3 px 的 `ring-ring/50` 外圈。禁用时整体
+  透明度降为 50%，两个按钮都不可交互。
+- 输入文字居中，使用 `text-sm` 与 `tabular-nums`；占位符只在草稿为空时出现。
+- `step` 默认是 `1`。设置 `precision` 后草稿按 `toFixed(precision)` 显示；未设置时先按 12 位
+  有效数字取整，以隐藏浮点误差。
+- 输入只要可解析就立即发出，失焦时才裁剪到 `min`/`max` 并按精度取整。像 `-` 这样的中间草稿
+  会留在输入框里且不发出值；`1.` 已经可以解析为 `1`。
+- 到达 `min` 时减号按钮禁用，到达 `max` 时加号按钮禁用，禁用态透明度为 40%。组件没有宽度
+  属性——根节点是 `w-full`，请用外层容器限制宽度（示例中为 9 rem）。
+
+## 无障碍
+
+| 按键            | 行为                                           |
+| --------------- | ---------------------------------------------- |
+| Tab / Shift+Tab | 在减号按钮、spinbutton、加号按钮之间移动焦点。 |
+| ArrowUp         | 按 `step` 增加，然后裁剪并取整。               |
+| ArrowDown       | 按 `step` 减少，然后裁剪并取整。               |
+| Enter           | 组件不做额外处理；外层表单若有提交控件则提交。 |
+
+内部输入保留 `role="spinbutton"`、`inputMode="decimal"`，并暴露 `aria-valuemin`、
+`aria-valuemax`、`aria-valuenow` 与格式化后的 `aria-valuetext`。两个按钮都是
+`type="button"`，带有本地化的“Increase”和“Decrease”标签，因此不会误触发表单提交。
+
+已知缺口：组件不渲染可见标签，且只把 `aria-label` 透传给 spinbutton。请把 `id` 与 `Label`
+配对，让字段拥有持久名称。已知缺口：没有 `aria-describedby` 属性，外部提示文案无法关联到
+输入框。
+
+## FAQ
+
+**`max` 是 10，为什么手动输入 99 仍会显示？** `onValueChange` 会立即上报解析出的草稿，裁剪
+只发生在失焦时。示例的汇总文案显示的是裁剪后的值。
+
+**如何清空输入框？** 把 `value` 设为 `null`。删除全部文字会发出 `onValueChange(null)`，失焦后
+字段保持为空。`undefined` 专门表示尚不可解析的草稿。
+
+**能显示小数吗？** 可以。设置 `step={0.5}` 与 `precision={1}` 可得到 `1.5` 和 `0.5`；即使不设
+`precision`，值也会按 12 位有效数字取整，避免浮点噪声。
+
+**能和表单库一起用吗？** 它完全受控——`value` 加 `onValueChange`——请用 Controller 或本地
+状态绑定；组件不转发 `ref`，也不透传原生 change 事件。
+
+## 相关
+
+- `Label`：提供可见且关联的名称。
+- `Input`：自由文本与带格式的文本。
+- `Slider`：具体数值不如相对位置重要时使用。
+- `Form`：接好标签与校验消息。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

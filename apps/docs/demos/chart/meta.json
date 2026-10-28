@@ -1,0 +1,28 @@
+[
+  {
+    "id": "chart/basic",
+    "component": "chart",
+    "file": "demos/chart/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Monthly revenue as bars with a themed tooltip and dashed grid.",
+      "zh": "按月收入柱状图，带主题化提示框与虚线网格。"
+    }
+  },
+  {
+    "id": "chart/area-legend",
+    "component": "chart",
+    "file": "demos/chart/area-legend.tsx",
+    "title": {
+      "en": "Area chart with a legend",
+      "zh": "面积图与图例"
+    },
+    "description": {
+      "en": "Two area series sharing one axis, a chart legend and a line tooltip indicator.",
+      "zh": "两条面积序列共用坐标轴，带图例与线性提示标记。"
+    }
+  }
+]

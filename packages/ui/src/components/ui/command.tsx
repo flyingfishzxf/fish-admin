@@ -28,9 +28,13 @@ function CommandDialog({
   showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof Dialog> & {
+  /** Title rendered for screen readers only. @default 'Command Palette' */
   title?: string
+  /** Description rendered for screen readers only. @default 'Search for a command to run...' */
   description?: string
+  /** Extra classes for the dialog content. */
   className?: string
+  /** Render the close button in the top-right corner. @default true */
   showCloseButton?: boolean
 }) {
   return (
@@ -110,9 +114,11 @@ function CommandSeparator({
   className,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Separator>) {
+  // A separator role is not allowed inside cmdk's listbox; the rule is purely visual.
   return (
-    <CommandPrimitive.Separator
+    <div
       data-slot="command-separator"
+      aria-hidden="true"
       className={cn('-mx-1 h-px bg-border', className)}
       {...props}
     />

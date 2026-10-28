@@ -1,0 +1,28 @@
+[
+  {
+    "id": "input-otp/basic",
+    "component": "input-otp",
+    "file": "demos/input-otp/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled six-digit code with a live completion hint.",
+      "zh": "受控的六位验证码，并实时显示输入进度。"
+    }
+  },
+  {
+    "id": "input-otp/resend",
+    "component": "input-otp",
+    "file": "demos/input-otp/resend.tsx",
+    "title": {
+      "en": "Verification with resend",
+      "zh": "验证与重新发送"
+    },
+    "description": {
+      "en": "Six slots split 3 + 3 by a separator, an onComplete confirmation and a resend action.",
+      "zh": "六个槽位由分隔符分成 3 + 3，带 onComplete 确认与重新发送操作。"
+    }
+  }
+]

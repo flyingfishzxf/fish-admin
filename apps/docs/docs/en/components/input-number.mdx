@@ -1,0 +1,113 @@
+---
+title: Input Number
+description: A bounded numeric field with decrement and increment buttons, clamping and fixed-precision formatting.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import InputNumberBasic from '@docs/demos/input-number/basic'
+import basicSource from '@docs/demos/input-number/basic.tsx?raw'
+import InputNumberBounded from '@docs/demos/input-number/bounded'
+import boundedSource from '@docs/demos/input-number/bounded.tsx?raw'
+
+# Input Number
+
+`Input Number` renders a numeric spinbutton flanked by decrement and increment buttons. It keeps a
+draft string while you type, emits numbers through `onValueChange`, clamps and reformats on blur, and
+can round to a fixed number of decimal places.
+
+<ComponentMeta id="input-number" />
+
+## When to use
+
+- Collecting a bounded quantity such as seats, licences or retries.
+- Letting people nudge a value with `step` instead of typing every digit.
+- Values that need fixed decimals, for example a 0.5 GB storage increment with one decimal shown.
+
+## When not to use
+
+- Unbounded or heavily formatted numbers such as currency with symbols: use `Input` and format the
+  text yourself.
+- Choosing a value across a wide range where position matters: use `Slider`.
+- Free-form text that only happens to contain digits: use `Input`.
+
+## Basic usage
+
+<Demo
+  title="Controlled seat count with a live summary"
+  filename="demos/input-number/basic.tsx"
+  source={basicSource}
+>
+  <InputNumberBasic />
+</Demo>
+
+## Steps, precision and bounds
+
+<Demo
+  title="Different steps, one-decimal precision and a combined total"
+  filename="demos/input-number/bounded.tsx"
+  source={boundedSource}
+>
+  <InputNumberBounded />
+</Demo>
+
+## API
+
+<ApiTable component="input-number" />
+
+## Design guidance
+
+- The wrapper is 36 px tall (`h-9`) and full width; `size="sm"` drops it to 32 px (`h-8`). The stepper
+  buttons are 36 px (`w-9`) and 32 px (`w-8`) wide, separated from the input by 1 px
+  `border-input` lines.
+- Focus is shown on the wrapper: `focus-within:border-ring` plus a 3 px `ring-ring/50` ring. A
+  disabled field fades to 50% opacity and both buttons become non-interactive.
+- The input is centred, uses `text-sm` with `tabular-nums`, and shows a placeholder only while the
+  draft is empty.
+- `step` defaults to `1`. With `precision`, the displayed draft is `toFixed(precision)`; without it,
+  values are rounded to 12 significant digits before display.
+- Typed values are emitted as soon as they parse, then clamped to `min`/`max` and rounded on blur.
+  A partial draft such as `-` stays in the field without emitting; `1.` already parses to `1`.
+- At `min` the decrement button disables, at `max` the increment button disables. Both use 40%
+  opacity. There is no width prop — the root is `w-full`, so size it with a wrapper (the demo uses
+  9 rem).
+
+## Accessibility
+
+| Key             | Behavior                                                                     |
+| --------------- | ---------------------------------------------------------------------------- |
+| Tab / Shift+Tab | Moves between the decrement button, the spinbutton and the increment button. |
+| ArrowUp         | Increases by `step`, then clamps and rounds.                                 |
+| ArrowDown       | Decreases by `step`, then clamps and rounds.                                 |
+| Enter           | No custom handling; a surrounding form submits if it has a submit control.   |
+
+The inner input keeps `role="spinbutton"`, `inputMode="decimal"` and exposes `aria-valuemin`,
+`aria-valuemax`, `aria-valuenow` and a formatted `aria-valuetext`. The two buttons are `type="button"`
+with localised "Increase" and "Decrease" labels, so they never submit a form by accident.
+
+Known gap: the component renders no visible label and forwards only `aria-label` to the spinbutton.
+Pair `id` with a `Label` so the field has a persistent name. Known gap: there is no
+`aria-describedby` prop, so an external hint cannot be attached to the input.
+
+## FAQ
+
+**Why does a typed 99 stay visible when `max` is 10?** `onValueChange` reports the parsed draft
+immediately, and clamping only happens on blur. The demo shows the clamped value in the summary.
+
+**How do I clear the field?** Set `value={null}`. Deleting the text emits `onValueChange(null)`, and
+blur keeps the field empty. `undefined` is reserved for drafts that are not parseable yet.
+
+**Can it show decimals?** Yes. Set `step={0.5}` and `precision={1}` to get `1.5` and `0.5`; without
+`precision` the value is still rounded to 12 significant digits to hide float noise.
+
+**Does it work with a form library?** It is controlled only — `value` plus `onValueChange` — so bind it
+with a controller or local state; it does not forward `ref` or native change events.
+
+## Related
+
+- `Label` for the visible, associated name.
+- `Input` for free-form and formatted text.
+- `Slider` when the exact number matters less than its position.
+- `Form` to wire labels and validation messages.
+- [Used in the template](https://fish-admin.vercel.app/reports)

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "sonner/basic",
+    "component": "sonner",
+    "file": "demos/sonner/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Success, error and neutral toasts fired from three buttons, with Toaster mounted once.",
+      "zh": "三个按钮分别触发成功、错误与普通提示，Toaster 只挂载一次。"
+    }
+  },
+  {
+    "id": "sonner/actions",
+    "component": "sonner",
+    "file": "demos/sonner/actions.tsx",
+    "title": {
+      "en": "Toasts with an action",
+      "zh": "带操作按钮的提示"
+    },
+    "description": {
+      "en": "Undo and retry actions that stay on screen twice as long as the default.",
+      "zh": "撤销与重试操作，展示时长是默认值的两倍。"
+    }
+  }
+]
