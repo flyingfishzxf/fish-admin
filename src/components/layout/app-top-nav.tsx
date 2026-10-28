@@ -14,7 +14,14 @@ import {
   DropdownMenuTrigger,
 } from '@fish-admin/react'
 
-import { findNavItem, isPathActive } from '@/config/nav'
+import {
+  findNavItem,
+  internalNavItems,
+  isExternalNavItem,
+  isPathActive,
+  type NavItem,
+} from '@/config/nav'
+import { NavItemLink } from '@/components/layout/nav-item-link'
 import { useMenuNavGroups } from '@/features/navigation/queries'
 
 export function AppTopNav() {
@@ -43,9 +50,7 @@ export function AppTopNav() {
 
       <nav className="no-scrollbar ml-2 flex min-w-0 items-center gap-0.5 overflow-x-auto">
         {groups.map((group) => {
-          const inGroup = group.items.some(
-            (item) => activeItem?.to === item.to || item.to === activeItem?.to,
-          )
+          const inGroup = internalNavItems(group.items).some((item) => item.to === activeItem?.to)
           return (
             <DropdownMenu key={group.titleKey}>
               <DropdownMenuTrigger asChild>
@@ -65,15 +70,22 @@ export function AppTopNav() {
                 <DropdownMenuSeparator />
                 {group.items.map((item) => {
                   const Icon = item.icon
-                  const entries = item.children?.length ? item.children : [item]
+                  const children = isExternalNavItem(item) ? undefined : item.children
+                  const entries: NavItem[] = children?.length ? children : [item]
                   return entries.map((entry) => (
                     <DropdownMenuItem
-                      key={entry.to}
-                      className={isPathActive(pathname, entry.to) ? 'bg-accent' : undefined}
-                      onClick={() => navigate({ to: entry.to })}
+                      key={isExternalNavItem(entry) ? entry.href : entry.to}
+                      asChild
+                      className={
+                        !isExternalNavItem(entry) && isPathActive(pathname, entry.to)
+                          ? 'bg-accent'
+                          : undefined
+                      }
                     >
-                      {entry === item ? <Icon /> : <span className="w-4" aria-hidden />}
-                      {t(entry.titleKey)}
+                      <NavItemLink item={entry}>
+                        {entry === item ? <Icon /> : <span className="w-4" aria-hidden />}
+                        {t(entry.titleKey)}
+                      </NavItemLink>
                     </DropdownMenuItem>
                   ))
                 })}

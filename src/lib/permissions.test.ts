@@ -1,7 +1,7 @@
-import { LayoutDashboard, ShieldCheck, UserRound, Users } from 'lucide-react'
+import { BookOpen, LayoutDashboard, ShieldCheck, UserRound, Users } from 'lucide-react'
 import { describe, expect, it } from 'vitest'
 
-import type { NavGroup } from '@/config/nav'
+import { internalNavItems, type NavGroup } from '@/config/nav'
 import { filterNavGroups, hasPermission } from '@/lib/permissions'
 
 describe('hasPermission', () => {
@@ -55,7 +55,24 @@ describe('filterNavGroups', () => {
     const filtered = filterNavGroups(groups, ['dashboard:read'])
 
     expect(filtered).toHaveLength(1)
-    expect(filtered[0].items.map((item) => item.to)).toEqual(['/'])
+    expect(internalNavItems(filtered[0].items).map((item) => item.to)).toEqual(['/'])
+  })
+
+  it('keeps an external entry for a session that grants it nothing', () => {
+    // The docs link claims no permission, so the filter never removes it: hiding
+    // it is the env seam's job, not the permission check's.
+    const withDocs: NavGroup[] = [
+      {
+        titleKey: 'first',
+        items: [
+          ...groups[0].items,
+          { titleKey: 'docs', href: 'https://docs.acme.test', icon: BookOpen, external: true },
+        ],
+      },
+    ]
+
+    const filtered = filterNavGroups(withDocs, ['dashboard:read'])
+    expect(filtered[0].items.map((item) => item.titleKey)).toEqual(['dashboard', 'docs'])
   })
 
   it('keeps unrestricted items for any signed-in user', () => {

@@ -8,6 +8,7 @@
   "items": {
     "dashboard": "Dashboard",
     "reports": "Reports",
+    "docs": "Component docs",
     "projects": "Projects",
     "workflows": "Approvals",
     "files": "Files",

@@ -1,8 +1,8 @@
-import { NAV_GROUPS, type NavItem } from '@/config/nav'
+import { NAV_GROUPS, internalNavItems, type InternalNavItem } from '@/config/nav'
 import type { MenuGroupPayload, MenuPayload, MenuRoutePayload } from '@/features/navigation/api'
 import { iconNameFor } from '@/features/navigation/menu-icons'
 
-function toRoute(item: NavItem): MenuRoutePayload {
+function toRoute(item: InternalNavItem): MenuRoutePayload {
   return {
     titleKey: item.titleKey,
     path: item.to,
@@ -19,7 +19,9 @@ function toRoute(item: NavItem): MenuRoutePayload {
 export function buildMenuPayload(): MenuPayload {
   const groups = NAV_GROUPS.map((group): MenuGroupPayload => ({
     titleKey: group.titleKey,
-    items: group.items.map(toRoute),
+    // The wire format only carries routes, and the docs entry is appended
+    // client-side, so this serializes the internal items alone.
+    items: internalNavItems(group.items).map(toRoute),
   }))
 
   return { groups }

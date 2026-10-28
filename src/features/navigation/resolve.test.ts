@@ -1,7 +1,13 @@
 import { CircleDot, LayoutDashboard, Users } from 'lucide-react'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { NAV_GROUPS } from '@/config/nav'
+import {
+  NAV_GROUPS,
+  internalNavItems,
+  isExternalNavItem,
+  type NavGroup,
+  type NavItem,
+} from '@/config/nav'
 import { PERMISSION_CODES } from '@/config/permissions'
 
 import { MENU_ICON_NAMES, iconNameFor, resolveMenuIcon } from './menu-icons'
@@ -9,6 +15,16 @@ import type { MenuPayload, MenuRoutePayload } from './api'
 import { resolveMenuGroups } from './resolve'
 
 const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((group) => group.items)
+
+// The resolver may append the external docs entry, which has no path; the path
+// assertions below only ever care about the internal items.
+function pathsOf(items: NavItem[]) {
+  return internalNavItems(items).map((item) => item.to)
+}
+
+function childrenOf(item: NavItem) {
+  return isExternalNavItem(item) ? undefined : item.children
+}
 
 function payload(
   items: Array<Record<string, unknown>>,
@@ -47,7 +63,7 @@ describe('resolveMenuGroups', () => {
 
   it('filters the fallback by the session, exactly as the offline nav did', () => {
     const granted = [PERMISSION_CODES.dashboardRead]
-    const paths = resolveMenuGroups(null, granted).flatMap((group) => group.items.map((i) => i.to))
+    const paths = resolveMenuGroups(null, granted).flatMap((group) => pathsOf(group.items))
 
     expect(paths).toContain('/')
     expect(paths).not.toContain('/users')
@@ -84,7 +100,7 @@ describe('resolveMenuGroups', () => {
       [],
     )
 
-    expect(groups[0].items.map((item) => item.to)).toEqual(['/'])
+    expect(pathsOf(groups[0].items)).toEqual(['/'])
   })
 
   it('degrades an unknown icon instead of throwing', () => {
@@ -106,7 +122,7 @@ describe('resolveMenuGroups', () => {
       ['*'],
     )
 
-    expect(groups[0].items.map((item) => item.to)).toEqual(['/users'])
+    expect(pathsOf(groups[0].items)).toEqual(['/users'])
     // No icon on the surviving entry: the marker stands in rather than a crash.
     expect(groups[0].items[0].icon).toBe(CircleDot)
   })
@@ -133,10 +149,10 @@ describe('resolveMenuGroups', () => {
       ['*'],
     )
 
-    expect(groups[0].items.map((item) => item.to)).toEqual(['/users', '/roles'])
-    expect(groups[0].items[0].children?.map((child) => child.to)).toEqual(['/profile'])
+    expect(pathsOf(groups[0].items)).toEqual(['/users', '/roles'])
+    expect(childrenOf(groups[0].items[0])?.map((child) => child.to)).toEqual(['/profile'])
     // A parent whose only child was unrenderable keeps its own link, not an empty subtree.
-    expect(groups[0].items[1].children).toBeUndefined()
+    expect(childrenOf(groups[0].items[1])).toBeUndefined()
   })
 
   it('falls back when the payload is not shaped like a menu', () => {
@@ -175,5 +191,36 @@ describe('resolveMenuGroups', () => {
     )
 
     expect(groups.map((group) => group.titleKey)).toEqual(['nav:groups.overview'])
+  })
+})
+
+function externalItems(groups: NavGroup[]) {
+  return groups.flatMap((group) => group.items.filter((item) => isExternalNavItem(item)))
+}
+
+describe('docs entry', () => {
+  afterEach(() => vi.unstubAllEnvs())
+
+  it('appears for every role, in both the served and the offline menu', async () => {
+    vi.stubEnv('VITE_DOCS_URL', 'https://docs.acme.test')
+    vi.resetModules()
+    const { resolveMenuGroups: resolve } = await import('./resolve')
+
+    for (const granted of [['*'], ['project:read'], []]) {
+      const served = resolve(
+        payload([{ titleKey: 'nav:items.dashboard', path: '/', icon: 'layout-dashboard' }]),
+        granted,
+      )
+      const offline = resolve(null, granted)
+      expect(externalItems(served)).toHaveLength(1)
+      expect(externalItems(offline)).toHaveLength(1)
+    }
+  })
+
+  it('is absent when the docs URL is unset', async () => {
+    vi.stubEnv('VITE_DOCS_URL', '')
+    vi.resetModules()
+    const { resolveMenuGroups: resolve } = await import('./resolve')
+    expect(externalItems(resolve(null, ['*']))).toHaveLength(0)
   })
 })

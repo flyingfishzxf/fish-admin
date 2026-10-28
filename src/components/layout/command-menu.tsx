@@ -13,7 +13,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '@fish-admin/react'
-import { flattenNavItems } from '@/config/nav'
+import { flattenNavItems, isExternalNavItem } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'
 import { changeLanguage, nextLanguage } from '@/lib/i18n'
 import { useResolvedTheme } from '@/lib/theme'
@@ -75,11 +75,20 @@ export function CommandMenu() {
           <CommandGroup key={group.titleKey} heading={t(group.titleKey)}>
             {flattenNavItems([group]).map((item) => {
               const Icon = item.icon
+              const href = isExternalNavItem(item) ? item.href : item.to
               return (
                 <CommandItem
-                  key={item.to}
-                  value={`${t(item.titleKey)} ${item.to}`}
-                  onSelect={() => runAction(() => navigate({ to: item.to }))}
+                  key={href}
+                  value={`${t(item.titleKey)} ${href}`}
+                  onSelect={() =>
+                    runAction(() => {
+                      // A CommandItem is a button, not an anchor, so the palette
+                      // opens the tab itself.
+                      if (isExternalNavItem(item)) {
+                        window.open(item.href, '_blank', 'noopener,noreferrer')
+                      } else navigate({ to: item.to })
+                    })
+                  }
                 >
                   <Icon />
                   {t(item.titleKey)}

@@ -17,7 +17,7 @@ import {
   cn,
 } from '@fish-admin/react'
 
-import { findNavItem, flattenNavItems, type AppPath } from '@/config/nav'
+import { findNavItem, flattenInternalNavItems, type AppPath } from '@/config/nav'
 import { useMenuNavGroups } from '@/features/navigation/queries'
 
 import { useUiStore, type ShellTab } from '@/stores/ui-store'
@@ -42,7 +42,8 @@ export function AppTabs() {
   const toggleTabPin = useUiStore((state) => state.toggleTabPin)
   const keepOnlyTabs = useUiStore((state) => state.keepOnlyTabs)
 
-  const reachable = useMemo(() => flattenNavItems(groups).map((item) => item.to), [groups])
+  // A tab is a route in the shell, so the external docs entry never opens one.
+  const reachable = useMemo(() => flattenInternalNavItems(groups).map((item) => item.to), [groups])
 
   useEffect(() => {
     // An empty menu means the request has not resolved yet, not that the role

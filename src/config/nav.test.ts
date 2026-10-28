@@ -6,8 +6,11 @@ import {
   NAV_GROUPS,
   findNavGroup,
   findNavItem,
+  flattenInternalNavItems,
   flattenNavItems,
+  internalNavItems,
   isAppPath,
+  isExternalNavItem,
   isManagedNavPath,
   isPathActive,
   type NavGroup,
@@ -120,7 +123,27 @@ describe('navigation config', () => {
 
     expect(findNavItem('/reports', withChildren)?.titleKey).toBe('nav:items.reports')
     expect(findNavItem('/nope', withChildren)).toBeUndefined()
-    expect(flattenNavItems(withChildren).map((item) => item.to)).toEqual(['/', '/reports'])
+    expect(flattenInternalNavItems(withChildren).map((item) => item.to)).toEqual(['/', '/reports'])
+  })
+
+  it('keeps an external entry out of every path-facing helper', () => {
+    const docs: NavItem = {
+      titleKey: 'nav:items.docs',
+      href: 'https://docs.acme.test',
+      icon: ALL_NAV_ITEMS[0].icon,
+      external: true,
+    }
+    const groups: NavGroup[] = [
+      { titleKey: 'nav:groups.overview', items: [...NAV_GROUPS[0].items, docs] },
+    ]
+
+    // The palette searches everything; routing, the 403 guard and the tabs only
+    // ever see entries this build actually has a route for.
+    expect(flattenNavItems(groups)).toContain(docs)
+    expect(isExternalNavItem(flattenNavItems(groups).at(-1)!)).toBe(true)
+    expect(internalNavItems(groups[0].items)).not.toContain(docs)
+    expect(flattenInternalNavItems(groups).map((item) => item.to)).toEqual(['/', '/reports'])
+    expect(findNavItem('/', groups)?.to).toBe('/')
   })
 
   it.each(ALL_NAV_ITEMS.map((item) => [item.to] as const))(

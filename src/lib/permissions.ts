@@ -1,4 +1,4 @@
-import type { NavGroup, NavItem } from '@/config/nav'
+import { internalNavItems, isExternalNavItem, type NavGroup, type NavItem } from '@/config/nav'
 
 export function hasPermission(
   granted: readonly string[] | null | undefined,
@@ -16,7 +16,10 @@ function filterItems(items: NavItem[], granted: readonly string[]): NavItem[] {
   return items
     .filter((item) => hasPermission(granted, item.permission))
     .map((item) =>
-      item.children ? { ...item, children: filterItems(item.children, granted) } : item,
+      !isExternalNavItem(item) && item.children
+        ? // Children are internal by construction; the helper keeps that type.
+          { ...item, children: internalNavItems(filterItems(item.children, granted)) }
+        : item,
     )
 }
 

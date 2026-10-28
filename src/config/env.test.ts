@@ -13,6 +13,7 @@ describe('startup environment', () => {
 
   it('keeps the documented defaults when nothing is set', async () => {
     vi.stubEnv('VITE_API_BASE_URL', '')
+    vi.stubEnv('VITE_DOCS_URL', '')
     vi.stubEnv('VITE_ENABLE_MOCK', '')
     vi.stubEnv('VITE_MOCK_LATENCY', '')
     vi.stubEnv('VITE_REQUEST_TIMEOUT', '')
@@ -20,6 +21,7 @@ describe('startup environment', () => {
 
     await expect(loadEnv()).resolves.toEqual({
       apiBaseUrl: '/api',
+      docsUrl: undefined,
       enableMock: false,
       mockLatency: 300,
       requestTimeout: 15_000,
@@ -73,5 +75,20 @@ describe('startup environment', () => {
     vi.stubEnv('VITE_ENABLE_MOCK', 'yes')
 
     await expect(loadEnv()).rejects.toThrow(/VITE_ENABLE_MOCK="yes" — expected "true" or "false"/)
+  })
+
+  it('treats an unset or blank docs URL as no docs site', async () => {
+    await expect(loadEnv()).resolves.toMatchObject({ docsUrl: undefined })
+
+    vi.stubEnv('VITE_DOCS_URL', '   ')
+    await expect(loadEnv()).resolves.toMatchObject({ docsUrl: undefined })
+  })
+
+  it('keeps only an absolute docs URL and drops its trailing slash', async () => {
+    vi.stubEnv('VITE_DOCS_URL', ' https://docs.acme.test/guide/ ')
+    await expect(loadEnv()).resolves.toMatchObject({ docsUrl: 'https://docs.acme.test/guide' })
+
+    vi.stubEnv('VITE_DOCS_URL', 'docs.acme.test')
+    await expect(loadEnv()).rejects.toThrow(/VITE_DOCS_URL/)
   })
 })

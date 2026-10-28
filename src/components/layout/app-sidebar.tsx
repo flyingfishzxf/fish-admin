@@ -21,7 +21,8 @@ import {
   useSidebar,
 } from '@fish-admin/react'
 import { APP_VERSION } from '@/config/app'
-import { findNavItem, isPathActive } from '@/config/nav'
+import { findNavItem, isExternalNavItem, isPathActive } from '@/config/nav'
+import { NavItemLink } from '@/components/layout/nav-item-link'
 import { useMenuNavGroups } from '@/features/navigation/queries'
 
 export function AppSidebar() {
@@ -60,18 +61,19 @@ export function AppSidebar() {
               <SidebarMenu className="gap-0.5">
                 {group.items.map((item) => {
                   const Icon = item.icon
-                  const children = item.children ?? []
+                  const children = isExternalNavItem(item) ? [] : (item.children ?? [])
+                  const href = isExternalNavItem(item) ? item.href : item.to
                   return (
-                    <SidebarMenuItem key={item.to}>
+                    <SidebarMenuItem key={href}>
                       <SidebarMenuButton
                         asChild
-                        isActive={isPathActive(pathname, item.to)}
+                        isActive={!isExternalNavItem(item) && isPathActive(pathname, item.to)}
                         tooltip={t(item.titleKey)}
                       >
-                        <Link to={item.to} onClick={closeMobileSidebar}>
+                        <NavItemLink item={item} onNavigate={closeMobileSidebar}>
                           <Icon />
                           <span>{t(item.titleKey)}</span>
-                        </Link>
+                        </NavItemLink>
                       </SidebarMenuButton>
                       {children.length > 0 ? (
                         <SidebarMenuSub>

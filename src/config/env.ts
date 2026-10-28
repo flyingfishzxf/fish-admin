@@ -34,8 +34,20 @@ function readBoolean(label: string, value: string | undefined, fallback: boolean
 const rawBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim()
 const apiBaseUrl = (rawBaseUrl ? rawBaseUrl : '/api').replace(/\/+$/, '')
 
+// A relative value would resolve against the app origin and render a broken
+// external link, so anything without a scheme is a configuration mistake.
+function readHttpsUrl(label: string, value: string | undefined): string | undefined {
+  const trimmed = value?.trim()
+  if (!trimmed) return undefined
+  if (!/^https?:\/\//i.test(trimmed)) {
+    throw new Error(`Invalid ${label}="${value}" — expected an absolute http(s) URL.`)
+  }
+  return trimmed.replace(/\/+$/, '')
+}
+
 export const env = {
   apiBaseUrl,
+  docsUrl: readHttpsUrl('VITE_DOCS_URL', import.meta.env.VITE_DOCS_URL),
   // `MODE` rather than `DEV` keeps the test runner on the safe default: Vitest
   // reports `DEV === true` while `MODE === 'test'`.
   enableMock: readBoolean(
