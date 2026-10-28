@@ -1,0 +1,96 @@
+---
+title: Result 结果页
+description: 用于流程结束或整页状态的居中结果面板。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ResultBasic from '@docs/demos/result/basic'
+import basicSource from '@docs/demos/result/basic.tsx?raw'
+import ResultStates from '@docs/demos/result/states'
+import statesSource from '@docs/demos/result/states.tsx?raw'
+
+# Result 结果页
+
+`Result` 把五种 `status` 之一、一个 Lucide 图标方块、一个 `h2` 标题、一段说明和一行 `extra`
+操作组合成居中的面板。它是内容块而不是页面：需要放进你自己的容器里。
+
+<ComponentMeta id="result" />
+
+## 何时使用
+
+- 一段流程结束时：邀请已发出、支付已完成、部署已上线。
+- 应用框架内的整页状态，例如审计记录不存在、单据已被删除。
+- 需要解释原因并提供恢复动作的阻塞性错误。
+
+## 何时不使用
+
+- 用户仍停留在原地的轻量确认：用 `Sonner` 的 toast。
+- 字段级或行内的小问题：用 `Alert` 或表单自身的错误提示。
+- 操作前的二次确认：用 `Alert Dialog`。
+- 只是数据为空：用专为数据区域设计的 `Empty`。
+
+## 基础用法
+
+<Demo title="邀请成员成功" filename="demos/result/basic.tsx" source={basicSource}>
+  <ResultBasic />
+</Demo>
+
+## 五种状态
+
+支持 `success`、`info`、`warning`、`error` 与 `not-found`。每种状态替换图标与底色，其中只有
+`error` 会以断言方式播报。
+
+<Demo title="五种状态" filename="demos/result/states.tsx" source={statesSource}>
+  <ResultStates />
+</Demo>
+
+## API
+
+<ApiTable component="result" />
+
+## 设计指引
+
+- 布局是居中纵向排列，`gap-4`、`px-6 py-16`。这个 `py-16` 是为整页结果准备的；嵌进卡片时传入
+  `className` 收紧。
+- 每种状态对应固定的图标与底色：`success` 用 `CheckCircle2` 配
+  `bg-chart-3/14 text-chart-3-foreground`，`info` 用 `Info` 配 `bg-chart-1/12`，`warning` 用
+  `AlertTriangle` 配 `bg-chart-4/16`，`error` 用 `XCircle` 配 `bg-destructive/10 text-destructive`，
+  `not-found` 用 `FileQuestion` 配 `bg-muted`。
+- 图标方块是 `size-14`、`rounded-2xl`，里面放 `size-7` 的图标；标题 `text-lg font-semibold`，
+  说明限制在 `max-w-md`，使用 `text-sm` 的次要文字颜色。
+- `extra` 仅在传入时渲染，是可换行的行内布局、间距 `gap-2`。主操作放第一个，一条路径走到底。
+- `title` 与 `description` 都是 `ReactNode`；组件没有插图插槽，需要自定义画面时请自行编写结构。
+
+## 无障碍
+
+- `error` 使用 `role="alert"`，其余状态使用 `role="status"`，因此操作之后出现的结果会作为实时
+  区域更新被播报。
+- 标题固定渲染为 `h2`。把结果面板放进卡片或对话框后仍然是 `h2`，请检查所在页面的标题层级。
+- 状态图标是普通 `<svg>`，没有 title 也没有 `aria-label`；语义由标题文本承担，图标不会被单独
+  读出。
+- 组件不做焦点管理：不会把焦点移到标题上。路由跳转到结果页后，如果需要播报，请自行聚焦标题。
+
+已知缺口：`error` 无条件使用 `role="alert"`，即便这段错误在页面加载时就已存在，也会被断言式
+播报。请在失败发生后条件渲染错误结果，而不要随页面一起挂载。说明文字没有对外暴露 `id`，
+标题与正文之间也没有 `aria-describedby` 关联。
+
+## FAQ
+
+**`Result` 是一整页吗？** 不是，它只是带默认内边距的区块。放进 `PageContainer` 或 `Card`，当
+默认的 `py-16` 对容器来说过高时用 `className` 覆盖。
+
+**为什么错误没有被播报？** 实时区域只播报挂载之后发生的变更。请在失败后切换状态或条件挂载结果；
+首屏就存在的错误面板往往没有任何播报。
+
+**图标可以换吗？** 不能通过属性更换，图标由 `status` 固定决定。五种内置结果不适用时请自行编写
+结构，数据为空则优先考虑 `Empty`。
+
+## 相关
+
+- `Empty`：数据区域为空，而不是流程完成。
+- `Alert`：行内、非阻塞的提示。
+- `Alert Dialog`：结果发生前需要用户确认时。
+- `Sonner`：一次性的成功或失败 toast。
+- [在模板中的用法](https://fish-admin.vercel.app/users/$id)

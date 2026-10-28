@@ -1,0 +1,28 @@
+[
+  {
+    "id": "image-preview/basic",
+    "component": "image-preview",
+    "file": "demos/image-preview/basic.tsx",
+    "title": {
+      "en": "Gallery lightbox",
+      "zh": "图库灯箱"
+    },
+    "description": {
+      "en": "Captioned thumbnails that open a dialog with paging.",
+      "zh": "带说明文字的缩略图，点击后打开可分页的对话框。"
+    }
+  },
+  {
+    "id": "image-preview/single",
+    "component": "image-preview",
+    "file": "demos/image-preview/single.tsx",
+    "title": {
+      "en": "One image, and none",
+      "zh": "单图与空态"
+    },
+    "description": {
+      "en": "A single attachment without paging, plus the empty state.",
+      "zh": "不带翻页的单个附件，以及没有图片时的空态。"
+    }
+  }
+]

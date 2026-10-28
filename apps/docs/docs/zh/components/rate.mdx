@@ -1,0 +1,95 @@
+---
+title: Rate 评分
+description: 用于采集或展示简短分值的五星单选组。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import RateBasic from '@docs/demos/rate/basic'
+import basicSource from '@docs/demos/rate/basic.tsx?raw'
+import RateStates from '@docs/demos/rate/states'
+import statesSource from '@docs/demos/rate/states.tsx?raw'
+
+# Rate 评分
+
+`Rate` 输出的是一组 `role="radiogroup"` 的 Lucide `Star` 按钮。分值由页面持有，组件只在
+`onChange` 里回报被点中的星级；悬停或聚焦某颗星只是预览，不会改动值。
+
+<ComponentMeta id="rate" />
+
+## 何时使用
+
+- 采集一段短评分，例如客服满意度、内容评分或测试结论。
+- 展示一个扫一眼就够用的平均分。
+- 星级数量本身就能说明刻度粗细的场合。
+
+## 何时不使用
+
+- 需要连续或细粒度的分值：改用 `Slider` 或 `Input Number`。
+- 只有正反两面的判断：`Switch`、`Radio Group` 表达得更直接。
+- 需要用文字标签描述程度（差 → 优）：带标签的选项列表更好读。
+
+## 基础用法
+
+<Demo title="给一次上手通话打分" filename="demos/rate/basic.tsx" source={basicSource}>
+  <RateBasic />
+</Demo>
+
+## 清除与只读
+
+`allowClear` 默认开启，再次点击已选中的星级会回调 `0`。设置 `readOnly`，或者干脆不传
+`onChange`，所有星都会变成 `disabled`，分组随之退化为静态展示。
+
+<Demo title="可清除的编辑态与只读平均分" filename="demos/rate/states.tsx" source={statesSource}>
+  <RateStates />
+</Demo>
+
+## API
+
+<ApiTable component="rate" />
+
+## 设计指引
+
+- 每颗星是 `p-0.5` 按钮里的 `size-5` Lucide `Star`，容器再加 `gap-0.5`，一行五星约 128 px。
+- 点亮星标用 `text-warning` 叠加 `fill-current`，未点亮的保持 `text-muted-foreground`。
+- 填充值来自 `hovered ?? value`：鼠标悬停或键盘聚焦都会预览该分值，移出分组或失焦后预览清空。
+- `allowClear` 默认 `true`，点中当前分值即回调 `0`。已提交的评分不容撤回时请显式关闭。
+- 未传 `onChange` 或设置 `readOnly` 时 `interactive` 为 false：所有星标 `disabled`、
+  `cursor-default`，也不会出现悬停预览。
+- 判定条件是 `star <= value`，因此实际取值是整数：`4.5` 会点亮四颗星且没有任何一颗处于选中态，
+  需要半星请在数据边界先处理。
+
+## 无障碍
+
+- 外层是 `radiogroup`，名称取自 `ariaLabel`，缺省为本地化的“评分”；每颗星是 `role="radio"`
+  并带 `aria-checked`。
+- 游走的 Tab 停靠点：只有当前选中星可聚焦（值为 0 时是第一颗），`tabIndex` 为 0，其余为 -1。
+- 右/上方向键前移一颗，左/下方向键后移一颗，Home 与 End 跳到首尾。
+- 方向键只移动焦点，Enter 或空格才选中，沿用按钮的原生激活方式，不存在“焦点即选中”。
+- 每颗星的可访问名称是本地化的“N / M 星”，刻度本身也会被读出来。
+- 焦点环来自 `focus-visible:ring-2` 与 `ring-ring/50`；状态不只靠颜色，`aria-checked`
+  同时承担语义。
+
+已知缺口：焦点与选中分离，键盘用户用方向键移到某颗星再按 Enter 时，中途听不到分值预览；只读态
+渲染的是 disabled 的 radio，分组本身又是 `tabIndex={-1}`，只能靠浏览模式读到。组件不输出可见
+标签，需要像示例那样在旁边自行放置提示文案。
+
+## FAQ
+
+**`Rate` 会自己保存分数吗？** 不会，它是受控组件：传入 `value`，在 `onChange` 里更新。不传
+`onChange` 时星标是禁用的，而不是在组件内部记录状态。
+
+**为什么分数突然变成 0 了？** `allowClear` 默认为 true，点击已选中的那颗星会回调 `0`。传
+`allowClear={false}` 可以让分值保持。
+
+**可以做成十星吗？** 可以，`max` 默认 5，可传任意数量；Tab 停靠点、方向键和星级名称都会跟随
+`max`。
+
+## 相关
+
+- `Slider`：需要可见轨道与连续分值。
+- `Progress`：关心“完成到哪一步”，而不是“做得怎么样”。
+- `Statistic`：把平均分当成一个数字展示。
+- `Input Number`：分值由键盘输入而不是点击时。
+- [在模板中的用法](https://fish-admin.vercel.app/projects/$id)

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "descriptions/basic",
+    "component": "descriptions",
+    "file": "demos/descriptions/basic.tsx",
+    "title": {
+      "en": "Profile details",
+      "zh": "用户资料"
+    },
+    "description": {
+      "en": "Term and value pairs for a member, with a badge value and one wide row.",
+      "zh": "以“字段—值”对展示成员信息，包含徽标值与一项跨列内容。"
+    }
+  },
+  {
+    "id": "descriptions/columns",
+    "component": "descriptions",
+    "file": "demos/descriptions/columns.tsx",
+    "title": {
+      "en": "Three columns",
+      "zh": "三列布局"
+    },
+    "description": {
+      "en": "An incident summary laid out in three columns with a spanning item.",
+      "zh": "以三列布局展示故障概要，并让其中一项跨列。"
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "rate/basic",
+    "component": "rate",
+    "file": "demos/rate/basic.tsx",
+    "title": {
+      "en": "Basic rating",
+      "zh": "基础评分"
+    },
+    "description": {
+      "en": "A controlled five-star score with a live summary.",
+      "zh": "受控的五星评分，并实时显示分值。"
+    }
+  },
+  {
+    "id": "rate/states",
+    "component": "rate",
+    "file": "demos/rate/states.tsx",
+    "title": {
+      "en": "Clear and read-only",
+      "zh": "清除与只读"
+    },
+    "description": {
+      "en": "Clearable editing next to a read-only average score.",
+      "zh": "可清除的编辑态，以及只读的平均分。"
+    }
+  }
+]

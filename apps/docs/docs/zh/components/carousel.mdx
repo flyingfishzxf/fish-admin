@@ -1,0 +1,100 @@
+---
+title: Carousel 轮播
+description: 可聚焦的幻灯片区域，提供箭头、圆点与 inert 隐藏幻灯片，内容由静态数组驱动。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CarouselBasic from '@docs/demos/carousel/basic'
+import basicSource from '@docs/demos/carousel/basic.tsx?raw'
+import CarouselContent from '@docs/demos/carousel/content'
+import contentSource from '@docs/demos/carousel/content.tsx?raw'
+
+# Carousel 轮播
+
+`Carousel` 在 `role="region"` 内用 `translateX(-index * 100%)` 平移一条 flex 轨道，键盘交互也
+由该 region 承担。每张幻灯片是带位置名称的 `role="group"`，`Button` 箭头逐张翻页，圆点组通过
+`aria-current` 直接跳转。
+
+<ComponentMeta id="carousel" />
+
+## 何时使用
+
+- 看板上少量公告、更新日志或新手引导。
+- 营销位或帮助内容，一张卡片刚好承载一条信息。
+- 短小且有先后顺序、允许跳过的内容。
+
+## 何时不使用
+
+- 需要逐条对比的内容：请并排摆放卡片。
+- 需要几十张幻灯片的列表：使用 `List` 或带滚动容器的 `Tabs`。
+- 必须自动播放才能被看到的内容；本组件从不自动前进。
+
+## 基础用法
+
+三张带说明文字与 alt 的图片幻灯片。幻灯片内容按 `aspect-[16/7]` 裁切，请提供宽幅封面而不是竖版
+海报。
+
+<Demo title="带封面的公告幻灯片" filename="demos/carousel/basic.tsx" source={basicSource}>
+  <CarouselBasic />
+</Demo>
+
+## 自定义幻灯片内容
+
+`content` 会整体替换该张幻灯片的图片、标题与说明，适合在面板里放按钮或状态行。
+
+<Demo title="带行内操作的通知" filename="demos/carousel/content.tsx" source={contentSource}>
+  <CarouselContent />
+</Demo>
+
+## API
+
+<ApiTable component="carousel" />
+
+## 设计指引
+
+- 翻页是 flex 轨道上的 `translateX`，`duration-300 ease-out`；`motion-reduce` 下去掉过渡直接跳
+  转。每张幻灯片 `min-w-full`，宽度恰好等于容器宽度。
+- 控件排布：箭头为 `variant="secondary"`、`size="icon-xs"`（24 px），浮在 `left-2` / `right-2`
+  并垂直居中。圆点高 6 px，当前圆点加宽到 20 px 并使用 `bg-primary`，其余为
+  `bg-muted-foreground/30`。
+- 图片幻灯片使用 `aspect-[16/7]` 与 `object-cover`。当幻灯片带图片时，标题区变成绝对定位覆盖层：
+  黑色到透明的渐变、白色文字，并留出 `px-12` 以避开两侧箭头。
+- `content` 优先于 `image`、`title`、`description`，不支持只覆盖其中一部分。内容自身的内边距要自己
+  加——组件不会补充。
+- 只有一张幻灯片时不渲染箭头与圆点，退化为静态面板。
+- 传入空数组时不再渲染 region，而是显示一个虚线居中的 `emptyLabel` 占位块，请为加载中或无数据
+  路径准备文案。
+- 翻页位置按取模循环；当数组收缩而用户停留在较后的幻灯片时，可见索引会被收敛到最后一页。
+
+## 无障碍
+
+- 外层是 `region`，`aria-roledescription="carousel"`，名称取自传入的 `ariaLabel`，可聚焦且带可见
+  焦点环。
+- 该 region 获得焦点时，左右方向键可翻页；幻灯片自身的控件就是普通按钮，处在 Tab 顺序中。
+- 每张幻灯片都是按位置命名的 group，例如“2 / 3”，读屏无需看到布局也能判断进度。
+- 非当前幻灯片同时带 `aria-hidden` 与 `inert`，其中的链接和按钮既不能被 Tab 到，也不会成为点击
+  目标。
+
+已知缺口：箭头是 24 px 的按钮，低于常见的 44 px 触控建议。已知缺口：翻页没有任何播报——圆点的
+`aria-current` 会更新，但没有 live region，用箭头翻页时读屏用户收不到提示。已知缺口：即使只有一
+张幻灯片、没有任何控件，可聚焦的 region 仍是一个 Tab 停靠点。
+
+## FAQ
+
+**会自动播放吗？** 不会。组件没有间隔属性，只有点击或方向键才会切换，因此也没有需要暂停的动画。
+
+**为什么 Tab 不到第二张幻灯片里的按钮？** 因为非当前幻灯片是 `inert`，这是刻意设计，避免隐藏内容
+获得焦点。请先切换到该幻灯片。
+
+**为什么标题和图片都不见了？** 因为传入 `content` 会替换整个幻灯片主体；去掉它即可恢复图片加说明
+的排版。
+
+## 相关
+
+- `Card`：轮播旁边的静态内容块。
+- `Image Preview`：需要放大查看原图的场景。
+- `Tabs`：由用户直接选择的平级视图。
+- `Button`：幻灯片里使用的箭头与操作按钮变体。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

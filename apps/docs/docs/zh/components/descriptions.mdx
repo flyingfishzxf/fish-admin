@@ -1,0 +1,90 @@
+---
+title: Descriptions 描述列表
+description: 以“字段—值”对呈现只读信息的定义列表。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DescriptionsBasic from '@docs/demos/descriptions/basic'
+import basicSource from '@docs/demos/descriptions/basic.tsx?raw'
+import DescriptionsColumns from '@docs/demos/descriptions/columns'
+import columnsSource from '@docs/demos/descriptions/columns.tsx?raw'
+
+# Descriptions 描述列表
+
+`Descriptions` 用原生 `dl` 渲染一个网格：每个 `DescriptionItem` 是一行弱化的 `dt` 字段名，
+下面跟着 `dd` 值。列数来自 `columns`（1–3），单项还可以通过 `span` 跨列。
+
+<ComponentMeta id="descriptions" />
+
+## 何时使用
+
+- 详情页或抽屉中展示某条记录的只读属性。
+- 把负责人、地域、时间等简短的事实成组呈现。
+- 值需要富内容时，例如状态 `Badge` 或链接。
+
+## 何时不使用
+
+- 数据需要排序、筛选或行数很多：使用 `Table`。
+- 字段需要编辑：在表单里用标签配合 `Input`、`Select` 等控件。
+- 只有一个核心数字：使用 `Statistic`。
+- 只是行内的一句“标签：值”：普通 `<p>` 更轻量。
+
+## 基础用法
+
+<Demo title="成员资料" filename="demos/descriptions/basic.tsx" source={basicSource}>
+  <DescriptionsBasic />
+</Demo>
+
+## 三列布局
+
+详情面板较宽时可以用 `columns={3}` 容纳更多字段，`span: 2` 则让较长的那一项占两列。
+
+<Demo title="三列展示故障概要" filename="demos/descriptions/columns.tsx" source={columnsSource}>
+  <DescriptionsColumns />
+</Demo>
+
+## API
+
+<ApiTable component="descriptions" />
+
+## 设计指引
+
+- 根节点是 `dl`，类名为 `grid grid-cols-1 gap-x-8 gap-y-4`；`columns` 只在 `sm` 断点及以上
+  生效，因此在手机上永远是单列。
+- 字段名是 12 px 中等字重的弱化文字（`text-xs font-medium text-muted-foreground`），值是
+  14 px（`text-sm`）并带 `break-words`，长邮箱和长链接会换行，不会把网格撑宽。
+- 每一项是 `div`，带 `min-w-0 space-y-1`。`min-w-0` 是值能够在网格单元内收缩、换行的关键。
+- `span: 2` 编译为 `sm:col-span-2`，把一项拓宽为两列。它应当配合 `columns={2}` 或
+  `columns={3}` 使用，也没有三列宽度可选。
+- `description` 类型是 `ReactNode`，徽标、链接、格式化后的数字都可以直接放入。
+- 列间距（32 px）大于行间距（16 px），列与列之间好读，行与行之间保持紧凑。
+
+## 无障碍
+
+- 语义完全来自原生 `dl`、`dt`、`dd`：读屏会先读字段名再读对应的值，并且可以逐项浏览。
+- 组件本身没有交互行为；`dd` 内的链接等可聚焦元素保持正常的 Tab 顺序。
+- 字段名只承担视觉标签的作用，请保持简短，并在同一个列表内不重复。
+
+已知缺口：网格把内容在视觉上分成了多列，但 DOM 顺序仍是数组顺序。宽屏下读屏会按数组顺序
+朗读，而不是按视觉列，因此相关的“字段—值”应相邻排列。另外 `dl` 没有可访问名称，同一页面
+上有多组 `Descriptions` 时无法区分，建议各自放进带标题的 `<section>` 中。
+
+## FAQ
+
+**值可以放徽标或链接吗？** 可以。`description` 接受任意 `ReactNode`，示例中的角色用的就是
+`Badge`。
+
+**为什么我的长文本没有占满整行？** `span` 最大为 2，而且只在 `sm` 断点及以上生效。在三列
+布局中它只增加一列宽度，并不是整行。
+
+**移动端会自动堆叠吗？** 会。基础网格是单列，`columns` 从 `sm`（640 px）起才生效。
+
+## 相关
+
+- `Card`：为一块描述信息提供容器。
+- `Table`：数据需要独立列、排序或分页时。
+- `Badge`：在描述中展示状态值。
+- `Statistic`：突出显示单个数字。
+- [在模板中的用法](https://fish-admin.vercel.app/users/$id)

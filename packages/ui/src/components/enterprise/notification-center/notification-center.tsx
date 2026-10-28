@@ -27,15 +27,25 @@ export function NotificationCenter({
   emptyLabel,
   className,
 }: {
+  /** Notifications to list, newest first. */
   items: NotificationItem[]
+  /** Opened notification; use it to mark the item read in your data. */
   onItemClick?: (item: NotificationItem) => void
+  /** Enables the header button; it is disabled when nothing is unread. */
   onMarkAllRead?: () => void
+  /** Overrides the count derived from items; pass the server total. */
   unreadCount?: number
+  /** Renders a footer button that opens the full inbox. */
   onViewAll?: () => void
+  /** Footer button text; defaults to the localized "View all notifications". */
   viewAllLabel?: string
+  /** Accessible name of the bell trigger; defaults to "Notifications". */
   ariaLabel?: string
+  /** Panel heading; defaults to "Notifications". */
   title?: string
+  /** Mark-all button text; defaults to "Mark all read". */
   markAllLabel?: string
+  /** Text shown when items is empty; defaults to "You're all caught up.". */
   emptyLabel?: string
   className?: string
 }) {

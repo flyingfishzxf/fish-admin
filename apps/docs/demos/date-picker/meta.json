@@ -1,0 +1,28 @@
+[
+  {
+    "id": "date-picker/basic",
+    "component": "date-picker",
+    "file": "demos/date-picker/basic.tsx",
+    "title": {
+      "en": "One date, stored as a string",
+      "zh": "单个日期，以字符串保存"
+    },
+    "description": {
+      "en": "A YYYY-MM-DD value picked from a popover calendar.",
+      "zh": "从弹层日历中选取 YYYY-MM-DD 值。"
+    }
+  },
+  {
+    "id": "date-picker/bounds",
+    "component": "date-picker",
+    "file": "demos/date-picker/bounds.tsx",
+    "title": {
+      "en": "Allowed window",
+      "zh": "可选时间窗口"
+    },
+    "description": {
+      "en": "min and max disable every day outside the quarter.",
+      "zh": "min 与 max 会禁用季度之外的日期。"
+    }
+  }
+]

@@ -1,0 +1,96 @@
+---
+title: JSON Viewer JSON 查看器
+description: 在页面内折叠查看并复制 JSON 载荷，无需跳转到别处。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import JsonViewerBasic from '@docs/demos/json-viewer/basic'
+import basicSource from '@docs/demos/json-viewer/basic.tsx?raw'
+import JsonViewerStates from '@docs/demos/json-viewer/states'
+import statesSource from '@docs/demos/json-viewer/states.tsx?raw'
+
+# JSON Viewer JSON 查看器
+
+`JsonViewer` 把任意 `unknown` 值渲染成可折叠的树：对象与数组变成带 `{n}` / `[n]` 计数的切换按钮，
+基础类型保留 JSON 写法并按类型着色，顶部还会提供一个按钮，把整份载荷格式化后复制走。
+
+<ComponentMeta id="json-viewer" />
+
+## 何时使用
+
+- 排查审计事件、Webhook 请求体或任务载荷，而这些数据的结构随集成方变化。
+- 让客服或运维在后台直接读取已存储的 API 响应，不用下载 JSON 文件。
+- 详情页里的请求元数据较长，需要折叠数组以保持页面可扫读。
+
+## 何时不使用
+
+- 需要编辑内容：使用 `Textarea`，提交时再校验解析结果。
+- 结构固定且字段明确：`Descriptions` 会为每个字段提供标签。
+- 需要搜索或对比原始文本：带语法高亮的代码块更合适。
+
+## 基础用法
+
+<Demo title="审计事件载荷" filename="demos/json-viewer/basic.tsx" source={basicSource}>
+  <JsonViewerBasic />
+</Demo>
+
+## 空状态与折叠状态
+
+`undefined` 表示“数据还没到”，会渲染本地化的 `No data` 提示；`null` 是真实值，显示为 `null`。
+`defaultExpandedDepth` 决定首屏展开到第几层，设为 `0` 时根节点也保持折叠，只显示计数摘要。
+
+<Demo title="空状态与折叠状态" filename="demos/json-viewer/states.tsx" source={statesSource}>
+  <JsonViewerStates />
+</Demo>
+
+## API
+
+<ApiTable component="json-viewer" />
+
+## 设计指引
+
+- 外层是 `rounded-lg border`，正文使用 `bg-muted/20` 底色与 `font-mono text-xs`，头部是一条
+  `bg-muted/40`、`px-3 py-1.5` 的横条，视觉上属于“工具外壳”而不是正文内容。
+- `defaultExpandedDepth` 默认 `2`，每个节点只在挂载时读取一次
+  （`useState(depth < expandedDepth)`）；之后再改这个 prop，用户已展开的分支不会重新折叠。
+- 容器用 `[3]`（数组）或 `{5}`（对象）概括子项数量；空容器直接以弱化文字显示 `[0]` 或 `{}`，
+  不生成可点击的切换按钮。
+- 类型靠语义色区分：字符串 `text-success`、数字 `text-primary`、布尔 `text-warning`、`null` 使用
+  `text-muted-foreground`。字符串保留引号，因此即使不看颜色也能认出是字符串。
+- `ariaLabel` 同时是头部标签和根节点的可访问名称，过长会被截断，建议写成“审计载荷”这样的短语。
+- 正文高度封顶 288px（`max-h-72`）并独立滚动，两千行的事件也不会把整页撑开。
+- 复制使用 `JSON.stringify(value, null, 2)`；成功后按钮在 1.5 秒内显示对勾与“Copied”。
+
+## 无障碍
+
+- 每个对象和数组分支都是原生 `<button>` 并带 `aria-expanded`，Tab 可以逐个到达，Enter 或空格
+  切换展开。
+- 折叠箭头是 `aria-hidden`；分支名是可见文本，根分支没有键名，因此用 `ariaLabel` 生成
+  `sr-only` 标签补上名称。
+- 复制按钮的 `aria-label` 在“Copy”和“Copied”之间切换，图标与可见文字对辅助技术隐藏，避免名称
+  被重复朗读。
+- 基础类型的行是纯文本，读取顺序与序列化后的 JSON 完全一致。
+
+已知缺口：正文的滚动容器（`max-h-72 overflow-auto`）既不是带名称的 region，也不可聚焦，键盘只能
+通过分支按钮间接触达；如果载荷只含基础类型，键盘用户无法滚动它。数字与布尔值仅靠颜色区分，色觉
+障碍用户不易分辨。
+
+## FAQ
+
+**值可以编辑吗？** 不可以，查看器是只读的。用复制按钮拿到格式化文本，再到编辑器里修改。
+
+**为什么 `Date` 显示成 `{}`？** 组件遍历的是 `Object.entries`，而 `Date` 没有可枚举的自有属性。
+传入前请先转成 ISO 字符串。
+
+**可以默认全部折叠吗？** 传 `defaultExpandedDepth={0}`，根节点会保持收起，只显示计数摘要，直到
+用户主动展开。
+
+## 相关
+
+- `Descriptions`：载荷结构固定、字段需要标签时使用。
+- `Timeline`：把这类事件按时间顺序串起来。
+- `List`：需要可扫读的动态列表时使用。
+- `Card`：在详情面板中给查看器加一层容器。
+- [在模板中的用法](https://fish-admin.vercel.app/audit-logs)

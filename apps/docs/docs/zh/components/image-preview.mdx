@@ -1,0 +1,103 @@
+---
+title: Image Preview 图片预览
+description: 缩略图网格，点击后在灯箱中查看大图并翻页。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ImagePreviewBasic from '@docs/demos/image-preview/basic'
+import basicSource from '@docs/demos/image-preview/basic.tsx?raw'
+import ImagePreviewSingle from '@docs/demos/image-preview/single'
+import singleSource from '@docs/demos/image-preview/single.tsx?raw'
+
+# Image Preview 图片预览
+
+`ImagePreview` 把 `PreviewImage[]` 渲染成按钮网格。点击任一缩略图会打开 `Dialog` 灯箱，显示
+说明文字、位置计数以及上一张/下一张 `Button`，也可以用左右方向键切换。
+
+<ComponentMeta id="image-preview" />
+
+## 何时使用
+
+- 附件、票据等场景，用户需要查看原尺寸图片。
+- 发布说明或工单中附带少量截图时。
+- 希望不离开当前页面就能快速浏览一组图片。
+
+## 何时不使用
+
+- 图片很多，浏览图片本身就是主要任务：使用 `Carousel`。
+- 图片还在上传中：先用 `Dropzone` 或 `Upload`。
+- 只是一张行内插图：直接用 `<img>`，不需要弹窗。
+
+## 基础用法
+
+<Demo title="带说明文字的截图灯箱" filename="demos/image-preview/basic.tsx" source={basicSource}>
+  <ImagePreviewBasic />
+</Demo>
+
+## 单图与空态
+
+只有多于一张图片时才渲染翻页按钮和计数器。传入空数组时不会渲染网格，而是显示本地化的
+“暂无数据”。
+
+<Demo
+  title="只有一个附件，以及没有附件"
+  filename="demos/image-preview/single.tsx"
+  source={singleSource}
+>
+  <ImagePreviewSingle />
+</Demo>
+
+## API
+
+<ApiTable component="image-preview" />
+
+## 设计指引
+
+- 网格默认两列，`sm` 断点起三列，间距 8 px（`gap-2`）。缩略图固定 4:3（`aspect-4/3`），
+  带 `rounded-lg`、边框并裁切，因此不同比例的图片也能对齐。
+- 缩略图用 `object-cover`，悬停时在 300 ms 内放大到 1.05；按钮本身还有 2 px 焦点环，键盘
+  焦点与悬停一样明显。
+- 说明文字是 12 px 白字，压在 `black/70` 到透明的渐变上，单行截断并留出 `pt-6` 的上内边距，
+  保证在浅色照片上也能看清。
+- 灯箱最大宽度 `max-w-3xl`，内边距 12–16 px。图片用 `object-contain` 并限制在 70 vh 内，
+  长截图也能完整显示而不用滚动页面。
+- 说明区显示 `caption ?? alt`；仅当多张图片时，右侧再显示“1 / 3”这样的等宽数字计数，位数
+  变化时不会抖动。
+- 弹窗标题和描述仅供读屏：分别是 `ariaLabel` 与当前图片的 `alt`，所以画面上没有多余的标题
+  与图片争抢注意力。
+- 上一张/下一张是 `icon-sm` 的 `outline` 按钮，走到两端会循环。
+- 空数组时组件返回一段 14 px 的弱化文字，而不是网格。
+
+## 无障碍
+
+- 每张缩略图都是真实按钮，名称为 `ariaLabel: alt — caption`；`<img>` 保留自己的 `alt`，因此
+  读出来的始终是描述，而不是文件名。
+- 打开灯箱后焦点进入对话框并由 Radix 锁定；Escape 关闭，焦点回到触发它的缩略图。
+- 对话框的可访问名称来自 `ariaLabel`，描述来自当前的 `alt`，翻页时会同步更新，并与可见的
+  说明文字保持一致。
+- 焦点在对话框内时，左右方向键可以翻页；翻页按钮的名称使用本地化的“上一个”“下一个”。
+
+已知缺口：方向键的监听绑定在对话框内容上而不是 document 上，因此只有焦点在灯箱内时才生效，
+界面上也没有任何提示告诉用户可以用方向键。另外没有缩放、拖拽查看或下载操作，空态也只是一段
+纯文字，没有图标。
+
+## FAQ
+
+**为什么只有一张图片时没有翻页箭头？** 翻页按钮和计数器只在 `images.length > 1` 时渲染。
+单张图片依然会打开灯箱，并带有说明文字与读屏标题。
+
+**传入空数组会怎样？** 组件会渲染本地化的“暂无数据”，不渲染网格，也不会打开弹窗，因此可以
+直接把接口返回的空列表交给它。
+
+**图片是立即加载的吗？** 不是。每张缩略图都设置了 `loading="lazy"`，灯箱只在打开时挂载，
+屏幕外的图片不会在首屏请求。
+
+## 相关
+
+- `Dialog`：需要自定义灯箱布局时。
+- `Carousel`：图片浏览本身就是页面主体时。
+- `Dropzone`、`Upload`：先把图片收集上来。
+- `Empty`：空图库需要提供操作入口时。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

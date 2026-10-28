@@ -1,0 +1,28 @@
+[
+  {
+    "id": "back-top/basic",
+    "component": "back-top",
+    "file": "demos/back-top/basic.tsx",
+    "title": {
+      "en": "Back to the top of a panel",
+      "zh": "回到面板顶部"
+    },
+    "description": {
+      "en": "targetRef points the button at a scroll container instead of the window.",
+      "zh": "targetRef 让按钮作用于滚动容器，而不是整个窗口。"
+    }
+  },
+  {
+    "id": "back-top/threshold",
+    "component": "back-top",
+    "file": "demos/back-top/threshold.tsx",
+    "title": {
+      "en": "Two thresholds, one list",
+      "zh": "同一份列表，两种阈值"
+    },
+    "description": {
+      "en": "40 px versus 240 px of scroll before the button appears.",
+      "zh": "分别在滚动 40 px 与 240 px 之后出现按钮。"
+    }
+  }
+]

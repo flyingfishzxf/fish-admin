@@ -1,0 +1,115 @@
+---
+title: Auto Complete
+description: A text field that filters a suggestion list as you type and writes the picked label back into the field.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AutoCompleteBasic from '@docs/demos/auto-complete/basic'
+import basicSource from '@docs/demos/auto-complete/basic.tsx?raw'
+import AutoCompleteStates from '@docs/demos/auto-complete/states'
+import statesSource from '@docs/demos/auto-complete/states.tsx?raw'
+
+# Auto Complete
+
+`AutoComplete` combines an `Input` with `role="combobox"` and a Radix `Popover` holding a
+`role="listbox"`. It filters the `options` prop with a case-insensitive substring match on `label`
+and `description`, keeps the caret in the input, and moves the highlight with
+`aria-activedescendant`.
+
+<ComponentMeta id="auto-complete" />
+
+## When to use
+
+- Picking a person, team or project from a directory that is too long for a `Select`.
+- Searching with a secondary line of context, such as role and department.
+- A free-text field where suggestions are a shortcut, not a requirement.
+
+## When not to use
+
+- A closed list of fewer than ten fixed choices: use `Select`.
+- Commands and navigation rather than a field value: use `Command`.
+- Values that must be validated against the list: use `Combobox`, which forces a selection.
+
+## Basic usage
+
+Type `des` or pick from the open list. The field keeps what you typed if no suggestion matches, so
+you decide whether a custom reviewer is acceptable.
+
+<Demo
+  title="Filter the reviewer directory"
+  filename="demos/auto-complete/basic.tsx"
+  source={basicSource}
+>
+  <AutoCompleteBasic />
+</Demo>
+
+## Loading, disabled and empty
+
+Three states share the same shell: `loading` collapses the list into one centred row, `disabled`
+freezes the field, and a query with no match shows `emptyLabel` in place of the options.
+
+<Demo
+  title="Loading, disabled and no results"
+  filename="demos/auto-complete/states.tsx"
+  source={statesSource}
+>
+  <AutoCompleteStates />
+</Demo>
+
+## API
+
+<ApiTable component="auto-complete" />
+
+## Design guidance
+
+- The field is fully controlled through `value` and `onValueChange`; there is no internal query
+  state, which keeps server-driven suggestions straightforward.
+- Picking an option writes its `label` into the input, not its `value`. Read the identifier from
+  `onSelect(option)` and keep the raw values in your own state.
+- Filtering runs over both `label` and `description`, lowercased, with `String.includes`. An empty
+  query returns every option, so the list opens full on focus.
+- The popover inherits the trigger width (`w-(--radix-popover-trigger-width)`, `min-w-56`); the list
+  caps at `max-h-64` and scrolls. Rows are `px-3 py-2 text-sm`, and the highlighted row uses
+  `bg-accent` with `text-accent-foreground`.
+- Disabled options render at 50% opacity and are skipped by click and Enter; they still occupy a row
+  so the gap in the directory stays visible.
+- The empty and loading rows are centred with `py-6` in `text-muted-foreground`; supply
+  `emptyLabel` and `loadingLabel` in the page language.
+
+## Accessibility
+
+- The input is a combobox: `aria-expanded` follows the open state, `aria-controls` points at the
+  listbox id, `aria-autocomplete="list"`, and `aria-activedescendant` names the highlighted option.
+  Focus never leaves the input, so typing continues while arrowing.
+- Arrow Down opens the list and moves down, clamping at the last option; Arrow Up moves up and clamps
+  at the first, without wrapping. Enter commits only when the list is open and something is
+  highlighted; Escape closes; Tab closes and moves on.
+- The listbox repeats the `ariaLabel` of the input, and each option is `role="option"` with
+  `aria-selected` for the highlighted row and `aria-disabled` for disabled ones.
+- Mouse hover moves the highlight, and `mousedown` is prevented so the input keeps focus.
+
+Known gap: the listbox has no live region or result count, and the loading and empty rows are
+`role="presentation"` inside it, so screen readers may not announce them. The input is also not
+marked `aria-required` by the component; add it yourself when the field is mandatory.
+
+## FAQ
+
+**Does Enter submit my form?** No. While the list is open with a highlighted option, Enter selects it
+and prevents the default; with no match, Enter falls through to whatever wraps the field.
+
+**Can users keep text that is not in the list?** Yes — that is the difference from `Combobox`.
+`onSelect` only fires for a real option, so treat the raw text as your fallback value.
+
+**How do I load suggestions from the server?** Feed `onValueChange` into your query, pass the results
+as `options`, and set `loading` while the request is in flight; the popover stays anchored to the
+input.
+
+## Related
+
+- `Combobox` when a value must come from the list.
+- `Select` for short, fixed option sets.
+- `Command` for a keyboard-first action palette.
+- `Input` for plain text with no suggestions.
+- [Used in the template](https://fish-admin.vercel.app/files)

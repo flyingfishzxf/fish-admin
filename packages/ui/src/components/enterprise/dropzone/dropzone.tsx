@@ -18,16 +18,27 @@ export function Dropzone({
   preview,
   className,
 }: {
+  /** Receives the first dropped or picked file when `onFiles` is absent. */
   onFile?: (file: File) => void
+  /** Receives every file at once; takes precedence over `onFile`. */
   onFiles?: (files: File[]) => void
+  /** Allows picking and dropping more than one file. */
   multiple?: boolean
+  /** Native accept hint, for example `.csv,.tsv`; drag and drop is not filtered by it. */
   accept?: string
+  /** Primary instruction and accessible name of the hidden file input. */
   label: string
+  /** Secondary line under the label, for format and size limits. */
   hint?: string
+  /** Text of the browse button; defaults to "Browse files". */
   browseLabel?: string
+  /** Disables dragging, the input and the browse button. */
   disabled?: boolean
+  /** Validation message rendered with `role="alert"` under the button. */
   error?: string
+  /** Content rendered above the icon, for thumbnails or a file summary. */
   preview?: ReactNode
+  /** Extra classes for the dashed drop area. */
   className?: string
 }) {
   const { t } = useUITranslation()

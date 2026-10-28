@@ -17,8 +17,11 @@ export function ImagePreview({
   ariaLabel,
   className,
 }: {
+  /** Thumbnails in display order; an empty array renders the "No data" line. */
   images: PreviewImage[]
+  /** Accessible name of the dialog and prefix of every thumbnail name. */
   ariaLabel: string
+  /** Extra classes for the thumbnail grid. */
   className?: string
 }) {
   const { t } = useUITranslation()

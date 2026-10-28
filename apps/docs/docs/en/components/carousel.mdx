@@ -1,0 +1,115 @@
+---
+title: Carousel
+description: A focusable slide region with arrows, dots and inert hidden slides, driven by a static slide array.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CarouselBasic from '@docs/demos/carousel/basic'
+import basicSource from '@docs/demos/carousel/basic.tsx?raw'
+import CarouselContent from '@docs/demos/carousel/content'
+import contentSource from '@docs/demos/carousel/content.tsx?raw'
+
+# Carousel
+
+`Carousel` moves a flex track with `translateX(-index * 100%)` inside a `role="region"` that owns the
+keyboard. Each slide is a `role="group"` labelled with its position, `Button` arrows page by one, and
+a dot group with `aria-current` jumps straight to a slide.
+
+<ComponentMeta id="carousel" />
+
+## When to use
+
+- A handful of announcements, release notes or onboarding tips on a dashboard.
+- Marketing or help imagery where one message fits a wide card.
+- A short, ordered story where "next" is meaningful and skippable.
+
+## When not to use
+
+- Content the reader must compare: put the cards side by side.
+- Long lists that would need dozens of slides: use `List` or `Tabs` with a scroll container.
+- Anything that needs autoplay to be seen; this component never advances on its own.
+
+## Basic usage
+
+Three image slides with captions and alt text. Slide content is clamped to `aspect-[16/7]`, so pass
+wide covers rather than tall posters.
+
+<Demo
+  title="Announcement slides with covers"
+  filename="demos/carousel/basic.tsx"
+  source={basicSource}
+>
+  <CarouselBasic />
+</Demo>
+
+## Custom slide content
+
+`content` replaces the image, title and description for a slide, which is how you place a button or
+a status line inside the panel.
+
+<Demo
+  title="Notices with inline actions"
+  filename="demos/carousel/content.tsx"
+  source={contentSource}
+>
+  <CarouselContent />
+</Demo>
+
+## API
+
+<ApiTable component="carousel" />
+
+## Design guidance
+
+- Paging is `translateX` on a flex track with `duration-300 ease-out`; `motion-reduce` drops the
+  transition to a jump. Slides are `min-w-full`, so every slide is exactly one container wide.
+- Control layout: arrows are `variant="secondary"`, `size="icon-xs"` (24 px) and float
+  `left-2` / `right-2`, vertically centred. Dots are 6 px tall; the active dot widens to 20 px and
+  takes `bg-primary`, the others sit at `bg-muted-foreground/30`.
+- Image slides use `aspect-[16/7]` with `object-cover`. When a slide has an image, the caption
+  becomes an absolute overlay with a black-to-transparent gradient, white text and `px-12` so it
+  clears the arrows.
+- `content` wins over `image`, `title` and `description`; there is no partial override. Give the
+  content its own padding — the component adds none.
+- Arrows and dots only render when there are two or more slides; a single slide is a static panel.
+- An empty array renders a dashed, centred `emptyLabel` box instead of the region, so include copy
+  for the loading or no-data path.
+- Position wraps with modulo arithmetic, and the visible index is clamped when the array shrinks
+  while the user is on a later slide.
+
+## Accessibility
+
+- The wrapper is a `region` with `aria-roledescription="carousel"` and the `ariaLabel` you pass,
+  focusable with a visible focus ring.
+- Arrow Left and Right page while that region has focus; the slide's own controls are ordinary
+  buttons in the tab order.
+- Every slide is a group named by position, for example "2 / 3", so a screen reader can orient
+  itself without seeing the layout.
+- Inactive slides carry both `aria-hidden` and `inert`, so links and buttons inside them cannot be
+  tabbed to or click targets.
+
+Known gap: the arrows are 24 px buttons, below the common 44 px touch recommendation. Known gap:
+slide changes are not announced — the dot's `aria-current` updates, but there is no live region, so
+a screen reader user hears nothing when paging with the arrows. Known gap: the focusable region
+remains a tab stop even in the single-slide case, where it has no controls.
+
+## FAQ
+
+**Is there autoplay?** No. There is no interval prop, so nothing moves without a click or arrow key.
+That also means there is nothing to pause.
+
+**Why can't I tab into a button on the second slide?** Because inactive slides are `inert` — that is
+deliberate, so hidden content never receives focus. Navigate to the slide first.
+
+**Why did my title and image disappear?** Passing `content` replaces the whole slide body; remove it
+to go back to the image and caption layout.
+
+## Related
+
+- `Card` for static content blocks beside the carousel.
+- `Image Preview` for full-size images with zoom.
+- `Tabs` for peer views the user picks directly.
+- `Button` for the arrow and action variants used inside slides.
+- [Used in the template](https://fish-admin.vercel.app/projects)

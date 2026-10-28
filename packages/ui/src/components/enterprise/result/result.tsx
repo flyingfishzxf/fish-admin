@@ -27,10 +27,15 @@ export function Result({
   extra,
   className,
 }: {
+  /** Outcome to show; also picks the icon and the icon tile colours. */
   status: ResultStatus
+  /** Main message, rendered as an h2. */
   title: ReactNode
+  /** Supporting sentence, centred and capped at max-w-md. */
   description?: ReactNode
+  /** Action row under the copy, for buttons or links. */
   extra?: ReactNode
+  /** Extra classes merged onto the wrapper, for example to tighten the default py-16. */
   className?: string
 }) {
   const { icon: Icon, tile } = RESULT_STYLES[status]

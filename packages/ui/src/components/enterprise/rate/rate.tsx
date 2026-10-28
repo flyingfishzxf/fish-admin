@@ -13,12 +13,19 @@ export function Rate({
   ariaLabel,
   className,
 }: {
+  /** Selected number of stars; 0 means nothing is selected. */
   value?: number
+  /** Called with the next value. Without it the rating is static and every star is disabled. */
   onChange?: (value: number) => void
+  /** Number of stars rendered. */
   max?: number
+  /** Renders a static display instead of an input. */
   readOnly?: boolean
+  /** Lets a click on the already selected star clear the rating back to 0. */
   allowClear?: boolean
+  /** Accessible name of the radiogroup; defaults to the localized "Rating". */
   ariaLabel?: string
+  /** Extra classes merged onto the radiogroup. */
   className?: string
 }) {
   const { t } = useUITranslation()

@@ -1,0 +1,98 @@
+---
+title: Anchor Nav 锚点导航
+description: 跟踪当前可视分区的锚点导航，点击任一锚点即可滚动到对应位置。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AnchorNavBasic from '@docs/demos/anchor-nav/basic'
+import basicSource from '@docs/demos/anchor-nav/basic.tsx?raw'
+import AnchorNavSticky from '@docs/demos/anchor-nav/sticky'
+import stickySource from '@docs/demos/anchor-nav/sticky.tsx?raw'
+
+# Anchor Nav 锚点导航
+
+`AnchorNav` 就是一个用原生 `<button>` 组成的 `<nav>`。它监听窗口或 `rootRef` 传入容器的滚动
+事件，把最后一个越过 offset 线的分区标为当前项并写入 `aria-current="location"`；点击锚点则滚
+动该容器到对应分区。
+
+<ComponentMeta id="anchor-nav" />
+
+## 何时使用
+
+- 较长的报表、设置页或政策页，按分区组织，读者需要在分区之间来回跳转。
+- 常驻目录的文档页，需要始终知道自己在哪一节。
+- 表单按组拆分，且分组数量多到一屏放不下。
+
+## 何时不使用
+
+- 在平级视图之间切换且每个视图维护自己的状态：使用 `Tabs`。
+- 只有两三个短分区，一屏就能看完。
+- 路由之间的站点级导航：使用 `Sidebar` 或 `Breadcrumb`。
+
+## 基础用法
+
+纵向导航放在滚动面板左侧，`rootRef` 指向该面板，因此点击滚动与当前项判断都以面板为作用域，而
+不是整个页面。
+
+<Demo title="滚动面板旁的纵向导航" filename="demos/anchor-nav/basic.tsx" source={basicSource}>
+  <AnchorNavBasic />
+</Demo>
+
+## 横向吸顶栏
+
+`orientation="horizontal"` 把左侧竖线换成 `border-b-2` 的标签栏，并在横向溢出时滚动。组件不会
+自己吸顶，需要像示例一样放进你自己的 sticky 容器里。
+
+<Demo title="工作区设置上方的吸顶栏" filename="demos/anchor-nav/sticky.tsx" source={stickySource}>
+  <AnchorNavSticky />
+</Demo>
+
+## API
+
+<ApiTable component="anchor-nav" />
+
+## 设计指引
+
+- 选中态靠线条表达：纵向变体画 2 px 左边线（`border-l-2` 加 `-ml-px`），横向变体画 2 px 下边
+  线。只有当前项保留 `border-primary`，其余为 `border-transparent`，视觉上连成一条完整导轨。
+- 当前项文案同时切换为 `text-primary` 与 `font-medium`，其余使用 `text-muted-foreground`。按钮字
+  号为 `text-sm`，纵向 `px-3 py-1.5`、横向 `px-3 py-2`，所以横向条更高一些。
+- 当前项判定基于位置而非 IntersectionObserver：`boundary` 等于容器顶边加 `offset`（默认
+  `88`），遍历时保留最后一个顶边已越过该线的分区。因此分区刚跨过这条线就会被激活，不必等它填
+  满视口。
+- `offset` 同时用于滚动落点：目标分区会停在容器顶部下方 `offset` 像素处，这正是标题避开吸顶
+  头部的方式。两个行为共用一个数值，调参时一起考虑。
+- 滚动行为是 `smooth`，但当用户系统开启 `prefers-reduced-motion: reduce` 时改为直接跳转。
+- 分区通过 `document.getElementById` 查找，所以 ID 必须在页面上唯一；找不到的 ID 在测量时被跳
+  过，点击时也不会有任何反应。
+
+## 无障碍
+
+- 根节点是有 `ariaLabel` 命名的 `nav` 地标；每个锚点都是进入 Tab 顺序的原生 `button`，并带
+  `focus-visible` 焦点环。
+- 当前分区带 `aria-current="location"`，读屏会把它读作这一组链接中的“当前位置”。
+- 横向变体的横向溢出由组件自身滚动，内部按钮仍可通过键盘到达。
+
+已知缺口：锚点之间没有方向键切换，高亮变化是静默的（没有 live region 播报），组件也不会为目
+标分区包裹或命名地标——示例里由面板自己补上 `role="region"`、`aria-label` 与 `tabIndex={0}`。
+
+## FAQ
+
+**为什么没有任何一项高亮？** 每个 `item.id` 都必须在 effect 执行时真实存在于 DOM 中。如果分区是
+数据返回后才渲染的，请让 items 与已渲染分区保持同步；组件会在每次滚动和窗口尺寸变化时重新测量。
+
+**导航会自动吸顶吗？** 不会。只有横向变体适合做吸顶栏，sticky 容器和背景色都由你负责；文档示
+例使用 `position: sticky` 与 `background: var(--card)`。
+
+**可以作用于整个窗口而不是某个面板吗？** 可以，省略 `rootRef` 即可。此时组件监听 `window` 滚动
+并调用 `window.scrollTo`，`offset` 逻辑完全一致。
+
+## 相关
+
+- `Sidebar`：常驻的路由级导航。
+- `Tabs`：分区之间是平级关系且各自维护状态时使用。
+- `Scroll Area`：可作为与导航搭配的带样式滚动容器。
+- `Breadcrumb`：在内容上方提供位置感。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

@@ -1,0 +1,97 @@
+---
+title: Date Picker 日期选择器
+description: 在弹层日历中选择单个日期，值以 YYYY-MM-DD 字符串保存。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DatePickerBasic from '@docs/demos/date-picker/basic'
+import basicSource from '@docs/demos/date-picker/basic.tsx?raw'
+import DatePickerBounds from '@docs/demos/date-picker/bounds'
+import boundsSource from '@docs/demos/date-picker/bounds.tsx?raw'
+
+# Date Picker 日期选择器
+
+`DatePicker` 由一个 `outline` 变体的 `Button` 触发器和一个承载单日期 `Calendar` 的 `Popover`
+组成。值是 `YYYY-MM-DD` 字符串，显示时按当前 `UIProvider` 的语言格式化。
+
+<ComponentMeta id="date-picker" />
+
+## 何时使用
+
+- 表单或筛选条件只需要一个自然日，不涉及具体时刻。
+- 需要结合上下文安排时间，例如发布冻结日、权限复核日。
+- 需要把可选日期限制在某个区间内，可用 `min` 与 `max`。
+
+## 何时不使用
+
+- 需要起止两个日期：使用 `Date Range Picker`。
+- 日期加时间：与 `Time Picker` 组合使用。
+- 日历需要常驻页面：直接使用 `Calendar`。
+- 日期来自外部系统、需要直接粘贴：`Input` 比逐月翻页更快。
+
+## 基础用法
+
+<Demo title="安排一个具体日期" filename="demos/date-picker/basic.tsx" source={basicSource}>
+  <DatePickerBasic />
+</Demo>
+
+## 限定可选范围
+
+`min` 与 `max` 是闭区间的 `YYYY-MM-DD` 边界，内部会转换为 react-day-picker 的 `before` 与
+`after` 匹配器：区间外的日期不会消失，而是渲染为禁用按钮。
+
+<Demo title="限定在一个季度内" filename="demos/date-picker/bounds.tsx" source={boundsSource}>
+  <DatePickerBounds />
+</Demo>
+
+## API
+
+<ApiTable component="date-picker" />
+
+## 设计指引
+
+- 触发器是 36 px（`h-9`）的 `outline` 按钮，最左侧是 16 px 的 `CalendarDays` 图标；未选择时
+  占位文案为弱化色，值过长会截断。
+- 显示文本由 `Intl.DateTimeFormat` 按 `UIProvider` 的语言生成：中文为“2026年3月15日”，
+  英文为“Mar 15, 2026”，而保存的值始终是 ISO 格式。
+- 弹层使用 `p-3`、`w-auto max-w-[calc(100vw-2rem)]`，七列日历在窄屏上不会溢出。
+- 底部由一条上边框分隔，右侧是 `ghost` 变体的“清除”按钮，`value` 为空时处于禁用状态。
+- 选中某天会以 ISO 值调用 `onChange` 并关闭弹层；点击“清除”则以 `undefined` 调用并同样关闭。
+  点击弹层外部只关闭，不改变值。
+- 日历以已选月份（`defaultMonth`）打开，未选择时停在当前月；日期格仍是 `Calendar` 页描述的
+  32 px 规格。
+
+## 无障碍
+
+- 触发器的可访问名称由 `ariaLabel` 与当前显示值拼成，例如“迁移开始日期：2026年11月3日”，
+  不打开弹层也能听到已选结果。
+- 打开后焦点进入日历网格：方向键按天、按周移动，Page Up/Down 切换月份，Home/End 跳到一周
+  两端，Enter/空格选中；Escape 关闭并把焦点交还触发器。
+- 禁用的日期是真正的 `<button disabled>`，键盘导航会跳过；每天的读屏名称会带上本地化的
+  “今天”和“已选择”。
+- 底部的“清除”按钮在 Tab 顺序中，未选择时禁用。
+
+已知缺口：可选区间只通过禁用日期表达，没有任何文案播报 `min`/`max` 的边界，请在界面上补充
+可见的提示文字。另外弹层本身是 `dialog`，但没有自己的可访问名称，语义由触发器标签和日期
+标签承担。
+
+## FAQ
+
+**`onChange` 到底会拿到什么？** `YYYY-MM-DD` 字符串；用户清空时是 `undefined`。请在数据边界
+处再转成 `Date`，不要放在组件里转换。
+
+**可以手动输入日期吗？** 不可以。触发器只负责展示，所有修改都经过日历。确实需要键盘输入时，
+请用 `Input` 自行解析。
+
+**选中一天会提交表单吗？** 只会调用 `onChange` 并关闭弹层，没有“确定”按钮，提交逻辑请接到
+自己的表单处理上。
+
+## 相关
+
+- `Date Range Picker`：选择起止日期并附带快捷预设。
+- `Calendar`：日历常驻或需要区间选择时。
+- `Time Picker`：需要补充具体时刻时。
+- `Popover`：需要自定义触发器时。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

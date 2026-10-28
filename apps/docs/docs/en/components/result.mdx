@@ -1,0 +1,107 @@
+---
+title: Result
+description: A centred status panel for the end of a flow or a whole-page state.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ResultBasic from '@docs/demos/result/basic'
+import basicSource from '@docs/demos/result/basic.tsx?raw'
+import ResultStates from '@docs/demos/result/states'
+import statesSource from '@docs/demos/result/states.tsx?raw'
+
+# Result
+
+`Result` pairs one of five `status` values with a Lucide icon tile, an `h2` title, a short
+description and an `extra` action row. It is a block, not a page: you place it inside your own
+container.
+
+<ComponentMeta id="result" />
+
+## When to use
+
+- The end of a flow: invitations sent, payment taken, deployment finished.
+- A whole-page state inside the app shell, such as no audit entry or a missing record.
+- A blocking error that needs an explanation and a recovery action.
+
+## When not to use
+
+- Transient confirmation while the user stays put: use a `Sonner` toast.
+- A field-level or inline problem: use `Alert` or the form's own error text.
+- A confirmation before acting: use `Alert Dialog`.
+- A list that is simply empty: use `Empty`, which is built for data regions.
+
+## Basic usage
+
+<Demo
+  title="Success after inviting teammates"
+  filename="demos/result/basic.tsx"
+  source={basicSource}
+>
+  <ResultBasic />
+</Demo>
+
+## Statuses
+
+Five statuses are supported: `success`, `info`, `warning`, `error` and `not-found`. Each one swaps
+the icon and the tile colours; `error` is the only status that announces assertively.
+
+<Demo title="All five statuses" filename="demos/result/states.tsx" source={statesSource}>
+  <ResultStates />
+</Demo>
+
+## API
+
+<ApiTable component="result" />
+
+## Design guidance
+
+- The layout is a centred column with `gap-4` and `px-6 py-16`. That generous `py-16` is meant for
+  a full-page result; pass `className` to tighten it when embedding the block in a card.
+- Each status maps to an icon and a tinted tile: `success` uses `CheckCircle2` on
+  `bg-chart-3/14 text-chart-3-foreground`, `info` uses `Info` on `bg-chart-1/12`,
+  `warning` uses `AlertTriangle` on `bg-chart-4/16`, `error` uses `XCircle` on
+  `bg-destructive/10 text-destructive`, and `not-found` uses `FileQuestion` on `bg-muted`.
+- The tile is `size-14` with `rounded-2xl` and holds a `size-7` icon; the title is
+  `text-lg font-semibold`, and the description is capped at `max-w-md` in `text-sm` muted text.
+- `extra` renders only when provided, as a wrapping row with `gap-2`; put the primary action first
+  and keep a single obvious way forward.
+- `title` and `description` are `ReactNode`; the component adds no image slot, so custom artwork
+  means composing your own markup.
+
+## Accessibility
+
+- `role="alert"` is used for `error` and `role="status"` for every other status, so a result that
+  appears after an action is announced as a live-region update.
+- The title is always an `h2`. Nesting a result inside a card or dialog still produces an `h2`, so
+  check the outline of the surrounding page.
+- The status icon is a plain `<svg>` with no title or `aria-label`; the title text carries the
+  meaning, and the icon is not announced separately.
+- No focus management: the panel does not move focus to its heading. After navigating to a result
+  screen, focus the heading yourself if the user needs the announcement.
+
+Known gap: `role="alert"` is unconditional for `error`, so the message is announced assertively
+even when it was already on screen at load. Render the error result after the failure instead of
+mounting it with the page. The description also has no `id` exposed, so the panel has no
+`aria-describedby` link between title and body.
+
+## FAQ
+
+**Is `Result` a full page?** No, it is a block with default padding. Put it in `PageContainer` or a
+`Card`, and override `className` when the default `py-16` is too tall for the container.
+
+**Why is my error not announced?** Live regions only announce changes after mount. Switch the
+status or mount the result in response to the failure; an error panel present on first render is
+often silent.
+
+**Can I change the icon?** Not through props — the icon is fixed per status. Render your own markup
+if the five built-in outcomes don't fit, or pair `Result` with `Empty` for data-driven empty states.
+
+## Related
+
+- `Empty` for an empty data region rather than a finished flow.
+- `Alert` for inline, non-blocking messages.
+- `Alert Dialog` when the user must confirm before an outcome happens.
+- `Sonner` for transient success and failure toasts.
+- [Used in the template](https://fish-admin.vercel.app/users/$id)

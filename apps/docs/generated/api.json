@@ -1425,28 +1425,28 @@
           "type": "AnchorItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Sections to link, in document order; each id must exist in the DOM."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the nav landmark."
         },
         {
           "name": "rootRef",
           "type": "RefObject<HTMLElement | null>",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Scroll container to watch and scroll; defaults to the window."
         },
         {
           "name": "offset",
           "type": "number",
           "required": false,
           "defaultValue": "88",
-          "description": ""
+          "description": "Distance in px between the scroll top and the active boundary."
         },
         {
           "name": "orientation",
@@ -1484,14 +1484,14 @@
           "type": "AutoCompleteOption[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Suggestions to filter; the list is shown as-is while the query is empty."
         },
         {
           "name": "value",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Controlled query text; the label of a picked option is written back here."
         },
         {
           "name": "placeholder",
@@ -1505,28 +1505,28 @@
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for both the input and the listbox."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Row shown when no option matches the query."
         },
         {
           "name": "loading",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Replaces the list with a single centred loading row."
         },
         {
           "name": "loadingLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Copy for the loading row."
         },
         {
           "name": "disabled",
@@ -1540,7 +1540,7 @@
           "type": "boolean",
           "required": false,
           "defaultValue": "true",
-          "description": ""
+          "description": "Open the list when the input receives focus."
         },
         {
           "name": "className",
@@ -1556,14 +1556,14 @@
           "type": "(value: string) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called on every keystroke with the new query."
         },
         {
           "name": "onSelect",
           "type": "((option: AutoCompleteOption) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Called only when a suggestion is picked, with the full option."
         }
       ],
       "slots": [],
@@ -1579,21 +1579,21 @@
           "type": "RefObject<HTMLElement | null>",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Scroll container to watch and scroll; defaults to the window."
         },
         {
           "name": "threshold",
           "type": "number",
           "required": false,
           "defaultValue": "400",
-          "description": ""
+          "description": "Scroll distance in px before the button appears."
         },
         {
           "name": "label",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name; falls back to the localized \"back to top\" string."
         },
         {
           "name": "className",
@@ -1617,42 +1617,42 @@
           "type": "CarouselSlide[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Slides in order; an empty array renders the empty state instead."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the carousel region."
         },
         {
           "name": "previousLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the previous-slide button."
         },
         {
           "name": "nextLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the next-slide button."
         },
         {
           "name": "goToLabel",
           "type": "(index: number) => string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Builds the accessible name of a dot, given its 1-based position."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Copy for the box shown when slides is empty."
         },
         {
           "name": "className",
@@ -1676,42 +1676,42 @@
           "type": "CascaderOption[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Root level of the tree; each level is one column."
         },
         {
           "name": "value",
           "type": "string[]",
           "required": false,
           "defaultValue": "[]",
-          "description": ""
+          "description": "Controlled path of option values from root to leaf."
         },
         {
           "name": "placeholder",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Trigger text when nothing is selected."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the trigger and each column."
         },
         {
           "name": "clearLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the clear button."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Copy for the popover when options is empty."
         },
         {
           "name": "disabled",
@@ -1734,14 +1734,14 @@
           "type": "(value: string[]) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the full path when a leaf is picked."
         },
         {
           "name": "onClear",
           "type": "(() => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Shows the clear affordance when provided and a value is set."
         }
       ],
       "slots": [],
@@ -1757,70 +1757,70 @@
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "DOM id applied to the trigger button."
         },
         {
           "name": "options",
           "type": "ComboboxOption[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Options rendered in the list; label and description are both searchable."
         },
         {
           "name": "value",
           "type": "string | null",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Currently selected option value; the label is looked up in `options`."
         },
         {
           "name": "placeholder",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Trigger text shown while nothing is selected."
         },
         {
           "name": "searchPlaceholder",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Placeholder of the search field; defaults to the localized \"Search…\"."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text shown when the search matches nothing."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the combobox trigger."
         },
         {
           "name": "clearLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the clear button; defaults to \"Clear selection\"."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disables the trigger, the clear button and the list."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the wrapper that also anchors the clear button."
         }
       ],
       "events": [
@@ -1829,14 +1829,14 @@
           "type": "(value: string) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the option value when an item is chosen."
         },
         {
           "name": "onClear",
           "type": "(() => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Renders the clear button when provided together with a value."
         }
       ],
       "slots": [],
@@ -1852,49 +1852,49 @@
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Selected day as a `YYYY-MM-DD` string."
         },
         {
           "name": "placeholder",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Trigger text shown while no date is selected."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name; the current display value is appended to it."
         },
         {
           "name": "min",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Earliest selectable day as `YYYY-MM-DD`; earlier days are disabled."
         },
         {
           "name": "max",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Latest selectable day as `YYYY-MM-DD`; later days are disabled."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disables the trigger."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the trigger button."
         }
       ],
       "events": [
@@ -1903,7 +1903,7 @@
           "type": "(value: string | undefined) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the `YYYY-MM-DD` value, or `undefined` when cleared."
         }
       ],
       "slots": [],
@@ -1979,21 +1979,21 @@
           "type": "DescriptionItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Term/description pairs rendered in source order."
         },
         {
           "name": "columns",
           "type": "enum",
           "required": false,
           "defaultValue": "2",
-          "description": ""
+          "description": "Column count from the `sm` breakpoint up; the base layout is one column."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the `dl` grid."
         }
       ],
       "events": [],
@@ -2010,63 +2010,63 @@
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Allows picking and dropping more than one file."
         },
         {
           "name": "accept",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Native accept hint, for example `.csv,.tsv`; drag and drop is not filtered by it."
         },
         {
           "name": "label",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Primary instruction and accessible name of the hidden file input."
         },
         {
           "name": "hint",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Secondary line under the label, for format and size limits."
         },
         {
           "name": "browseLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text of the browse button; defaults to \"Browse files\"."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disables dragging, the input and the browse button."
         },
         {
           "name": "error",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Validation message rendered with `role=\"alert\"` under the button."
         },
         {
           "name": "preview",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Content rendered above the icon, for thumbnails or a file summary."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the dashed drop area."
         }
       ],
       "events": [
@@ -2075,14 +2075,14 @@
           "type": "((file: File) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Receives the first dropped or picked file when `onFiles` is absent."
         },
         {
           "name": "onFiles",
           "type": "((files: File[]) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Receives every file at once; takes precedence over `onFile`."
         }
       ],
       "slots": [],
@@ -2098,21 +2098,21 @@
           "type": "PreviewImage[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Thumbnails in display order; an empty array renders the \"No data\" line."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the dialog and prefix of every thumbnail name."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the thumbnail grid."
         }
       ],
       "events": [],
@@ -2129,21 +2129,21 @@
           "type": "unknown",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Any JSON-compatible value; undefined renders the empty state."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Short label shown in the header and used as the root's accessible name."
         },
         {
           "name": "defaultExpandedDepth",
           "type": "number",
           "required": false,
           "defaultValue": "2",
-          "description": ""
+          "description": "Depth that starts expanded; 0 keeps everything folded."
         },
         {
           "name": "className",
@@ -2167,28 +2167,28 @@
           "type": "ListItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Rows to render; an empty array switches to the dashed empty state."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the list element."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Text shown when items is empty."
         },
         {
           "name": "selectedId",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Id of the highlighted row; also sets aria-current on its button."
         },
         {
           "name": "className",
@@ -2204,7 +2204,7 @@
           "type": "((item: ListItem) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Makes every row body a button; omit it for a read-only list."
         }
       ],
       "slots": [],
@@ -2220,49 +2220,49 @@
           "type": "NotificationItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Notifications to list, newest first."
         },
         {
           "name": "unreadCount",
           "type": "number",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Overrides the count derived from items; pass the server total."
         },
         {
           "name": "viewAllLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Footer button text; defaults to the localized \"View all notifications\"."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the bell trigger; defaults to \"Notifications\"."
         },
         {
           "name": "title",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Panel heading; defaults to \"Notifications\"."
         },
         {
           "name": "markAllLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Mark-all button text; defaults to \"Mark all read\"."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text shown when items is empty; defaults to \"You're all caught up.\"."
         },
         {
           "name": "className",
@@ -2278,21 +2278,21 @@
           "type": "((item: NotificationItem) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Opened notification; use it to mark the item read in your data."
         },
         {
           "name": "onMarkAllRead",
           "type": "(() => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Enables the header button; it is disabled when nothing is unread."
         },
         {
           "name": "onViewAll",
           "type": "(() => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Renders a footer button that opens the full inbox."
         }
       ],
       "slots": [],
@@ -2308,49 +2308,56 @@
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Page title, rendered as the page's h1."
         },
         {
           "name": "description",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "One or two sentences under the title."
         },
         {
           "name": "eyebrow",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Small uppercase label above the title, such as \"Workspace\"."
         },
         {
           "name": "actions",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Buttons shown opposite the title from the lg breakpoint."
         },
         {
           "name": "tabs",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Filter bar or tabs rendered below the header in a bordered row."
         },
         {
           "name": "footer",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Page-level footer, separated by a top border."
         },
         {
           "name": "stickyHeader",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Makes the tabs row sticky instead of the whole header."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": "Page body; children are spaced with space-y-6."
         },
         {
           "name": "className",
@@ -2361,7 +2368,9 @@
         }
       ],
       "events": [],
-      "slots": [],
+      "slots": [
+        "children"
+      ],
       "unresolved": []
     },
     "popconfirm": {
@@ -2370,67 +2379,74 @@
       "source": "packages/ui/src/components/enterprise/popconfirm/popconfirm.tsx",
       "props": [
         {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": "Trigger element; pass a single button so focus returns to it on close."
+        },
+        {
           "name": "title",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Question shown in the popover; used as the alertdialog's name."
         },
         {
           "name": "description",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Consequence of confirming, linked through aria-describedby."
         },
         {
           "name": "confirmLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Confirm button text; defaults to the localized \"Confirm\"."
         },
         {
           "name": "cancelLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Footer button text; defaults to the localized \"Cancel\"."
         },
         {
           "name": "pending",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disables Confirm and sets aria-busy while an operation is in flight."
         },
         {
           "name": "destructive",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Confirm button style: destructive for deletes and revocations."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Blocks opening and marks the trigger aria-disabled."
         },
         {
           "name": "side",
           "type": "enum",
           "required": false,
           "defaultValue": "top",
-          "description": ""
+          "description": "Preferred side of the trigger."
         },
         {
           "name": "align",
           "type": "enum",
           "required": false,
           "defaultValue": "center",
-          "description": ""
+          "description": "Alignment along the chosen side."
         },
         {
           "name": "className",
@@ -2446,10 +2462,12 @@
           "type": "() => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Runs when Confirm is pressed; the popover closes immediately afterwards."
         }
       ],
-      "slots": [],
+      "slots": [
+        "children"
+      ],
       "unresolved": []
     },
     "rate": {
@@ -2462,42 +2480,42 @@
           "type": "number",
           "required": false,
           "defaultValue": "0",
-          "description": ""
+          "description": "Selected number of stars; 0 means nothing is selected."
         },
         {
           "name": "max",
           "type": "number",
           "required": false,
           "defaultValue": "5",
-          "description": ""
+          "description": "Number of stars rendered."
         },
         {
           "name": "readOnly",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Renders a static display instead of an input."
         },
         {
           "name": "allowClear",
           "type": "boolean",
           "required": false,
           "defaultValue": "true",
-          "description": ""
+          "description": "Lets a click on the already selected star clear the rating back to 0."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the radiogroup; defaults to the localized \"Rating\"."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes merged onto the radiogroup."
         }
       ],
       "events": [
@@ -2506,7 +2524,7 @@
           "type": "((value: number) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the next value. Without it the rating is static and every star is disabled."
         }
       ],
       "slots": [],
@@ -2522,35 +2540,35 @@
           "type": "enum",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Outcome to show; also picks the icon and the icon tile colours."
         },
         {
           "name": "title",
           "type": "ReactNode",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Main message, rendered as an h2."
         },
         {
           "name": "description",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Supporting sentence, centred and capped at max-w-md."
         },
         {
           "name": "extra",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Action row under the copy, for buttons or links."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes merged onto the wrapper, for example to tighten the default py-16."
         }
       ],
       "events": [],
@@ -2567,63 +2585,63 @@
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Name of the metric; also the first word of the trend's accessible label."
         },
         {
           "name": "value",
           "type": "string | number",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Numbers go through Intl.NumberFormat; strings render verbatim."
         },
         {
           "name": "precision",
           "type": "number",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Fixed number of fraction digits passed to Intl.NumberFormat."
         },
         {
           "name": "prefix",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Node shown before the value, for example a currency symbol."
         },
         {
           "name": "suffix",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Node shown after the value, for example a unit."
         },
         {
           "name": "trend",
           "type": "{ value: number; label?: string; }",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Percentage change; its sign selects the up, down or flat icon and tone."
         },
         {
           "name": "icon",
           "type": "LucideIcon",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Lucide icon shown in the tile at the top right."
         },
         {
           "name": "loading",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Swaps the value for two skeleton blocks and marks the card aria-busy."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes merged onto the card."
         }
       ],
       "events": [],
@@ -2640,28 +2658,28 @@
           "type": "StepperStep[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Ordered steps; each needs a stable id used as the list key."
         },
         {
           "name": "current",
           "type": "number",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Zero-based index of the current step."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the ordered list."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes merged onto the ordered list."
         }
       ],
       "events": [
@@ -2670,7 +2688,7 @@
           "type": "((index: number) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Makes every step up to current a button. Later steps stay inert."
         }
       ],
       "slots": [],

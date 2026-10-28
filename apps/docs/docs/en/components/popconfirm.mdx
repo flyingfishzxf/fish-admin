@@ -1,0 +1,112 @@
+---
+title: Popconfirm
+description: An inline confirmation popover for short, reversible or single-row decisions.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PopconfirmBasic from '@docs/demos/popconfirm/basic'
+import basicSource from '@docs/demos/popconfirm/basic.tsx?raw'
+import PopconfirmPlacements from '@docs/demos/popconfirm/placements'
+import placementsSource from '@docs/demos/popconfirm/placements.tsx?raw'
+
+# Popconfirm
+
+`Popconfirm` wraps any trigger in a `Popover` whose content is an `alertdialog`: a title, an optional
+description, and Cancel/Confirm buttons. The question appears next to the thing it affects instead of
+taking over the screen.
+
+<ComponentMeta id="popconfirm" />
+
+## When to use
+
+- A destructive or irreversible action on a single row, such as deleting a workflow.
+- A decision that is quick to explain in one sentence.
+- Places where a modal would be too heavy: table rows, list rows, toolbar buttons.
+
+## When not to use
+
+- Bulk operations that need a summary of what will happen: use `AlertDialog`.
+- A confirmation that needs a form, a typed phrase or a reason: use `Dialog`.
+- Purely informational hints: use `Tooltip` or `Popover`.
+
+## Basic usage
+
+<Demo title="Destructive confirmation" filename="demos/popconfirm/basic.tsx" source={basicSource}>
+  <PopconfirmBasic />
+</Demo>
+
+## Placement and labels
+
+`side` and `align` are preferences, not guarantees: the popover flips when there is no room. Pass
+verbs as labels so the confirm button reads as the action.
+
+<Demo
+  title="Placement and labels"
+  filename="demos/popconfirm/placements.tsx"
+  source={placementsSource}
+>
+  <PopconfirmPlacements />
+</Demo>
+
+## API
+
+<ApiTable component="popconfirm" />
+
+## Design guidance
+
+- The panel is 288px wide with 16px padding (`w-72 p-4`), offset 4px from the trigger; `side`
+  defaults to `top` and `align` to `center`.
+- The title is `text-sm font-semibold`; the description is `text-sm` muted and is linked with
+  `aria-describedby`, so keep it to the consequence, not a repeat of the title.
+- Actions sit 16px below the header, right aligned with an 8px gap. Cancel is an `outline` button,
+  Confirm is `default` or `destructive` when `destructive` is set; both are `size="sm"`.
+- Label defaults come from the UI locale ("Cancel", "Confirm"). When the consequence matters, pass a
+  verb: "Delete workflow", "Revoke token", "Archive".
+- Reserving `destructive` for genuine data loss keeps the red button meaningful; a neutral confirm
+  such as "Archive" should stay on the default variant.
+- `pending` disables Confirm and sets `aria-busy` on the dialog. While it is true the question cannot
+  be confirmed and the panel stays open: it guards work already in flight, it is not a post-click
+  spinner.
+- `disabled` ignores `onOpenChange` and adds `aria-disabled` to the trigger, but it does not disable or
+  dim the child button — style the trigger yourself when the action is unavailable.
+
+## Accessibility
+
+- The content is `role="alertdialog"` with `aria-labelledby` pointing at the title and
+  `aria-describedby` at the description when one is provided.
+- Focus moves into the panel on open; Escape and Cancel both close it and return focus to the trigger,
+  which the component test asserts.
+- Confirm and Cancel are native buttons; `pending` sets the native `disabled` attribute on Confirm, so
+  it also leaves the tab order.
+- The alertdialog is non-modal: there is no focus trap and no backdrop, so Tab can move back into the
+  page while the question is open.
+- The trigger keeps its own semantics. Pass a single button as the child so focus restoration and
+  `aria-disabled` land on a real control.
+- `side` and `align` are visual only; reading order follows the DOM, not the chosen placement.
+
+Known gap: the popover is non-modal, so the alertdialog does not make the rest of the page inert and
+Tab can leave the panel; there is no backdrop or focus trap. There is also no controlled `open` prop,
+so an async operation cannot reopen the panel into a loading state.
+
+## FAQ
+
+**Can I await a request before closing?** Not directly. `onConfirm` is synchronous and the panel closes
+on click. For async flows that must report success or failure, control your own `Popover` or use an
+`AlertDialog` with local state.
+
+**What exactly does `pending` do?** It disables Confirm and sets `aria-busy` on the dialog. Since
+Confirm is disabled, `onConfirm` cannot fire while `pending` is true; the panel stays open so the
+operation can finish elsewhere.
+
+**Can I control whether it is open?** No, `open` is internal. Compose `Popover` plus two `Button`s if
+you need to open it programmatically.
+
+## Related
+
+- `AlertDialog` when the decision must block the page.
+- `Popover` for a panel that is not a confirmation.
+- `Dialog` when the confirmation needs fields.
+- `Button` for the trigger and the two actions.
+- [Used in the template](https://fish-admin.vercel.app/workflows/$id)

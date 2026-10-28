@@ -39,13 +39,21 @@ export function Cascader({
   disabled = false,
   className,
 }: {
+  /** Root level of the tree; each level is one column. */
   options: CascaderOption[]
+  /** Controlled path of option values from root to leaf. */
   value?: string[]
+  /** Called with the full path when a leaf is picked. */
   onChange: (value: string[]) => void
+  /** Shows the clear affordance when provided and a value is set. */
   onClear?: () => void
+  /** Trigger text when nothing is selected. */
   placeholder: string
+  /** Accessible name for the trigger and each column. */
   ariaLabel: string
+  /** Accessible name of the clear button. */
   clearLabel?: string
+  /** Copy for the popover when options is empty. */
   emptyLabel?: string
   disabled?: boolean
   className?: string

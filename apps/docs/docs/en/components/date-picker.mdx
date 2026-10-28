@@ -1,0 +1,102 @@
+---
+title: Date Picker
+description: Pick a single day from a popover calendar and store it as YYYY-MM-DD.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DatePickerBasic from '@docs/demos/date-picker/basic'
+import basicSource from '@docs/demos/date-picker/basic.tsx?raw'
+import DatePickerBounds from '@docs/demos/date-picker/bounds'
+import boundsSource from '@docs/demos/date-picker/bounds.tsx?raw'
+
+# Date Picker
+
+`DatePicker` is an outline `Button` trigger plus a `Popover` holding the single-mode `Calendar`.
+The value is a `YYYY-MM-DD` string, and the same value is formatted for display with the active
+`UIProvider` locale.
+
+<ComponentMeta id="date-picker" />
+
+## When to use
+
+- Forms and filters that need one calendar day, not a time of day.
+- Scheduling something with context, such as a freeze window or a review date.
+- Constraining the choice to a period with `min` and `max`.
+
+## When not to use
+
+- A start and end date: use `Date Range Picker`.
+- A date plus a time: pair this with `Time Picker`.
+- A calendar that stays visible: use `Calendar` directly.
+- Dates typed from an external source: an `Input` is faster than paging months.
+
+## Basic usage
+
+<Demo title="A single scheduled date" filename="demos/date-picker/basic.tsx" source={basicSource}>
+  <DatePickerBasic />
+</Demo>
+
+## Allowed range
+
+`min` and `max` are inclusive `YYYY-MM-DD` bounds. They are passed to react-day-picker as `before`
+and `after` matchers, so out-of-range days render as disabled buttons rather than disappearing.
+
+<Demo title="Bounded to one quarter" filename="demos/date-picker/bounds.tsx" source={boundsSource}>
+  <DatePickerBounds />
+</Demo>
+
+## API
+
+<ApiTable component="date-picker" />
+
+## Design guidance
+
+- The trigger is an outline `Button` at 36 px (`h-9`) that starts with a 16 px `CalendarDays` icon;
+  the placeholder is muted until a date exists, and long values truncate.
+- The display string is built with `Intl.DateTimeFormat` in the `UIProvider` locale — "Mar 15, 2026"
+  in English, "2026年3月15日" in Chinese — while the value stays ISO.
+- The popover uses `p-3` and `w-auto max-w-[calc(100vw-2rem)]`, so the seven-column calendar never
+  overflows a narrow viewport.
+- A footer separated by a top border holds a ghost `Clear` button aligned to the right; it is
+  disabled while `value` is empty.
+- Picking a day calls `onChange` with the formatted ISO value and closes the popover; clearing calls
+  `onChange(undefined)` and closes too. Clicking outside closes without a change.
+- The calendar opens on the selected month (`defaultMonth`), or the current month when empty, and
+  keeps the 32 px day cells described on the `Calendar` page.
+
+## Accessibility
+
+- The trigger's accessible name is `ariaLabel` plus the visible value, for example
+  "Migration start date: Nov 3, 2026", so the selection is announced without opening anything.
+- Opening the popover moves focus into the calendar grid. Arrow keys move by day and week, Page
+  Up/Down by month, Home/End to the week edges, Enter/Space selects; Escape closes and returns focus
+  to the trigger.
+- Disabled days are real `<button disabled>` elements, skipped by keyboard navigation, and each day's
+  name carries "today" and "selected" in the active locale.
+- The footer `Clear` control is a normal button in the tab order and is disabled when nothing is
+  selected.
+
+Known gap: the allowed window is only expressed as disabled days — nothing announces the `min`/`max`
+bounds, so show them as visible hint text. The popover surface is also a `dialog` with no accessible
+name of its own; the trigger label and the day labels carry the context.
+
+## FAQ
+
+**What exactly does `onChange` receive?** A `YYYY-MM-DD` string, or `undefined` when the user clears
+the field. Convert to `Date` at your data boundary, not in the component.
+
+**Can the user type a date?** No. The trigger only displays the value; every change goes through the
+calendar. Use `Input` with your own parsing when typing matters.
+
+**Does picking a day submit the form?** It only calls `onChange` and closes. There is no Apply button,
+so wire submission to your own form handler.
+
+## Related
+
+- `Date Range Picker` for a start and end date with presets.
+- `Calendar` for an always-visible grid or range selection.
+- `Time Picker` to add a time of day.
+- `Popover` when you build a custom trigger.
+- [Used in the template](https://fish-admin.vercel.app/projects)

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "dropzone/basic",
+    "component": "dropzone",
+    "file": "demos/dropzone/basic.tsx",
+    "title": {
+      "en": "One CSV with validation",
+      "zh": "单个 CSV 与校验"
+    },
+    "description": {
+      "en": "Drop or browse for a single file and reject the wrong extension.",
+      "zh": "拖拽或浏览选择单个文件，并拒绝错误的扩展名。"
+    }
+  },
+  {
+    "id": "dropzone/multiple",
+    "component": "dropzone",
+    "file": "demos/dropzone/multiple.tsx",
+    "title": {
+      "en": "Batch of images",
+      "zh": "批量图片"
+    },
+    "description": {
+      "en": "Collect several PNG or JPEG files into one visible queue.",
+      "zh": "将多个 PNG 或 JPEG 文件收集到可见队列中。"
+    }
+  }
+]

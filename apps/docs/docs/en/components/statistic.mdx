@@ -1,0 +1,101 @@
+---
+title: Statistic
+description: A KPI card that formats one number with an optional prefix, suffix, icon and trend.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import StatisticBasic from '@docs/demos/statistic/basic'
+import basicSource from '@docs/demos/statistic/basic.tsx?raw'
+import StatisticTrend from '@docs/demos/statistic/trend'
+import trendSource from '@docs/demos/statistic/trend.tsx?raw'
+
+# Statistic
+
+`Statistic` is a card for a single metric: a label, a value formatted with `Intl.NumberFormat` in
+the `UIProvider` locale, optional prefix and suffix nodes, an icon tile and a percentage trend.
+
+<ComponentMeta id="statistic" />
+
+## When to use
+
+- The KPI row at the top of a dashboard or report.
+- A metric that needs context, such as "vs last month" next to the number.
+- A card that shows a skeleton while the metric loads.
+
+## When not to use
+
+- A value over time: use `Chart`.
+- A number inside a table row: a `ProTable` column is cheaper than a card.
+- A single figure in prose: plain text with `tabular-nums` is enough.
+
+## Basic usage
+
+<Demo title="KPI row" filename="demos/statistic/basic.tsx" source={basicSource}>
+  <StatisticBasic />
+</Demo>
+
+## Trends and loading
+
+Trends are signed: a positive value uses `ArrowUpRight` in `text-success`, a negative one
+`ArrowDownRight` in `text-destructive`, and zero falls back to `Minus` in muted text. `loading`
+swaps the number for two skeleton blocks.
+
+<Demo title="Trends and loading" filename="demos/statistic/trend.tsx" source={trendSource}>
+  <StatisticTrend />
+</Demo>
+
+## API
+
+<ApiTable component="statistic" />
+
+## Design guidance
+
+- Numeric `value`s go through `Intl.NumberFormat(locale, …)` with `precision` as both the minimum
+  and maximum fraction digits, so `precision={2}` on `1234.5` renders `1,234.50`.
+- A string `value` is rendered verbatim. Use it for already formatted numbers such as `"99.98%"`;
+  `precision` is ignored in that case.
+- The trend is formatted with `maximumFractionDigits: 1` and `signDisplay: "exceptZero"`, and `%` is
+  appended: `12.4` renders `+12.4%` and `0` renders `0%`.
+- The card is `rounded-xl border bg-card p-5 shadow-xs`; the label is `text-sm font-medium` in muted
+  text, the value `text-2xl font-semibold tracking-tight tabular-nums`, the prefix `text-lg` and
+  the suffix `text-sm`.
+- The icon tile is `size-9`, `rounded-lg`, tinted with `bg-primary/10 text-primary` and holds a
+  `size-4` icon. It sits top-right, opposite the label.
+- `loading` keeps the label, hides the value, and renders `h-8 w-32` plus `h-3 w-24` skeletons.
+- The card has no fixed width; place it in a grid so cards of a row share a height.
+
+## Accessibility
+
+- The trend element carries a computed `aria-label` built from label, percentage and trend label,
+  for example "Revenue +12.4% vs last month", so it can be understood without the surrounding card.
+- While loading, the card sets `aria-busy="true"` and the skeletons carry `data-slot="skeleton"`;
+  a consumer can wait for that slot to disappear before asserting on the value.
+- The trend icon is decorative (`aria-hidden`); direction is also encoded by the sign in the text
+  and by the up/down tone.
+- Nothing in the card is focusable, so it never adds a tab stop.
+
+Known gap: the visible `trend.label` is a separate text node from the element that carries the
+combined `aria-label`, so screen readers can announce "vs last month" twice. Live metrics are not
+announced at all — the card has no `aria-live` region, so polling updates silently change the
+number.
+
+## FAQ
+
+**Can I show a currency?** Pass the symbol as `prefix` and the unit as `suffix`; the number itself
+is formatted by `Intl.NumberFormat` with the active locale's grouping.
+
+**Why is my decimal ignored?** `precision` applies to numbers only. A string `value` renders exactly
+as given, so format it first if you need fixed decimals.
+
+**How do I localize the separators?** Wrap the page in `UIProvider`. The docs page forwards the
+Rspress language, so Chinese pages format with `zh-CN` rules.
+
+## Related
+
+- `Chart` when the metric needs a time series.
+- `Trend` for a signed percentage on its own, without a value.
+- `Progress` for a bounded share of a whole.
+- `Card` when you need a custom body rather than one number.
+- [Used in the template](https://fish-admin.vercel.app/reports)

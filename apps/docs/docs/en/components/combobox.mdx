@@ -1,0 +1,113 @@
+---
+title: Combobox
+description: A single-select search field that filters its options as you type.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ComboboxBasic from '@docs/demos/combobox/basic'
+import basicSource from '@docs/demos/combobox/basic.tsx?raw'
+import ComboboxStates from '@docs/demos/combobox/states'
+import statesSource from '@docs/demos/combobox/states.tsx?raw'
+
+# Combobox
+
+`Combobox` pairs a `Button` trigger (with `role="combobox"`) with a `Popover` that holds the
+`Command` list from cmdk. It stores one string value, resolves its label from `options`, and
+optionally clears itself from the trigger.
+
+<ComponentMeta id="combobox" />
+
+## When to use
+
+- Choosing one item from a list that is too long to scan, such as a team, region or owner.
+- Matching on more than the visible label: option descriptions are searchable too.
+- Replacing a native `Select` when the list needs a search field.
+
+## When not to use
+
+- Fewer than about eight fixed options: `Select` is faster and needs no popover.
+- Several values at once: use `Tags Input` or `Transfer`.
+- Hierarchical choices: use `Cascader` or `Tree Select`.
+- Free text that is not in the list: use `Input` with a suggestion list.
+
+## Basic usage
+
+<Demo
+  title="Search a team and clear the choice"
+  filename="demos/combobox/basic.tsx"
+  source={basicSource}
+>
+  <ComboboxBasic />
+</Demo>
+
+## Disabled options and controls
+
+Individual options can be disabled with `disabled: true`; they stay visible and searchable but
+cannot be selected. The control itself takes `disabled`, which closes the list and hides the clear
+button.
+
+<Demo
+  title="A restricted option and a locked control"
+  filename="demos/combobox/states.tsx"
+  source={statesSource}
+>
+  <ComboboxStates />
+</Demo>
+
+## API
+
+<ApiTable component="combobox" />
+
+## Design guidance
+
+- The trigger is an outline `Button` at 36 px (`h-9`) with `justify-between gap-2 pr-14`; the
+  14 px placeholder and the selected label share the same slot, and the placeholder is muted.
+- `pr-14` reserves room for the chevron and the clear button, so long labels truncate instead of
+  sliding under them.
+- The clear button only mounts when both `value` and `onClear` are set. It is a 24 px (`size-6`)
+  icon button at `right-8` with a 2 px focus ring, and it does not open the list.
+- The popover matches the trigger width (`--radix-popover-trigger-width`) with `min-w-56` and `p-0`,
+  so the search field sits flush against the popover edges.
+- Each row is a 14 px label plus an optional 12 px muted description. The search string is
+  `label + description`, so "runtime" finds Platform through its description.
+- The check icon always occupies its slot and only toggles `opacity`, so labels never shift when
+  the selection changes. A `disabled` option fades to 50 % opacity and cannot be chosen.
+- The list caps at 300 px (`max-h-[300px]`) and scrolls; the empty state is `emptyLabel`, defaulting
+  to the localized "No matches". Choosing an option closes the popover.
+
+## Accessibility
+
+- The trigger is a `Button` with `role="combobox"`, `aria-label={ariaLabel}` and `aria-expanded`;
+  the popover primitive adds `aria-controls` pointing at the popover content.
+- Opening the popover moves focus into the search input, so typing filters at once. Up/Down move the
+  active option, Enter selects it, Escape closes without changing the value.
+- cmdk exposes the list as a listbox: items have the `option` role and `aria-selected` on the
+  current value, and the check mark is `aria-hidden` so it is not announced as text.
+- The clear button is its own focus stop with the accessible name from `clearLabel` (default
+  "Clear selection").
+
+Known gap: the trigger inherits `aria-haspopup="dialog"` from the popover primitive even though the
+surface is a listbox, and because focus moves into the search field the trigger never sets
+`aria-activedescendant`. A screen reader therefore hears "expanded" on the trigger and then a second
+search field inside the popover, rather than one continuous combobox.
+
+## FAQ
+
+**Can I use icons or badges as option labels?** No. `ComboboxOption` takes `label` and `description`
+strings, and both are used as search text. Use a `Command` list directly when you need rich rows.
+
+**Why is there no clear button?** It requires both `value` and `onClear`. With an empty value there
+is nothing to clear, so it is not rendered.
+
+**How do I prefill a selection?** Pass the option's `value`. The label is looked up in `options`, so
+a value that is not in the list renders the placeholder instead.
+
+## Related
+
+- `Select` for short, fixed option lists.
+- `Command` when you need a full searchable palette or custom rows.
+- `Cascader` and `Tree Select` for nested choices.
+- `Tags Input` when several values are allowed.
+- [Used in the template](https://fish-admin.vercel.app/integrations)

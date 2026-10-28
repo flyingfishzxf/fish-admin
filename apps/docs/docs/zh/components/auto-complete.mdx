@@ -1,0 +1,105 @@
+---
+title: Auto Complete 自动补全
+description: 输入时实时过滤建议列表，选中建议后把其文本写回输入框。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AutoCompleteBasic from '@docs/demos/auto-complete/basic'
+import basicSource from '@docs/demos/auto-complete/basic.tsx?raw'
+import AutoCompleteStates from '@docs/demos/auto-complete/states'
+import statesSource from '@docs/demos/auto-complete/states.tsx?raw'
+
+# Auto Complete 自动补全
+
+`AutoComplete` 由一个 `role="combobox"` 的 `Input` 和一个承载 `role="listbox"` 的 Radix
+`Popover` 组成。它按 `label` 与 `description` 做不区分大小写的子串过滤，光标始终留在输入框中，
+高亮项通过 `aria-activedescendant` 指向。
+
+<ComponentMeta id="auto-complete" />
+
+## 何时使用
+
+- 从人数或条目过多的目录中挑一个人、团队或项目，`Select` 已经不适用。
+- 需要连同第二行上下文（例如角色与部门）一起搜索。
+- 自由填写的字段，建议只是加速手段，而不是强制约束。
+
+## 何时不使用
+
+- 固定选项少于十条：使用 `Select`。
+- 用于执行命令或跳转而不是填写字段值：使用 `Command`。
+- 值必须来自列表且需要校验：使用 `Combobox`，它会强制选中一项。
+
+## 基础用法
+
+输入 `des` 或直接从列表中点选。没有匹配时输入框会保留你输入的文字，因此是否接受自定义评审人
+由业务决定。
+
+<Demo title="在评审人目录中过滤" filename="demos/auto-complete/basic.tsx" source={basicSource}>
+  <AutoCompleteBasic />
+</Demo>
+
+## 加载、禁用与空结果
+
+三种状态共用同一套外壳：`loading` 把列表折叠成一行居中提示，`disabled` 冻结输入框，查询无匹配
+时用 `emptyLabel` 顶替选项。
+
+<Demo
+  title="加载中、已禁用与无匹配"
+  filename="demos/auto-complete/states.tsx"
+  source={statesSource}
+>
+  <AutoCompleteStates />
+</Demo>
+
+## API
+
+<ApiTable component="auto-complete" />
+
+## 设计指引
+
+- 输入框完全受控于 `value` 与 `onValueChange`，组件内部不保存查询状态，因此接服务端建议很直接。
+- 选中建议后写回输入框的是 `label` 而不是 `value`。标识符请从 `onSelect(option)` 中取，并自己
+  维护 value 列表。
+- 过滤同时覆盖 `label` 与 `description`，统一转小写后用 `String.includes` 判断。查询为空时返回全
+  部选项，所以聚焦即展开完整列表。
+- 弹层宽度继承触发器（`w-(--radix-popover-trigger-width)`、`min-w-56`），列表最多 `max-h-64` 后
+  内滚。每行 `px-3 py-2 text-sm`，高亮行使用 `bg-accent` 与 `text-accent-foreground`。
+- 禁用选项以 50% 透明度呈现，点击与回车都会被忽略，但仍占一行，让目录中的“空缺”可见。
+- 空结果行与加载行居中显示（`py-6`）并使用 `text-muted-foreground`；请按页面语言传入
+  `emptyLabel` 与 `loadingLabel`。
+
+## 无障碍
+
+- 输入框是标准 combobox：`aria-expanded` 跟随展开状态，`aria-controls` 指向 listbox 的 id，
+  `aria-autocomplete="list"`，`aria-activedescendant` 指向当前高亮项。焦点始终不离开输入框，因
+  此用方向键移动高亮时仍可继续输入。
+- 下方向键展开列表并向下移动，到达最后一项后停住；上方向键向上移动，到第一项停住，不会循环。只
+  有列表展开且存在高亮项时回车才会提交；Esc 关闭；Tab 关闭并继续前进。
+- listbox 复用输入框的 `ariaLabel`，每个选项都是 `role="option"`，高亮项带 `aria-selected`，禁用
+  项带 `aria-disabled`。
+- 鼠标悬停会移动高亮，`mousedown` 被阻止默认行为，从而让输入框保持焦点。
+
+已知缺口：listbox 没有 live region，也没有结果数量提示；加载行与空结果行是 listbox 内的
+`role="presentation"`，读屏可能不会播报。组件也不会自动加上 `aria-required`，字段必填时请自行补
+充。
+
+## FAQ
+
+**按回车会提交表单吗？** 不会。列表展开且有高亮项时，回车用于选中该选项并阻止默认行为；没有匹配
+时回车会交给外层表单处理。
+
+**可以保留不在列表中的文字吗？** 可以，这正是它与 `Combobox` 的区别。`onSelect` 只会对真实选项触
+发，所以把原始文本当作兜底值即可。
+
+**如何接入服务端建议？** 把 `onValueChange` 接到查询上，把返回结果作为 `options` 传入，请求期间把
+`loading` 设为 `true`，弹层会一直锚定在输入框上。
+
+## 相关
+
+- `Combobox`：值必须来自列表时使用。
+- `Select`：选项少且固定时使用。
+- `Command`：面向键盘的操作面板。
+- `Input`：不需要任何建议的纯文本输入。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

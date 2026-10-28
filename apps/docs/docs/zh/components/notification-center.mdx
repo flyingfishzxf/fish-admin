@@ -1,0 +1,102 @@
+---
+title: Notification Center 通知中心
+description: 由铃铛触发器、未读角标与弹出式通知面板组成的通知入口。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import NotificationCenterBasic from '@docs/demos/notification-center/basic'
+import basicSource from '@docs/demos/notification-center/basic.tsx?raw'
+import NotificationCenterEmpty from '@docs/demos/notification-center/empty'
+import emptySource from '@docs/demos/notification-center/empty.tsx?raw'
+
+# Notification Center 通知中心
+
+`NotificationCenter` 是一个包着幽灵样式 `Button` 的 `Popover`。触发器绘制铃铛和未读数量角标，
+面板用 `NotificationItem` 逐条列出图标、标题、描述与时间；头部提供“全部已读”操作，底部可以
+挂一个进入完整通知列表的按钮。
+
+<ComponentMeta id="notification-center" />
+
+## 何时使用
+
+- 顶栏需要常驻的铃铛入口，展示账户、部署或审批的最新动态。
+- 只需要最近几条记录的“近期动态”托盘。
+- 希望不打开页面也能看到未读数量。
+
+## 何时不使用
+
+- 完整的通知收件箱：在独立页面使用 `List`。
+- “已保存”这类瞬时反馈：使用 `Sonner` 的 toast。
+- 需要打断当前任务才能继续的决定：使用 `AlertDialog`。
+
+## 基础用法
+
+<Demo title="未读通知" filename="demos/notification-center/basic.tsx" source={basicSource}>
+  <NotificationCenterBasic />
+</Demo>
+
+## 空状态与已读状态
+
+未读数量同时决定角标与触发器名称。没有未读时角标消失，“全部已读”按钮变为禁用；传空数组时
+列表位置显示 `emptyLabel`。
+
+<Demo title="空状态与已读状态" filename="demos/notification-center/empty.tsx" source={emptySource}>
+  <NotificationCenterEmpty />
+</Demo>
+
+## API
+
+<ApiTable component="notification-center" />
+
+## 设计指引
+
+- 触发器是幽灵样式 `icon-sm` 按钮（32px），定位为 `relative`；角标是右上角 16px 的 primary 圆形，
+  文字 10px 半粗。
+- 未读数按 `unreadCount ?? items.filter((item) => !item.read).length` 计算。当接口知道总数、而
+  `items` 只是最近几条时，请显式传 `unreadCount`。
+- 角标最多显示 `9+`，两位数不会把圆形撑开。
+- 面板宽 320px（`w-80`），在 `sm` 断点起变为 384px（`sm:w-96`），任何宽度下都不会超过
+  `calc(100vw - 2rem)`。
+- 头部 `px-4 py-3`，标题 `text-sm` 半粗，右侧是链接样式按钮；当 `unread === 0` 或没有传入
+  `onMarkAllRead` 时该按钮禁用。
+- 未读行带 `bg-primary/5` 底色与 6px 的 primary 圆点；图标放在 32px 的弱化圆形里；时间 11px 弱化。
+  已读行既没有底色也没有圆点。
+- 列表区域最高 320px（`max-h-80`）并滚动；传入 `onViewAll` 才会渲染整宽的幽灵页脚按钮。
+- 默认文案来自 UI 语言包：“Notifications”“Mark all read”“You're all caught up.”
+  “View all notifications”。
+
+## 无障碍
+
+- 触发器按钮的 `aria-label` 是本地化文案——“Notifications”或“Notifications, 3 unread”——因此
+  面板打开前就能听到未读数量。Radix 还会在触发器上设置 `aria-haspopup="dialog"`、
+  `aria-expanded` 与 `aria-controls`。
+- 角标与每行的未读圆点都是 `aria-hidden`，因为数量已经包含在触发器名称里。
+- 每条通知都是面板内的整宽原生按钮，Tab 可逐条移动，Enter 或空格打开；Escape 关闭弹层并把焦点
+  还给铃铛。
+- “全部已读”是真实按钮，没有未读时通过原生 `disabled` 禁用。
+- 宽度与滚动只是布局，文本保持正文对比度。
+
+已知缺口：面板没有 `dialog` 或 `region` 角色，也没有可访问名称，读屏只会把它当成一组按钮；它的
+滚动容器不可聚焦；单条已读状态只靠视觉表达（底色加 `aria-hidden` 圆点），读屏无法分辨哪一条
+未读，只能从触发器名称里得知总数。
+
+## FAQ
+
+**组件会保存已读状态吗？** 不会。它只是基于 `items` 和回调的视图；请在 `onItemClick` 与
+`onMarkAllRead` 中更新自己的数据。
+
+**接口只返回总数怎么办？** 传 `unreadCount`，角标和名称会使用它，面板仍然渲染你传入的
+`items`。
+
+**为什么“全部已读”是禁用的？** 要么所有条目都已读，要么没有传入 `onMarkAllRead`，两种情况都会
+禁用。
+
+## 相关
+
+- `Popover`：任意其他锚定面板。
+- `List`：完整的通知收件箱。
+- `Badge`：铃铛之外的计数展示。
+- `Sonner`：瞬时操作反馈。
+- [在模板中的用法](https://fish-admin.vercel.app/notifications)

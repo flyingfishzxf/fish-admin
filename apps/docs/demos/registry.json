@@ -78,6 +78,58 @@
     }
   },
   {
+    "id": "anchor-nav/basic",
+    "component": "anchor-nav",
+    "file": "demos/anchor-nav/basic.tsx",
+    "title": {
+      "en": "Vertical rail in a scroll panel",
+      "zh": "滚动面板中的纵向导航"
+    },
+    "description": {
+      "en": "A left rail follows the report section nearest the top of a scoped scroll container.",
+      "zh": "左侧导航跟踪滚动容器中距离顶部最近的分区。"
+    }
+  },
+  {
+    "id": "anchor-nav/sticky",
+    "component": "anchor-nav",
+    "file": "demos/anchor-nav/sticky.tsx",
+    "title": {
+      "en": "Sticky horizontal section bar",
+      "zh": "吸顶的横向分区栏"
+    },
+    "description": {
+      "en": "orientation=\"horizontal\" turns the rail into a sticky tab strip above settings sections.",
+      "zh": "orientation=\"horizontal\" 把导航变成设置分区上方的吸顶标签栏。"
+    }
+  },
+  {
+    "id": "auto-complete/basic",
+    "component": "auto-complete",
+    "file": "demos/auto-complete/basic.tsx",
+    "title": {
+      "en": "Search a reviewer directory",
+      "zh": "搜索评审人目录"
+    },
+    "description": {
+      "en": "Type to filter by name or description, then pick a suggestion or keep your own text.",
+      "zh": "输入即按名称或描述过滤，可选中建议，也可保留自己输入的文字。"
+    }
+  },
+  {
+    "id": "auto-complete/states",
+    "component": "auto-complete",
+    "file": "demos/auto-complete/states.tsx",
+    "title": {
+      "en": "Loading, disabled and empty",
+      "zh": "加载、禁用与空结果"
+    },
+    "description": {
+      "en": "The loading row, the disabled field and the no-match row side by side.",
+      "zh": "加载提示行、禁用输入框与无匹配提示并排展示。"
+    }
+  },
+  {
     "id": "avatar/basic",
     "component": "avatar",
     "file": "demos/avatar/basic.tsx",
@@ -101,6 +153,32 @@
     "description": {
       "en": "Four overlapping avatars plus a count, expandable to the full member list.",
       "zh": "四个重叠头像加一个溢出计数，可展开为完整的成员列表。"
+    }
+  },
+  {
+    "id": "back-top/basic",
+    "component": "back-top",
+    "file": "demos/back-top/basic.tsx",
+    "title": {
+      "en": "Back to the top of a panel",
+      "zh": "回到面板顶部"
+    },
+    "description": {
+      "en": "targetRef points the button at a scroll container instead of the window.",
+      "zh": "targetRef 让按钮作用于滚动容器，而不是整个窗口。"
+    }
+  },
+  {
+    "id": "back-top/threshold",
+    "component": "back-top",
+    "file": "demos/back-top/threshold.tsx",
+    "title": {
+      "en": "Two thresholds, one list",
+      "zh": "同一份列表，两种阈值"
+    },
+    "description": {
+      "en": "40 px versus 240 px of scroll before the button appears.",
+      "zh": "分别在滚动 40 px 与 240 px 之后出现按钮。"
     }
   },
   {
@@ -247,6 +325,58 @@
     }
   },
   {
+    "id": "carousel/basic",
+    "component": "carousel",
+    "file": "demos/carousel/basic.tsx",
+    "title": {
+      "en": "Image slides with captions",
+      "zh": "带标题的图片幻灯片"
+    },
+    "description": {
+      "en": "Three announcement slides with gradient covers, arrows and dots.",
+      "zh": "三张带渐变封面、箭头与圆点的公告幻灯片。"
+    }
+  },
+  {
+    "id": "carousel/content",
+    "component": "carousel",
+    "file": "demos/carousel/content.tsx",
+    "title": {
+      "en": "Custom slide content",
+      "zh": "自定义幻灯片内容"
+    },
+    "description": {
+      "en": "The content prop replaces the image and text block with arbitrary markup and a button.",
+      "zh": "content 属性用任意结构与按钮替代图片与文字区块。"
+    }
+  },
+  {
+    "id": "cascader/basic",
+    "component": "cascader",
+    "file": "demos/cascader/basic.tsx",
+    "title": {
+      "en": "Region, country, office",
+      "zh": "地区、国家、办公室"
+    },
+    "description": {
+      "en": "Drill through three columns until a leaf commits the full path.",
+      "zh": "逐列下钻，直到叶子节点提交完整路径。"
+    }
+  },
+  {
+    "id": "cascader/preset",
+    "component": "cascader",
+    "file": "demos/cascader/preset.tsx",
+    "title": {
+      "en": "Preset path with disabled branches",
+      "zh": "预置路径与禁用分支"
+    },
+    "description": {
+      "en": "A prefilled value, a clear button and branches that cannot be selected.",
+      "zh": "预填值、清除按钮，以及无法选中的分支。"
+    }
+  },
+  {
     "id": "chart/area-legend",
     "component": "chart",
     "file": "demos/chart/area-legend.tsx",
@@ -351,6 +481,32 @@
     }
   },
   {
+    "id": "combobox/basic",
+    "component": "combobox",
+    "file": "demos/combobox/basic.tsx",
+    "title": {
+      "en": "Search and assign",
+      "zh": "搜索并分配"
+    },
+    "description": {
+      "en": "Filter a long team list, pick one value and clear it from the trigger.",
+      "zh": "在较长的团队列表中搜索、选择，并可从触发器上清除。"
+    }
+  },
+  {
+    "id": "combobox/states",
+    "component": "combobox",
+    "file": "demos/combobox/states.tsx",
+    "title": {
+      "en": "Disabled options and controls",
+      "zh": "禁用选项与禁用控件"
+    },
+    "description": {
+      "en": "A restricted option, a locked region picker and an empty selection.",
+      "zh": "受限选项、被锁定的区域选择器，以及未选择状态。"
+    }
+  },
+  {
     "id": "command/basic",
     "component": "command",
     "file": "demos/command/basic.tsx",
@@ -403,6 +559,32 @@
     }
   },
   {
+    "id": "date-picker/basic",
+    "component": "date-picker",
+    "file": "demos/date-picker/basic.tsx",
+    "title": {
+      "en": "One date, stored as a string",
+      "zh": "单个日期，以字符串保存"
+    },
+    "description": {
+      "en": "A YYYY-MM-DD value picked from a popover calendar.",
+      "zh": "从弹层日历中选取 YYYY-MM-DD 值。"
+    }
+  },
+  {
+    "id": "date-picker/bounds",
+    "component": "date-picker",
+    "file": "demos/date-picker/bounds.tsx",
+    "title": {
+      "en": "Allowed window",
+      "zh": "可选时间窗口"
+    },
+    "description": {
+      "en": "min and max disable every day outside the quarter.",
+      "zh": "min 与 max 会禁用季度之外的日期。"
+    }
+  },
+  {
     "id": "date-range-picker/basic",
     "component": "date-range-picker",
     "file": "demos/date-range-picker/basic.tsx",
@@ -426,6 +608,32 @@
     "description": {
       "en": "Quick ranges next to the calendar.",
       "zh": "日历旁的快捷范围。"
+    }
+  },
+  {
+    "id": "descriptions/basic",
+    "component": "descriptions",
+    "file": "demos/descriptions/basic.tsx",
+    "title": {
+      "en": "Profile details",
+      "zh": "用户资料"
+    },
+    "description": {
+      "en": "Term and value pairs for a member, with a badge value and one wide row.",
+      "zh": "以“字段—值”对展示成员信息，包含徽标值与一项跨列内容。"
+    }
+  },
+  {
+    "id": "descriptions/columns",
+    "component": "descriptions",
+    "file": "demos/descriptions/columns.tsx",
+    "title": {
+      "en": "Three columns",
+      "zh": "三列布局"
+    },
+    "description": {
+      "en": "An incident summary laid out in three columns with a spanning item.",
+      "zh": "以三列布局展示故障概要，并让其中一项跨列。"
     }
   },
   {
@@ -507,6 +715,32 @@
     }
   },
   {
+    "id": "dropzone/basic",
+    "component": "dropzone",
+    "file": "demos/dropzone/basic.tsx",
+    "title": {
+      "en": "One CSV with validation",
+      "zh": "单个 CSV 与校验"
+    },
+    "description": {
+      "en": "Drop or browse for a single file and reject the wrong extension.",
+      "zh": "拖拽或浏览选择单个文件，并拒绝错误的扩展名。"
+    }
+  },
+  {
+    "id": "dropzone/multiple",
+    "component": "dropzone",
+    "file": "demos/dropzone/multiple.tsx",
+    "title": {
+      "en": "Batch of images",
+      "zh": "批量图片"
+    },
+    "description": {
+      "en": "Collect several PNG or JPEG files into one visible queue.",
+      "zh": "将多个 PNG 或 JPEG 文件收集到可见队列中。"
+    }
+  },
+  {
     "id": "empty/basic",
     "component": "empty",
     "file": "demos/empty/basic.tsx",
@@ -582,6 +816,32 @@
     "description": {
       "en": "A wider card with avatar, status, bio and three meta rows, opened after a 200 ms delay.",
       "zh": "更宽的资料卡，包含头像、状态、简介与三项信息，延迟 200 ms 打开。"
+    }
+  },
+  {
+    "id": "image-preview/basic",
+    "component": "image-preview",
+    "file": "demos/image-preview/basic.tsx",
+    "title": {
+      "en": "Gallery lightbox",
+      "zh": "图库灯箱"
+    },
+    "description": {
+      "en": "Captioned thumbnails that open a dialog with paging.",
+      "zh": "带说明文字的缩略图，点击后打开可分页的对话框。"
+    }
+  },
+  {
+    "id": "image-preview/single",
+    "component": "image-preview",
+    "file": "demos/image-preview/single.tsx",
+    "title": {
+      "en": "One image, and none",
+      "zh": "单图与空态"
+    },
+    "description": {
+      "en": "A single attachment without paging, plus the empty state.",
+      "zh": "不带翻页的单个附件，以及没有图片时的空态。"
     }
   },
   {
@@ -663,6 +923,32 @@
     }
   },
   {
+    "id": "json-viewer/basic",
+    "component": "json-viewer",
+    "file": "demos/json-viewer/basic.tsx",
+    "title": {
+      "en": "Audit event payload",
+      "zh": "审计事件载荷"
+    },
+    "description": {
+      "en": "A nested role-change event with two levels open by default.",
+      "zh": "一个角色变更事件，默认展开两层。"
+    }
+  },
+  {
+    "id": "json-viewer/states",
+    "component": "json-viewer",
+    "file": "demos/json-viewer/states.tsx",
+    "title": {
+      "en": "Empty and collapsed states",
+      "zh": "空状态与折叠状态"
+    },
+    "description": {
+      "en": "An undefined payload shows the empty state; depth 0 keeps a tree folded.",
+      "zh": "未传入载荷时显示空状态，深度 0 让树保持折叠。"
+    }
+  },
+  {
     "id": "label/basic",
     "component": "label",
     "file": "demos/label/basic.tsx",
@@ -689,6 +975,84 @@
     }
   },
   {
+    "id": "list/basic",
+    "component": "list",
+    "file": "demos/list/basic.tsx",
+    "title": {
+      "en": "Workspace activity",
+      "zh": "工作区动态"
+    },
+    "description": {
+      "en": "A read-only list of recent deploys, reviews and exports.",
+      "zh": "只读列表，展示最近的部署、权限审核与导出记录。"
+    }
+  },
+  {
+    "id": "list/selectable",
+    "component": "list",
+    "file": "demos/list/selectable.tsx",
+    "title": {
+      "en": "Selectable rows and menus",
+      "zh": "可选行与行内菜单"
+    },
+    "description": {
+      "en": "Avatars, a disabled member, per-row menus and a controlled selection.",
+      "zh": "头像、禁用成员、行内菜单与受控选中状态。"
+    }
+  },
+  {
+    "id": "notification-center/basic",
+    "component": "notification-center",
+    "file": "demos/notification-center/basic.tsx",
+    "title": {
+      "en": "Unread notifications",
+      "zh": "未读通知"
+    },
+    "description": {
+      "en": "A bell with an unread badge, a mark-all action and a link to the inbox.",
+      "zh": "带未读角标的铃铛、全部已读操作与收件箱入口。"
+    }
+  },
+  {
+    "id": "notification-center/empty",
+    "component": "notification-center",
+    "file": "demos/notification-center/empty.tsx",
+    "title": {
+      "en": "Empty and read states",
+      "zh": "空状态与已读状态"
+    },
+    "description": {
+      "en": "Two inboxes: one empty, one fully read, both without a badge.",
+      "zh": "两个收件箱：一个为空，一个全部已读，都不显示角标。"
+    }
+  },
+  {
+    "id": "page-container/basic",
+    "component": "page-container",
+    "file": "demos/page-container/basic.tsx",
+    "title": {
+      "en": "Page header with actions",
+      "zh": "带操作按钮的页头"
+    },
+    "description": {
+      "en": "A report page with a title, description, export action and spaced body.",
+      "zh": "报表页面：标题、描述、导出操作与统一间距的正文。"
+    }
+  },
+  {
+    "id": "page-container/sections",
+    "component": "page-container",
+    "file": "demos/page-container/sections.tsx",
+    "title": {
+      "en": "Eyebrow, tabs and footer",
+      "zh": "眉标、标签与页脚"
+    },
+    "description": {
+      "en": "The full frame: eyebrow, actions, a switching tab row and a footer note.",
+      "zh": "完整结构：眉标、操作区、可切换的标签行与页脚说明。"
+    }
+  },
+  {
     "id": "pagination/basic",
     "component": "pagination",
     "file": "demos/pagination/basic.tsx",
@@ -712,6 +1076,32 @@
     "description": {
       "en": "A page-of-total pager next to a rows-per-page selector built from PaginationLink.",
       "zh": "“第几页/共几页”式分页，配合用 PaginationLink 组成的每页条数选择器。"
+    }
+  },
+  {
+    "id": "popconfirm/basic",
+    "component": "popconfirm",
+    "file": "demos/popconfirm/basic.tsx",
+    "title": {
+      "en": "Destructive confirmation",
+      "zh": "删除类确认"
+    },
+    "description": {
+      "en": "Deleting a workflow after an explicit confirm, with a custom verb on the button.",
+      "zh": "删除工作流前的就地确认，按钮使用明确的动词文案。"
+    }
+  },
+  {
+    "id": "popconfirm/placements",
+    "component": "popconfirm",
+    "file": "demos/popconfirm/placements.tsx",
+    "title": {
+      "en": "Placement and labels",
+      "zh": "弹出方向与按钮文案"
+    },
+    "description": {
+      "en": "Three confirmations on different sides, destructive and neutral.",
+      "zh": "三个不同方向的确认框，分别用于破坏性操作与普通操作。"
     }
   },
   {
@@ -819,6 +1209,32 @@
     }
   },
   {
+    "id": "rate/basic",
+    "component": "rate",
+    "file": "demos/rate/basic.tsx",
+    "title": {
+      "en": "Basic rating",
+      "zh": "基础评分"
+    },
+    "description": {
+      "en": "A controlled five-star score with a live summary.",
+      "zh": "受控的五星评分，并实时显示分值。"
+    }
+  },
+  {
+    "id": "rate/states",
+    "component": "rate",
+    "file": "demos/rate/states.tsx",
+    "title": {
+      "en": "Clear and read-only",
+      "zh": "清除与只读"
+    },
+    "description": {
+      "en": "Clearable editing next to a read-only average score.",
+      "zh": "可清除的编辑态，以及只读的平均分。"
+    }
+  },
+  {
     "id": "resizable/basic",
     "component": "resizable",
     "file": "demos/resizable/basic.tsx",
@@ -842,6 +1258,32 @@
     "description": {
       "en": "An API console with the request payload above the response payload.",
       "zh": "API 控制台：请求负载在上，响应负载在下。"
+    }
+  },
+  {
+    "id": "result/basic",
+    "component": "result",
+    "file": "demos/result/basic.tsx",
+    "title": {
+      "en": "Success after inviting teammates",
+      "zh": "邀请成员成功"
+    },
+    "description": {
+      "en": "A finished flow with two follow-up actions.",
+      "zh": "流程结束后的结果页，带有两个后续操作。"
+    }
+  },
+  {
+    "id": "result/states",
+    "component": "result",
+    "file": "demos/result/states.tsx",
+    "title": {
+      "en": "All five statuses",
+      "zh": "五种状态"
+    },
+    "description": {
+      "en": "Switch between success, info, warning, error and not-found.",
+      "zh": "在成功、信息、警告、错误与未找到之间切换。"
     }
   },
   {
@@ -1102,6 +1544,58 @@
     "description": {
       "en": "A labeled spinner and a LoadingOverlay that covers a card while it refreshes.",
       "zh": "带标签的加载指示器，以及刷新时覆盖卡片的 LoadingOverlay。"
+    }
+  },
+  {
+    "id": "statistic/basic",
+    "component": "statistic",
+    "file": "demos/statistic/basic.tsx",
+    "title": {
+      "en": "KPI row",
+      "zh": "指标卡行"
+    },
+    "description": {
+      "en": "Revenue, members and churn with icons and trends.",
+      "zh": "带图标与趋势的营收、成员与流失率指标。"
+    }
+  },
+  {
+    "id": "statistic/trend",
+    "component": "statistic",
+    "file": "demos/statistic/trend.tsx",
+    "title": {
+      "en": "Trends and loading",
+      "zh": "趋势与加载"
+    },
+    "description": {
+      "en": "Positive, flat and negative trends, string values, precision and the loading skeleton.",
+      "zh": "正向、持平与负向趋势，字符串值、精度以及加载骨架。"
+    }
+  },
+  {
+    "id": "stepper/basic",
+    "component": "stepper",
+    "file": "demos/stepper/basic.tsx",
+    "title": {
+      "en": "Setup wizard",
+      "zh": "设置向导"
+    },
+    "description": {
+      "en": "Four steps with Back and Next, plus clickable completed steps.",
+      "zh": "四个步骤，配上一步/下一步按钮，已完成步骤可点击回跳。"
+    }
+  },
+  {
+    "id": "stepper/progress",
+    "component": "stepper",
+    "file": "demos/stepper/progress.tsx",
+    "title": {
+      "en": "Read-only progress",
+      "zh": "只读进度"
+    },
+    "description": {
+      "en": "A status readout without click handlers.",
+      "zh": "没有点击处理函数的纯状态展示。"
     }
   },
   {

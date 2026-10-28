@@ -1,0 +1,106 @@
+---
+title: Dropzone
+description: A dashed drop area with a hidden file input and a browse button.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DropzoneBasic from '@docs/demos/dropzone/basic'
+import basicSource from '@docs/demos/dropzone/basic.tsx?raw'
+import DropzoneMultiple from '@docs/demos/dropzone/multiple'
+import multipleSource from '@docs/demos/dropzone/multiple.tsx?raw'
+
+# Dropzone
+
+`Dropzone` is a dashed drop area around a visually hidden `<input type="file">` and an outline
+`Button`. Files arrive through `onFiles` or `onFile`; the caller decides what to do with them and
+feeds any message back through `error`.
+
+<ComponentMeta id="dropzone" />
+
+## When to use
+
+- Importing a CSV or spreadsheet export where the file is the whole task.
+- Collecting attachments on a form, with drag and drop plus a keyboard path.
+- One upload slot that should show format and size hints up front.
+
+## When not to use
+
+- Uploading needs progress, retries or a list of finished files: use `Upload`.
+- Picking an image that is already on the server: use `Image Preview`.
+- A single known path or URL: an `Input` is enough.
+
+## Basic usage
+
+<Demo title="One CSV, validated" filename="demos/dropzone/basic.tsx" source={basicSource}>
+  <DropzoneBasic />
+</Demo>
+
+## Multiple files
+
+With `multiple`, the browse dialog accepts a selection and every dropped file is delivered in a
+single `onFiles` call.
+
+<Demo
+  title="Collecting a batch of images"
+  filename="demos/dropzone/multiple.tsx"
+  source={multipleSource}
+>
+  <DropzoneMultiple />
+</Demo>
+
+## API
+
+<ApiTable component="dropzone" />
+
+## Design guidance
+
+- The area is a `rounded-xl` dashed border with 24 px horizontal and 32 px vertical padding, stacked
+  and centred. Idle it uses `border-border` on `bg-muted/30`; during a drag it switches to
+  `border-primary` and `bg-primary/5`.
+- Highlighting is driven by an internal drag counter, so moving over child elements does not make the
+  border flicker between states.
+- The cloud icon sits in a 40 px (`size-10`) circle on `bg-background`; the label is 14 px medium,
+  and `hint` is 12 px muted capped at `max-w-xs`.
+- The browse button is an outline `sm` button (32 px) that clicks the hidden input. After every
+  change the input value is reset, so choosing the same file twice still fires the callback.
+- `accept` is only a hint for the native picker. A dropped file bypasses it, so validate name and
+  size in your handler and pass the message to `error`.
+- `error` renders under the browse button as 12 px destructive text with `role="alert"`.
+- `disabled` sets `aria-disabled`, drops the opacity to 60 % and blocks both the input and the drag
+  handlers; nothing about the area looks clickable, so pair it with an explanation.
+
+## Accessibility
+
+- The hidden input is a real file input with `aria-label={label}`, and the browse button opens it, so
+  the native picker is fully available from the keyboard.
+- `label` is therefore doing double duty: it is the visible instruction and the input's accessible
+  name. Keep it specific, for example "Drop the member import here".
+- `error` uses `role="alert"` and is inserted after the button, so it is announced as soon as
+  validation fails.
+- `aria-disabled` is set on the wrapper, and both the input and the button carry the native
+  `disabled` attribute.
+
+Known gap: the dashed area itself is not focusable and has no keyboard drop equivalent, so every
+action must be reachable through the browse button. The `sr-only` file input also stays in the tab
+order, which adds an invisible stop with the same name as the button just before it.
+
+## FAQ
+
+**Should I use `onFile` or `onFiles`?** `onFiles` wins when both are passed. Use `onFile` with
+`multiple={false}` when one file is enough, and `onFiles` whenever `multiple` is set.
+
+**Why did a PDF get through `accept=".csv"`?** `accept` only filters the native dialog. Drag and drop
+delivers whatever the user dropped, so check the extension or MIME type yourself and set `error`.
+
+**Can I preview the chosen file?** Pass a `ReactNode` as `preview`; it renders above the icon and
+stays inside the dashed area, which is handy for a thumbnail or a filename chip.
+
+## Related
+
+- `Upload` for progress, retries and a managed file list.
+- `Image Preview` to show the files after they are stored.
+- `Button` for the browse action inside the area.
+- `Form` to wire the dropzone into validation.
+- [Used in the template](https://fish-admin.vercel.app/profile)

@@ -14,13 +14,21 @@ export function PageContainer({
   children,
   className,
 }: {
+  /** Page title, rendered as the page's h1. */
   title: string
+  /** One or two sentences under the title. */
   description?: string
+  /** Small uppercase label above the title, such as "Workspace". */
   eyebrow?: string
+  /** Buttons shown opposite the title from the lg breakpoint. */
   actions?: ReactNode
+  /** Filter bar or tabs rendered below the header in a bordered row. */
   tabs?: ReactNode
+  /** Page-level footer, separated by a top border. */
   footer?: ReactNode
+  /** Makes the tabs row sticky instead of the whole header. @default false */
   stickyHeader?: boolean
+  /** Page body; children are spaced with space-y-6. */
   children: ReactNode
   className?: string
 }) {

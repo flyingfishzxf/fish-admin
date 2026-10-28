@@ -1,0 +1,28 @@
+[
+  {
+    "id": "statistic/basic",
+    "component": "statistic",
+    "file": "demos/statistic/basic.tsx",
+    "title": {
+      "en": "KPI row",
+      "zh": "指标卡行"
+    },
+    "description": {
+      "en": "Revenue, members and churn with icons and trends.",
+      "zh": "带图标与趋势的营收、成员与流失率指标。"
+    }
+  },
+  {
+    "id": "statistic/trend",
+    "component": "statistic",
+    "file": "demos/statistic/trend.tsx",
+    "title": {
+      "en": "Trends and loading",
+      "zh": "趋势与加载"
+    },
+    "description": {
+      "en": "Positive, flat and negative trends, string values, precision and the loading skeleton.",
+      "zh": "正向、持平与负向趋势，字符串值、精度以及加载骨架。"
+    }
+  }
+]

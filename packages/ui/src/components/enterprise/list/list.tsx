@@ -22,10 +22,15 @@ export function List({
   selectedId,
   className,
 }: {
+  /** Rows to render; an empty array switches to the dashed empty state. */
   items: ListItem[]
+  /** Accessible name of the list element. */
   ariaLabel: string
+  /** Text shown when items is empty. */
   emptyLabel: string
+  /** Makes every row body a button; omit it for a read-only list. */
   onItemClick?: (item: ListItem) => void
+  /** Id of the highlighted row; also sets aria-current on its button. */
   selectedId?: string
   className?: string
 }) {

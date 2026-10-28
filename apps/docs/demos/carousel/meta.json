@@ -1,0 +1,28 @@
+[
+  {
+    "id": "carousel/basic",
+    "component": "carousel",
+    "file": "demos/carousel/basic.tsx",
+    "title": {
+      "en": "Image slides with captions",
+      "zh": "带标题的图片幻灯片"
+    },
+    "description": {
+      "en": "Three announcement slides with gradient covers, arrows and dots.",
+      "zh": "三张带渐变封面、箭头与圆点的公告幻灯片。"
+    }
+  },
+  {
+    "id": "carousel/content",
+    "component": "carousel",
+    "file": "demos/carousel/content.tsx",
+    "title": {
+      "en": "Custom slide content",
+      "zh": "自定义幻灯片内容"
+    },
+    "description": {
+      "en": "The content prop replaces the image and text block with arbitrary markup and a button.",
+      "zh": "content 属性用任意结构与按钮替代图片与文字区块。"
+    }
+  }
+]

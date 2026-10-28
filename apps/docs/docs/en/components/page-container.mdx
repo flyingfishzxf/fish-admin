@@ -1,0 +1,114 @@
+---
+title: Page Container
+description: The standard page frame: page header, optional tabs, spaced body and a footer.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PageContainerBasic from '@docs/demos/page-container/basic'
+import basicSource from '@docs/demos/page-container/basic.tsx?raw'
+import PageContainerSections from '@docs/demos/page-container/sections'
+import sectionsSource from '@docs/demos/page-container/sections.tsx?raw'
+
+# Page Container
+
+`PageContainer` composes the exported page header with an optional tabs row, a `space-y-6` body and a
+bordered footer. It owns only the frame: the title, description, eyebrow and actions are rendered by
+`PageHeader`, and tabs and footer accept any node you pass.
+
+<ComponentMeta id="page-container" />
+
+## When to use
+
+- Every routed screen that needs the same header spacing and body rhythm.
+- A detail page with a primary action, tabs and a footer note.
+- A form page where save and cancel belong in a page-level footer.
+- A page whose filter or tab bar should stay visible while the body scrolls.
+
+## When not to use
+
+- A panel inside a page: use `Card` for a bordered, padded block.
+- Dialog, drawer or sheet content: those already provide their own frame.
+- A marketing or authentication screen with a bespoke hero.
+
+## Basic usage
+
+<Demo
+  title="Page header with actions"
+  filename="demos/page-container/basic.tsx"
+  source={basicSource}
+>
+  <PageContainerBasic />
+</Demo>
+
+## Eyebrow, tabs and footer
+
+`eyebrow` adds a small uppercase label above the title, `tabs` sits in a bordered row below the
+header, and `footer` renders under a top border after the body.
+
+<Demo
+  title="Eyebrow, tabs and footer"
+  filename="demos/page-container/sections.tsx"
+  source={sectionsSource}
+>
+  <PageContainerSections />
+</Demo>
+
+## API
+
+<ApiTable component="page-container" />
+
+## Design guidance
+
+- The root is `flex flex-col gap-6`, and the body adds `space-y-6`; children never need their own top
+  margin to separate sections.
+- The header stacks on small screens and becomes a row from `lg`, with actions aligned to the bottom
+  of the header block (`lg:items-end lg:justify-between`), so a button sits level with the description.
+- `eyebrow` is 12px, semibold, uppercase, with `0.14em` letter spacing in the primary colour. Use it
+  for the parent area ("Workspace", "Billing"), not for a second title.
+- The title is an `<h1>` at 24px, 30px from the `sm` breakpoint, with tight tracking and balanced
+  wrapping; the description is capped at 42rem (`max-w-2xl`) for a comfortable measure.
+- `tabs` renders in a row with a bottom border. `stickyHeader` applies only to that row
+  (`sticky top-0 z-10 bg-background/95 backdrop-blur`) — the header itself always scrolls away.
+- `footer` is a native `<footer>` with `border-t pt-6`; put page-level save or legal notes there
+  rather than at the end of `children`.
+- The container has no padding or background of its own. Give it a padded surface (an app shell
+  `main` or the demo's bordered frame) before it sits against the viewport edge.
+
+## Accessibility
+
+- The header is a real `<header>` and the title is an `<h1>`. In an app, keep one PageContainer per
+  page so the document keeps a single top-level heading.
+- The description is a paragraph directly after the heading, which makes the heading and its summary
+  read together.
+- Actions are whatever you pass. The demo uses a `Button` with visible text; avoid icon-only actions
+  without an `aria-label`.
+- The tabs row is a plain `<div>` with no role — the widget you pass owns its semantics. A `Segmented`
+  or `Tabs` supplies the group label, keyboard behaviour and selected state.
+- `footer` is a native `<footer>`; when it is not nested in a sectioning element it maps to the
+  contentinfo landmark, so do not render several PageContainers at the top level of one page.
+
+Known gap: `stickyHeader` pins the tabs row over the body as you scroll, so in-page anchor targets
+can land underneath it unless you add `scroll-margin-top` to them. The component also renders no skip
+link or breadcrumb slot; both belong to the app shell.
+
+## FAQ
+
+**Does `stickyHeader` stick the whole header?** No. Only the tabs row becomes sticky; the title,
+description and actions scroll away. Give the scroll parent a fixed height if you want to see the
+effect.
+
+**Where do save and cancel buttons go?** In `footer` for page-level forms, so they stay after the
+content. Use `actions` for a single primary action next to the title.
+
+**How do I add breadcrumbs?** There is no breadcrumb slot. Render `Breadcrumb` in the app shell above
+the container, or as the first child of the body.
+
+## Related
+
+- `Card` for a bordered block inside a page.
+- `Tabs` for the tab row that drives the body.
+- `Segmented` for a compact view switcher in `tabs`.
+- `Breadcrumb` for the location trail above the page.
+- [Used in the template](https://fish-admin.vercel.app/reports)

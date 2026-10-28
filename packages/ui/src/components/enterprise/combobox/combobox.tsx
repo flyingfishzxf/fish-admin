@@ -28,17 +28,29 @@ export function Combobox({
   disabled = false,
   className,
 }: {
+  /** DOM id applied to the trigger button. */
   id?: string
+  /** Options rendered in the list; label and description are both searchable. */
   options: ComboboxOption[]
+  /** Currently selected option value; the label is looked up in `options`. */
   value?: string | null
+  /** Called with the option value when an item is chosen. */
   onChange: (value: string) => void
+  /** Renders the clear button when provided together with a value. */
   onClear?: () => void
+  /** Trigger text shown while nothing is selected. */
   placeholder: string
+  /** Placeholder of the search field; defaults to the localized "Search…". */
   searchPlaceholder?: string
+  /** Text shown when the search matches nothing. */
   emptyLabel?: string
+  /** Accessible name of the combobox trigger. */
   ariaLabel: string
+  /** Accessible name of the clear button; defaults to "Clear selection". */
   clearLabel?: string
+  /** Disables the trigger, the clear button and the list. */
   disabled?: boolean
+  /** Extra classes for the wrapper that also anchors the clear button. */
   className?: string
 }) {
   const { t } = useUITranslation()

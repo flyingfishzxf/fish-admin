@@ -1,0 +1,100 @@
+---
+title: Combobox 组合框
+description: 带搜索过滤的单选下拉框，适合选项较多的场景。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ComboboxBasic from '@docs/demos/combobox/basic'
+import basicSource from '@docs/demos/combobox/basic.tsx?raw'
+import ComboboxStates from '@docs/demos/combobox/states'
+import statesSource from '@docs/demos/combobox/states.tsx?raw'
+
+# Combobox 组合框
+
+`Combobox` 用带 `role="combobox"` 的 `Button` 作为触发器，弹层里放 cmdk 的 `Command` 列表。
+组件只维护一个字符串值，显示文字由 `options` 反查得到，还可以在触发器上直接清除选择。
+
+<ComponentMeta id="combobox" />
+
+## 何时使用
+
+- 选项很多、无法一眼扫完时，例如选择团队、地域或负责人。
+- 需要按描述匹配：选项的 `description` 也参与搜索。
+- 原生 `Select` 不带搜索框，但列表又确实需要搜索时。
+
+## 何时不使用
+
+- 少于八个固定选项：直接用 `Select`，少一层弹层，操作更快。
+- 需要一次选多个值：使用 `Tags Input` 或 `Transfer`。
+- 层级结构的选择：使用 `Cascader`、`Tree Select`。
+- 输入的内容不在列表中：使用 `Input` 加自定义建议列表。
+
+## 基础用法
+
+<Demo title="搜索团队并清除选择" filename="demos/combobox/basic.tsx" source={basicSource}>
+  <ComboboxBasic />
+</Demo>
+
+## 禁用选项与禁用控件
+
+单个选项可以设置 `disabled: true`，它仍然显示、也能被搜索到，但无法选中。整个控件传入
+`disabled` 后会禁止展开，同时不再渲染清除按钮。
+
+<Demo title="受限选项与被锁定的控件" filename="demos/combobox/states.tsx" source={statesSource}>
+  <ComboboxStates />
+</Demo>
+
+## API
+
+<ApiTable component="combobox" />
+
+## 设计指引
+
+- 触发器是 `outline` 变体的 `Button`，高 36 px（`h-9`），使用 `justify-between gap-2 pr-14`；
+  占位文案与已选标签共用同一位置，未选择时文字为弱化色。
+- `pr-14` 为右侧箭头和清除按钮预留空间，长标签会截断，而不会压到图标上。
+- 清除按钮只在同时传入 `value` 与 `onClear` 时出现。它是 24 px（`size-6`）的图标按钮，位于
+  `right-8`，带 2 px 焦点环，点击不会展开列表。
+- 弹层宽度跟随触发器（`--radix-popover-trigger-width`），并有 `min-w-56`、`p-0`，因此搜索框
+  与弹层边缘齐平。
+- 每个选项由 14 px 标签和可选的 12 px 弱化描述组成。搜索串是「标签 + 描述」，所以输入
+  “runtime” 也能通过描述匹配到 Platform。
+- 勾选图标始终占位，只切换 `opacity`，因此切换选中项时文字不会跳动；`disabled` 选项会降到
+  50% 不透明度，并且无法被选中。
+- 列表最高 300 px（`max-h-[300px]`）后滚动；空状态显示 `emptyLabel`，默认取本地化的
+  “无匹配项”。选中一项后弹层立即关闭。
+
+## 无障碍
+
+- 触发器是带 `role="combobox"`、`aria-label={ariaLabel}` 和 `aria-expanded` 的 `Button`，弹层
+  原语还会补上 `aria-controls`，指向弹层内容。
+- 打开弹层后焦点进入搜索框，可直接输入过滤；上下方向键移动当前项，Enter 选中，Escape 关闭
+  且不改变原值。
+- cmdk 把列表声明为 listbox：选项使用 `option` 角色，当前值带 `aria-selected`，勾选图标
+  标了 `aria-hidden`，不会被读成文字。
+- 清除按钮是独立的 Tab 停靠点，其可访问名称来自 `clearLabel`（默认“清除选择”）。
+
+已知缺口：触发器从弹层原语继承了 `aria-haspopup="dialog"`，但实际弹出的是 listbox；并且因为
+焦点会移动到搜索框，触发器不会设置 `aria-activedescendant`。读屏用户会先听到触发器“已展开”，
+再遇到弹层内的另一个搜索框，而不是一个连续的组合框。
+
+## FAQ
+
+**可以用图标或徽标作为选项内容吗？** 不可以。`ComboboxOption` 只接受 `label` 与
+`description` 两个字符串，而且两者都会作为搜索文本。需要富文本行时请直接使用 `Command`。
+
+**为什么没有清除按钮？** 清除按钮需要同时满足 `value` 与 `onClear`。没有值时无从清除，
+所以不会渲染。
+
+**如何预置选中值？** 传入对应选项的 `value` 即可。显示文字是从 `options` 反查的，如果该值
+不在列表中，触发器会回落到占位文案。
+
+## 相关
+
+- `Select`：选项少且固定时的首选。
+- `Command`：需要完整命令面板或自定义行内容时。
+- `Cascader`、`Tree Select`：处理层级数据。
+- `Tags Input`：允许选择多个值时。
+- [在模板中的用法](https://fish-admin.vercel.app/integrations)

@@ -1,0 +1,101 @@
+---
+title: Descriptions
+description: A definition list laid out as a grid of term and value pairs.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DescriptionsBasic from '@docs/demos/descriptions/basic'
+import basicSource from '@docs/demos/descriptions/basic.tsx?raw'
+import DescriptionsColumns from '@docs/demos/descriptions/columns'
+import columnsSource from '@docs/demos/descriptions/columns.tsx?raw'
+
+# Descriptions
+
+`Descriptions` renders a native `dl` as a grid: each `DescriptionItem` becomes a muted `dt` term
+above a `dd` value. The grid takes its column count from `columns` (1–3) and per-item `span`.
+
+<ComponentMeta id="descriptions" />
+
+## When to use
+
+- A detail page or drawer that shows read-only attributes of one record.
+- Grouping short labelled facts, such as owner, region and timestamps.
+- Values that need rich content, such as a status `Badge` or a link.
+
+## When not to use
+
+- Data that needs sorting, filtering or many rows: use `Table`.
+- Editable fields: use labels with `Input`, `Select` and friends inside a form.
+- One headline figure: use `Statistic`.
+- A single label and value inline: a plain `<p>` is lighter.
+
+## Basic usage
+
+<Demo title="Member profile" filename="demos/descriptions/basic.tsx" source={basicSource}>
+  <DescriptionsBasic />
+</Demo>
+
+## Three columns
+
+`columns={3}` fits more pairs into a wide detail panel, and `span: 2` lets a long value occupy two of
+the three columns.
+
+<Demo
+  title="Incident summary in three columns"
+  filename="demos/descriptions/columns.tsx"
+  source={columnsSource}
+>
+  <DescriptionsColumns />
+</Demo>
+
+## API
+
+<ApiTable component="descriptions" />
+
+## Design guidance
+
+- The root is a `dl` with `grid grid-cols-1 gap-x-8 gap-y-4`; `columns` only takes effect from the
+  `sm` breakpoint, so every layout is a single column on phones.
+- Terms are 12 px medium muted text (`text-xs font-medium text-muted-foreground`); values are 14 px
+  (`text-sm`) with `break-words`, so long emails and URLs wrap instead of widening the grid.
+- Each item is a `div` with `min-w-0 space-y-1`. The `min-w-0` is what allows a value to shrink and
+  wrap inside its grid cell.
+- `span: 2` compiles to `sm:col-span-2`, which widens an item to two columns. Use it with
+  `columns={2}` or `columns={3}`; there is no three-column span.
+- `description` is a `ReactNode`, so badges, links and formatted numbers are all valid values.
+- Column gaps (32 px) are wider than row gaps (16 px), which keeps columns readable while rows stay
+  tight.
+
+## Accessibility
+
+- Semantics come from the native `dl`, `dt` and `dd` elements: screen readers announce the term and
+  then its definition, and the list can be navigated term by term.
+- There is no interactive behaviour of its own; links and other focusable values inside a `dd` keep
+  the normal tab order.
+- Terms are visual labels only, so keep them short and unique within one block.
+
+Known gap: the layout reorders items into columns visually, but the DOM order stays the source order.
+On wide screens a screen reader therefore follows the array, not the visual columns — keep related
+pairs adjacent. The `dl` also has no accessible name, so several `Descriptions` blocks on one page
+are indistinguishable; wrap each in a heading or `<section>`.
+
+## FAQ
+
+**Can a value be a badge or a link?** Yes. `description` accepts any `ReactNode`, which is why the
+demo passes a `Badge` for the role.
+
+**Why does my long value not span the whole row?** `span` tops out at 2 and only applies from the
+`sm` breakpoint. In a three-column grid it widens the item by one column, not to full width.
+
+**Does it stack on mobile?** Yes. The base grid is one column; `columns` starts applying at `sm`
+(640 px) and above.
+
+## Related
+
+- `Card` to frame a block of details.
+- `Table` when the data needs columns of its own, sorting or pagination.
+- `Badge` for status values inside a description.
+- `Statistic` for a single highlighted number.
+- [Used in the template](https://fish-admin.vercel.app/users/$id)

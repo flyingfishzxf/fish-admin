@@ -1,0 +1,28 @@
+[
+  {
+    "id": "cascader/basic",
+    "component": "cascader",
+    "file": "demos/cascader/basic.tsx",
+    "title": {
+      "en": "Region, country, office",
+      "zh": "地区、国家、办公室"
+    },
+    "description": {
+      "en": "Drill through three columns until a leaf commits the full path.",
+      "zh": "逐列下钻，直到叶子节点提交完整路径。"
+    }
+  },
+  {
+    "id": "cascader/preset",
+    "component": "cascader",
+    "file": "demos/cascader/preset.tsx",
+    "title": {
+      "en": "Preset path with disabled branches",
+      "zh": "预置路径与禁用分支"
+    },
+    "description": {
+      "en": "A prefilled value, a clear button and branches that cannot be selected.",
+      "zh": "预填值、清除按钮，以及无法选中的分支。"
+    }
+  }
+]

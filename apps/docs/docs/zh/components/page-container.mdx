@@ -1,0 +1,100 @@
+---
+title: Page Container 页面容器
+description: 标准页面骨架：页头、可选标签行、统一间距的正文与页脚。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PageContainerBasic from '@docs/demos/page-container/basic'
+import basicSource from '@docs/demos/page-container/basic.tsx?raw'
+import PageContainerSections from '@docs/demos/page-container/sections'
+import sectionsSource from '@docs/demos/page-container/sections.tsx?raw'
+
+# Page Container 页面容器
+
+`PageContainer` 把页头、可选的标签行、`space-y-6` 的正文与带分隔线的页脚组合成统一骨架。它只
+负责框架：标题、描述、眉标与操作区由 `PageHeader` 渲染，`tabs` 和 `footer` 接受任意节点。
+
+<ComponentMeta id="page-container" />
+
+## 何时使用
+
+- 所有需要统一页头间距与正文节奏的路由页面。
+- 带主操作、标签页和页脚说明的详情页。
+- 保存与取消放在页面级页脚的表单页。
+- 希望正文滚动时筛选栏或标签栏保持可见的页面。
+
+## 何时不使用
+
+- 页面内部的区块：用 `Card` 获得带边框和内边距的容器。
+- 弹窗、抽屉或 Sheet 的内容：它们本身已有框架。
+- 需要自定义主视觉的营销页或登录页。
+
+## 基础用法
+
+<Demo title="带操作按钮的页头" filename="demos/page-container/basic.tsx" source={basicSource}>
+  <PageContainerBasic />
+</Demo>
+
+## 眉标、标签与页脚
+
+`eyebrow` 在标题上方加一行大写小标签，`tabs` 放在页头下方的带边框行里，`footer` 则在正文之后以
+上边框分隔。
+
+<Demo title="眉标、标签与页脚" filename="demos/page-container/sections.tsx" source={sectionsSource}>
+  <PageContainerSections />
+</Demo>
+
+## API
+
+<ApiTable component="page-container" />
+
+## 设计指引
+
+- 根节点是 `flex flex-col gap-6`，正文再加 `space-y-6`；子元素不需要自己加顶部外边距就能分段。
+- 页头在窄屏纵向排列，从 `lg` 断点起变为一行，操作区与整个页头块的底部对齐
+  （`lg:items-end lg:justify-between`），因此按钮大致与描述末行齐平。
+- `eyebrow` 是 12px 半粗大写文本，字距 `0.14em`，使用主色。它表示所属区域（Workspace、
+  Billing），不要当成第二个标题。
+- 标题渲染为 `<h1>`，24px，`sm` 起为 30px，紧字距并平衡换行；描述限制在 42rem
+  （`max-w-2xl`），保证易读的行宽。
+- `tabs` 位于带下边框的行内。`stickyHeader` 只作用于这一行
+  （`sticky top-0 z-10 bg-background/95 backdrop-blur`），页头本身始终随页面滚走。
+- `footer` 是原生 `<footer>`，样式为 `border-t pt-6`；页面级的保存按钮或法律说明放这里，而不是
+  塞在 `children` 末尾。
+- 容器自身没有内边距和背景。贴近视口边缘前，请给它一个带内边距的容器（应用外壳的 `main` 或
+  demo 里的边框盒子）。
+
+## 无障碍
+
+- 页头是真实 `<header>`，标题是 `<h1>`。在应用里请每个页面只用一个 PageContainer，让文档只保留
+  一个一级标题。
+- 描述紧跟标题之后的段落，读屏会把标题与摘要连起来读。
+- 操作区完全由调用方决定。demo 使用带可见文字的 `Button`；只有图标时请补 `aria-label`。
+- 标签行只是普通 `<div>`，没有角色——语义由传入的组件承担。`Segmented` 或 `Tabs` 会提供分组名称、
+  键盘行为与选中状态。
+- `footer` 是原生 `<footer>`；当它不嵌套在分区元素内时会映射为 contentinfo 地标，因此不要在同一个
+  页面顶层渲染多个 PageContainer。
+
+已知缺口：`stickyHeader` 会把标签行固定在正文之上，页面内锚点可能落到它下面，需要给锚点加
+`scroll-margin-top`。组件也不提供跳转链接或面包屑插槽，这两者属于应用外壳。
+
+## FAQ
+
+**`stickyHeader` 会让整个页头吸顶吗？** 不会，只有标签行变吸顶；标题、描述和操作区照常滚走。
+想看到效果，需要给滚动父容器一个固定高度。
+
+**保存和取消按钮该放哪？** 页面级表单放在 `footer`，让它们跟在内容之后；如果只有一个主操作，放
+在标题旁的 `actions` 里。
+
+**如何加面包屑？** 没有面包屑插槽。把 `Breadcrumb` 渲染在外壳中、容器之前，或作为正文的第一个
+子元素。
+
+## 相关
+
+- `Card`：页面内的带边框区块。
+- `Tabs`：驱动正文的标签页。
+- `Segmented`：`tabs` 里的紧凑视图切换。
+- `Breadcrumb`：页面之上的位置路径。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

@@ -27,16 +27,25 @@ export function AutoComplete({
   className,
 }: {
   id?: string
+  /** Suggestions to filter; the list is shown as-is while the query is empty. */
   options: AutoCompleteOption[]
+  /** Controlled query text; the label of a picked option is written back here. */
   value: string
+  /** Called on every keystroke with the new query. */
   onValueChange: (value: string) => void
+  /** Called only when a suggestion is picked, with the full option. */
   onSelect?: (option: AutoCompleteOption) => void
   placeholder?: string
+  /** Accessible name for both the input and the listbox. */
   ariaLabel: string
+  /** Row shown when no option matches the query. */
   emptyLabel?: string
+  /** Replaces the list with a single centred loading row. */
   loading?: boolean
+  /** Copy for the loading row. */
   loadingLabel?: string
   disabled?: boolean
+  /** Open the list when the input receives focus. */
   openOnFocus?: boolean
   className?: string
 }) {

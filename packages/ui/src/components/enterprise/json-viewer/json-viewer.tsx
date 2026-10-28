@@ -106,8 +106,11 @@ export function JsonViewer({
   defaultExpandedDepth = 2,
   className,
 }: {
+  /** Any JSON-compatible value; undefined renders the empty state. */
   value: unknown
+  /** Short label shown in the header and used as the root's accessible name. */
   ariaLabel: string
+  /** Depth that starts expanded; 0 keeps everything folded. @default 2 */
   defaultExpandedDepth?: number
   className?: string
 }) {

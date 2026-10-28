@@ -1,0 +1,98 @@
+---
+title: List 列表
+description: 由图标或头像、辅助信息、行内操作与选中状态组成的紧凑记录列表。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ListBasic from '@docs/demos/list/basic'
+import basicSource from '@docs/demos/list/basic.tsx?raw'
+import ListSelectable from '@docs/demos/list/selectable'
+import selectableSource from '@docs/demos/list/selectable.tsx?raw'
+
+# List 列表
+
+`List` 用语义化的 `<ul>` 渲染一组 `ListItem` 记录。每行可以带图标或头像、标题、描述、右侧
+`meta` 文本以及独立的 `actions`；传入 `onItemClick` 后，行主体会变成按钮，`selectedId` 的高亮
+同时生效。
+
+<ComponentMeta id="list" />
+
+## 何时使用
+
+- 结构统一、数量不多的集合，例如最近部署、成员或集成连接。
+- 左侧列表、右侧详情的分栏布局，用选中行驱动右侧内容。
+- 每行结构一致，但需要附带一个时间戳或一个行内操作。
+
+## 何时不使用
+
+- 需要多列可比较的数据：使用 `Table` 或 `ProTable`。
+- 需要服务端分页与筛选的数据集：这些外壳 `ProTable` 已经提供。
+- 需要打断用户的公告：使用 `Alert` 或 `Sonner` 的提示。
+
+## 基础用法
+
+<Demo title="工作区动态" filename="demos/list/basic.tsx" source={basicSource}>
+  <ListBasic />
+</Demo>
+
+## 可选行与行内菜单
+
+传入 `onItemClick` 后，行主体变成按钮；配合 `selectedId` 可以高亮当前行。行内 `actions` 渲染在
+同级容器里，因此点击行菜单不会触发行选中。
+
+<Demo title="可选行与行内菜单" filename="demos/list/selectable.tsx" source={selectableSource}>
+  <ListSelectable />
+</Demo>
+
+## API
+
+<ApiTable component="list" />
+
+## 设计指引
+
+- 列表是 `rounded-lg border bg-background` 里的 `divide-y` 结构；每行 `px-4 py-3`、间距 12px，
+  并占满父容器宽度。
+- `avatar` 与 `icon` 同时存在时优先显示头像。没有头像时，图标放在 36px 的
+  `rounded-lg bg-muted` 方块里；两者都没有时，文本直接从行首开始。
+- 标题是 `text-sm font-medium`，描述是弱化的 `text-xs`，两者都会截断，因此很长的名称也不会换行，
+  行高保持稳定。
+- `meta` 是右对齐的 `text-xs` 弱化文本，适合放时间戳或简短状态。
+- 选中是受控的：把 `selectedId` 放在 state 里，在 `onItemClick` 中更新。选中行显示
+  `bg-primary/5`，其按钮带 `aria-current="true"`。
+- 行内操作位于行按钮之后的独立弹性容器；组件测试断言点击 “Open” 不会触发 `onItemClick`。
+- `disabled` 行降到 50% 不透明度，按钮使用原生 `disabled` 属性。
+- `items={[]}` 时不会渲染 `<ul>`，而是显示一个虚线边框、居中、弱化文字的盒子，内容为
+  `emptyLabel`。
+
+## 无障碍
+
+- 列表是由 `ariaLabel` 命名的 `<ul>`，每条记录是 `<li>`，读屏会播报条目数量。
+- 不传 `onItemClick` 时行是静态内容：没有 hover、没有焦点、也没有选中语义。
+- 传入 `onItemClick` 后，整个行主体是原生按钮，名称由标题、描述、`meta` 与头像文字拼成；它有
+  可见的焦点环，选中时带 `aria-current="true"`。
+- 行内操作是行按钮之后的普通按钮，每行因此有两个 Tab 停靠点，不选中行也能直接打开菜单。
+- 禁用行使用 `disabled`，会从 Tab 顺序中移除。
+
+已知缺口：只读列表里的 `selectedId` 只影响配色——`aria-current` 加在行按钮上，而没有
+`onItemClick` 时并不存在这个按钮，因此选中状态只靠颜色表达。默认情况下头像首字母会被算进行按钮
+的可访问名称（demo 中把装饰性头像隐藏了），且任何行都不会在聚焦时提供被截断标题的完整内容。
+
+## FAQ
+
+**行可以是链接吗？** 组件没有内置链接。可以在 `actions` 里放 `<a>`，或在 `onItemClick` 中调用
+路由的 navigate。
+
+**点击行内操作会同时选中该行吗？** 不会。行内操作在行按钮之外，点击事件不会到达 `onItemClick`。
+
+**如何展示两个辅助信息？** `meta` 只是一个字符串。第二个值可以渲染成 `actions` 里的 `Badge`，
+或者把两个值合成一句短文本。
+
+## 相关
+
+- `Table`：需要对齐的列与排序时使用。
+- `Notification Center`：需要已读/未读的收件箱时使用。
+- `Timeline`：时间顺序是重点时使用。
+- `Descriptions`：固定字段需要标签时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/integrations)

@@ -1,0 +1,98 @@
+---
+title: Cascader 级联选择
+description: 通过弹层按层级逐列选择值，最终提交完整路径数组。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CascaderBasic from '@docs/demos/cascader/basic'
+import basicSource from '@docs/demos/cascader/basic.tsx?raw'
+import CascaderPreset from '@docs/demos/cascader/preset'
+import presetSource from '@docs/demos/cascader/preset.tsx?raw'
+
+# Cascader 级联选择
+
+`Cascader` 是一个描边 `Button` 触发器加一个 `Popover`，弹层为 `options` 的每一层渲染一列可滚动
+列表。每个节点都是带 `aria-pressed` 的 `button`；有子节点的分支只负责展开下一列，只有叶子节点会
+通过 `onChange` 提交完整的 `string[]` 路径。
+
+<ComponentMeta id="cascader" />
+
+## 何时使用
+
+- 地区 → 国家 → 办公室这类三级地理结构。
+- 层级比 `Tree Select` 浅、选项又比 `Select` 多的分类树。
+- 成本中心、产品线、组织单元——完整路径本身就是值。
+
+## 何时不使用
+
+- 只有两三个平铺选项：使用 `Select`。
+- 层级很深或深浅不一且需要搜索：使用 `Tree Select` 或 `Tree`。
+- 中间层级也需要可选：请先把这些层级拍平，含子节点的节点永远不会提交值。
+
+## 基础用法
+
+先选地区，再选国家，最后选办公室。触发器用 `/` 连接显示路径，下方一行输出原始值数组。
+
+<Demo title="逐级下钻到办公室" filename="demos/cascader/basic.tsx" source={basicSource}>
+  <CascaderBasic />
+</Demo>
+
+## 预置路径与清除
+
+`value` 是路径数组，因此已保存的记录可以直接回填。只有在已有值且传入了 `onClear` 时才会出现清
+除按钮；禁用节点仍然可见，但永远不会提交。
+
+<Demo title="带禁用分支的预置成本中心" filename="demos/cascader/preset.tsx" source={presetSource}>
+  <CascaderPreset />
+</Demo>
+
+## API
+
+<ApiTable component="cascader" />
+
+## 设计指引
+
+- 触发器是 `w-full justify-between` 并带 `pr-14`，为 `right-8` 处的清除按钮和右侧箭头预留空间。
+  无值时文字降为 `text-muted-foreground`，占位符读起来是提示而不是已选值。
+- 它的无障碍名称拼接为 `ariaLabel: label || placeholder`，即字段名与当前路径一起被读出。
+- 每列固定 `w-44`、`max-h-64` 内滚，除最后一列外都有右分隔线。桌面弹层放两到三列合适；第四层
+  在窄屏上会拥挤，此时内容宽度上限为 `max-w-[calc(100vw-2rem)]`。
+- 弹层内的选中只是“下钻状态”，不等于已提交的值：每次打开时 `activePath` 都从 `value` 重建，因
+  此中途关掉弹层不会改动原有选择。
+- 选中行使用 `bg-primary/10` 加 `font-medium`；分支显示 `ChevronRight`，叶子显示 1.5 px 的主色圆
+  点。
+- 禁用节点使用原生 `disabled` 属性并降到 50% 透明度；点击会被忽略，但仍用于交代树的形状。
+- `options` 为空数组时弹层显示 `emptyLabel`，未传则回退到本地化的“无匹配”文案。
+
+## 无障碍
+
+- 触发器是带 `aria-expanded` 的按钮，当前路径已包含在名称中，不打开弹层就能读出已选值。
+- 每列都是有名称的列表（`<ariaLabel> 1`、`2`……），每个节点是带 `aria-pressed` 的按钮，反映下钻
+  状态；禁用节点使用原生属性。
+- 各列会滚动，但内部都是可聚焦按钮，键盘用户可以到达每一行。
+
+已知缺口：它不是 combobox 也不是 listbox——没有 `aria-activedescendant`，没有行与列之间的方向键
+移动，也没有首字母检索；Tab 会依次走过所有已展开列的每一个按钮。已知缺口：清除按钮只有 24 px，
+并且位于触发器的右侧内边距内，既低于 44 px 触控建议，也离箭头较近。
+
+## FAQ
+
+**如何预填一个值？** 传完整路径，例如 `['europe', 'germany', 'berlin']`。也允许部分路径：触发器
+显示已匹配的各级标签，弹层会停在该分支上。
+
+**保存的路径已经不存在了怎么办？** 查找从根节点开始，遇到第一个缺失或改名的值就停下，因此触发器
+显示仍能匹配的最长前缀，而不是直接报错。
+
+**为什么点父节点不会关闭弹层？** 带子节点的父级只负责展开下一列，只有叶子才调用 `onChange`。如
+果在你的数据模型里中间层级本身也是有效值，请拍平树结构，或在传入 `options` 前去掉它们的
+`children`。
+
+## 相关
+
+- `Tree Select`：可搜索、层级不规整的树。
+- `Select`：平铺的选项列表。
+- `Combobox`：需要自由文本加过滤时使用。
+- `Popover`：本组件依赖的弹层基础。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

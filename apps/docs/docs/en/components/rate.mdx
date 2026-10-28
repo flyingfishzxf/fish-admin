@@ -1,0 +1,106 @@
+---
+title: Rate
+description: A five-star radiogroup for collecting or displaying a short score.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import RateBasic from '@docs/demos/rate/basic'
+import basicSource from '@docs/demos/rate/basic.tsx?raw'
+import RateStates from '@docs/demos/rate/states'
+import statesSource from '@docs/demos/rate/states.tsx?raw'
+
+# Rate
+
+`Rate` renders a `role="radiogroup"` of Lucide `Star` buttons. The page owns the number, the
+component reports picks through `onChange`, and hovering or focusing a star previews the score.
+
+<ComponentMeta id="rate" />
+
+## When to use
+
+- Collecting a short score, such as a support rating, a review or a QA check.
+- Showing an aggregate score that only needs a glance.
+- A scale where the number of filled stars already explains the granularity.
+
+## When not to use
+
+- Fine-grained or unbounded scores: use `Slider` or `Input Number`.
+- A binary choice: a `Switch` or `Radio Group` says yes/no more directly.
+- Labelled sentiment ("poor" to "excellent"): a visible list of labelled options reads better.
+
+## Basic usage
+
+<Demo title="Score an onboarding call" filename="demos/rate/basic.tsx" source={basicSource}>
+  <RateBasic />
+</Demo>
+
+## Clear and read-only
+
+`allowClear` is on by default, so clicking the selected star emits `0`. With `readOnly` — or with no
+`onChange` at all — the stars become disabled and the group turns into a static display.
+
+<Demo
+  title="Clearable editing and a read-only average"
+  filename="demos/rate/states.tsx"
+  source={statesSource}
+>
+  <RateStates />
+</Demo>
+
+## API
+
+<ApiTable component="rate" />
+
+## Design guidance
+
+- Each star is a `size-5` Lucide `Star` inside a `p-0.5` button; the group adds `gap-0.5`, so a
+  five-star row is roughly 128 px wide.
+- Filled stars take `text-warning` plus `fill-current`; empty stars stay `text-muted-foreground`.
+- The fill follows `hovered ?? value`: hovering or focusing a star previews that score, and leaving
+  the group or blurring clears the preview.
+- `allowClear` defaults to `true` — clicking the current score sends `0`. Turn it off when a
+  submitted score must never be withdrawn.
+- Without `onChange`, or when `readOnly` is set, `interactive` is false: every star is `disabled`
+  and gets `cursor-default`, and no hover preview happens.
+- Comparisons are `star <= value`, so values are integers in practice: `4.5` fills four stars and
+  marks none as checked. Round at your data boundary.
+
+## Accessibility
+
+- The wrapper is a `radiogroup` named by `ariaLabel`, falling back to the localized "Rating"; each
+  star is a `radio` with `aria-checked`.
+- Roving tab stop: only the checked star has `tabIndex={0}`, or the first star when the value is 0.
+  All other stars are `-1`.
+- Arrow Right / Up move focus one star forward, Arrow Left / Down one back; Home and End jump to the
+  first and last star.
+- Arrow keys only move focus. Enter or Space selects, using native button activation — there is no
+  "follow focus" selection.
+- Each star's name is the localized "N of M stars" (Chinese: "N / M 星"), so the scale is spoken.
+- Focus rings come from `focus-visible:ring-2` with `ring-ring/50`; colour is never the only signal
+  because `aria-checked` carries the state.
+
+Known gap: focus and selection are separate, so a keyboard user arrows to a star and then presses
+Enter without hearing a preview. A read-only rating renders disabled radios and the group itself is
+`tabIndex={-1}`, so it is reachable only in browse mode. The component also renders no visible
+label — place your own prompt next to it, as the demos do.
+
+## FAQ
+
+**Does `Rate` store the score?** No. It is controlled from the outside: pass `value` and update it
+in `onChange`. Without `onChange` the stars are disabled rather than internally stateful.
+
+**Why did my score drop to zero?** `allowClear` is true by default and a click on the selected star
+sends `0`. Pass `allowClear={false}` to make the score sticky.
+
+**Can I use ten stars?** Yes, `max` defaults to 5 and accepts any count; the roving tab stop, arrow
+keys and labels all follow `max`.
+
+## Related
+
+- `Slider` for a continuous score with a visible track.
+- `Progress` when the question is how far along something is, not how good it was.
+- `Statistic` to show the aggregate score as a single number.
+- `Input Number` when the score is typed rather than clicked.
+- [Used in the template](https://fish-admin.vercel.app/projects/$id)

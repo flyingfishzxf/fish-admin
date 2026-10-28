@@ -1,0 +1,113 @@
+---
+title: Cascader
+description: A popover trigger for picking a value through a hierarchical path, one column per level.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CascaderBasic from '@docs/demos/cascader/basic'
+import basicSource from '@docs/demos/cascader/basic.tsx?raw'
+import CascaderPreset from '@docs/demos/cascader/preset'
+import presetSource from '@docs/demos/cascader/preset.tsx?raw'
+
+# Cascader
+
+`Cascader` is an outline `Button` trigger plus a `Popover` that renders one scrollable column per
+level of `options`. Every node is a `button` with `aria-pressed`; branches with children only open
+the next column, and a leaf commits the whole `string[]` path through `onChange`.
+
+<ComponentMeta id="cascader" />
+
+## When to use
+
+- Region → country → office, or any three-level geography.
+- Category trees that are too shallow for `Tree Select` and too wide for a `Select`.
+- Cost centers, product lines and org units where the full path is the value.
+
+## When not to use
+
+- Two or three flat options: use `Select`.
+- A deep or uneven tree with search: use `Tree Select` or `Tree`.
+- A path where middle levels must also be selectable: flatten those levels first, because a node
+  with children never commits.
+
+## Basic usage
+
+Pick a region, then a country, then an office. The trigger shows the path joined with `/`, and the
+line below reports the raw value array.
+
+<Demo title="Drill down to an office" filename="demos/cascader/basic.tsx" source={basicSource}>
+  <CascaderBasic />
+</Demo>
+
+## Preset path and clearing
+
+`value` is a path array, so a saved record can prefill it. The clear button appears only when a value
+is set and `onClear` is provided; disabled nodes stay visible but never commit.
+
+<Demo
+  title="Prefilled cost center with disabled branches"
+  filename="demos/cascader/preset.tsx"
+  source={presetSource}
+>
+  <CascaderPreset />
+</Demo>
+
+## API
+
+<ApiTable component="cascader" />
+
+## Design guidance
+
+- The trigger is `w-full justify-between` with `pr-14`, reserving room for the clear button at
+  `right-8` and the chevron. With no value it drops to `text-muted-foreground`, so the placeholder
+  reads as a prompt rather than a value.
+- Its accessible name is composed as `ariaLabel: label || placeholder`, which means the current path
+  is spoken together with the field name.
+- Columns are fixed at `w-44` with `max-h-64` scrolling and a right border on all but the last. Two
+  or three columns fit a desktop popover; a fourth level gets tight on narrow screens, where the
+  content caps at `max-w-[calc(100vw-2rem)]`.
+- Selection inside the popover is a drill state, not the committed value: `activePath` starts from
+  `value` on every open, so abandoning the popover leaves the previous selection intact.
+- The selected row is `bg-primary/10` with `font-medium`; branches show a `ChevronRight`, leaves show
+  a 1.5 px primary dot.
+- Disabled nodes use the native `disabled` attribute plus 50% opacity; they are skipped by click but
+  still describe the shape of the tree.
+- With an empty `options` array the popover shows `emptyLabel`, falling back to the localized
+  "no matches" string.
+
+## Accessibility
+
+- The trigger is a button with `aria-expanded` and the current path in its name, so the value is
+  readable without opening the popover.
+- Each column is a labelled list (`<ariaLabel> 1`, `2`, …) and every node is a button with
+  `aria-pressed` reflecting the drill state; disabled nodes use the native attribute.
+- Columns scroll but contain focusable buttons, so keyboard users can reach every row.
+
+Known gap: this is not a combobox or listbox — there is no `aria-activedescendant`, no arrow-key
+movement between rows or columns, and no type-ahead. Tab walks every button in every open column.
+Known gap: the clear button is 24 px and sits inside the trigger's right padding, which is below the
+44 px touch recommendation and visually close to the chevron.
+
+## FAQ
+
+**How do I prefill a value?** Pass the full path, for example
+`['europe', 'germany', 'berlin']`. A partial path is allowed: the trigger shows the matched labels
+and the popover opens on that branch.
+
+**What happens when a stored path no longer exists?** The lookup walks from the root and stops at the
+first missing or renamed value, so the trigger renders the longest prefix that still matches instead
+of failing.
+
+**Why doesn't clicking a parent close the popover?** Parents with children only expand the next
+column; only leaves call `onChange`. If the middle level is a real value in your model, flatten the
+tree or drop those children before passing `options`.
+
+## Related
+
+- `Tree Select` for searchable, uneven hierarchies.
+- `Select` for a flat option list.
+- `Combobox` when the field needs free text plus filtering.
+- `Popover` for the overlay this component builds on.
+- [Used in the template](https://fish-admin.vercel.app/files)

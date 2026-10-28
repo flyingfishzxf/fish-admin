@@ -1,0 +1,96 @@
+---
+title: Dropzone 拖拽上传
+description: 虚线拖拽区域，内置隐藏的文件输入与“浏览文件”按钮。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DropzoneBasic from '@docs/demos/dropzone/basic'
+import basicSource from '@docs/demos/dropzone/basic.tsx?raw'
+import DropzoneMultiple from '@docs/demos/dropzone/multiple'
+import multipleSource from '@docs/demos/dropzone/multiple.tsx?raw'
+
+# Dropzone 拖拽上传
+
+`Dropzone` 是一个虚线拖拽区域，内部包含视觉隐藏的 `<input type="file">` 和 `outline` 变体的
+`Button`。文件通过 `onFiles` 或 `onFile` 交给调用方处理，校验结果再通过 `error` 回传显示。
+
+<ComponentMeta id="dropzone" />
+
+## 何时使用
+
+- 导入 CSV 或表格导出文件，文件本身就是任务的全部内容。
+- 表单需要收集附件，同时提供拖拽与键盘操作两条路径。
+- 只有一处上传入口，并希望一开始就说明格式与大小限制。
+
+## 何时不使用
+
+- 上传需要进度、重试或已完成文件列表：使用 `Upload`。
+- 图片已经在服务器上，只想看大图：使用 `Image Preview`。
+- 只是填写一个已知路径或链接：`Input` 足够。
+
+## 基础用法
+
+<Demo title="单个 CSV，带校验" filename="demos/dropzone/basic.tsx" source={basicSource}>
+  <DropzoneBasic />
+</Demo>
+
+## 多文件上传
+
+设置 `multiple` 后，浏览对话框支持多选，拖入的多个文件也会合并成一次 `onFiles` 调用。
+
+<Demo title="批量收集图片" filename="demos/dropzone/multiple.tsx" source={multipleSource}>
+  <DropzoneMultiple />
+</Demo>
+
+## API
+
+<ApiTable component="dropzone" />
+
+## 设计指引
+
+- 区域是 `rounded-xl` 的虚线边框，水平内边距 24 px、垂直 32 px，内容纵向居中排列。静止时用
+  `border-border bg-muted/30`，拖拽经过时变为 `border-primary bg-primary/5`。
+- 高亮由内部的拖拽计数器控制，在子元素之间移动时边框不会来回闪烁。
+- 云图标放在 40 px（`size-10`）的圆形底上；`label` 为 14 px 中等字重，`hint` 为 12 px 弱化
+  文字，宽度上限 `max-w-xs`。
+- “浏览文件”是 `sm` 尺寸（32 px）的 `outline` 按钮，点击后触发隐藏输入。每次选择完成都会把
+  input 的值重置为空，因此同一个文件连续选两次依然会触发回调。
+- `accept` 只是原生选择器的提示，拖拽进来的文件不受它限制。请在回调里自行校验扩展名或类型，
+  再把提示传给 `error`。
+- `error` 显示在浏览按钮下方，为 12 px 的 destructive 文字，并带 `role="alert"`。
+- `disabled` 会设置 `aria-disabled`、把整体透明度降到 60%，同时阻止输入与拖拽；此时区域看
+  起来已不可用，建议在旁边补一句原因。
+
+## 无障碍
+
+- 隐藏的输入是真正的文件输入，带 `aria-label={label}`，浏览按钮负责唤起它，因此键盘用户也能
+  使用系统选择文件对话框。
+- 也正因如此，`label` 同时承担可见说明和输入框可访问名称两个职责，请写得具体，例如
+  “把成员导入文件拖到这里”。
+- `error` 使用 `role="alert"` 且插在按钮之后，校验失败时会被立即播报。
+- 外层设置了 `aria-disabled`，输入和按钮本身也带原生 `disabled` 属性。
+
+已知缺口：虚线区域本身不可聚焦，也没有键盘等价的“放入文件”操作，所有能力必须能通过浏览
+按钮完成。另外 `sr-only` 的文件输入仍在 Tab 顺序里，键盘用户会先在按钮之前遇到一个看不见、
+但名称相同的控件。
+
+## FAQ
+
+**该用 `onFile` 还是 `onFiles`？** 两个都传时 `onFiles` 优先。只需要一个文件且
+`multiple={false}` 时用 `onFile`；开启 `multiple` 时用 `onFiles`。
+
+**为什么 `accept=".csv"` 还是能拖进 PDF？** `accept` 只过滤系统选择对话框。拖拽会原样投递用户
+拖入的文件，所以需要自己判断扩展名或 MIME 类型，并把提示写回 `error`。
+
+**能预览选中的文件吗？** 可以。把任意 `ReactNode` 传给 `preview`，它会渲染在图标上方、仍在
+虚线区域内，适合放缩略图或文件名标签。
+
+## 相关
+
+- `Upload`：需要上传进度、重试与完整文件列表时。
+- `Image Preview`：文件保存后用于查看大图。
+- `Button`：区域内的浏览操作。
+- `Form`：把拖拽上传接入表单校验。
+- [在模板中的用法](https://fish-admin.vercel.app/profile)

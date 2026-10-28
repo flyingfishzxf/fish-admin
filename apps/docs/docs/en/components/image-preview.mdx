@@ -1,0 +1,110 @@
+---
+title: Image Preview
+description: A thumbnail grid that opens a captioned lightbox with paging.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ImagePreviewBasic from '@docs/demos/image-preview/basic'
+import basicSource from '@docs/demos/image-preview/basic.tsx?raw'
+import ImagePreviewSingle from '@docs/demos/image-preview/single'
+import singleSource from '@docs/demos/image-preview/single.tsx?raw'
+
+# Image Preview
+
+`ImagePreview` renders `PreviewImage[]` as a thumbnail grid of buttons. Choosing one opens a `Dialog`
+lightbox with the caption, a position counter and previous/next `Button`s; the arrow keys step
+through the set as well.
+
+<ComponentMeta id="image-preview" />
+
+## When to use
+
+- Attachment or receipt galleries where users need the full-size image.
+- Release notes and tickets that carry a handful of screenshots.
+- Reviewing a small set of images without leaving the page.
+
+## When not to use
+
+- Many similar images that need browsing as a primary task: use `Carousel`.
+- Images still being uploaded: use `Dropzone` or `Upload` first.
+- A single inline illustration: a plain `<img>` needs no dialog.
+
+## Basic usage
+
+<Demo
+  title="Captioned screenshots in a lightbox"
+  filename="demos/image-preview/basic.tsx"
+  source={basicSource}
+>
+  <ImagePreviewBasic />
+</Demo>
+
+## One image and the empty state
+
+The pager and counter only render when there is more than one image. An empty array skips the grid
+and shows a localized "No data" line instead.
+
+<Demo
+  title="Single attachment and no attachment"
+  filename="demos/image-preview/single.tsx"
+  source={singleSource}
+>
+  <ImagePreviewSingle />
+</Demo>
+
+## API
+
+<ApiTable component="image-preview" />
+
+## Design guidance
+
+- The grid is two columns, three from the `sm` breakpoint, with an 8 px gap (`gap-2`). Thumbnails
+  are 4:3 (`aspect-4/3`), `rounded-lg`, bordered and clipped, so mixed source ratios stay aligned.
+- Thumbnail images use `object-cover` and scale to 1.05 over 300 ms on hover; the button itself has
+  a 2 px focus ring, so keyboard focus is as visible as hover.
+- A caption renders as a 12 px white overlay on a gradient from `black/70`, truncated to one line
+  with `pt-6`, which keeps the text legible over bright photos.
+- The lightbox caps at `max-w-3xl` with 12–16 px padding. The image is `object-contain` and limited
+  to 70 vh, so tall screenshots still fit without scrolling the page.
+- The figcaption shows `caption ?? alt` and, only when there are several images, a "1 / 3" counter
+  in tabular numbers so it does not jitter as digits change.
+- The dialog title and description are screen-reader only — the `ariaLabel` and the current `alt` —
+  so no visible heading competes with the image.
+- The previous/next buttons are `icon-sm` outline buttons. Stepping wraps around at both ends.
+- With an empty array the component returns a single 14 px muted paragraph, not a grid.
+
+## Accessibility
+
+- Every thumbnail is a real button named `ariaLabel: alt — caption`; the `<img>` keeps its own
+  `alt`, so the name is the description, never the file name.
+- Opening the lightbox moves focus into the dialog, where Radix traps it; Escape closes it and focus
+  returns to the thumbnail that opened it.
+- The dialog has an accessible name from `ariaLabel` and a description from the current `alt`, both
+  updated as you page, alongside the visible figcaption.
+- Arrow Left and Arrow Right step the gallery while focus is inside the dialog, and the pager buttons
+  are labelled with the localized "Previous" and "Next".
+
+Known gap: the arrow-key handler is bound to the dialog content rather than the document, so the keys
+only work while focus is inside the lightbox, and nothing on screen tells users about them. There is
+also no zoom, pan or download action, and the empty state is a bare paragraph with no icon.
+
+## FAQ
+
+**Why are there no arrows for a single image?** The pager and the counter only render when
+`images.length > 1`. A single image still opens with its caption and screen-reader title.
+
+**What happens with an empty array?** The component renders the localized "No data" line and no
+grid or dialog, so you can call it with fetched data that turns out to be empty.
+
+**Are the images loaded eagerly?** No. Every thumbnail sets `loading="lazy"`, and the lightbox only
+mounts when opened, so off-screen images are not fetched on page load.
+
+## Related
+
+- `Dialog` for a custom lightbox layout.
+- `Carousel` for a browsable gallery as the main content.
+- `Dropzone` and `Upload` to collect the images first.
+- `Empty` when the empty gallery needs an action.
+- [Used in the template](https://fish-admin.vercel.app/files)

@@ -1,0 +1,113 @@
+---
+title: Back Top
+description: A floating button that appears after you scroll a page or panel and returns it to the top.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import BackTopBasic from '@docs/demos/back-top/basic'
+import basicSource from '@docs/demos/back-top/basic.tsx?raw'
+import BackTopThreshold from '@docs/demos/back-top/threshold'
+import thresholdSource from '@docs/demos/back-top/threshold.tsx?raw'
+
+# Back Top
+
+`BackTop` is one `Button` — `size="icon-lg"`, `rounded-full`, a `shadow-lg` and an `aria-hidden`
+`ArrowUp` icon. It renders `null` until the scroll position of the window or of `targetRef` passes
+`threshold`, then scrolls that element back to `0`.
+
+<ComponentMeta id="back-top" />
+
+## When to use
+
+- Long pages: reports, audit logs, changelogs, documentation.
+- A dashboard column with its own scroll panel that can get deep.
+- Anywhere the reader is far from the page header and the return trip is costly.
+
+## When not to use
+
+- Short pages that fit in one or two viewports.
+- Sticky toolbars that already expose a home or top action.
+- Mobile screens where the `fixed right-6 bottom-6` position would cover a primary action.
+
+## Basic usage
+
+The demo scopes the button to an audit-log panel. `targetRef` makes the component watch and scroll
+that element instead of the window.
+
+<Demo
+  title="Return a panel to its first entry"
+  filename="demos/back-top/basic.tsx"
+  source={basicSource}
+>
+  <BackTopBasic />
+</Demo>
+
+## Tuning the threshold
+
+`threshold` is the scroll distance in pixels before the button mounts. Both panels below hold the
+same list; only `40` versus `240` differs.
+
+<Demo
+  title="40 px versus 240 px of scroll"
+  filename="demos/back-top/threshold.tsx"
+  source={thresholdSource}
+>
+  <BackTopThreshold />
+</Demo>
+
+## API
+
+<ApiTable component="back-top" />
+
+## Design guidance
+
+- Hidden is truly hidden: the component returns `null` below the threshold, so no invisible button
+  sits in the tab order or under the pointer.
+- The button is `40 × 40` px (`size="icon-lg"`), circular, with `shadow-lg` and the default primary
+  fill. Place it `right-6 bottom-6` from its containing block with `z-40` — above page content, but
+  below dialogs, menus and the sticky nav on the docs site.
+- `threshold` defaults to `400` px. Lower it (`80`–`120`) for a compact internal panel, and keep it
+  larger than the distance at which the page header leaves the viewport.
+- The accessible name falls back to the localized `enterprise.backToTop` string through
+  `useUITranslation`, so pass `label` only when the context needs to be more specific, for example
+  "Back to the top of the audit log".
+- Scrolling uses `behavior: 'smooth'`, downgraded to `'auto'` when `prefers-reduced-motion: reduce`
+  matches.
+- The listeners are passive `scroll` handlers on the target, re-bound when `targetRef` or `threshold`
+  changes.
+
+## Accessibility
+
+- The control is a labelled `button`; the arrow icon is `aria-hidden`, so the name comes only from
+  `label` or the localized default.
+- It is a single tab stop that exists only while it is usable, which keeps the order stable and
+  avoids a hidden focus trap.
+
+Known gap: the hit area is 40 px, below the common 44 px touch recommendation. Known gap: when the
+click returns the scroller under the threshold the button unmounts, so focus falls back to the
+document body rather than to a heading or the scroll container — move focus yourself if the
+affordance is a primary path. The appearance is not announced; that is acceptable because the
+button is a redundant shortcut.
+
+## FAQ
+
+**Why does the button sit at the corner of my panel instead of the page?** Because it is `fixed`;
+a wrapper with `transform: translateZ(0)` (or any transform) becomes its containing block. The basic
+demo uses that so the button stays inside the card. Without it, `fixed` resolves against the
+viewport.
+
+**Can I show it all the time?** No. With `threshold={0}` it appears as soon as the container scrolls
+by one pixel, but it is still unmounted at rest.
+
+**Does it scroll the window when I pass `targetRef`?** No — it calls `scrollTo` on the referenced
+element only, and never touches `window`.
+
+## Related
+
+- `Anchor Nav` to jump between named sections instead of the top.
+- `Scroll Area` for a styled container to pair with `targetRef`.
+- `Button` for the underlying variants and sizes.
+- `Page Container` for the page scroller in the template layout.
+- [Used in the template](https://fish-admin.vercel.app/reports)

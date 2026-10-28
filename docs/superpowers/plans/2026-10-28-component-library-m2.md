@@ -90,7 +90,7 @@ e2e-docs/axe-full.spec.ts                    # new: env-gated full axe sweep (cl
 - [x] **Step 1:** dispatch batches and collect the files
 - [x] **Step 2:** `pnpm gen-api` + review api.json descriptions for the wave (no empty tables, no wrong display names)
 - [x] **Step 3:** gate set + axe sample + browser spot check
-- [ ] **Step 4:** commit
+- [x] **Step 4:** commit
 
 ---
 
@@ -100,6 +100,11 @@ e2e-docs/axe-full.spec.ts                    # new: env-gated full axe sweep (cl
 
 Same recipe and gates as Task 2; commit `feat(docs): document wave 2 primitives`.
 
+- [x] **Step 1:** dispatch batches and collect the files
+- [x] **Step 2:** `pnpm gen-api` + review api.json descriptions for the wave
+- [x] **Step 3:** gate set + full axe sweep (161 passed) + browser spot check
+- [x] **Step 4:** commit `bbefa7f`
+
 ---
 
 ### Task 4: Wave 3 — enterprise, first 20 (19 new pages)
@@ -107,6 +112,11 @@ Same recipe and gates as Task 2; commit `feat(docs): document wave 2 primitives`
 **Components:** anchor-nav, auto-complete, back-top, carousel, cascader, combobox, date-picker, date-range-picker _(pilot)_, descriptions, dropzone, image-preview, json-viewer, list, notification-center, page-container, popconfirm, rate, result, statistic, stepper.
 
 Same recipe; enterprise sources live in `packages/ui/src/components/enterprise/<id>/`. Commit `feat(docs): document wave 3 enterprise components`.
+
+- [x] **Step 1:** dispatch batches and collect the files
+- [x] **Step 2:** `pnpm gen-api` + review api.json descriptions for the wave (JSDoc coverage 19.31% → 49.21%)
+- [x] **Step 3:** gate set + full axe sweep (218 passed) + browser spot check
+- [ ] **Step 4:** commit
 
 ---
 

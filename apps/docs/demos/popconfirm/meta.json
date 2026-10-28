@@ -1,0 +1,28 @@
+[
+  {
+    "id": "popconfirm/basic",
+    "component": "popconfirm",
+    "file": "demos/popconfirm/basic.tsx",
+    "title": {
+      "en": "Destructive confirmation",
+      "zh": "删除类确认"
+    },
+    "description": {
+      "en": "Deleting a workflow after an explicit confirm, with a custom verb on the button.",
+      "zh": "删除工作流前的就地确认，按钮使用明确的动词文案。"
+    }
+  },
+  {
+    "id": "popconfirm/placements",
+    "component": "popconfirm",
+    "file": "demos/popconfirm/placements.tsx",
+    "title": {
+      "en": "Placement and labels",
+      "zh": "弹出方向与按钮文案"
+    },
+    "description": {
+      "en": "Three confirmations on different sides, destructive and neutral.",
+      "zh": "三个不同方向的确认框，分别用于破坏性操作与普通操作。"
+    }
+  }
+]

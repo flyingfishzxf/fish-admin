@@ -1,0 +1,28 @@
+[
+  {
+    "id": "notification-center/basic",
+    "component": "notification-center",
+    "file": "demos/notification-center/basic.tsx",
+    "title": {
+      "en": "Unread notifications",
+      "zh": "未读通知"
+    },
+    "description": {
+      "en": "A bell with an unread badge, a mark-all action and a link to the inbox.",
+      "zh": "带未读角标的铃铛、全部已读操作与收件箱入口。"
+    }
+  },
+  {
+    "id": "notification-center/empty",
+    "component": "notification-center",
+    "file": "demos/notification-center/empty.tsx",
+    "title": {
+      "en": "Empty and read states",
+      "zh": "空状态与已读状态"
+    },
+    "description": {
+      "en": "Two inboxes: one empty, one fully read, both without a badge.",
+      "zh": "两个收件箱：一个为空，一个全部已读，都不显示角标。"
+    }
+  }
+]

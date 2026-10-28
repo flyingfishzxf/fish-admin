@@ -15,10 +15,15 @@ export function Stepper({
   ariaLabel,
   className,
 }: {
+  /** Ordered steps; each needs a stable id used as the list key. */
   steps: StepperStep[]
+  /** Zero-based index of the current step. */
   current: number
+  /** Makes every step up to current a button. Later steps stay inert. */
   onStepClick?: (index: number) => void
+  /** Accessible name of the ordered list. */
   ariaLabel: string
+  /** Extra classes merged onto the ordered list. */
   className?: string
 }) {
   return (

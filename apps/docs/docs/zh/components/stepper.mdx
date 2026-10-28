@@ -1,0 +1,99 @@
+---
+title: Stepper 步骤条
+description: 用有序列表标出流程当前所处的位置。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import StepperBasic from '@docs/demos/stepper/basic'
+import basicSource from '@docs/demos/stepper/basic.tsx?raw'
+import StepperProgress from '@docs/demos/stepper/progress'
+import progressSource from '@docs/demos/stepper/progress.tsx?raw'
+
+# Stepper 步骤条
+
+`Stepper` 渲染一个 `<ol>`，每项包含带序号的圆点、标题和可选描述；状态由下标与 `current`
+的位置关系推导，传入 `onStepClick` 后当前及之前的步骤会变成按钮。
+
+<ComponentMeta id="stepper" />
+
+## 何时使用
+
+- 顺序固定的多步表单或向导。
+- 订单、部署、审批等有明确阶段的流程。
+- 需要让用户看到还剩多少步的初始化清单。
+
+## 何时不使用
+
+- 带时间戳的事件记录：用 `Timeline`。
+- 只需要一个完成百分比：用 `Progress`。
+- 平级页面之间的切换：用 `Tabs`。
+- 存在分支的流程：步骤是扁平列表，分支请拆成多个步骤条。
+
+## 基础用法
+
+<Demo title="设置向导" filename="demos/stepper/basic.tsx" source={basicSource}>
+  <StepperBasic />
+</Demo>
+
+## 只读进度
+
+去掉 `onStepClick`，步骤条就变成状态展示：没有任何可点击项，但完成、当前与未开始的样式保持不变。
+
+<Demo title="只读进度" filename="demos/stepper/progress.tsx" source={progressSource}>
+  <StepperProgress />
+</Demo>
+
+## API
+
+<ApiTable component="stepper" />
+
+## 设计指引
+
+- 状态是位置推导的：`index < current` 为完成，`index === current` 为当前，其余为未开始。
+  `current` 为 `-1` 时全部未开始，超出末尾时全部完成，因此请在调用方夹紧取值。
+- 圆点是 `size-8`、`rounded-full` 带边框。完成的步骤用
+  `border-primary bg-primary text-primary-foreground` 填充，并把序号换成 `size-4` 的 `Check`；
+  当前步骤保留序号，用 `border-primary text-primary`；未开始的保持 `border-border` 与次要色。
+- 标题是 `text-sm font-medium`（未开始时为次要色），描述 `text-xs` 次要色。描述请控制在
+  一句话，它在任何宽度下都排在标题下方。
+- 连接线是 1 px 的 `bg-border`，定位为 `top-4 right-2 left-8`，在 `sm` 以下隐藏。移动端整列
+  纵向排列、间距 `gap-4`；`sm` 起横向排列，每步 `flex-1` 平分宽度。
+- 传入 `onStepClick` 后，下标小于等于 `current` 的步骤渲染为按钮，之后的步骤只是普通容器，
+  因此不可能靠点击往前跳。
+- `steps` 需要稳定的 `id`，它既是 React key，也能在重排后保持不变。
+
+## 无障碍
+
+- 根节点是真正的有序列表，名称来自必填的 `ariaLabel`；每步是一个列表项，读屏会播报“列表，
+  4 项”以及当前所处的位置。
+- 当前步骤带 `aria-current="step"`。这是唯一的程序化状态：完成与未开始只通过颜色、对勾图标
+  和位置表达。
+- 可点击步骤是列表项里的原生 `<button>`，其可访问名称是序号与文案的拼接，例如
+  “2 Billing Choose a plan and add a payment method.”；焦点环是 `focus-visible:ring-[3px]`，
+  颜色 `ring-ring/50`。
+- 之后的步骤不是按钮，既不在 Tab 顺序里，也无法被激活。
+- 连接线带 `aria-hidden`。
+
+已知缺口：完成的步骤没有文本等价物——序号被换成没有标签的 `Check` 图标，无障碍树里也没有
+“已完成”状态。如果完成与否重要，请在标题里复述，或自行渲染状态文字。组件也没有自己的键盘
+模型（没有方向键、没有 roving tabindex），只能在已启用的按钮之间用 Tab 移动。
+
+## FAQ
+
+**`current` 从 0 开始吗？** 是的，它是步骤下标。四步流程的第一步是 `current={0}`，第四步是
+`current={3}`。
+
+**能让用户直接跳到后面的步骤吗？** 不能。`onStepClick` 只挂在 `index <= current` 的步骤上，
+回调收到被点击的下标：回退始终允许，前进必须走你自己的“下一步”按钮。
+
+**步骤内容由组件渲染吗？** 不渲染。它只是指示器，表单或面板在外部，点击后发生什么由你决定。
+
+## 相关
+
+- `Timeline`：只追加、带时间的历史记录。
+- `Progress`：只关心完成占比时。
+- `Tabs`：没有先后顺序的平级视图。
+- `Form`：承载向导某一步的面板。
+- [在模板中的用法](https://fish-admin.vercel.app/roles)

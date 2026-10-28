@@ -1,0 +1,28 @@
+[
+  {
+    "id": "page-container/basic",
+    "component": "page-container",
+    "file": "demos/page-container/basic.tsx",
+    "title": {
+      "en": "Page header with actions",
+      "zh": "带操作按钮的页头"
+    },
+    "description": {
+      "en": "A report page with a title, description, export action and spaced body.",
+      "zh": "报表页面：标题、描述、导出操作与统一间距的正文。"
+    }
+  },
+  {
+    "id": "page-container/sections",
+    "component": "page-container",
+    "file": "demos/page-container/sections.tsx",
+    "title": {
+      "en": "Eyebrow, tabs and footer",
+      "zh": "眉标、标签与页脚"
+    },
+    "description": {
+      "en": "The full frame: eyebrow, actions, a switching tab row and a footer note.",
+      "zh": "完整结构：眉标、操作区、可切换的标签行与页脚说明。"
+    }
+  }
+]

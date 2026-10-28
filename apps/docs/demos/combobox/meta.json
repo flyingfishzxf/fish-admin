@@ -1,0 +1,28 @@
+[
+  {
+    "id": "combobox/basic",
+    "component": "combobox",
+    "file": "demos/combobox/basic.tsx",
+    "title": {
+      "en": "Search and assign",
+      "zh": "搜索并分配"
+    },
+    "description": {
+      "en": "Filter a long team list, pick one value and clear it from the trigger.",
+      "zh": "在较长的团队列表中搜索、选择，并可从触发器上清除。"
+    }
+  },
+  {
+    "id": "combobox/states",
+    "component": "combobox",
+    "file": "demos/combobox/states.tsx",
+    "title": {
+      "en": "Disabled options and controls",
+      "zh": "禁用选项与禁用控件"
+    },
+    "description": {
+      "en": "A restricted option, a locked region picker and an empty selection.",
+      "zh": "受限选项、被锁定的区域选择器，以及未选择状态。"
+    }
+  }
+]

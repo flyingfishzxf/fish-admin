@@ -26,16 +26,27 @@ export function Popconfirm({
   align = 'center',
   className,
 }: {
+  /** Trigger element; pass a single button so focus returns to it on close. */
   children: ReactNode
+  /** Question shown in the popover; used as the alertdialog's name. */
   title: string
+  /** Consequence of confirming, linked through aria-describedby. */
   description?: string
+  /** Confirm button text; defaults to the localized "Confirm". */
   confirmLabel?: string
+  /** Footer button text; defaults to the localized "Cancel". */
   cancelLabel?: string
+  /** Runs when Confirm is pressed; the popover closes immediately afterwards. */
   onConfirm: () => void
+  /** Disables Confirm and sets aria-busy while an operation is in flight. @default false */
   pending?: boolean
+  /** Confirm button style: destructive for deletes and revocations. @default false */
   destructive?: boolean
+  /** Blocks opening and marks the trigger aria-disabled. @default false */
   disabled?: boolean
+  /** Preferred side of the trigger. @default 'top' */
   side?: 'top' | 'right' | 'bottom' | 'left'
+  /** Alignment along the chosen side. @default 'center' */
   align?: 'start' | 'center' | 'end'
   className?: string
 }) {

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "anchor-nav/basic",
+    "component": "anchor-nav",
+    "file": "demos/anchor-nav/basic.tsx",
+    "title": {
+      "en": "Vertical rail in a scroll panel",
+      "zh": "滚动面板中的纵向导航"
+    },
+    "description": {
+      "en": "A left rail follows the report section nearest the top of a scoped scroll container.",
+      "zh": "左侧导航跟踪滚动容器中距离顶部最近的分区。"
+    }
+  },
+  {
+    "id": "anchor-nav/sticky",
+    "component": "anchor-nav",
+    "file": "demos/anchor-nav/sticky.tsx",
+    "title": {
+      "en": "Sticky horizontal section bar",
+      "zh": "吸顶的横向分区栏"
+    },
+    "description": {
+      "en": "orientation=\"horizontal\" turns the rail into a sticky tab strip above settings sections.",
+      "zh": "orientation=\"horizontal\" 把导航变成设置分区上方的吸顶标签栏。"
+    }
+  }
+]

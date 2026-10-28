@@ -1,0 +1,28 @@
+[
+  {
+    "id": "auto-complete/basic",
+    "component": "auto-complete",
+    "file": "demos/auto-complete/basic.tsx",
+    "title": {
+      "en": "Search a reviewer directory",
+      "zh": "搜索评审人目录"
+    },
+    "description": {
+      "en": "Type to filter by name or description, then pick a suggestion or keep your own text.",
+      "zh": "输入即按名称或描述过滤，可选中建议，也可保留自己输入的文字。"
+    }
+  },
+  {
+    "id": "auto-complete/states",
+    "component": "auto-complete",
+    "file": "demos/auto-complete/states.tsx",
+    "title": {
+      "en": "Loading, disabled and empty",
+      "zh": "加载、禁用与空结果"
+    },
+    "description": {
+      "en": "The loading row, the disabled field and the no-match row side by side.",
+      "zh": "加载提示行、禁用输入框与无匹配提示并排展示。"
+    }
+  }
+]

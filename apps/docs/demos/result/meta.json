@@ -1,0 +1,28 @@
+[
+  {
+    "id": "result/basic",
+    "component": "result",
+    "file": "demos/result/basic.tsx",
+    "title": {
+      "en": "Success after inviting teammates",
+      "zh": "邀请成员成功"
+    },
+    "description": {
+      "en": "A finished flow with two follow-up actions.",
+      "zh": "流程结束后的结果页，带有两个后续操作。"
+    }
+  },
+  {
+    "id": "result/states",
+    "component": "result",
+    "file": "demos/result/states.tsx",
+    "title": {
+      "en": "All five statuses",
+      "zh": "五种状态"
+    },
+    "description": {
+      "en": "Switch between success, info, warning, error and not-found.",
+      "zh": "在成功、信息、警告、错误与未找到之间切换。"
+    }
+  }
+]

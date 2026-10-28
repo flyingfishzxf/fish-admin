@@ -1,0 +1,107 @@
+---
+title: List
+description: A compact list of records with icons or avatars, metadata, row actions and selection.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ListBasic from '@docs/demos/list/basic'
+import basicSource from '@docs/demos/list/basic.tsx?raw'
+import ListSelectable from '@docs/demos/list/selectable'
+import selectableSource from '@docs/demos/list/selectable.tsx?raw'
+
+# List
+
+`List` renders a semantic `<ul>` of `ListItem` records. A row can carry an icon or avatar, a title, a
+description, trailing `meta` text and its own `actions`; passing `onItemClick` turns the row body into
+a button and enables the `selectedId` highlight.
+
+<ComponentMeta id="list" />
+
+## When to use
+
+- A short, homogeneous collection such as recent deployments, members or integrations.
+- A master list beside a detail pane, where the selected row drives the right-hand content.
+- Rows that share one anatomy and need a trailing action or timestamp.
+
+## When not to use
+
+- More than one column of comparable data: use `Table` or `ProTable`.
+- Server-paged, filterable data sets: `ProTable` already owns that chrome.
+- Announcements that should interrupt the user: use `Alert` or a toast from `Sonner`.
+
+## Basic usage
+
+<Demo title="Workspace activity" filename="demos/list/basic.tsx" source={basicSource}>
+  <ListBasic />
+</Demo>
+
+## Selectable rows and menus
+
+Passing `onItemClick` makes each row body a button and `selectedId` paints the current one. Row
+`actions` render in a sibling container, so a row menu never triggers selection.
+
+<Demo
+  title="Selectable rows and menus"
+  filename="demos/list/selectable.tsx"
+  source={selectableSource}
+>
+  <ListSelectable />
+</Demo>
+
+## API
+
+<ApiTable component="list" />
+
+## Design guidance
+
+- The list is a `divide-y` stack inside `rounded-lg border bg-background`; rows use `px-4 py-3` and a
+  12px gap, and the list takes the full width it is given.
+- `avatar` wins over `icon` when both are set. Without an avatar, an icon sits in a 36px
+  `rounded-lg bg-muted` square; without either, the text starts at the row edge.
+- The title is `text-sm font-medium` and the description `text-xs` muted; both truncate, so very long
+  names never wrap and the row height stays fixed.
+- `meta` is right-aligned `text-xs` muted text — the natural home for a timestamp or a short status.
+- Selection is controlled: keep `selectedId` in state, update it in `onItemClick`. The selected row
+  gets `bg-primary/5` and its button gets `aria-current="true"`.
+- Row actions are a separate flex container after the row button; the test asserts that clicking
+  "Open" does not call `onItemClick`.
+- `disabled` rows drop to 50% opacity and their button uses the native `disabled` attribute.
+- With `items={[]}` the `<ul>` is not rendered at all; a dashed, centred, muted box shows
+  `emptyLabel` instead.
+
+## Accessibility
+
+- The list is a `<ul>` named by `ariaLabel`, and every record is an `<li>`, so the item count is
+  announced.
+- Without `onItemClick` a row is static content: no hover state, no focus stop, no selection.
+- With `onItemClick` the whole row body becomes a native button named by the title, description, meta
+  and avatar text; it has a visible focus ring and `aria-current="true"` when selected.
+- Row actions are ordinary buttons after the row button, giving two tab stops per row and keeping the
+  menu reachable without selecting the row.
+- Disabled rows use `disabled`, which removes the button from the tab order.
+
+Known gap: in a read-only list `selectedId` only paints the row — `aria-current` is applied to the row
+button, which does not exist without `onItemClick`, so the selection is conveyed by colour alone. By
+default the avatar initials are part of the row button's accessible name (the demos hide decorative
+avatars), and no row exposes its full untruncated title on focus.
+
+## FAQ
+
+**Can a row be a link?** Not built in. Put an `<a>` in `actions`, or call your router's navigate inside
+`onItemClick`.
+
+**Does clicking a row action also select the row?** No. Actions live outside the row button, so their
+clicks never reach `onItemClick`.
+
+**How do I show two pieces of metadata?** `meta` is a single string. Render a `Badge` in `actions` for
+a second value, or format both into one short string.
+
+## Related
+
+- `Table` when rows need aligned columns and sorting.
+- `Notification Center` for an inbox of read/unread rows.
+- `Timeline` when order in time is the point.
+- `Descriptions` for a fixed set of labelled fields.
+- [Used in the template](https://fish-admin.vercel.app/integrations)

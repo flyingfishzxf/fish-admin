@@ -1,0 +1,112 @@
+---
+title: Anchor Nav
+description: A navigation rail that tracks which section is in view and scrolls to any section on click.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AnchorNavBasic from '@docs/demos/anchor-nav/basic'
+import basicSource from '@docs/demos/anchor-nav/basic.tsx?raw'
+import AnchorNavSticky from '@docs/demos/anchor-nav/sticky'
+import stickySource from '@docs/demos/anchor-nav/sticky.tsx?raw'
+
+# Anchor Nav
+
+`AnchorNav` is a plain `<nav>` of native `<button>` anchors. It listens to scroll on the window or on
+a container you hand it through `rootRef`, then marks the last section whose top passed the offset
+with `aria-current="location"`; clicking an anchor scrolls that container.
+
+<ComponentMeta id="anchor-nav" />
+
+## When to use
+
+- A long report or settings page split into sections that people jump between.
+- A documentation or policy page with a persistent table of contents.
+- A form broken into groups where the reader needs to see where they are.
+
+## When not to use
+
+- Switching between peer views that keep their own state: use `Tabs`.
+- Two or three short sections that fit on one screen without scrolling.
+- Site-level navigation between routes: use `Sidebar` or `Breadcrumb`.
+
+## Basic usage
+
+The vertical rail sits beside a scroll panel. `rootRef` points at the panel, so both the click
+target and the active detection are scoped to it rather than the page.
+
+<Demo
+  title="Rail beside a scoped scroll panel"
+  filename="demos/anchor-nav/basic.tsx"
+  source={basicSource}
+>
+  <AnchorNavBasic />
+</Demo>
+
+## Sticky horizontal bar
+
+`orientation="horizontal"` swaps the left rail for `border-b-2` tabs with horizontal overflow. The
+component does not make itself sticky, so place it inside your own sticky wrapper as this demo does.
+
+<Demo
+  title="Sticky bar over workspace settings"
+  filename="demos/anchor-nav/sticky.tsx"
+  source={stickySource}
+>
+  <AnchorNavSticky />
+</Demo>
+
+## API
+
+<ApiTable component="anchor-nav" />
+
+## Design guidance
+
+- Active state is geometric: the vertical variant draws a 2 px left rule (`border-l-2` with
+  `-ml-px`) and the horizontal variant a 2 px bottom rule. Only the active button keeps
+  `border-primary`; the rest stay `border-transparent` so the rail looks continuous.
+- The active label also switches to `text-primary` plus `font-medium`; inactive labels use
+  `text-muted-foreground`. Buttons are `text-sm` with `px-3 py-1.5` vertically and `px-3 py-2`
+  horizontally, so the horizontal strip is taller.
+- Detection is position-based, not intersection-based: `boundary` is the container's top edge plus
+  `offset` (default `88`), and the loop keeps the last item whose section top is above it. A section
+  becomes active the moment it crosses that line, before it fills the viewport.
+- `offset` is reused when scrolling: the target lands `offset` pixels below the container top, which
+  is how headings clear a sticky header. Tune both behaviours with the same number.
+- Scrolling is `smooth` unless `prefers-reduced-motion: reduce` is set, in which case it jumps.
+- Items are matched to `document.getElementById`, so IDs must be unique on the page; a missing ID is
+  skipped when measuring and ignored on click.
+
+## Accessibility
+
+- The root is a `nav` landmark named by `ariaLabel`; every anchor is a real `button` in the tab
+  order with a `focus-visible` ring.
+- The current section carries `aria-current="location"`, which screen readers announce as the
+  current location inside the set.
+- The horizontal variant scrolls its own overflow; the buttons inside keep it keyboard reachable.
+
+Known gap: there is no arrow-key navigation between anchors, the highlight changes silently (no live
+region announcement), and the component does not wrap or label the target sections — the demos add
+`role="region"`, an `aria-label` and `tabIndex={0}` to the panels themselves.
+
+## FAQ
+
+**Why is nothing highlighted?** The `id` of each item must exist in the DOM when the effect runs. If
+you render sections after data arrives, keep the items array in sync with the rendered sections;
+the nav re-measures on every scroll and resize.
+
+**Does the nav stick to the top by itself?** No. Only the horizontal variant suits a sticky bar, and
+you own the sticky wrapper and its background; the docs demos use `position: sticky` and
+`background: var(--card)`.
+
+**Can I use it for the window instead of a panel?** Yes — omit `rootRef`. The component then listens
+to `window` scroll and calls `window.scrollTo`, with the same `offset` logic.
+
+## Related
+
+- `Sidebar` for persistent route navigation.
+- `Tabs` when the panels are peers with their own state.
+- `Scroll Area` for a styled scroll container to pair with the rail.
+- `Breadcrumb` for orientation above the content.
+- [Used in the template](https://fish-admin.vercel.app/reports)

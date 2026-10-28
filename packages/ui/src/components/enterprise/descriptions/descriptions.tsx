@@ -24,8 +24,11 @@ export function Descriptions({
   columns = 2,
   className,
 }: {
+  /** Term/description pairs rendered in source order. */
   items: DescriptionItem[]
+  /** Column count from the `sm` breakpoint up; the base layout is one column. */
   columns?: 1 | 2 | 3
+  /** Extra classes for the `dl` grid. */
   className?: string
 }) {
   return (

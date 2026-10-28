@@ -20,13 +20,21 @@ export function DatePicker({
   disabled = false,
   className,
 }: {
+  /** Selected day as a `YYYY-MM-DD` string. */
   value?: string
+  /** Called with the `YYYY-MM-DD` value, or `undefined` when cleared. */
   onChange: (value: string | undefined) => void
+  /** Trigger text shown while no date is selected. */
   placeholder: string
+  /** Accessible name; the current display value is appended to it. */
   ariaLabel: string
+  /** Earliest selectable day as `YYYY-MM-DD`; earlier days are disabled. */
   min?: string
+  /** Latest selectable day as `YYYY-MM-DD`; later days are disabled. */
   max?: string
+  /** Disables the trigger. */
   disabled?: boolean
+  /** Extra classes for the trigger button. */
   className?: string
 }) {
   const { t, locale } = useUITranslation()

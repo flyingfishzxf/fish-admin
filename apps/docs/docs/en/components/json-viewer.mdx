@@ -1,0 +1,109 @@
+---
+title: JSON Viewer
+description: Fold, inspect and copy a JSON payload without leaving the page.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import JsonViewerBasic from '@docs/demos/json-viewer/basic'
+import basicSource from '@docs/demos/json-viewer/basic.tsx?raw'
+import JsonViewerStates from '@docs/demos/json-viewer/states'
+import statesSource from '@docs/demos/json-viewer/states.tsx?raw'
+
+# JSON Viewer
+
+`JsonViewer` turns any `unknown` value into a collapsible tree. Objects and arrays become toggle
+buttons with `{n}` / `[n]` summaries, primitives keep their JSON form with a colour per type, and the
+header copies the whole payload as pretty-printed JSON.
+
+<ComponentMeta id="json-viewer" />
+
+## When to use
+
+- Inspecting an audit event, webhook body or job payload whose shape changes between integrations.
+- Letting support staff read a stored API response without leaving the admin console.
+- Showing request metadata on a detail page where folding long arrays keeps it scannable.
+
+## When not to use
+
+- Editing the value: use `Textarea` and validate the parsed result on submit.
+- A payload with a known, fixed shape: `Descriptions` labels every field for you.
+- Raw text you need to search or diff: a syntax-highlighted code block serves that better.
+
+## Basic usage
+
+<Demo title="Audit event payload" filename="demos/json-viewer/basic.tsx" source={basicSource}>
+  <JsonViewerBasic />
+</Demo>
+
+## Empty and collapsed states
+
+`undefined` is treated as "nothing arrived yet" and renders the localized `No data` message, while
+`null` is a real value drawn as `null`. `defaultExpandedDepth` controls how much of the tree opens on
+first paint; `0` leaves the root folded behind its summary.
+
+<Demo
+  title="Empty and collapsed states"
+  filename="demos/json-viewer/states.tsx"
+  source={statesSource}
+>
+  <JsonViewerStates />
+</Demo>
+
+## API
+
+<ApiTable component="json-viewer" />
+
+## Design guidance
+
+- The frame is `rounded-lg border` with the body tinted `bg-muted/20` and set in `font-mono text-xs`;
+  the header is a `bg-muted/40` strip with `px-3 py-1.5`, so it reads as chrome rather than content.
+- `defaultExpandedDepth` defaults to `2` and is read once per node when it mounts
+  (`useState(depth < expandedDepth)`); changing the prop later does not re-fold branches the user
+  already opened.
+- Containers summarize their size as `[3]` for arrays and `{5}` for objects. Empty containers print
+  `[0]` or `{}` as muted text instead of a toggle, so there is nothing to expand.
+- Types are carried by tokens: strings `text-success`, numbers `text-primary`, booleans
+  `text-warning`, and `null` in `text-muted-foreground`. Strings keep their quotes, so they also read
+  as values without colour.
+- `ariaLabel` is the header label and truncates; keep it short ("Audit payload") instead of a
+  sentence.
+- The body is capped at 288px (`max-h-72`) and scrolls on its own, so a 2,000-line event never pushes
+  the page around.
+- Copy writes `JSON.stringify(value, null, 2)` and flips the button to a check mark plus "Copied" for
+  1.5 seconds.
+
+## Accessibility
+
+- Every object and array branch is a native `<button>` with `aria-expanded`, so Tab reaches each
+  branch and Enter or Space toggles it.
+- The chevron is `aria-hidden`; the branch name is visible text, and the root branch gets an
+  `sr-only` label from `ariaLabel` because it has no key.
+- The copy button has an `aria-label` that switches between "Copy" and "Copied"; its icon and visible
+  label are hidden from assistive technology so the name is announced once.
+- Primitive rows are plain text in document order, which keeps the reading order identical to the
+  serialized JSON.
+
+Known gap: the scrollable body (`max-h-72 overflow-auto`) is not a labelled region and is only
+reachable through the branch buttons; a payload made only of primitives cannot be scrolled from the
+keyboard. Number and boolean values are distinguished by colour alone, which is hard to tell apart for
+colour-blind readers.
+
+## FAQ
+
+**Is the value editable?** No. The viewer is read-only; use the copy button and paste into your editor.
+
+**Why does a `Date` render as `{}`?** The viewer walks `Object.entries`, and a `Date` has no own
+enumerable keys. Convert dates to ISO strings before passing them in.
+
+**Can the whole tree start collapsed?** Pass `defaultExpandedDepth={0}`; the root stays a toggle that
+shows only its summary until the user opens it.
+
+## Related
+
+- `Descriptions` when the payload has a fixed, labelled shape.
+- `Timeline` to put events such as these in chronological order.
+- `List` for a scannable activity feed.
+- `Card` to frame the viewer inside a detail pane.
+- [Used in the template](https://fish-admin.vercel.app/audit-logs)

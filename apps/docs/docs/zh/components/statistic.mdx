@@ -1,0 +1,95 @@
+---
+title: Statistic 统计数值
+description: 用于展示单个指标的卡片，可带前后缀、图标与趋势。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import StatisticBasic from '@docs/demos/statistic/basic'
+import basicSource from '@docs/demos/statistic/basic.tsx?raw'
+import StatisticTrend from '@docs/demos/statistic/trend'
+import trendSource from '@docs/demos/statistic/trend.tsx?raw'
+
+# Statistic 统计数值
+
+`Statistic` 是单个指标的卡片：一个标签、一个按 `UIProvider` 语言用 `Intl.NumberFormat`
+格式化的值、可选的前后缀节点、图标方块以及百分比趋势。
+
+<ComponentMeta id="statistic" />
+
+## 何时使用
+
+- 仪表盘或报表顶部的 KPI 行。
+- 数字旁需要上下文，例如“较上月”的趋势。
+- 指标加载期间需要显示骨架占位的卡片。
+
+## 何时不使用
+
+- 需要展示随时间变化的曲线：用 `Chart`。
+- 数字只是表格里的一列：`ProTable` 的列比卡片更轻。
+- 正文里出现的单个数字：加 `tabular-nums` 的纯文本就够了。
+
+## 基础用法
+
+<Demo title="指标卡行" filename="demos/statistic/basic.tsx" source={basicSource}>
+  <StatisticBasic />
+</Demo>
+
+## 趋势与加载
+
+趋势带正负号：正值用 `text-success` 的 `ArrowUpRight`，负值用 `text-destructive` 的
+`ArrowDownRight`，零值回落到次要文字色的 `Minus`。`loading` 会把数字换成两块骨架。
+
+<Demo title="趋势与加载" filename="demos/statistic/trend.tsx" source={trendSource}>
+  <StatisticTrend />
+</Demo>
+
+## API
+
+<ApiTable component="statistic" />
+
+## 设计指引
+
+- 数值型 `value` 走 `Intl.NumberFormat(locale, …)`，`precision` 同时作为最小与最大小数位，
+  所以 `1234.5` 配 `precision={2}` 会渲染为 `1,234.50`。
+- 字符串 `value` 原样输出，适合已经算好格式的数字（如 `"99.98%"`），此时 `precision` 不生效。
+- 趋势按 `maximumFractionDigits: 1` 与 `signDisplay: "exceptZero"` 格式化后再拼 `%`：
+  `12.4` 显示为 `+12.4%`，`0` 显示为 `0%`。
+- 卡片是 `rounded-xl border bg-card p-5 shadow-xs`；标签 `text-sm font-medium` 用次要文字色，
+  数值 `text-2xl font-semibold tracking-tight tabular-nums`，前缀 `text-lg`，后缀 `text-sm`。
+- 图标方块是 `size-9`、`rounded-lg`，底色 `bg-primary/10 text-primary`，内放 `size-4` 图标，
+  与标签处于同一行、靠右对齐。
+- `loading` 保留标签、隐藏数值，渲染 `h-8 w-32` 与 `h-3 w-24` 两块骨架。
+- 卡片没有固定宽度，放进网格里同一行的卡片才能等高。
+
+## 无障碍
+
+- 趋势元素带有计算出的 `aria-label`，由指标名、百分比和趋势说明拼成，例如
+  “Revenue +12.4% vs last month”，脱离卡片也能听懂。
+- 加载期间卡片设置 `aria-busy="true"`，骨架带 `data-slot="skeleton"`；测试可以等这个标记消失
+  后再断言数值。
+- 趋势图标是装饰性的（`aria-hidden`），方向同时由文本的正负号和上/下配色表达。
+- 卡片内没有任何可聚焦元素，不会增加 Tab 停靠点。
+
+已知缺口：可见的 `trend.label` 与承担组合 `aria-label` 的元素是两个文本节点，读屏可能把
+“较上月”读两遍。实时指标也不会被播报——卡片没有 `aria-live` 区域，轮询更新会静默改动数字。
+
+## FAQ
+
+**货币符号怎么写？** 把符号放在 `prefix`、单位放在 `suffix`；数字本身由 `Intl.NumberFormat`
+按当前语言分组。
+
+**为什么小数位没生效？** `precision` 只作用于数字。字符串 `value` 会原样渲染，需要固定小数位就
+先自行格式化。
+
+**千分位等分隔符怎么本地化？** 用 `UIProvider` 包裹页面。文档页会透传 Rspress 语言，中文页面
+即按 `zh-CN` 规则格式化。
+
+## 相关
+
+- `Chart`：指标需要时间序列时。
+- `Trend`：只展示带符号的百分比，不展示数值。
+- `Progress`：展示整体中的一段占比。
+- `Card`：需要自定义卡片内容而不是单个数字时。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

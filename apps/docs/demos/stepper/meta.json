@@ -1,0 +1,28 @@
+[
+  {
+    "id": "stepper/basic",
+    "component": "stepper",
+    "file": "demos/stepper/basic.tsx",
+    "title": {
+      "en": "Setup wizard",
+      "zh": "设置向导"
+    },
+    "description": {
+      "en": "Four steps with Back and Next, plus clickable completed steps.",
+      "zh": "四个步骤，配上一步/下一步按钮，已完成步骤可点击回跳。"
+    }
+  },
+  {
+    "id": "stepper/progress",
+    "component": "stepper",
+    "file": "demos/stepper/progress.tsx",
+    "title": {
+      "en": "Read-only progress",
+      "zh": "只读进度"
+    },
+    "description": {
+      "en": "A status readout without click handlers.",
+      "zh": "没有点击处理函数的纯状态展示。"
+    }
+  }
+]

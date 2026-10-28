@@ -15,9 +15,13 @@ export function AnchorNav({
   orientation = 'vertical',
   className,
 }: {
+  /** Sections to link, in document order; each id must exist in the DOM. */
   items: AnchorItem[]
+  /** Accessible name for the nav landmark. */
   ariaLabel: string
+  /** Scroll container to watch and scroll; defaults to the window. */
   rootRef?: RefObject<HTMLElement | null>
+  /** Distance in px between the scroll top and the active boundary. */
   offset?: number
   /** Sticky section bars use the horizontal variant; in-page rails keep the default. */
   orientation?: 'vertical' | 'horizontal'

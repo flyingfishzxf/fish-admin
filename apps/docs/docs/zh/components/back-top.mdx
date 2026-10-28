@@ -1,0 +1,99 @@
+---
+title: Back Top 回到顶部
+description: 在页面或面板滚动到一定距离后浮现的悬浮按钮，点击即可回到顶部。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import BackTopBasic from '@docs/demos/back-top/basic'
+import basicSource from '@docs/demos/back-top/basic.tsx?raw'
+import BackTopThreshold from '@docs/demos/back-top/threshold'
+import thresholdSource from '@docs/demos/back-top/threshold.tsx?raw'
+
+# Back Top 回到顶部
+
+`BackTop` 只渲染一个 `Button`：`size="icon-lg"`、`rounded-full`、`shadow-lg`，内含 `aria-hidden`
+的 `ArrowUp` 图标。窗口或 `targetRef` 的滚动距离未超过 `threshold` 时它返回 `null`，超过后点击
+会把该元素滚回 `0`。
+
+<ComponentMeta id="back-top" />
+
+## 何时使用
+
+- 长页面：报表、审计日志、更新日志、文档。
+- 拥有独立滚动区、且内容可能很深的看板栏目。
+- 读者离页头很远、返程成本高的任何场景。
+
+## 何时不使用
+
+- 一两屏就能看完的短页面。
+- 已有吸顶工具栏并提供了“首页”或“顶部”入口。
+- 移动端上 `fixed right-6 bottom-6` 会遮住主要操作按钮的页面。
+
+## 基础用法
+
+示例把按钮限定在审计日志面板内。`targetRef` 让组件监听并滚动该元素，而不是窗口。
+
+<Demo title="把面板带回第一条记录" filename="demos/back-top/basic.tsx" source={basicSource}>
+  <BackTopBasic />
+</Demo>
+
+## 调整触发阈值
+
+`threshold` 是按钮挂载前需要滚动的像素距离。下面两个面板内容完全相同，只有 `40` 与 `240` 的
+差别。
+
+<Demo
+  title="滚动 40 px 与 240 px 的对比"
+  filename="demos/back-top/threshold.tsx"
+  source={thresholdSource}
+>
+  <BackTopThreshold />
+</Demo>
+
+## API
+
+<ApiTable component="back-top" />
+
+## 设计指引
+
+- 隐藏是真正的隐藏：低于阈值时返回 `null`，不会留下一个不可见却仍在 Tab 顺序或指针命中范围内的
+  按钮。
+- 按钮尺寸为 `40 × 40` px（`size="icon-lg"`），圆形、带 `shadow-lg`、使用默认主色填充。相对其
+  包含块定位在 `right-6 bottom-6`，`z-40`：高于页面内容，但低于模板的浮层——文档主题会把浮层压
+  到吸顶导航之上。
+- `threshold` 默认 `400` px。紧凑的内部面板可降到 `80`–`120`，并让它略大于页头离开视口所需的
+  滚动距离。
+- 无障碍名称会通过 `useUITranslation` 回退到本地化的 `enterprise.backToTop`，因此只有需要更强上
+  下文时才传 `label`，例如“回到审计日志顶部”。
+- 滚动使用 `behavior: 'smooth'`；当 `prefers-reduced-motion: reduce` 生效时降级为 `'auto'`。
+- 监听器是目标上的被动 `scroll` 处理器，`targetRef` 或 `threshold` 变化时会重新绑定。
+
+## 无障碍
+
+- 控件是带名称的 `button`，箭头图标为 `aria-hidden`，名称只来自 `label` 或本地化默认值。
+- 它是一个仅在可用期间存在的独立 Tab 停靠点，顺序稳定，也不会形成隐藏的焦点陷阱。
+
+已知缺口：命中区域为 40 px，低于常见的 44 px 触控建议。已知缺口：点击后滚动位置回到阈值以下，
+按钮随即卸载，焦点会落回文档 body，而不是某个标题或滚动容器——如果这是主要路径，请自行把焦点移
+到合适位置。按钮的出现没有任何播报，这可以接受，因为它只是一个冗余的快捷入口。
+
+## FAQ
+
+**为什么按钮出现在面板角落而不是页面角落？** 因为它使用 `fixed` 定位；带 `transform: translateZ(0)`
+（或任意 transform）的包裹层会成为它的包含块。基础示例正是这样让按钮留在卡片内，否则 `fixed`
+会相对视口定位。
+
+**可以一直显示吗？** 不能。`threshold={0}` 时容器滚动哪怕 1 px 就会出现，但静止状态下依然是未挂
+载的。
+
+**传了 `targetRef` 还会滚动窗口吗？** 不会，它只对引用元素调用 `scrollTo`，完全不触碰 `window`。
+
+## 相关
+
+- `Anchor Nav`：按命名分区跳转，而不只是回到顶部。
+- `Scroll Area`：可作为搭配 `targetRef` 的带样式容器。
+- `Button`：底层变体与尺寸的来源。
+- `Page Container`：模板布局中的页面滚动容器。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

@@ -22,14 +22,23 @@ export function Statistic({
   loading = false,
   className,
 }: {
+  /** Name of the metric; also the first word of the trend's accessible label. */
   label: string
+  /** Numbers go through Intl.NumberFormat; strings render verbatim. */
   value: number | string
+  /** Fixed number of fraction digits passed to Intl.NumberFormat. */
   precision?: number
+  /** Node shown before the value, for example a currency symbol. */
   prefix?: ReactNode
+  /** Node shown after the value, for example a unit. */
   suffix?: ReactNode
+  /** Percentage change; its sign selects the up, down or flat icon and tone. */
   trend?: { value: number; label?: string }
+  /** Lucide icon shown in the tile at the top right. */
   icon?: LucideIcon
+  /** Swaps the value for two skeleton blocks and marks the card aria-busy. */
   loading?: boolean
+  /** Extra classes merged onto the card. */
   className?: string
 }) {
   const { locale } = useUITranslation()

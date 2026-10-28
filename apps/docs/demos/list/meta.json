@@ -1,0 +1,28 @@
+[
+  {
+    "id": "list/basic",
+    "component": "list",
+    "file": "demos/list/basic.tsx",
+    "title": {
+      "en": "Workspace activity",
+      "zh": "工作区动态"
+    },
+    "description": {
+      "en": "A read-only list of recent deploys, reviews and exports.",
+      "zh": "只读列表，展示最近的部署、权限审核与导出记录。"
+    }
+  },
+  {
+    "id": "list/selectable",
+    "component": "list",
+    "file": "demos/list/selectable.tsx",
+    "title": {
+      "en": "Selectable rows and menus",
+      "zh": "可选行与行内菜单"
+    },
+    "description": {
+      "en": "Avatars, a disabled member, per-row menus and a controlled selection.",
+      "zh": "头像、禁用成员、行内菜单与受控选中状态。"
+    }
+  }
+]

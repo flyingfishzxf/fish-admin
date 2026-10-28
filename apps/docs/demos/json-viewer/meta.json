@@ -1,0 +1,28 @@
+[
+  {
+    "id": "json-viewer/basic",
+    "component": "json-viewer",
+    "file": "demos/json-viewer/basic.tsx",
+    "title": {
+      "en": "Audit event payload",
+      "zh": "审计事件载荷"
+    },
+    "description": {
+      "en": "A nested role-change event with two levels open by default.",
+      "zh": "一个角色变更事件，默认展开两层。"
+    }
+  },
+  {
+    "id": "json-viewer/states",
+    "component": "json-viewer",
+    "file": "demos/json-viewer/states.tsx",
+    "title": {
+      "en": "Empty and collapsed states",
+      "zh": "空状态与折叠状态"
+    },
+    "description": {
+      "en": "An undefined payload shows the empty state; depth 0 keeps a tree folded.",
+      "zh": "未传入载荷时显示空状态，深度 0 让树保持折叠。"
+    }
+  }
+]

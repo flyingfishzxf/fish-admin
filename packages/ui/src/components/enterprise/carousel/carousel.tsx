@@ -22,11 +22,17 @@ export function Carousel({
   emptyLabel,
   className,
 }: {
+  /** Slides in order; an empty array renders the empty state instead. */
   slides: CarouselSlide[]
+  /** Accessible name for the carousel region. */
   ariaLabel: string
+  /** Accessible name for the previous-slide button. */
   previousLabel: string
+  /** Accessible name for the next-slide button. */
   nextLabel: string
+  /** Builds the accessible name of a dot, given its 1-based position. */
   goToLabel: (index: number) => string
+  /** Copy for the box shown when slides is empty. */
   emptyLabel?: string
   className?: string
 }) {

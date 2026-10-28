@@ -1,0 +1,101 @@
+---
+title: Popconfirm 气泡确认框
+description: 在触发元素旁就地完成简短确认的弹出层，适合单行、可逆的操作。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import PopconfirmBasic from '@docs/demos/popconfirm/basic'
+import basicSource from '@docs/demos/popconfirm/basic.tsx?raw'
+import PopconfirmPlacements from '@docs/demos/popconfirm/placements'
+import placementsSource from '@docs/demos/popconfirm/placements.tsx?raw'
+
+# Popconfirm 气泡确认框
+
+`Popconfirm` 把任意触发器包进 `Popover`，内容是一个 `alertdialog`：标题、可选描述，以及取消和确认
+两个按钮。确认问题出现在受影响的对象旁边，而不是接管整个屏幕。
+
+<ComponentMeta id="popconfirm" />
+
+## 何时使用
+
+- 针对单行的破坏性或不可逆操作，例如删除一个工作流。
+- 一句话就能解释清楚的小决定。
+- 用弹窗太重的地方：表格行、列表行、工具栏按钮。
+
+## 何时不使用
+
+- 批量操作，且需要先概述影响范围：使用 `AlertDialog`。
+- 确认过程需要表单、输入确认词或填写原因：使用 `Dialog`。
+- 只是提示信息：使用 `Tooltip` 或 `Popover`。
+
+## 基础用法
+
+<Demo title="删除类确认" filename="demos/popconfirm/basic.tsx" source={basicSource}>
+  <PopconfirmBasic />
+</Demo>
+
+## 弹出方向与按钮文案
+
+`side` 与 `align` 只是偏好而非保证：空间不足时弹层会自动翻转。按钮文案请使用动词，让确认按钮
+直接说明将要发生什么。
+
+<Demo
+  title="弹出方向与按钮文案"
+  filename="demos/popconfirm/placements.tsx"
+  source={placementsSource}
+>
+  <PopconfirmPlacements />
+</Demo>
+
+## API
+
+<ApiTable component="popconfirm" />
+
+## 设计指引
+
+- 面板宽 288px、内边距 16px（`w-72 p-4`），与触发器相距 4px；`side` 默认 `top`，`align` 默认
+  `center`。
+- 标题是 `text-sm font-semibold`；描述是弱化的 `text-sm`，通过 `aria-describedby` 关联。描述写
+  后果，不要重复标题。
+- 操作区在标题下方 16px，右对齐，按钮间距 8px。取消是 `outline` 按钮，确认是 `default`；设置
+  `destructive` 后确认按钮变为破坏性样式，两者都是 `size="sm"`。
+- 默认文案来自 UI 语言包（“Cancel”“Confirm”）。后果重要时请传动词：“Delete workflow”
+  “Revoke token”“Archive”。
+- `destructive` 只留给真正会丢数据的操作，红色按钮才有意义；“归档”这类中性确认应保持默认样式。
+- `pending` 会禁用确认按钮，并在对话框上设置 `aria-busy`。它为真时无法确认，面板保持打开：它守
+  护的是已经在进行的操作，不是点击后的加载动画。
+- `disabled` 会忽略 `onOpenChange` 并给触发器加 `aria-disabled`，但不会禁用或降低子按钮的视觉
+  表现——操作不可用时请自行给触发器加样式。
+
+## 无障碍
+
+- 内容是 `role="alertdialog"`，`aria-labelledby` 指向标题；有描述时 `aria-describedby` 指向描述。
+- 打开后焦点进入面板；Escape 与取消都会关闭并把焦点还给触发器，组件测试对此有断言。
+- 确认与取消都是原生按钮；`pending` 会给确认按钮加原生 `disabled`，因此也会移出 Tab 顺序。
+- 该 alertdialog 是非模态的：没有焦点陷阱，也没有遮罩，问题打开期间 Tab 仍可回到页面其他部分。
+- 触发器保留自身语义。请把单个按钮作为子元素，这样焦点恢复与 `aria-disabled` 都落在真实控件上。
+- `side` 与 `align` 只影响视觉；阅读顺序仍按 DOM，而不是弹出方向。
+
+已知缺口：弹层是非模态的，alertdialog 不会让页面其他内容对读屏变为不可用，Tab 也可以离开面板；
+没有遮罩与焦点陷阱，也没有受控的 `open`，异步操作无法把面板重新打开成加载状态。
+
+## FAQ
+
+**可以先等请求结束再关闭吗？** 不行。`onConfirm` 是同步的，点击后弹层立即关闭。需要上报成功或
+失败的异步流程，请自行组合 `Popover`，或使用带本地状态的 `AlertDialog`。
+
+**`pending` 到底做什么？** 它禁用确认按钮，并给对话框设置 `aria-busy`。确认按钮被禁用，因此
+`pending` 为真时 `onConfirm` 不会触发；面板保持打开，让别处的操作有机会完成。
+
+**可以控制开关状态吗？** 不可以，`open` 是内部状态。需要程序化打开时，请直接组合 `Popover` 和
+两个 `Button`。
+
+## 相关
+
+- `AlertDialog`：必须阻塞页面才能继续的决定。
+- `Popover`：不是确认场景的锚定面板。
+- `Dialog`：确认过程需要填写字段时使用。
+- `Button`：触发器与两个操作按钮。
+- [在模板中的用法](https://fish-admin.vercel.app/workflows/$id)

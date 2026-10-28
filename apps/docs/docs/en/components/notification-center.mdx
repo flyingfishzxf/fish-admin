@@ -1,0 +1,113 @@
+---
+title: Notification Center
+description: A bell trigger with an unread badge and a popover inbox for recent notifications.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import NotificationCenterBasic from '@docs/demos/notification-center/basic'
+import basicSource from '@docs/demos/notification-center/basic.tsx?raw'
+import NotificationCenterEmpty from '@docs/demos/notification-center/empty'
+import emptySource from '@docs/demos/notification-center/empty.tsx?raw'
+
+# Notification Center
+
+`NotificationCenter` is a `Popover` around a ghost `Button`. The trigger draws a bell plus an unread
+count badge, and the panel lists `NotificationItem` rows with an icon, title, description and time,
+with a mark-all action in the header and an optional link to the full inbox.
+
+<ComponentMeta id="notification-center" />
+
+## When to use
+
+- A persistent bell in the app header for recent account, deploy or approval updates.
+- A "recent activity" tray where the newest few items are enough.
+- Anywhere a count of unread work should be visible without opening a page.
+
+## When not to use
+
+- The full inbox: use `List` on a dedicated page.
+- Transient confirmations such as "Saved": use a toast from `Sonner`.
+- A decision that blocks the current task: use `AlertDialog`.
+
+## Basic usage
+
+<Demo
+  title="Unread notifications"
+  filename="demos/notification-center/basic.tsx"
+  source={basicSource}
+>
+  <NotificationCenterBasic />
+</Demo>
+
+## Empty and read states
+
+The unread count drives both the badge and the label. When nothing is unread the badge disappears and
+"Mark all read" is disabled; an empty inbox shows `emptyLabel` instead of the list.
+
+<Demo
+  title="Empty and read states"
+  filename="demos/notification-center/empty.tsx"
+  source={emptySource}
+>
+  <NotificationCenterEmpty />
+</Demo>
+
+## API
+
+<ApiTable component="notification-center" />
+
+## Design guidance
+
+- The trigger is a ghost `icon-sm` button (32px) with `relative` positioning; the badge is a 16px
+  primary circle in the top-right corner with 10px semibold text.
+- Unread is computed as `unreadCount ?? items.filter((item) => !item.read).length`. Pass
+  `unreadCount` when the API knows the total and `items` is only a recent slice.
+- The badge caps at `9+` so two-digit counts never stretch the circle.
+- The panel is 320px wide (`w-80`), grows to 384px from the `sm` breakpoint (`sm:w-96`), and never
+  exceeds `calc(100vw - 2rem)`.
+- The header is `px-4 py-3` with a `text-sm` semibold title and a link-style button; the button is
+  disabled when `unread === 0` or no `onMarkAllRead` is supplied.
+- Unread rows get `bg-primary/5` plus a 6px primary dot; icons sit in a 32px muted circle; time is
+  11px muted. Read rows have no tint and no dot.
+- The list body caps at 320px (`max-h-80`) and scrolls; `onViewAll` adds a full-width ghost footer
+  button, and no footer renders without it.
+- Defaults come from the UI locale: "Notifications", "Mark all read", "You're all caught up." and
+  "View all notifications".
+
+## Accessibility
+
+- The trigger is a button with a localized `aria-label` — "Notifications" or
+  "Notifications, 3 unread" — so the count is announced before the panel opens. Radix also sets
+  `aria-haspopup="dialog"`, `aria-expanded` and `aria-controls` on it.
+- The badge and the per-row unread dot are `aria-hidden`, because the count already appears in the
+  trigger's name.
+- Every notification is a full-width native button in the panel, so Tab moves through items and Enter
+  or Space opens one; Escape closes the popover and returns focus to the bell.
+- "Mark all read" is a real button, disabled through the native attribute when nothing is unread.
+- The panel width and scrolling are layout only; text stays at normal body contrast.
+
+Known gap: the panel has no `dialog` or `region` role and no accessible name, so it is announced as a
+plain group of buttons. Its scroll container is not focusable, and per-item read state is visual only
+(tint plus an `aria-hidden` dot), so a screen reader cannot tell which rows are unread — only the total
+in the trigger label.
+
+## FAQ
+
+**Does the component store read state?** No. It is a view over `items` plus callbacks; mark items read
+in your own data inside `onItemClick` and `onMarkAllRead`.
+
+**What if the server only returns a count?** Pass `unreadCount`; the badge and label use it while the
+panel still renders the items you supply.
+
+**Why is "Mark all read" disabled?** Either every item is read or you did not pass `onMarkAllRead`.
+Both conditions disable it.
+
+## Related
+
+- `Popover` for any other anchored panel.
+- `List` for the full notification inbox.
+- `Badge` for counts outside a bell.
+- `Sonner` for transient confirmations.
+- [Used in the template](https://fish-admin.vercel.app/notifications)

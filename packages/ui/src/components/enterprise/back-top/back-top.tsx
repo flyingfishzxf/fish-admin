@@ -11,8 +11,11 @@ export function BackTop({
   label,
   className,
 }: {
+  /** Scroll container to watch and scroll; defaults to the window. */
   targetRef?: RefObject<HTMLElement | null>
+  /** Scroll distance in px before the button appears. */
   threshold?: number
+  /** Accessible name; falls back to the localized "back to top" string. */
   label?: string
   className?: string
 }) {

@@ -1,0 +1,108 @@
+---
+title: Stepper
+description: An ordered list of steps that marks the current position of a flow.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import StepperBasic from '@docs/demos/stepper/basic'
+import basicSource from '@docs/demos/stepper/basic.tsx?raw'
+import StepperProgress from '@docs/demos/stepper/progress'
+import progressSource from '@docs/demos/stepper/progress.tsx?raw'
+
+# Stepper
+
+`Stepper` renders a `<ol>` of numbered circles with titles and optional descriptions, derives each
+step's state from its index against `current`, and turns steps up to the current one into buttons
+when `onStepClick` is provided.
+
+<ComponentMeta id="stepper" />
+
+## When to use
+
+- A multi-step form or wizard where the order is fixed.
+- An order, deployment or approval that moves through known stages.
+- A setup checklist where the user should see how much is left.
+
+## When not to use
+
+- A history of events with timestamps: use `Timeline`.
+- A single completion percentage: use `Progress`.
+- Navigation between peer views: use `Tabs`.
+- A flow with branches: the steps are a flat list, so model branches as separate steppers.
+
+## Basic usage
+
+<Demo title="Setup wizard" filename="demos/stepper/basic.tsx" source={basicSource}>
+  <StepperBasic />
+</Demo>
+
+## Read-only progress
+
+Drop `onStepClick` and the stepper becomes a status readout: nothing is clickable, and the steps
+keep their complete, current and upcoming styling.
+
+<Demo title="Read-only progress" filename="demos/stepper/progress.tsx" source={progressSource}>
+  <StepperProgress />
+</Demo>
+
+## API
+
+<ApiTable component="stepper" />
+
+## Design guidance
+
+- State is positional: `index < current` is complete, `index === current` is current, everything
+  else is upcoming. A `current` of `-1` makes every step upcoming; a value past the end marks them
+  all complete — clamp it in the caller.
+- The marker is `size-8`, `rounded-full` with a border. Complete steps fill it with
+  `border-primary bg-primary text-primary-foreground` and swap the number for a `size-4` `Check`;
+  the current step keeps its number with `border-primary text-primary`; upcoming steps stay
+  `border-border` and muted.
+- Titles are `text-sm font-medium` (muted while upcoming) and descriptions `text-xs` in muted text.
+  Keep descriptions to one short sentence — they sit under the title at every width.
+- The connector is a 1 px `bg-border` line placed `top-4 right-2 left-8` inside each item and is
+  hidden below the `sm` breakpoint. On mobile the list is a column with `gap-4`; from `sm` up it is
+  a row and every step takes `flex-1`.
+- With `onStepClick`, steps up to and including `current` render as buttons; later steps render as
+  plain containers, so forward jumps never happen by clicking.
+- `steps` need a stable `id`; it is the React key and survives reordering.
+
+## Accessibility
+
+- The root is a real ordered list named by the required `ariaLabel`; each step is a list item, so
+  screen readers announce "list, 4 items" and the position in the list.
+- The current step carries `aria-current="step"`. That is the only programmatic state; complete and
+  upcoming are expressed through colour, the check icon and position.
+- Clickable steps are native `<button>` elements inside the list item. Their accessible name is the
+  concatenation of the marker text and the copy, for example "2 Billing Choose a plan and add a
+  payment method."; the focus ring is `focus-visible:ring-[3px]` with `ring-ring/50`.
+- Later steps are not buttons, so they are absent from the tab order and cannot be activated.
+- The connector lines are `aria-hidden`.
+
+Known gap: completed steps have no text equivalent — the number is replaced by a `Check` icon with
+no label, and there is no "completed" state in the accessibility tree. If completion matters,
+repeat it in the step title or render your own status text. The component also has no keyboard
+model of its own (no arrow keys, no roving tabindex); navigation is plain Tab across the enabled
+buttons.
+
+## FAQ
+
+**Is `current` zero-based?** Yes, it is a step index. The first step of four is `current={0}`; the
+fourth is `current={3}`.
+
+**Can users jump ahead?** No. `onStepClick` is only attached to steps with `index <= current`, and
+it receives the clicked index, so "back" is always allowed and "forward" goes through your Next
+button.
+
+**Does it render the step content?** No. It is an indicator only: your form or panels live
+elsewhere, and you decide what happens when a step is clicked.
+
+## Related
+
+- `Timeline` for an append-only history with times.
+- `Progress` when only the completion share matters.
+- `Tabs` for peer views that are not ordered.
+- `Form` for the panel behind a wizard step.
+- [Used in the template](https://fish-admin.vercel.app/roles)
