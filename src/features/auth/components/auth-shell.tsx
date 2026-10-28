@@ -1,10 +1,11 @@
-import { Database, Palette, ShieldCheck } from 'lucide-react'
+import { BookOpen, Database, Palette, ShieldCheck } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { Brand } from '@/components/common/brand'
 import { LanguageToggle } from '@/components/common/language-toggle'
 import { ThemeToggle } from '@/components/common/theme-toggle'
+import { env } from '@/config/env'
 
 export function AuthShell({
   title,
@@ -49,9 +50,20 @@ export function AuthShell({
           </ul>
         </div>
 
-        <p className="relative max-w-sm text-xs leading-relaxed text-white/60">
-          {t('demo.disclaimer')}
-        </p>
+        <div className="relative max-w-sm space-y-2">
+          <p className="text-xs leading-relaxed text-white/60">{t('demo.disclaimer')}</p>
+          {env.docsUrl ? (
+            <a
+              href={env.docsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-white underline-offset-4 hover:underline"
+            >
+              <BookOpen className="size-3.5" aria-hidden />
+              {t('brand.docs')}
+            </a>
+          ) : null}
+        </div>
       </aside>
 
       <main className="relative flex flex-1 items-center justify-center px-5 py-10 sm:px-8">

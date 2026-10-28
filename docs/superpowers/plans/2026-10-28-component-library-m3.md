@@ -1083,7 +1083,7 @@ The login page is the template's front door for anyone who arrives without conte
 - Consumes: `env.docsUrl` from Task 3.
 - Produces: nothing.
 
-- [ ] **Step 1: Write the failing component test**
+- [x] **Step 1: Write the failing component test**
 
 Create `src/features/auth/components/auth-shell.test.tsx`:
 
@@ -1134,12 +1134,12 @@ describe('AuthShell docs link', () => {
 })
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [x] **Step 2: Run it to verify it fails**
 
 Run: `pnpm test -- src/features/auth/components/auth-shell.test.tsx`
 Expected: FAIL — no `auth:brand.docs` link exists yet (first two cases), and the third passes.
 
-- [ ] **Step 3: Add the link under the disclaimer**
+- [x] **Step 3: Add the link under the disclaimer**
 
 In [src/features/auth/components/auth-shell.tsx:52-54](../../../src/features/auth/components/auth-shell.tsx#L52-L54) wrap the existing paragraph and append the link. The disclaimer must stay visible on the small screens where the aside is hidden, so the link goes in the aside and the mobile copy is untouched:
 
@@ -1162,14 +1162,14 @@ In [src/features/auth/components/auth-shell.tsx:52-54](../../../src/features/aut
 
 Add `import { BookOpen } from 'lucide-react'` and `import { env } from '@/config/env'`.
 
-- [ ] **Step 4: Add the label in both languages**
+- [x] **Step 4: Add the label in both languages**
 
 `src/locales/en/auth.json` under `brand`: `"docs": "Component documentation"`. `src/locales/zh-CN/auth.json` under `brand`: `"docs": "组件文档"`.
 
 Run: `pnpm test -- src/features/auth/components/auth-shell.test.tsx src/lib/locales.test.ts`
 Expected: PASS, 3 tests in the new file.
 
-- [ ] **Step 5: Extend the e2e guard and verify in the browser**
+- [x] **Step 5: Extend the e2e guard and verify in the browser**
 
 Append to `e2e/docs-link.spec.ts`:
 
@@ -1184,12 +1184,25 @@ test('the login page offers no docs link when the URL is unset', async ({ page }
 Run: `pnpm test:e2e -- e2e/docs-link.spec.ts --workers=1`
 Expected: 3 passed. Then, with `VITE_DOCS_URL=http://localhost:4175 pnpm dev` and the docs preview running, load `/login` at 1440 px and 375 px in the browser and confirm the link is present at the wide breakpoint, the disclaimer still reads correctly, and nothing overflows at 375 px.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
 git commit -m "feat(template): link the component docs from the login page"
 ```
+
+**Measured, and where this task departed from the plan.** The red state was exactly one failure (`links the docs site in a new tab`); the other two cases passed before and after, so the disclaimer requirement stayed covered.
+
+- The plan's test snippet could not run as written. Its first case imported `AuthShell` statically, which reads `env` before `vi.stubEnv` is called; it called `vi.unstubEnv`, which is not a Vitest API (`vi.unstubAllEnvs` is); and it looked for the accessible name `auth:brand.docs`, while the mocked `t` echoes the key the component passes — `brand.docs`, namespace already selected by `useTranslation('auth')`. The mock also needs `i18n: { resolvedLanguage }` because `LanguageToggle` reads it, and `@/components/common/language-toggle` is stubbed to `null` so the language menu cannot pull in the real i18n runtime.
+- Both env cases now go through one `loadAuthShell(docsUrl)` helper, and `''` is the unset case (`readHttpsUrl` treats blank as absent), which keeps the helper's signature a plain string.
+- The first full-suite run failed these two tests: `Test timed out in 5000ms` on the cold dynamic import (~2.7 s alone, longer while 47 other files compete), and the render that landed after the timeout leaked into the next test, which then reported `Found multiple elements with the role "link"`. A `beforeAll` that performs one throwaway import pays the transform once under the hook budget, and the file passes in isolation and in two consecutive full runs: **48 files / 375 tests**.
+- `pnpm test:e2e` ends at **77 passed** (76 before this task, plus the login guard).
+- Browser verification used the real docs site, not a stub: `VITE_DOCS_URL=http://localhost:4174`, `pnpm --filter @fish-admin/docs preview --port 4174`, template rebuilt with the same URL.
+  - 1440×900: one `Component documentation` link, `href=http://localhost:4174`, `target=_blank`, `rel=noopener noreferrer`; aside disclaimer visible; 0 px horizontal overflow; clicking it opened a tab on the docs home.
+  - 375×812: no docs link, because the whole aside is `hidden lg:flex`. The caveat is still on screen — `src/features/auth/components/login-page.tsx:187` renders the `lg:hidden` copy in the card footer. Measured per breakpoint: wide `[{aside visible}, {footer hidden}]`, mobile `[{aside hidden}, {footer visible}]`, 0 px overflow. So the login page's docs link is desktop-only by construction; if it has to reach phones too, the footer is where it belongs.
+  - Retired routes against the real site: `/components` → `http://localhost:4174/components/index.html` (`h1` "Components") and `/ui` → `http://localhost:4174/guide/theming.html` (`h1` "Theming"). Rspress preview serves `/index.html` and `.html`, so the scratch script's exact-URL equality was the wrong assertion; prefix match is the honest one.
+  - A scratch `browser.newContext()` inherits the machine locale, which is `zh-CN` on this box, so `/login` renders Chinese and every English name locator times out. The scratch contexts needed `locale: 'en-US'`; the Playwright suite gets it free from `devices['Desktop Chrome']`.
+- Scratch scripts and screenshots deleted, both preview servers stopped, `dist` rebuilt with no `VITE_DOCS_URL`, format/lint/typecheck green (the one pre-existing `react-refresh` warning in `apps/docs/theme/index.tsx` unchanged).
 
 ---
 

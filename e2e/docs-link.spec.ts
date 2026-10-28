@@ -26,4 +26,14 @@ test.describe('docs seam', () => {
     await expect(page.getByRole('link', { name: /Component docs|组件文档/ })).toHaveCount(0)
     await expect(page.locator('aside a[target="_blank"]')).toHaveCount(0)
   })
+
+  test('the login page offers no docs link when the URL is unset', async ({ page }) => {
+    await page.goto('/login')
+
+    await expect(page.getByRole('link', { name: /Component documentation|组件文档/ })).toHaveCount(
+      0,
+    )
+    // The RBAC caveat is a standing requirement, with or without a docs site.
+    await expect(page.getByText(/client-side|前端/i).first()).toBeVisible()
+  })
 })
