@@ -1221,7 +1221,7 @@ The README currently sells a dashboard starter. It has to lead with the componen
 - Consumes: the built demo with the mock API, and the Docker image used by `pnpm test:visual:docker`.
 - Produces: four PNGs at `apps/docs/public/screenshots/`, referenced by the READMEs as `apps/docs/public/screenshots/<name>.png` and by the docs site as `/screenshots/<name>.png`.
 
-- [ ] **Step 1: Add the screenshot spec**
+- [x] **Step 1: Add the screenshot spec**
 
 Create `e2e/visual/readme-shots.spec.ts`. It is gated by an env var so the ordinary visual run is unaffected, and it writes viewport-sized PNGs (not fullPage) straight to the docs asset folder:
 
@@ -1270,7 +1270,7 @@ test.describe('readme screenshots', () => {
 
 Add `testMatch: ['pages.spec.ts', 'readme-shots.spec.ts']` to [playwright.visual.config.ts](../../../playwright.visual.config.ts) so the runner sees the new file, and note in the config comment that `README_SHOTS=1` writes files instead of comparing them.
 
-- [ ] **Step 2: Capture them in Docker**
+- [x] **Step 2: Capture them in Docker**
 
 ```bash
 mkdir -p apps/docs/public/screenshots
@@ -1291,11 +1291,11 @@ docker run --rm --init --ipc=host \
 
 Expected: 4 tests pass and four PNGs appear in `apps/docs/public/screenshots/`.
 
-- [ ] **Step 3: Look at them**
+- [x] **Step 3: Look at them**
 
 Open each PNG. Requirements: no toast, no skeleton, no loading spinner, no cursor in an input, the sidebar visible on the 1440 px shots, and the 375 px shot must show the mobile shell rather than a squashed table. Reject and re-capture anything that fails — a stale-looking screenshot is the exact thing this task exists to fix.
 
-- [ ] **Step 4: Confirm the visual suite still passes**
+- [x] **Step 4: Confirm the visual suite still passes**
 
 ```bash
 pnpm test:visual:docker
@@ -1303,7 +1303,7 @@ pnpm test:visual:docker
 
 Expected: 16 passed, zero diff — the new spec is skipped without `README_SHOTS=1`.
 
-- [ ] **Step 5: Rewrite the README headline and lead (both languages)**
+- [x] **Step 5: Rewrite the README headline and lead (both languages)**
 
 Replace [README.md:3](../../../README.md#L3) and the first paragraph at line 14. Keep the section list and line-for-line parity with the Chinese file:
 
@@ -1328,7 +1328,7 @@ FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深
 
 Then, in both files: add a `Docs` badge on the same line as the existing `Demo` badge (line 18 region) pointing at the docs URL, add an `## Install` / `## 安装` line under Quick start with `npm install @fish-admin/react`, and update the Routes table (lines 117-118) to delete the `/ui` and `/components` rows.
 
-- [ ] **Step 6: Fix the screenshot references and the stale counts**
+- [x] **Step 6: Fix the screenshot references and the stale counts**
 
 In both READMEs: repoint the four `docs/assets/*.png` image lines at `apps/docs/public/screenshots/*.png`, delete the `ui-playground.png` line, and add a `workflows.png` line with alt text `Approval center` / `审批中心`. Correct the quality-gates bullet at [README.md:308](../../../README.md#L308) from nineteen screenshots with a catalog hero to eighteen, and delete `docs/assets/ui-playground.png`:
 
@@ -1336,11 +1336,11 @@ In both READMEs: repoint the four `docs/assets/*.png` image lines at `apps/docs/
 git rm docs/assets/ui-playground.png
 ```
 
-- [ ] **Step 7: Update the document meta**
+- [x] **Step 7: Update the document meta**
 
 In [index.html](../../../index.html), change `:27` title to `FishAdmin — React component library and admin template`, and the `description` (`:8`), `og:title` (`:13`), `og:description` (`:16`), `twitter:title` (`:20`), `twitter:description` (`:23`) to match that framing. Keep `/og.png` and add no external script. Then re-render `public/og.png` if it carries the old tagline — check by opening it; if the text is stale, regenerate it at 1200×630 with the new one-liner and commit the replacement.
 
-- [ ] **Step 8: Verify the rendering**
+- [x] **Step 8: Verify the rendering**
 
 ```bash
 pnpm format:check && pnpm lint
@@ -1356,12 +1356,24 @@ done
 
 Expected: four `ok` lines, no `MISSING`.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add -A
 git commit -m "docs: present the component library as the front door"
 ```
+
+**Measured, and where this task departed from the plan.**
+
+- Step 2: the plan's `SHOT_DIR = '../../apps/docs/public/screenshots'` wrote nothing. `page.screenshot({ path })` resolves against the process CWD, and inside the container the CWD is `/work`, so `../../` escaped the bind mount. The spec now derives the directory from `import.meta.url` with `fileURLToPath`. The same run also needed `MSYS_NO_PATHCONV=1`, because Git Bash rewrites `-w /work` into a Windows path.
+- Step 2/3: the plan's per-name viewport table put users-tablet at 768×1024, which clipped the users table mid-column, and a 250 ms settle, which froze a half-drawn Recharts area (the charts animate with requestAnimationFrame, invisible to `networkidle`). The spec carries an explicit viewport per shot — users-tablet is 1024×768 — and waits 2000 ms after the heading assertion. All four were re-captured and reviewed one by one.
+- Step 4: `pnpm test:visual:docker` after the change: 16 passed, 4 skipped, zero diff.
+- Step 6: the plan says delete `docs/assets/ui-playground.png`. A repo-wide grep found no reference to any of the four files in `docs/assets/` once the READMEs were repointed — `sync-template-docs.mjs` excludes that directory — so all four went, not just the playground one. Leaving three 1.7.0-era PNGs next to the new ones is exactly the staleness this task exists to remove.
+- Step 6 also exposed a wrong count that predated this task: the section opened with "five gates" and listed six bullets, and neither mentioned the docs jobs. CI actually runs Quality, Build, E2E, Docs, Docs E2E, Visual regression and Docs visual regression. The intro no longer asserts a count, the visual bullet states eighteen template shots plus eight docs baselines (home, installation, one primitive, one pro, each theme), and a Documentation gate covers `gen-api:check`, `docs:check` and `test:docs`. `pnpm check:package` is deliberately **not** listed as a CI gate: it is a release-time script and no workflow calls it.
+- Step 7: `index.html`'s meta strings are load-bearing — `scripts/scaffold.mjs` replaces them with exact-match `.sub()` calls that assert their occurrence count. The four literals were rewritten in the same commit, and `checkPlan` (which the 13 scaffold tests run against the real tree in check mode) passes. Note the tests never mention `index.html` by name; the count assertions were additionally verified by hand.
+- Step 7: `public/og.png` did carry the old tagline ("Open-source React admin starter", "Your next admin, ready on day one."). It was re-rendered at 1200×630 from a scratch HTML page using the real `favicon.svg`, the committed `button-light` docs baseline as the window content, and the new one-liner. The generator is not checked in — the PNG is a hand-built asset, so the page lives in a temp directory and the shot is committed as a binary.
+- Deliberately unchanged: `src/lib/document-title.ts` still exports `APP_TAGLINE = 'Modern Admin Dashboard Starter'`, so the browser tab of the running template keeps that wording. It describes the template, which is what the user is looking at; the document meta describes the product. Changing it would also move the scaffold's default tagline and both `common.json` taglines.
+- Open honesty item, for Task 9/10: two claims in both READMEs are forward-looking. `npm install @fish-admin/react` only works after the first publish, and every `https://fish-admin-docs.vercel.app` link (badges, lead, guide links and the og image's address bar) only resolves once the docs Vercel project exists. Neither is live yet, so nothing here may be pushed publicly before Task 10 lands both.
 
 ---
 

@@ -396,25 +396,25 @@ function brandStep({ editor, options }) {
   editor
     .sub(
       'index.html',
-      'content="FishAdmin is an open-source React admin dashboard starter with RBAC, i18n, theming and a realistic mock API."',
+      'content="FishAdmin is an MIT-licensed React component library: 83 documented components with light and dark theming, English and Chinese locales, plus the RBAC admin template built on them."',
       `content="${description}"`,
     )
     .sub('index.html', 'content="FishAdmin" />', `content="${displayName}" />`)
     .sub(
       'index.html',
-      'content="FishAdmin — Modern Admin Dashboard Starter" />',
+      'content="FishAdmin — React component library and admin template" />',
       `content="${displayName} — ${tagline}" />`,
       2,
     )
     .sub(
       'index.html',
-      'content="Open-source React admin starter with RBAC, i18n, theming and a realistic mock API."',
+      'content="83 documented React components with theming, i18n and RBAC, plus the admin template that ships with them."',
       `content="${description}"`,
       2,
     )
     .sub(
       'index.html',
-      '<title>FishAdmin — Modern Admin Dashboard Starter</title>',
+      '<title>FishAdmin — React component library and admin template</title>',
       `<title>${displayName} — ${tagline}</title>`,
     )
     .sub(

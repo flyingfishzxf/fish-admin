@@ -1,17 +1,18 @@
 # FishAdmin
 
-**一个可直接开工的 React 后台模板：RBAC、国际化、主题、图表与真实感 Mock API 全部接好。**
+> **面向企业中后台的 React 组件库 —— 以及随它一起发布的模板工程。**
 
 [English](./README.md) · 简体中文
 
 [![CI](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/Docs-组件库-8b5cf6)](https://fish-admin-docs.vercel.app)
 [![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](https://vite.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
 
-FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录、故意越权试试、再换成自己后端的 starter：认证、菜单/路由/按钮三级权限、数据表格、图表、主题与中英双语已经串成一条完整链路。
+FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深浅主题、中英文与按 RBAC 组织的页面），以及一套可以 clone 下来登录、故意越权试试、再换成自己后端的模板工程。[组件文档](https://fish-admin-docs.vercel.app) 是这两部分的统一入口。
 
 > **安全声明：** 客户端 RBAC 只是交互层，**不是安全边界**。修改 JavaScript 或直接调用 API 都能绕过本项目的权限判断。真实权限必须由服务端校验。Mock API 对无权限的写操作返回 `403`，用于演示这一契约。
 
@@ -19,11 +20,13 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 
 ## 预览
 
-![FishAdmin 工作台](docs/assets/dashboard.png)
+![FishAdmin 工作台](apps/docs/public/screenshots/dashboard.png)
 
-| 768px 下的用户列表                              | 375px 下的角色页                              | 1440px 下的组件演练场                               |
-| ----------------------------------------------- | --------------------------------------------- | --------------------------------------------------- |
-| ![768px 用户表格](docs/assets/users-tablet.png) | ![375px 角色页](docs/assets/roles-mobile.png) | ![1440px 组件演练场](docs/assets/ui-playground.png) |
+| 1024px 下的用户列表                                                    | 375px 下的角色页                                                     | 审批中心                                                |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------- |
+| ![平板视口下的用户表格](apps/docs/public/screenshots/users-tablet.png) | ![手机视口下的角色页](apps/docs/public/screenshots/roles-mobile.png) | ![审批中心](apps/docs/public/screenshots/workflows.png) |
+
+这四张图同样由[文档站点](https://fish-admin-docs.vercel.app)在 `/screenshots/` 下提供。
 
 ## 功能
 
@@ -44,9 +47,9 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 - **组织架构树** —— `/departments` 提供可键盘导航的部门树、成员计数，以及新建子部门 / 重命名与可深链的选中态。
 - **角色治理** —— 系统角色与自定义角色、两步创建向导，以及 `/roles/matrix` 权限矩阵：分组勾选、冻结表头与显式保存条。
 - **审计日志** —— `/audit-logs` 支持 URL 同步筛选、日期区间预设、详情抽屉与关联事件，并可跳转到受影响的用户、角色或部门。
-- **可见的异常处理** —— `401`、`403`、`500`、`503` 与维护页各有专页，断网时显示离线横幅并在恢复后提示，路由错误由 error boundary 兜底，设置页与组件库页提供直达预览入口。
+- **可见的异常处理** —— `401`、`403`、`500`、`503` 与维护页各有专页，断网时显示离线横幅并在恢复后提示，路由错误由 error boundary 兜底，设置页提供直达预览入口。
 - **工作台** —— KPI 卡片、收入面积图、流量柱状图、渠道环形图、最近活动，支持 7/30 天切换；图表随路由懒加载。
-- **83 个共享组件与可搜索目录** —— 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）统一登记在 `src/config/components.ts`。`/components` 支持搜索整份清单，并为全部 83 个组件提供贴合业务场景的实时演示，每张卡片都能一键复制 import 路径、并标注它已在哪个业务页面投入使用；每个条目都必须指向 `/components`、`/ui` 之外的真实路由，并由单元测试强制校验。`/ui` 继续集中展示原语的状态、浮层与表单控件，并由吸顶分段导航串联。ProTable 现已用于用户与审计页，让同一套表格外壳在业务页面中复用。
+- **83 个组件，一个包** —— `@fish-admin/react` 导出 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）。83 个组件在[文档站点](https://fish-admin-docs.vercel.app)各有一页，中英双语，都带贴合业务场景的实时演示、可复制的 import 路径与自动生成的属性表。`pnpm check:package` 会在出口文件少导出任一条目时让构建失败，`pnpm docs:check` 会在页面、演示或登记项漂移时失败。ProTable 已用于用户与审计页，模板本身就是这个包的第一个使用者。
 - **明快产品风设计系统** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，首屏无闪烁。
 - **中英双语** —— i18next 按 namespace 懒加载，`Intl` 处理日期/数字，校验文案随语言切换。
 - **命令面板** —— `Ctrl/⌘ K` 打开导航与快捷动作，按当前角色过滤。
@@ -56,6 +59,14 @@ FishAdmin 不是又一个页面展示集。它是一套可以 clone 下来登录
 ## 快速开始
 
 环境要求：**Node.js >= 22**（推荐 24 LTS）、**pnpm 9.1.1**（`corepack enable` 即可）。
+
+### 安装组件库
+
+```bash
+npm install @fish-admin/react
+```
+
+这就是模板在用的那 83 个组件。[安装](https://fish-admin-docs.vercel.app/guide/installation)说明 peer 依赖、Tailwind v4 的引入方式与 CSS 入口；[快速开始](https://fish-admin-docs.vercel.app/guide/quick-start)带你跑通第一张表格。
 
 ### 从演示开始
 
@@ -76,7 +87,7 @@ pnpm install
 pnpm scaffold
 ```
 
-它会重写品牌信息，并可以删掉组件 catalog、多余语言，以及 mock API 和依赖它的 Playwright 套件。先跑 `pnpm scaffold --dry-run` 可以看到完整计划，详见 [docs/zh-CN/scaffold.md](docs/zh-CN/scaffold.md)。
+它会重写品牌信息，并可以删掉多余语言，以及 mock API 和依赖它的 Playwright 套件。先跑 `pnpm scaffold --dry-run` 可以看到完整计划，详见 [docs/zh-CN/scaffold.md](docs/zh-CN/scaffold.md)。
 
 ### 演示账号
 
@@ -104,7 +115,7 @@ pnpm scaffold
 - **审计日志** —— `/audit-logs` 可按动作、对象与日期区间筛选，演示中的每次变更都会记录在案。
 - **组织架构** —— `/departments?dept=dept-engineering` 可深链到节点，并分页查看其成员（含后代部门）。
 - **异常页** —— `/401`、`/500`、`/503`、`/maintenance` 均可直接访问；在开发者工具中断网会出现离线横幅。
-- **组件目录** —— `/components` 可搜索全部 83 个共享组件、按层级筛选，并为每个组件提供实时演示；`/ui` 保留原语状态陈列。
+- **组件文档** —— 当 `VITE_DOCS_URL` 指向一个部署时，侧边栏、命令面板与宽屏登录页都会在新标签页打开[文档站点](https://fish-admin-docs.vercel.app)，已下线的 `/components` 与 `/ui` 也会重定向过去而不是 404。
 
 ## 项目内容
 
@@ -114,8 +125,6 @@ pnpm scaffold
 | -------------------- | ---------------------------------------- | ------------------ |
 | `/`                  | 工作台：KPI、图表、活动与产品导览        | `dashboard:read`   |
 | `/reports`           | KPI、趋势与渠道报表，含锚点与 CSV 导出   | `report:read`      |
-| `/components`        | 全部 83 个共享组件的可搜索目录           | 已登录             |
-| `/ui`                | 组件演练场：40 个原语演示、状态与浮层    | 已登录             |
 | `/projects`          | 项目组合：筛选、看板/列表、向导与分页    | `project:read`     |
 | `/projects/$id`      | 项目工作台：任务、日历、预算与复盘       | `project:read`     |
 | `/workflows`         | 审批中心：我发起、待我审批与全部         | `workflow:read`    |
@@ -145,7 +154,7 @@ pnpm scaffold
 | `/401` `/500` `/503` | 会话过期、服务端错误、服务不可用         | 公开               |
 | `/maintenance`       | 计划停机页                               | 公开               |
 
-未知路径在登录状态下显示外壳内的 404；未登录访问受保护页面会跳转 `/login?redirect=…`，登录后回到原地址。所有页面守卫都写在 `beforeLoad` 中；路由渲染抛错时由 error boundary 展示可重试的兜底页，而不是白屏。
+未知路径在登录状态下显示外壳内的 404；未登录访问受保护页面会跳转 `/login?redirect=…`，登录后回到原地址。两个已下线的组件目录路径是例外：设置了 `VITE_DOCS_URL` 时它们离开本应用、前往文档站点，没设置时和其他未知路径一样 404。所有页面守卫都写在 `beforeLoad` 中；路由渲染抛错时由 error boundary 展示可重试的兜底页，而不是白屏。
 
 ### 角色与权限
 
@@ -259,61 +268,75 @@ pnpm scaffold
 ## 目录结构
 
 ```text
-src/
-├─ routes/                 # 文件路由；routeTree.gen.ts 自动生成
-├─ features/               # auth、dashboard、users、roles、permissions、departments、audit、projects、files、reports、notifications、integrations、profile、security、settings、playground
+packages/ui/                 # @fish-admin/react —— 组件库
+├─ src/components/           # ui（47 个原语）、enterprise（30 个）、pro（6 个）、data-table、common
+├─ src/locales/              # 组件自带的 en + zh-CN 文案
+├─ src/styles/               # 设计令牌、工具类、preflight 与归应用的 base 样式
+├─ registry.json             # 83 条登记项，gen-api 的输入
+└─ test/                     # 包级测试
+apps/docs/                   # Rspress 文档站点
+├─ docs/{en,zh}/             # 83 个组件页、指南与版本页
+├─ demos/<component>/        # 每个页面渲染的实时示例
+├─ generated/                # registry.json 与 API 表，由 pnpm gen-api 生成
+└─ public/screenshots/       # README 与文档首屏截图
+src/                         # 模板
+├─ routes/                   # 文件路由；routeTree.gen.ts 自动生成
+├─ features/                 # auth、dashboard、users、roles、permissions、departments、audit、projects、files、reports、notifications、integrations、profile、security、settings
 ├─ components/
-│  ├─ ui/                  # 47 个 shadcn/ui 原语
-│  ├─ enterprise/          # 30 个业务组件（树、选择器、上传、反馈等）
-│  ├─ pro/                 # DetailPage、EditableTable、ImportWizard、ProForm、QueryFilter 与 ProTable 组合
-│  ├─ layout/              # AppShell、侧边栏、Header、通知铃铛、面包屑、命令面板、离线横幅
-│  ├─ data-table/          # 表格、分页、列显隐与列排序
-│  └─ common/              # Can、PageHeader、EmptyState、StatusScreen、主题/语言切换
-├─ config/                 # env、权限、审计动作、导航、主题预设、组件注册表
-├─ lib/                    # API 客户端、鉴权、i18n、格式化、CSV、在线状态
-├─ stores/                 # 会话、主题、UI 状态
-├─ locales/{en,zh-CN}/     # 懒加载语言包
-├─ mocks/                  # MSW handlers、种子数据库、工作区种子与假鉴权
+│  ├─ layout/                # AppShell、侧边栏、Header、通知铃铛、面包屑、命令面板、离线横幅
+│  └─ common/                # Can、EmptyState、StatusScreen、主题/语言切换
+├─ config/                   # env、权限、审计动作、导航、主题预设
+├─ lib/                      # API 客户端、鉴权、i18n、格式化、CSV、在线状态
+├─ stores/                   # 会话、主题、UI 状态
+├─ locales/{en,zh-CN}/       # 懒加载语言包
+├─ mocks/                    # MSW handlers、种子数据库、工作区种子与假鉴权
 └─ styles/index.css
-e2e/                       # Playwright 用例
-docs/{en,zh-CN}/           # 文档
+e2e/                         # Playwright 用例
+docs/{en,zh-CN}/             # 仓库文档（上面那个站点才是产品文档）
 ```
 
 ## 常用命令
 
-| 命令                                | 说明                                  |
-| ----------------------------------- | ------------------------------------- |
-| `pnpm scaffold`                     | 重写品牌信息，并删掉不需要的部分      |
-| `pnpm dev`                          | 启动开发服务器（Mock 开启）           |
-| `pnpm build`                        | 类型检查并构建生产包（默认关闭 Mock） |
-| `pnpm build:demo`                   | 开启 Mock 构建演示包                  |
-| `pnpm preview`                      | 预览生产构建                          |
-| `pnpm lint` / `pnpm lint:fix`       | 运行 ESLint                           |
-| `pnpm format` / `pnpm format:check` | 运行 Prettier                         |
-| `pnpm typecheck`                    | 仅跑 TypeScript 检查                  |
-| `pnpm test` / `pnpm test:watch`     | 单元测试                              |
-| `pnpm test:coverage`                | 带覆盖率的单元测试                    |
-| `pnpm test:e2e`                     | 构建演示包并运行 E2E、axe 与性能用例  |
-| `pnpm perf`                         | 仅运行运行时性能预算                  |
-| `pnpm size`                         | 构建生产包并校验 gzip 体积预算        |
-| `pnpm test:visual:docker`           | 在 Playwright Docker 镜像中比对截图   |
+| 命令                                | 说明                                   |
+| ----------------------------------- | -------------------------------------- |
+| `pnpm scaffold`                     | 重写品牌信息，并删掉不需要的部分       |
+| `pnpm dev`                          | 启动开发服务器（Mock 开启）            |
+| `pnpm build`                        | 类型检查并构建生产包（默认关闭 Mock）  |
+| `pnpm build:demo`                   | 开启 Mock 构建演示包                   |
+| `pnpm preview`                      | 预览生产构建                           |
+| `pnpm build:ui` / `pnpm test:ui`    | 构建 / 测试 `@fish-admin/react`        |
+| `pnpm check:package`                | 导出必须覆盖注册表全部条目，否则失败   |
+| `pnpm gen-api` / `gen-api:check`    | 重新生成 / 校验文档 API 表与覆盖率下限 |
+| `pnpm docs:dev` / `docs:build`      | 运行 / 构建文档站点                    |
+| `pnpm docs:check`                   | 缺页面、缺示例或注册表漂移即失败       |
+| `pnpm test:docs`                    | 构建站点并运行它的 Playwright 用例     |
+| `pnpm lint` / `pnpm lint:fix`       | 运行 ESLint                            |
+| `pnpm format` / `pnpm format:check` | 运行 Prettier                          |
+| `pnpm typecheck`                    | 仅跑 TypeScript 检查                   |
+| `pnpm test` / `pnpm test:watch`     | 单元测试                               |
+| `pnpm test:coverage`                | 带覆盖率的单元测试                     |
+| `pnpm test:e2e`                     | 构建演示包并运行 E2E、axe 与性能用例   |
+| `pnpm perf`                         | 仅运行运行时性能预算                   |
+| `pnpm size`                         | 构建生产包并校验 gzip 体积预算         |
+| `pnpm test:visual:docker`           | 在 Playwright Docker 镜像中比对截图    |
 
 ## 质量门禁
 
-CI 在每次 push 和 pull request 上运行五道门禁：
+CI 在每次 push 和 pull request 上跑这些门禁：
 
-- **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描十三个流程（登录页的浅色、深色与中文，仪表盘浅色与深色，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，项目看板/新建弹窗/详情，文件库/上传抽屉/预览，通知中心与偏好，报表与集成表单，组件目录与 UI 演练场）。出现任何违规即失败。
+- **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描十二个流程（登录页的浅色、深色与中文，仪表盘浅色与深色，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，项目看板/新建弹窗/详情，文件库/上传抽屉/预览，通知中心与偏好，报表与集成表单）。出现任何违规即失败。文档站点另有 `e2e-docs/axe-full.spec.ts` 独立扫描。
 - **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签，再算上首屏阻塞的 `/theme-bootstrap.js`——现在是 27 个 chunk、共 172.4 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。CSS 总量同样计入通过 `<link>` 引入的 `/boot.css`。
 - **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
-- **视觉回归** —— 十九张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、组件目录首屏、项目看板、项目详情、资源库、报表浅色与深色、通知中心、集成中心、审批中心、审批详情与数据字典）与 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的基线比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。
-- **安全响应头** —— `e2e/security.spec.ts` 先比对 `/`、`/index.html`、一个带 hash 的资源与两个外壳文件的响应头是否完全一致，再带着 `securitypolicyviolation` 监听器走完登录、仪表盘、用户、报表、文件、组件目录与设置，监听器必须始终为空。详见 [docs/zh-CN/security-headers.md](docs/zh-CN/security-headers.md)。
+- **视觉回归** —— 模板的十八张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、项目看板、项目详情、资源库、报表浅色与深色、通知中心、集成中心、审批中心、审批详情与数据字典）与文档站的八张基线（首页、安装、一个原语页、一个 pro 页，各取浅色与深色）都和 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的图片比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。`e2e/visual/readme-shots.spec.ts` 在同一次运行里，但它只写文件，且只有设置 `README_SHOTS=1` 时才执行。
+- **安全响应头** —— `e2e/security.spec.ts` 先比对 `/`、`/index.html`、一个带 hash 的资源与两个外壳文件的响应头是否完全一致，再带着 `securitypolicyviolation` 监听器走完登录、仪表盘、用户、报表、文件、项目与设置，监听器必须始终为空。详见 [docs/zh-CN/security-headers.md](docs/zh-CN/security-headers.md)。
+- **文档站** —— `pnpm gen-api:check` 在生成的 props 表与包源码不一致时失败，`pnpm docs:check` 在某个注册表条目缺少页面、缺少示例或缺少译文时失败，`pnpm test:docs` 跑文档站自己的 Playwright 用例。
 - **依赖供应链** —— `pnpm audit --audit-level=high` 有高危漏洞就让质量 job 失败，CodeQL 在每次 push、pull request 与每周定时任务中分析 JavaScript 和 TypeScript，[`.github/dependabot.yml`](.github/dependabot.yml) 为 npm 与 actions 分别开分组后的 minor/patch 和 major 升级 PR，所有 workflow 使用只读 token（`permissions: contents: read`），构建 job 还会上传被度量的产物。
 
-基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。
+基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。文档站同样有一对命令：`pnpm test:docs:visual` 与 `pnpm test:docs:visual:docker`。
 
 ## 接入真实后端
 
-1. 设置 `VITE_API_BASE_URL=https://your-api.example.com`；若也要让开发服务器停止 Mock，再加 `VITE_ENABLE_MOCK=false`——构建产物本来就不含 Mock。
+1. 设置 `VITE_API_BASE_URL=https://your-api.example.com`；若也要让开发服务器停止 Mock，再加 `VITE_ENABLE_MOCK=false`——构建产物本来就不含 Mock。`VITE_DOCS_URL` 可选：填上文档站的地址，侧边栏、命令面板与宽屏登录页就会出现组件文档入口。
 2. 删除 `src/main.tsx` 中的 Mock 启动块，然后删除 `src/mocks` 与 `public/mockServiceWorker.js`。
 3. 按 [docs/zh-CN/api-integration.md](docs/zh-CN/api-integration.md) 实现接口。开发阶段可先保持响应结构，只替换 base URL。
 4. 在服务端校验所有权限。前端判断只改善体验，不能保护数据。
@@ -330,6 +353,10 @@ CI 在每次 push 和 pull request 上运行五道门禁：
 
 ## 文档
 
+**组件文档：<https://fish-admin-docs.vercel.app>** —— 83 个组件页，中英双语，每页都有实时示例、导入路径与自动生成的 props 表，另有安装、快速开始与主题定制指南。
+
+下面的文档讲的是模板本身：
+
 - [架构说明](docs/zh-CN/architecture.md) —— 启动流程、路由、数据流、主题与国际化。
 - [权限系统](docs/zh-CN/rbac.md) —— 权限模型、守卫、新增权限步骤。
 - [账号生命周期](docs/zh-CN/account-lifecycle.md) —— 注册、邮箱验证、二次验证、会话、异常页面与离线处理。
@@ -339,7 +366,7 @@ CI 在每次 push 和 pull request 上运行五道门禁：
 - [接入 API](docs/zh-CN/api-integration.md) —— 接口契约、鉴权流程、替换 Mock。
 - [部署指南](docs/zh-CN/deployment.md) —— Vercel、Docker、nginx 与 Service Worker 注意事项。
 - [安全响应头](docs/zh-CN/security-headers.md) —— 完整的 CSP 取值、`script-src 'self'` 改动了哪些代码、以及如何验证。
-- [脚手架](docs/zh-CN/scaffold.md) —— 把一份 clone 变成你自己的应用：改名、去掉 catalog、去掉多余语言、去掉 Mock API。
+- [脚手架](docs/zh-CN/scaffold.md) —— 把一份 clone 变成你自己的应用：改名、去掉多余语言、去掉 Mock API。
 - [English docs](docs/en/architecture.md)
 
 ## 参与贡献

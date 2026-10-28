@@ -1,17 +1,18 @@
 # FishAdmin
 
-**A production-minded React admin dashboard starter with RBAC, i18n, theming, charts and a realistic mock API.**
+> **A React component library for enterprise admin apps — plus the template that ships with it.**
 
 English · [简体中文](./README.zh-CN.md)
 
 [![CI](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/Docs-component_library-8b5cf6)](https://fish-admin-docs.vercel.app)
 [![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](https://vite.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
 
-FishAdmin is not another page gallery. It is a front-end starter you can clone, log into, break on purpose and then connect to your own backend. Authentication, route/menu/button permissions, data tables, charts, themes and two languages are already wired together.
+FishAdmin is two things: `@fish-admin/react`, 83 documented components with light/dark theming, English and Chinese locales and RBAC-shaped screens, and a front-end starter you can clone, log into, break on purpose and then connect to your own backend. The [component documentation](https://fish-admin-docs.vercel.app) is the front door for both.
 
 > **Security note:** client-side RBAC is a UX layer, **not a security boundary**. Every permission check in this project can be bypassed by editing JavaScript or calling the API directly. Your backend must enforce authorization. The mock API returns `403` for forbidden writes to demonstrate the expected contract.
 
@@ -19,11 +20,13 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 
 ## Preview
 
-![FishAdmin dashboard](docs/assets/dashboard.png)
+![FishAdmin dashboard](apps/docs/public/screenshots/dashboard.png)
 
-| Users on tablet                                                  | Roles on mobile                                                 | UI playground                                                               |
-| ---------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| ![Users table on a 768px viewport](docs/assets/users-tablet.png) | ![Roles page on a 375px viewport](docs/assets/roles-mobile.png) | ![Component playground on a 1440px viewport](docs/assets/ui-playground.png) |
+| Users on a 1024 px viewport                                                        | Roles on a 375 px viewport                                                       | Approval center                                                |
+| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| ![Users table on a tablet viewport](apps/docs/public/screenshots/users-tablet.png) | ![Roles page on a phone viewport](apps/docs/public/screenshots/roles-mobile.png) | ![Approval center](apps/docs/public/screenshots/workflows.png) |
+
+The same four files are served by the [documentation site](https://fish-admin-docs.vercel.app) under `/screenshots/`.
 
 ## Features
 
@@ -44,9 +47,9 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 - **Organization tree** — `/departments` renders a keyboard-navigable department tree with member counts, plus create/rename actions and deep-linkable selection.
 - **Role governance** — system and custom roles, a two-step create-role wizard, and a `/roles/matrix` permission matrix with grouped checkboxes, sticky headers and an explicit save bar.
 - **Audit log** — `/audit-logs` with URL-synced filters, date-range presets, a detail drawer with related events, and links back to the affected user, role or department.
-- **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings and the UI playground.
+- **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings.
 - **Dashboard** — KPI cards, revenue area chart, traffic bars, acquisition donut and recent activity, with a 7/30-day switch. Charts are lazy-loaded with the dashboard route.
-- **83 shared components with a searchable catalog** — 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`) are registered in `src/config/components.ts`. `/components` searches the whole inventory and renders a live, business-framed demo for every one of the 83 entries, each with a copyable import path and a link to the business screen that uses it; every entry must name a real route outside `/components` and `/ui`, and a unit test enforces it. `/ui` keeps the primitive states, overlays and form controls behind a sticky section nav. ProTable now powers the users and audit pages, so the same table shell is reused across business screens.
+- **83 components, one package** — `@fish-admin/react` exports 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`). Each of the 83 has a page on the [documentation site](https://fish-admin-docs.vercel.app), in English and Chinese, with a business-framed live demo, the copyable import path and the generated props table. `pnpm check:package` fails the build if the barrel stops exporting any of them, and `pnpm docs:check` fails if a page, demo or registry entry drifts. ProTable powers the users and audit pages, so the template is the package's first consumer.
 - **Product-style design system** — light, dark and system modes, five accent colors, oklch tokens, refined shadows and a FOUC-free first paint.
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
@@ -56,6 +59,14 @@ FishAdmin is not another page gallery. It is a front-end starter you can clone, 
 ## Quick start
 
 Requirements: **Node.js >= 22** (24 LTS recommended) and **pnpm 9.1.1** (`corepack enable` is enough).
+
+### Install the components
+
+```bash
+npm install @fish-admin/react
+```
+
+That is the same 83-component set the template runs on. [Installation](https://fish-admin-docs.vercel.app/guide/installation) covers the peer dependencies, the Tailwind v4 import and the CSS entry; [Quick start](https://fish-admin-docs.vercel.app/guide/quick-start) walks the first table.
 
 ### Start from the demo
 
@@ -76,7 +87,7 @@ pnpm install
 pnpm scaffold
 ```
 
-It rebrands the app and can drop the component catalog, the extra locales, and the mock API with the Playwright suite that drives it. `pnpm scaffold --dry-run` prints the plan first. See [docs/en/scaffold.md](docs/en/scaffold.md).
+It rebrands the app and can drop the extra locales, and the mock API with the Playwright suite that drives it. `pnpm scaffold --dry-run` prints the plan first. See [docs/en/scaffold.md](docs/en/scaffold.md).
 
 ### Demo accounts
 
@@ -104,7 +115,7 @@ More things to try:
 - **Audit trail** — `/audit-logs` filters by action, entity and date range. Every change made in the demo is recorded there.
 - **Departments** — `/departments?dept=dept-engineering` deep-links to a node and lists its members, including descendants.
 - **Failure screens** — `/401`, `/500`, `/503` and `/maintenance` are directly reachable, and the offline banner appears when you throttle the network.
-- **Component catalog** — `/components` searches all 83 shared components, filters by layer and renders a live demo for every one of them; `/ui` keeps the primitive state gallery.
+- **Component docs** — when `VITE_DOCS_URL` names a deployment, the sidebar, the command palette and the wide login layout all open the [documentation site](https://fish-admin-docs.vercel.app) in a new tab, and the retired `/components` and `/ui` paths redirect there instead of 404ing.
 
 ## What is inside
 
@@ -114,8 +125,6 @@ More things to try:
 | -------------------- | ------------------------------------------------------------ | ------------------- |
 | `/`                  | Dashboard with KPIs, charts, activity and the product tour   | `dashboard:read`    |
 | `/reports`           | KPI, trend and channel reports with anchors and CSV export   | `report:read`       |
-| `/components`        | Searchable catalog of all 83 shared components               | signed in           |
-| `/ui`                | UI playground: 40 primitive demos, states and overlays       | signed in           |
 | `/projects`          | Project portfolio: filters, board/list, wizard and paging    | `project:read`      |
 | `/projects/$id`      | Project workspace: tasks, calendar, budget and retrospective | `project:read`      |
 | `/workflows`         | Approval center: my requests, awaiting me and all            | `workflow:read`     |
@@ -145,7 +154,7 @@ More things to try:
 | `/401` `/500` `/503` | Expired session, server error, unavailable service           | public              |
 | `/maintenance`       | Planned-downtime screen                                      | public              |
 
-Unknown paths render a 404 inside the shell when you are signed in; unauthenticated visitors are redirected to `/login?redirect=…` and returned to the original URL after signing in. Every page above is guarded by `beforeLoad`, and a throwing route falls back to an error boundary with a retry action instead of a blank screen.
+Unknown paths render a 404 inside the shell when you are signed in; unauthenticated visitors are redirected to `/login?redirect=…` and returned to the original URL after signing in. The two retired catalog paths are the exception: with `VITE_DOCS_URL` set they leave the app for the docs site, and without it they 404 like any other unknown path. Every page above is guarded by `beforeLoad`, and a throwing route falls back to an error boundary with a retry action instead of a blank screen.
 
 ### Roles and permissions
 
@@ -259,62 +268,75 @@ Access tokens are fake base64url JWTs valid for 15 minutes; refresh tokens last 
 ## Project structure
 
 ```text
-src/
-├─ routes/                 # File-based routes; routeTree.gen.ts is generated
-├─ features/               # auth, dashboard, users, roles, permissions, departments, audit, projects, files, reports, notifications, integrations, profile, security, settings, playground
+packages/ui/                 # @fish-admin/react — the component library
+├─ src/components/           # ui (47 primitives), enterprise (30), pro (6), data-table, common
+├─ src/locales/              # en + zh-CN strings the components ship with
+├─ src/styles/               # tokens, utilities, preflight and the app-owned base
+├─ registry.json             # the 83-entry inventory gen-api reads
+└─ test/                     # package-level tests
+apps/docs/                   # the Rspress documentation site
+├─ docs/{en,zh}/             # 83 component pages, guides and the versions page
+├─ demos/<component>/        # the live example each page renders
+├─ generated/                # registry.json + the API tables, produced by pnpm gen-api
+└─ public/screenshots/       # the README and docs hero shots
+src/                         # the template
+├─ routes/                   # File-based routes; routeTree.gen.ts is generated
+├─ features/                 # auth, dashboard, users, roles, permissions, departments, audit, projects, files, reports, notifications, integrations, profile, security, settings
 ├─ components/
-│  ├─ ui/                  # 47 shadcn/ui primitives
-│  ├─ enterprise/          # 30 business components (trees, pickers, upload, feedback…)
-│  ├─ pro/                 # DetailPage, EditableTable, ImportWizard, ProForm, QueryFilter and ProTable compositions
-│  ├─ layout/              # AppShell, sidebar, header, notification bell, breadcrumbs, command menu, offline banner
-│  ├─ data-table/          # Table, pagination, column visibility and ordering
-│  └─ common/              # Can, PageHeader, EmptyState, StatusScreen, theme/language toggles
-├─ config/                 # env, permissions, audit actions, navigation, theme presets, component registry
-├─ lib/                    # API client, auth helpers, i18n, formatting, CSV, online status
-├─ stores/                 # Auth, theme and UI Zustand stores
-├─ locales/{en,zh-CN}/     # Lazy-loaded namespaces
-├─ mocks/                  # MSW handlers, seeded database, workspace seed and fake auth
+│  ├─ layout/                # AppShell, sidebar, header, notification bell, breadcrumbs, command menu, offline banner
+│  └─ common/                # Can, EmptyState, StatusScreen, theme/language toggles
+├─ config/                   # env, permissions, audit actions, navigation, theme presets
+├─ lib/                      # API client, auth helpers, i18n, formatting, CSV, online status
+├─ stores/                   # Auth, theme and UI Zustand stores
+├─ locales/{en,zh-CN}/       # Lazy-loaded namespaces
+├─ mocks/                    # MSW handlers, seeded database, workspace seed and fake auth
 └─ styles/index.css
-e2e/                       # Playwright specs
-docs/{en,zh-CN}/           # Documentation
+e2e/                         # Playwright specs
+docs/{en,zh-CN}/             # Repository documentation (the site above is the product one)
 ```
 
 ## Scripts
 
-| Command                             | Description                                               |
-| ----------------------------------- | --------------------------------------------------------- |
-| `pnpm scaffold`                     | Rebrand the clone and drop the parts you do not want      |
-| `pnpm dev`                          | Start Vite with the mock API enabled                      |
-| `pnpm build`                        | Type-check and build for production (mock off by default) |
-| `pnpm build:demo`                   | Build with the mock API enabled, as used by the live demo |
-| `pnpm preview`                      | Preview the production build                              |
-| `pnpm lint` / `pnpm lint:fix`       | Run ESLint                                                |
-| `pnpm format` / `pnpm format:check` | Run Prettier                                              |
-| `pnpm typecheck`                    | Run TypeScript without emitting                           |
-| `pnpm test` / `pnpm test:watch`     | Run unit tests                                            |
-| `pnpm test:coverage`                | Unit tests with a coverage report                         |
-| `pnpm test:e2e`                     | Build the demo, then run E2E, axe and performance specs   |
-| `pnpm perf`                         | Run only the runtime performance budgets                  |
-| `pnpm size`                         | Build production and check gzip budgets                   |
-| `pnpm test:visual:docker`           | Compare screenshots in the Playwright Docker image        |
+| Command                             | Description                                                |
+| ----------------------------------- | ---------------------------------------------------------- |
+| `pnpm scaffold`                     | Rebrand the clone and drop the parts you do not want       |
+| `pnpm dev`                          | Start Vite with the mock API enabled                       |
+| `pnpm build`                        | Type-check and build for production (mock off by default)  |
+| `pnpm build:demo`                   | Build with the mock API enabled, as used by the live demo  |
+| `pnpm preview`                      | Preview the production build                               |
+| `pnpm build:ui` / `pnpm test:ui`    | Build / test `@fish-admin/react`                           |
+| `pnpm check:package`                | Fail unless the barrel exports every registry entry        |
+| `pnpm gen-api` / `gen-api:check`    | Regenerate / verify the docs API tables and coverage floor |
+| `pnpm docs:dev` / `docs:build`      | Run / build the documentation site                         |
+| `pnpm docs:check`                   | Fail on a missing page, demo or registry drift             |
+| `pnpm test:docs`                    | Build the site, then run its Playwright suite              |
+| `pnpm lint` / `pnpm lint:fix`       | Run ESLint                                                 |
+| `pnpm format` / `pnpm format:check` | Run Prettier                                               |
+| `pnpm typecheck`                    | Run TypeScript without emitting                            |
+| `pnpm test` / `pnpm test:watch`     | Run unit tests                                             |
+| `pnpm test:coverage`                | Unit tests with a coverage report                          |
+| `pnpm test:e2e`                     | Build the demo, then run E2E, axe and performance specs    |
+| `pnpm perf`                         | Run only the runtime performance budgets                   |
+| `pnpm size`                         | Build production and check gzip budgets                    |
+| `pnpm test:visual:docker`           | Compare screenshots in the Playwright Docker image         |
 
 ## Quality gates
 
-Every push and pull request runs five gates in CI:
+CI runs these gates on every push and pull request:
 
-- **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans thirteen flows (login in light, dark and Simplified Chinese; dashboard in both themes; users list and create dialog; user detail; roles and permission matrix; audit log; security and settings; projects board, create dialog and project detail; file library, upload drawer and preview; notification inbox and preferences; reports and the integration form; component catalog and UI playground) against WCAG 2.1 A/AA with axe. Any violation fails the run.
+- **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans twelve flows (login in light, dark and Simplified Chinese; dashboard in both themes; users list and create dialog; user detail; roles and permission matrix; audit log; security and settings; projects board, create dialog and project detail; file library, upload drawer and preview; notification inbox and preferences; reports and the integration form) against WCAG 2.1 A/AA with axe. Any violation fails the run. The documentation site has its own axe scan in `e2e-docs/axe-full.spec.ts`.
 - **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html`, together with the shell's blocking `/theme-bootstrap.js` — 27 chunks totalling 172.4 KB — because that set, not the entry file alone, is what the browser downloads before it paints. The CSS total counts the linked `/boot.css` as well.
 - **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
-- **Visual regression** — nineteen screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, catalog hero, projects, project detail, files, reports in both themes, notifications, integrations, approval center, approval detail and dictionaries) are compared against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable.
-
-- **Security headers** — `e2e/security.spec.ts` checks that `/`, `/index.html`, a hashed asset and the two shell files all carry the identical header set, then walks sign-in, dashboard, users, reports, files, the component catalog and settings with a `securitypolicyviolation` listener that must stay empty. See [docs/en/security-headers.md](docs/en/security-headers.md).
+- **Visual regression** — eighteen template screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, projects, project detail, files, reports in both themes, notifications, integrations, approval center, approval detail and dictionaries) plus eight docs baselines (home, installation, one primitive and one pro page, each in light and dark) are compared against images rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable. `e2e/visual/readme-shots.spec.ts` lives in the same run but only writes files, and only when `README_SHOTS=1`.
+- **Security headers** — `e2e/security.spec.ts` checks that `/`, `/index.html`, a hashed asset and the two shell files all carry the identical header set, then walks sign-in, dashboard, users, reports, files, projects and settings with a `securitypolicyviolation` listener that must stay empty. See [docs/en/security-headers.md](docs/en/security-headers.md).
+- **Documentation** — `pnpm gen-api:check` fails when the generated props tables drift from the package source, `pnpm docs:check` fails when a registry entry has no page, no demo or no translation, and `pnpm test:docs` runs the site's own Playwright suite.
 - **Supply chain** — `pnpm audit --audit-level=high` fails the quality job, CodeQL analyses JavaScript and TypeScript on every push, pull request and weekly schedule, [`.github/dependabot.yml`](.github/dependabot.yml) opens grouped minor/patch and major pull requests for npm and for the actions, every workflow runs on a read-scoped token (`permissions: contents: read`), and the build job uploads the bundle it measured.
 
-Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`.
+Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`. The docs site has the same pair under `pnpm test:docs:visual` and `pnpm test:docs:visual:docker`.
 
 ## Connect your own backend
 
-1. Set `VITE_API_BASE_URL=https://your-api.example.com`, and `VITE_ENABLE_MOCK=false` too if you want the dev server to stop mocking — builds already leave it off.
+1. Set `VITE_API_BASE_URL=https://your-api.example.com`, and `VITE_ENABLE_MOCK=false` too if you want the dev server to stop mocking — builds already leave it off. `VITE_DOCS_URL` is optional: name a documentation deployment and the shell, the command palette and the wide login layout gain the Component docs entry.
 2. Remove the mock bootstrap block in `src/main.tsx`, then delete `src/mocks` and `public/mockServiceWorker.js`.
 3. Implement the endpoints in [docs/en/api-integration.md](docs/en/api-integration.md). You can keep the response shapes and adjust only the base URL while developing.
 4. Enforce every permission on the server. The client checks improve UX; they do not protect your data.
@@ -331,6 +353,10 @@ Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).
 
 ## Documentation
 
+**Component documentation: <https://fish-admin-docs.vercel.app>** — 83 pages in English and Chinese, each with a live demo, the import path and the generated props table, plus the installation, quick-start and theming guides.
+
+The pages below document the template itself:
+
 - [Architecture](docs/en/architecture.md) — boot sequence, routing, data flow, theming and i18n.
 - [RBAC](docs/en/rbac.md) — permission model, guards, adding a permission.
 - [Account lifecycle](docs/en/account-lifecycle.md) — sign-up, verification, 2FA, sessions, failure screens and offline behaviour.
@@ -340,7 +366,7 @@ Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).
 - [API integration](docs/en/api-integration.md) — contract, auth flow, replacing the mock.
 - [Deployment](docs/en/deployment.md) — Vercel, Docker, nginx and service-worker pitfalls.
 - [Security headers](docs/en/security-headers.md) — the exact CSP, what `script-src 'self'` forced in the code, and how to verify it.
-- [Scaffold](docs/en/scaffold.md) — turn a clone into your own app: rebrand, drop the catalog, drop the locales, drop the mock API.
+- [Scaffold](docs/en/scaffold.md) — turn a clone into your own app: rebrand, drop the locales, drop the mock API.
 - [中文文档](docs/zh-CN/architecture.md)
 
 ## Contributing

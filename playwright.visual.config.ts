@@ -3,8 +3,11 @@ import { defineConfig, devices } from '@playwright/test'
 // Baselines are rendered on Linux inside
 // mcr.microsoft.com/playwright:v1.64.1-noble. Regenerate them with
 // `pnpm test:visual:docker --update` before committing layout changes.
+// readme-shots.spec.ts is listed because it shares this runner's server, but it
+// compares nothing: with README_SHOTS=1 it writes PNGs into the docs assets.
 export default defineConfig({
   testDir: './e2e/visual',
+  testMatch: ['pages.spec.ts', 'readme-shots.spec.ts'],
   snapshotPathTemplate: '{testDir}/__screenshots__/{testFileName}/{arg}{-snapshotSuffix}{ext}',
   fullyParallel: false,
   workers: 1,
