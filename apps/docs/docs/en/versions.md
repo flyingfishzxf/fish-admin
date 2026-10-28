@@ -5,11 +5,11 @@ description: Package, template and documentation versions.
 
 # Versions
 
-| Surface             | Version | Status                                                          |
-| ------------------- | ------- | --------------------------------------------------------------- |
-| `@fish-admin/react` | 0.1.0   | Repository only; not published to npm yet.                      |
-| Template            | 1.7.0   | Released; running at <https://fish-admin.vercel.app>.           |
-| Docs site           | M1      | Infrastructure and three pilot pages. 83 pages are in progress. |
+| Surface             | Version | Status                                                             |
+| ------------------- | ------- | ------------------------------------------------------------------ |
+| `@fish-admin/react` | 0.1.0   | Repository only; not published to npm yet.                         |
+| Template            | 2.0.0   | Pending release; <https://fish-admin.vercel.app> still runs 1.7.0. |
+| Docs site           | 0.1.0   | Repository only; deployed with the 2.0.0 release.                  |
 
 The package follows semantic versioning after its first public release. Until then the minor
 version can change between repository checkpoints.

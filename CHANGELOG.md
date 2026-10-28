@@ -4,6 +4,70 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-10-28
+
+Delivered against the [component library plan](./docs/plans/component-library.md).
+
+### Added
+
+- **`@fish-admin/react`.** The 83 components that used to live in `src/components` are now a workspace
+  package under `packages/ui`, and the template is its first consumer. It ships ESM with generated
+  types (`dist/index.js`, `dist/index.d.ts`), a stylesheet split into `dist/styles.css` and a separate
+  `dist/preflight.css`, React 19 as its only peer, and an `i18n` seam that carries the component
+  strings in English and Chinese. `pnpm build:ui` builds it, `pnpm test:ui` runs its tests and
+  `pnpm check:package` verifies the 83 exports and the publishable file list.
+- **Documentation site.** A bilingual Rspress 2 site in `apps/docs` is the front door: 83 component
+  pages in English and Chinese, 167 live demos with a source toggle, props tables generated from the
+  package source, search, dark mode, a component index and a versions page. The template's own
+  `docs/{en,zh-CN}` are published beside it under `/template`. `pnpm docs:dev` runs it locally.
+- **Documentation gates.** `pnpm gen-api:check` fails when a generated props table drifts from the
+  package source, `pnpm docs:check` fails when a registry entry has no page, no demo or no
+  translation, and the site carries its own Playwright suite (`pnpm test:docs`), an axe sweep that
+  covers all 83 pages in both locales under `DOCS_FULL_AXE=1`, and eight visual baselines recorded in
+  the same container as the template's. CI builds, checks and tests the site on every push and pull
+  request.
+- **The component registry moved into the package.** `packages/ui/registry.json` is now the single
+  inventory — 83 entries, 47 primitives / 30 enterprise / 6 pro — read by the docs pipeline and
+  guarded by `packages/ui/src/registry.test.ts`, which requires unique kebab-cased ids, one barrel
+  export each, and an absolute `usedIn` template route per entry.
+- **A documented seam to the site.** `VITE_DOCS_URL` adds a Component docs entry to the sidebar, the
+  command palette and the wide login layout, and the retired `/components` and `/ui` paths redirect to
+  the matching docs page. Without the variable the template emits no external link at all, which
+  `e2e/docs-link.spec.ts` asserts.
+
+### Changed
+
+- **The in-app component catalog and the UI playground are gone** (breaking). `/components`, `/ui`,
+  `src/features/playground`, `src/config/components.ts` and the catalog-only locale namespaces were
+  deleted — 57 files, 10 448 lines — together with `e2e/components-catalog.spec.ts`,
+  `e2e/ui-playground.spec.ts` and one visual baseline. The component examples are pages on the
+  documentation site now; the sidebar loses two entries, which is why every template baseline was
+  re-recorded.
+- **The template imports its primitives from the package.** Every `@/components/ui/*` import was
+  rewritten to `@fish-admin/react`, and `src/styles/index.css` now pulls the token and utility layers
+  out of `packages/ui/src/styles` instead of keeping a local copy.
+- **Positioning.** `README.md`, `README.zh-CN.md`, the `index.html` meta tags and `public/og.png`
+  present the component library first and the template as its consumer. The four screenshots the
+  READMEs embed are re-captured from the Playwright container into
+  `apps/docs/docs/public/screenshots/`, so the site serves the same files at `/screenshots/`.
+- **Bundle figures re-measured at 2.0.0.** First paint is 31 chunks / 175.2 kB gzip against the
+  unchanged 180 kB budget; total JavaScript is 707 kB gzip and all CSS 22.0 kB. The catalog's demo
+  chunks left the bundle with the pages. See [deployment](docs/en/deployment.md).
+- **The template documentation describes the new information architecture.** The stack tables name the
+  package instead of a local `src/components/ui`, the route tree drops the two retired routes, the
+  navigation allowlist gained `/workflows` and `/dictionaries`, and `CONTRIBUTING.md` covers the docs
+  site, the generated template pages and the README-shot mode.
+
+### Fixed
+
+- The README screenshots were written to a path resolved against the process CWD, so inside the
+  Docker run they escaped the bind mount and no file appeared. `e2e/visual/readme-shots.spec.ts` now
+  derives the directory from its own URL, shoots each page at the viewport it is displayed in, and
+  waits for Recharts to finish animating instead of freezing a half-drawn line.
+- Stale counts in the documentation: the READMEs claimed five quality gates while listing six,
+  `CONTRIBUTING.md` claimed sixteen screenshots for a suite that compares eighteen, and the demo
+  account list named an editor where the login page offers administrator, manager and viewer.
+
 ## [1.7.0] - 2026-10-27
 
 Delivered against the [1.7.0 plan](./docs/plans/1.7.0.md).

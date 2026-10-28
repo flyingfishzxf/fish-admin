@@ -1,9 +1,9 @@
 {
   "name": "fish-admin",
   "private": true,
-  "version": "1.7.0",
+  "version": "2.0.0",
   "type": "module",
-  "description": "A modern open-source admin dashboard starter built with React, TanStack Router and shadcn/ui.",
+  "description": "An MIT-licensed React component library — 83 documented components — plus the RBAC admin template built on them.",
   "license": "MIT",
   "engines": {
     "node": ">=22"

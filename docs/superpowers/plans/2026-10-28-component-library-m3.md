@@ -1454,11 +1454,11 @@ git commit -m "docs(template): describe the docs site as the component front doo
 - Consumes: everything above.
 - Produces: template `2.0.0`, package `0.1.0` (already declared), docs status text.
 
-- [ ] **Step 1: Bump the template version**
+- [x] **Step 1: Bump the template version**
 
 `package.json:4` `"version": "1.7.0"` → `"2.0.0"`. That is the single source: `vite.config.ts:23` injects `__APP_VERSION__`, `src/config/app.ts:1` re-exports it, and the sidebar, shell footer and settings screen read it.
 
-- [ ] **Step 2: Re-record the visual baselines the version appears in**
+- [x] **Step 2: Re-record the visual baselines the version appears in**
 
 The sidebar and footer render `APP_VERSION`, so the version string is inside the screenshots:
 
@@ -1468,7 +1468,7 @@ pnpm test:visual:docker --update && pnpm test:visual:docker
 
 Expected: 16 updated, then zero diff.
 
-- [ ] **Step 3: Update the docs versions page (both languages)**
+- [x] **Step 3: Update the docs versions page (both languages)**
 
 `apps/docs/docs/en/versions.md:8-12` becomes:
 
@@ -1482,7 +1482,7 @@ Expected: 16 updated, then zero diff.
 
 Write the package row only after Task 10's npm publish succeeds; until then keep `Repository only; not published to npm yet.` and say so in the execution record. `apps/docs/docs/zh/versions.md` gets the same table in Chinese.
 
-- [ ] **Step 4: Add the CHANGELOG entry**
+- [x] **Step 4: Add the CHANGELOG entry**
 
 Prepend after the preamble at [CHANGELOG.md:6](../../../CHANGELOG.md#L6), matching the existing style (`### Added` / `### Changed` / `### Fixed`, bold lead-ins, ~100-column wrap, a `See [...](...)` link per cluster):
 
@@ -1509,7 +1509,7 @@ Delivered against the [component library plan](./docs/plans/component-library.md
 
 Fill every `...` from the actual commits made in Tasks 1-7 — no invented entries.
 
-- [ ] **Step 5: Verify the version surfaces**
+- [x] **Step 5: Verify the version surfaces**
 
 ```bash
 pnpm build && node -e "console.log(require('./package.json').version)"
@@ -1518,12 +1518,48 @@ grep -rn "1\.7\.0" src apps/docs/docs README.md README.zh-CN.md | grep -v CHANGE
 
 Expected: `2.0.0`, and no stale `1.7.0` outside the changelog history.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
 git commit -m "chore: version the template for the component library release"
 ```
+
+**Measured, and where this task departed from the plan.**
+
+- Step 2's expectation was wrong in a way worth recording: `--update` reported 16 passed and rewrote
+  nothing, because `maxDiffPixelRatio: 0.001` in [playwright.visual.config.ts](../../../playwright.visual.config.ts)
+  tolerates about 2 600 pixels on a full-page shot and the two version strings together move far
+  fewer than that. The committed baselines therefore kept saying `Version 1.7.0` while the app under
+  test said `2.0.0`, and the check run passed anyway. All 18 baselines were deleted and re-recorded,
+  which is the only way a version bump can be made to show up; the new `dashboard-light-linux.png`
+  reads `Version 2.0.0` / `2.0.0 · MIT License`, and `login-linux.png` is byte-identical because the
+  login page has no shell. The consequence for future releases is the same: **a version bump alone
+  will not fail the visual gate and will not refresh the baselines on its own.**
+- The four README screenshots were re-captured in the same container run with `-e README_SHOTS=1`
+  (`MSYS_NO_PATHCONV=1` still required from Git Bash); `dashboard`, `users-tablet` and `workflows`
+  changed, `roles-mobile` did not, because the collapsed rail shows no footer.
+- Step 3's table was not usable as written. `@fish-admin/react` is still unpublished, and the docs
+  site has no deployment yet, so `Published to npm.` / `Docs site 1.0.0 Running at …` would have been
+  false. The rows now read `Repository only; not published to npm yet.`, `Pending release;
+<https://fish-admin.vercel.app> still runs 1.7.0.` and `Repository only; deployed with the 2.0.0
+release.` — the third row takes its version from `apps/docs/package.json` (`0.1.0`) rather than
+  inventing `1.0.0`. The old `Docs site | M1 | Infrastructure and three pilot pages` row predated M2
+  and understated the site by 80 pages.
+- The bundle table in `docs/{en,zh-CN}/deployment.md` was still measured at v1.6.0, so it was
+  re-measured against this build: first paint 175.2 kB / 31 eager chunks for `pnpm build` and
+  176.1 kB / 35 for `pnpm build:demo`, entry 309 kB (95) and 314 kB (97), `chart-*` 357 kB (103),
+  total JavaScript 707 kB / 1,042 kB gzip, CSS 143 kB (22.0), `browser-*` 929 kB (333). The claim
+  that first paint is _identical_ in both builds turned out to be false — the demo build preloads
+  `react`, `env`, `createLucideIcon`, `boxes` and `integrations` through the mock graph — so the
+  sentence now states the measured difference and its cause. Both READMEs moved from `27 chunks /
+172.4 KB` to `31 chunks / 175.2 KB`.
+- `package.json`'s own `description` still sold a dashboard starter; it now matches the README lead.
+  `scripts/scaffold.mjs` overwrites that field without matching it, so no substitution literal moved.
+- Step 5's grep is clean by design: the only remaining `1.7.0` strings are `docs/{en,zh-CN}/tables.md`
+  (a capability introduced in that release) and the versions page's own "still runs 1.7.0" status.
+- `apps/docs/theme/ComponentMeta.tsx:6` was verified, not edited: `VERSION = '0.1.0'` is the package
+  version, which this task deliberately leaves alone.
 
 ---
 
