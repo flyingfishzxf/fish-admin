@@ -54,7 +54,7 @@ A production server emails a link with a single-use token and returns an opaque 
 | Route          | Tone        | Reach                                                           |
 | -------------- | ----------- | --------------------------------------------------------------- |
 | `/401`         | warning     | Session expired or revoked; signs out and sends you to `/login` |
-| `/500`         | destructive | Server error, or previewed from Settings and `/ui`              |
+| `/500`         | destructive | Server error, or previewed from Settings                        |
 | `/503`         | warning     | Service unavailable                                             |
 | `/maintenance` | muted       | Planned downtime                                                |
 

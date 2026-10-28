@@ -1390,7 +1390,7 @@ git commit -m "docs: present the component library as the front door"
 - Consumes: the post-deletion tree from Task 2 and the screenshots from Task 6.
 - Produces: docs-site content that matches the code.
 
-- [ ] **Step 1: Find every stale claim**
+- [x] **Step 1: Find every stale claim**
 
 ```bash
 grep -rn "components catalog\|component catalog\|/components\|/ui\b\|playground\|COMPONENT_COUNTS\|83 components\|catalog" docs/en docs/zh-CN apps/docs/template-index CONTRIBUTING.md | grep -v "^docs/superpowers"
@@ -1398,11 +1398,11 @@ grep -rn "components catalog\|component catalog\|/components\|/ui\b\|playground\
 
 Expected: the architecture route tree (48-49, 195, 213, 215), deployment chunk table (121, 126-131, 137), rbac (35), api-integration (394, 404), dictionaries (139), account-lifecycle (59), scaffold (5, 22, 32, 45, 77), plus the template index pages.
 
-- [ ] **Step 2: Rewrite each hit in place**
+- [x] **Step 2: Rewrite each hit in place**
 
 Rules: describe the docs site as the place component examples live; keep the English and Chinese files structurally aligned (same headings, same table rows); where a page previously said "open `/components`", say "open the component page at the docs site" and link `/components/button` (docs-relative) rather than a template route. `docs/{en,zh-CN}/scaffold.md` loses the whole `--catalog` paragraph — the option no longer exists — and its "drops the whole browser subsystem" list must drop `components-catalog.spec.ts` / `ui-playground.spec.ts` and `components-linux.png`.
 
-- [ ] **Step 3: Update the template index pages with a screenshot**
+- [x] **Step 3: Update the template index pages with a screenshot**
 
 `apps/docs/template-index/{en,zh}.md` are docs-owned (not synced). Add the dashboard image using the docs-absolute path so the single copy serves both README and site:
 
@@ -1412,11 +1412,11 @@ Rules: describe the docs site as the place component examples live; keep the Eng
 
 and keep the RBAC caveat line.
 
-- [ ] **Step 4: Update CONTRIBUTING.md**
+- [x] **Step 4: Update CONTRIBUTING.md**
 
 The visual-regression section still says `e2e/visual/pages.spec.ts` compares sixteen screenshots. It is now sixteen minus the catalog hero, plus a separate README-shot mode. Rewrite that paragraph to state: 16 baselines compared by `pnpm test:visual:docker`, four README PNGs written by `README_SHOTS=1`, and that the docs baselines live in `e2e-docs/__screenshots__/visual.spec.ts/`.
 
-- [ ] **Step 5: Verify the docs site builds with the new content**
+- [x] **Step 5: Verify the docs site builds with the new content**
 
 ```bash
 pnpm docs:build && pnpm docs:check
@@ -1424,12 +1424,22 @@ pnpm docs:build && pnpm docs:check
 
 Expected: build succeeds (dead-link checking is on, so a stale `/components` link inside a template page fails the build) and `docs:check` reports 20 template pages.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add -A
 git commit -m "docs(template): describe the docs site as the component front door"
 ```
+
+**Measured, and where this task departed from the plan.**
+
+- Step 1's grep listed `scaffold.md` (5, 22, 32, 45, 77) as a target. It was already correct — Task 2 rewrote the `--catalog` paragraph in the same commit that deleted the option, so the only scaffold hit left was the sentence explaining why there is no catalog step.
+- The `docs/{en,zh-CN}` stack tables claimed the template owns its primitives ("Tailwind CSS 4 with shadcn/ui and Radix primitives"). Both now carry a `Components` row pointing at `@fish-admin/react` (`packages/ui`), and the i18n row says component strings come from the package. This was not in the plan's hit list; `CONTRIBUTING.md` had the same error at its `src/components/ui` bullet, and that directory no longer exists (`ls src/components` → `common`, `layout`).
+- Step 3's image path was wrong, and the build said so: `Dead images found in apps/docs/docs/{en,zh}/template/index.md: "/screenshots/dashboard.png" → apps/docs/docs/public/screenshots/dashboard.png`. Rspress resolves an absolute image URL against `root` (which is `apps/docs/docs`), not the app folder, so the four PNGs moved from `apps/docs/public/screenshots/` to `apps/docs/docs/public/screenshots/` with `git mv`. `readme-shots.spec.ts`, both READMEs (four image lines plus the tree entry) and the CONTRIBUTING shot-mode paragraph were repointed in the same commit. `doc_build/screenshots/` now exists, which is what makes the READMEs' "served by the documentation site under `/screenshots/`" claim true.
+- The index pages had no `##` headings, so their outline rendered as an empty `目录` block while every other page on the site fills it. Added `## Entry points` / `## What this section covers` and the Chinese pair; the outline now renders two links on both locales.
+- Step 4's "16 baselines" wording was already superseded by Task 6's measured count (18 screenshots across 16 tests); CONTRIBUTING kept that correction and gained the docs-baseline sentence, the README-shot paragraph and a Documentation section describing the sync direction (`docs/{en,zh-CN}` → `apps/docs/docs/{en,zh}/template`, generated and gitignored).
+- The "Adding a language" steps were stale in a way the grep could not see: step 4 as written told a contributor to hand-edit `packages/ui/src/locales/<locale>.ts`, but those two files carry a `Generated by scripts/extract-ui-messages.mjs — do not edit by hand` header, and the package has no locale-parity test — the extractor throws on a missing key instead. Step 6 said otherwise; it now names `src/lib/locales.test.ts` for the template and the extractor for the package.
+- Browser verification, not just a build: served `doc_build` with `rspress preview --port 4176` and drove it with Playwright. `/screenshots/dashboard.png` reports `naturalWidth > 0` on both index pages, no response in the run returned ≥ 400, and the outline lists the new headings. One finding worth recording for later tasks: the unprefixed route follows `navigator.language` — `/template/index.html` on a `zh-CN` browser ends up at `/zh/template/index.html` — so docs screenshots and e2e must pin the context locale.
 
 ---
 

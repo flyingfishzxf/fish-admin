@@ -118,7 +118,7 @@ If the app lives at `https://example.com/admin/`, set `base: '/admin/'` in `vite
 
 ## Bundle layout
 
-`autoCodeSplitting` gives each route its own chunk, so the chart library, the `/components` catalog, the `/ui` playground and the mock API are only fetched when something actually needs them. `pnpm size` enforces that split; the figures below are measured by the budget script (gzip level 9) at v1.6.0.
+`autoCodeSplitting` gives each route its own chunk, so the chart library and the mock API are only fetched when something actually needs them. `pnpm size` enforces that split; the figures below are measured by the budget script (gzip level 9) at v1.6.0.
 
 | Measure                                      | `pnpm build`  | `pnpm build:demo` | Budget              |
 | -------------------------------------------- | ------------- | ----------------- | ------------------- |
@@ -134,7 +134,7 @@ The first-paint budget counts the entry chunk, _every_ `modulepreload` chunk Vit
 
 The budgets are enforced against `pnpm build`, not the demo build. The demo build adds `browser-*` (907 kB, 327 gzip — MSW plus the seeded workspace database), which on its own breaks the largest-chunk and total-JS budgets. First paint is identical in both builds, because that chunk is lazy and `src/main.tsx` imports it only behind the mock flag: an explicit `VITE_ENABLE_MOCK` wins, otherwise the dev server turns it on and a build turns it off. `pnpm build` tree-shakes the branch away and drops `mockServiceWorker.js` from the output, so `ls dist/assets | grep browser`, `ls dist | grep mock` and `grep -r mockServiceWorker dist` all come back empty. Vite still prints a chunk-size warning for it in a demo build, which is expected.
 
-The other large lazy chunks are the ones you would expect: `chart-*` is recharts, shared by the dashboard, `/reports` and the chart demos on `/components`; the catalog and the playground split into their own demo chunks. None of them is fetched on the way to `/users`.
+The other large lazy chunks are the ones you would expect: `chart-*` is recharts, shared by the dashboard and `/reports`. The component catalog and the UI playground used to own demo chunks of their own; they left with the in-app pages, so the bundle no longer carries them. None of the remaining chunks is fetched on the way to `/users`.
 
 Run `pnpm build && pnpm preview` and check the Network panel before shipping: the first paint should load only the shell, auth and locale chunks.
 

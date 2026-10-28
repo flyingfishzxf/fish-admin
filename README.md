@@ -20,11 +20,11 @@ FishAdmin is two things: `@fish-admin/react`, 83 documented components with ligh
 
 ## Preview
 
-![FishAdmin dashboard](apps/docs/public/screenshots/dashboard.png)
+![FishAdmin dashboard](apps/docs/docs/public/screenshots/dashboard.png)
 
-| Users on a 1024 px viewport                                                        | Roles on a 375 px viewport                                                       | Approval center                                                |
-| ---------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| ![Users table on a tablet viewport](apps/docs/public/screenshots/users-tablet.png) | ![Roles page on a phone viewport](apps/docs/public/screenshots/roles-mobile.png) | ![Approval center](apps/docs/public/screenshots/workflows.png) |
+| Users on a 1024 px viewport                                                             | Roles on a 375 px viewport                                                            | Approval center                                                     |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| ![Users table on a tablet viewport](apps/docs/docs/public/screenshots/users-tablet.png) | ![Roles page on a phone viewport](apps/docs/docs/public/screenshots/roles-mobile.png) | ![Approval center](apps/docs/docs/public/screenshots/workflows.png) |
 
 The same four files are served by the [documentation site](https://fish-admin-docs.vercel.app) under `/screenshots/`.
 
@@ -278,7 +278,7 @@ apps/docs/                   # the Rspress documentation site
 ├─ docs/{en,zh}/             # 83 component pages, guides and the versions page
 ├─ demos/<component>/        # the live example each page renders
 ├─ generated/                # registry.json + the API tables, produced by pnpm gen-api
-└─ public/screenshots/       # the README and docs hero shots
+└─ docs/public/screenshots/  # the README and docs hero shots
 src/                         # the template
 ├─ routes/                   # File-based routes; routeTree.gen.ts is generated
 ├─ features/                 # auth, dashboard, users, roles, permissions, departments, audit, projects, files, reports, notifications, integrations, profile, security, settings

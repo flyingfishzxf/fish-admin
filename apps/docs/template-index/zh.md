@@ -8,9 +8,15 @@ description: FishAdmin 中后台模板，组件库的第一个使用者。
 模板是组件库的第一个使用者，也是它的活样例。它是一套完整的中后台应用——路由、登录、mock API、
 字典、审计日志和带权限的导航——全部由本站记录的组件搭建。
 
+![FishAdmin 工作台](/screenshots/dashboard.png)
+
+## 入口
+
 - **在线演示：** <https://fish-admin.vercel.app>
 - **源码：** <https://github.com/flyingfishzxf/fish-admin>
-- **演示账号：** 登录页列出管理员、编辑和只读三种账号。
+- **演示账号：** 登录页列出管理员、经理与只读三种账号。
+
+## 本节说明
 
 本节说明应用如何组装：启动与路由、API 契约、表格、工作流、字典、账号生命周期、部署与脚手架。
 

@@ -1,19 +1,20 @@
 # Architecture
 
-FishAdmin is a single-page React application. There is no server in this repository: the demo API runs in a Service Worker, and the same client can point at a real backend through one environment variable.
+FishAdmin is a single-page React application built on the `@fish-admin/react` component package. There is no server in this repository: the demo API runs in a Service Worker, and the same client can point at a real backend through one environment variable.
 
 ## Stack at a glance
 
-| Concern      | Implementation                                     |
-| ------------ | -------------------------------------------------- |
-| Rendering    | React 19 + Vite 8                                  |
-| Routing      | TanStack Router, file-based, typed search params   |
-| Server state | TanStack Query                                     |
-| Client state | Zustand                                            |
-| Styling      | Tailwind CSS 4 with shadcn/ui and Radix primitives |
-| Forms        | React Hook Form + Zod                              |
-| Mock backend | MSW 2 + Faker + `localStorage`                     |
-| i18n         | i18next with lazy JSON namespaces                  |
+| Concern      | Implementation                                                             |
+| ------------ | -------------------------------------------------------------------------- |
+| Rendering    | React 19 + Vite 8                                                          |
+| Routing      | TanStack Router, file-based, typed search params                           |
+| Server state | TanStack Query                                                             |
+| Client state | Zustand                                                                    |
+| Components   | `@fish-admin/react` (`packages/ui`), shadcn/ui on Radix primitives         |
+| Styling      | Tailwind CSS 4                                                             |
+| Forms        | React Hook Form + Zod                                                      |
+| Mock backend | MSW 2 + Faker + `localStorage`                                             |
+| i18n         | i18next with lazy JSON namespaces; component strings come from the package |
 
 ## Boot sequence
 
@@ -45,8 +46,8 @@ __root.tsx              Providers, global 404, error fallback
 └─ _app/route.tsx       Session guard + AppShell (sidebar, bell, offline banner, command palette)
    ├─ index.tsx         /            dashboard:read
    ├─ reports.tsx       /reports     report:read
-   ├─ components.tsx    /components  signed in (searchable component catalog)
-   ├─ ui.tsx            /ui          signed in (component playground)
+   ├─ workflows.tsx     /workflows   workflow:read
+   ├─ workflows_.$id.tsx /workflows/$id workflow:read
    ├─ projects.tsx      /projects    project:read
    ├─ projects_.$id.tsx /projects/$id project:read
    ├─ files.tsx         /files       file:read
@@ -57,13 +58,14 @@ __root.tsx              Providers, global 404, error fallback
    ├─ roles.tsx         /roles       role:read
    ├─ roles_.matrix.tsx /roles/matrix role:read
    ├─ permissions.tsx   /permissions permission:read
+   ├─ dictionaries.tsx  /dictionaries dictionary:read
    ├─ audit-logs.tsx    /audit-logs  audit:read
    ├─ integrations.tsx  /integrations integration:read
    ├─ profile.tsx       /profile     signed in
    ├─ security.tsx      /security    signed in
    ├─ settings.tsx      /settings    signed in
    ├─ 403.tsx           Rendered inside the shell
-   └─ $.tsx             Shell-level 404
+   └─ $.tsx             Shell-level 404; also hands the retired `/components` and `/ui` links to the docs site
 ```
 
 - `_app` checks only that a session exists. Permission checks belong to each leaf route so `/403` itself stays reachable.
@@ -192,7 +194,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Internationalization
 
-- Locale JSON lives in `src/locales/{en,zh-CN}` with 21 namespaces: `common`, `nav`, `auth`, `dashboard`, `projects`, `files`, `reports`, `notifications`, `integrations`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `ui`, `catalog`, `errors`, `validation`.
+- Locale JSON lives in `src/locales/{en,zh-CN}` with 21 namespaces: `common`, `nav`, `auth`, `dashboard`, `projects`, `files`, `reports`, `notifications`, `integrations`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `dictionaries`, `workflows`, `errors`, `validation`. Component strings live in the package, not here — see [`@fish-admin/react` i18n](https://fish-admin-docs.vercel.app/guide/installation).
 - `common`, `nav` and `errors` are bundled; other namespaces are loaded on demand with `i18next-resources-to-backend` and `import.meta.glob`.
 - The initial language comes from `localStorage`, then the browser language, then English.
 - `changeLanguage()` persists the choice, switches i18next and updates `<html lang>`.
@@ -202,7 +204,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Failure handling
 
-- `StatusScreen` renders the shared layout for `/401`, `/403`, `/500`, `/503` and `/maintenance`; each screen gets its own tone, icon, hint and actions, and the pages are reachable from Settings and `/ui`.
+- `StatusScreen` renders the shared layout for `/401`, `/403`, `/500`, `/503` and `/maintenance`; each screen gets its own tone, icon, hint and actions, and the pages are reachable from Settings.
 - `useOnlineStatus()` drives the offline banner in `AppShell`; when connectivity returns it clears and fires a Sonner toast.
 - `src/router.tsx` sets `defaultErrorComponent`, and `_app/route.tsx` overrides it so a crash keeps the sidebar and header instead of unmounting the app.
 - Query-level failures surface through `ErrorState` with a retry button; mutation failures become toasts with the server message when one exists.
@@ -210,7 +212,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 ## Testing strategy
 
 - Unit tests cover permission parsing and wildcard expansion, nav-to-route resolution (including longest-prefix matching), URL search validation for users, audit logs, projects, files, reports and integrations, Zod schemas for users and every auth form, password strength, theme application, locale key parity, API clients, query keys, single-flight refresh, saved-view persistence, online status, `<Can>`, the tree utilities, transfer selection, the tags input, notification preferences, integration headers and deterministic report generation.
-- The component registry test requires all 83 entries to declare a `usedIn` route, rejects `/components` and `/ui`, resolves each route through the generated route tree, and checks that every new business route is referenced.
+- The registry test in the package, `packages/ui/src/registry.test.ts`, requires 83 entries split 47 primitives / 30 enterprise / 6 pro, unique kebab-cased ids, one barrel export per entry, an absolute `usedIn` template route that is never the retired `/components` or `/ui`, and a category-then-id ordering so the generated docs manifests stay diffable.
 - Database migration tests replay v1, v2 and v3 payloads into v4, verify that users, sessions and tokens survive, that the new permissions are merged and that a second migration is idempotent; damaged storage resets instead of crashing.
-- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, CSV import, saved views, density and column controls, URL-restored filters, user detail and tags, department deep links and creation, the role matrix and role CRUD, audit filters and the JSON detail drawer, project filters, the create wizard, archiving, detail tabs, tasks, members, budget and retrospective, file upload, preview, watermark, move and delete, notification read state and preferences, report ranges, anchors and CSV export, integration creation, toggling, payloads and replay, theme/language persistence, the `/components` catalog and `/ui` playground, and the status and offline screens. `e2e/security.spec.ts` adds the header comparison and the `securitypolicyviolation` sweep across the same navigation.
+- Playwright covers login redirects, invalid credentials, sign-out, RBAC for all three roles, API-level `403`, the registration/verification/reset/invite/MFA flows, lockout, user CRUD persistence, bulk actions with undo, CSV import, saved views, density and column controls, URL-restored filters, user detail and tags, department deep links and creation, the role matrix and role CRUD, audit filters and the JSON detail drawer, project filters, the create wizard, archiving, detail tabs, tasks, members, budget and retrospective, file upload, preview, watermark, move and delete, notification read state and preferences, report ranges, anchors and CSV export, integration creation, toggling, payloads and replay, theme/language persistence, the status and offline screens, and the docs seam — `e2e/docs-link.spec.ts` asserts that no external link appears when `VITE_DOCS_URL` is unset. `e2e/security.spec.ts` adds the header comparison and the `securitypolicyviolation` sweep across the same navigation.
 - CI runs format check, lint, typecheck, coverage, `pnpm audit --audit-level=high`, a production build and the E2E suite in parallel jobs, uploads the measured `dist/`, and runs CodeQL on its own schedule; dependabot keeps npm packages and the actions current.

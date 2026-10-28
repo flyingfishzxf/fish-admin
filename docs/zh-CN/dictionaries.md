@@ -136,5 +136,5 @@ Mock 数据库版本为 `6`。从 v5 迁移时会补上 `dictionaryTypes` 与 `d
 
 - `e2e/dictionaries.spec.ts` —— admin 排序后刷新仍在；新建项后在 `/users/user-admin` 看到标签建议；改名后看到新 label；停用后建议消失；viewer 可读但没有新建/编辑入口，也不能切换状态。
 - `src/mocks/db/migrate.test.ts` —— v5 → v6 补种并保留原有数据；v4 → v6 串起两次迁移。
-- `src/config/components.test.ts` —— `switch` 的 `usedIn` 改指 `/dictionaries`，catalog 的"使用位置"保持真实。
+- `packages/ui/src/registry.test.ts` —— `switch` 的 `usedIn` 指向 `/dictionaries`，文档页因此始终链接到一个真实存在的路由。
 - 视觉基线 —— `dictionaries.png`（选中类型、排序把手与引用徽标）。

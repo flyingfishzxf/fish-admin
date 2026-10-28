@@ -20,11 +20,11 @@ FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深
 
 ## 预览
 
-![FishAdmin 工作台](apps/docs/public/screenshots/dashboard.png)
+![FishAdmin 工作台](apps/docs/docs/public/screenshots/dashboard.png)
 
-| 1024px 下的用户列表                                                    | 375px 下的角色页                                                     | 审批中心                                                |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------- |
-| ![平板视口下的用户表格](apps/docs/public/screenshots/users-tablet.png) | ![手机视口下的角色页](apps/docs/public/screenshots/roles-mobile.png) | ![审批中心](apps/docs/public/screenshots/workflows.png) |
+| 1024px 下的用户列表                                                         | 375px 下的角色页                                                          | 审批中心                                                     |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| ![平板视口下的用户表格](apps/docs/docs/public/screenshots/users-tablet.png) | ![手机视口下的角色页](apps/docs/docs/public/screenshots/roles-mobile.png) | ![审批中心](apps/docs/docs/public/screenshots/workflows.png) |
 
 这四张图同样由[文档站点](https://fish-admin-docs.vercel.app)在 `/screenshots/` 下提供。
 
@@ -278,7 +278,7 @@ apps/docs/                   # Rspress 文档站点
 ├─ docs/{en,zh}/             # 83 个组件页、指南与版本页
 ├─ demos/<component>/        # 每个页面渲染的实时示例
 ├─ generated/                # registry.json 与 API 表，由 pnpm gen-api 生成
-└─ public/screenshots/       # README 与文档首屏截图
+└─ docs/public/screenshots/  # README 与文档首屏截图
 src/                         # 模板
 ├─ routes/                   # 文件路由；routeTree.gen.ts 自动生成
 ├─ features/                 # auth、dashboard、users、roles、permissions、departments、audit、projects、files、reports、notifications、integrations、profile、security、settings

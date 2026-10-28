@@ -43,7 +43,9 @@ pnpm test:e2e
 
 ### Visual regression
 
-`e2e/visual/pages.spec.ts` compares sixteen screenshots against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The baselines are platform-specific, so run the suite through Docker even on Linux; `pnpm test:visual` exits with an error off Linux and warns when it is not running in a container.
+`e2e/visual/pages.spec.ts` compares eighteen screenshots across sixteen tests — the dashboard and reports tests each shoot both themes — against baselines rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The baselines are platform-specific, so run the suite through Docker even on Linux; `pnpm test:visual` exits with an error off Linux and warns when it is not running in a container.
+
+`e2e/visual/readme-shots.spec.ts` joins that run but compares nothing: with `README_SHOTS=1` it writes the four PNGs the READMEs embed into `apps/docs/docs/public/screenshots/`, and without the flag all four tests skip. Re-capture them only from the Docker image, so the fonts match the baselines, and look at each file before committing — a half-drawn chart or a stray toast is exactly what the 2-second settle is there to prevent.
 
 ```bash
 pnpm test:visual:docker --update   # regenerate baselines after an intentional UI change
@@ -52,7 +54,7 @@ pnpm test:visual:docker            # verify a change did not move anything else
 
 The mock database is seeded and each test freezes the clock, so dates and chart series stay stable. Review the regenerated `.png` files before committing them — an unexpected diff is usually the bug.
 
-The docs site has its own baseline set: `e2e-docs/visual.spec.ts` compares four routes (home, installation, button, pro-table) in light and dark against baselines from the same image, served on port 4175.
+The docs site has its own baseline set: `e2e-docs/visual.spec.ts` compares four routes (home, installation, button, pro-table) in light and dark — eight baselines, stored under `e2e-docs/__screenshots__/visual.spec.ts/` — against images from the same container, served on port 4175.
 
 ```bash
 pnpm test:docs:visual:docker --update   # regenerate the docs baselines
@@ -88,10 +90,11 @@ Reviewers may ask for changes or suggest splitting a large pull request. That is
 
 - TypeScript is strict. Avoid `any` and non-null assertions unless the reason is obvious.
 - Use the `@/` alias for imports from `src`.
-- `src/components/ui` contains shadcn/ui primitives. Do not hand-edit them; update them through the CLI or keep local changes minimal and documented.
+- `packages/ui/src/components/ui` contains the shadcn/ui primitives the package builds on. Do not hand-edit them; update them through the CLI or keep local changes minimal and documented.
+- The components live in `packages/ui` (`@fish-admin/react`), not in `src`. A new component needs a `packages/ui/registry.json` entry, an export from `packages/ui/src/index.ts`, a page under `apps/docs/docs/{en,zh}/components/`, and at least two demos in `apps/docs/demos/<id>/` with its own `meta.json`; run `pnpm gen-api` after changing props so the generated tables match.
 - Put feature-specific code under `src/features/<feature>` — API calls, query options, schemas and components stay together.
 - Do not call `fetch` from components. Go through `apiRequest` and TanStack Query.
-- UI strings belong in `src/locales/{en,zh-CN}`; add both languages in the same pull request. The locale parity test enforces this.
+- Template UI strings belong in `src/locales/{en,zh-CN}`; component strings belong in `packages/ui/src/locales`. Add both languages in the same pull request. The locale parity tests enforce this.
 - Permission checks must use the existing registry — see [docs/en/rbac.md](./docs/en/rbac.md). A new permission needs a registry entry, a navigation item when relevant, a route guard and role grants.
 - Client-side permissions are for UX only. Any new write endpoint must also be authorized by the backend or mock handler.
 
@@ -100,12 +103,16 @@ Reviewers may ask for changes or suggest splitting a large pull request. That is
 1. Copy `src/locales/en` to `src/locales/<locale>` and translate every namespace.
 2. Register the locale in `src/lib/i18n.ts` and the language switcher.
 3. Add the locale to the language names map and the `supportedLngs` list.
-4. Run `pnpm test` — the locale test checks namespace and key parity.
+4. Regenerate the package strings: `node scripts/extract-ui-messages.mjs` writes `packages/ui/src/locales/{en,zh-CN}.ts` from the template's `common.json` and throws when a key is missing from a locale, so add the new locale's `read`/`write` pair there instead of hand-editing the generated files. Widen `UILocale` and the `BUILT_IN` map in `packages/ui/src/i18n.tsx` to match.
+5. Add a matching language tree to the docs site — a directory under `apps/docs/docs/<locale>`, an entry in the multilingual config in `apps/docs/rspress.config.ts`, and the site's own UI strings in `apps/docs/site.ts`.
+6. Run `pnpm test` — `src/lib/locales.test.ts` checks namespace and key parity across the template locales, and the package locale parity is enforced by the extractor.
 
 ## Documentation
 
 - `README.md` is English; `README.zh-CN.md` is the Chinese mirror.
 - `docs/en` and `docs/zh-CN` should stay structurally aligned. When you change one, update the other.
+- `docs/{en,zh-CN}` describe the template. `pnpm docs:build` copies them into the Rspress site under `apps/docs/docs/{en,zh}/template`; those copies are generated and gitignored, so never edit them directly.
+- The component reference is written in the site itself, under `apps/docs/docs/{en,zh}/components/<id>.mdx` with its demos in `apps/docs/demos/<id>/`. `pnpm gen-api` regenerates the props tables from `packages/ui`, and `pnpm docs:check` fails when a registry entry has no page, no demo or no translation.
 - Prefer short examples over long prose. Test commands and file paths before documenting them.
 
 ## License

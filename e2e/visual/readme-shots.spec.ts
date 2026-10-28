@@ -7,7 +7,7 @@ import { signInAs } from '../helpers'
 // `page.screenshot` resolves a relative path against the process CWD, which is
 // the repo root here — deriving it from this file keeps the shot next to the
 // spec that produces it.
-const SHOT_DIR = fileURLToPath(new URL('../../apps/docs/public/screenshots', import.meta.url))
+const SHOT_DIR = fileURLToPath(new URL('../../apps/docs/docs/public/screenshots', import.meta.url))
 const CAPTURE = process.env.README_SHOTS === '1'
 
 async function settle(page: Page) {

@@ -32,7 +32,7 @@ FishAdmin 演示了一套完整的客户端权限闭环：导航、路由与按�
 | `permission:read`    | 只读权限页与 `GET /api/permissions`                                                  |
 | `demo:reset`         | 重置演示数据库                                                                       |
 
-有若干区域刻意不设权限码：`/components` 与 `/ui`（组件目录和演练场对所有已登录角色都有用）、`/notifications`（只暴露当前用户自己的收件箱），以及只对当前用户生效的账户页 `/profile` 与 `/security`。
+有若干区域刻意不设权限码：`/notifications`（只暴露当前用户自己的收件箱），以及只对当前用户生效的账户页 `/profile` 与 `/security`。`/settings` 同样仅需登录；组件示例已经彻底离开应用——它们是文档站点里的页面，而文档站没有需要鉴权的会话。
 
 `src/config/permissions.ts` 是唯一事实来源，导出：
 

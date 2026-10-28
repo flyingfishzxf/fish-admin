@@ -118,7 +118,7 @@ docker build \
 
 ## 打包产物结构
 
-`autoCodeSplitting` 让每个路由都有独立的 chunk，图表库、`/components` 组件目录、`/ui` 组件演练场与 Mock API 只在真正被用到时才发起请求。`pnpm size` 正是按这个边界做门禁的；下表数字由预算脚本测得（gzip level 9），取自 v1.6.0。
+`autoCodeSplitting` 让每个路由都有独立的 chunk，图表库与 Mock API 只在真正被用到时才发起请求。`pnpm size` 正是按这个边界做门禁的；下表数字由预算脚本测得（gzip level 9），取自 v1.6.0。
 
 | 指标                                | `pnpm build`  | `pnpm build:demo` | 预算         |
 | ----------------------------------- | ------------- | ----------------- | ------------ |
@@ -134,7 +134,7 @@ docker build \
 
 其二，预算只作用于 `pnpm build`，不作用于演示构建。演示构建会多出 `browser-*`（907 kB，gzip 327 —— MSW 加上预置的业务数据库种子），单这一块就会同时撑破「最大 chunk」与「JS 总量」两条预算。两种构建的首屏完全一致，因为这个 chunk 是懒加载的，而 `src/main.tsx` 只在 mock 开关打开时 import 它：显式设置的 `VITE_ENABLE_MOCK` 优先，未设置时 dev 开、构建关。`pnpm build` 会把整条分支摇掉，并让 `vite.config.ts` 从产物中删掉 `mockServiceWorker.js`，因此 `ls dist/assets | grep browser`、`ls dist | grep mock` 与 `grep -r mockServiceWorker dist` 都是空的。演示构建里 Vite 仍会为它打印 chunk 体积警告，这属于预期。
 
-其余较大的懒加载 chunk 也在意料之中：`chart-*` 是 recharts，由工作台、`/reports` 以及 `/components` 里的图表演示共用；组件目录与演练场各自拆成独立的演示 chunk。打开 `/users` 时它们一个都不会被下载。
+其余较大的懒加载 chunk 也在意料之中：`chart-*` 是 recharts，由工作台与 `/reports` 共用。组件目录与 UI 演练场曾经各自拆出独立的演示 chunk，随着这些页面一起离开了产物。打开 `/users` 时它们一个都不会被下载。
 
 上线前请执行 `pnpm build && pnpm preview`，并检查 Network 面板：首屏只应加载 shell、auth 与 locale 这几类 chunk。
 

@@ -136,5 +136,5 @@ The seed contains three system types: `user_tag` (seven items), `expense_categor
 
 - `e2e/dictionaries.spec.ts` — admin reorders and reloads, creates an item, sees it as a tag suggestion on `/users/user-admin`, renames it, sees the new label, disables it and sees the suggestion disappear; viewer can read but has no create/edit controls and cannot toggle.
 - `src/mocks/db/migrate.test.ts` — v5 → v6 adds the seed and keeps existing data; v4 → v6 chains through both migrations.
-- `src/config/components.test.ts` — `switch` now points at `/dictionaries`, so the catalog's "used in" link stays honest.
+- `packages/ui/src/registry.test.ts` — `switch` declares `/dictionaries` as its `usedIn`, so the docs page keeps pointing at a route that exists.
 - Visual baseline — `dictionaries.png` (selected type, reorder handles and reference badges).

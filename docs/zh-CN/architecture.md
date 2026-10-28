@@ -1,19 +1,20 @@
 # 架构说明
 
-FishAdmin 是一个单页 React 应用。仓库中不包含服务端：演示 API 运行在 Service Worker 中，同一个客户端只需一个环境变量即可指向真实后端。
+FishAdmin 是一个单页 React 应用，构建在 `@fish-admin/react` 组件包之上。仓库中不包含服务端：演示 API 运行在 Service Worker 中，同一个客户端只需一个环境变量即可指向真实后端。
 
 ## 技术栈速览
 
-| 关注点     | 实现                                                  |
-| ---------- | ----------------------------------------------------- |
-| 渲染       | React 19 + Vite 8                                     |
-| 路由       | TanStack Router，文件式路由，类型安全的 search params |
-| 服务端状态 | TanStack Query                                        |
-| 客户端状态 | Zustand                                               |
-| 样式       | Tailwind CSS 4 + shadcn/ui + Radix 原语               |
-| 表单       | React Hook Form + Zod                                 |
-| Mock 后端  | MSW 2 + Faker + `localStorage`                        |
-| 国际化     | i18next，JSON namespace 懒加载                        |
+| 关注点     | 实现                                                         |
+| ---------- | ------------------------------------------------------------ |
+| 渲染       | React 19 + Vite 8                                            |
+| 路由       | TanStack Router，文件式路由，类型安全的 search params        |
+| 服务端状态 | TanStack Query                                               |
+| 客户端状态 | Zustand                                                      |
+| 组件       | `@fish-admin/react`（`packages/ui`），shadcn/ui + Radix 原语 |
+| 样式       | Tailwind CSS 4                                               |
+| 表单       | React Hook Form + Zod                                        |
+| Mock 后端  | MSW 2 + Faker + `localStorage`                               |
+| 国际化     | i18next，JSON namespace 懒加载；组件文案由包提供             |
 
 ## 启动流程
 
@@ -45,8 +46,8 @@ __root.tsx              Providers、全局 404 与错误兜底
 └─ _app/route.tsx       会话守卫 + AppShell（侧边栏、铃铛、离线横幅、命令面板）
    ├─ index.tsx         /            dashboard:read
    ├─ reports.tsx       /reports     report:read
-   ├─ components.tsx    /components  仅需登录（可搜索的组件目录）
-   ├─ ui.tsx            /ui          仅需登录（组件演练场）
+   ├─ workflows.tsx     /workflows   workflow:read
+   ├─ workflows_.$id.tsx /workflows/$id workflow:read
    ├─ projects.tsx      /projects    project:read
    ├─ projects_.$id.tsx /projects/$id project:read
    ├─ files.tsx         /files       file:read
@@ -57,13 +58,14 @@ __root.tsx              Providers、全局 404 与错误兜底
    ├─ roles.tsx         /roles       role:read
    ├─ roles_.matrix.tsx /roles/matrix role:read
    ├─ permissions.tsx   /permissions permission:read
+   ├─ dictionaries.tsx  /dictionaries dictionary:read
    ├─ audit-logs.tsx    /audit-logs  audit:read
    ├─ integrations.tsx  /integrations integration:read
    ├─ profile.tsx       /profile     仅需登录
    ├─ security.tsx      /security    仅需登录
    ├─ settings.tsx      /settings    仅需登录
    ├─ 403.tsx           带外壳渲染的 403
-   └─ $.tsx             带外壳渲染的 404
+   └─ $.tsx             带外壳渲染的 404；已下线的 `/components` 与 `/ui` 也由它交给文档站点
 ```
 
 - `_app` 只校验会话是否存在。权限检查放在各叶子路由，保证 `/403` 自身始终可达。
@@ -191,7 +193,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 国际化
 
-- 语言 JSON 位于 `src/locales/{en,zh-CN}`，共 21 个 namespace：`common`、`nav`、`auth`、`dashboard`、`projects`、`files`、`reports`、`notifications`、`integrations`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`ui`、`catalog`、`errors`、`validation`。
+- 语言 JSON 位于 `src/locales/{en,zh-CN}`，共 21 个 namespace：`common`、`nav`、`auth`、`dashboard`、`projects`、`files`、`reports`、`notifications`、`integrations`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`dictionaries`、`workflows`、`errors`、`validation`。组件自身的文案在包里，由 `UIProvider` 提供语言，见[安装指南](https://fish-admin-docs.vercel.app/guide/installation)。
 - `common`、`nav`、`errors` 直接打入主包；其余通过 `i18next-resources-to-backend` 与 `import.meta.glob` 按需加载。
 - 初始语言依次取 `localStorage`、浏览器语言，最后回退英文。
 - `changeLanguage()` 持久化选择、切换 i18next 并同步 `<html lang>`。
@@ -201,7 +203,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 故障处理
 
-- `StatusScreen` 为 `/401`、`/403`、`/500`、`/503` 与 `/maintenance` 提供统一布局；每个页面有各自的语气、图标、提示与操作，可从设置页与 `/ui` 进入。
+- `StatusScreen` 为 `/401`、`/403`、`/500`、`/503` 与 `/maintenance` 提供统一布局；每个页面有各自的语气、图标、提示与操作，可从设置页进入。
 - `useOnlineStatus()` 驱动 `AppShell` 中的离线横幅；网络恢复后横幅消失并弹出一条 Sonner toast。
 - `src/router.tsx` 设置 `defaultErrorComponent`，`_app/route.tsx` 将其覆盖，使崩溃时保留侧边栏与顶栏而不是卸载整个应用。
 - Query 层的失败通过带重试按钮的 `ErrorState` 呈现；mutation 失败则弹出 toast，服务端有返回信息时直接展示该信息。
@@ -209,7 +211,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 ## 测试策略
 
 - 单元测试覆盖权限解析与通配展开、导航到路由的解析（含最长前缀匹配）、用户、审计、项目、文件、报表与集成的 URL search 校验、用户与所有认证表单的 Zod schema、密码强度、主题应用、locale key 对齐、API 客户端、query key、单飞刷新、已保存视图持久化、在线状态、`<Can>`、树工具函数、穿梭框选择、标签输入、通知偏好、集成请求头与确定性报表生成。
-- 组件注册表测试要求 83 个条目全部声明 `usedIn`，拒绝 `/components` 与 `/ui`，通过生成的 route tree 解析每个路由，并检查每个新业务路由至少被引用一次。
+- 包里的 `packages/ui/src/registry.test.ts` 要求 83 个条目按 47 原语 / 30 企业 / 6 pro 分层、id 唯一且是 kebab-case、每个条目都能在出口文件里取到、`usedIn` 是以 `/` 开头的模板路由且不得是已下线的 `/components` 或 `/ui`，并按「层级 + id」排序，保证生成的清单可以稳定 diff。
 - 数据库迁移测试会把 v1、v2、v3 数据重放到 v4，验证用户、会话与令牌保留、新权限合并、重复迁移幂等；损坏的存储会重置而不是崩溃。
-- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、CSV 导入、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与 JSON 详情抽屉、项目筛选/创建向导/归档/详情 tabs/任务/成员/预算/复盘、文件上传/预览/水印/移动/删除、通知已读与偏好、报表区间/锚点/CSV 导出、集成创建/启停/payload/重放、主题与语言持久化、`/components` 组件目录与 `/ui` 演练场，以及状态页与离线画面；`e2e/security.spec.ts` 在同一段导航路径上补上响应头比对与 `securitypolicyviolation` 扫描。
+- Playwright 覆盖登录重定向、错误凭据、登出、三种角色的 RBAC、API 层 `403`、注册/验证/重置/邀请/MFA 全流程、账号锁定、用户 CRUD 持久化、带撤销的批量操作、CSV 导入、已保存视图、密度与列控制、URL 还原筛选、用户详情与标签、部门深链与新建、权限矩阵与角色 CRUD、审计筛选与 JSON 详情抽屉、项目筛选/创建向导/归档/详情 tabs/任务/成员/预算/复盘、文件上传/预览/水印/移动/删除、通知已读与偏好、报表区间/锚点/CSV 导出、集成创建/启停/payload/重放、主题与语言持久化、状态页与离线画面，以及文档入口——`e2e/docs-link.spec.ts` 断言未设置 `VITE_DOCS_URL` 时不出现任何外链；`e2e/security.spec.ts` 在同一段导航路径上补上响应头比对与 `securitypolicyviolation` 扫描。
 - CI 并行执行格式检查、lint、类型检查、覆盖率、`pnpm audit --audit-level=high`、生产构建与 E2E，构建 job 还会上传被度量的 `dist/`；CodeQL 单独按 push、pull request 与每周定时运行，dependabot 负责 npm 依赖与 actions 的更新。
