@@ -320,7 +320,55 @@ recharts）、d.ts 与 JS 同构、CSS 可独立消费、Rspress/Vite 都能直�
 
 ### 执行记录
 
-（待实现后填写）
+**栈与规模**
+
+- Rspress 2.0.23（rsbuild 构建）、React 19.3.1，pnpm 9.1.1 workspace；本地 Node 22.21.1、
+  Windows；CI 用 Node 24。
+- 构建：`pnpm docs:build`（含 `packages/ui` 预构建）约 12 s；`doc_build` 产物 15 MB
+  （含 HTML 与源码页面），Rspress 统计总资源 1706.3 kB / gzip 332.8 kB；`static/js` 697 KB、
+  `static/css` 188 KB（未压缩）。搜索索引 en 138.5 KB、zh 133.7 KB。
+- 页面：每种语言 20 页——首页、3 篇指南、组件索引 + 3 个试点页、模板 11 页（索引 + 10 篇）、
+  版本页；加根 404，共 41 个 HTML。计划里的「19 页」未把模板索引页单独计入。
+- Demo 6 个（3 个试点各 2 个），登记在 `apps/docs/demos/registry.ts`；API 条目 83 个，
+  `gen-api:check` 干净；M1 的 JSDoc 覆盖 7.67%（CI 下限 0.00%，M2 随每波提升）。
+
+**门禁结果（本地全绿）**
+
+- `format:check`、`lint`（0 error，1 条 theme entry 的 react-refresh warning）、
+  `typecheck`（模板 + 包 + docs 三段链式）、`test:coverage`、`@fish-admin/react` 测试
+  42 个文件全过、包构建、`check:package`（83 个导出）、`gen-api:check`、`docs:build`、
+  `docs:check`、`test:docs` 14/14。
+- 包体积无回归：firstPaintJs 174.4 / 180 KB、largestAsyncJs 95.6 / 115 KB、
+  totalJs 778.6 / 800 KB、totalCss 23.1 / 30 KB。
+- `docs:check`：`83 registry entries, 6 demos, 6 pilot pages, 20 template pages`；内部规划
+  （`plans/**`、`superpowers/**`）未进入产物，死链由 Rspress 构建兜底。
+- Axe：`/`、`/components/button`、`/components/pro-table`、`/components/date-range-picker`、
+  `/zh/components/button` 五条路由零违规。为此修了 Rspress 主题本身的问题：首页补 `<main>`
+  与 `<h1>`；侧栏与大纲 `aside` 各自命名；标题锚点移出 Tab 序；调暗浅色链接色（`#0059b3`）
+  与三级文字（`#5f5f5f`）并保留深色 `#33adff` / `#9e9e9e`；导航激活项改用链接色；demo
+  浮层 z-index 抬到吸顶导航之上（导航 60、包内浮层 50）。搜索快捷键对比度是一次动画期间的
+  瞬时读数，静置后不复现，未做抑制。
+- 文档 e2e 14 条：内容与 demo 行为（首页、83 索引、button、ProTable 过滤与多选、
+  日期区间日历与预设、中文路由、深色、搜索）+ 375 px 布局 5 条。
+
+**偏差**
+
+- 语言代码用 `zh`（Rspress 的 locale code，路由 `/zh/…`），不是计划写的 `zh-CN`。
+- 6 个 demo 而非每个试点「至少 2 个」之外的更多变体；满足验收。
+- 用 `@docs/*` alias 指向 `apps/docs`；`site.ts` 集中模板与 GitHub 外链。
+- `rspress preview` 不支持 `--strictPort`，Playwright 改为依赖 `url` 探活。
+- 文档站 CSP 需要 `script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'`：Rspress 搜索索引
+  用 WebAssembly 编译，缺 `wasm-unsafe-eval` 时搜索在带 CSP 的静态服务下不可用。已用
+  `apps/docs/vercel.json` 的真实 headers 起本地静态服务验证：四条路由 200、搜索命中、
+  深色切换正常、控制台零报错。
+
+**部署姿态**
+
+- 已从 `apps/docs` 独立构建成功，并本地验证产物与 headers；**未创建 Vercel 项目**
+  （需单独确认）。目标配置：Root = `apps/docs` 并开启“Include files outside of the Root
+  Directory”；根 `vercel.json` 属于 demo，不复用。线上 headers、缓存与预览 URL 都要等
+  项目建立后才能实测，在此之前不宣称线上可用。
+- 未验证：真实 npm 消费者安装、Vercel 预览、83 页全量覆盖（M2）。
 
 ---
 
