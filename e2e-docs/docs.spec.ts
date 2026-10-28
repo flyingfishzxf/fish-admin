@@ -8,6 +8,14 @@ const registry = JSON.parse(
   fs.readFileSync(path.resolve(process.cwd(), 'apps/docs/generated/registry.json'), 'utf8'),
 ) as { components: Array<{ id: string; name: string }> }
 
+const documented = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), 'apps/docs/generated/documented.json'), 'utf8'),
+) as { components: string[] }
+
+const demos = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), 'apps/docs/demos/registry.json'), 'utf8'),
+) as Array<{ id: string; component: string }>
+
 const AXE_ROUTES = [
   '/',
   '/components/button',
@@ -52,26 +60,23 @@ test('the home page shows the hero, install command and three actions', async ({
   expect(errors).toEqual([])
 })
 
-test('the component index lists all 83 components and links the three pilots', async ({ page }) => {
+test('the component index lists all 83 components and links documented pages', async ({ page }) => {
   await page.goto('/components')
   await expect(page.locator('.fish-index__item')).toHaveCount(registry.components.length)
   const names = await page.locator('.fish-index__name').allTextContents()
   expect([...names].sort()).toEqual(registry.components.map((entry) => entry.name).sort())
-  await expect(page.locator('a.fish-index__item')).toHaveCount(3)
+  await expect(page.locator('a.fish-index__item')).toHaveCount(documented.components.length)
   const hrefs = await page
     .locator('a.fish-index__item')
     .evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href')))
-  expect(hrefs.sort()).toEqual([
-    '/components/button.html',
-    '/components/date-range-picker.html',
-    '/components/pro-table.html',
-  ])
+  expect(hrefs.sort()).toEqual(documented.components.map((id) => `/components/${id}.html`).sort())
 })
 
 test('the button page renders both demos, their source and the template link', async ({ page }) => {
+  const buttonDemos = demos.filter((demo) => demo.component === 'button').map((demo) => demo.id)
   await page.goto('/components/button')
-  await expect(page.locator('[data-demo^="button/"]')).toHaveCount(2)
-  for (const id of ['button/basic', 'button/states']) {
+  await expect(page.locator('[data-demo^="button/"]')).toHaveCount(buttonDemos.length)
+  for (const id of buttonDemos) {
     const demo = page.locator(`[data-demo="${id}"]`)
     await expect(demo.locator('button').first()).toBeVisible()
     await expect(demo.locator('.fish-demo__source')).toContainText('export default function')

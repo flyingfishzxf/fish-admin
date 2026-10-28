@@ -1,0 +1,28 @@
+[
+  {
+    "id": "pro-table/basic",
+    "component": "pro-table",
+    "file": "demos/pro-table/basic.tsx",
+    "title": {
+      "en": "Basic table with search",
+      "zh": "带搜索的基础表格"
+    },
+    "description": {
+      "en": "A TanStack Table instance plus a controlled search field.",
+      "zh": "一个 TanStack Table 实例，加一个受控搜索框。"
+    }
+  },
+  {
+    "id": "pro-table/selection",
+    "component": "pro-table",
+    "file": "demos/pro-table/selection.tsx",
+    "title": {
+      "en": "Row selection",
+      "zh": "行选择"
+    },
+    "description": {
+      "en": "Checkbox selection with a summary bar that clears the selection.",
+      "zh": "复选框选择，以及可清空选择的汇总栏。"
+    }
+  }
+]

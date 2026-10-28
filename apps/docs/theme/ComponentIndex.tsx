@@ -1,10 +1,11 @@
 import { normalizeHrefInRuntime, useLang } from '@rspress/core/runtime'
 import { Link } from '@rspress/core/theme'
 
+import documented from '@docs/generated/documented.json'
 import registry from '@docs/generated/registry.json'
 import { uiText } from '@docs/site'
 
-const DOCUMENTED = new Set(['button', 'pro-table', 'date-range-picker'])
+const DOCUMENTED = new Set(documented.components)
 const CATEGORY_ORDER = ['primitive', 'enterprise', 'pro'] as const
 
 export default function ComponentIndex() {

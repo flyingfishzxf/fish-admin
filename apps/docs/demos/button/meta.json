@@ -1,0 +1,28 @@
+[
+  {
+    "id": "button/basic",
+    "component": "button",
+    "file": "demos/button/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "The default button, plus the secondary, outline and ghost variants.",
+      "zh": "默认按钮，以及次要、描边和幽灵三种变体。"
+    }
+  },
+  {
+    "id": "button/states",
+    "component": "button",
+    "file": "demos/button/states.tsx",
+    "title": {
+      "en": "Sizes and states",
+      "zh": "尺寸与状态"
+    },
+    "description": {
+      "en": "Three sizes, a disabled button, a destructive action and a spinner composed as a child.",
+      "zh": "三种尺寸、禁用状态、危险操作，以及把 Spinner 作为子元素组合出的加载态。"
+    }
+  }
+]

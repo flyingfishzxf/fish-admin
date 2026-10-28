@@ -1,1 +1,6 @@
-["index", "button", "pro-table", "date-range-picker"]
+[
+  "index",
+  "button",
+  "date-range-picker",
+  "pro-table"
+]

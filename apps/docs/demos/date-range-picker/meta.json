@@ -1,0 +1,28 @@
+[
+  {
+    "id": "date-range-picker/basic",
+    "component": "date-range-picker",
+    "file": "demos/date-range-picker/basic.tsx",
+    "title": {
+      "en": "Basic range",
+      "zh": "基础范围选择"
+    },
+    "description": {
+      "en": "A controlled range stored as YYYY-MM-DD strings.",
+      "zh": "以 YYYY-MM-DD 字符串保存的受控范围。"
+    }
+  },
+  {
+    "id": "date-range-picker/presets",
+    "component": "date-range-picker",
+    "file": "demos/date-range-picker/presets.tsx",
+    "title": {
+      "en": "Presets",
+      "zh": "预设范围"
+    },
+    "description": {
+      "en": "Quick ranges next to the calendar.",
+      "zh": "日历旁的快捷范围。"
+    }
+  }
+]

@@ -13,3 +13,6 @@ apps/docs/doc_build
 apps/docs/generated
 apps/docs/docs/en/template
 apps/docs/docs/zh/template
+# Written by scripts/build-manifests.mjs; its compact arrays are not prettier's output.
+apps/docs/docs/en/components/_meta.json
+apps/docs/docs/zh/components/_meta.json

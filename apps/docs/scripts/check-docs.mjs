@@ -4,7 +4,31 @@ import { fileURLToPath } from 'node:url'
 
 const docsRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const repoRoot = path.resolve(docsRoot, '../..')
+const COMPLETE = process.argv.includes('--complete')
+const LANGS = ['en', 'zh']
 const failures = []
+
+const HEADINGS = {
+  en: [
+    'When to use',
+    'When not to use',
+    'Basic usage',
+    'API',
+    'Design guidance',
+    'Accessibility',
+    'FAQ',
+    'Related',
+  ],
+  zh: ['何时使用', '何时不使用', '基础用法', 'API', '设计指引', '无障碍', 'FAQ', '相关'],
+}
+
+const ALLOWED_IMPORTS = new Set([
+  'react',
+  'react-dom',
+  '@fish-admin/react',
+  'lucide-react',
+  '@tanstack/react-table',
+])
 
 function fail(message) {
   failures.push(message)
@@ -75,6 +99,12 @@ function checkDemos(registry) {
     if (!fs.existsSync(path.join(docsRoot, demo.file))) {
       fail(`demo ${demo.id} file "${demo.file}" does not exist`)
     }
+    for (const lang of LANGS) {
+      if (!String(demo.title?.[lang] ?? '').trim()) fail(`demo ${demo.id} has no ${lang} title`)
+      if (!String(demo.description?.[lang] ?? '').trim()) {
+        fail(`demo ${demo.id} has no ${lang} description`)
+      }
+    }
     registered.add(demo.file)
   }
   const demoDir = path.join(docsRoot, 'demos')
@@ -94,6 +124,36 @@ function checkDemos(registry) {
     if (!registered.has(file)) fail(`demo file "${file}" is not in demos/registry.json`)
   }
   return demos
+}
+
+function checkDemoImports() {
+  const demoDir = path.join(docsRoot, 'demos')
+  const files = []
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) {
+        if (entry.name !== 'data') walk(full)
+      } else if (entry.name.endsWith('.tsx')) {
+        files.push(full)
+      }
+    }
+  }
+  walk(demoDir)
+  for (const file of files) {
+    const source = read(file)
+    const specifiers = [
+      ...[...source.matchAll(/\bfrom\s+'([^']+)'/g)].map((match) => match[1]),
+      ...[...source.matchAll(/^\s*import\s+'([^']+)'/gm)].map((match) => match[1]),
+    ]
+    for (const specifier of specifiers) {
+      if (ALLOWED_IMPORTS.has(specifier)) continue
+      if (specifier.startsWith('@docs/demos/data/')) continue
+      if (specifier.startsWith('./')) continue
+      if (specifier.startsWith('../data/')) continue
+      fail(`${rel(file)} imports "${specifier}", which is not allowed in a demo`)
+    }
+  }
 }
 
 function bodyAfterFrontmatter(source) {
@@ -117,73 +177,103 @@ function checkImportOrder(file, body) {
   }
 }
 
-const PILOTS = [
-  {
-    id: 'button',
-    headings: ['When to use', 'API', 'Design guidance', 'Accessibility', 'FAQ', 'Related'],
-    headingsZh: ['何时使用', 'API', '设计指引', '无障碍', 'FAQ', '相关'],
-  },
-  {
-    id: 'pro-table',
-    headings: ['When to use', 'API', 'Design guidance', 'Accessibility', 'FAQ', 'Related'],
-    headingsZh: ['何时使用', 'API', '设计指引', '无障碍', 'FAQ', '相关'],
-  },
-  {
-    id: 'date-range-picker',
-    headings: ['When to use', 'API', 'Design guidance', 'Accessibility', 'FAQ', 'Related'],
-    headingsZh: ['何时使用', 'API', '设计指引', '无障碍', 'FAQ', '相关'],
-  },
-]
+function demoImports(source) {
+  return [...source.matchAll(/from '@docs\/demos\/([^']+)'/g)].map((match) => match[1])
+}
 
-function checkPilotPages(demos) {
-  for (const pilot of PILOTS) {
-    const componentDemos = demos.filter((demo) => demo.component === pilot.id)
-    for (const [lang, headings] of [
-      ['en', pilot.headings],
-      ['zh', pilot.headingsZh],
-    ]) {
-      const file = path.join(docsRoot, `docs/${lang}/components/${pilot.id}.mdx`)
+function checkDocumentedPages(registry, demos) {
+  const documentedFile = path.join(docsRoot, 'generated/documented.json')
+  const documented = readJson(documentedFile).components
+  const registryIds = registry.map((entry) => entry.id)
+
+  const onDisk = registryIds.filter((id) =>
+    LANGS.every((lang) => fs.existsSync(path.join(docsRoot, `docs/${lang}/components/${id}.mdx`))),
+  )
+  if (JSON.stringify(onDisk) !== JSON.stringify(documented)) {
+    fail('generated/documented.json is stale; run pnpm docs:manifests')
+  }
+
+  const byComponent = new Map()
+  for (const demo of demos) {
+    const list = byComponent.get(demo.component) ?? []
+    list.push(demo)
+    byComponent.set(demo.component, list)
+  }
+
+  for (const demo of demos) {
+    if (!documented.includes(demo.component)) {
+      fail(`demo ${demo.id} belongs to "${demo.component}", which has no bilingual page pair`)
+    }
+  }
+
+  for (const id of documented) {
+    const componentDemos = byComponent.get(id) ?? []
+    if (componentDemos.length < 2) {
+      fail(`component "${id}" has ${componentDemos.length} demo(s), expected at least 2`)
+    }
+    const importSets = []
+    for (const lang of LANGS) {
+      const file = path.join(docsRoot, `docs/${lang}/components/${id}.mdx`)
       if (!fs.existsSync(file)) {
-        fail(`missing pilot page ${rel(file)}`)
+        fail(`missing page ${rel(file)}`)
         continue
       }
       const source = read(file)
       const body = bodyAfterFrontmatter(source)
       checkImportOrder(file, body)
-      const demoImports = [...source.matchAll(/from '@docs\/demos\/([^']+)'/g)].map(
-        (match) => match[1],
-      )
-      const componentImports = demoImports.filter((target) => target.startsWith(`${pilot.id}/`))
-      if (componentImports.length < 2) {
-        fail(`${rel(file)}: expected at least two imports from @docs/demos/${pilot.id}/`)
+      const frontmatter = source.match(/^---\n([\s\S]*?)\n---\n/)
+      const frontmatterBody = frontmatter?.[1] ?? ''
+      if (!/^title:\s*\S/m.test(frontmatterBody)) fail(`${rel(file)}: missing frontmatter title`)
+      if (!/^description:\s*\S/m.test(frontmatterBody)) {
+        fail(`${rel(file)}: missing frontmatter description`)
       }
-      for (const demo of componentDemos) {
-        const stem = demo.file.replace(/^demos\//, '').replace(/\.tsx$/, '')
-        if (!demoImports.includes(stem)) fail(`${rel(file)}: demo ${demo.id} is not imported`)
-        if (!demoImports.includes(`${stem}.tsx?raw`)) {
-          fail(`${rel(file)}: raw source for ${demo.id} is not imported`)
-        }
-      }
-      for (const heading of headings) {
+      for (const heading of HEADINGS[lang]) {
         const pattern = new RegExp(
           `^##\\s+${heading.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`,
           'm',
         )
         if (!pattern.test(body)) fail(`${rel(file)}: missing heading "## ${heading}"`)
       }
-      if (!source.includes(`<ApiTable component="${pilot.id}" />`)) {
-        fail(`${rel(file)}: missing <ApiTable component="${pilot.id}" />`)
+      if (!source.includes(`<ApiTable component="${id}" />`)) {
+        fail(`${rel(file)}: missing <ApiTable component="${id}" />`)
+      }
+      if (!source.includes(`<ComponentMeta id="${id}" />`)) {
+        fail(`${rel(file)}: missing <ComponentMeta id="${id}" />`)
+      }
+      const imports = demoImports(source)
+      for (const demo of componentDemos) {
+        if (!imports.includes(demo.id)) fail(`${rel(file)}: demo ${demo.id} is not imported`)
+        if (!imports.includes(`${demo.id}.tsx?raw`)) {
+          fail(`${rel(file)}: raw source for ${demo.id} is not imported`)
+        }
       }
       const demoCount = (source.match(/<Demo\b/g) || []).length
       if (demoCount !== componentDemos.length) {
         fail(`${rel(file)}: ${demoCount} <Demo> blocks, expected ${componentDemos.length}`)
       }
+      importSets.push(
+        imports
+          .filter((target) => target.startsWith(`${id}/`))
+          .sort()
+          .join(','),
+      )
     }
+    if (importSets.length === 2 && importSets[0] !== importSets[1]) {
+      fail(`component "${id}" imports different demos in en and zh`)
+    }
+  }
+
+  if (COMPLETE) {
+    if (documented.length !== registry.length) {
+      fail(`--complete: ${documented.length} of ${registry.length} components are documented`)
+    }
+    const missing = registryIds.filter((id) => !documented.includes(id))
+    if (missing.length > 0) fail(`--complete: not documented: ${missing.join(', ')}`)
   }
 }
 
 function checkComponentIndex() {
-  for (const lang of ['en', 'zh']) {
+  for (const lang of LANGS) {
     const candidates = ['index.mdx', 'index.md'].map((name) =>
       path.join(docsRoot, `docs/${lang}/components/${name}`),
     )
@@ -244,7 +334,8 @@ function checkTemplatePages() {
 
 const registry = checkRegistry()
 const demos = checkDemos(registry)
-checkPilotPages(demos)
+checkDemoImports()
+checkDocumentedPages(registry, demos)
 checkComponentIndex()
 const templatePages = checkTemplatePages()
 
@@ -254,6 +345,7 @@ if (failures.length > 0) {
   process.exit(1)
 }
 
+const documentedCount = readJson(path.join(docsRoot, 'generated/documented.json')).components.length
 console.log(
-  `docs:check passed: ${registry.length} registry entries, ${demos.length} demos, 6 pilot pages, ${templatePages} template pages`,
+  `docs:check passed: ${registry.length} registry entries, ${documentedCount} documented components, ${demos.length} demos, ${templatePages} template pages`,
 )

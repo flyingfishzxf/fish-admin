@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "components": [
+    "button",
+    "date-range-picker",
+    "pro-table"
+  ]
+}

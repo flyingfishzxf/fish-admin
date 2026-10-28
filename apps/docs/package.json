@@ -8,18 +8,20 @@
   },
   "scripts": {
     "sync:template": "node scripts/sync-template-docs.mjs",
-    "predev": "pnpm sync:template && pnpm --filter @fish-admin/react build",
+    "manifests": "node scripts/build-manifests.mjs",
+    "predev": "pnpm manifests && pnpm sync:template && pnpm --filter @fish-admin/react build",
     "dev": "rspress dev",
-    "prebuild": "pnpm sync:template && pnpm --filter @fish-admin/react build",
+    "prebuild": "pnpm manifests && pnpm sync:template && pnpm --filter @fish-admin/react build",
     "build": "rspress build",
     "preview": "rspress preview",
-    "pretypecheck": "pnpm --filter @fish-admin/react build",
+    "pretypecheck": "pnpm manifests && pnpm --filter @fish-admin/react build",
     "typecheck": "tsc --noEmit",
-    "check": "node scripts/check-docs.mjs"
+    "check": "node scripts/build-manifests.mjs --check && node scripts/check-docs.mjs"
   },
   "dependencies": {
     "@fish-admin/react": "workspace:*",
     "@tanstack/react-table": "^8.21.3",
+    "lucide-react": "^1.60.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },
