@@ -1,0 +1,28 @@
+[
+  {
+    "id": "textarea/basic",
+    "component": "textarea",
+    "file": "demos/textarea/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled review note with a live character count against the hard limit.",
+      "zh": "受控的审核备注，并实时显示字符数上限。"
+    }
+  },
+  {
+    "id": "textarea/states",
+    "component": "textarea",
+    "file": "demos/textarea/states.tsx",
+    "title": {
+      "en": "States",
+      "zh": "状态"
+    },
+    "description": {
+      "en": "A disabled summary next to a textarea that turns invalid until the reason is long enough.",
+      "zh": "禁用的处理摘要，以及内容过短时变为无效状态的文本域。"
+    }
+  }
+]

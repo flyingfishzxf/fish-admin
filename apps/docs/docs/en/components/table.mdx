@@ -1,0 +1,94 @@
+---
+title: Table
+description: Semantic table primitives for static, read-only data.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TableBasic from '@docs/demos/table/basic'
+import basicSource from '@docs/demos/table/basic.tsx?raw'
+import TableSummary from '@docs/demos/table/summary'
+import summarySource from '@docs/demos/table/summary.tsx?raw'
+
+# Table
+
+`Table` is a set of thin wrappers around the native table elements. It supplies the template's
+borders, spacing and caption styling while leaving sorting, selection and pagination to you.
+
+<ComponentMeta id="table" />
+
+## When to use
+
+- A short list of static rows, such as members or invoice lines.
+- A totals row where `TableFooter` makes the summary explicit.
+- A table you render inside your own scrollable region or card.
+
+## When not to use
+
+- Search, filters, bulk actions or pagination: use `ProTable`.
+- Editable cells: use `EditableTable`.
+- Two-column label/value summaries: use `Descriptions`.
+
+## Basic usage
+
+<Demo title="Members with a caption" filename="demos/table/basic.tsx" source={basicSource}>
+  <TableBasic />
+</Demo>
+
+## Footer and summary row
+
+`TableFooter` adds a top border and a muted background. The demo recomputes the footer total from
+the rows that remain after the toggle, so the summary never drifts from the visible data.
+
+<Demo title="Invoice totals" filename="demos/table/summary.tsx" source={summarySource}>
+  <TableSummary />
+</Demo>
+
+## API
+
+<ApiTable component="table" />
+
+## Design guidance
+
+- `Table` wraps itself in a horizontally scrollable container by default; pass `container={false}`
+  when the surrounding layout already scrolls.
+- Header cells are 40 px tall (`h-10`) and cells use 0.5 rem padding; rows separate with a bottom
+  border, and the last body row drops it.
+- Numbers do not align themselves: set right alignment on the relevant `TableHead` and `TableCell`
+  cells, as the second demo does.
+- `TableCaption` renders muted and, because the root sets `caption-bottom`, appears 1 rem below the
+  table rather than above it.
+
+## Accessibility
+
+| Key           | Behavior                                                            |
+| ------------- | ------------------------------------------------------------------- |
+| Tab           | Reaches the scroll container, then any link or button in a cell.    |
+| Arrow keys    | Scroll the focused container horizontally when the table overflows. |
+| Enter / Space | Activate a link or button inside a cell.                            |
+
+The markup keeps native semantics: `th` header cells, `caption` associated with the table, and
+`tfoot` for the summary row, so screen readers announce row and column context. The scroll
+wrapper, not the `table` element, takes focus, which lets keyboard users reach off-screen columns.
+
+Known gap: the scroll container is given `tabIndex={0}` but no role or accessible name, so it is
+announced as a generic focusable area rather than a labelled region.
+
+## FAQ
+
+**Does Table sort or page its rows?** No. It only renders markup; sorting, filtering and pagination
+belong in `ProTable` or your own state.
+
+**Why is my caption under the table?** The root applies `caption-bottom`; keep the caption there or
+override the alignment when the table is embedded in prose.
+
+**How do I mark the selected row?** Set `data-state="selected"` on `TableRow`; the row picks up the
+muted selected background without extra classes.
+
+## Related
+
+- `ProTable` for searchable, paginated and selectable data.
+- `EditableTable` when cells are form controls.
+- `Descriptions` for a small set of label/value pairs.
+- [Used in the template](https://fish-admin.vercel.app/users)

@@ -7,7 +7,10 @@ function Table({
   className,
   container = true,
   ...props
-}: React.ComponentProps<'table'> & { container?: boolean }) {
+}: React.ComponentProps<'table'> & {
+  /** Wrap the table in a focusable, horizontally scrollable container. @default true */
+  container?: boolean
+}) {
   const table = (
     <table
       data-slot="table"

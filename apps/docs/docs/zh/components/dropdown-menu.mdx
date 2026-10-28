@@ -1,0 +1,98 @@
+---
+title: Dropdown Menu 下拉菜单
+description: 把一小组操作、开关与视图设置收进一个触发按钮之后。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DropdownMenuBasic from '@docs/demos/dropdown-menu/basic'
+import basicSource from '@docs/demos/dropdown-menu/basic.tsx?raw'
+import DropdownMenuSelections from '@docs/demos/dropdown-menu/selections'
+import selectionsSource from '@docs/demos/dropdown-menu/selections.tsx?raw'
+
+# Dropdown Menu 下拉菜单
+
+`Dropdown Menu` 从一个触发按钮展开一组操作。它封装 Radix DropdownMenu，提供菜单项、复选项、单选项、
+子菜单、标签、分隔线与快捷键部件，内容通过 portal 渲染并沿用模板的浮层样式。
+
+<ComponentMeta id="dropdown-menu" />
+
+## 何时使用
+
+- 表格行级的操作，例如编辑、复制与删除。
+- 页面头部次要命令较多、否则会挤压主按钮的场景。
+- 需要集中放置的视图设置：多个独立开关加上一个单选选项。
+
+## 何时不使用
+
+- 页面之间的跳转：请使用链接或 `Sidebar`。
+- 只有一个高频操作：请保留为可见的 `Button`。
+- 两到四个互斥选项且屏幕上放得下：请使用 `Segmented` 或 `Toggle Group`。
+- 为表单字段取值：请使用 `Select` 或 `Combobox`。
+
+## 基础用法
+
+<Demo title="操作菜单" filename="demos/dropdown-menu/basic.tsx" source={basicSource}>
+  <DropdownMenuBasic />
+</Demo>
+
+## 复选项、单选项与子菜单
+
+`DropdownMenuCheckboxItem` 承载互相独立的开关，`DropdownMenuRadioGroup` 搭配
+`DropdownMenuRadioItem` 承载单选，`DropdownMenuSub` 则加入一个悬停或按右方向键展开的嵌套菜单。
+
+<Demo
+  title="开关、单选与嵌套子菜单"
+  filename="demos/dropdown-menu/selections.tsx"
+  source={selectionsSource}
+>
+  <DropdownMenuSelections />
+</Demo>
+
+## API
+
+<ApiTable component="dropdown-menu" />
+
+## 设计指引
+
+- 最常用的操作放最前，危险操作放最后，并用 `DropdownMenuSeparator` 分隔。
+- `variant="destructive"` 只改变菜单项与图标的颜色；操作不可撤销时，请配合 `Alert Dialog`。
+- 子菜单只保留一层：`DropdownMenuSub` 可以继续嵌套，但层级过深时触摸与键盘都难以到达。
+- 触发器要有可见文案；纯图标时请提供 `aria-label`。
+
+## 无障碍
+
+| 按键          | 行为                                                 |
+| ------------- | ---------------------------------------------------- |
+| Enter / Space | 在触发器上切换菜单开合；在菜单项上执行该项。         |
+| Arrow Down    | 在触发器上打开菜单并聚焦第一项；菜单内则移到下一项。 |
+| Arrow Up      | 菜单打开时，将焦点移到上一项。                       |
+| 字符键        | 跳到下一个以该字符开头的菜单项。                     |
+| Arrow Right   | 在子菜单触发器上展开子菜单。                         |
+| Arrow Left    | 在子菜单内关闭子菜单并回到父级菜单项。               |
+| Escape        | 关闭菜单并把焦点交回触发器。                         |
+
+触发器带有 `aria-haspopup="menu"`、`aria-expanded` 与 `aria-controls`，内容由触发器作为标签。
+按 `Escape` 或执行菜单项后焦点回到触发器；菜单打开时 `Tab` 会被拦截，请先按 `Escape` 再继续。
+
+已知缺口：`DropdownMenuShortcut` 只是一个普通 `<span>`，没有 `aria-keyshortcuts`，因此读屏会把
+快捷键当作菜单项的普通文字读出。
+
+## FAQ
+
+**为什么勾选复选项后菜单就关闭了？** 这是设计使然：执行任意菜单项都会关闭菜单。若想连续修改多项，
+请在复选项或单选项上使用 `onSelect={(event) => event.preventDefault()}` 保持菜单打开。
+
+**`variant="destructive"` 会执行删除吗？** 不会。它只改变文字与图标的颜色以及聚焦背景，真正的删除
+需要你在回调里完成并自行确认。
+
+**触发器可以放在表格单元格里吗？** 可以——使用 `asChild`，内容会渲染到 portal 中，因此不会被行的
+`overflow` 裁剪。
+
+## 相关
+
+- `Context Menu`：在右键上提供同一组命令。
+- `Select`：列表代表表单取值而不是操作时使用。
+- `Alert Dialog`：在危险菜单项执行前确认。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

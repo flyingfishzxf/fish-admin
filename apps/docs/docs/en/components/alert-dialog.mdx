@@ -1,0 +1,99 @@
+---
+title: Alert Dialog
+description: Interrupt the user for a decision that should not be dismissed by accident.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AlertDialogBasic from '@docs/demos/alert-dialog/basic'
+import basicSource from '@docs/demos/alert-dialog/basic.tsx?raw'
+import AlertDialogControlled from '@docs/demos/alert-dialog/controlled'
+import controlledSource from '@docs/demos/alert-dialog/controlled.tsx?raw'
+
+# Alert Dialog
+
+Alert Dialog is a modal with `role="alertdialog"`. It has no close icon and ignores outside clicks, so
+the only ways out are `AlertDialogAction`, `AlertDialogCancel` or Escape. Both buttons render `Button`
+through `asChild`, so they accept its `variant` and `size`.
+
+<ComponentMeta id="alert-dialog" />
+
+## When to use
+
+- Deleting, revoking or overwriting something that cannot be undone.
+- Confirming an action with side effects, such as transferring workspace ownership.
+- Interrupting a flow where an accidental dismissal would lose work.
+
+## When not to use
+
+- Reversible confirmations, such as "Discard draft?" on a list row: use `Popconfirm`.
+- Informational messages with a single acknowledgement: use `Alert` or a toast.
+- Confirmations that collect input: use `Dialog`, which allows outside dismissal and a form.
+- Frequent repeated prompts, which train users to confirm without reading.
+
+## Basic usage
+
+The action carries `variant="destructive"` and repeats the verb ("Revoke key"); the cancel button
+keeps the object ("Keep key"). The page reports the outcome after the dialog closes.
+
+<Demo title="Revoke an API key" filename="demos/alert-dialog/basic.tsx" source={basicSource}>
+  <AlertDialogBasic />
+</Demo>
+
+## Controlled confirmation flow
+
+Because `AlertDialog` accepts `open` and `onOpenChange`, the page can own the open state and write a
+result line from the same handlers that close the dialog.
+
+<Demo
+  title="Controlled confirmation flow"
+  filename="demos/alert-dialog/controlled.tsx"
+  source={controlledSource}
+>
+  <AlertDialogControlled />
+</Demo>
+
+## API
+
+<ApiTable component="alert-dialog" />
+
+## Design guidance
+
+- Make the title name both the action and the object: "Revoke the CI deploy key?".
+- State the consequence and whether it is reversible in `AlertDialogDescription`; never rely on the title alone.
+- Use `variant="destructive"` on `AlertDialogAction` for irreversible actions, and label it with the verb rather than "OK".
+- Keep the cancel control first in the markup; the footer reverses the visual order on small screens. Use `size="sm"` for one-line confirmations.
+
+## Accessibility
+
+| Key           | Behavior                                                         |
+| ------------- | ---------------------------------------------------------------- |
+| Escape        | Cancels and closes the dialog.                                   |
+| Tab           | Moves between Cancel and the confirm action; focus stays inside. |
+| Enter / Space | Activates the focused action.                                    |
+
+Focus lands on the cancel button when the dialog opens and returns to the trigger when it closes.
+Both controls are real buttons, and the confirm action names the consequence, so a screen-reader
+user hears what the dialog is about before choosing.
+
+Known gap: `AlertDialogAction` closes the dialog as soon as it is activated, so asynchronous work
+must start in `onClick` and report its result on the page (as the controlled demo does), and
+`AlertDialogMedia` is unlabelled decoration unless you add your own icon and text.
+
+## FAQ
+
+**Why can I not close it by clicking the overlay?** That is the point of Alert Dialog: a decision has
+to be explicit. Use `Dialog` if outside dismissal is acceptable.
+
+**How do I style the buttons?** Pass `variant` and `size` to `AlertDialogAction` and
+`AlertDialogCancel`; they are forwarded to `Button`. The action is not destructive by default.
+
+**Can I stop it from closing after confirming?** Not declaratively — the action always closes. For a
+dialog that stays open while an API call runs, use a controlled `Dialog` instead.
+
+## Related
+
+- `Dialog` for tasks and forms inside a modal.
+- `Popconfirm` for lighter, reversible confirmations.
+- `Button` for the variants the actions forward.

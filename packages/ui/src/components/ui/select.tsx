@@ -23,6 +23,7 @@ function SelectTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
+  /** Height of the trigger. @default 'default' */
   size?: 'sm' | 'default'
 }) {
   return (

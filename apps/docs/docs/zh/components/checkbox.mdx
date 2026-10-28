@@ -1,0 +1,86 @@
+---
+title: Checkbox 复选框
+description: 16 px 的复选框，用于单个勾选项或一组彼此独立的选项。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CheckboxBasic from '@docs/demos/checkbox/basic'
+import basicSource from '@docs/demos/checkbox/basic.tsx?raw'
+import CheckboxGroup from '@docs/demos/checkbox/group'
+import groupSource from '@docs/demos/checkbox/group.tsx?raw'
+
+# Checkbox 复选框
+
+`Checkbox` 是基于 Radix 的复选框，以带勾选指示器的按钮渲染。它通过 `checked` 与
+`onCheckedChange` 受控，支持半选状态，并依据 `aria-invalid` 呈现无效样式。
+
+<ComponentMeta id="checkbox" />
+
+## 何时使用
+
+- 单个布尔勾选项，例如开启通知或接受条款。
+- 若干彼此独立、可以同时选中的选项。
+- 表格行选择，包括表头的半选复选框。
+
+## 何时不使用
+
+- 切换后立即生效的设置：使用 `Switch`。
+- 互斥选项：使用 `Radio Group`。
+- 从长列表中选一个：使用 `Select`。
+
+## 基础用法
+
+<Demo title="单个勾选项与说明" filename="demos/checkbox/basic.tsx" source={basicSource}>
+  <CheckboxBasic />
+</Demo>
+
+## 一组选项
+
+<Demo title="受控数组保存的三个选项" filename="demos/checkbox/group.tsx" source={groupSource}>
+  <CheckboxGroup />
+</Demo>
+
+## API
+
+<ApiTable component="checkbox" />
+
+## 设计指引
+
+- 方框为 16 px 见方、圆角 4 px；标签保持一行，说明放在标签下方，两个示例都遵循这一点。
+- 为每个复选框提供 `id`，并用 `htmlFor` 匹配的 `Label` 与之关联，才能提供无障碍名称。
+- 把一组选项当作一组：用带 `role="group"` 与 `aria-labelledby` 的容器（或真正的 fieldset 加
+  legend）包裹，让共同的问题只被宣告一次。
+- `checked` 还接受 `'indeterminate'`，表头复选框正是用它表示部分选中。
+
+## 无障碍
+
+| 按键            | 行为                                 |
+| --------------- | ------------------------------------ |
+| Space           | 切换当前聚焦的复选框。               |
+| Tab / Shift+Tab | 将焦点移到下一个或上一个可聚焦控件。 |
+
+根节点暴露 `role="checkbox"` 与 `aria-checked`，半选时为 `mixed`。无障碍名称来自关联的
+`Label`，提示文字通过 `aria-describedby` 关联——两个示例都把它指向说明元素。
+
+已知缺口：组件不渲染标签、说明或错误文案，也没有分组容器；`role="group"` 与共用标签仍需你
+自己提供。
+
+## FAQ
+
+**`onCheckedChange` 给的是布尔值吗？** 它给出 `boolean | 'indeterminate'`。像示例那样用
+`checked === true` 判断，即可只保存布尔值。
+
+**如何实现全选表头？** 传入
+`checked={someSelected ? 'indeterminate' : allSelected}`，并在表头复选框上处理变更。
+
+**能提交表单吗？** 可以。Radix 会渲染隐藏输入框，因此当根节点带有 `name` 时，`<form>` 提交会
+包含该值。
+
+## 相关
+
+- `Switch`：切换后立即生效的设置。
+- `Radio Group`：只能保留一个选中项时使用。
+- `Form`：把标签与消息接入受校验的表单。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

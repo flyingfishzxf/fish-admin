@@ -1,0 +1,87 @@
+---
+title: Textarea 文本域
+description: 原生多行文本域，沿用 Input 的聚焦描边、禁用与无效状态样式。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TextareaBasic from '@docs/demos/textarea/basic'
+import basicSource from '@docs/demos/textarea/basic.tsx?raw'
+import TextareaStates from '@docs/demos/textarea/states'
+import statesSource from '@docs/demos/textarea/states.tsx?raw'
+
+# Textarea 文本域
+
+`Textarea` 为原生 `<textarea>` 提供样式：最小高度 64 px、与 `Input` 一致的聚焦描边，以及由
+`aria-invalid` 驱动的无效状态。它不统计字数，也不渲染提示文案。
+
+<ComponentMeta id="textarea" />
+
+## 何时使用
+
+- 留言、备注或驳回理由等预计超过一行的内容。
+- 长度事先未知的自由反馈。
+- 用户手工修改的 JSON、SQL 或日志片段。
+
+## 何时不使用
+
+- 姓名、邮箱等单行取值：使用 `Input`。
+- 带格式的富文本：文本域只处理纯文本，请使用专门的编辑器。
+- 固定长度的短验证码：使用 `Input OTP`。
+
+## 基础用法
+
+<Demo title="受控备注并显示字符数" filename="demos/textarea/basic.tsx" source={basicSource}>
+  <TextareaBasic />
+</Demo>
+
+## 状态
+
+<Demo title="禁用与无效" filename="demos/textarea/states.tsx" source={statesSource}>
+  <TextareaStates />
+</Demo>
+
+## API
+
+<ApiTable component="textarea" />
+
+## 设计指引
+
+- 文本域最小高度为 64 px（`min-h-16`），宽度撑满容器；`rows` 是稳定的高度基准，支持
+  `field-sizing: content` 的浏览器会随内容增高。
+- `maxLength` 只会在达到上限时阻止继续输入，不会显示任何提示；请自行渲染计数，并通过
+  `aria-describedby` 暴露，正如第一个示例。
+- 组件没有设置 `resize`，因此浏览器右下角的拖拽手柄默认可用，除非你在 `className` 中覆盖。
+- 无效样式的用法与 `Input` 完全一致：设置 `aria-invalid` 并自行提供提示文案。
+
+## 无障碍
+
+| 按键            | 行为                       |
+| --------------- | -------------------------- |
+| Tab / Shift+Tab | 将焦点移入、移出文本域。   |
+| Enter           | 插入换行，绝不会提交表单。 |
+
+Enter 插入换行而不是提交，因此提交操作请放在按钮上。原生文本域行为被保留：名称来自 `Label` 与
+`htmlFor`，提示与计数来自 `aria-describedby`，无效状态来自 `aria-invalid`。
+
+已知缺口：没有内置计数，也无法保证自动增高——`field-sizing` 并非所有浏览器都支持，请始终传入
+明确的 `rows` 作为基准。
+
+## FAQ
+
+**会随内容自动增高吗？** 在支持 `field-sizing: content` 的浏览器中会；其他浏览器保持 `rows`
+高度并出现滚动条。为保证一致，请设置 `rows`。
+
+**如何显示剩余字数？** 把值放在 state 中，传入 `maxLength`，在字段旁渲染 `value.length`，并让
+`aria-describedby` 指向该元素。
+
+**可以固定拖拽手柄吗？** 可以。`className` 会作用到原生元素，你自己的 `resize` CSS 即可生效——
+组件本身没有设置。
+
+## 相关
+
+- `Input`：单行取值。
+- `Label`：提供无障碍名称。
+- `Form`：把标签、描述与错误消息串联起来。
+- [在模板中的用法](https://fish-admin.vercel.app/users)

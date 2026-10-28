@@ -1,0 +1,28 @@
+[
+  {
+    "id": "switch/basic",
+    "component": "switch",
+    "file": "demos/switch/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A settings row where the switch state is reflected in a status line.",
+      "zh": "设置行中的开关，其状态会同步显示在状态文案里。"
+    }
+  },
+  {
+    "id": "switch/sizes",
+    "component": "switch",
+    "file": "demos/switch/sizes.tsx",
+    "title": {
+      "en": "Sizes and disabled",
+      "zh": "尺寸与禁用"
+    },
+    "description": {
+      "en": "The default and sm tracks, plus a disabled switch with the reason next to it.",
+      "zh": "默认与 sm 两种尺寸，以及旁边注明原因的禁用开关。"
+    }
+  }
+]

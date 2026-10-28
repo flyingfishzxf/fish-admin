@@ -1,0 +1,28 @@
+[
+  {
+    "id": "badge/basic",
+    "component": "badge",
+    "file": "demos/badge/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "All six badge variants in a row, including a badge rendered as a link.",
+      "zh": "一行展示全部六种徽标变体，其中包括渲染为链接的徽标。"
+    }
+  },
+  {
+    "id": "badge/status",
+    "component": "badge",
+    "file": "demos/badge/status.tsx",
+    "title": {
+      "en": "Status with a dot and an icon",
+      "zh": "带圆点与图标的状态"
+    },
+    "description": {
+      "en": "A status badge that combines a dot, an icon and a variant, driven by a three-way switch.",
+      "zh": "由三档按钮切换驱动，同时组合圆点、图标与变体的状态徽标。"
+    }
+  }
+]

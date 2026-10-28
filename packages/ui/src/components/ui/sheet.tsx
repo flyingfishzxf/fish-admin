@@ -43,7 +43,9 @@ function SheetContent({
   showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
+  /** Edge of the viewport the sheet slides in from. @default 'right' */
   side?: 'top' | 'right' | 'bottom' | 'left'
+  /** Render the built-in close button in the top-right corner. @default true */
   showCloseButton?: boolean
 }) {
   const { t } = useUITranslation()

@@ -1,0 +1,99 @@
+---
+title: Card
+description: A bordered surface that groups related content and actions.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CardBasic from '@docs/demos/card/basic'
+import basicSource from '@docs/demos/card/basic.tsx?raw'
+import CardHeaderAction from '@docs/demos/card/header-action'
+import headerActionSource from '@docs/demos/card/header-action.tsx?raw'
+
+# Card
+
+`Card` is a bordered, softly shadowed surface for one topic: a project, a setting or a summary.
+It is a layout container, not an interactive widget — actions inside it stay ordinary buttons and
+links.
+
+<ComponentMeta id="card" />
+
+## When to use
+
+- Grouping a project's status, progress and next actions.
+- Presenting one setting with its current state and a control.
+- Repeating summaries in a dashboard grid.
+
+## When not to use
+
+- Tabular data or comparisons: use `Table`.
+- A page-level section that needs a heading and toolbar: use `PageContainer`.
+- Long forms split into steps, which need more structure than a single surface.
+
+## Basic usage
+
+<Demo title="Project card" filename="demos/card/basic.tsx" source={basicSource}>
+  <CardBasic />
+</Demo>
+
+## Header action and footer
+
+`CardAction` places one small element in the second header column, spanning both header rows.
+The footer below holds the control that changes the card's state, and the header badge follows it.
+
+<Demo
+  title="Status badge and footer toggle"
+  filename="demos/card/header-action.tsx"
+  source={headerActionSource}
+>
+  <CardHeaderAction />
+</Demo>
+
+## API
+
+<ApiTable component="card" />
+
+## Design guidance
+
+- Sections are separated by a 1.5 rem gap and the card adds 1.5 rem vertical padding, so do not add
+  your own section margins; `CardHeader`, `CardContent` and `CardFooter` already share 1.5 rem
+  horizontal padding.
+- `CardAction` is meant for one compact element (a badge or an icon button); it starts in the
+  second column and spans the title and description rows.
+- `CardFooter` is a left-aligned flex row. Keep one primary action there and move secondary actions
+  into a menu.
+- The border and `shadow-sm` are part of the surface; avoid nesting cards, which doubles both.
+
+## Accessibility
+
+| Key           | Behavior                                                 |
+| ------------- | -------------------------------------------------------- |
+| Tab           | Moves through the card's buttons and links in DOM order. |
+| Enter / Space | Activates a focused button or link inside the card.      |
+
+The card itself has no keyboard behavior and no landmark role: it renders a plain `div`, and focus
+moves only through the interactive children you place inside it. Never attach a click handler to
+`Card` on its own; use a link on the title or a button in the footer so the action is reachable and
+announced.
+
+Known gap: `CardTitle` renders a `div`, so card titles never appear in the document outline; wrap
+the title text in a real heading when the card is a page section.
+
+## FAQ
+
+**How do I put a badge or menu in the header?** Use `CardAction`. It occupies the header's second
+column and spans both rows, so the title and description keep the first column.
+
+**Why is the card title missing from my heading outline?** Because `CardTitle` is a `div`, not a
+heading; provide the heading level yourself where it matters.
+
+**Can the whole card be clickable?** Prefer a link on the title or a footer button. A click handler
+on `Card` alone gives no focus target and no keyboard activation.
+
+## Related
+
+- `PageContainer` for page-level headers and toolbars.
+- `Table` when the content is comparative and column-based.
+- `Badge` and `Button` for the header action and footer controls.
+- [Used in the template](https://fish-admin.vercel.app/)

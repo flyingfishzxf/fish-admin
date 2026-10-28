@@ -1,0 +1,92 @@
+---
+title: Switch
+description: Flip a single setting on or off, with the change applied immediately.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SwitchBasic from '@docs/demos/switch/basic'
+import basicSource from '@docs/demos/switch/basic.tsx?raw'
+import SwitchSizes from '@docs/demos/switch/sizes'
+import sizesSource from '@docs/demos/switch/sizes.tsx?raw'
+
+# Switch
+
+A switch is a two-state control for a setting that takes effect as soon as it changes. The thumb
+position and the track colour both reflect the current `checked` value.
+
+<ComponentMeta id="switch" />
+
+## When to use
+
+- A binary setting that applies immediately, such as enabling two-factor authentication.
+- Rows in a settings panel where users expect the change to save without a submit step.
+- Toggling one option that is independent of the other fields on the page.
+
+## When not to use
+
+- A choice that should only take effect when the form is submitted: use `Checkbox` inside the form.
+- Choosing one of several mutually exclusive options: use `Radio Group`.
+- Running an action once, such as "Revoke key": use `Button`, paired with `Alert Dialog` when it is destructive.
+
+## Basic usage
+
+The switch is controlled with `checked` and `onCheckedChange`; the status line in the demo reads the
+same state as the thumb. Pass `defaultChecked` instead for an uncontrolled switch.
+
+<Demo title="Settings row with a label" filename="demos/switch/basic.tsx" source={basicSource}>
+  <SwitchBasic />
+</Demo>
+
+## Sizes and disabled
+
+The default track is 18.4 × 32 px and `size="sm"` is 14 × 24 px. The disabled switch keeps its row
+visible and states the reason next to it.
+
+<Demo title="Sizes and disabled" filename="demos/switch/sizes.tsx" source={sizesSource}>
+  <SwitchSizes />
+</Demo>
+
+## API
+
+<ApiTable component="switch" />
+
+## Design guidance
+
+- Name the setting in the label ("Two-factor authentication") and describe the effect in one short line below it.
+- Apply the change immediately; a switch that needs a save button is better expressed as a checkbox.
+- Give disabled switches a visible reason rather than a tooltip only.
+- Use `size="sm"` only in dense rows where the default track crowds the label, and keep one size per surface.
+
+## Accessibility
+
+| Key   | Behavior                         |
+| ----- | -------------------------------- |
+| Space | Toggles the focused switch.      |
+| Tab   | Moves focus to the next control. |
+
+The root renders as a `<button>` with `role="switch"` and `aria-checked`, so the on/off state is
+announced without relying on colour. The component renders no text, so the accessible name must come
+from an associated `Label` or from `aria-label`; the demo pairs `Label htmlFor` with the switch `id`.
+
+Known gap: there is no built-in on/off caption, invalid state or loading state — if a change can
+fail, show the pending and failed states next to the switch yourself.
+
+## FAQ
+
+**Does the switch submit with a form?** Radix Switch accepts `name` and `value` on the root, but a
+switch is meant for settings that apply immediately; a submitted choice belongs in `Checkbox`.
+
+**Why did clicking the label not toggle my switch?** A `<label>` click activates checkboxes and
+radios, not buttons, and the switch root is a button. Toggle it directly or drive it from your own
+control.
+
+**Can I show "On"/"Off" inside the track?** No — the component renders only a thumb. Put the state
+in nearby text, as the first demo does.
+
+## Related
+
+- `Label` to name the setting.
+- `Checkbox` when the value belongs to a submitted form.
+- `Radio Group` for mutually exclusive options.

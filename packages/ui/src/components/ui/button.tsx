@@ -43,6 +43,7 @@ function Button({
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
+    /** Render the child element instead of a <button>. @default false */
     asChild?: boolean
   }) {
   const Comp = asChild ? Slot.Root : 'button'

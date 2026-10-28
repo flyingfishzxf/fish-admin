@@ -1,0 +1,28 @@
+[
+  {
+    "id": "skeleton/basic",
+    "component": "skeleton",
+    "file": "demos/skeleton/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A card placeholder that swaps to the loaded card without changing its frame.",
+      "zh": "在不改变卡片外框的情况下切换为已加载内容的卡片占位。"
+    }
+  },
+  {
+    "id": "skeleton/list",
+    "component": "skeleton",
+    "file": "demos/skeleton/list.tsx",
+    "title": {
+      "en": "List rows with avatars",
+      "zh": "带头像的列表行"
+    },
+    "description": {
+      "en": "Five skeleton rows that become member rows with avatars and status badges.",
+      "zh": "五行骨架屏，加载后变为带头像与状态徽标的成员列表。"
+    }
+  }
+]

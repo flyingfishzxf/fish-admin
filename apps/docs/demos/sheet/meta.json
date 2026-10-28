@@ -1,0 +1,28 @@
+[
+  {
+    "id": "sheet/basic",
+    "component": "sheet",
+    "file": "demos/sheet/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A right-side panel that edits a member with inline validation.",
+      "zh": "从右侧滑出、带行内校验的成员编辑面板。"
+    }
+  },
+  {
+    "id": "sheet/another-side",
+    "component": "sheet",
+    "file": "demos/sheet/another-side.tsx",
+    "title": {
+      "en": "Another side",
+      "zh": "切换方向"
+    },
+    "description": {
+      "en": "A bottom sheet that collects audit filters before applying them.",
+      "zh": "从底部滑出、先收集审计筛选条件再应用的抽屉面板。"
+    }
+  }
+]

@@ -1,0 +1,90 @@
+---
+title: Table 表格
+description: 用于静态只读数据的语义化表格基础组件。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TableBasic from '@docs/demos/table/basic'
+import basicSource from '@docs/demos/table/basic.tsx?raw'
+import TableSummary from '@docs/demos/table/summary'
+import summarySource from '@docs/demos/table/summary.tsx?raw'
+
+# Table 表格
+
+`Table` 是原生表格元素之上的一层轻封装：提供模板的边框、间距与标题样式，而排序、选择与分页
+仍然由你负责。
+
+<ComponentMeta id="table" />
+
+## 何时使用
+
+- 少量静态行的列表，例如成员或账单明细。
+- 需要 `TableFooter` 明确表达合计的汇总行。
+- 需要放进自定义滚动区域或卡片中的表格。
+
+## 何时不使用
+
+- 需要搜索、筛选、批量操作或分页：使用 `ProTable`。
+- 单元格需要编辑：使用 `EditableTable`。
+- 两列标签/值摘要：使用 `Descriptions`。
+
+## 基础用法
+
+<Demo title="带标题的成员表格" filename="demos/table/basic.tsx" source={basicSource}>
+  <TableBasic />
+</Demo>
+
+## 表尾与汇总行
+
+`TableFooter` 会增加顶部边框和浅色背景。示例根据开关切换后剩余的行实时计算合计，因此汇总值
+始终与可见数据一致。
+
+<Demo title="账单合计" filename="demos/table/summary.tsx" source={summarySource}>
+  <TableSummary />
+</Demo>
+
+## API
+
+<ApiTable component="table" />
+
+## 设计指引
+
+- 默认情况下 `Table` 会把自身包进一个可横向滚动的容器；如果外层布局已经负责滚动，传入
+  `container={false}`。
+- 表头单元格高 40 px（`h-10`），单元格内边距为 0.5 rem；行之间用底部边框分隔，最后一行不显示。
+- 数字列不会自动对齐：请像第二个示例那样，在对应的 `TableHead` 与 `TableCell` 上设置右对齐。
+- `TableCaption` 使用弱化文字；由于根组件设置了 `caption-bottom`，它会出现在表格下方 1 rem 处，
+  而不是上方。
+
+## 无障碍
+
+| 按键          | 行为                                         |
+| ------------- | -------------------------------------------- |
+| Tab           | 先到达滚动容器，再到达单元格内的链接或按钮。 |
+| 方向键        | 表格溢出时，横向滚动已聚焦的容器。           |
+| Enter / Space | 激活单元格内的链接或按钮。                   |
+
+标记保留了原生语义：`th` 表头单元格、与表格关联的 `caption`、用于汇总行的 `tfoot`，屏幕阅读器
+因此能播报行列上下文。获得焦点的是滚动容器而不是 `table` 元素，键盘用户可以借此访问屏幕外的列。
+
+已知缺口：滚动容器只设置了 `tabIndex={0}`，没有 role 或无障碍名称，因此会被播报为一个通用的
+可聚焦区域，而不是带标签的 region。
+
+## FAQ
+
+**Table 会排序或分页吗？** 不会。它只渲染标记；排序、筛选与分页应交给 `ProTable` 或你自己的状态。
+
+**为什么标题出现在表格下方？** 根组件设置了 `caption-bottom`；请把标题保留在下方，或在嵌入正文时
+覆盖对齐方式。
+
+**如何标记选中行？** 在 `TableRow` 上设置 `data-state="selected"`，该行会自动获得浅色的选中背景，
+无需额外类名。
+
+## 相关
+
+- `ProTable`：可搜索、分页与选择的表格。
+- `EditableTable`：单元格是表单控件时使用。
+- `Descriptions`：少量标签/值对的摘要展示。
+- [在模板中的用法](https://fish-admin.vercel.app/users)

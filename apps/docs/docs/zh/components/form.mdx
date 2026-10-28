@@ -1,0 +1,93 @@
+---
+title: Form 表单
+description: 把 react-hook-form 的字段接入模板的输入框、标签与错误信息。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import FormBasic from '@docs/demos/form/basic'
+import basicSource from '@docs/demos/form/basic.tsx?raw'
+import FormFields from '@docs/demos/form/fields'
+import fieldsSource from '@docs/demos/form/fields.tsx?raw'
+
+# Form 表单
+
+Form 就是重新导出的 react-hook-form 的 `FormProvider`。`FormField` 包装 `Controller` 并公开字段名，
+`FormItem` 生成稳定的 id，`FormControl` 注入 `id`、`aria-describedby` 与 `aria-invalid`，
+`FormLabel` 在字段出错时变为危险色，`FormMessage` 渲染错误文案（没有错误时不渲染）。校验本身来自
+`rules` 或 resolver。
+
+<ComponentMeta id="form" />
+
+## 何时使用
+
+- 两个以上字段、需要校验与逐字段错误提示的表单。
+- 对话框或侧边面板中的表单，标签、提示与错误必须保持对齐。
+- 提交到接口，并同时展示客户端与服务端字段错误的场景。
+
+## 何时不使用
+
+- 单个无需校验的字段：`Label` 加 `Input` 就够了。
+- 控件变化即生效的筛选栏：直接绑定控件，而不是提交表单。
+- 立即保存的设置：使用 `Switch` 或 `Checkbox` 并自行处理回调。
+
+## 基础用法
+
+调用 `useForm`，把返回的表单展开给 `Form`，并为每个 `FormField` 配置 `rules`。提交空表单会显示错误
+信息；校验通过后会向页面写入一条摘要。
+
+<Demo title="带校验的工作区表单" filename="demos/form/basic.tsx" source={basicSource}>
+  <FormBasic />
+</Demo>
+
+## 选择与复选框字段
+
+`FormControl` 包裹的是 `SelectTrigger` 而不是 `Select` 根节点，因此 id 与 aria 属性会落在打开列表的
+按钮上。复选框通过 `field.onChange(checked === true)` 把 Radix 的 `checked` 值转回布尔值。
+
+<Demo title="选择与复选框字段" filename="demos/form/fields.tsx" source={fieldsSource}>
+  <FormFields />
+</Demo>
+
+## API
+
+<ApiTable component="form" />
+
+## 设计指引
+
+- 错误文案写成指令：“请输入工作区名称”，而不是“无效”。
+- `FormDescription` 放提示，`FormMessage` 放错误；不要把同一句话在两处重复。
+- 让提交按钮保持可用：`handleSubmit` 会展示错误并把焦点移到第一个无效字段。
+- 在标签上同时标记必填；只有 `required` 规则时，提交前完全看不出来。
+
+## 无障碍
+
+| 按键  | 行为                             |
+| ----- | -------------------------------- |
+| Tab   | 按 DOM 顺序在字段之间移动焦点。  |
+| Enter | 在文本输入框中提交表单。         |
+| Space | 切换当前聚焦的复选框或激活按钮。 |
+
+`FormLabel` 的 `htmlFor` 指向 `FormControl` 生成的 id，`FormControl` 同时设置 `aria-invalid` 与指向提示
+和错误信息的 `aria-describedby`，因此焦点回到字段时会重新读出错误。
+
+已知缺口：`FormMessage` 只是普通的 `<p>`，没有 `role="alert"` 或 `aria-live`，提交后出现的错误要等到
+焦点回到该字段才会被朗读；此外 `FormControl` 始终引用描述文案的 id，未渲染 `FormDescription` 时该引用
+会悬空。
+
+## FAQ
+
+**必须使用 schema 库吗？** 不必。必填与格式检查用逐字段的 `rules` 即可；如果更偏好 schema，`useForm`
+仍然接受 resolver。
+
+**可以在 FormControl 里放自定义控件吗？** 可以，前提是它透传属性与 ref。对不渲染 DOM 节点的控件，请
+读取 `useFormField` 并自行应用这些 id。
+
+**提交成功后如何清空表单？** 调用 `form.reset()`，再自行设置结果状态；组件本身不保存提交状态。
+
+## 相关
+
+- `Input` 与 `Select`：示例中包裹的控件。
+- `Label`：Form 之外的独立字段使用。
+- `Dialog`：表单需要放在模态层时使用。

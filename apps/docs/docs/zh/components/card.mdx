@@ -1,0 +1,94 @@
+---
+title: Card 卡片
+description: 用于分组相关内容与操作的描边容器。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CardBasic from '@docs/demos/card/basic'
+import basicSource from '@docs/demos/card/basic.tsx?raw'
+import CardHeaderAction from '@docs/demos/card/header-action'
+import headerActionSource from '@docs/demos/card/header-action.tsx?raw'
+
+# Card 卡片
+
+`Card` 是带边框与轻微阴影的容器，用于承载一个主题：一个项目、一项设置或一份摘要。它是布局
+容器而不是交互控件——卡片内的操作仍然是普通的按钮与链接。
+
+<ComponentMeta id="card" />
+
+## 何时使用
+
+- 汇总一个项目的状态、进度与后续操作。
+- 展示单项设置及其当前状态和控制项。
+- 在仪表盘网格中重复排列摘要信息。
+
+## 何时不使用
+
+- 表格型数据或对比：使用 `Table`。
+- 需要标题与工具栏的页面级区块：使用 `PageContainer`。
+- 需要分步的长表单：单个容器提供的结构不够。
+
+## 基础用法
+
+<Demo title="项目卡片" filename="demos/card/basic.tsx" source={basicSource}>
+  <CardBasic />
+</Demo>
+
+## 头部操作与底部
+
+`CardAction` 把一个小元素放进头部的第二列，并跨越两行。下方底部放置改变卡片状态的控制项，
+头部徽标会随之更新。
+
+<Demo
+  title="状态徽标与底部开关"
+  filename="demos/card/header-action.tsx"
+  source={headerActionSource}
+>
+  <CardHeaderAction />
+</Demo>
+
+## API
+
+<ApiTable component="card" />
+
+## 设计指引
+
+- 各区块之间由 1.5 rem 的间距分隔，卡片自身还有 1.5 rem 的纵向内边距，因此不要再加区块外边距；
+  `CardHeader`、`CardContent` 与 `CardFooter` 已统一使用 1.5 rem 横向内边距。
+- `CardAction` 只适合放一个紧凑元素（徽标或纯图标按钮）；它从第二列开始，并跨越标题与描述两行。
+- `CardFooter` 是左对齐的弹性行。请在其中保留一个主操作，次要操作收进菜单。
+- 边框与 `shadow-sm` 属于容器外观；避免卡片嵌套，否则两层边框与阴影会叠加。
+
+## 无障碍
+
+| 按键          | 行为                                |
+| ------------- | ----------------------------------- |
+| Tab           | 按 DOM 顺序经过卡片内的按钮与链接。 |
+| Enter / Space | 激活卡片内已聚焦的按钮或链接。      |
+
+卡片本身没有键盘行为，也没有地标角色：它渲染为普通 `div`，焦点只会经过你放在其中的可交互子元素。
+不要只给 `Card` 绑定点击事件；请在标题上使用链接，或在底部放按钮，这样操作才能被键盘到达并被
+正确播报。
+
+已知缺口：`CardTitle` 渲染为 `div`，卡片标题不会出现在文档大纲中；当卡片是页面区块时，请用真正的
+标题元素包裹标题文本。
+
+## FAQ
+
+**如何在头部放置徽标或菜单？** 使用 `CardAction`。它占据头部第二列并跨越两行，标题与描述仍留在
+第一列。
+
+**为什么卡片标题没有出现在标题大纲里？** 因为 `CardTitle` 是 `div` 而不是标题元素；在需要的地方
+请自行提供标题层级。
+
+**可以整张卡片可点击吗？** 建议在标题上放链接，或在底部放按钮。仅给 `Card` 加点击事件既没有焦点
+目标，也无法用键盘激活。
+
+## 相关
+
+- `PageContainer`：页面级标题与工具栏。
+- `Table`：以列为单位的对比型内容。
+- `Badge` 与 `Button`：头部操作与底部控制项。
+- [在模板中的用法](https://fish-admin.vercel.app/)

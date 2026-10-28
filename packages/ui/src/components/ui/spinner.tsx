@@ -8,8 +8,11 @@ import { cn } from '../../lib/utils'
 type SpinnerSize = 'sm' | 'default' | 'lg'
 
 type SpinnerProps = {
+  /** Icon size: `sm` is 14 px, `default` 16 px, `lg` 24 px. @default 'default' */
   size?: SpinnerSize
+  /** Accessible name for the `status` region; without it the spinner is `aria-hidden`. */
   label?: string
+  /** Extra classes merged onto the wrapping `<span>`. */
   className?: string
 }
 
@@ -35,10 +38,15 @@ function Spinner({ size = 'default', label, className }: SpinnerProps) {
 }
 
 type LoadingOverlayProps = {
+  /** Whether the overlay is shown; mirrored as `aria-busy` on the wrapper. */
   loading: boolean
+  /** Accessible name announced by the spinner inside the overlay. */
   label?: string
+  /** Content rendered under the overlay. */
   children?: React.ReactNode
+  /** Extra classes merged onto the wrapping `<div>`. */
   className?: string
+  /** Milliseconds to wait before showing the overlay, so fast loads do not flash. @default 150 */
   delay?: number
 }
 

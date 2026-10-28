@@ -1,0 +1,28 @@
+[
+  {
+    "id": "checkbox/basic",
+    "component": "checkbox",
+    "file": "demos/checkbox/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A single opt-in with a description and a status line that mirrors its state.",
+      "zh": "单个勾选项，带说明文字以及同步显示状态的提示行。"
+    }
+  },
+  {
+    "id": "checkbox/group",
+    "component": "checkbox",
+    "file": "demos/checkbox/group.tsx",
+    "title": {
+      "en": "A group of choices",
+      "zh": "一组选项"
+    },
+    "description": {
+      "en": "Three notification options stored as one controlled array of values.",
+      "zh": "三个通知选项，值保存在一个受控数组中。"
+    }
+  }
+]

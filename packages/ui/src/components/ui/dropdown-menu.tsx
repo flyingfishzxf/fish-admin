@@ -49,7 +49,9 @@ function DropdownMenuItem({
   variant = 'default',
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
+  /** Indent the item to line up with a menu that renders icons. */
   inset?: boolean
+  /** `destructive` colours the text and icon for irreversible actions. @default 'default' */
   variant?: 'default' | 'destructive'
 }) {
   return (
@@ -127,6 +129,7 @@ function DropdownMenuLabel({
   inset,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & {
+  /** Indent the label to line up with a menu that renders icons. */
   inset?: boolean
 }) {
   return (
@@ -172,6 +175,7 @@ function DropdownMenuSubTrigger({
   children,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & {
+  /** Indent the trigger to line up with a menu that renders icons. */
   inset?: boolean
 }) {
   return (

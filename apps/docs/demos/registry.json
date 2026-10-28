@@ -1,5 +1,109 @@
 [
   {
+    "id": "alert-dialog/basic",
+    "component": "alert-dialog",
+    "file": "demos/alert-dialog/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A delete-style confirmation for revoking an API key, with the outcome reported on the page.",
+      "zh": "吊销 API 密钥的删除式确认，并在页面上反馈结果。"
+    }
+  },
+  {
+    "id": "alert-dialog/controlled",
+    "component": "alert-dialog",
+    "file": "demos/alert-dialog/controlled.tsx",
+    "title": {
+      "en": "Controlled confirmation flow",
+      "zh": "受控确认流程"
+    },
+    "description": {
+      "en": "The open state lives in the page, so a result message tracks the user's decision.",
+      "zh": "打开状态由页面持有，因此结果文案能跟随用户的选择。"
+    }
+  },
+  {
+    "id": "alert/basic",
+    "component": "alert",
+    "file": "demos/alert/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "An informational alert with an icon, a title, a description and a request action.",
+      "zh": "带图标、标题、描述与请求操作的信息提示。"
+    }
+  },
+  {
+    "id": "alert/destructive",
+    "component": "alert",
+    "file": "demos/alert/destructive.tsx",
+    "title": {
+      "en": "Destructive alert with a list",
+      "zh": "带列表的危险提示"
+    },
+    "description": {
+      "en": "A destructive alert listing failed jobs, with a control that switches to the clean state.",
+      "zh": "用列表列出失败任务的危险提示，并可切换到全部正常的默认状态。"
+    }
+  },
+  {
+    "id": "avatar/basic",
+    "component": "avatar",
+    "file": "demos/avatar/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Initials fallbacks at the sm, default and lg sizes.",
+      "zh": "sm、default 与 lg 三种尺寸下的姓名缩写回退。"
+    }
+  },
+  {
+    "id": "avatar/group",
+    "component": "avatar",
+    "file": "demos/avatar/group.tsx",
+    "title": {
+      "en": "Avatar group with an overflow count",
+      "zh": "带溢出计数的头像组"
+    },
+    "description": {
+      "en": "Four overlapping avatars plus a count, expandable to the full member list.",
+      "zh": "四个重叠头像加一个溢出计数，可展开为完整的成员列表。"
+    }
+  },
+  {
+    "id": "badge/basic",
+    "component": "badge",
+    "file": "demos/badge/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "All six badge variants in a row, including a badge rendered as a link.",
+      "zh": "一行展示全部六种徽标变体，其中包括渲染为链接的徽标。"
+    }
+  },
+  {
+    "id": "badge/status",
+    "component": "badge",
+    "file": "demos/badge/status.tsx",
+    "title": {
+      "en": "Status with a dot and an icon",
+      "zh": "带圆点与图标的状态"
+    },
+    "description": {
+      "en": "A status badge that combines a dot, an icon and a variant, driven by a three-way switch.",
+      "zh": "由三档按钮切换驱动，同时组合圆点、图标与变体的状态徽标。"
+    }
+  },
+  {
     "id": "button/basic",
     "component": "button",
     "file": "demos/button/basic.tsx",
@@ -13,6 +117,19 @@
     }
   },
   {
+    "id": "button/icons",
+    "component": "button",
+    "file": "demos/button/icons.tsx",
+    "title": {
+      "en": "Icons, icon-only and link buttons",
+      "zh": "图标、纯图标与链接按钮"
+    },
+    "description": {
+      "en": "Icons compose as children; icon-only buttons need an accessible name, and asChild keeps link semantics.",
+      "zh": "图标作为子元素组合；纯图标按钮必须提供无障碍名称，asChild 则保留链接语义。"
+    }
+  },
+  {
     "id": "button/states",
     "component": "button",
     "file": "demos/button/states.tsx",
@@ -23,6 +140,58 @@
     "description": {
       "en": "Three sizes, a disabled button, a destructive action and a spinner composed as a child.",
       "zh": "三种尺寸、禁用状态、危险操作，以及把 Spinner 作为子元素组合出的加载态。"
+    }
+  },
+  {
+    "id": "card/basic",
+    "component": "card",
+    "file": "demos/card/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A project card with a status badge, progress and footer actions.",
+      "zh": "项目卡片：状态徽标、进度条与底部操作。"
+    }
+  },
+  {
+    "id": "card/header-action",
+    "component": "card",
+    "file": "demos/card/header-action.tsx",
+    "title": {
+      "en": "Header action and footer",
+      "zh": "头部操作与底部"
+    },
+    "description": {
+      "en": "A security card with a status badge in CardAction and a footer toggle.",
+      "zh": "安全设置卡片：CardAction 中放状态徽标，底部放切换操作。"
+    }
+  },
+  {
+    "id": "checkbox/basic",
+    "component": "checkbox",
+    "file": "demos/checkbox/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A single opt-in with a description and a status line that mirrors its state.",
+      "zh": "单个勾选项，带说明文字以及同步显示状态的提示行。"
+    }
+  },
+  {
+    "id": "checkbox/group",
+    "component": "checkbox",
+    "file": "demos/checkbox/group.tsx",
+    "title": {
+      "en": "A group of choices",
+      "zh": "一组选项"
+    },
+    "description": {
+      "en": "Three notification options stored as one controlled array of values.",
+      "zh": "三个通知选项，值保存在一个受控数组中。"
     }
   },
   {
@@ -52,6 +221,162 @@
     }
   },
   {
+    "id": "dialog/basic",
+    "component": "dialog",
+    "file": "demos/dialog/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "An invite-member dialog with an email and a role field, plus footer actions.",
+      "zh": "包含邮箱与角色字段、底部带操作按钮的邀请成员对话框。"
+    }
+  },
+  {
+    "id": "dialog/long-content",
+    "component": "dialog",
+    "file": "demos/dialog/long-content.tsx",
+    "title": {
+      "en": "Long, scrollable content",
+      "zh": "长内容滚动"
+    },
+    "description": {
+      "en": "A max-height keeps a long release note inside the dialog and scrolls its body.",
+      "zh": "用最大高度把较长的发布说明限制在对话框内，并让内容滚动。"
+    }
+  },
+  {
+    "id": "drawer/basic",
+    "component": "drawer",
+    "file": "demos/drawer/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A bottom drawer with draft preferences and explicit save and cancel actions.",
+      "zh": "底部抽屉：先编辑草稿偏好，再明确保存或取消。"
+    }
+  },
+  {
+    "id": "drawer/right-side",
+    "component": "drawer",
+    "file": "demos/drawer/right-side.tsx",
+    "title": {
+      "en": "Right-side drawer",
+      "zh": "右侧抽屉"
+    },
+    "description": {
+      "en": "A rename panel opened with direction=\"right\" and a validated name field.",
+      "zh": "通过 direction=\"right\" 打开的改名面板，名称字段带校验。"
+    }
+  },
+  {
+    "id": "dropdown-menu/basic",
+    "component": "dropdown-menu",
+    "file": "demos/dropdown-menu/basic.tsx",
+    "title": {
+      "en": "Actions menu",
+      "zh": "操作菜单"
+    },
+    "description": {
+      "en": "Edit, duplicate and delete actions, with the destructive item separated at the end.",
+      "zh": "编辑、复制与删除操作，其中危险项单独分隔在末尾。"
+    }
+  },
+  {
+    "id": "dropdown-menu/selections",
+    "component": "dropdown-menu",
+    "file": "demos/dropdown-menu/selections.tsx",
+    "title": {
+      "en": "Checkbox items, radio items and a submenu",
+      "zh": "复选项、单选项与子菜单"
+    },
+    "description": {
+      "en": "Independent toggles, a single-choice density group and a nested share submenu.",
+      "zh": "互相独立的开关、单选密度分组，以及嵌套的分享子菜单。"
+    }
+  },
+  {
+    "id": "form/basic",
+    "component": "form",
+    "file": "demos/form/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A react-hook-form form that validates two text fields on submit.",
+      "zh": "使用 react-hook-form 的表单，在提交时校验两个文本字段。"
+    }
+  },
+  {
+    "id": "form/fields",
+    "component": "form",
+    "file": "demos/form/fields.tsx",
+    "title": {
+      "en": "Select and checkbox fields",
+      "zh": "选择与复选框字段"
+    },
+    "description": {
+      "en": "A select and a checkbox wired into the same form, with a submitted summary.",
+      "zh": "把选择器与复选框接入同一个表单，并在提交后显示结果摘要。"
+    }
+  },
+  {
+    "id": "input/basic",
+    "component": "input",
+    "file": "demos/input/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled email field that reports whether the address looks usable.",
+      "zh": "受控的邮箱输入框，会提示地址是否可用。"
+    }
+  },
+  {
+    "id": "input/types",
+    "component": "input",
+    "file": "demos/input/types.tsx",
+    "title": {
+      "en": "Types and states",
+      "zh": "类型与状态"
+    },
+    "description": {
+      "en": "Text, email and password fields, plus a disabled field and an aria-invalid field.",
+      "zh": "文本、邮箱与密码字段，以及禁用字段和 aria-invalid 字段。"
+    }
+  },
+  {
+    "id": "label/basic",
+    "component": "label",
+    "file": "demos/label/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A label associated with an input through matching htmlFor and id.",
+      "zh": "通过匹配的 htmlFor 与 id 和输入框建立关联的标签。"
+    }
+  },
+  {
+    "id": "label/required-disabled",
+    "component": "label",
+    "file": "demos/label/required-disabled.tsx",
+    "title": {
+      "en": "Required and disabled controls",
+      "zh": "必填与禁用控件"
+    },
+    "description": {
+      "en": "A required field marked with an asterisk and a disabled field with its reason.",
+      "zh": "用星号标记的必填字段，以及注明原因的禁用字段。"
+    }
+  },
+  {
     "id": "pro-table/basic",
     "component": "pro-table",
     "file": "demos/pro-table/basic.tsx",
@@ -75,6 +400,292 @@
     "description": {
       "en": "Checkbox selection with a summary bar that clears the selection.",
       "zh": "复选框选择，以及可清空选择的汇总栏。"
+    }
+  },
+  {
+    "id": "radio-group/basic",
+    "component": "radio-group",
+    "file": "demos/radio-group/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled billing plan choice where every option carries a one-line hint.",
+      "zh": "受控的套餐选择，每个选项都带一行说明。"
+    }
+  },
+  {
+    "id": "radio-group/horizontal",
+    "component": "radio-group",
+    "file": "demos/radio-group/horizontal.tsx",
+    "title": {
+      "en": "Horizontal with a disabled option",
+      "zh": "横向排列与禁用选项"
+    },
+    "description": {
+      "en": "Three cadence options in one row, with the unavailable one disabled and explained.",
+      "zh": "一行三个频率选项，其中不可用的一项被禁用并给出说明。"
+    }
+  },
+  {
+    "id": "select/basic",
+    "component": "select",
+    "file": "demos/select/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled role picker that explains the chosen role underneath.",
+      "zh": "受控的角色选择器，并在下方说明所选角色的权限。"
+    }
+  },
+  {
+    "id": "select/groups",
+    "component": "select",
+    "file": "demos/select/groups.tsx",
+    "title": {
+      "en": "Groups and disabled options",
+      "zh": "分组与禁用选项"
+    },
+    "description": {
+      "en": "Grouped permissions with a disabled item, plus a disabled select showing an inherited value.",
+      "zh": "带禁用项的分组权限，以及展示继承值的禁用选择器。"
+    }
+  },
+  {
+    "id": "separator/basic",
+    "component": "separator",
+    "file": "demos/separator/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Horizontal rules between the sections of an invoice summary.",
+      "zh": "发票摘要各区块之间的水平分隔线。"
+    }
+  },
+  {
+    "id": "separator/toolbar",
+    "component": "separator",
+    "file": "demos/separator/toolbar.tsx",
+    "title": {
+      "en": "Vertical separator in a toolbar",
+      "zh": "工具栏中的垂直分隔线"
+    },
+    "description": {
+      "en": "A vertical rule that splits the formatting toggles from the clear action.",
+      "zh": "把格式切换按钮与清除操作分开的垂直分隔线。"
+    }
+  },
+  {
+    "id": "sheet/another-side",
+    "component": "sheet",
+    "file": "demos/sheet/another-side.tsx",
+    "title": {
+      "en": "Another side",
+      "zh": "切换方向"
+    },
+    "description": {
+      "en": "A bottom sheet that collects audit filters before applying them.",
+      "zh": "从底部滑出、先收集审计筛选条件再应用的抽屉面板。"
+    }
+  },
+  {
+    "id": "sheet/basic",
+    "component": "sheet",
+    "file": "demos/sheet/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A right-side panel that edits a member with inline validation.",
+      "zh": "从右侧滑出、带行内校验的成员编辑面板。"
+    }
+  },
+  {
+    "id": "skeleton/basic",
+    "component": "skeleton",
+    "file": "demos/skeleton/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A card placeholder that swaps to the loaded card without changing its frame.",
+      "zh": "在不改变卡片外框的情况下切换为已加载内容的卡片占位。"
+    }
+  },
+  {
+    "id": "skeleton/list",
+    "component": "skeleton",
+    "file": "demos/skeleton/list.tsx",
+    "title": {
+      "en": "List rows with avatars",
+      "zh": "带头像的列表行"
+    },
+    "description": {
+      "en": "Five skeleton rows that become member rows with avatars and status badges.",
+      "zh": "五行骨架屏，加载后变为带头像与状态徽标的成员列表。"
+    }
+  },
+  {
+    "id": "spinner/basic",
+    "component": "spinner",
+    "file": "demos/spinner/basic.tsx",
+    "title": {
+      "en": "Three sizes",
+      "zh": "三种尺寸"
+    },
+    "description": {
+      "en": "The small, default and large spinner next to the space each size suits.",
+      "zh": "小号、默认与大号加载指示器，并标注各自适用的场景。"
+    }
+  },
+  {
+    "id": "spinner/labeled",
+    "component": "spinner",
+    "file": "demos/spinner/labeled.tsx",
+    "title": {
+      "en": "Labeled loading region",
+      "zh": "带标签的加载区域"
+    },
+    "description": {
+      "en": "A labeled spinner and a LoadingOverlay that covers a card while it refreshes.",
+      "zh": "带标签的加载指示器，以及刷新时覆盖卡片的 LoadingOverlay。"
+    }
+  },
+  {
+    "id": "switch/basic",
+    "component": "switch",
+    "file": "demos/switch/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A settings row where the switch state is reflected in a status line.",
+      "zh": "设置行中的开关，其状态会同步显示在状态文案里。"
+    }
+  },
+  {
+    "id": "switch/sizes",
+    "component": "switch",
+    "file": "demos/switch/sizes.tsx",
+    "title": {
+      "en": "Sizes and disabled",
+      "zh": "尺寸与禁用"
+    },
+    "description": {
+      "en": "The default and sm tracks, plus a disabled switch with the reason next to it.",
+      "zh": "默认与 sm 两种尺寸，以及旁边注明原因的禁用开关。"
+    }
+  },
+  {
+    "id": "table/basic",
+    "component": "table",
+    "file": "demos/table/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A members table with a caption and a search field that filters rows.",
+      "zh": "带标题和搜索过滤的成员表格。"
+    }
+  },
+  {
+    "id": "table/summary",
+    "component": "table",
+    "file": "demos/table/summary.tsx",
+    "title": {
+      "en": "Footer and summary row",
+      "zh": "表尾与汇总行"
+    },
+    "description": {
+      "en": "An invoice table whose footer total follows a hide-paid toggle.",
+      "zh": "账单表格，表尾合计随“隐藏已付款”开关变化。"
+    }
+  },
+  {
+    "id": "tabs/basic",
+    "component": "tabs",
+    "file": "demos/tabs/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Account settings split into profile, notification and security panels.",
+      "zh": "账户设置拆分为资料、通知与安全三个面板。"
+    }
+  },
+  {
+    "id": "tabs/vertical",
+    "component": "tabs",
+    "file": "demos/tabs/vertical.tsx",
+    "title": {
+      "en": "Vertical with a disabled tab",
+      "zh": "垂直布局与禁用标签"
+    },
+    "description": {
+      "en": "A vertical tab list where the billing tab stays disabled until the owner view is on.",
+      "zh": "垂直标签列表：切换到所有者视图前，账单标签保持禁用。"
+    }
+  },
+  {
+    "id": "textarea/basic",
+    "component": "textarea",
+    "file": "demos/textarea/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled review note with a live character count against the hard limit.",
+      "zh": "受控的审核备注，并实时显示字符数上限。"
+    }
+  },
+  {
+    "id": "textarea/states",
+    "component": "textarea",
+    "file": "demos/textarea/states.tsx",
+    "title": {
+      "en": "States",
+      "zh": "状态"
+    },
+    "description": {
+      "en": "A disabled summary next to a textarea that turns invalid until the reason is long enough.",
+      "zh": "禁用的处理摘要，以及内容过短时变为无效状态的文本域。"
+    }
+  },
+  {
+    "id": "tooltip/basic",
+    "component": "tooltip",
+    "file": "demos/tooltip/basic.tsx",
+    "title": {
+      "en": "Tooltip on a button",
+      "zh": "按钮上的文字提示"
+    },
+    "description": {
+      "en": "A text button and an icon-only button, each with a tooltip that opens on hover or focus.",
+      "zh": "文本按钮与纯图标按钮，各自带有一个悬停或聚焦即打开的文字提示。"
+    }
+  },
+  {
+    "id": "tooltip/sides",
+    "component": "tooltip",
+    "file": "demos/tooltip/sides.tsx",
+    "title": {
+      "en": "All four sides",
+      "zh": "四个方向"
+    },
+    "description": {
+      "en": "Four triggers that place their tooltip on the top, right, bottom and left.",
+      "zh": "四个触发器，将文字提示分别放在上、右、下、左四侧。"
     }
   }
 ]

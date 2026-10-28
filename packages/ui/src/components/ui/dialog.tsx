@@ -46,6 +46,7 @@ function DialogContent({
   showCloseButton = true,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
+  /** Render the close button in the top-right corner. @default true */
   showCloseButton?: boolean
 }) {
   const { t } = useUITranslation()
@@ -92,6 +93,7 @@ function DialogFooter({
   children,
   ...props
 }: React.ComponentProps<'div'> & {
+  /** Render a Close button built from DialogClose. @default false */
   showCloseButton?: boolean
 }) {
   const { t } = useUITranslation()

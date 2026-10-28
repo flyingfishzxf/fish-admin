@@ -1,0 +1,98 @@
+---
+title: Drawer
+description: A draggable panel anchored to an edge, built on vaul for touch-friendly sheets.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DrawerBasic from '@docs/demos/drawer/basic'
+import basicSource from '@docs/demos/drawer/basic.tsx?raw'
+import DrawerRightSide from '@docs/demos/drawer/right-side'
+import rightSideSource from '@docs/demos/drawer/right-side.tsx?raw'
+
+# Drawer
+
+`Drawer` is a panel anchored to a screen edge that can be dragged closed. It is built on vaul,
+which layers a Radix Dialog underneath, so it keeps dialog focus management while adding the
+touch gesture people expect from a mobile sheet.
+
+<ComponentMeta id="drawer" />
+
+## When to use
+
+- A bottom panel on touch devices that should be dismissible by swiping down.
+- Quick settings or preferences that should not take over the page.
+- A side panel for editing one record, when a draggable surface is preferred over `Sheet`.
+
+## When not to use
+
+- A blocking confirm/cancel decision: use `Alert Dialog`.
+- Desktop-first forms with many fields: use `Sheet` or `Dialog`.
+- Content that must stay mounted while hidden: the drawer unmounts when closed.
+
+## Basic usage
+
+<Demo title="Bottom drawer with actions" filename="demos/drawer/basic.tsx" source={basicSource}>
+  <DrawerBasic />
+</Demo>
+
+## Right-side drawer
+
+Pass `direction="right"` to `Drawer`. The direction lives on the root, and `DrawerContent` styles
+itself from vaul's `data-vaul-drawer-direction` attribute, so no extra props are needed on the
+content. The demo validates the name before committing it.
+
+<Demo title="Rename panel" filename="demos/drawer/right-side.tsx" source={rightSideSource}>
+  <DrawerRightSide />
+</Demo>
+
+## API
+
+<ApiTable component="drawer" />
+
+## Design guidance
+
+- `direction` defaults to `"bottom"`. Bottom and top drawers are capped at 80% of the viewport
+  height and keep a 6 rem gap from the opposite edge; right and left drawers are 75% wide, capped
+  at 24 rem from the `sm` breakpoint.
+- Only bottom drawers render the drag handle (100 px by 8 px). Right and left drawers have no
+  handle, so always give them visible actions.
+- `DrawerHeader` and `DrawerFooter` apply 1 rem padding; the body has none. `DrawerFooter` uses
+  `mt-auto`, so actions stay pinned to the bottom.
+- Header text is centred for bottom drawers until the `md` breakpoint; keep titles to one line.
+
+## Accessibility
+
+| Key           | Behavior                                               |
+| ------------- | ------------------------------------------------------ |
+| Enter / Space | Opens the drawer from the focused trigger.             |
+| Tab           | Moves focus inside the drawer; focus is trapped there. |
+| Shift + Tab   | Moves focus backwards inside the drawer.               |
+| Escape        | Closes the drawer and returns focus to the trigger.    |
+
+Because vaul renders a Radix Dialog, the panel is a modal dialog with a focus trap, Escape to
+close, and focus restored to the trigger. `DrawerTitle` and `DrawerDescription` provide the
+accessible name and description; render both. Dragging the handle (bottom direction only) also
+closes the drawer for pointer and touch users.
+
+Known gap: there is no built-in close button, so keyboard users depend on Escape or on a
+`DrawerClose` you place in the header or footer.
+
+## FAQ
+
+**How do I change the side?** Set `direction` on `Drawer` — `"bottom"`, `"top"`, `"left"` or
+`"right"`. Content styling follows that direction automatically.
+
+**Can the drawer open at partial heights?** Yes. `Drawer` forwards vaul's `snapPoints` and
+`activeSnapPoint` props to the underlying root.
+
+**Can I stop the drawer from being dragged closed?** Set `dismissible={false}`, or restrict
+dragging to the handle with `handleOnly`; both props are forwarded to vaul.
+
+## Related
+
+- `Sheet` for a non-draggable side panel built on Radix Dialog.
+- `Dialog` for centred desktop tasks.
+- `Alert Dialog` when the drawer asks for confirmation.
+- [Used in the template](https://fish-admin.vercel.app/integrations)

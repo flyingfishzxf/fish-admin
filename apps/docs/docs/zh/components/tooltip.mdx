@@ -1,0 +1,89 @@
+---
+title: Tooltip 文字提示
+description: 在触发器被悬停或聚焦时显示一行简短说明，不打断页面操作。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TooltipBasic from '@docs/demos/tooltip/basic'
+import basicSource from '@docs/demos/tooltip/basic.tsx?raw'
+import TooltipSides from '@docs/demos/tooltip/sides'
+import sidesSource from '@docs/demos/tooltip/sides.tsx?raw'
+
+# Tooltip 文字提示
+
+`Tooltip` 在触发器被悬停或聚焦时显示一行文字。它是对 Radix Tooltip 原语的轻量封装：一个
+Provider、一个触发器，以及带箭头、通过 portal 渲染的内容。
+
+<ComponentMeta id="tooltip" />
+
+## 何时使用
+
+- 说明纯图标按钮的作用。
+- 展示被布局截断的值，例如较长的 ID 或文件路径。
+- 为一个本身就可用、但带快捷键的控件补充快捷键提醒。
+
+## 何时不使用
+
+- 信息是完成任务所必需的：请直接渲染在页面里。
+- 内容是可交互的（链接、按钮、输入框）：请使用 `Popover`。
+- 触发器需要包含媒体信息的丰富预览：请使用 `Hover Card`。
+- 只有触摸屏、不存在悬停：请显示可见标签，或使用 `Popover`。
+
+## 基础用法
+
+<Demo title="按钮上的文字提示" filename="demos/tooltip/basic.tsx" source={basicSource}>
+  <TooltipBasic />
+</Demo>
+
+## 四个方向
+
+`TooltipContent` 接受 Radix 的 `side`、`align` 与 `sideOffset`。箭头由组件自行渲染，并跟随你选择的方向。
+
+<Demo title="四个方向" filename="demos/tooltip/sides.tsx" source={sidesSource}>
+  <TooltipSides />
+</Demo>
+
+## API
+
+<ApiTable component="tooltip" />
+
+## 设计指引
+
+- 内容控制在一行短语内：它以 `text-xs` 渲染在 `bg-foreground` 的气泡上。
+- 把一组提示放在同一个 `TooltipProvider` 里，只需配置一次 `delayDuration`；本封装默认值为 `0`。
+- 触发器靠近视口边缘时调整 `side` 或 `align`，让气泡留在视口内。
+- 不要在 `TooltipContent` 内放可交互内容：提示本身没有焦点管理，键盘用户永远无法到达它。
+
+## 无障碍
+
+| 按键   | 行为                                       |
+| ------ | ------------------------------------------ |
+| Tab    | 聚焦触发器并打开提示；焦点离开后自动关闭。 |
+| Escape | 关闭提示，焦点仍停留在触发器上。           |
+
+未传入 `asChild` 时触发器是原生 `<button>`；提示打开期间触发器带有 `aria-describedby` 指向内容，
+内容以 `role="tooltip"` 暴露。提示不会捕获焦点，也不会拦截指针事件（`disableOutsidePointerEvents`
+始终关闭）。
+
+已知缺口：把 `asChild` 用在禁用控件上时提示无法打开，因为禁用元素不会派发指针事件；若确实需要这条
+提示，请把控件包在一个可聚焦元素中。
+
+## FAQ
+
+**必须用 `TooltipProvider` 包裹吗？** 必须。`TooltipTrigger` 会从 Provider 读取 `delayDuration` 与
+跳过延迟的状态，缺少 Provider 时会直接抛错；Provider 还能避免相邻提示每次悬停都重新播放动画。
+
+**为什么提示立刻出现？** 因为本封装的 `TooltipProvider` 把 `delayDuration` 设为 `0`。在密集的工具栏里，
+可以在 Provider 上提高该值来增加悬停延迟。
+
+**可以在提示里放链接吗？** 不可以。内容只是带箭头的一段文字气泡，且不可聚焦；需要点击的内容请使用
+`Popover`。
+
+## 相关
+
+- `Popover`：承载需要用户交互的内容。
+- `Hover Card`：更丰富的预览。
+- `Button`：文字提示通常用来解释的纯图标按钮。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

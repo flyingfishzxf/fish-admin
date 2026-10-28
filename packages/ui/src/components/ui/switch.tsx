@@ -9,6 +9,7 @@ function Switch({
   size = 'default',
   ...props
 }: React.ComponentProps<typeof SwitchPrimitive.Root> & {
+  /** Track size; sm renders 14 x 24 px, default renders 18.4 x 32 px. @default default */
   size?: 'sm' | 'default'
 }) {
   return (

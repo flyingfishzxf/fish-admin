@@ -1,0 +1,28 @@
+[
+  {
+    "id": "spinner/basic",
+    "component": "spinner",
+    "file": "demos/spinner/basic.tsx",
+    "title": {
+      "en": "Three sizes",
+      "zh": "三种尺寸"
+    },
+    "description": {
+      "en": "The small, default and large spinner next to the space each size suits.",
+      "zh": "小号、默认与大号加载指示器，并标注各自适用的场景。"
+    }
+  },
+  {
+    "id": "spinner/labeled",
+    "component": "spinner",
+    "file": "demos/spinner/labeled.tsx",
+    "title": {
+      "en": "Labeled loading region",
+      "zh": "带标签的加载区域"
+    },
+    "description": {
+      "en": "A labeled spinner and a LoadingOverlay that covers a card while it refreshes.",
+      "zh": "带标签的加载指示器，以及刷新时覆盖卡片的 LoadingOverlay。"
+    }
+  }
+]

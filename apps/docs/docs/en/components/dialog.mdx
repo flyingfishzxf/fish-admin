@@ -1,0 +1,99 @@
+---
+title: Dialog
+description: Open a focused task in a modal layer without leaving the page.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DialogBasic from '@docs/demos/dialog/basic'
+import basicSource from '@docs/demos/dialog/basic.tsx?raw'
+import DialogLongContent from '@docs/demos/dialog/long-content'
+import longContentSource from '@docs/demos/dialog/long-content.tsx?raw'
+
+# Dialog
+
+Dialog is a modal built on Radix Portal and Overlay. `DialogContent` portals the overlay and panel,
+centres both and caps the panel at `max-w-lg` from the `sm` breakpoint; `showCloseButton` defaults to
+true. A dialog starts closed and opens from `DialogTrigger` or a controlled `open` prop.
+
+<ComponentMeta id="dialog" />
+
+## When to use
+
+- A short task that needs the page for context, such as inviting a member.
+- Editing a record without losing the list, filters or scroll position behind it.
+- A focused detail view that is too small to justify its own route.
+
+## When not to use
+
+- Destructive confirmations: use `Alert Dialog`, which ignores outside clicks.
+- Long, multi-step flows: use `Drawer` or a dedicated page instead.
+- Non-blocking messages: use `Alert` or a toast.
+- Content the user must keep visible while working: use a panel or `Popover`.
+
+## Basic usage
+
+The trigger opens the dialog; the footer closes it through `DialogClose`. The send button stays
+disabled until an address is typed, and the page keeps the last result after the dialog closes.
+
+<Demo title="Invite a member" filename="demos/dialog/basic.tsx" source={basicSource}>
+  <DialogBasic />
+</Demo>
+
+## Long, scrollable content
+
+`DialogContent` has no scroll region of its own, so long content is capped with a `max-height` and
+`overflow-y` on the content element. The dialog stays inside the viewport and its body scrolls.
+
+<Demo
+  title="Long, scrollable content"
+  filename="demos/dialog/long-content.tsx"
+  source={longContentSource}
+>
+  <DialogLongContent />
+</Demo>
+
+## API
+
+<ApiTable component="dialog" />
+
+## Design guidance
+
+- Always render a `DialogTitle`; without it the dialog has no accessible name, and Radix logs a warning in development.
+- Add a `DialogDescription` for one sentence of context, and put the primary action last in `DialogFooter` so it sits at the right edge on desktop.
+- Cap long bodies with `max-height` and `overflow-y`, and keep the footer inside the content so its actions stay reachable.
+- Set `DialogFooter showCloseButton` when the footer needs a translated outline Close button without importing `DialogClose`; the top-right close icon is already on by default.
+
+## Accessibility
+
+| Key    | Behavior                                                     |
+| ------ | ------------------------------------------------------------ |
+| Escape | Closes the dialog and returns focus to the trigger.          |
+| Tab    | Cycles through the dialog's controls; focus cannot leave it. |
+| Enter  | Activates the focused action or submits a form inside.       |
+
+The panel is portalled to the end of the document, the trigger exposes `aria-expanded`, and the
+overlay makes the page behind inert to both pointer and keyboard input. Providing a title and
+description is what gives the dialog its accessible name and summary.
+
+Known gap: `DialogContent` has no scroll container and no size prop, so long content grows past the
+viewport unless you cap it with a `max-height` yourself, and the close icon's screen-reader label
+comes from the provider's translation table rather than a prop.
+
+## FAQ
+
+**How do I control the dialog from my own button?** Pass `open` and `onOpenChange` to `Dialog` and
+render `DialogContent` inside it; both demos here use the uncontrolled trigger instead.
+
+**Can a dialog contain a form?** Yes. Keep the submit button inside the `DialogFooter`, and close
+with `DialogClose` only after validation passes.
+
+**Why does my long dialog overflow the screen?** `DialogContent` sizes to its content. Add
+`style={{ maxHeight: '20rem', overflowY: 'auto' }}`, as the second demo does.
+
+## Related
+
+- `Alert Dialog` for confirmations that must not be dismissed by an outside click.
+- `Drawer` for side panels and longer tasks.
+- `Sheet` for navigation or filters that slide in.

@@ -1,0 +1,82 @@
+---
+title: Separator 分隔线
+description: 位于区块之间的 1 px 分隔线，可水平或垂直，并可按需暴露语义。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SeparatorBasic from '@docs/demos/separator/basic'
+import basicSource from '@docs/demos/separator/basic.tsx?raw'
+import SeparatorToolbar from '@docs/demos/separator/toolbar'
+import toolbarSource from '@docs/demos/separator/toolbar.tsx?raw'
+
+# Separator 分隔线
+
+Separator 绘制 1 px 的分隔线，默认水平，设置 `orientation="vertical"` 后垂直。默认是装饰性的；传入 `decorative={false}` 后才会以分隔符语义暴露给辅助技术。
+
+<ComponentMeta id="separator" />
+
+## 何时使用
+
+- 划分字段组、行组或摘要区块。
+- 在工具栏或页头中切分控件分组。
+- 在边框显得过重的位置，让结构性断点可见。
+
+## 何时不使用
+
+- 仅需要间距：请使用布局自身的 gap。
+- 表格内的单元格分隔：请使用表格的边框样式。
+- 页面级的分节：请使用标题与间距。
+
+## 基础用法
+
+<Demo title="发票区块之间的分隔线" filename="demos/separator/basic.tsx" source={basicSource}>
+  <SeparatorBasic />
+</Demo>
+
+## 工具栏中的垂直分隔线
+
+<Demo
+  title="格式工具栏中的垂直分隔线"
+  filename="demos/separator/toolbar.tsx"
+  source={toolbarSource}
+>
+  <SeparatorToolbar />
+</Demo>
+
+## API
+
+<ApiTable component="separator" />
+
+## 设计指引
+
+- 水平分隔线高 1 px、宽度撑满；垂直分隔线宽 1 px、高度为 `h-full`。
+- 垂直分隔线需要父元素具有确定的高度。工具栏显式设置了 20 px 高度，因为 flex 行的高度由内容决定。
+- `decorative` 默认为 `true`，组件会显式传入该值，因此除非主动开启，分隔线不会进入无障碍树。
+- 组件没有外边距或间距属性；间距由外层布局负责。
+
+## 无障碍
+
+| 按键 | 行为                               |
+| ---- | ---------------------------------- |
+| Tab  | 永远无法到达；元素没有焦点停留点。 |
+| —    | 没有任何按键处理；它不是控件。     |
+
+使用默认的 `decorative={true}` 时元素渲染为 `role="none"`。设置 `decorative={false}` 后元素变为 `role="separator"`，垂直时还会带上 `aria-orientation="vertical"`；水平方向是隐含的，因此不会输出该属性。
+
+已知缺口：组件渲染的是 `<div>` 而不是 `<hr>`，也没有提供标签属性，因此它画出的分隔纯粹是视觉性的——被划分的区域仍需各自具备标题。
+
+## FAQ
+
+**为什么垂直分隔线看不见？** 它使用 `h-full`，父元素没有高度时会被压缩为零。请给父元素或分隔线设置明确的高度。
+
+**为什么它没有出现在无障碍树中？** 因为 `decorative` 默认为 `true` 并渲染 `role="none"`。当分隔本身有语义时应设置 `decorative={false}`。
+
+**可以替代 `<hr>` 吗？** 视觉上可以，但它渲染的是 `<div>`，文档结构仍需依赖真实标题来表达。
+
+## 相关
+
+- `Sidebar`：用分隔线划分导航区块。
+- `Card`：自带边框的较大容器。
+- [在模板中的用法](https://fish-admin.vercel.app/)

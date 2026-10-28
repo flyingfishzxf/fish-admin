@@ -1,0 +1,78 @@
+---
+title: Skeleton 骨架屏
+description: 在数据加载时保持布局稳定的中性占位块。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SkeletonBasic from '@docs/demos/skeleton/basic'
+import basicSource from '@docs/demos/skeleton/basic.tsx?raw'
+import SkeletonList from '@docs/demos/skeleton/list'
+import listSource from '@docs/demos/skeleton/list.tsx?raw'
+
+# Skeleton 骨架屏
+
+Skeleton 是一个带脉冲动画的占位 `<div>`。除了 `rounded-md` 与 `bg-accent`，它本身没有几何尺寸，宽、高与圆角全部来自你传入的类名或样式。
+
+<ComponentMeta id="skeleton" />
+
+## 何时使用
+
+- 卡片、列表或表格的首屏数据加载时，先占住布局。
+- 保持行高稳定，避免数据到达时内容跳动。
+- 尽量贴近已知布局，让切换看起来像同一个组件。
+
+## 何时不使用
+
+- 不到一秒就能完成的加载：短暂的闪烁比空白更糟。
+- 没有布局需要预留的不确定等待：请使用 `Spinner`。
+- 结果确实为空：请使用 `Empty`。
+
+## 基础用法
+
+<Demo title="从骨架屏变为真实卡片" filename="demos/skeleton/basic.tsx" source={basicSource}>
+  <SkeletonBasic />
+</Demo>
+
+## 带头像的列表行
+
+<Demo title="头像、文本行与状态胶囊的列表" filename="demos/skeleton/list.tsx" source={listSource}>
+  <SkeletonList />
+</Demo>
+
+## API
+
+<ApiTable component="skeleton" />
+
+## 设计指引
+
+- 默认圆角为 `rounded-md`、填充为 `bg-accent`；真实内容是圆形、胶囊或其他表面时要覆盖这两项。
+- 尺寸要与加载后的内容完全一致，否则数据落地的瞬间行节奏会移动。
+- 真实布局有层次时，用多个 Skeleton 组合，而不是一整块大方块。
+- 让骨架屏和真实内容留在同一容器内，这样 `aria-busy` 能同时覆盖两者。
+
+## 无障碍
+
+| 按键 | 行为                                   |
+| ---- | -------------------------------------- |
+| Tab  | 完全跳过骨架屏；它们是没有焦点的 div。 |
+| —    | 没有按键处理；脉冲动画纯属表现层。     |
+
+骨架屏是空元素，本身不会被朗读。加载期间请给所在区域标记 `aria-busy="true"`，并用文本说明等待状态，第二个示例中的加载提示行就是这样做的。
+
+已知缺口：组件不响应 `prefers-reduced-motion`——`animate-pulse` 始终运行，也没有关闭它的属性，因此偏好减少动效的用户仍会看到持续的明暗变化。
+
+## FAQ
+
+**有流光（shimmer）效果吗？** 没有。区块通过 `animate-pulse` 做透明度呼吸，没有渐变扫光，也没有动画属性。
+
+**应该渲染多少个骨架屏？** 与预期的行数一致，至少覆盖可见区域的高度，以免页面重新排版。
+
+**可以给每个块单独设置样式吗？** 可以。每个 `Skeleton` 都接受 `className` 与 `style`，第二个示例中的圆形头像与状态胶囊就是这样实现的。
+
+## 相关
+
+- `Spinner`：没有布局需要预留的等待。
+- `Empty`：加载结束后没有任何结果。
+- [在模板中的用法](https://fish-admin.vercel.app/)

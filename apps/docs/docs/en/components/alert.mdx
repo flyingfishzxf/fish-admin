@@ -1,0 +1,95 @@
+---
+title: Alert
+description: Inline status messaging for informational and destructive states.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AlertBasic from '@docs/demos/alert/basic'
+import basicSource from '@docs/demos/alert/basic.tsx?raw'
+import AlertDestructive from '@docs/demos/alert/destructive'
+import destructiveSource from '@docs/demos/alert/destructive.tsx?raw'
+
+# Alert
+
+Alert is a bordered block that carries `role="alert"`. Put an icon as the first direct child,
+then `AlertTitle` and `AlertDescription`; the root is a grid that reserves a column for that icon.
+
+<ComponentMeta id="alert" />
+
+## When to use
+
+- Reporting the outcome of an inline action without leaving the page.
+- Explaining why a form, panel or action is unavailable.
+- Surfacing a time-sensitive notice directly above the content it affects.
+
+## When not to use
+
+- Confirming a destructive action: use `Alert Dialog`.
+- A short transient message: use `Sonner`.
+- Content users collapse or dismiss: use `Collapsible` or a `Card`.
+
+## Basic usage
+
+<Demo
+  title="Informational alert with an action"
+  filename="demos/alert/basic.tsx"
+  source={basicSource}
+>
+  <AlertBasic />
+</Demo>
+
+## Destructive alert with a list
+
+<Demo
+  title="Destructive alert listing failed jobs"
+  filename="demos/alert/destructive.tsx"
+  source={destructiveSource}
+>
+  <AlertDestructive />
+</Demo>
+
+## API
+
+<ApiTable component="alert" />
+
+## Design guidance
+
+- Only two variants exist: `default` and `destructive`. There is no success or warning variant, so
+  choose the icon and copy for those cases.
+- The icon column appears only when an `<svg>` is a direct child; that icon is set to 16 px and
+  inherits the current text colour.
+- `AlertTitle` is clamped to one line, so keep it short and move detail into `AlertDescription`.
+- Children after the icon stack in the second column, which is why the icon has to come first.
+
+## Accessibility
+
+| Key         | Behavior                                                                       |
+| ----------- | ------------------------------------------------------------------------------ |
+| Tab         | Skips the alert itself and stops only on interactive children such as buttons. |
+| Enter/Space | Activates a focused control inside the alert; the alert has no key handling.   |
+
+The root always renders `role="alert"`, so assistive tech announces it assertively when it is
+inserted into the page. Mount an alert in response to an event rather than keeping one permanently
+in the tree and swapping its text.
+
+Known gap: there is no dismiss button, close control or auto-hide behaviour; you remove the alert
+from the tree yourself and must label any close control you add.
+
+## FAQ
+
+**Why does my alert announce twice?** `role="alert"` announces on insertion; nesting the alert in
+an `aria-live` region, or re-mounting it on every render, duplicates the message.
+
+**Can I put an icon inside the title?** Put icons as direct children of `Alert`. Icons nested deeper
+receive no sizing or colour treatment.
+
+**How do I show a success message?** Use the `default` variant with a success icon and copy; the
+component ships no coloured success variant.
+
+## Related
+
+- `Alert Dialog` when the user must confirm before continuing.
+- `Sonner` for toasts that appear and disappear on their own.
+- `Empty` when a result set is empty rather than broken.

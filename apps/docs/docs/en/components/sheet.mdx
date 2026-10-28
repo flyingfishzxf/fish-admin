@@ -1,0 +1,101 @@
+---
+title: Sheet
+description: A panel that slides in from an edge of the screen for short, focused tasks.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SheetBasic from '@docs/demos/sheet/basic'
+import basicSource from '@docs/demos/sheet/basic.tsx?raw'
+import SheetAnotherSide from '@docs/demos/sheet/another-side'
+import anotherSideSource from '@docs/demos/sheet/another-side.tsx?raw'
+
+# Sheet
+
+`Sheet` is an overlay panel that slides in from one edge of the viewport while the page stays
+visible behind a dimmed overlay. It is built on Radix Dialog, so focus, Escape and labelling
+behave like a dialog.
+
+<ComponentMeta id="sheet" />
+
+## When to use
+
+- Editing a few fields of the record you are already looking at.
+- Inspecting details without losing the list or table underneath.
+- Collecting filters or preferences on small screens, where a bottom panel is within thumb reach.
+
+## When not to use
+
+- A blocking yes/no decision: use `Alert Dialog`.
+- A long, multi-section form: give it a route or use `Dialog`.
+- Persistent navigation: use `Sidebar`.
+
+## Basic usage
+
+<Demo title="Right-side edit panel" filename="demos/sheet/basic.tsx" source={basicSource}>
+  <SheetBasic />
+</Demo>
+
+## Another side
+
+Set `side="bottom"` to slide the panel up from the bottom edge. The panel is full width and sizes
+itself to its content; the demo keeps the draft filters local until Apply is pressed.
+
+<Demo
+  title="Bottom sheet with filters"
+  filename="demos/sheet/another-side.tsx"
+  source={anotherSideSource}
+>
+  <SheetAnotherSide />
+</Demo>
+
+## API
+
+<ApiTable component="sheet" />
+
+## Design guidance
+
+- `side` defaults to `"right"`. Right and left panels are 75% of the viewport wide and capped at
+  24 rem from the `sm` breakpoint; top and bottom panels are full width and auto height.
+- `SheetHeader` and `SheetFooter` apply 1 rem padding; the middle of the panel has none, so pad
+  your own body instead of relying on the shell.
+- `SheetFooter` uses `mt-auto`, so it stays pinned to the bottom of a full-height side panel.
+- Set `showCloseButton={false}` only when you also render an explicit `SheetClose`; keep one
+  obvious way out.
+
+## Accessibility
+
+| Key           | Behavior                                              |
+| ------------- | ----------------------------------------------------- |
+| Enter / Space | Opens the sheet from the focused trigger.             |
+| Tab           | Moves focus inside the sheet; focus is trapped there. |
+| Shift + Tab   | Moves focus backwards inside the sheet.               |
+| Escape        | Closes the sheet and returns focus to the trigger.    |
+
+`SheetTitle` supplies the dialog's accessible name and `SheetDescription` is wired to
+`aria-describedby`; render both. The overlay is clickable to dismiss, and the built-in close
+button carries a visually hidden label from the `actions.close` message. Focus returns to the
+trigger after closing.
+
+Known gap: the built-in close button's accessible name is fixed to the shared `Close` message;
+there is no per-instance label prop, so hide it with `showCloseButton={false}` if you need custom
+wording.
+
+## FAQ
+
+**Can the sheet be controlled from outside?** Yes — pass `open` and `onOpenChange` to `Sheet`,
+exactly as the first demo does, when a table row or menu should decide which record is shown.
+
+**Is the content unmounted when the sheet closes?** Yes, Radix Dialog unmounts the panel unless
+`forceMount` is set, so local state inside `SheetContent` is lost on close.
+
+**Does the sheet scroll long content?** `SheetContent` has no overflow utilities, so long bodies
+overflow the panel; give the body its own scroll container rather than relying on the sheet.
+
+## Related
+
+- `Dialog` for centred, blocking tasks.
+- `Drawer` for a bottom panel that can be dragged closed on touch devices.
+- `Alert Dialog` when the panel needs a confirm/cancel decision.
+- [Used in the template](https://fish-admin.vercel.app/audit-logs)

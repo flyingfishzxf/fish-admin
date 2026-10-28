@@ -1,0 +1,28 @@
+[
+  {
+    "id": "dropdown-menu/basic",
+    "component": "dropdown-menu",
+    "file": "demos/dropdown-menu/basic.tsx",
+    "title": {
+      "en": "Actions menu",
+      "zh": "操作菜单"
+    },
+    "description": {
+      "en": "Edit, duplicate and delete actions, with the destructive item separated at the end.",
+      "zh": "编辑、复制与删除操作，其中危险项单独分隔在末尾。"
+    }
+  },
+  {
+    "id": "dropdown-menu/selections",
+    "component": "dropdown-menu",
+    "file": "demos/dropdown-menu/selections.tsx",
+    "title": {
+      "en": "Checkbox items, radio items and a submenu",
+      "zh": "复选项、单选项与子菜单"
+    },
+    "description": {
+      "en": "Independent toggles, a single-choice density group and a nested share submenu.",
+      "zh": "互相独立的开关、单选密度分组，以及嵌套的分享子菜单。"
+    }
+  }
+]

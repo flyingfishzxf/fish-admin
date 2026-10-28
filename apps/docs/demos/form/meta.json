@@ -1,0 +1,28 @@
+[
+  {
+    "id": "form/basic",
+    "component": "form",
+    "file": "demos/form/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A react-hook-form form that validates two text fields on submit.",
+      "zh": "使用 react-hook-form 的表单，在提交时校验两个文本字段。"
+    }
+  },
+  {
+    "id": "form/fields",
+    "component": "form",
+    "file": "demos/form/fields.tsx",
+    "title": {
+      "en": "Select and checkbox fields",
+      "zh": "选择与复选框字段"
+    },
+    "description": {
+      "en": "A select and a checkbox wired into the same form, with a submitted summary.",
+      "zh": "把选择器与复选框接入同一个表单，并在提交后显示结果摘要。"
+    }
+  }
+]

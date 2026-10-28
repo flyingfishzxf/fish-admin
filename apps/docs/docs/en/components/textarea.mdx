@@ -1,0 +1,93 @@
+---
+title: Textarea
+description: A multi-line native text area with the same focus ring, disabled and invalid styling as Input.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TextareaBasic from '@docs/demos/textarea/basic'
+import basicSource from '@docs/demos/textarea/basic.tsx?raw'
+import TextareaStates from '@docs/demos/textarea/states'
+import statesSource from '@docs/demos/textarea/states.tsx?raw'
+
+# Textarea
+
+`Textarea` styles the native `<textarea>`: a 64 px minimum height, the same focus ring as `Input`,
+and an invalid state driven by `aria-invalid`. It does not count characters or render messages.
+
+<ComponentMeta id="textarea" />
+
+## When to use
+
+- A message, note or rejection reason that is expected to run past one line.
+- Free-form feedback where the length is unknown up front.
+- Pasted JSON, SQL or log excerpts that the user edits by hand.
+
+## When not to use
+
+- Single-line values such as a name or email: use `Input`.
+- Formatted rich text: a textarea is plain text, so use a dedicated editor.
+- A short fixed-length code: use `Input OTP`.
+
+## Basic usage
+
+<Demo
+  title="Controlled note with a character count"
+  filename="demos/textarea/basic.tsx"
+  source={basicSource}
+>
+  <TextareaBasic />
+</Demo>
+
+## States
+
+<Demo title="Disabled and invalid" filename="demos/textarea/states.tsx" source={statesSource}>
+  <TextareaStates />
+</Demo>
+
+## API
+
+<ApiTable component="textarea" />
+
+## Design guidance
+
+- The field is at least 64 px tall (`min-h-16`) and full width; `rows` is the predictable height and
+  `field-sizing: content` lets supporting browsers grow it with the text.
+- `maxLength` stops typing at the limit but shows nothing; render the count yourself and expose it
+  through `aria-describedby`, as the first demo does.
+- The component sets no `resize` value, so the browser's corner handle stays available unless you
+  override it in `className`.
+- Invalid styling works exactly like `Input`: set `aria-invalid` and supply the message.
+
+## Accessibility
+
+| Key             | Behavior                                      |
+| --------------- | --------------------------------------------- |
+| Tab / Shift+Tab | Moves focus into and out of the textarea.     |
+| Enter           | Inserts a newline; it never submits the form. |
+
+Enter inserts a newline instead of submitting, so keep the submit action on a button. Native text
+area behaviour is preserved: the name comes from `Label` plus `htmlFor`, the hint and count from
+`aria-describedby`, and the invalid state from `aria-invalid`.
+
+Known gap: there is no built-in counter and no guaranteed auto-resize — `field-sizing` is not
+available in every browser, so always pass an explicit `rows` as the baseline.
+
+## FAQ
+
+**Does it grow with its content?** In browsers that support `field-sizing: content` it does;
+elsewhere it keeps the `rows` height and scrolls. Set `rows` for a consistent baseline.
+
+**How do I show a remaining-character count?** Keep the value in state, pass `maxLength`, and render
+`value.length` next to the field; point `aria-describedby` at that element.
+
+**Can I lock the resize handle?** Yes. `className` reaches the native element, so your own `resize`
+CSS applies — the component sets none.
+
+## Related
+
+- `Input` for single-line values.
+- `Label` for the accessible name.
+- `Form` to wire label, description and error message together.
+- [Used in the template](https://fish-admin.vercel.app/users)

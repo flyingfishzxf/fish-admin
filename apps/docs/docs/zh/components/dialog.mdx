@@ -1,0 +1,94 @@
+---
+title: Dialog 对话框
+description: 在不离开当前页面的情况下，用模态层完成一项聚焦的任务。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DialogBasic from '@docs/demos/dialog/basic'
+import basicSource from '@docs/demos/dialog/basic.tsx?raw'
+import DialogLongContent from '@docs/demos/dialog/long-content'
+import longContentSource from '@docs/demos/dialog/long-content.tsx?raw'
+
+# Dialog 对话框
+
+Dialog 是基于 Radix Portal 与 Overlay 的模态层。`DialogContent` 把遮罩与面板传送到文档末尾，居中显示，
+并从 `sm` 断点起把面板宽度限制在 `max-w-lg`；`showCloseButton` 默认为 true。对话框初始为关闭状态，
+通过 `DialogTrigger` 或受控的 `open` 打开。
+
+<ComponentMeta id="dialog" />
+
+## 何时使用
+
+- 需要借助页面上下文完成的短任务，例如邀请成员。
+- 在不丢失背后的列表、筛选与滚动位置的情况下编辑记录。
+- 内容聚焦、又不值得单独开一个路由的详情。
+
+## 何时不使用
+
+- 危险操作的二次确认：请使用会忽略外部点击的 `Alert Dialog`。
+- 较长的多步骤流程：请使用 `Drawer` 或独立页面。
+- 非阻塞的消息：请使用 `Alert` 或 toast。
+- 用户必须持续可见的内容：请使用面板或 `Popover`。
+
+## 基础用法
+
+触发器打开对话框，底部按钮通过 `DialogClose` 关闭。未填写邮箱前发送按钮保持禁用；关闭后页面仍保留
+最后一次结果。
+
+<Demo title="邀请成员" filename="demos/dialog/basic.tsx" source={basicSource}>
+  <DialogBasic />
+</Demo>
+
+## 长内容滚动
+
+`DialogContent` 本身没有滚动区域，因此长内容需要在内容元素上用 `max-height` 与 `overflow-y` 限高。
+这样对话框仍留在视口内，而内容主体可以滚动。
+
+<Demo title="长内容滚动" filename="demos/dialog/long-content.tsx" source={longContentSource}>
+  <DialogLongContent />
+</Demo>
+
+## API
+
+<ApiTable component="dialog" />
+
+## 设计指引
+
+- 始终渲染 `DialogTitle`；否则对话框没有无障碍名称，Radix 在开发环境还会输出警告。
+- 用一句 `DialogDescription` 交代背景，并把主要操作放在 `DialogFooter` 的最后，使其在桌面端靠右。
+- 长内容用 `max-height` 与 `overflow-y` 限高，并把底部区域放在内容内部，保证操作始终可达。
+- 需要在底部提供本地化的描边“关闭”按钮时，直接设置 `DialogFooter showCloseButton`，无需引入
+  `DialogClose`；右上角的关闭图标默认已经存在。
+
+## 无障碍
+
+| 按键   | 行为                                       |
+| ------ | ------------------------------------------ |
+| Escape | 关闭对话框，并把焦点返回触发器。           |
+| Tab    | 在对话框内的控件之间循环，焦点无法移出。   |
+| Enter  | 激活当前聚焦的操作，或提交对话框内的表单。 |
+
+面板被传送到文档末尾，触发器暴露 `aria-expanded`，遮罩让背后的页面同时对指针与键盘输入失效。提供标题
+与描述，对话框才有无障碍名称与摘要。
+
+已知缺口：`DialogContent` 既没有滚动容器也没有尺寸属性，长内容不自行用 `max-height` 限高就会超出视口；
+关闭图标的屏幕阅读器文案来自 provider 的翻译表，而不是属性。
+
+## FAQ
+
+**如何用自己的按钮控制对话框？** 给 `Dialog` 传 `open` 与 `onOpenChange`，并在其中渲染
+`DialogContent`；这里的两个示例用的是非受控触发器。
+
+**对话框里可以放表单吗？** 可以。把提交按钮放在 `DialogFooter` 内，并且只在校验通过后再用
+`DialogClose` 关闭。
+
+**为什么较长的对话框会溢出屏幕？** `DialogContent` 会随内容撑高。请像第二个示例那样加上
+`style={{ maxHeight: '20rem', overflowY: 'auto' }}`。
+
+## 相关
+
+- `Alert Dialog`：不能被外部点击关闭的确认操作。
+- `Drawer`：侧边面板与更长的任务。
+- `Sheet`：从侧边滑入的导航或筛选。

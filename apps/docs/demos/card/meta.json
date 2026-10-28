@@ -1,0 +1,28 @@
+[
+  {
+    "id": "card/basic",
+    "component": "card",
+    "file": "demos/card/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A project card with a status badge, progress and footer actions.",
+      "zh": "项目卡片：状态徽标、进度条与底部操作。"
+    }
+  },
+  {
+    "id": "card/header-action",
+    "component": "card",
+    "file": "demos/card/header-action.tsx",
+    "title": {
+      "en": "Header action and footer",
+      "zh": "头部操作与底部"
+    },
+    "description": {
+      "en": "A security card with a status badge in CardAction and a footer toggle.",
+      "zh": "安全设置卡片：CardAction 中放状态徽标，底部放切换操作。"
+    }
+  }
+]

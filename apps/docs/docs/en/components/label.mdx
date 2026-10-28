@@ -1,0 +1,96 @@
+---
+title: Label
+description: Name a form control and connect the text to the input it describes.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import LabelBasic from '@docs/demos/label/basic'
+import basicSource from '@docs/demos/label/basic.tsx?raw'
+import LabelRequiredDisabled from '@docs/demos/label/required-disabled'
+import requiredDisabledSource from '@docs/demos/label/required-disabled.tsx?raw'
+
+# Label
+
+Label renders a native `<label>` from Radix. When `htmlFor` matches the control's `id`, selecting
+the text moves focus to that control and the text becomes its accessible name.
+
+<ComponentMeta id="label" />
+
+## When to use
+
+- Naming a single `Input`, `Textarea`, `Select` trigger or `Checkbox`.
+- Marking a field as required or disabled in a settings row.
+- Replacing placeholder text, which disappears as soon as the user types.
+
+## When not to use
+
+- As a caption for a group of controls: use a heading or a group label instead.
+- To display help or format hints: use `FormDescription` or a plain paragraph.
+- As a click target for an action: use `Button`.
+
+## Basic usage
+
+Set `htmlFor` on the label to the `id` of the control. Clicking the label then focuses the input,
+and screen readers announce the label as the field's name.
+
+<Demo title="Label and input association" filename="demos/label/basic.tsx" source={basicSource}>
+  <LabelBasic />
+</Demo>
+
+## Required and disabled controls
+
+The asterisk is decorative text inside the label; the `required` attribute on the input carries the
+actual requirement. The disabled field keeps its label so the row still says what the value is.
+
+<Demo
+  title="Required and disabled controls"
+  filename="demos/label/required-disabled.tsx"
+  source={requiredDisabledSource}
+>
+  <LabelRequiredDisabled />
+</Demo>
+
+## API
+
+<ApiTable component="label" />
+
+## Design guidance
+
+- Keep labels short and noun-first ("Webhook URL"), and move format rules into helper text.
+- Mark required fields with an asterisk plus `required` or `aria-required` on the control; the asterisk alone conveys nothing.
+- Dim a disabled label together with its control. The built-in rule is a sibling selector that needs the control to carry `peer` and the label to follow it, so dim the label yourself otherwise, as the second demo does.
+- Never use a placeholder as the only label: it vanishes on input and fails contrast.
+
+## Accessibility
+
+| Key           | Behavior                                                          |
+| ------------- | ----------------------------------------------------------------- |
+| Tab           | Skips the label, which is not focusable, and focuses its control. |
+| Enter / Space | Activate the focused control; the label itself handles no keys.   |
+
+The `for`/`id` pair makes the visible text the control's accessible name. A label without a matching
+`id` is read nowhere and clicking it does nothing. With a pointer, clicking the label focuses a text
+field or toggles an associated checkbox or radio.
+
+Known gap: Label adds no required marker and no error styling — the asterisk, the `required`
+attribute and any invalid colour are the caller's responsibility.
+
+## FAQ
+
+**Can one label describe two inputs?** No. An `id` must be unique, so give each control its own
+label; use `aria-label` for controls that cannot show a visible one.
+
+**Should I use Label or FormLabel?** Inside `Form` use `FormLabel`, which adds error styling and
+wires `htmlFor` automatically. Use `Label` for standalone fields.
+
+**Why is my label not dimming with the disabled input?** The built-in rule is a sibling selector,
+`:where(.peer):disabled ~ *`, so the control needs the `peer` class and the label must come after it.
+Otherwise set the opacity on the label directly.
+
+## Related
+
+- `Input` for the text control most labels name.
+- `Form` for labels that need validation state.
+- `Checkbox` and `Radio Group` for controls a label click can toggle.

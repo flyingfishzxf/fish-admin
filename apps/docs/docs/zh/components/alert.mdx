@@ -1,0 +1,82 @@
+---
+title: Alert 提示
+description: 用于信息型与危险型状态的页内提示。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AlertBasic from '@docs/demos/alert/basic'
+import basicSource from '@docs/demos/alert/basic.tsx?raw'
+import AlertDestructive from '@docs/demos/alert/destructive'
+import destructiveSource from '@docs/demos/alert/destructive.tsx?raw'
+
+# Alert 提示
+
+Alert 是一个带边框的区块，并带有 `role="alert"`。把图标作为第一个直接子元素，然后依次放入 `AlertTitle` 与 `AlertDescription`；根元素是网格布局，会为图标预留一列。
+
+<ComponentMeta id="alert" />
+
+## 何时使用
+
+- 在不离开当前页面的情况下说明某个行内操作的结果。
+- 解释表单、面板或某个操作为何不可用。
+- 在受影响内容的正上方展示时效性通知。
+
+## 何时不使用
+
+- 需要确认危险操作：请使用 `Alert Dialog`。
+- 短暂出现又消失的消息：请使用 `Sonner`。
+- 需要折叠或关闭的内容：请使用 `Collapsible` 或 `Card`。
+
+## 基础用法
+
+<Demo title="带操作的信息提示" filename="demos/alert/basic.tsx" source={basicSource}>
+  <AlertBasic />
+</Demo>
+
+## 带列表的危险提示
+
+<Demo
+  title="列出失败任务的危险提示"
+  filename="demos/alert/destructive.tsx"
+  source={destructiveSource}
+>
+  <AlertDestructive />
+</Demo>
+
+## API
+
+<ApiTable component="alert" />
+
+## 设计指引
+
+- 只有 `default` 与 `destructive` 两种变体，没有成功或警告变体，这类场景请自行选择图标与文案。
+- 只有当 `<svg>` 是直接子元素时才会出现图标列；该图标被设为 16 px，并继承当前文字颜色。
+- `AlertTitle` 被限制为一行，因此标题要短，细节放进 `AlertDescription`。
+- 图标之后的子元素都堆叠在第二列，所以图标必须放在最前面。
+
+## 无障碍
+
+| 按键        | 行为                                               |
+| ----------- | -------------------------------------------------- |
+| Tab         | 会跳过提示本身，只停留在按钮等可交互子元素上。     |
+| Enter/Space | 激活提示内部获得焦点的控件；提示本身没有按键处理。 |
+
+根元素始终渲染 `role="alert"`，因此提示被插入页面时辅助技术会以 assertive 方式播报。请在某次事件后挂载提示，而不是让提示常驻并替换其中的文字。
+
+已知缺口：组件没有关闭按钮、关闭控件或自动隐藏行为；需要你自行从树中移除提示，并为自建的关闭控件补上无障碍名称。
+
+## FAQ
+
+**为什么我的提示被播报了两遍？** `role="alert"` 在插入时就会播报；把提示嵌在 `aria-live` 区域内，或在每次渲染时重新挂载，都会让消息重复。
+
+**可以把图标放进标题里吗？** 请把图标作为 `Alert` 的直接子元素。嵌套更深的图标不会获得尺寸和颜色处理。
+
+**如何展示成功消息？** 使用 `default` 变体搭配成功图标与文案；组件并没有提供彩色的成功变体。
+
+## 相关
+
+- `Alert Dialog`：需要在继续前确认时使用。
+- `Sonner`：自动出现并消失的轻提示。
+- `Empty`：结果是空集而非出错时使用。

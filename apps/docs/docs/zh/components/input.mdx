@@ -1,0 +1,86 @@
+---
+title: Input 输入框
+description: 原生单行文本输入框，沿用模板的固定高度、聚焦描边与无效状态样式。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import InputBasic from '@docs/demos/input/basic'
+import basicSource from '@docs/demos/input/basic.tsx?raw'
+import InputTypes from '@docs/demos/input/types'
+import typesSource from '@docs/demos/input/types.tsx?raw'
+
+# Input 输入框
+
+`Input` 渲染原生 `<input>`，固定 36 px 高度，带可见的聚焦描边和破坏性的无效状态。它只负责
+输入框本身的样式——标签、提示与错误文案仍由你的页面提供。
+
+<ComponentMeta id="input" />
+
+## 何时使用
+
+- 收集单行短文本，例如姓名、工作邮箱或路径别名。
+- 在设置面板、工具栏或对话框中编辑单个字段。
+- 需要借助原生类型：`email`、`password`、`tel`、`url` 或 `file`。
+
+## 何时不使用
+
+- 多行文本：使用 `Textarea`。
+- 从固定列表中单选：使用 `Select`、`Radio Group` 或 `Segmented`。
+- 需要格式化或步进的数字：使用 `Input Number`。
+- 完整校验表单：组合 `Form`，标签、描述与消息会自动接好。
+
+## 基础用法
+
+<Demo title="受控邮箱并给出有效性提示" filename="demos/input/basic.tsx" source={basicSource}>
+  <InputBasic />
+</Demo>
+
+## 类型与状态
+
+<Demo title="文本、邮箱、密码、禁用与无效" filename="demos/input/types.tsx" source={typesSource}>
+  <InputTypes />
+</Demo>
+
+## API
+
+<ApiTable component="input" />
+
+## 设计指引
+
+- 输入框高 36 px（`h-9`），宽度为 `w-full`；没有 `size` 属性，紧凑工具栏需要自行覆盖高度。
+- 小屏字号为 16 px，从 `md` 断点起降为 14 px。
+- 无效样式只由 `aria-invalid` 驱动：描边变为破坏性颜色，聚焦时的 3 px 外圈也改为半透明的破坏性
+  颜色。是否传入该属性由你决定。
+- 输入框会撑满容器；当表单列比内容更宽时，用外层容器或 `className` 限制宽度。
+
+## 无障碍
+
+| 按键            | 行为                           |
+| --------------- | ------------------------------ |
+| Tab / Shift+Tab | 将焦点移入、移出输入框。       |
+| Enter           | 表单内存在提交控件时提交表单。 |
+
+原生输入语义被保留，因此自动填充、密码管理器与软键盘会遵循 `type` 与 `autoComplete`。禁用字段
+会被 Tab 跳过，并被读屏宣告为不可用。`aria-invalid` 会暴露给辅助技术，红色描边与宣告状态一致。
+
+已知缺口：组件不渲染标签、描述或错误文案。若不接入带匹配 `htmlFor` 的 `Label`，并用
+`aria-describedby` 指向你自己的提示，读屏用户将得不到任何说明。
+
+## FAQ
+
+**可以在输入框内放图标吗？** 不能——`Input` 只渲染原生元素。请用定位容器包裹，并自行渲染图标。
+
+**为什么没有 `error` 属性？** 唯一的无效样式来自 `aria-invalid`；请自行渲染提示文案，并用
+`aria-describedby` 关联。
+
+**能和 react-hook-form 一起用吗？** 可以。`{...register('email')}` 会透传 `ref`、`name`、
+`onChange` 与 `onBlur`；再加上 `aria-invalid={Boolean(errors.email)}` 即可获得无效样式。
+
+## 相关
+
+- `Label`：为输入框提供无障碍名称。
+- `Textarea`：多行输入。
+- `Input Number`：值是有范围限制的数字时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/users)

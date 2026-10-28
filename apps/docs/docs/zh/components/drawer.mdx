@@ -1,0 +1,92 @@
+---
+title: Drawer 抽屉
+description: 锚定在屏幕边缘、可拖拽关闭的面板，基于 vaul 实现。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DrawerBasic from '@docs/demos/drawer/basic'
+import basicSource from '@docs/demos/drawer/basic.tsx?raw'
+import DrawerRightSide from '@docs/demos/drawer/right-side'
+import rightSideSource from '@docs/demos/drawer/right-side.tsx?raw'
+
+# Drawer 抽屉
+
+`Drawer` 是锚定在屏幕边缘、可拖拽关闭的面板。它基于 vaul，底层仍是 Radix Dialog，因此在保留
+对话框焦点管理的同时，提供了移动端抽屉应有的触摸手势。
+
+<ComponentMeta id="drawer" />
+
+## 何时使用
+
+- 触屏设备上的底部面板，支持向下滑动关闭。
+- 不应占据整个页面的快捷设置或偏好项。
+- 需要可拖拽表面而不是 `Sheet` 的边缘编辑面板。
+
+## 何时不使用
+
+- 阻塞式确认/取消决策：使用 `Alert Dialog`。
+- 以桌面为主、字段较多的表单：使用 `Sheet` 或 `Dialog`。
+- 隐藏时必须保持挂载的内容：抽屉关闭后会卸载。
+
+## 基础用法
+
+<Demo title="带操作的底部抽屉" filename="demos/drawer/basic.tsx" source={basicSource}>
+  <DrawerBasic />
+</Demo>
+
+## 右侧抽屉
+
+在 `Drawer` 上传入 `direction="right"`。方向属于根组件，`DrawerContent` 会根据 vaul 的
+`data-vaul-drawer-direction` 属性自动套用样式，内容组件无需额外属性。示例会先校验名称再提交。
+
+<Demo title="重命名面板" filename="demos/drawer/right-side.tsx" source={rightSideSource}>
+  <DrawerRightSide />
+</Demo>
+
+## API
+
+<ApiTable component="drawer" />
+
+## 设计指引
+
+- `direction` 默认为 `"bottom"`。上下抽屉高度不超过视口的 80%，并与对侧边缘保留 6 rem 间距；
+  左右抽屉宽度为 75%，从 `sm` 断点起最大 24 rem。
+- 只有底部抽屉会渲染拖拽把手（100 px × 8 px）。左右抽屉没有把手，务必提供可见的操作按钮。
+- `DrawerHeader` 与 `DrawerFooter` 自带 1 rem 内边距，正文没有；`DrawerFooter` 使用 `mt-auto`，
+  操作区始终贴底。
+- 底部抽屉的头部文案在 `md` 断点前居中，标题尽量保持单行。
+
+## 无障碍
+
+| 按键          | 行为                               |
+| ------------- | ---------------------------------- |
+| Enter / Space | 在触发的按钮上打开抽屉。           |
+| Tab           | 在抽屉内移动焦点，焦点被限制其中。 |
+| Shift + Tab   | 在抽屉内反向移动焦点。             |
+| Escape        | 关闭抽屉并把焦点交还给触发元素。   |
+
+由于 vaul 渲染的是 Radix Dialog，面板是一个带焦点陷阱的模态对话框，支持 Escape 关闭，并在关闭后
+把焦点交还给触发元素。`DrawerTitle` 与 `DrawerDescription` 提供无障碍名称与描述，两者都应渲染。
+（仅底部方向）拖动把手也可以为指针与触屏用户关闭抽屉。
+
+已知缺口：组件没有内置关闭按钮，键盘用户只能依赖 Escape，或依赖你在头部/底部放置的 `DrawerClose`。
+
+## FAQ
+
+**如何切换滑出方向？** 在 `Drawer` 上设置 `direction`：`"bottom"`、`"top"`、`"left"` 或 `"right"`，
+内容样式会自动跟随。
+
+**可以只展开到部分高度吗？** 可以。`Drawer` 会把 vaul 的 `snapPoints` 与 `activeSnapPoint` 属性
+透传给底层根组件。
+
+**可以禁止拖动关闭吗？** 设置 `dismissible={false}`，或用 `handleOnly` 只允许从把手拖动；这两个
+属性都会透传给 vaul。
+
+## 相关
+
+- `Sheet`：基于 Radix Dialog、不可拖拽的侧边面板。
+- `Dialog`：桌面端居中的任务对话框。
+- `Alert Dialog`：抽屉内需要二次确认时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/integrations)

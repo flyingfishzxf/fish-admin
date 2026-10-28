@@ -1,0 +1,98 @@
+---
+title: Checkbox
+description: A 16 px checkbox for a single opt-in or a set of independent choices.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import CheckboxBasic from '@docs/demos/checkbox/basic'
+import basicSource from '@docs/demos/checkbox/basic.tsx?raw'
+import CheckboxGroup from '@docs/demos/checkbox/group'
+import groupSource from '@docs/demos/checkbox/group.tsx?raw'
+
+# Checkbox
+
+`Checkbox` is a Radix checkbox rendered as a button with a check indicator. It is controlled through
+`checked` and `onCheckedChange`, accepts the indeterminate state, and paints invalid styling from
+`aria-invalid`.
+
+<ComponentMeta id="checkbox" />
+
+## When to use
+
+- A single boolean opt-in, such as enabling notifications or accepting terms.
+- Several choices that are independent and can all be on at once.
+- Table row selection, including an indeterminate header checkbox.
+
+## When not to use
+
+- A setting that applies immediately when flipped: use `Switch`.
+- Mutually exclusive choices: use `Radio Group`.
+- One choice from a long list: use `Select`.
+
+## Basic usage
+
+<Demo
+  title="One opt-in with a description"
+  filename="demos/checkbox/basic.tsx"
+  source={basicSource}
+>
+  <CheckboxBasic />
+</Demo>
+
+## A group of choices
+
+<Demo
+  title="One controlled array of three"
+  filename="demos/checkbox/group.tsx"
+  source={groupSource}
+>
+  <CheckboxGroup />
+</Demo>
+
+## API
+
+<ApiTable component="checkbox" />
+
+## Design guidance
+
+- The box is 16 px square with a 4 px radius; keep the label on one line and the description below it,
+  as both demos do.
+- Give every checkbox an `id` and a `Label` with a matching `htmlFor`; that is what supplies the
+  accessible name.
+- Treat a set as a set: wrap the options in a container with `role="group"` and an `aria-labelledby`
+  (or a real fieldset with a legend) so the shared question is announced once.
+- `checked` also accepts `'indeterminate'`, which is how a header checkbox shows a partial selection.
+
+## Accessibility
+
+| Key             | Behavior                                               |
+| --------------- | ------------------------------------------------------ |
+| Space           | Toggles the focused checkbox.                          |
+| Tab / Shift+Tab | Moves focus to the next or previous focusable control. |
+
+The root exposes `role="checkbox"` with `aria-checked`, including `mixed` for the indeterminate state.
+The accessible name comes from the associated `Label`, and `aria-describedby` carries the hint text —
+both demos point it at the description element.
+
+Known gap: the component renders no label, description or error text, and there is no group wrapper;
+`role="group"` plus a shared label stays your responsibility.
+
+## FAQ
+
+**Does `onCheckedChange` give me a boolean?** It gives `boolean | 'indeterminate'`. Compare with
+`checked === true` to store a plain boolean, as the demos do.
+
+**How do I build a select-all header?** Pass
+`checked={someSelected ? 'indeterminate' : allSelected}` and handle the change on the header box.
+
+**Can it submit a form?** Yes. Radix renders a hidden input, so a `<form>` submission includes the
+value when the root has a `name`.
+
+## Related
+
+- `Switch` for settings that apply immediately.
+- `Radio Group` when only one option may stay selected.
+- `Form` to wire labels and messages into a validated form.
+- [Used in the template](https://fish-admin.vercel.app/files)

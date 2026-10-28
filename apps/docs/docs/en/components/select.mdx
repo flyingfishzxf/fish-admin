@@ -1,0 +1,96 @@
+---
+title: Select
+description: A Radix-backed single-select combobox for picking one value from a grouped list.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SelectBasic from '@docs/demos/select/basic'
+import basicSource from '@docs/demos/select/basic.tsx?raw'
+import SelectGroups from '@docs/demos/select/groups'
+import groupsSource from '@docs/demos/select/groups.tsx?raw'
+
+# Select
+
+`Select` is a Radix combobox: `SelectTrigger` shows the chosen value, `SelectContent` holds the
+items, and the value is a plain string. Groups, labels, separators and disabled items are separate
+exports that you compose inside the content.
+
+<ComponentMeta id="select" />
+
+## When to use
+
+- Choosing one value from a list that is too long to keep visible.
+- Picking a role, status or assignee inside a form or a table toolbar.
+- Grouping options under headings with `SelectGroup` and `SelectLabel`.
+
+## When not to use
+
+- A handful of options that should stay visible: use `Radio Group` or `Segmented`.
+- Searching or selecting several values: use `Combobox`.
+- Free-form text with suggestions: use `Auto Complete`.
+
+## Basic usage
+
+<Demo title="Controlled role picker" filename="demos/select/basic.tsx" source={basicSource}>
+  <SelectBasic />
+</Demo>
+
+## Groups and disabled options
+
+<Demo
+  title="Groups, one disabled item and one disabled select"
+  filename="demos/select/groups.tsx"
+  source={groupsSource}
+>
+  <SelectGroups />
+</Demo>
+
+## API
+
+<ApiTable component="select" />
+
+## Design guidance
+
+- `SelectTrigger` is 36 px tall by default and 32 px with `size="sm"`; it is `w-fit`, so give it a
+  width when it sits in a form column.
+- `SelectContent` defaults to `position="item-aligned"`; pass `position="popper"` when the list
+  should be anchored to the trigger and match its width.
+- The trigger text is the current value; `SelectValue` shows its `placeholder` until a value exists.
+- Disable the whole control with `disabled` on the root, or a single option with `disabled` on
+  `SelectItem` — and say why in the hint next to the field, not only in the option.
+
+## Accessibility
+
+| Key                        | Behavior                                            |
+| -------------------------- | --------------------------------------------------- |
+| Enter / Space / Arrow Down | Opens the list from the trigger.                    |
+| Arrow Up / Arrow Down      | Moves through the options without committing.       |
+| Enter                      | Commits the highlighted option and closes the list. |
+| Esc                        | Closes the list and keeps the previous value.       |
+
+Radix exposes the trigger as a `combobox` with an `aria-expanded` state and renders the list in a
+portal as a `listbox`. Focus returns to the trigger when the list closes, and disabled items are
+skipped by the arrow keys.
+
+Known gap: the list has no search field and only one value can be selected; reach for `Combobox`
+when either is required.
+
+## FAQ
+
+**How do I clear the selection?** Keep the select controlled and set the state back to `''`;
+`SelectValue` then shows its placeholder again.
+
+**Can the trigger fill its container?** Yes — `className="w-full"` on `SelectTrigger`, which is
+`w-fit` by default.
+
+**Why does `onValueChange` give me the value and not the label?** Radix reports the `value` string
+only; map values to labels yourself, as the first demo does with `ROLES`.
+
+## Related
+
+- `Combobox` for searchable and multi-value selection.
+- `Radio Group` when every option should stay visible.
+- `Label` for the accessible name of the trigger.
+- [Used in the template](https://fish-admin.vercel.app/users)

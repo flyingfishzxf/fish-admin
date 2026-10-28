@@ -1,0 +1,88 @@
+---
+title: Switch 开关
+description: 切换后立即生效的两态设置。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SwitchBasic from '@docs/demos/switch/basic'
+import basicSource from '@docs/demos/switch/basic.tsx?raw'
+import SwitchSizes from '@docs/demos/switch/sizes'
+import sizesSource from '@docs/demos/switch/sizes.tsx?raw'
+
+# Switch 开关
+
+开关用于在切换后立即生效的两态设置。滑块位置与轨道颜色都反映当前的 `checked` 值。
+
+<ComponentMeta id="switch" />
+
+## 何时使用
+
+- 立即生效的二值设置，例如开启两步验证。
+- 设置面板中期望无需提交即可保存的行。
+- 切换一个与其他字段无关的选项。
+
+## 何时不使用
+
+- 只在提交表单后才应生效的选择：请在表单内使用 `Checkbox`。
+- 在多个互斥选项中做选择：请使用 `Radio Group`。
+- 只执行一次的操作，例如“吊销密钥”：请使用 `Button`，危险操作再配合 `Alert Dialog`。
+
+## 基础用法
+
+开关用 `checked` 与 `onCheckedChange` 受控，示例中的状态文案与滑块显示同一状态；非受控时请传
+`defaultChecked`。
+
+<Demo title="带标签的设置行" filename="demos/switch/basic.tsx" source={basicSource}>
+  <SwitchBasic />
+</Demo>
+
+## 尺寸与禁用
+
+默认轨道为 18.4 × 32 px，`size="sm"` 为 14 × 24 px。禁用的开关保留整行内容，并在旁边写明原因。
+
+<Demo title="尺寸与禁用" filename="demos/switch/sizes.tsx" source={sizesSource}>
+  <SwitchSizes />
+</Demo>
+
+## API
+
+<ApiTable component="switch" />
+
+## 设计指引
+
+- 标签写设置名称（“两步验证”），并在下方一句话说明影响。
+- 变更应立即生效；需要“保存”按钮的开关更适合用复选框表达。
+- 禁用的开关要给出可见原因，而不是只放进 tooltip。
+- 仅当密集行中默认轨道会挤压标签时使用 `size="sm"`，同一界面只保留一种尺寸。
+
+## 无障碍
+
+| 按键  | 行为                   |
+| ----- | ---------------------- |
+| Space | 切换当前聚焦的开关。   |
+| Tab   | 将焦点移到下一个控件。 |
+
+根节点渲染为带 `role="switch"` 与 `aria-checked` 的 `<button>`，因此开/关状态不依赖颜色也能被读出。
+组件本身不渲染文字，无障碍名称必须来自关联的 `Label` 或 `aria-label`；示例用 `Label htmlFor` 对应
+开关的 `id`。
+
+已知缺口：组件没有内置的开/关文案、无效状态与加载状态；如果切换可能失败，请自行在开关旁显示进行中
+与失败状态。
+
+## FAQ
+
+**开关会随表单一起提交吗？** Radix Switch 支持在根节点上传 `name` 与 `value`，但开关面向立即生效的
+设置；需要随表单提交的选择请使用 `Checkbox`。
+
+**点击标签为什么没有切换开关？** `<label>` 的点击会激活复选框与单选框，而不会激活按钮，开关的根节点
+正是按钮。请直接切换开关，或用你自己的控件驱动它。
+
+**可以在轨道里显示“开/关”吗？** 不能，组件只渲染滑块；请像第一个示例那样把状态写在旁边的文案里。
+
+## 相关
+
+- `Label`：为设置命名。
+- `Checkbox`：值需要随表单提交时使用。
+- `Radio Group`：互斥选项时使用。

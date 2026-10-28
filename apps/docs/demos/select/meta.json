@@ -1,0 +1,28 @@
+[
+  {
+    "id": "select/basic",
+    "component": "select",
+    "file": "demos/select/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled role picker that explains the chosen role underneath.",
+      "zh": "受控的角色选择器，并在下方说明所选角色的权限。"
+    }
+  },
+  {
+    "id": "select/groups",
+    "component": "select",
+    "file": "demos/select/groups.tsx",
+    "title": {
+      "en": "Groups and disabled options",
+      "zh": "分组与禁用选项"
+    },
+    "description": {
+      "en": "Grouped permissions with a disabled item, plus a disabled select showing an inherited value.",
+      "zh": "带禁用项的分组权限，以及展示继承值的禁用选择器。"
+    }
+  }
+]

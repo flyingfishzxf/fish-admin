@@ -1,0 +1,104 @@
+---
+title: Dropdown Menu
+description: Collect a short list of actions, toggles and view settings behind one trigger button.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DropdownMenuBasic from '@docs/demos/dropdown-menu/basic'
+import basicSource from '@docs/demos/dropdown-menu/basic.tsx?raw'
+import DropdownMenuSelections from '@docs/demos/dropdown-menu/selections'
+import selectionsSource from '@docs/demos/dropdown-menu/selections.tsx?raw'
+
+# Dropdown Menu
+
+`Dropdown Menu` opens a list of actions from a trigger button. It wraps Radix DropdownMenu and ships
+the item, checkbox item, radio item, submenu, label, separator and shortcut parts; the content
+renders in a portal with the template's popover styling.
+
+<ComponentMeta id="dropdown-menu" />
+
+## When to use
+
+- Row-level actions in a table, such as edit, duplicate and delete.
+- A page header where secondary commands would otherwise crowd the primary button.
+- View settings — independent toggles plus one single-choice option — that belong in one place.
+
+## When not to use
+
+- Navigating between pages: use links or `Sidebar`.
+- A single, frequently used action: keep it a visible `Button`.
+- Two to four mutually exclusive options that fit on screen: use `Segmented` or `Toggle Group`.
+- Picking a value for a form field: use `Select` or `Combobox`.
+
+## Basic usage
+
+<Demo title="Actions menu" filename="demos/dropdown-menu/basic.tsx" source={basicSource}>
+  <DropdownMenuBasic />
+</Demo>
+
+## Checkbox items, radio items and a submenu
+
+`DropdownMenuCheckboxItem` holds independent toggles, `DropdownMenuRadioGroup` with
+`DropdownMenuRadioItem` holds one choice, and `DropdownMenuSub` adds a nested menu that opens on
+hover or with the right arrow key.
+
+<Demo
+  title="Toggles, one choice and a nested submenu"
+  filename="demos/dropdown-menu/selections.tsx"
+  source={selectionsSource}
+>
+  <DropdownMenuSelections />
+</Demo>
+
+## API
+
+<ApiTable component="dropdown-menu" />
+
+## Design guidance
+
+- Put the most common action first and the destructive one last, after a `DropdownMenuSeparator`.
+- `variant="destructive"` only recolours the item and its icon; pair it with `Alert Dialog` when
+  the action cannot be undone.
+- Keep to one level of submenu: `DropdownMenuSub` nests further, but deep paths are hard to reach
+  on touch and with the keyboard.
+- Give the trigger a visible label, or an `aria-label` when it is icon-only.
+
+## Accessibility
+
+| Key           | Behavior                                                      |
+| ------------- | ------------------------------------------------------------- |
+| Enter / Space | Toggles the menu from the trigger; selects the focused item.  |
+| Arrow Down    | Opens the menu from the trigger, then moves to the next item. |
+| Arrow Up      | Moves focus to the previous item while the menu is open.      |
+| Character key | Jumps to the next item whose text starts with that character. |
+| Arrow Right   | On a submenu trigger, opens the submenu.                      |
+| Arrow Left    | Inside a submenu, closes it and returns to the parent item.   |
+| Escape        | Closes the menu and returns focus to the trigger.             |
+
+The trigger exposes `aria-haspopup="menu"`, `aria-expanded` and `aria-controls`; the content is
+labelled by the trigger. Closing with `Escape` or by selecting an item returns focus to the
+trigger, while `Tab` is intercepted inside an open menu — press `Escape` before moving on.
+
+Known gap: `DropdownMenuShortcut` is a plain `<span>` without `aria-keyshortcuts`, so a screen
+reader reads the accelerator as ordinary item text.
+
+## FAQ
+
+**Why does the menu close when I toggle a checkbox?** Selecting any item closes the menu by
+design. Keep it open with `onSelect={(event) => event.preventDefault()}` on the checkbox or radio
+item if you want several changes in a row.
+
+**Does `variant="destructive"` delete anything?** No. It changes the text and icon colour and the
+focus background only; the action itself has to confirm or delete.
+
+**Can the trigger live in a table cell?** Yes — pass `asChild` and the content is portalled out, so
+a row's `overflow` never clips it.
+
+## Related
+
+- `Context Menu` for the same commands on right-click.
+- `Select` when the list is a form value rather than actions.
+- `Alert Dialog` before a destructive item runs.
+- [Used in the template](https://fish-admin.vercel.app/reports)

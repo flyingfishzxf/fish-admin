@@ -72,7 +72,7 @@ test('the component index lists all 83 components and links documented pages', a
   expect(hrefs.sort()).toEqual(documented.components.map((id) => `/components/${id}.html`).sort())
 })
 
-test('the button page renders both demos, their source and the template link', async ({ page }) => {
+test('the button page renders every demo, its source and the template link', async ({ page }) => {
   const buttonDemos = demos.filter((demo) => demo.component === 'button').map((demo) => demo.id)
   await page.goto('/components/button')
   await expect(page.locator('[data-demo^="button/"]')).toHaveCount(buttonDemos.length)

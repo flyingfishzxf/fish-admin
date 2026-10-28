@@ -1,0 +1,91 @@
+---
+title: Select 选择器
+description: 基于 Radix 的单选下拉框，用于从分组列表中挑选一个值。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SelectBasic from '@docs/demos/select/basic'
+import basicSource from '@docs/demos/select/basic.tsx?raw'
+import SelectGroups from '@docs/demos/select/groups'
+import groupsSource from '@docs/demos/select/groups.tsx?raw'
+
+# Select 选择器
+
+`Select` 是基于 Radix 的下拉选择器：`SelectTrigger` 展示当前值，`SelectContent` 承载选项，值是
+普通字符串。分组、分组标题、分隔线与禁用项都是独立导出，由你在内容区中组合。
+
+<ComponentMeta id="select" />
+
+## 何时使用
+
+- 从过长、不适合全部展示的列表中挑一个值。
+- 在表单或表格工具栏中选择角色、状态或负责人。
+- 用 `SelectGroup` 与 `SelectLabel` 把选项按标题分组。
+
+## 何时不使用
+
+- 选项不多且应保持可见：使用 `Radio Group` 或 `Segmented`。
+- 需要搜索或多选：使用 `Combobox`。
+- 自由文本加建议：使用 `Auto Complete`。
+
+## 基础用法
+
+<Demo title="受控的角色选择器" filename="demos/select/basic.tsx" source={basicSource}>
+  <SelectBasic />
+</Demo>
+
+## 分组与禁用选项
+
+<Demo
+  title="分组、一个禁用项与一个禁用选择器"
+  filename="demos/select/groups.tsx"
+  source={groupsSource}
+>
+  <SelectGroups />
+</Demo>
+
+## API
+
+<ApiTable component="select" />
+
+## 设计指引
+
+- `SelectTrigger` 默认高 36 px，使用 `size="sm"` 时为 32 px；它本身是 `w-fit`，放在表单列中时
+  请显式指定宽度。
+- `SelectContent` 默认 `position="item-aligned"`；若希望列表锚定在触发器上并与触发器等宽，传入
+  `position="popper"`。
+- 触发器上的文字就是当前值；在没有值时 `SelectValue` 显示其 `placeholder`。
+- 用根节点的 `disabled` 禁用整个控件，或用 `SelectItem` 的 `disabled` 禁用单个选项——并在字段
+  旁的提示中说明原因，而不只是写在选项文案里。
+
+## 无障碍
+
+| 按键                     | 行为                           |
+| ------------------------ | ------------------------------ |
+| Enter / Space / 下方向键 | 从触发器打开列表。             |
+| 上方向键 / 下方向键      | 在选项间移动，但不会立即提交。 |
+| Enter                    | 提交高亮选项并关闭列表。       |
+| Esc                      | 关闭列表，保留此前的值。       |
+
+Radix 会把触发器暴露为带 `aria-expanded` 状态的 `combobox`，并通过 portal 以 `listbox` 渲染列表。
+列表关闭后焦点回到触发器，禁用项会被方向键跳过。
+
+已知缺口：列表内没有搜索框，且只能选择一个值；需要其中任一能力时请改用 `Combobox`。
+
+## FAQ
+
+**如何清空选择？** 保持受控，把 state 重置为空字符串 `''`，`SelectValue` 会重新显示占位文案。
+
+**触发器可以撑满容器吗？** 可以——在 `SelectTrigger` 上加 `className="w-full"`；它默认是 `w-fit`。
+
+**为什么 `onValueChange` 给的是值而不是文案？** Radix 只上报 `value` 字符串；请自行把值映射为
+文案，正如第一个示例中的 `ROLES`。
+
+## 相关
+
+- `Combobox`：需要搜索或多选时使用。
+- `Radio Group`：所有选项都应保持可见时使用。
+- `Label`：为触发器提供无障碍名称。
+- [在模板中的用法](https://fish-admin.vercel.app/users)

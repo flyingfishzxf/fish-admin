@@ -1,0 +1,28 @@
+[
+  {
+    "id": "drawer/basic",
+    "component": "drawer",
+    "file": "demos/drawer/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A bottom drawer with draft preferences and explicit save and cancel actions.",
+      "zh": "底部抽屉：先编辑草稿偏好，再明确保存或取消。"
+    }
+  },
+  {
+    "id": "drawer/right-side",
+    "component": "drawer",
+    "file": "demos/drawer/right-side.tsx",
+    "title": {
+      "en": "Right-side drawer",
+      "zh": "右侧抽屉"
+    },
+    "description": {
+      "en": "A rename panel opened with direction=\"right\" and a validated name field.",
+      "zh": "通过 direction=\"right\" 打开的改名面板，名称字段带校验。"
+    }
+  }
+]

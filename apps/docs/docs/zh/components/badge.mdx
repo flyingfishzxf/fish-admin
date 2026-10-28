@@ -1,0 +1,79 @@
+---
+title: Badge 徽标
+description: 用于状态、计数和分类的紧凑标签，提供六种视觉变体。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import BadgeBasic from '@docs/demos/badge/basic'
+import basicSource from '@docs/demos/badge/basic.tsx?raw'
+import BadgeStatus from '@docs/demos/badge/status'
+import statusSource from '@docs/demos/badge/status.tsx?raw'
+
+# Badge 徽标
+
+Badge 渲染一个单行的胶囊标签。默认渲染为 `<span>`；设置 `asChild` 后同样的样式会转移到子元素上，因此徽标也可以用于修饰链接。
+
+<ComponentMeta id="badge" />
+
+## 何时使用
+
+- 在表格单元格旁标注某一行的状态，例如“Active”或“Past due”。
+- 在标题、标签页或导航项中展示简短计数。
+- 给条目打上分类标记，例如“Beta”或“Internal”。
+
+## 何时不使用
+
+- 该标签本身就是主要操作：请使用 `Button`。
+- 消息需要标题和正文：请使用 `Alert`。
+- 用户需要新增或删除取值：请使用 `Tags Input`。
+
+## 基础用法
+
+<Demo title="六种变体，含链接徽标" filename="demos/badge/basic.tsx" source={basicSource}>
+  <BadgeBasic />
+</Demo>
+
+## 带圆点与图标的状态
+
+<Demo title="由开关驱动的圆点、图标与文本" filename="demos/badge/status.tsx" source={statusSource}>
+  <BadgeStatus />
+</Demo>
+
+## API
+
+<ApiTable component="badge" />
+
+## 设计指引
+
+- 文字为 12 px，左右内边距 8 px、上下 2 px；徽标不会换行。
+- 直接的 `<svg>` 子元素会被强制为 12 px，因此传入图标时不需要再写尺寸类。
+- 仅在失败状态下使用 `destructive`；`secondary`、`outline` 与 `ghost` 让次要元信息保持低调。
+- `link` 只在配合 `asChild` 与 `<a>` 子元素时才有意义，焦点环也依赖这一组合。
+
+## 无障碍
+
+| 按键  | 行为                                                          |
+| ----- | ------------------------------------------------------------- |
+| Tab   | 仅当 `asChild` 渲染出可聚焦子元素（如 `<a>`）时才会到达徽标。 |
+| Enter | 徽标渲染为链接时，按下后跟随该链接。                          |
+
+可访问内容就是标签文字，因此要把含义写进文本，而不是只依赖颜色。徽标本身不是实时区域：原地变化的
+状态只有在所在区域带有 `aria-live` 或 `role="status"` 时才会被朗读。
+
+已知缺口：组件没有内置的状态圆点部件——第二个示例中的圆点是你自己提供的装饰性 `<span>`，其无障碍隐藏也需自行处理；相比之下，图标只需作为子元素传入即可。
+
+## FAQ
+
+**徽标里可以放图标吗？** 可以。任意子元素都可使用，直接的 `<svg>` 子元素会被设为 12 px 以匹配文字。
+
+**`asChild` 会发生什么？** 样式会应用到子元素而不是 `<span>`，因此徽标保留链接或按钮语义，并会获得焦点可见的焦点环。
+
+**有 count 或 max 属性吗？** 没有。请在渲染前自行格式化文本，例如参照头像组示例写成 `+{count}`。
+
+## 相关
+
+- `Alert`：需要标题与描述的消息。
+- `Avatar`：带姓名缩写的身份标识。
+- [在模板中的用法](https://fish-admin.vercel.app/)

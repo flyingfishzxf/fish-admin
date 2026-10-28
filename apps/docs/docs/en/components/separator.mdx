@@ -1,0 +1,95 @@
+---
+title: Separator
+description: A one-pixel rule between regions, horizontal or vertical and optionally semantic.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SeparatorBasic from '@docs/demos/separator/basic'
+import basicSource from '@docs/demos/separator/basic.tsx?raw'
+import SeparatorToolbar from '@docs/demos/separator/toolbar'
+import toolbarSource from '@docs/demos/separator/toolbar.tsx?raw'
+
+# Separator
+
+Separator draws a 1 px rule, horizontal by default or vertical with `orientation="vertical"`. It is
+decorative unless you pass `decorative={false}`, which exposes it to assistive tech as a separator.
+
+<ComponentMeta id="separator" />
+
+## When to use
+
+- Dividing groups of fields, rows or summary sections.
+- Splitting clusters of controls inside a toolbar or header.
+- Making a structural break visible where a border would be too heavy.
+
+## When not to use
+
+- Spacing alone: use the layout's own gap.
+- Cell dividers inside a table: use the table's border styles.
+- Page-level section breaks: use headings and spacing.
+
+## Basic usage
+
+<Demo
+  title="Rules between invoice sections"
+  filename="demos/separator/basic.tsx"
+  source={basicSource}
+>
+  <SeparatorBasic />
+</Demo>
+
+## Vertical separator in a toolbar
+
+<Demo
+  title="Vertical rule inside a formatting toolbar"
+  filename="demos/separator/toolbar.tsx"
+  source={toolbarSource}
+>
+  <SeparatorToolbar />
+</Demo>
+
+## API
+
+<ApiTable component="separator" />
+
+## Design guidance
+
+- Horizontal is 1 px tall and full width; vertical is 1 px wide and `h-full`.
+- A vertical separator needs a parent with a resolved height. The toolbar sets an explicit 20 px
+  height because the flex row's height comes from its content.
+- `decorative` defaults to `true` and the component sets it explicitly, so the rule stays out of the
+  accessibility tree unless you opt in.
+- There are no margin or spacing props; spacing belongs to the surrounding layout.
+
+## Accessibility
+
+| Key | Behavior                                          |
+| --- | ------------------------------------------------- |
+| Tab | Never reachable; the element has no tab stop.     |
+| —   | No key handling of any kind; it is not a control. |
+
+With the default `decorative={true}` the element renders `role="none"`. With
+`decorative={false}` it becomes `role="separator"` and receives `aria-orientation="vertical"` when
+vertical; horizontal orientation is implied and left off.
+
+Known gap: the component renders a `<div>` rather than `<hr>` and exposes no label prop, so the split
+it draws is purely visual — the regions it divides still need their own headings.
+
+## FAQ
+
+**Why is my vertical separator invisible?** It uses `h-full`, so a parent without a height collapses
+it. Give the parent or the separator an explicit height.
+
+**Why does it not show up in the accessibility tree?** Because `decorative` defaults to `true` and
+renders `role="none"`. Set `decorative={false}` when the split carries meaning.
+
+**Can I use it instead of `<hr>`?** Visually yes, but it renders a `<div>`, so document structure
+still has to come from real headings.
+
+## Related
+
+- `Sidebar` uses rules to group navigation blocks.
+- `Card` for larger surfaces that already draw their own border.
+- [Used in the template](https://fish-admin.vercel.app/)

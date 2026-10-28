@@ -1,0 +1,82 @@
+---
+title: Avatar 头像
+description: 带姓名缩写回退的用户头像，提供尺寸、在线标记与分组堆叠。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AvatarBasic from '@docs/demos/avatar/basic'
+import basicSource from '@docs/demos/avatar/basic.tsx?raw'
+import AvatarGroup from '@docs/demos/avatar/group'
+import groupSource from '@docs/demos/avatar/group.tsx?raw'
+
+# Avatar 头像
+
+Avatar 是圆形的身份标识。`AvatarImage` 只在图片加载完成后渲染，`AvatarFallback` 在此之前填充圆形区域；图片加载失败时回退内容会一直保留。
+
+<ComponentMeta id="avatar" />
+
+## 何时使用
+
+- 在列表、评论、审计记录或负责人字段中标识某个人。
+- 以紧凑的堆叠形式展示协作者。
+- 通过 `AvatarBadge` 表示在线状态。
+
+## 何时不使用
+
+- 装饰性插画或 Logo：请使用普通 `<img>`。
+- 与人无关的状态：请使用 `Badge`。
+- 包含简介和操作的资料页头部：请用真实图片与内容排版，而不是头像。
+
+## 基础用法
+
+<Demo
+  title="sm、default 与 lg 尺寸的姓名缩写"
+  filename="demos/avatar/basic.tsx"
+  source={basicSource}
+>
+  <AvatarBasic />
+</Demo>
+
+## 带溢出计数的头像组
+
+<Demo title="四个头像加溢出计数" filename="demos/avatar/group.tsx" source={groupSource}>
+  <AvatarGroup />
+</Demo>
+
+## API
+
+<ApiTable component="avatar" />
+
+## 设计指引
+
+- 共有三种尺寸：`sm` 为 24 px，`default` 为 32 px，`lg` 为 40 px；回退文字在 `sm` 下为 12 px，其余为 14 px。
+- `AvatarImage` 需要 `alt`，请传入姓名，让图片拥有无障碍名称。
+- `AvatarGroup` 让子元素重叠 8 px，并绘制 2 px 的背景色描边，使堆叠的头像保持分隔。
+- `AvatarGroupCount` 会跟随所在分组中头像的尺寸；溢出文本需要你自行传入。
+
+## 无障碍
+
+| 按键  | 行为                                             |
+| ----- | ------------------------------------------------ |
+| Tab   | 会跳过头像；只有外层链接或按钮会成为焦点停留点。 |
+| Enter | 头像位于控件内部时，跟随链接或激活该控件。       |
+
+否则缩写会被逐字母朗读（“A L”），因此请为头像提供无障碍名称——示例使用 `role="img"` 配 `aria-label` 正是这个原因。`AvatarBadge` 只有在传入 `aria-label` 时才会成为有名称的图像。
+
+已知缺口：组件没有内置的溢出总数或上限；`AvatarGroupCount` 会原样渲染你给的文本，`AvatarBadge` 不加标签时则完全静默。
+
+## FAQ
+
+**为什么回退内容一直显示？** `AvatarImage` 只有在图片加载完成后才渲染，因此损坏、被拦截或为空的 `src` 会让回退内容保留下来。
+
+**可以延迟显示回退内容吗？** 可以。Radix 会把 `delayMs` 透传给 `AvatarFallback`，默认值为 0，即立即显示缩写。
+
+**如何把头像组限制为四个？** 渲染四个 `Avatar`，再加一个 `AvatarGroupCount` 承载剩余数量，与第二个示例一致。
+
+## 相关
+
+- `Badge`：与人无关的状态标签。
+- `ProTable`：成员列表中在单元格内展示头像。
+- [在模板中的用法](https://fish-admin.vercel.app/)

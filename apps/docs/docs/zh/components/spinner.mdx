@@ -1,0 +1,87 @@
+---
+title: Spinner 加载指示器
+description: 用紧凑的加载指示器表达加载状态，并可附带读屏可朗读的标签。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SpinnerBasic from '@docs/demos/spinner/basic'
+import basicSource from '@docs/demos/spinner/basic.tsx?raw'
+import SpinnerLabeled from '@docs/demos/spinner/labeled'
+import labeledSource from '@docs/demos/spinner/labeled.tsx?raw'
+
+# Spinner 加载指示器
+
+`Spinner` 渲染一个旋转的 `Loader2` 图标，提供三种尺寸。传入 `label` 时，它会成为由辅助技术朗读的
+`status` 区域；不传时则对辅助技术隐藏。`LoadingOverlay` 基于它组合出一个在刷新期间覆盖区域的加载层。
+
+<ComponentMeta id="spinner" />
+
+## 何时使用
+
+- 卡片、列表或面板正在获取首批数据，且最终布局尚未确定。
+- 保存、导出等单个操作正在进行，反馈应当出现在触发按钮内部。
+- 某个区域原地刷新，同时周围布局需要保持可见。
+
+## 何时不使用
+
+- 完成度可以度量：请使用 `Progress`。
+- 已知最终内容的样子：请使用 `Skeleton`，避免页面跳动。
+- 整页会被阻塞较长时间：把状态放在引发操作的那个按钮上，而不是让加载器飘在空白处。
+- 请求已经失败：用 `Sonner` 或行内提示报告错误——加载器本身永远不会自己结束。
+
+## 基础用法
+
+<Demo title="三种尺寸" filename="demos/spinner/basic.tsx" source={basicSource}>
+  <SpinnerBasic />
+</Demo>
+
+## 带标签的加载区域
+
+传入 `label` 后，外层容器会从 `aria-hidden` 变为 `role="status"`，并带上一段视觉隐藏的文本。
+`LoadingOverlay` 复用同一个标签，并为被覆盖的区域设置 `aria-busy`。
+
+<Demo title="带标签的加载器与覆盖层" filename="demos/spinner/labeled.tsx" source={labeledSource}>
+  <SpinnerLabeled />
+</Demo>
+
+## API
+
+<ApiTable component="spinner" />
+
+## 设计指引
+
+- `size="sm"` 为 14 px 图标，默认 16 px，`size="lg"` 为 24 px。
+- 按钮与表格单元格内用 `sm`，卡片内用默认尺寸，整块面板首次加载时用 `lg`。
+- 在加载器旁写清正在做什么（“正在加载发票…”）；`label` 只服务辅助技术，不会显示出来。
+- 覆盖层的 `delay` 保持默认的 150 ms：更快完成的请求不会闪出一个覆盖层。
+
+## 无障碍
+
+`Spinner` 没有键盘行为：它不可聚焦、不接收按键，也不会抢占焦点。它唯一的无障碍接口是下面的实时区域。
+
+- 传入 `label` 时，外层容器是由标签文本组成的 `status` 区域；不传时外层容器为 `aria-hidden="true"`。
+- `LoadingOverlay` 在外层容器上设置 `aria-busy`，并把带标签的加载器放进覆盖层中。
+- 图标本身是 `aria-hidden`，因此加载状态只会通过标签朗读一次，而不是两次。
+
+已知缺口：`LoadingOverlay` 显示时只是视觉上覆盖了下方内容——组件不会将其标记为 `inert`，
+键盘焦点仍可能进入被遮挡的控件。
+
+## FAQ
+
+**每个加载器都需要标签吗？** 只有当它是“正在加载”的唯一提示时才需要。紧邻可见文字时不带标签的加载器
+是 `aria-hidden`，这正是期望的行为。
+
+**为什么加载器没有出现？** `LoadingOverlay` 会先等待 `delay`（默认 150 ms）再显示，很快完成的请求
+按设计不会出现。
+
+**可以改尺寸或颜色吗？** `size` 覆盖三种内置尺寸；图标继承 `currentColor`，因此在容器上设置文字颜色
+并通过 `className` 追加类名即可。
+
+## 相关
+
+- `Skeleton`：预留最终布局的占位符。
+- `Progress`：完成度可以度量时使用。
+- `Button`：加载器专属于某个操作时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "label/basic",
+    "component": "label",
+    "file": "demos/label/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A label associated with an input through matching htmlFor and id.",
+      "zh": "通过匹配的 htmlFor 与 id 和输入框建立关联的标签。"
+    }
+  },
+  {
+    "id": "label/required-disabled",
+    "component": "label",
+    "file": "demos/label/required-disabled.tsx",
+    "title": {
+      "en": "Required and disabled controls",
+      "zh": "必填与禁用控件"
+    },
+    "description": {
+      "en": "A required field marked with an asterisk and a disabled field with its reason.",
+      "zh": "用星号标记的必填字段，以及注明原因的禁用字段。"
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "radio-group/basic",
+    "component": "radio-group",
+    "file": "demos/radio-group/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled billing plan choice where every option carries a one-line hint.",
+      "zh": "受控的套餐选择，每个选项都带一行说明。"
+    }
+  },
+  {
+    "id": "radio-group/horizontal",
+    "component": "radio-group",
+    "file": "demos/radio-group/horizontal.tsx",
+    "title": {
+      "en": "Horizontal with a disabled option",
+      "zh": "横向排列与禁用选项"
+    },
+    "description": {
+      "en": "Three cadence options in one row, with the unavailable one disabled and explained.",
+      "zh": "一行三个频率选项，其中不可用的一项被禁用并给出说明。"
+    }
+  }
+]

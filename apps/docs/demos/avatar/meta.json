@@ -1,0 +1,28 @@
+[
+  {
+    "id": "avatar/basic",
+    "component": "avatar",
+    "file": "demos/avatar/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Initials fallbacks at the sm, default and lg sizes.",
+      "zh": "sm、default 与 lg 三种尺寸下的姓名缩写回退。"
+    }
+  },
+  {
+    "id": "avatar/group",
+    "component": "avatar",
+    "file": "demos/avatar/group.tsx",
+    "title": {
+      "en": "Avatar group with an overflow count",
+      "zh": "带溢出计数的头像组"
+    },
+    "description": {
+      "en": "Four overlapping avatars plus a count, expandable to the full member list.",
+      "zh": "四个重叠头像加一个溢出计数，可展开为完整的成员列表。"
+    }
+  }
+]

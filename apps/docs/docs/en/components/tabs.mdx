@@ -1,0 +1,99 @@
+---
+title: Tabs
+description: Switch between related panels in place, horizontally or in a vertical list.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TabsBasic from '@docs/demos/tabs/basic'
+import basicSource from '@docs/demos/tabs/basic.tsx?raw'
+import TabsVertical from '@docs/demos/tabs/vertical'
+import verticalSource from '@docs/demos/tabs/vertical.tsx?raw'
+
+# Tabs
+
+`Tabs` shows one of several related panels at a time. It wraps Radix Tabs, so selection state,
+arrow-key navigation and the `aria-selected` wiring are handled for you; the wrapper adds the
+template's list and trigger styling.
+
+<ComponentMeta id="tabs" />
+
+## When to use
+
+- Splitting one settings screen into profile, notifications and security panels.
+- Showing alternate views of the same record without leaving the page.
+- A small set of peers where only one can be visible at a time.
+
+## When not to use
+
+- Mutually exclusive filters or view modes: use `Segmented`.
+- Stacked, independently expandable sections: use `Accordion`.
+- Navigation between routes: use links or `Sidebar`.
+
+## Basic usage
+
+<Demo title="Account settings tabs" filename="demos/tabs/basic.tsx" source={basicSource}>
+  <TabsBasic />
+</Demo>
+
+## Vertical with a disabled tab
+
+Set `orientation="vertical"` on `Tabs`. The list switches to `h-fit` and stacks its triggers; the
+disabled Billing tab demonstrates a permission gate that only opens in the owner view.
+
+<Demo
+  title="Vertical list and a disabled tab"
+  filename="demos/tabs/vertical.tsx"
+  source={verticalSource}
+>
+  <TabsVertical />
+</Demo>
+
+## API
+
+<ApiTable component="tabs" />
+
+## Design guidance
+
+- A horizontal `TabsList` is 36 px tall (`h-9`); `variant="line"` drops the muted track and marks
+  the active trigger with a 2 px underline instead of the raised pill.
+- In the default variant the active trigger switches to the background colour and gains a small
+  shadow; keep the trigger labels short because they never wrap.
+- A disabled trigger stays in the list with 50% opacity and ignores pointer events; say why it is
+  disabled next to the list rather than inside the trigger.
+- Vertical tabs put the list beside the content; `TabsContent` is `flex-1`, so give the panel a
+  minimum height to keep the layout stable while switching.
+
+## Accessibility
+
+| Key                      | Behavior                                                    |
+| ------------------------ | ----------------------------------------------------------- |
+| Arrow Right / Arrow Left | Moves between horizontal tabs (automatic activation).       |
+| Arrow Up / Arrow Down    | Moves between vertical tabs.                                |
+| Home / End               | Jumps to the first or last enabled tab.                     |
+| Tab                      | Leaves the tab list and moves focus into the visible panel. |
+
+Focus follows selection by default, and disabled triggers are skipped by arrow keys. Each trigger
+is a `tab` with `aria-selected`, and each panel is a `tabpanel` associated with its trigger.
+
+Known gap: `TabsContent` is not focusable and has `outline-none`, so a panel made only of text
+cannot receive focus or be scrolled with the keyboard; add a focusable element inside it.
+
+## FAQ
+
+**How do I keep panel state when switching tabs?** Pass `forceMount` to `TabsContent`; by default
+Radix unmounts the inactive panel and its local state is lost.
+
+**Can the selected tab be controlled?** Yes — `Tabs` accepts Radix's `value` and `onValueChange`,
+as the demos do.
+
+**Does the list have to sit above the content?** For a vertical `orientation` the root becomes a
+row, so the list sits beside the panel automatically; leave the root's layout classes alone.
+
+## Related
+
+- `Segmented` for compact, filter-like choices.
+- `Accordion` for sections that expand independently.
+- `Sidebar` for persistent navigation between routes.
+- [Used in the template](https://fish-admin.vercel.app/workflows)

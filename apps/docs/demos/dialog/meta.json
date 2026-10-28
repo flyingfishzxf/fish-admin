@@ -1,0 +1,28 @@
+[
+  {
+    "id": "dialog/basic",
+    "component": "dialog",
+    "file": "demos/dialog/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "An invite-member dialog with an email and a role field, plus footer actions.",
+      "zh": "包含邮箱与角色字段、底部带操作按钮的邀请成员对话框。"
+    }
+  },
+  {
+    "id": "dialog/long-content",
+    "component": "dialog",
+    "file": "demos/dialog/long-content.tsx",
+    "title": {
+      "en": "Long, scrollable content",
+      "zh": "长内容滚动"
+    },
+    "description": {
+      "en": "A max-height keeps a long release note inside the dialog and scrolls its body.",
+      "zh": "用最大高度把较长的发布说明限制在对话框内，并让内容滚动。"
+    }
+  }
+]

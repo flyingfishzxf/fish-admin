@@ -1,0 +1,28 @@
+[
+  {
+    "id": "tooltip/basic",
+    "component": "tooltip",
+    "file": "demos/tooltip/basic.tsx",
+    "title": {
+      "en": "Tooltip on a button",
+      "zh": "按钮上的文字提示"
+    },
+    "description": {
+      "en": "A text button and an icon-only button, each with a tooltip that opens on hover or focus.",
+      "zh": "文本按钮与纯图标按钮，各自带有一个悬停或聚焦即打开的文字提示。"
+    }
+  },
+  {
+    "id": "tooltip/sides",
+    "component": "tooltip",
+    "file": "demos/tooltip/sides.tsx",
+    "title": {
+      "en": "All four sides",
+      "zh": "四个方向"
+    },
+    "description": {
+      "en": "Four triggers that place their tooltip on the top, right, bottom and left.",
+      "zh": "四个触发器，将文字提示分别放在上、右、下、左四侧。"
+    }
+  }
+]

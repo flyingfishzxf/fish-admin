@@ -1,0 +1,100 @@
+---
+title: Radio Group
+description: A Radix radio group for choosing exactly one option from a short, visible list.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import RadioGroupBasic from '@docs/demos/radio-group/basic'
+import basicSource from '@docs/demos/radio-group/basic.tsx?raw'
+import RadioGroupHorizontal from '@docs/demos/radio-group/horizontal'
+import horizontalSource from '@docs/demos/radio-group/horizontal.tsx?raw'
+
+# Radio Group
+
+`RadioGroup` is a Radix radio group: `RadioGroupItem` buttons share one string `value`, arrow keys
+move the selection, and `onValueChange` reports the newly selected value. The root renders a
+vertical `grid` with a 12 px gap.
+
+<ComponentMeta id="radio-group" />
+
+## When to use
+
+- Choosing exactly one of a small set of options that should stay visible.
+- Plan, permission or frequency pickers where each option needs a hint.
+- A short list that benefits from side-by-side comparison.
+
+## When not to use
+
+- More than a handful of options: use `Select`.
+- Several choices at once: use `Checkbox`.
+- A binary setting applied immediately: use `Switch`.
+- Switching between views of the same data: use `Segmented`.
+
+## Basic usage
+
+<Demo
+  title="Plan choice with a hint per option"
+  filename="demos/radio-group/basic.tsx"
+  source={basicSource}
+>
+  <RadioGroupBasic />
+</Demo>
+
+## Horizontal with a disabled option
+
+<Demo
+  title="A row of three options, one disabled"
+  filename="demos/radio-group/horizontal.tsx"
+  source={horizontalSource}
+>
+  <RadioGroupHorizontal />
+</Demo>
+
+## API
+
+<ApiTable component="radio-group" />
+
+## Design guidance
+
+- The root ships `grid gap-3`; pass a `className` to lay the options out horizontally, as the second
+  demo does with the row helper.
+- Give each item an `id` and its own `Label` with a matching `htmlFor`, plus a unique `value` — the
+  value is what `onValueChange` returns.
+- `orientation` changes arrow-key behavior and `aria-orientation`; it is not a layout prop.
+- Say why an option is disabled in text next to the group, not in a tooltip only.
+
+## Accessibility
+
+| Key                      | Behavior                                                |
+| ------------------------ | ------------------------------------------------------- |
+| Tab / Shift+Tab          | Enters and leaves the group; only one item is tabbable. |
+| Arrow Up / Arrow Down    | Moves the selection in a vertical group.                |
+| Arrow Left / Arrow Right | Moves the selection when `orientation="horizontal"`.    |
+| Space                    | Selects the focused option.                             |
+
+Only the selected item carries `tabIndex={0}`; the rest are reachable with the arrow keys, which also
+move the selection. Name the group with `aria-labelledby` on the root (or a fieldset legend) so the
+question is announced before the options.
+
+Known gap: the root only renders a `div` with `grid gap-3` — there is no fieldset/legend wrapper and
+no horizontal layout, so both remain the consumer's job.
+
+## FAQ
+
+**Why doesn't `orientation="horizontal"` put my options in a row?** It only swaps which arrow keys
+move the selection and sets `aria-orientation`; layout comes from `className`.
+
+**Can nothing be selected initially?** Yes — omit `value` and `defaultValue`; Tab then enters the
+group at the first option.
+
+**Do I need one state per option?** No. A single `value` string on the root is the whole selection;
+each item only needs its own `value`.
+
+## Related
+
+- `Checkbox` when several options may be selected.
+- `Select` for longer lists.
+- `Segmented` for switching views rather than committing a value.
+- [Used in the template](https://fish-admin.vercel.app/reports)

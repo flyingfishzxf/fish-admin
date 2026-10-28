@@ -1,0 +1,100 @@
+---
+title: Spinner
+description: Show that a region or an action is loading, with an optional label screen readers can announce.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SpinnerBasic from '@docs/demos/spinner/basic'
+import basicSource from '@docs/demos/spinner/basic.tsx?raw'
+import SpinnerLabeled from '@docs/demos/spinner/labeled'
+import labeledSource from '@docs/demos/spinner/labeled.tsx?raw'
+
+# Spinner
+
+`Spinner` renders a spinning `Loader2` icon in one of three sizes. With a `label` it becomes a
+`status` region that assistive technology announces; without one it is hidden from assistive
+technology. `LoadingOverlay` composes it to cover a region while that region reloads.
+
+<ComponentMeta id="spinner" />
+
+## When to use
+
+- A card, list or panel is fetching its first payload and the final layout is not known yet.
+- A single action such as save or export is in flight and the feedback belongs inside the trigger.
+- A region reloads in place and its surrounding layout has to stay visible.
+
+## When not to use
+
+- Completion can be measured: use `Progress` instead.
+- The shape of the finished content is known: use `Skeleton` so the page does not jump.
+- The whole page is blocked for more than a moment: show the state on the action that caused it,
+  not a spinner floating in empty space.
+- A request has already failed: report the error with `Sonner` or an inline message, since a
+  spinner never ends on its own.
+
+## Basic usage
+
+<Demo title="Three sizes" filename="demos/spinner/basic.tsx" source={basicSource}>
+  <SpinnerBasic />
+</Demo>
+
+## Labeled loading region
+
+Passing `label` changes the wrapper from `aria-hidden` to `role="status"` with a visually hidden
+text node. `LoadingOverlay` uses that same label and sets `aria-busy` on the region it covers.
+
+<Demo
+  title="Labeled spinner and overlay"
+  filename="demos/spinner/labeled.tsx"
+  source={labeledSource}
+>
+  <SpinnerLabeled />
+</Demo>
+
+## API
+
+<ApiTable component="spinner" />
+
+## Design guidance
+
+- `size="sm"` draws a 14 px icon, the default is 16 px and `size="lg"` is 24 px.
+- Use `sm` inside buttons and table cells, the default inside cards, and `lg` for a first
+  full-panel load.
+- Name the work next to the spinner ("Loading invoices…"); the `label` prop only serves assistive
+  technology and stays invisible.
+- Keep the overlay's `delay` at its default 150 ms: a response that finishes sooner never flashes
+  an overlay over the region.
+
+## Accessibility
+
+`Spinner` has no keyboard behavior: it is not focusable, takes no key presses and never traps
+focus. Its only accessible surface is the live region described below.
+
+- With `label`, the wrapper is a `status` region whose text is the label; without it, the wrapper
+  is `aria-hidden="true"`.
+- `LoadingOverlay` sets `aria-busy` on its wrapper and puts the labeled spinner inside the
+  covering layer.
+- The icon itself is `aria-hidden`, so the loader is announced once, by the label, not twice.
+
+Known gap: while `LoadingOverlay` is visible the content underneath is only covered visually — the
+component does not mark it `inert`, so keyboard focus can still move into the hidden controls.
+
+## FAQ
+
+**Does every spinner need a label?** Only when it is the sole indication that something is
+loading. Next to visible text the unlabeled spinner is `aria-hidden`, which is what you want.
+
+**Why did my spinner never appear?** `LoadingOverlay` waits `delay` (150 ms by default) before it
+shows, so a request that finishes quickly stays invisible by design.
+
+**Can I change the size or color?** `size` covers the three built-in sizes; the icon inherits
+`currentColor`, so set the text color on the wrapper and pass extra classes through `className`.
+
+## Related
+
+- `Skeleton` for placeholders that reserve the final layout.
+- `Progress` when completion can be measured.
+- `Button` when the spinner belongs to one action.
+- [Used in the template](https://fish-admin.vercel.app/projects)

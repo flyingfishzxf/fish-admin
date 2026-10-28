@@ -1,0 +1,28 @@
+[
+  {
+    "id": "separator/basic",
+    "component": "separator",
+    "file": "demos/separator/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "Horizontal rules between the sections of an invoice summary.",
+      "zh": "发票摘要各区块之间的水平分隔线。"
+    }
+  },
+  {
+    "id": "separator/toolbar",
+    "component": "separator",
+    "file": "demos/separator/toolbar.tsx",
+    "title": {
+      "en": "Vertical separator in a toolbar",
+      "zh": "工具栏中的垂直分隔线"
+    },
+    "description": {
+      "en": "A vertical rule that splits the formatting toggles from the clear action.",
+      "zh": "把格式切换按钮与清除操作分开的垂直分隔线。"
+    }
+  }
+]

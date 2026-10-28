@@ -1,0 +1,95 @@
+---
+title: Form
+description: Wire react-hook-form fields to the template's inputs, labels and error messages.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import FormBasic from '@docs/demos/form/basic'
+import basicSource from '@docs/demos/form/basic.tsx?raw'
+import FormFields from '@docs/demos/form/fields'
+import fieldsSource from '@docs/demos/form/fields.tsx?raw'
+
+# Form
+
+Form is `FormProvider` from react-hook-form, re-exported. `FormField` wraps `Controller` and publishes
+the field name, `FormItem` generates a stable id, `FormControl` injects `id`, `aria-describedby` and
+`aria-invalid`, `FormLabel` turns destructive when the field has an error, and `FormMessage` renders
+the error text — or nothing when there is none. Validation itself comes from `rules` or a resolver.
+
+<ComponentMeta id="form" />
+
+## When to use
+
+- Forms with two or more fields that need validation and per-field messages.
+- Dialog or side-panel forms where labels, hints and errors must stay aligned.
+- Submitting to an API and surfacing both client-side and server-side field errors.
+
+## When not to use
+
+- A single field without validation: a plain `Label` and `Input` are enough.
+- Filter bars whose controls apply on change: bind the controls directly instead of submitting.
+- Settings that save immediately: use `Switch` or `Checkbox` with their own handlers.
+
+## Basic usage
+
+Call `useForm`, spread the returned form into `Form`, and give each `FormField` its `rules`. Submitting
+an empty form reveals the messages; a valid submit writes a summary to the page.
+
+<Demo title="Validated workspace form" filename="demos/form/basic.tsx" source={basicSource}>
+  <FormBasic />
+</Demo>
+
+## Select and checkbox fields
+
+`FormControl` wraps the `SelectTrigger`, not the `Select` root, so the id and aria attributes land on
+the button that opens the list. The checkbox maps Radix's `checked` value back to a boolean through
+`field.onChange(checked === true)`.
+
+<Demo title="Select and checkbox fields" filename="demos/form/fields.tsx" source={fieldsSource}>
+  <FormFields />
+</Demo>
+
+## API
+
+<ApiTable component="form" />
+
+## Design guidance
+
+- Write messages as instructions: "Enter a workspace name." rather than "Invalid".
+- Keep `FormDescription` for hints and `FormMessage` for errors; do not repeat the same sentence in both.
+- Leave the submit button enabled. `handleSubmit` reveals the errors and focuses the first invalid field.
+- Mark required fields in the label as well; a required rule alone is invisible before submit.
+
+## Accessibility
+
+| Key   | Behavior                                          |
+| ----- | ------------------------------------------------- |
+| Tab   | Moves focus between fields in DOM order.          |
+| Enter | Submits the form from a text input.               |
+| Space | Toggles a focused checkbox or activates a button. |
+
+`FormLabel` points `htmlFor` at the id `FormControl` generated, and `FormControl` sets `aria-invalid`
+plus `aria-describedby` for the hint and the message, so returning focus to a field re-reads its error.
+
+Known gap: `FormMessage` is a plain `<p>` without `role="alert"` or `aria-live`, so an error that
+appears after submit is not announced until focus returns to the field — and `FormControl` always
+references the description id, which dangles when no `FormDescription` is rendered.
+
+## FAQ
+
+**Do I have to use a schema library?** No. Per-field `rules` are enough for required and pattern
+checks; `useForm` still accepts a resolver if you prefer a schema.
+
+**Can I put a custom control inside FormControl?** Yes, as long as it forwards props and its ref. For
+controls that do not render a DOM node, read `useFormField` and apply the ids yourself.
+
+**How do I clear the form after a successful submit?** Call `form.reset()`, then set your own result
+state; the component keeps no submission state of its own.
+
+## Related
+
+- `Input` and `Select` for the controls the demos wrap.
+- `Label` for fields outside a Form.
+- `Dialog` when the form lives in a modal.

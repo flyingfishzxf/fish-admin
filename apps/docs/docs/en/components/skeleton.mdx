@@ -1,0 +1,93 @@
+---
+title: Skeleton
+description: Neutral placeholder blocks that hold a layout steady while data loads.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SkeletonBasic from '@docs/demos/skeleton/basic'
+import basicSource from '@docs/demos/skeleton/basic.tsx?raw'
+import SkeletonList from '@docs/demos/skeleton/list'
+import listSource from '@docs/demos/skeleton/list.tsx?raw'
+
+# Skeleton
+
+Skeleton is a pulsing placeholder `<div>`. It has no geometry of its own beyond `rounded-md` and
+`bg-accent`, so every width, height and radius comes from the class or style you pass.
+
+<ComponentMeta id="skeleton" />
+
+## When to use
+
+- Reserving layout while the first payload of a card, list or table loads.
+- Keeping row heights stable so content does not jump when data arrives.
+- Mirroring a known layout closely enough that the swap reads as the same component.
+
+## When not to use
+
+- Work that finishes in well under a second: a brief flash is worse than nothing.
+- An indeterminate wait with no layout to reserve: use `Spinner`.
+- A result set that is genuinely empty: use `Empty`.
+
+## Basic usage
+
+<Demo
+  title="Card placeholder that becomes a card"
+  filename="demos/skeleton/basic.tsx"
+  source={basicSource}
+>
+  <SkeletonBasic />
+</Demo>
+
+## List rows with avatars
+
+<Demo
+  title="Rows with avatars, lines and a status pill"
+  filename="demos/skeleton/list.tsx"
+  source={listSource}
+>
+  <SkeletonList />
+</Demo>
+
+## API
+
+<ApiTable component="skeleton" />
+
+## Design guidance
+
+- The default radius is `rounded-md` and the fill is `bg-accent`; override both when the real
+  content is a circle, a pill or a different surface.
+- Mirror the loaded dimensions exactly, otherwise the row rhythm shifts the moment data lands.
+- Compose several skeletons when the real layout has structure instead of one large block.
+- Keep the skeleton and the loaded content in the same container so `aria-busy` covers both.
+
+## Accessibility
+
+| Key | Behavior                                                    |
+| --- | ----------------------------------------------------------- |
+| Tab | Skips skeletons entirely; they are divs without a tab stop. |
+| —   | No key handling; the pulse is purely presentational.        |
+
+Skeletons are empty, so they announce nothing on their own. Mark the region `aria-busy="true"`
+while loading and state the wait in text, as the second demo does with its loading line.
+
+Known gap: the component ignores `prefers-reduced-motion` — `animate-pulse` always runs and there is
+no prop to stop it, so reduced-motion users see the constant fade.
+
+## FAQ
+
+**Is there a shimmer effect?** No. The block fades in and out through `animate-pulse`; there is no
+gradient sweep and no animation prop.
+
+**How many skeletons should I render?** Match the number of rows you expect, or at least the visible
+height of the region, so the page does not reflow.
+
+**Can I style individual blocks differently?** Yes. Each `Skeleton` accepts `className` and `style`,
+which is how the avatar circle and the status pill in the second demo are built.
+
+## Related
+
+- `Spinner` for waits that do not have a layout to reserve.
+- `Empty` once loading finishes with no results.
+- [Used in the template](https://fish-admin.vercel.app/)

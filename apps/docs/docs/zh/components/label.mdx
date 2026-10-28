@@ -1,0 +1,93 @@
+---
+title: Label 标签
+description: 为表单控件命名，并把文字与它描述的输入框关联起来。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import LabelBasic from '@docs/demos/label/basic'
+import basicSource from '@docs/demos/label/basic.tsx?raw'
+import LabelRequiredDisabled from '@docs/demos/label/required-disabled'
+import requiredDisabledSource from '@docs/demos/label/required-disabled.tsx?raw'
+
+# Label 标签
+
+Label 基于 Radix 渲染原生 `<label>`。当 `htmlFor` 与控制器的 `id` 一致时，点击文字会把焦点移到该控件，
+这段文字也成为它的无障碍名称。
+
+<ComponentMeta id="label" />
+
+## 何时使用
+
+- 为单个 `Input`、`Textarea`、`Select` 触发器或 `Checkbox` 命名。
+- 在设置行中标记字段为必填或禁用。
+- 替代占位符文案——占位符在用户输入后就会消失。
+
+## 何时不使用
+
+- 作为一组控件的标题：请使用标题或分组标签。
+- 展示帮助或格式提示：请使用 `FormDescription` 或普通段落。
+- 作为操作的点击目标：请使用 `Button`。
+
+## 基础用法
+
+把标签的 `htmlFor` 设为控件的 `id`，点击标签即可聚焦输入框，屏幕阅读器也会把标签读作字段名称。
+
+<Demo title="标签与输入框关联" filename="demos/label/basic.tsx" source={basicSource}>
+  <LabelBasic />
+</Demo>
+
+## 必填与禁用控件
+
+星号只是标签内的装饰文字，真正的必填约束来自输入框上的 `required`。禁用字段保留标签，让这一行仍然
+说明值是什么。
+
+<Demo
+  title="必填与禁用控件"
+  filename="demos/label/required-disabled.tsx"
+  source={requiredDisabledSource}
+>
+  <LabelRequiredDisabled />
+</Demo>
+
+## API
+
+<ApiTable component="label" />
+
+## 设计指引
+
+- 标签要短，并以名词开头（“Webhook 地址”），格式规则放进辅助文案。
+- 必填字段同时使用星号与控件上的 `required` 或 `aria-required`；只有星号不传达任何约束。
+- 禁用时让标签与控件一起变淡。内置规则是兄弟选择器，需要控件带 `peer` 且标签排在其后；否则请像第二个
+  示例那样直接在标签上降低透明度。
+- 不要把占位符当作唯一标签：它会在输入时消失，而且对比度往往不足。
+
+## 无障碍
+
+| 按键          | 行为                                         |
+| ------------- | -------------------------------------------- |
+| Tab           | 跳过不可聚焦的标签，直接把焦点移到它的控件。 |
+| Enter / Space | 激活已聚焦的控件；标签本身不处理按键。       |
+
+`for`/`id` 的配对让可见文字成为控件的无障碍名称。没有匹配 `id` 的标签既不会被读出，点击也没有反应。
+用指针点击标签时，会聚焦文本框，或切换关联的复选框与单选框。
+
+已知缺口：Label 不提供必填标记，也没有错误样式——星号、`required` 属性与错误配色都需要调用方自己处理。
+
+## FAQ
+
+**一个标签可以同时描述两个输入框吗？** 不可以。`id` 必须唯一，请为每个控件提供自己的标签；无法显示
+可见标签的控件请使用 `aria-label`。
+
+**应该用 Label 还是 FormLabel？** 在 `Form` 内使用 `FormLabel`，它会附加错误样式并自动接好 `htmlFor`；
+独立字段使用 `Label`。
+
+**为什么标签没有随禁用输入框一起变淡？** 内置规则是兄弟选择器 `:where(.peer):disabled ~ *`，因此控件
+需要带 `peer`，并且标签要排在它后面；否则请直接在标签上设置透明度。
+
+## 相关
+
+- `Input`：标签最常命名的文本控件。
+- `Form`：需要校验状态时使用。
+- `Checkbox` 与 `Radio Group`：点击标签即可切换的控件。

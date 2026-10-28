@@ -1,0 +1,28 @@
+[
+  {
+    "id": "alert/basic",
+    "component": "alert",
+    "file": "demos/alert/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "An informational alert with an icon, a title, a description and a request action.",
+      "zh": "带图标、标题、描述与请求操作的信息提示。"
+    }
+  },
+  {
+    "id": "alert/destructive",
+    "component": "alert",
+    "file": "demos/alert/destructive.tsx",
+    "title": {
+      "en": "Destructive alert with a list",
+      "zh": "带列表的危险提示"
+    },
+    "description": {
+      "en": "A destructive alert listing failed jobs, with a control that switches to the clean state.",
+      "zh": "用列表列出失败任务的危险提示，并可切换到全部正常的默认状态。"
+    }
+  }
+]

@@ -19,6 +19,43 @@ const MAIN_EXPORT = {
 const EXTRA_UNRESOLVED = {
   button: ['Inherits native button attributes (React.ButtonHTMLAttributes<HTMLButtonElement>).'],
   'pro-table': ['The table instance prop comes from @tanstack/react-table; see its Table API.'],
+  input: ["Accepts every native <input> attribute (React.ComponentProps<'input'>)."],
+  textarea: ["Accepts every native <textarea> attribute (React.ComponentProps<'textarea'>)."],
+  card: ['Card parts are plain <div> elements and accept div attributes.'],
+  skeleton: ['Renders a <div>; accepts div attributes.'],
+  table: [
+    'TableHeader, TableBody, TableRow and TableCell render native table elements and accept their attributes.',
+  ],
+  form: [
+    "Form components follow react-hook-form's Controller API; see the react-hook-form docs for FormField props.",
+  ],
+  dialog: [
+    'Dialog parts wrap Radix Dialog; their props are listed in the Radix Dialog API.',
+    'DialogContent declares showCloseButton?: boolean (default true).',
+  ],
+  'alert-dialog': [
+    'AlertDialog parts wrap Radix AlertDialog; their props are listed in the Radix AlertDialog API.',
+  ],
+  sheet: [
+    'Sheet parts wrap Radix Dialog; their props are listed in the Radix Dialog API.',
+    'SheetContent declares side?: "top" | "right" | "bottom" | "left" (default "right") and showCloseButton?: boolean (default true).',
+  ],
+  drawer: [
+    'Drawer is built on vaul; see the vaul documentation for the full set of drag and snap props.',
+  ],
+  select: ['Select parts wrap Radix Select; their props are listed in the Radix Select API.'],
+  switch: ['Switch wraps Radix Switch; its props are listed in the Radix Switch API.'],
+  checkbox: ['Checkbox wraps Radix Checkbox; its props are listed in the Radix Checkbox API.'],
+  'radio-group': [
+    'RadioGroup wraps Radix RadioGroup; its props are listed in the Radix RadioGroup API.',
+  ],
+  separator: ['Separator wraps Radix Separator; its props are listed in the Radix Separator API.'],
+  avatar: ['Avatar parts wrap Radix Avatar; their props are listed in the Radix Avatar API.'],
+  label: ['Label wraps Radix Label; its props are listed in the Radix Label API.'],
+  tooltip: ['Tooltip parts wrap Radix Tooltip; their props are listed in the Radix Tooltip API.'],
+  'dropdown-menu': [
+    'DropdownMenu parts wrap Radix DropdownMenu; their props are listed in the Radix DropdownMenu API.',
+  ],
 }
 
 function readRegistry() {

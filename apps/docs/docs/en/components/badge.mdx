@@ -1,0 +1,94 @@
+---
+title: Badge
+description: Compact status, count and category labels in six visual variants.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import BadgeBasic from '@docs/demos/badge/basic'
+import basicSource from '@docs/demos/badge/basic.tsx?raw'
+import BadgeStatus from '@docs/demos/badge/status'
+import statusSource from '@docs/demos/badge/status.tsx?raw'
+
+# Badge
+
+Badge renders a short, single-line label in a pill. It is a `<span>` by default; with `asChild` the
+same styling moves onto the child element, so a badge can also decorate an anchor.
+
+<ComponentMeta id="badge" />
+
+## When to use
+
+- Labelling a row's state, such as "Active" or "Past due", next to a table cell.
+- Showing a short count in a heading, tab or nav item.
+- Tagging an item with a category such as "Beta" or "Internal".
+
+## When not to use
+
+- The label is the primary action: use `Button`.
+- The message needs a title and a body: use `Alert`.
+- Users must add or remove values: use `Tags Input`.
+
+## Basic usage
+
+<Demo
+  title="Six variants, including a linked badge"
+  filename="demos/badge/basic.tsx"
+  source={basicSource}
+>
+  <BadgeBasic />
+</Demo>
+
+## Status with a dot and an icon
+
+<Demo
+  title="Dot, icon and label driven by a switch"
+  filename="demos/badge/status.tsx"
+  source={statusSource}
+>
+  <BadgeStatus />
+</Demo>
+
+## API
+
+<ApiTable component="badge" />
+
+## Design guidance
+
+- Text is 12 px with 8 px horizontal and 2 px vertical padding; the badge never wraps.
+- Direct `<svg>` children are forced to 12 px, so pass icons without size classes.
+- Reserve `destructive` for a failing state; `secondary`, `outline` and `ghost` keep metadata quiet.
+- `link` only makes sense with `asChild` and an `<a>` child, which is also what enables the focus ring.
+
+## Accessibility
+
+| Key   | Behavior                                                                       |
+| ----- | ------------------------------------------------------------------------------ |
+| Tab   | Reaches the badge only when `asChild` renders a focusable child such as `<a>`. |
+| Enter | Follows the link when the badge is rendered as an anchor.                      |
+
+The label is the accessible content, so keep it worded as text rather than relying on colour. A
+badge is not a live region: a status that changes in place is only announced if the surrounding
+region carries `aria-live` or `role="status"`.
+
+Known gap: there is no built-in status-dot part — the dot in the second demo is a decorative
+`<span>` you supply and hide from assistive tech yourself. Icons, by contrast, only need to be
+passed as children.
+
+## FAQ
+
+**Can a badge contain an icon?** Yes. Any child works, and direct `<svg>` children are sized to
+12 px to match the text.
+
+**What happens with `asChild`?** The styling is applied to the child instead of a `<span>`, so the
+badge keeps anchor or button semantics and picks up the focus-visible ring.
+
+**Is there a count or max prop?** No. Format the text yourself before rendering, for example
+`+{count}` as in the avatar group demo.
+
+## Related
+
+- `Alert` for messages that need a title and a description.
+- `Avatar` for identity chips with initials.
+- [Used in the template](https://fish-admin.vercel.app/)

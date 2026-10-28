@@ -1,0 +1,96 @@
+---
+title: Tooltip
+description: Show a short text hint when a trigger is hovered or focused, without taking over the page.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TooltipBasic from '@docs/demos/tooltip/basic'
+import basicSource from '@docs/demos/tooltip/basic.tsx?raw'
+import TooltipSides from '@docs/demos/tooltip/sides'
+import sidesSource from '@docs/demos/tooltip/sides.tsx?raw'
+
+# Tooltip
+
+`Tooltip` shows one line of text while its trigger is hovered or focused. It is a thin wrapper over
+the Radix Tooltip primitives: a provider, a trigger, and content rendered in a portal with an arrow.
+
+<ComponentMeta id="tooltip" />
+
+## When to use
+
+- Explaining what an icon-only button does.
+- Revealing a value that the layout truncated, such as a long ID or a file path.
+- Adding a keyboard-shortcut reminder to a control that already works without it.
+
+## When not to use
+
+- The information is required to finish a task: render it in the page instead.
+- The content is interactive (links, buttons, inputs): use `Popover`.
+- The trigger needs a richer preview with media: use `Hover Card`.
+- Touch-only screens, where nothing hovers: show a visible label or use `Popover`.
+
+## Basic usage
+
+<Demo title="Tooltip on a button" filename="demos/tooltip/basic.tsx" source={basicSource}>
+  <TooltipBasic />
+</Demo>
+
+## All four sides
+
+`TooltipContent` accepts Radix's `side`, `align` and `sideOffset`. The arrow is rendered by the
+component and follows whichever side you pick.
+
+<Demo title="All four sides" filename="demos/tooltip/sides.tsx" source={sidesSource}>
+  <TooltipSides />
+</Demo>
+
+## API
+
+<ApiTable component="tooltip" />
+
+## Design guidance
+
+- Keep the content to a phrase that fits one line; it renders at `text-xs` on a `bg-foreground`
+  bubble.
+- Wrap a group of tooltips in one `TooltipProvider` so `delayDuration` is configured once; this
+  wrapper defaults it to `0`.
+- Change `side` or `align` when the trigger sits near an edge, so the bubble stays inside the
+  viewport.
+- Never place interactive content inside `TooltipContent`: the tooltip has no focus management, so
+  keyboard users could never reach it.
+
+## Accessibility
+
+| Key    | Behavior                                                         |
+| ------ | ---------------------------------------------------------------- |
+| Tab    | Focuses the trigger and opens its tooltip; leaving it closes it. |
+| Escape | Closes the tooltip; focus stays on the trigger.                  |
+
+The trigger is a native `<button>` unless you pass `asChild`, and it receives `aria-describedby`
+pointing at the open content, which is exposed as `role="tooltip"`. The tooltip never traps focus
+and never blocks pointer events (`disableOutsidePointerEvents` stays off).
+
+Known gap: a trigger with `asChild` wrapped around a disabled control cannot open, because disabled
+elements do not dispatch pointer events; wrap the control in a focusable element if the hint is
+required.
+
+## FAQ
+
+**Do I have to wrap tooltips in `TooltipProvider`?** Yes. `TooltipTrigger` reads
+`delayDuration` and the skip-delay state from the provider and throws without one; the provider
+also keeps adjacent tooltips from re-animating on every hover.
+
+**Why does the bubble open instantly?** Because this wrapper's `TooltipProvider` sets
+`delayDuration={0}`. Raise it on the provider to add a hover delay for a dense toolbar.
+
+**Can I put a link in the tooltip?** No. The content is a single text bubble with an arrow and is
+not focusable; use `Popover` for anything clickable.
+
+## Related
+
+- `Popover` for content the user interacts with.
+- `Hover Card` for a richer preview.
+- `Button` for the icon-only triggers a tooltip usually explains.
+- [Used in the template](https://fish-admin.vercel.app/reports)

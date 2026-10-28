@@ -1,0 +1,93 @@
+---
+title: Radio Group 单选组
+description: 基于 Radix 的单选组，用于从简短且始终可见的列表中选出一个选项。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import RadioGroupBasic from '@docs/demos/radio-group/basic'
+import basicSource from '@docs/demos/radio-group/basic.tsx?raw'
+import RadioGroupHorizontal from '@docs/demos/radio-group/horizontal'
+import horizontalSource from '@docs/demos/radio-group/horizontal.tsx?raw'
+
+# Radio Group 单选组
+
+`RadioGroup` 是基于 Radix 的单选组：`RadioGroupItem` 共享同一个字符串 `value`，方向键即可改变
+选择，`onValueChange` 上报新选中的值。根节点渲染为纵向 `grid`，间距为 12 px。
+
+<ComponentMeta id="radio-group" />
+
+## 何时使用
+
+- 从数量不多、应当始终可见的选项中选出唯一一项。
+- 套餐、权限或频率选择，且每个选项都需要一句说明。
+- 需要并排比较的短列表。
+
+## 何时不使用
+
+- 选项较多：使用 `Select`。
+- 可以同时选中多项：使用 `Checkbox`。
+- 切换后立即生效的开关：使用 `Switch`。
+- 在同一份数据的多个视图间切换：使用 `Segmented`。
+
+## 基础用法
+
+<Demo title="套餐选择，每个选项带说明" filename="demos/radio-group/basic.tsx" source={basicSource}>
+  <RadioGroupBasic />
+</Demo>
+
+## 横向排列与禁用选项
+
+<Demo
+  title="一行三个选项，其中一个被禁用"
+  filename="demos/radio-group/horizontal.tsx"
+  source={horizontalSource}
+>
+  <RadioGroupHorizontal />
+</Demo>
+
+## API
+
+<ApiTable component="radio-group" />
+
+## 设计指引
+
+- 根节点自带 `grid gap-3`；需要横向排列时传入 `className`，正如第二个示例使用行布局辅助类。
+- 为每个选项提供 `id`、`htmlFor` 匹配的 `Label`，以及唯一的 `value`——`onValueChange` 返回的
+  就是这个值。
+- `orientation` 只影响方向键行为与 `aria-orientation`，它不是布局属性。
+- 某个选项为何禁用，请写在组旁的文字里，而不只放在 tooltip 中。
+
+## 无障碍
+
+| 按键                | 行为                                    |
+| ------------------- | --------------------------------------- |
+| Tab / Shift+Tab     | 进入或离开该组；组内只有一项可 Tab。    |
+| 上方向键 / 下方向键 | 在纵向组中移动选择。                    |
+| 左方向键 / 右方向键 | `orientation="horizontal"` 时移动选择。 |
+| Space               | 选中当前聚焦的选项。                    |
+
+只有选中项带 `tabIndex={0}`，其余选项通过方向键可达，方向键同时会改变选择。请在根节点上用
+`aria-labelledby`（或 fieldset 的 legend）为组命名，使问题在选项之前被宣告。
+
+已知缺口：根节点只渲染带 `grid gap-3` 的 `div`——没有 fieldset/legend 包装，也没有横向布局，
+两者都需要调用方自行处理。
+
+## FAQ
+
+**为什么 `orientation="horizontal"` 没有把选项排成一行？** 它只切换方向键行为并设置
+`aria-orientation`；布局来自 `className`。
+
+**初始可以没有任何选中项吗？** 可以——省略 `value` 与 `defaultValue`，此时 Tab 会进入组内的
+第一个选项。
+
+**需要为每个选项各写一个 state 吗？** 不需要。根节点上的一个 `value` 字符串就是全部选择，
+每个选项只需各自的 `value`。
+
+## 相关
+
+- `Checkbox`：允许多选时使用。
+- `Select`：选项较长时使用。
+- `Segmented`：只切换视图、不提交取值时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

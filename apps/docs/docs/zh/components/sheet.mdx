@@ -1,0 +1,92 @@
+---
+title: Sheet 侧滑面板
+description: 从屏幕边缘滑入、用于短流程任务的面板。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import SheetBasic from '@docs/demos/sheet/basic'
+import basicSource from '@docs/demos/sheet/basic.tsx?raw'
+import SheetAnotherSide from '@docs/demos/sheet/another-side'
+import anotherSideSource from '@docs/demos/sheet/another-side.tsx?raw'
+
+# Sheet 侧滑面板
+
+`Sheet` 是从视口某条边缘滑入的覆盖面板，页面在半透明遮罩后保持可见。它基于 Radix Dialog，
+因此焦点管理、Escape 关闭与标签关联都与对话框一致。
+
+<ComponentMeta id="sheet" />
+
+## 何时使用
+
+- 在当前正在查看的记录上编辑少量字段。
+- 查看详情，同时不丢失下方的列表或表格。
+- 在窄屏上收集筛选条件或偏好设置，底部面板更便于拇指触达。
+
+## 何时不使用
+
+- 需要阻塞式确认的选择：使用 `Alert Dialog`。
+- 包含多个分区的长表单：为它分配独立路由，或使用 `Dialog`。
+- 常驻导航：使用 `Sidebar`。
+
+## 基础用法
+
+<Demo title="右侧编辑面板" filename="demos/sheet/basic.tsx" source={basicSource}>
+  <SheetBasic />
+</Demo>
+
+## 切换方向
+
+把 `side` 设为 `"bottom"` 即可从底部向上滑出。此时面板占满宽度并按内容高度自适应；示例会先把
+筛选草稿保留在面板内，直到点击“应用”才生效。
+
+<Demo title="底部筛选面板" filename="demos/sheet/another-side.tsx" source={anotherSideSource}>
+  <SheetAnotherSide />
+</Demo>
+
+## API
+
+<ApiTable component="sheet" />
+
+## 设计指引
+
+- `side` 默认为 `"right"`。左右面板宽度为视口的 75%，从 `sm` 断点起最大 24 rem；上下面板占满
+  宽度、高度自适应。
+- `SheetHeader` 与 `SheetFooter` 自带 1 rem 内边距，面板中部没有内边距，请给正文自行添加。
+- `SheetFooter` 使用 `mt-auto`，在占满高度的侧边面板中始终贴底。
+- 只有在同时渲染显式 `SheetClose` 时才设置 `showCloseButton={false}`，务必保留一个明确的关闭入口。
+
+## 无障碍
+
+| 按键          | 行为                               |
+| ------------- | ---------------------------------- |
+| Enter / Space | 在触发的按钮上打开面板。           |
+| Tab           | 在面板内移动焦点，焦点被限制其中。 |
+| Shift + Tab   | 在面板内反向移动焦点。             |
+| Escape        | 关闭面板并把焦点交还给触发元素。   |
+
+`SheetTitle` 提供对话框的无障碍名称，`SheetDescription` 会关联到 `aria-describedby`，两者都应渲染。
+点击遮罩可以关闭面板，内置关闭按钮带有来自 `actions.close` 文案的视觉隐藏标签；关闭后焦点回到
+触发元素。
+
+已知缺口：内置关闭按钮的无障碍名称固定使用共享的“关闭”文案，没有按实例覆盖的标签属性；如需
+自定义文案，请设置 `showCloseButton={false}` 并自行渲染关闭按钮。
+
+## FAQ
+
+**可以从外部控制面板吗？** 可以——像第一个示例那样，把 `open` 与 `onOpenChange` 传给 `Sheet`，
+由表格行或菜单决定展示哪条记录。
+
+**关闭后内容会被卸载吗？** 会。除非设置 `forceMount`，Radix Dialog 会在关闭时卸载面板，因此
+`SheetContent` 内的局部状态会丢失。
+
+**面板会为长内容提供滚动吗？** 不会。`SheetContent` 没有 overflow 相关样式，过长的正文会溢出
+面板；请为正文单独提供滚动容器。
+
+## 相关
+
+- `Dialog`：居中显示的阻塞式任务。
+- `Drawer`：可在触屏上下拖动关闭的底部面板。
+- `Alert Dialog`：面板需要确认/取消决策时使用。
+- [在模板中的用法](https://fish-admin.vercel.app/audit-logs)

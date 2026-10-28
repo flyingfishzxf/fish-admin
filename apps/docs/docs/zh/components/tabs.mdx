@@ -1,0 +1,92 @@
+---
+title: Tabs 标签页
+description: 在横向或纵向列表中就地切换相关面板。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TabsBasic from '@docs/demos/tabs/basic'
+import basicSource from '@docs/demos/tabs/basic.tsx?raw'
+import TabsVertical from '@docs/demos/tabs/vertical'
+import verticalSource from '@docs/demos/tabs/vertical.tsx?raw'
+
+# Tabs 标签页
+
+`Tabs` 一次只显示多个相关面板中的一个。它封装 Radix Tabs，选中状态、方向键导航与
+`aria-selected` 关联都由底层处理；封装层补充模板的列表与触发器样式。
+
+<ComponentMeta id="tabs" />
+
+## 何时使用
+
+- 把同一个设置页拆成资料、通知与安全三个面板。
+- 在同一页面内切换同一条记录的不同视图。
+- 一组互斥的平级内容，且同一时间只显示一个。
+
+## 何时不使用
+
+- 互斥的筛选条件或视图模式：使用 `Segmented`。
+- 可各自独立展开的多段内容：使用 `Accordion`。
+- 路由之间的跳转：使用链接或 `Sidebar`。
+
+## 基础用法
+
+<Demo title="账户设置标签页" filename="demos/tabs/basic.tsx" source={basicSource}>
+  <TabsBasic />
+</Demo>
+
+## 垂直布局与禁用标签
+
+在 `Tabs` 上设置 `orientation="vertical"`。列表会切换为 `h-fit` 并纵向堆叠触发器；示例中被禁用的
+账单标签模拟了一道权限门槛，只有切换到所有者视图后才可打开。
+
+<Demo title="垂直列表与禁用标签" filename="demos/tabs/vertical.tsx" source={verticalSource}>
+  <TabsVertical />
+</Demo>
+
+## API
+
+<ApiTable component="tabs" />
+
+## 设计指引
+
+- 横向 `TabsList` 高 36 px（`h-9`）；使用 `variant="line"` 会去掉浅色底，并用 2 px 下划线标记
+  当前触发器，而不是抬起式胶囊。
+- 默认变体下，当前触发器切换为背景色并带轻微阴影；触发器文案不会换行，请保持简短。
+- 禁用触发器仍留在列表中，透明度为 50% 且不响应指针事件；请把禁用原因写在列表旁边，而不是
+  塞进触发器内。
+- 垂直标签把列表放在内容旁；`TabsContent` 为 `flex-1`，请给面板设置最小高度，避免切换时布局跳动。
+
+## 无障碍
+
+| 按键                | 行为                                   |
+| ------------------- | -------------------------------------- |
+| 右方向键 / 左方向键 | 在横向标签之间移动（默认自动激活）。   |
+| 上方向键 / 下方向键 | 在纵向标签之间移动。                   |
+| Home / End          | 跳到第一个或最后一个可用标签。         |
+| Tab                 | 离开标签列表，把焦点移入当前可见面板。 |
+
+默认情况下焦点跟随选中项变化，方向键会跳过禁用触发器。每个触发器都是带 `aria-selected` 的
+`tab`，每个面板都是与其触发器关联的 `tabpanel`。
+
+已知缺口：`TabsContent` 不可聚焦且设置了 `outline-none`，因此只有文本的面板无法获得焦点，也无法
+用键盘滚动；请在面板内放置可聚焦元素。
+
+## FAQ
+
+**切换标签时如何保留面板状态？** 给 `TabsContent` 传入 `forceMount`。默认情况下 Radix 会卸载
+非激活面板，其局部状态随之丢失。
+
+**可以控制当前选中的标签吗？** 可以——`Tabs` 接受 Radix 的 `value` 与 `onValueChange`，示例中
+就是这样使用的。
+
+**列表必须放在内容上方吗？** 在垂直 `orientation` 下，根组件变为横向排列，列表会自动位于面板
+旁边；不要覆盖根组件的布局样式。
+
+## 相关
+
+- `Segmented`：紧凑的筛选式选择。
+- `Accordion`：可独立展开的内容区段。
+- `Sidebar`：路由之间的常驻导航。
+- [在模板中的用法](https://fish-admin.vercel.app/workflows)

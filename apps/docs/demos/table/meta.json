@@ -1,0 +1,28 @@
+[
+  {
+    "id": "table/basic",
+    "component": "table",
+    "file": "demos/table/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A members table with a caption and a search field that filters rows.",
+      "zh": "带标题和搜索过滤的成员表格。"
+    }
+  },
+  {
+    "id": "table/summary",
+    "component": "table",
+    "file": "demos/table/summary.tsx",
+    "title": {
+      "en": "Footer and summary row",
+      "zh": "表尾与汇总行"
+    },
+    "description": {
+      "en": "An invoice table whose footer total follows a hide-paid toggle.",
+      "zh": "账单表格，表尾合计随“隐藏已付款”开关变化。"
+    }
+  }
+]

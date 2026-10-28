@@ -61,14 +61,14 @@ e2e-docs/axe-full.spec.ts                    # new: env-gated full axe sweep (cl
 - `build-manifests.mjs` writes `demos/registry.json` (sorted by `id`), `docs/{en,zh}/components/_meta.json` (`["index", ...documentedIds]` sorted, documented = has both en and zh mdx), and `generated/documented.json` (`{ "version": 1, "components": string[] }`). `--check` compares and exits non-zero with a "run pnpm docs:manifests" hint.
 - `check-docs.mjs` validates every documented page pair: required headings, ≥2 `<Demo>`, `<ApiTable component="<id>" />`, every registered demo of that component imported with `?raw`, identical demo import sets across languages, legal demo imports, manifest freshness, and (with `--complete`) that all 83 ids are documented.
 
-- [ ] **Step 1: Write `build-manifests.mjs`** — scan `demos/*/meta.json` (skip `data`), validate fields, merge, write the three outputs; `--check` variant; sorted deterministic JSON with trailing newline.
-- [ ] **Step 2: Migrate the pilot metadata** — split the three existing registry entries into `meta.json` files; delete nothing else.
-- [ ] **Step 3: Wire scripts** — `apps/docs/package.json`: `"manifests": "node scripts/build-manifests.mjs"`, add it to `predev`, `prebuild` (after `sync:template`) and `pretypecheck`; `check` runs `node scripts/build-manifests.mjs --check && node scripts/check-docs.mjs`.
-- [ ] **Step 4: Generalise `check-docs.mjs`** — replace the `PILOTS` loop with a loop over `generated/documented.json`; add import-legality and cross-language parity checks; keep the pilot assertions as part of the general rule; add `--complete`.
-- [ ] **Step 5: ComponentIndex + ComponentMeta** — index links every id in `documented.json`; `<ComponentMeta id="…" />` renders the category label and `Since 0.1.0`, wired through `theme/index.tsx`; add it to the button pilot pages.
-- [ ] **Step 6: Add `lucide-react`** to `apps/docs` dependencies (same range as root).
-- [ ] **Step 7: Write `e2e-docs/sweep.spec.ts`** — for each id in `documented.json`: go to `/components/<id>`, wait for network idle, assert every `[data-demo]` has at least one visible child and its source block shows `export default`, assert `<ApiTable>` rows exist when the API has props, capture console errors per page and fail listing them.
-- [ ] **Step 8: Verify** — `pnpm docs:manifests && pnpm docs:check && pnpm docs:build && pnpm test:docs`; all green, sweep runs 3 pages.
+- [x] **Step 1: Write `build-manifests.mjs`** — scan `demos/*/meta.json` (skip `data`), validate fields, merge, write the three outputs; `--check` variant; sorted deterministic JSON with trailing newline.
+- [x] **Step 2: Migrate the pilot metadata** — split the three existing registry entries into `meta.json` files; delete nothing else.
+- [x] **Step 3: Wire scripts** — `apps/docs/package.json`: `"manifests": "node scripts/build-manifests.mjs"`, add it to `predev`, `prebuild` (after `sync:template`) and `pretypecheck`; `check` runs `node scripts/build-manifests.mjs --check && node scripts/check-docs.mjs`.
+- [x] **Step 4: Generalise `check-docs.mjs`** — replace the `PILOTS` loop with a loop over `generated/documented.json`; add import-legality and cross-language parity checks; keep the pilot assertions as part of the general rule; add `--complete`.
+- [x] **Step 5: ComponentIndex + ComponentMeta** — index links every id in `documented.json`; `<ComponentMeta id="…" />` renders the category label and `Since 0.1.0`, wired through `theme/index.tsx`; add it to the button pilot pages.
+- [x] **Step 6: Add `lucide-react`** to `apps/docs` dependencies (same range as root).
+- [x] **Step 7: Write `e2e-docs/sweep.spec.ts`** — for each id in `documented.json`: go to `/components/<id>`, wait for network idle, assert every `[data-demo]` has at least one visible child and its source block shows `export default`, assert `<ApiTable>` rows exist when the API has props, capture console errors per page and fail listing them.
+- [x] **Step 8: Verify** — `pnpm docs:manifests && pnpm docs:check && pnpm docs:build && pnpm test:docs`; all green, sweep runs 3 pages.
 
 ---
 
@@ -87,9 +87,9 @@ e2e-docs/axe-full.spec.ts                    # new: env-gated full axe sweep (cl
 - Every page imports `ComponentMeta`, `ApiTable`, `Demo`, and its demos with `?raw`.
 - Demo ids are `<id>/basic` and `<id>/<variant>`; variant slugs describe the angle (`controlled`, `sizes`, `empty`, `states`, …).
 
-- [ ] **Step 1:** dispatch batches and collect the files
-- [ ] **Step 2:** `pnpm gen-api` + review api.json descriptions for the wave (no empty tables, no wrong display names)
-- [ ] **Step 3:** gate set + axe sample + browser spot check
+- [x] **Step 1:** dispatch batches and collect the files
+- [x] **Step 2:** `pnpm gen-api` + review api.json descriptions for the wave (no empty tables, no wrong display names)
+- [x] **Step 3:** gate set + axe sample + browser spot check
 - [ ] **Step 4:** commit
 
 ---

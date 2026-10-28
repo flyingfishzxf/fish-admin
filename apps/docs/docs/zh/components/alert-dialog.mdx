@@ -1,0 +1,93 @@
+---
+title: Alert Dialog 警告对话框
+description: 在用户做出不应被误关闭的决定前打断操作。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AlertDialogBasic from '@docs/demos/alert-dialog/basic'
+import basicSource from '@docs/demos/alert-dialog/basic.tsx?raw'
+import AlertDialogControlled from '@docs/demos/alert-dialog/controlled'
+import controlledSource from '@docs/demos/alert-dialog/controlled.tsx?raw'
+
+# Alert Dialog 警告对话框
+
+Alert Dialog 是带 `role="alertdialog"` 的模态层。它没有关闭图标，也会忽略外部点击，因此只有
+`AlertDialogAction`、`AlertDialogCancel` 或 Escape 三种离开方式。两个按钮都通过 `asChild` 渲染
+`Button`，因此可以使用它的 `variant` 与 `size`。
+
+<ComponentMeta id="alert-dialog" />
+
+## 何时使用
+
+- 删除、吊销或覆盖无法撤销的内容。
+- 确认带有副作用的操作，例如转移工作区所有权。
+- 打断一个误关闭就会丢失工作的流程。
+
+## 何时不使用
+
+- 可撤销的确认，例如列表行上的“放弃草稿？”：请使用 `Popconfirm`。
+- 只有“知道了”一条出路的信息提示：请使用 `Alert` 或 toast。
+- 需要收集输入的确认：请使用允许外部关闭并支持表单的 `Dialog`。
+- 高频重复的弹窗，它会训练用户不看内容直接确认。
+
+## 基础用法
+
+确认按钮带 `variant="destructive"`，并重复动词（“吊销密钥”）；取消按钮保留对象（“保留密钥”）。对话框
+关闭后由页面展示结果。
+
+<Demo title="吊销 API 密钥" filename="demos/alert-dialog/basic.tsx" source={basicSource}>
+  <AlertDialogBasic />
+</Demo>
+
+## 受控确认流程
+
+`AlertDialog` 接受 `open` 与 `onOpenChange`，因此页面可以持有打开状态，并在关闭对话框的同一批处理函数里
+写入结果文案。
+
+<Demo title="受控确认流程" filename="demos/alert-dialog/controlled.tsx" source={controlledSource}>
+  <AlertDialogControlled />
+</Demo>
+
+## API
+
+<ApiTable component="alert-dialog" />
+
+## 设计指引
+
+- 标题同时说明操作与对象：“吊销 CI 部署密钥？”。
+- 在 `AlertDialogDescription` 中说明后果以及是否可撤销，不要只靠标题。
+- 不可逆操作给 `AlertDialogAction` 传 `variant="destructive"`，并用动词而不是“确定”作为文案。
+- 在标记中把取消控件放在前面；小屏幕上底部区域会反转视觉顺序。单行确认使用 `size="sm"`。
+
+## 无障碍
+
+| 按键          | 行为                                     |
+| ------------- | ---------------------------------------- |
+| Escape        | 取消并关闭对话框。                       |
+| Tab           | 在取消与确认之间移动焦点，焦点不会移出。 |
+| Enter / Space | 激活当前聚焦的按钮。                     |
+
+打开时焦点落在取消按钮上，关闭后返回触发器。两个控件都是真实的按钮，确认按钮文案说明了后果，因此
+屏幕阅读器用户在做选择前就能知道对话框在讲什么。
+
+已知缺口：`AlertDialogAction` 被激活后立即关闭对话框，异步操作必须在 `onClick` 中启动并把结果展示在
+页面上（受控示例即如此）；`AlertDialogMedia` 只是装饰，除非你补上自己的图标与文字。
+
+## FAQ
+
+**为什么点击遮罩关不掉？** 这正是 Alert Dialog 的意义：决定必须是显式的。如果允许外部关闭，请使用
+`Dialog`。
+
+**如何设置两个按钮的样式？** 给 `AlertDialogAction` 与 `AlertDialogCancel` 传 `variant` 与 `size`，
+它们会转交给 `Button`。确认按钮默认并不是危险样式。
+
+**确认后可以阻止它关闭吗？** 声明式地做不到——确认后必定关闭。需要在接口调用期间保持打开的对话框，请改用
+受控的 `Dialog`。
+
+## 相关
+
+- `Dialog`：模态层中的任务与表单。
+- `Popconfirm`：更轻量、可撤销的确认。
+- `Button`：操作按钮转交的变体来源。

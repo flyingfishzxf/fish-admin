@@ -28,6 +28,7 @@ const ALLOWED_IMPORTS = new Set([
   '@fish-admin/react',
   'lucide-react',
   '@tanstack/react-table',
+  'react-hook-form',
 ])
 
 function fail(message) {

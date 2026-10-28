@@ -1,0 +1,28 @@
+[
+  {
+    "id": "input/basic",
+    "component": "input",
+    "file": "demos/input/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A controlled email field that reports whether the address looks usable.",
+      "zh": "受控的邮箱输入框，会提示地址是否可用。"
+    }
+  },
+  {
+    "id": "input/types",
+    "component": "input",
+    "file": "demos/input/types.tsx",
+    "title": {
+      "en": "Types and states",
+      "zh": "类型与状态"
+    },
+    "description": {
+      "en": "Text, email and password fields, plus a disabled field and an aria-invalid field.",
+      "zh": "文本、邮箱与密码字段，以及禁用字段和 aria-invalid 字段。"
+    }
+  }
+]

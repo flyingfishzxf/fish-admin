@@ -1,0 +1,99 @@
+---
+title: Input
+description: A native single-line text field with the template's height, focus ring and invalid styling.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import InputBasic from '@docs/demos/input/basic'
+import basicSource from '@docs/demos/input/basic.tsx?raw'
+import InputTypes from '@docs/demos/input/types'
+import typesSource from '@docs/demos/input/types.tsx?raw'
+
+# Input
+
+`Input` renders a native `<input>` with a fixed 36 px height, a visible focus ring and a destructive
+invalid state. It styles the field only — the label, hint and error message stay in your markup.
+
+<ComponentMeta id="input" />
+
+## When to use
+
+- Collecting a short single-line value such as a name, a work email or a slug.
+- Editing one field inside a settings panel, toolbar or dialog.
+- Leaning on a native type: `email`, `password`, `tel`, `url` or `file`.
+
+## When not to use
+
+- Multi-line text: use `Textarea`.
+- Choosing from a fixed list: use `Select`, `Radio Group` or `Segmented`.
+- Numbers with formatting or steppers: use `Input Number`.
+- A fully validated form: compose `Form` so labels, descriptions and messages are wired for you.
+
+## Basic usage
+
+<Demo
+  title="Controlled email with a validity hint"
+  filename="demos/input/basic.tsx"
+  source={basicSource}
+>
+  <InputBasic />
+</Demo>
+
+## Types and states
+
+<Demo
+  title="Text, email, password, disabled and invalid"
+  filename="demos/input/types.tsx"
+  source={typesSource}
+>
+  <InputTypes />
+</Demo>
+
+## API
+
+<ApiTable component="input" />
+
+## Design guidance
+
+- The field is 36 px tall (`h-9`) and `w-full`; there is no `size` prop, so dense toolbars need their
+  own height override.
+- Text is 16 px on small screens and drops to 14 px from the `md` breakpoint.
+- Errors are painted only through `aria-invalid`: the border turns destructive and the 3 px focus
+  ring takes a translucent destructive colour. Passing the attribute is your job.
+- The field stretches to its container; constrain it with a wrapper or `className` when a form
+  column is wider than the value inside it.
+
+## Accessibility
+
+| Key             | Behavior                                                   |
+| --------------- | ---------------------------------------------------------- |
+| Tab / Shift+Tab | Moves focus into and out of the field.                     |
+| Enter           | Submits the surrounding form when it has a submit control. |
+
+Native input semantics are preserved, so autofill, password managers and the on-screen keyboard
+follow `type` and `autoComplete`. Disabled fields are skipped by Tab and announced as unavailable.
+`aria-invalid` is exposed to assistive technology, so the destructive border and the announced state
+agree.
+
+Known gap: the component renders no label, description or error text. Nothing is announced unless
+you add a `Label` with a matching `htmlFor` and point `aria-describedby` at your own message.
+
+## FAQ
+
+**Can I put an icon inside the field?** Not through `Input` — it renders only the native element.
+Wrap it in a positioned container and render the icon yourself.
+
+**Why is there no `error` prop?** The only invalid styling is `aria-invalid`; render the message
+yourself and connect it with `aria-describedby`.
+
+**Does it work with react-hook-form?** Yes. `{...register('email')}` forwards `ref`, `name`,
+`onChange` and `onBlur`; add `aria-invalid={Boolean(errors.email)}` to get the invalid styling.
+
+## Related
+
+- `Label` for the accessible name.
+- `Textarea` for multi-line input.
+- `Input Number` when the value is numeric with a known range.
+- [Used in the template](https://fish-admin.vercel.app/users)

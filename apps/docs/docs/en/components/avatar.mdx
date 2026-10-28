@@ -1,0 +1,91 @@
+---
+title: Avatar
+description: A user image with an initials fallback, sizes, presence badge and grouped stacks.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import AvatarBasic from '@docs/demos/avatar/basic'
+import basicSource from '@docs/demos/avatar/basic.tsx?raw'
+import AvatarGroup from '@docs/demos/avatar/group'
+import groupSource from '@docs/demos/avatar/group.tsx?raw'
+
+# Avatar
+
+Avatar is a circular identity chip. `AvatarImage` renders only after the image finishes loading,
+and `AvatarFallback` fills the circle until then — and stays if the image fails.
+
+<ComponentMeta id="avatar" />
+
+## When to use
+
+- Identifying a person in a list, comment, audit entry or assignee field.
+- Showing a compact stack of collaborators.
+- Indicating presence with `AvatarBadge`.
+
+## When not to use
+
+- Decorative illustration or a logo: use a plain `<img>`.
+- A status without a person: use `Badge`.
+- A profile header with bio and actions: lay out a real image and content, not an avatar.
+
+## Basic usage
+
+<Demo title="Initials at sm, default and lg" filename="demos/avatar/basic.tsx" source={basicSource}>
+  <AvatarBasic />
+</Demo>
+
+## Avatar group with an overflow count
+
+<Demo
+  title="Four avatars plus an overflow count"
+  filename="demos/avatar/group.tsx"
+  source={groupSource}
+>
+  <AvatarGroup />
+</Demo>
+
+## API
+
+<ApiTable component="avatar" />
+
+## Design guidance
+
+- Three sizes exist: `sm` is 24 px, `default` 32 px and `lg` 40 px; fallback text is 12 px at `sm`
+  and 14 px otherwise.
+- `AvatarImage` needs `alt`; pass the person's name so the image has an accessible name.
+- `AvatarGroup` overlaps its children by 8 px and draws a 2 px ring in the background colour, so
+  stacked avatars stay separated.
+- `AvatarGroupCount` follows the size of the avatars in its group; pass the overflow text yourself.
+
+## Accessibility
+
+| Key   | Behavior                                                                   |
+| ----- | -------------------------------------------------------------------------- |
+| Tab   | Skips avatars; only a wrapping link or button becomes a tab stop.          |
+| Enter | Follows or activates the wrapping control when the avatar sits inside one. |
+
+Initials are otherwise read letter by letter ("A L"), so give the avatar an accessible name — the
+demos use `role="img"` with `aria-label` for exactly that reason. `AvatarBadge` only becomes an
+image with a name when you pass `aria-label`.
+
+Known gap: there is no built-in overflow total or maximum; `AvatarGroupCount` renders whatever text
+you give it, and `AvatarBadge` is silent unless you label it.
+
+## FAQ
+
+**Why is the fallback still showing?** `AvatarImage` renders only once the image loads, so a broken,
+blocked or empty `src` leaves the fallback in place.
+
+**Can I delay the fallback?** Yes. Radix forwards `delayMs` to `AvatarFallback`; the default is 0, so
+the initials appear immediately.
+
+**How do I cap a group at four avatars?** Render four `Avatar`s plus an `AvatarGroupCount` holding
+the remaining number, as the second demo does.
+
+## Related
+
+- `Badge` for status labels that are not tied to a person.
+- `ProTable` for member lists where avatars sit in a cell.
+- [Used in the template](https://fish-admin.vercel.app/)

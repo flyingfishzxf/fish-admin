@@ -42,7 +42,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "AlertDialog parts wrap Radix AlertDialog; their props are listed in the Radix AlertDialog API."
+      ]
     },
     "avatar": {
       "name": "Avatar",
@@ -61,12 +63,14 @@
           "type": "enum",
           "required": false,
           "defaultValue": "default",
-          "description": ""
+          "description": "Diameter preset: sm is 24 px, default 32 px, lg 40 px."
         }
       ],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Avatar parts wrap Radix Avatar; their props are listed in the Radix Avatar API."
+      ]
     },
     "badge": {
       "name": "Badge",
@@ -85,7 +89,7 @@
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Render the child element instead of a <span>."
         }
       ],
       "events": [],
@@ -125,7 +129,7 @@
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Render the child element instead of a <button>."
         }
       ],
       "events": [],
@@ -158,7 +162,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Card parts are plain <div> elements and accept div attributes."
+      ]
     },
     "chart": {
       "name": "Chart",
@@ -199,7 +205,9 @@
       ],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Checkbox wraps Radix Checkbox; its props are listed in the Radix Checkbox API."
+      ]
     },
     "collapsible": {
       "name": "Collapsible",
@@ -396,7 +404,10 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Dialog parts wrap Radix Dialog; their props are listed in the Radix Dialog API.",
+        "DialogContent declares showCloseButton?: boolean (default true)."
+      ]
     },
     "drawer": {
       "name": "Drawer",
@@ -589,7 +600,9 @@
         }
       ],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Drawer is built on vaul; see the vaul documentation for the full set of drag and snap props."
+      ]
     },
     "dropdown-menu": {
       "name": "Dropdown Menu",
@@ -598,7 +611,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "DropdownMenu parts wrap Radix DropdownMenu; their props are listed in the Radix DropdownMenu API."
+      ]
     },
     "empty": {
       "name": "Empty",
@@ -624,7 +639,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Form components follow react-hook-form's Controller API; see the react-hook-form docs for FormField props."
+      ]
     },
     "hover-card": {
       "name": "Hover Card",
@@ -642,7 +659,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Accepts every native <input> attribute (React.ComponentProps<'input'>)."
+      ]
     },
     "input-number": {
       "name": "Input Number",
@@ -856,7 +875,9 @@
       ],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Label wraps Radix Label; its props are listed in the Radix Label API."
+      ]
     },
     "pagination": {
       "name": "Pagination",
@@ -908,7 +929,9 @@
       ],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "RadioGroup wraps Radix RadioGroup; its props are listed in the Radix RadioGroup API."
+      ]
     },
     "resizable": {
       "name": "Resizable",
@@ -1098,7 +1121,9 @@
         }
       ],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Select parts wrap Radix Select; their props are listed in the Radix Select API."
+      ]
     },
     "separator": {
       "name": "Separator",
@@ -1115,7 +1140,9 @@
       ],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Separator wraps Radix Separator; its props are listed in the Radix Separator API."
+      ]
     },
     "sheet": {
       "name": "Sheet",
@@ -1124,7 +1151,10 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Sheet parts wrap Radix Dialog; their props are listed in the Radix Dialog API.",
+        "SheetContent declares side?: \"top\" | \"right\" | \"bottom\" | \"left\" (default \"right\") and showCloseButton?: boolean (default true)."
+      ]
     },
     "sidebar": {
       "name": "Sidebar",
@@ -1164,7 +1194,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Renders a <div>; accepts div attributes."
+      ]
     },
     "slider": {
       "name": "Slider",
@@ -1209,21 +1241,21 @@
           "type": "enum",
           "required": false,
           "defaultValue": "default",
-          "description": ""
+          "description": "Icon size: `sm` is 14 px, `default` 16 px, `lg` 24 px."
         },
         {
           "name": "label",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the `status` region; without it the spinner is `aria-hidden`."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes merged onto the wrapping `<span>`."
         }
       ],
       "events": [],
@@ -1247,12 +1279,14 @@
           "type": "enum",
           "required": false,
           "defaultValue": "default",
-          "description": ""
+          "description": "Track size; sm renders 14 x 24 px, default renders 18.4 x 32 px."
         }
       ],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Switch wraps Radix Switch; its props are listed in the Radix Switch API."
+      ]
     },
     "table": {
       "name": "Table",
@@ -1264,12 +1298,14 @@
           "type": "boolean",
           "required": false,
           "defaultValue": "true",
-          "description": ""
+          "description": "Wrap the table in a focusable, horizontally scrollable container."
         }
       ],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "TableHeader, TableBody, TableRow and TableCell render native table elements and accept their attributes."
+      ]
     },
     "tabs": {
       "name": "Tabs",
@@ -1295,7 +1331,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Accepts every native <textarea> attribute (React.ComponentProps<'textarea'>)."
+      ]
     },
     "toggle": {
       "name": "Toggle",
@@ -1373,7 +1411,9 @@
       "props": [],
       "events": [],
       "slots": [],
-      "unresolved": []
+      "unresolved": [
+        "Tooltip parts wrap Radix Tooltip; their props are listed in the Radix Tooltip API."
+      ]
     },
     "anchor-nav": {
       "name": "Anchor Nav",

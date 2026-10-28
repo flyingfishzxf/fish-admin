@@ -1,0 +1,28 @@
+[
+  {
+    "id": "alert-dialog/basic",
+    "component": "alert-dialog",
+    "file": "demos/alert-dialog/basic.tsx",
+    "title": {
+      "en": "Basic usage",
+      "zh": "基础用法"
+    },
+    "description": {
+      "en": "A delete-style confirmation for revoking an API key, with the outcome reported on the page.",
+      "zh": "吊销 API 密钥的删除式确认，并在页面上反馈结果。"
+    }
+  },
+  {
+    "id": "alert-dialog/controlled",
+    "component": "alert-dialog",
+    "file": "demos/alert-dialog/controlled.tsx",
+    "title": {
+      "en": "Controlled confirmation flow",
+      "zh": "受控确认流程"
+    },
+    "description": {
+      "en": "The open state lives in the page, so a result message tracks the user's decision.",
+      "zh": "打开状态由页面持有，因此结果文案能跟随用户的选择。"
+    }
+  }
+]
