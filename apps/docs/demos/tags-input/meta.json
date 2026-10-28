@@ -1,0 +1,28 @@
+[
+  {
+    "id": "tags-input/basic",
+    "component": "tags-input",
+    "file": "demos/tags-input/basic.tsx",
+    "title": {
+      "en": "Free-form tags with keyboard commit",
+      "zh": "自由输入标签，键盘提交"
+    },
+    "description": {
+      "en": "Add, deduplicate, and remove tags with Enter, comma, and Backspace.",
+      "zh": "使用 Enter、逗号与 Backspace 添加、去重和删除标签。"
+    }
+  },
+  {
+    "id": "tags-input/suggestions",
+    "component": "tags-input",
+    "file": "demos/tags-input/suggestions.tsx",
+    "title": {
+      "en": "Quick-add suggestions under a cap",
+      "zh": "带数量上限的快捷建议"
+    },
+    "description": {
+      "en": "Dashed suggestion chips share the maxTags budget with typed tags.",
+      "zh": "虚线建议按钮与手动输入共享 maxTags 上限。"
+    }
+  }
+]

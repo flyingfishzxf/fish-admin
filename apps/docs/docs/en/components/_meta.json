@@ -67,5 +67,20 @@
   "result",
   "statistic",
   "stepper",
-  "pro-table"
+  "tags-input",
+  "time-picker",
+  "timeline",
+  "tour",
+  "transfer",
+  "tree",
+  "tree-select",
+  "trend",
+  "upload",
+  "watermark",
+  "detail-page",
+  "editable-table",
+  "import-wizard",
+  "pro-form",
+  "pro-table",
+  "query-filter"
 ]

@@ -27,8 +27,11 @@ export function Timeline({
   emptyLabel,
   className,
 }: {
+  /** Events to render, top to bottom; the connecting line is drawn between all but the last. */
   items: TimelineItem[]
+  /** Text shown in place of the list when `items` is empty; nothing renders when omitted. */
   emptyLabel?: string
+  /** Extra classes for the ordered list wrapper. */
   className?: string
 }) {
   if (items.length === 0) {

@@ -34,10 +34,15 @@ export function Tour({
   onFinish,
   labels,
 }: {
+  /** Ordered steps; each targets a live element and carries its own title and description. */
   steps: TourStep[]
+  /** Whether the tour overlay is shown; when reopened the tour restarts at the first step. */
   open: boolean
+  /** Called when the user skips, finishes, or presses Escape; drive your own state here. */
   onOpenChange: (open: boolean) => void
+  /** Fired when the final step's Finish button is pressed, just before closing. */
   onFinish?: () => void
+  /** Localized strings for the Next, Back, Skip, Finish controls and the step counter. */
   labels: TourLabels
 }) {
   const [index, setIndex] = useState(0)

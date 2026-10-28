@@ -1,0 +1,114 @@
+---
+title: ProForm
+description: A react-hook-form driven field grid with rules, messages and busy state from a field schema.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ProFormBasic from '@docs/demos/pro-form/basic'
+import basicSource from '@docs/demos/pro-form/basic.tsx?raw'
+import ProFormValidation from '@docs/demos/pro-form/validation'
+import validationSource from '@docs/demos/pro-form/validation.tsx?raw'
+
+# ProForm
+
+`ProForm` builds a `react-hook-form` form from a `fields` array: each entry becomes a `FormField`
+plus `FormItem`, `FormLabel`, `FormControl` and `FormMessage`, rendered into the `Input`, `Textarea`,
+`Select` or `Switch` primitive that its `type` names.
+
+<ComponentMeta id="pro-form" />
+
+## When to use
+
+- Create and edit dialogs whose fields are known ahead of time and mostly standard.
+- Forms where validation copy must be shared across many screens, per locale.
+- Two-column admin forms that need `colSpan` for the long field.
+
+## When not to use
+
+- Fields that appear conditionally or nest deeply: compose `Form` with `FormField` yourself.
+- Non-standard controls (upload lists, tag pickers): use `custom` rendering with `Form`, or
+  `QueryFilter`'s custom field type for filters.
+- A search bar rather than a record: use `QueryFilter`.
+
+## Basic usage
+
+<Demo title="Schema-driven member form" filename="demos/pro-form/basic.tsx" source={basicSource}>
+  <ProFormBasic />
+</Demo>
+
+## Validation rules and messages
+
+<Demo
+  title="Rule messages in one place"
+  filename="demos/pro-form/validation.tsx"
+  source={validationSource}
+>
+  <ProFormValidation />
+</Demo>
+
+## API
+
+<ApiTable component="pro-form" />
+
+## Design guidance
+
+- Initial values are computed once from each field's `defaultValue` — `switch` coerces to a boolean,
+  `number` stays `''` unless the default is a number — then `defaultValues` is spread over the top.
+  Because the result is memoised in a ref, editing `fields` later does not re-seed the form; remount
+  it to rebuild.
+- Layout is `grid gap-4 sm:grid-cols-2`, so a wide field takes `colSpan: 2` (`sm:col-span-2`). Footer
+  actions sit in a `flex flex-col-reverse sm:flex-row sm:justify-end` row, reset before submit.
+- Supported `type` values are `text`, `email`, `password`, `number`, `textarea`, `select`, `switch`
+  and `date`; anything omitted is `text`. `date` is a native `<input type="date">` — use the
+  `DatePicker` component when you want the popover calendar and locale-formatted display.
+- Rules come from the field flags: `required` becomes the message from
+  `validateMessage('required', label)`; `email` adds a pattern (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`);
+  `min`/`max` apply to numbers and `minLength`/`maxLength` to text, email, password and textarea.
+- The shared `validate` function returns early on empty values, so length and range rules never fire
+  on a blank optional field — pair `required` with them when the value must exist.
+- Number fields store `event.target.valueAsNumber` (or `''` when cleared) and pass `min`/`max` to the
+  DOM, so browsers add spinner constraints on top of the JS rule. `maxLength` is forwarded to inputs
+  and textareas; `password` gets `autoComplete="new-password"`.
+- `busy` is `loading || formState.isSubmitting`: both buttons disable, and the submit button prefixes
+  a spinning `Loader2`. Returning a promise from `onSubmit` is what makes `isSubmitting` useful.
+- Reset calls `form.reset(initialValues)`, so it restores defaults rather than clearing to blanks.
+- The form is `noValidate`; native bubbles never compete with `FormMessage`.
+
+## Accessibility
+
+- Every field is a `FormField`: `FormLabel` points at the control through `htmlFor`, and
+  `FormControl` injects the field id, `aria-describedby` for the description and `aria-invalid` when
+  an error exists.
+- `FormMessage` renders only when there is something to say, so error text is not in the a11y tree
+  until it is real; the label turns destructive alongside it (`data-error` styling on `FormLabel`).
+- The `<form>` carries `ariaLabel` and `aria-busy` while submitting, and both buttons stay reachable
+  and disabled rather than disappearing.
+- Selects are Radix `Select` with a real `FormLabel`; the switch keeps its label association, which is
+  why tests can query `getByRole('switch', { name: 'Email alerts' })`.
+- `noValidate` plus per-field messages means an invalid submit reports each field inline; nothing is
+  colour-only, since the message text states the rule.
+
+Known gap: focus is not moved to the first invalid field after a failed submit, and there is no live
+region summarising how many fields failed, so screen reader users have to Tab through the grid to
+find the messages.
+
+## FAQ
+
+**Why doesn't my message say what I expect?** ProForm never hardcodes copy: it calls your
+`validateMessage(rule, label, limit?)`, so the same rule renders localized text per screen.
+
+**Does it validate while typing?** Validation runs on submit, then re-validates on change for fields
+that already show an error — react-hook-form's default `reValidateMode`.
+
+**Can I add a custom control?** Not through `fields` — its type union is fixed. Build that row with
+`Form` and `FormField`, or keep it out of the schema.
+
+## Related
+
+- `Form` for hand-built fields and custom controllers.
+- `QueryFilter` for the filter bar over a list.
+- `Date Picker` when a date field needs the popover calendar.
+- `ProTable` for the list a created record joins.
+- [Used in the template](https://fish-admin.vercel.app/integrations)

@@ -1,0 +1,113 @@
+---
+title: Detail Page
+description: A record header plus a tabbed or single-body content area with actions and a footer.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DetailPageBasic from '@docs/demos/detail-page/basic'
+import basicSource from '@docs/demos/detail-page/basic.tsx?raw'
+import DetailPageSingleSection from '@docs/demos/detail-page/single-section'
+import singleSectionSource from '@docs/demos/detail-page/single-section.tsx?raw'
+
+# Detail Page
+
+`DetailPage` lays out a record header—optional `back` and `avatar`, an `h1` `title`, `subtitle`,
+inline `badges`, a muted `meta` row and right-aligned `actions`—followed by a body. When `tabs` is a
+non-empty array it renders a Radix `Tabs` list; otherwise it renders `children`, and `footer` closes
+the layout.
+
+<ComponentMeta id="detail-page" />
+
+## When to use
+
+- The landing view of any entity route (member, project, order, ticket) that needs a consistent header.
+- Splitting a large record into labelled sections without wiring up your own tab state.
+- A page whose header stays stable while the body switches between an overview, activity and settings.
+
+## When not to use
+
+- Creating or editing a record: use `Pro Form` or `Editable Table` for the interactive surface.
+- A compact summary inside another card: `Descriptions` is lighter than a full page scaffold.
+- Content with no header, avatar or actions: the structure is more than you need.
+
+## Basic usage
+
+<Demo
+  title="A member record with tabbed sections"
+  filename="demos/detail-page/basic.tsx"
+  source={basicSource}
+>
+  <DetailPageBasic />
+</Demo>
+
+## Single body and footer
+
+Passing `children` instead of `tabs` skips the tab list entirely and renders one body block. This form
+also shows the two header slots the basic example leaves out: a `back` node above the header and a
+`footer` action row after the body.
+
+<Demo
+  title="A project record without tabs"
+  filename="demos/detail-page/single-section.tsx"
+  source={singleSectionSource}
+>
+  <DetailPageSingleSection />
+</Demo>
+
+## API
+
+<ApiTable component="detail-page" />
+
+## Design guidance
+
+- The root is a `space-y-6` stack; `back` renders first, then the header, then the body, then `footer`.
+- The header is `flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between`. The left group is
+  `flex min-w-0 items-center gap-4` (avatar in a `shrink-0` box, then the text column); the right
+  `actions` group is `flex shrink-0 flex-wrap items-center gap-2` so buttons wrap rather than overflow.
+- `title` is an `<h1>` styled `truncate text-2xl font-semibold tracking-tight`; `badges` sit inline
+  right after it. `subtitle` and `meta` are `text-sm text-muted-foreground`, and `meta` wraps with
+  `gap-x-4 gap-y-1`.
+- With tabs, the body is `Tabs defaultValue={defaultTab ?? tabs[0]?.value}` with a `gap-4` list; each
+  `DetailPageTab` becomes a `TabsTrigger` labelled by `label` and a matching `TabsContent` that renders
+  `content`. `defaultTab` chooses the opening section, falling back to the first tab.
+- The tabs/children branch is exclusive: `tabs && tabs.length > 0` renders the tab list, and an absent
+  or empty array renders `children`—there is never a tab list alongside body content.
+- State is uncontrolled. `Tabs` receives `defaultValue`, not a controlled value or `onChange`, so the
+  active section resets on remount; lift it yourself if you need persistence or deep links.
+
+## Accessibility
+
+- The `TabsList` gets an accessible name from `tabsLabel`, so the tab group is announced as a labelled
+  tab list rather than anonymous controls. Always pass `tabsLabel` when you use `tabs`.
+- Radix Tabs supplies the keyboard model out of the box: arrow keys move between triggers with a roving
+  tab index, Home/End jump to the ends, and the active trigger carries `aria-selected` with the panel
+  linked back via `aria-controls` / `aria-labelledby`.
+- `title` is rendered as a real `<h1>`, giving the record a programmatic heading for skip links and
+  screen-reader navigation.
+- `back`, `actions`, `badges`, `meta` and `footer` are raw `ReactNode` slots: anything icon-only is on
+  you to name, as the demos do with labelled `Button`s.
+
+Known gap: `DetailPage` hardcodes the title as an `<h1>`, so on a route that already renders a level-1
+page heading you end up with two h1s. It also exposes no `onChange` or controlled value for the tabs, so
+section changes cannot be persisted or reflected in the URL.
+
+## FAQ
+
+**Does DetailPage remember the open tab?** No. It is uncontrolled—`Tabs` gets `defaultTab ?? first tab`
+and no `onChange`. Manage the active section externally if you need to persist or route it.
+
+**Can I use `tabs` and `children` together?** No. A non-empty `tabs` array renders the tab list; if
+`tabs` is absent or empty, `children` renders instead. Pick one body model.
+
+**Where do `badges` and `meta` belong?** `badges` are short status chips inline after the title. `meta`
+is muted supporting text (department, owner, dates) on its own wrapping row beneath the subtitle.
+
+## Related
+
+- `Avatar` for the header media slot.
+- `Tabs` for the underlying section switcher the `tabs` prop drives.
+- `Badge` for the status chips passed to `badges`.
+- `Descriptions` for lighter key/value summaries inside a section.
+- [Used in the template](https://fish-admin.vercel.app/projects/$id)

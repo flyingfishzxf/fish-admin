@@ -1,0 +1,115 @@
+---
+title: Transfer
+description: Move items between an available list and an assigned list with per-panel search and select-all.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TransferBasic from '@docs/demos/transfer/basic'
+import basicSource from '@docs/demos/transfer/basic.tsx?raw'
+import TransferSearchable from '@docs/demos/transfer/searchable'
+import searchableSource from '@docs/demos/transfer/searchable.tsx?raw'
+
+# Transfer
+
+`Transfer` is a `md:grid-cols-2` pair of bordered `bg-card` panels built from `Input` search
+boxes, a `Checkbox` select-all and listboxes of option buttons. Its value is the array of keys
+sitting in the target panel; clicking any row toggles membership in that array.
+
+<ComponentMeta id="transfer" />
+
+## When to use
+
+- Assigning a set of things to something else: reviewers to a release, repositories to an
+  integration, permissions to a role.
+- The choices carry detail worth skimming — descriptions, group headers and a live count per panel.
+- The pool is large enough that each side needs its own search box.
+
+## When not to use
+
+- Picking exactly one option: use `Select` or `Radio Group`.
+- Choices that only exist in a hierarchy: `Tree` or `Tree Select` show structure better.
+- Two or three options: a checkbox group beats a two-panel widget.
+- Order of selection matters: the value is a membership list, and rows are sorted by their source
+  array, not by when they were moved.
+
+## Basic usage
+
+<Demo title="Assign reviewers" filename="demos/transfer/basic.tsx" source={basicSource}>
+  <TransferBasic />
+</Demo>
+
+Clicking a row calls `onChange` with the whole updated key list — keys are appended on the way in
+and filtered out on the way back, so previously assigned keys keep their position.
+
+## Search and groups
+
+<Demo
+  title="Filter a grouped pool"
+  filename="demos/transfer/searchable.tsx"
+  source={searchableSource}
+>
+  <TransferSearchable />
+</Demo>
+
+Both panels share one `searchPlaceholder`, and each keeps its own query. A row matches when the
+trimmed, lower-cased query appears in `label + description + searchText`. Items with a `group`
+field get a muted header, in source order; `disabled` items are excluded from select-all and can
+never be clicked across.
+
+## API
+
+<ApiTable component="transfer" />
+
+## Design guidance
+
+- The shell is `grid gap-3 md:grid-cols-2`; each panel is a `flex-col gap-2` column with
+  `rounded-lg border bg-card p-3`, so the widget collapses to one column on small viewports.
+- A panel header pairs an `h3` (`text-sm font-medium`) with the unfiltered item count in
+  `text-xs text-muted-foreground` — the count does not shrink while you search.
+- The search `Input` runs at `h-8`; when `searchPlaceholder` is omitted it falls back to the
+  localized "Search".
+- Select-all reflects only visible, non-disabled rows: checked when all are in `value`, indeterminate
+  when some are, and disabled when nothing is selectable.
+- Rows are buttons with `px-2 py-1.5` and `hover:bg-accent`. Target rows read as assigned through a
+  `bg-primary/5` wash and a filled primary checkbox with a `Check` glyph; source rows show an empty
+  bordered box. Labels truncate; `description` renders under the label in 12 px muted text.
+- The list scrolls inside `max-h-64 overflow-y-auto pr-1`, so long pools do not stretch the page.
+- Empty filtered panels show `emptySourceLabel` / `emptyTargetLabel`, or the localized "No matches".
+
+## Accessibility
+
+- Each panel is a `<section>` labelled by its heading, so "Team members" and "Reviewers" appear as
+  named regions in the landmark list.
+- The scroll area is `role="listbox"` with `aria-multiselectable="true"`, named by the panel title;
+  every row is a real `<button role="option">` whose `aria-selected` mirrors membership in the
+  target panel, and the decorative checkbox square is `aria-hidden` because the state is on the
+  option.
+- The search field is labelled `"<panel title> — Search"`, and the select-all `Checkbox` is bound to
+  a visible "Select all" label; a partially selected set is expressed in its checked state.
+- Rows are plain buttons: Tab reaches every row, Enter and Space move the item, and
+  `focus-visible:ring-[3px] ring-ring/50` marks the focused row. Disabled rows are real
+  `<button disabled>` and drop out of the tab order.
+
+Known gap: there is no arrow-key navigation inside a listbox — Tab is the only way between rows —
+and the row you just moved unmounts from that panel, so focus is lost on every transfer. Announce
+the result through your own live region (the basic demo does this) instead of relying on focus.
+
+## FAQ
+
+**What does `onChange` receive?** The complete next `value` array, not a delta. Keys appended by a
+transfer land at the end; removing a key keeps the remaining order.
+
+**Does "Select all" grab the entire pool?** No — only the rows currently visible after filtering,
+and never rows marked `disabled` in `items`.
+
+**Can I read or reset the search text?** It is internal `useState` per panel with no props to
+control it. Changing `value` leaves both queries untouched.
+
+## Related
+
+- `Tree` and `Tree Select` when the pool itself is hierarchical.
+- `Tags Input` for typing free-form values instead of picking from a pool.
+- `Checkbox` for the select-all primitive.
+- [Used in the template](https://fish-admin.vercel.app/roles)

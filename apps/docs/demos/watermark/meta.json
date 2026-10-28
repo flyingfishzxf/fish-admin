@@ -1,0 +1,28 @@
+[
+  {
+    "id": "watermark/basic",
+    "component": "watermark",
+    "file": "demos/watermark/basic.tsx",
+    "title": {
+      "en": "A confidential document overlay",
+      "zh": "机密文档水印"
+    },
+    "description": {
+      "en": "Faint repeating text painted over a content block.",
+      "zh": "在内容块之上叠加淡淡的重复文字。"
+    }
+  },
+  {
+    "id": "watermark/styles",
+    "component": "watermark",
+    "file": "demos/watermark/styles.tsx",
+    "title": {
+      "en": "Tuning the pattern",
+      "zh": "调整水印样式"
+    },
+    "description": {
+      "en": "opacity, fontSize, rotate and gap reshape the tiled look.",
+      "zh": "用 opacity、fontSize、rotate 与 gap 改变平铺效果。"
+    }
+  }
+]

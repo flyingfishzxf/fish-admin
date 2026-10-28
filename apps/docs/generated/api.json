@@ -2704,70 +2704,70 @@
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "DOM `id` applied to the inner text input for label association."
         },
         {
           "name": "name",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Native `name` applied to the inner text input for form submission."
         },
         {
           "name": "value",
           "type": "string[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Committed tags, in insertion order."
         },
         {
           "name": "placeholder",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Placeholder shown in the input only while there are no tags."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the text input."
         },
         {
           "name": "maxTags",
           "type": "number",
           "required": false,
           "defaultValue": "8",
-          "description": ""
+          "description": "Maximum number of tags; the input disables once this is reached. Defaults to 8."
         },
         {
           "name": "maxLength",
           "type": "number",
           "required": false,
           "defaultValue": "24",
-          "description": ""
+          "description": "Characters each tag is trimmed to when committed. Defaults to 24."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disables the input and every remove button."
         },
         {
           "name": "suggestions",
           "type": "{ label: string; value: string; }[]",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Optional quick-add chips rendered below the input."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the bordered wrapper."
         }
       ],
       "events": [
@@ -2776,7 +2776,7 @@
           "type": "(value: string[]) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the full updated tag list on every add or remove."
         }
       ],
       "slots": [],
@@ -2792,42 +2792,42 @@
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Selected time as an `HH:mm` 24-hour string; invalid or empty values show the placeholder."
         },
         {
           "name": "placeholder",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Trigger text shown while no time is selected."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name; the display value and the HH/MM select labels are appended to it."
         },
         {
           "name": "minuteStep",
           "type": "number",
           "required": false,
           "defaultValue": "5",
-          "description": ""
+          "description": "Interval between minute options, clamped to 1–59. Defaults to 5."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disables the trigger."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the trigger button."
         }
       ],
       "events": [
@@ -2836,7 +2836,7 @@
           "type": "(value: string | undefined) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the new `HH:mm` value, or `undefined` when cleared."
         }
       ],
       "slots": [],
@@ -2852,21 +2852,21 @@
           "type": "TimelineItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Events to render, top to bottom; the connecting line is drawn between all but the last."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text shown in place of the list when `items` is empty; nothing renders when omitted."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the ordered list wrapper."
         }
       ],
       "events": [],
@@ -2883,21 +2883,21 @@
           "type": "TourStep[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Ordered steps; each targets a live element and carries its own title and description."
         },
         {
           "name": "open",
           "type": "boolean",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Whether the tour overlay is shown; when reopened the tour restarts at the first step."
         },
         {
           "name": "labels",
           "type": "TourLabels",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Localized strings for the Next, Back, Skip, Finish controls and the step counter."
         }
       ],
       "events": [
@@ -2906,14 +2906,14 @@
           "type": "(open: boolean) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called when the user skips, finishes, or presses Escape; drive your own state here."
         },
         {
           "name": "onFinish",
           "type": "(() => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Fired when the final step's Finish button is pressed, just before closing."
         }
       ],
       "slots": [],
@@ -2929,63 +2929,63 @@
           "type": "TransferLike[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Full item pool; `value` decides which panel each item renders in."
         },
         {
           "name": "value",
           "type": "string[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Keys currently sitting in the target panel."
         },
         {
           "name": "sourceTitle",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Heading of the available-items panel."
         },
         {
           "name": "targetTitle",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Heading of the assigned-items panel."
         },
         {
           "name": "searchPlaceholder",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Search input placeholder in both panels; defaults to the locale \"Search\"."
         },
         {
           "name": "emptySourceLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text shown when the filtered source panel has no rows."
         },
         {
           "name": "emptyTargetLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text shown when the filtered target panel has no rows."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Disables both panels: search inputs, select-all checkboxes and rows."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the two-column grid wrapper."
         }
       ],
       "events": [
@@ -2994,7 +2994,7 @@
           "type": "(value: string[]) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the complete next key list on every move."
         }
       ],
       "slots": [],
@@ -3010,49 +3010,49 @@
           "type": "TreeItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Flat records linked by `parentId`; unknown parents become roots."
         },
         {
           "name": "selectedId",
           "type": "string | null",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Currently selected node id, or `null` for none."
         },
         {
           "name": "expandedIds",
           "type": "ReadonlySet<string>",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Controlled set of node ids whose children are visible."
         },
         {
           "name": "defaultExpanded",
           "type": "string[]",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Initial open branches in uncontrolled mode; auto-reveals parents otherwise."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the tree container."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Centered text rendered when no nodes are visible."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the tree container."
         }
       ],
       "events": [
@@ -3061,14 +3061,14 @@
           "type": "((id: string) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the node id when a row is clicked or Enter/Space is pressed."
         },
         {
           "name": "onExpandedChange",
           "type": "((ids: Set<string>) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the next expansion set whenever a branch is toggled."
         }
       ],
       "slots": [],
@@ -3084,77 +3084,77 @@
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "DOM id forwarded to the trigger button."
         },
         {
           "name": "items",
           "type": "TreeItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Flat tree records rendered inside the popover."
         },
         {
           "name": "value",
           "type": "string | null",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Selected node id; `null` or `undefined` shows the placeholder."
         },
         {
           "name": "placeholder",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Trigger text while nothing is selected."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name; the selected path or placeholder is appended to it."
         },
         {
           "name": "clearLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the clear button; defaults to the locale \"Clear selection\"."
         },
         {
           "name": "emptyLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text shown in the popover when the tree has no nodes."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Disables the trigger and the clear button."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the relative wrapper."
         },
         {
           "name": "aria-invalid",
           "type": "boolean | \"false\" | \"true\" | \"grammar\" | \"spelling\"",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Marks the field invalid; forwarded to the trigger button."
         },
         {
           "name": "aria-describedby",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Ids of hint or error text; forwarded to the trigger button."
         }
       ],
       "events": [
@@ -3163,14 +3163,14 @@
           "type": "(id: string) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the node id when a row is picked."
         },
         {
           "name": "onClear",
           "type": "(() => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Provide to render the clear button; called when it is clicked."
         }
       ],
       "slots": [],
@@ -3186,42 +3186,42 @@
           "type": "number",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Signed delta to format; its sign decides the arrow and direction."
         },
         {
           "name": "label",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Context announced and shown after the value, e.g. \"vs last month\"."
         },
         {
           "name": "suffix",
           "type": "string",
           "required": false,
           "defaultValue": "%",
-          "description": ""
+          "description": "Text appended directly after the formatted number."
         },
         {
           "name": "precision",
           "type": "number",
           "required": false,
           "defaultValue": "1",
-          "description": ""
+          "description": "Maximum fraction digits passed to `Intl.NumberFormat`."
         },
         {
           "name": "invert",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Flips the success/destructive tone for metrics where lower is better."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the inline wrapper."
         }
       ],
       "events": [],
@@ -3238,77 +3238,77 @@
           "type": "UploadItem[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "The file rows to render, each carrying name, size and an optional status, progress or error."
         },
         {
           "name": "accept",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Native accept hint for the browse dialog; drag and drop is not filtered by it."
         },
         {
           "name": "label",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Primary instruction and accessible name of the hidden file input."
         },
         {
           "name": "hint",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Secondary line under the label, for format and size guidance."
         },
         {
           "name": "browseLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Text of the browse button; falls back to the translated default."
         },
         {
           "name": "maxSize",
           "type": "number",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Per-file byte ceiling; larger picks are blocked before onFiles runs."
         },
         {
           "name": "maxSizeLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Message surfaced as an alert when a file exceeds maxSize."
         },
         {
           "name": "removeLabel",
           "type": "((item: UploadItem) => string)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Builds the accessible name of each remove button from the row."
         },
         {
           "name": "retryLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the retry button on an error row."
         },
         {
           "name": "disabled",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "Blocks dragging, the file input and the browse button."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the outer stack wrapper."
         }
       ],
       "events": [
@@ -3317,21 +3317,21 @@
           "type": "(files: File[]) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the accepted files that pass the size check, straight from the dropzone."
         },
         {
           "name": "onRemove",
           "type": "((item: UploadItem) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "When provided, every row gets a remove button that calls this with the row."
         },
         {
           "name": "onRetry",
           "type": "((item: UploadItem) => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "When provided, error rows get a retry button that calls this with the row."
         }
       ],
       "slots": [],
@@ -3347,46 +3347,55 @@
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "The label repeated across the surface as a decorative, non-accessible tile."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": true,
+          "defaultValue": null,
+          "description": "The content the watermark is painted over."
         },
         {
           "name": "opacity",
           "type": "number",
           "required": false,
           "defaultValue": "0.08",
-          "description": ""
+          "description": "Alpha of each tile from 0 to 1; defaults to a subtle 0.08."
         },
         {
           "name": "fontSize",
           "type": "number",
           "required": false,
           "defaultValue": "14",
-          "description": ""
+          "description": "Font size in pixels used for each repeated tile."
         },
         {
           "name": "rotate",
           "type": "number",
           "required": false,
           "defaultValue": "-20",
-          "description": ""
+          "description": "Rotation in degrees; a negative value tilts the text up to the right."
         },
         {
           "name": "gap",
           "type": "number",
           "required": false,
           "defaultValue": "96",
-          "description": ""
+          "description": "Distance in pixels between tile centers on both axes."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the positioned container."
         }
       ],
       "events": [],
-      "slots": [],
+      "slots": [
+        "children"
+      ],
       "unresolved": []
     },
     "detail-page": {
@@ -3399,88 +3408,97 @@
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Node rendered above the header, typically a back link or breadcrumb."
         },
         {
           "name": "avatar",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Leading media such as an Avatar, pinned to the left of the header."
         },
         {
           "name": "title",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "The record name, shown as the page `h1` and truncated when long."
         },
         {
           "name": "subtitle",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Short secondary line under the title, such as an email or handle."
         },
         {
           "name": "badges",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Status chips rendered inline right after the title."
         },
         {
           "name": "meta",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Muted supporting facts, laid out in a wrapping row under the subtitle."
         },
         {
           "name": "actions",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Buttons aligned to the right of the header."
         },
         {
           "name": "tabs",
           "type": "DetailPageTab[]",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Sections shown as a tab list; when empty or absent, `children` renders instead."
         },
         {
           "name": "defaultTab",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "The tab value opened first; falls back to the first tab."
         },
         {
           "name": "tabsLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name of the tab list."
         },
         {
           "name": "footer",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Content rendered after the body, often a secondary action row."
+        },
+        {
+          "name": "children",
+          "type": "ReactNode",
+          "required": false,
+          "defaultValue": null,
+          "description": "Body content shown when no tabs are supplied."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the outer stack."
         }
       ],
       "events": [],
-      "slots": [],
+      "slots": [
+        "children"
+      ],
       "unresolved": []
     },
     "editable-table": {
@@ -3493,49 +3511,49 @@
           "type": "EditableTableColumn[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Column definitions: editor type, options, alignment, `render`, `parse` and `validate`."
         },
         {
           "name": "rows",
           "type": "EditableTableRow[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Committed rows; the component never mutates them."
         },
         {
           "name": "addRow",
           "type": "(() => EditableTableRow)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "When provided, renders the Add button and seeds the draft row it opens."
         },
         {
           "name": "rowLabel",
           "type": "((row: EditableTableRow) => string)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Short human name for a row, used in the Edit and Delete button labels."
         },
         {
           "name": "labels",
           "type": "EditableTableLabels",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Every visible string: add, save, cancel, edit, delete, actions and empty."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the underlying table."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the outer wrapper."
         }
       ],
       "events": [
@@ -3544,7 +3562,7 @@
           "type": "(rows: EditableTableRow[]) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the next row array when a save or delete succeeds."
         }
       ],
       "slots": [],
@@ -3560,49 +3578,49 @@
           "type": "ImportField[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Target fields; `aliases` feed the automatic column matching."
         },
         {
           "name": "labels",
           "type": "ImportWizardLabels",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Every visible string, including the four step names and the row messages."
         },
         {
           "name": "sample",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "CSV text for the \"load sample\" button; omit the button when undefined."
         },
         {
           "name": "sampleName",
           "type": "string",
           "required": false,
           "defaultValue": "sample.csv",
-          "description": ""
+          "description": "File name shown for the sample once it is loaded."
         },
         {
           "name": "accept",
           "type": "string",
           "required": false,
           "defaultValue": ".csv,text/csv",
-          "description": ""
+          "description": "`accept` attribute for the hidden file input."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the wizard region."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the outer panel."
         }
       ],
       "events": [
@@ -3611,7 +3629,7 @@
           "type": "(rows: Record<string, unknown>[]) => void | Promise<void>",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the valid rows only; rejected or thrown errors show `labels.importFailed`."
         }
       ],
       "slots": [],
@@ -3627,56 +3645,56 @@
           "type": "ProFormField[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Field definitions rendered in order on a two-column grid."
         },
         {
           "name": "defaultValues",
           "type": "Partial<ProFormValues>",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Overrides for the values built from each field's `defaultValue`."
         },
         {
           "name": "validateMessage",
           "type": "(rule: ProFormRule, label: string, limit?: number | undefined) => string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Message builder for a failed rule; receives the rule name, field label and limit."
         },
         {
           "name": "submitLabel",
           "type": "string",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Submit button label."
         },
         {
           "name": "resetLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "When set, renders an outline button that resets to the initial values."
         },
         {
           "name": "loading",
           "type": "boolean",
           "required": false,
           "defaultValue": "false",
-          "description": ""
+          "description": "External pending flag; combined with `isSubmitting` for the busy state."
         },
         {
           "name": "ariaLabel",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Accessible name for the `<form>` element."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the `<form>` element."
         }
       ],
       "events": [
@@ -3685,7 +3703,7 @@
           "type": "(values: ProFormValues) => void | Promise<void>",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the form values only after every rule passes."
         }
       ],
       "slots": [],
@@ -3840,42 +3858,42 @@
           "type": "FilterField[]",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Field descriptors; order defines the layout order."
         },
         {
           "name": "value",
           "type": "FilterValue",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Current filter values, keyed by each field's `name` (or `fromName`/`toName`)."
         },
         {
           "name": "labels",
           "type": "{ reset: string; more: string; less: string; }",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Visible strings for the reset, expand and collapse buttons."
         },
         {
           "name": "maxVisible",
           "type": "number",
           "required": false,
           "defaultValue": "3",
-          "description": ""
+          "description": "How many fields stay visible while collapsed; defaults to 3."
         },
         {
           "name": "extra",
           "type": "ReactNode",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Node rendered at the end of the action row, aligned right."
         },
         {
           "name": "className",
           "type": "string",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Extra classes for the outer wrapper."
         }
       ],
       "events": [
@@ -3884,14 +3902,14 @@
           "type": "(next: FilterValue) => void",
           "required": true,
           "defaultValue": null,
-          "description": ""
+          "description": "Called with the whole next value object on every edit."
         },
         {
           "name": "onReset",
           "type": "(() => void)",
           "required": false,
           "defaultValue": null,
-          "description": ""
+          "description": "Called after Reset has already cleared every value to `{}`."
         }
       ],
       "slots": [],

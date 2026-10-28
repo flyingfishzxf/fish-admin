@@ -1,0 +1,108 @@
+---
+title: Tour
+description: A controlled, spotlight-style guided tour that anchors step cards to real elements on the page.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TourBasic from '@docs/demos/tour/basic'
+import basicSource from '@docs/demos/tour/basic.tsx?raw'
+import TourResume from '@docs/demos/tour/resume'
+import resumeSource from '@docs/demos/tour/resume.tsx?raw'
+
+# Tour
+
+`Tour` is a portal-based walkthrough: for each `TourStep` it measures a target element, draws a
+`ring-primary` spotlight around it, and shows a `role="dialog"` popover with Next, Back, Skip, and
+Finish controls. The open state is fully controlled by the parent through `onOpenChange`.
+
+<ComponentMeta id="tour" />
+
+## When to use
+
+- First-run onboarding that should point at real controls rather than screenshots.
+- A short, linear walkthrough of a form or toolbar where each step highlights one element.
+- Cases where you want the dismissed state to persist (your code decides via `onFinish`).
+
+## When not to use
+
+- Non-linear help or reference docs: write prose, not a forced sequence.
+- Tooltips on a single element: use `Popover` or `Tooltip`; a tour implies a multi-step sequence.
+- Flows that must block the page: the tour has no focus trap, so it is guidance, not a modal gate.
+- Anything that has to render server-side: `Tour` portals to `document.body` and only exists when open.
+
+## Basic usage
+
+The demo keeps `open` false by default, so the scanned page shows only the trigger and the target
+fields. Pressing Start tour mounts the spotlight and dialog; the step cards anchor to the workspace
+name, the plan select, and the Save button.
+
+<Demo title="Spotlight tour over a setup form" filename="demos/tour/basic.tsx" source={basicSource}>
+  <TourBasic />
+</Demo>
+
+## Controlled open and finish
+
+`open` is owned by the parent, and the internal step index resets to the first step whenever the tour
+is (re)opened. `onFinish` fires only when the last step's Finish control is pressed, just before the
+tour closes. Here that callback hides the launcher, so a completed tour will not offer to reopen.
+
+<Demo title="Finishing hides the launcher" filename="demos/tour/resume.tsx" source={resumeSource}>
+  <TourResume />
+</Demo>
+
+## API
+
+<ApiTable component="tour" />
+
+## Design guidance
+
+- While `open` is false or there is no current step, `Tour` returns `null` and renders nothing, which
+  keeps the resting page free of extra landmarks.
+- When open it portals three layers into `document.body`: a `bg-black/45` scrim at `z-[80]` that closes
+  on click, an `aria-hidden` spotlight ring at `z-[81]`, and the dialog at `z-[82]`.
+- The card is `w-80 max-w-[calc(100vw-1rem)]`, `rounded-xl border bg-popover p-4 shadow-xl`, sized
+  against a 320 by 190 model box with a 12 px gap and 8 px viewport edge padding.
+- `placement` (`top`, `bottom`, `left`, `right`; default `bottom`) positions the card relative to the
+  target, and the position is clamped so the card stays inside the viewport.
+- `target()` returns the element to highlight; if it resolves to `null` the ring is skipped and the
+  card centers itself in the viewport. The card repositions on `resize` and any `scroll`.
+- `labels` is required and is the only text source (there is no built-in locale): it supplies `next`,
+  `previous`, `skip`, `finish`, and a `step(current, total)` formatter. The step counter and Skip sit
+  on one line, the title is an `<h2>`, and Back/Next (`ghost` and default `size="sm"` buttons) sit in
+  the footer.
+
+## Accessibility
+
+- The card is a `role="dialog" aria-modal="true"` named by its step title through `aria-labelledby`, and
+  it is focused (`tabIndex={-1}`) on open and on every step change, so the new title is announced.
+- `Escape` closes the tour and, on unmount, returns focus to the element that was active before it
+  opened. The Skip control and clicking the scrim also call `onOpenChange(false)`.
+- Back is a real disabled button on the first step; Next advances and the final step swaps to Finish,
+  which calls `onFinish` then closes. All controls are keyboard reachable from the focused dialog.
+- The scrim and the spotlight ring are `aria-hidden`, so only the dialog content is in the accessibility
+  tree.
+
+Known gap: there is no focus trap, so Tab can move focus to page content behind the open dialog, and
+`aria-modal` is not enforced for pointer users. The step counter is rendered as static text rather than
+a live region, so a screen reader may not re-announce "Step 2 of 3" on advance unless the title change
+draws attention to it. Treat the tour as advisory.
+
+## FAQ
+
+**What does the tour look like before it is opened?** Nothing. `Tour` returns `null` while `open` is
+false, so the resting page shows only your trigger and target elements.
+
+**What happens if a step's target is missing?** The spotlight ring is skipped and the card is centered
+in the viewport, so a tour still works when an element is off-screen or not yet rendered.
+
+**Are the button labels translated?** No. You must pass a `labels` object; the component intentionally
+keeps all copy external so you can localize it yourself.
+
+## Related
+
+- `Dialog` for a modal that should block and trap focus.
+- `Popover` for a single anchored hint instead of a sequence.
+- `Button` for the trigger that opens the tour.
+- [Used in the template](https://fish-admin.vercel.app/)

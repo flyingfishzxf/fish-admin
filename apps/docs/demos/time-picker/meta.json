@@ -1,0 +1,28 @@
+[
+  {
+    "id": "time-picker/basic",
+    "component": "time-picker",
+    "file": "demos/time-picker/basic.tsx",
+    "title": {
+      "en": "A 24-hour time stored as HH:mm",
+      "zh": "以 HH:mm 保存的 24 小时制时间"
+    },
+    "description": {
+      "en": "A popover trigger with paired hour and minute selects.",
+      "zh": "带小时与分钟两列下拉的弹层触发器。"
+    }
+  },
+  {
+    "id": "time-picker/steps",
+    "component": "time-picker",
+    "file": "demos/time-picker/steps.tsx",
+    "title": {
+      "en": "Coarser minute grid",
+      "zh": "更粗的分钟刻度"
+    },
+    "description": {
+      "en": "minuteStep limits the MM column while keeping an off-grid value selectable.",
+      "zh": "minuteStep 收窄分钟列，同时保留不在刻度上的当前值。"
+    }
+  }
+]

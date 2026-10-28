@@ -1,0 +1,115 @@
+---
+title: Tree Select
+description: Choose one node from a hierarchical dataset through a popover-bound outline trigger.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TreeSelectBasic from '@docs/demos/tree-select/basic'
+import basicSource from '@docs/demos/tree-select/basic.tsx?raw'
+import TreeSelectValidation from '@docs/demos/tree-select/validation'
+import validationSource from '@docs/demos/tree-select/validation.tsx?raw'
+
+# Tree Select
+
+`TreeSelect` pairs an outline `Button` trigger with a `Popover` that hosts the `Tree` component on
+the same flat `TreeItem[]` data. The value is a single node id, and the trigger renders its full
+ancestor path via `treePath`.
+
+<ComponentMeta id="tree-select" />
+
+## When to use
+
+- A form field whose options only make sense in a hierarchy: owning team, chart of accounts,
+  folder location.
+- The chosen node should be readable in context — parents and children carry meaning.
+- Datasets small enough to scan visually, since there is no search.
+
+## When not to use
+
+- Flat option lists: `Select` is lighter and supports type-ahead.
+- Free-text or async search-as-you-type over options: use `Combobox`.
+- Stepwise path narrowing where each level is one click (`Country / City / Store`): `Cascader`.
+- Multiple nodes at once: `TreeSelect` is single-value — `Transfer` or a `Tree` plus checkboxes fits
+  better.
+
+## Basic usage
+
+<Demo title="Pick an owning team" filename="demos/tree-select/basic.tsx" source={basicSource}>
+  <TreeSelectBasic />
+</Demo>
+
+Selecting `Frontend` stores the id `frontend` but displays "Engineering / Frontend" — the trigger
+always renders the joined path, while `onChange` hands you only the leaf's id. The popover closes on
+selection.
+
+## Validation and clearing
+
+<Demo
+  title="Required and locked fields"
+  filename="demos/tree-select/validation.tsx"
+  source={validationSource}
+>
+  <TreeSelectValidation />
+</Demo>
+
+`aria-invalid` and `aria-describedby` pass straight through to the trigger button, which picks up
+the standard `aria-invalid:border-destructive` treatment from `Button`. The clear (×) button only
+appears when both `value` and `onClear` are provided; omit `onClear` for a mandatory field.
+
+## API
+
+<ApiTable component="tree-select" />
+
+## Design guidance
+
+- The trigger is the `h-9` outline `Button` at `w-full justify-between gap-2 pr-14 font-normal`;
+  the value truncates and a 16 px `ChevronDown` (`opacity-60`) sits at the right edge.
+- Without a value the placeholder renders in `text-muted-foreground`; an id that resolves to no
+  path also falls back to the placeholder.
+- Display text is `treePath(items, value).map(label).join(' / ')`, so a deep node always shows its
+  ancestry — matching the test expectation "Engineering / Frontend".
+- The popover is `align="start"` with `w-80 max-w-[calc(100vw-2rem)] p-1`, and the inner tree
+  scrolls at `max-h-72 overflow-y-auto p-1`.
+- The clear button is absolutely positioned (`right-8`, `z-10`, 24 px square) with a 14 px `X`
+  icon; hover `bg-accent`, focus ring, and it inherits `disabled`.
+- Picking a node calls `onChange(id)` and closes the popover; clicking outside closes without a
+  change, same as `DatePicker`.
+
+## Accessibility
+
+- The trigger's accessible name is `ariaLabel` plus the selected path or the placeholder, for
+  example "Deployment region: Europe / eu-central-1 (Frankfurt)", so the value is announced before
+  anything opens.
+- `aria-expanded` on the trigger mirrors the popover state. Once open, the embedded tree provides
+  the full `Tree` keyboard model — roving focus, arrow navigation, Home/End, Enter/Space to select —
+  and Escape closes and returns focus to the trigger.
+- The clear control is a real button in the tab order named by `clearLabel` (defaulting to the
+  localized "Clear selection") and disabled alongside the field.
+- `aria-invalid` and `aria-describedby` are forwarded, so a visible error paragraph (as in the
+  validation demo) is associated with the control.
+
+Known gap: the trigger is a plain `<button>` — it exposes no `role="combobox"` or `aria-controls`,
+so screen readers announce a collapsed disclosure rather than a select popup. The popover surface
+itself also has no accessible name; the tree's `ariaLabel` is what carries the context. There is no
+keyboard-only clear when `onClear` is omitted.
+
+## FAQ
+
+**What exactly is stored as `value`?** One node id (`string | null`). Never the path — display
+strings are derived, ids are the contract.
+
+**Can parent nodes be selected?** Yes; every row is selectable unless the item sets `disabled`.
+There is no leaves-only mode.
+
+**Is there search inside the popover?** No. Pre-collapse large datasets or pair the field with an
+external filter; `Combobox` covers searchable flat lists.
+
+## Related
+
+- `Tree` for the embedded picker and its keyboard behavior.
+- `Cascader` for column-style path narrowing.
+- `Select` for flat single-choice fields.
+- `Combobox` when options need typing and async loading.
+- [Used in the template](https://fish-admin.vercel.app/projects)

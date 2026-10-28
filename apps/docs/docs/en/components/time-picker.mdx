@@ -1,0 +1,105 @@
+---
+title: Time Picker
+description: Pick an hour and minute from a popover of two selects and store it as HH:mm.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TimePickerBasic from '@docs/demos/time-picker/basic'
+import basicSource from '@docs/demos/time-picker/basic.tsx?raw'
+import TimePickerSteps from '@docs/demos/time-picker/steps'
+import stepsSource from '@docs/demos/time-picker/steps.tsx?raw'
+
+# Time Picker
+
+`TimePicker` is an outline `Button` trigger plus a `Popover` that holds two `Select` lists, one for
+hours and one for minutes. The value is a 24-hour `HH:mm` string.
+
+<ComponentMeta id="time-picker" />
+
+## When to use
+
+- Forms and schedules that need a time of day without a date, such as a standup or a maintenance slot.
+- Constraining entry to a coarse grid with `minuteStep`, like quarter-hour booking.
+- Pairing with `Date Picker` when a single field for date plus time would be over-engineered.
+
+## When not to use
+
+- A date is required too: `Date Picker` covers the day, then this covers the clock.
+- A date and time that must move together as one value: model that yourself rather than storing two
+  separate strings.
+- A timezone or UTC instant: this is a wall-clock value with no zone attached.
+- A duration or range of time: capture start and end explicitly; this picker returns a single point.
+
+## Basic usage
+
+<Demo title="A single 24-hour time" filename="demos/time-picker/basic.tsx" source={basicSource}>
+  <TimePickerBasic />
+</Demo>
+
+## Minute grid
+
+`minuteStep` controls how many options the MM column shows. It is clamped to 1–59 and falls back to 5
+when the value is not a finite number. A minute already stored in `value` that does not sit on the
+grid is still injected into the list, so opening the picker never strands the current value.
+
+<Demo
+  title="Quarter-hour slots keep an off-grid value"
+  filename="demos/time-picker/steps.tsx"
+  source={stepsSource}
+>
+  <TimePickerSteps />
+</Demo>
+
+## API
+
+<ApiTable component="time-picker" />
+
+## Design guidance
+
+- The trigger is an `outline` `Button` at the standard 36 px height with `justify-start`, a `size-4`
+  `Clock` icon on the left, and a truncating label. While empty it uses `text-muted-foreground`.
+- `value` is validated with `/^([01]\d|2[0-3]):([0-5]\d)$/`. Anything else (or no value) shows the
+  `placeholder` and the selects open with nothing chosen.
+- The popover is `align="start"` with `w-auto min-w-64 p-3`; the two `SelectTrigger`s are `w-20` and
+  their lists use `position="popper"` with `max-h-60`, so long option lists scroll inside the panel.
+- Changing either column calls `onChange` with the padded `HH:mm`. Picking an hour keeps the current
+  minute (or `00`); picking a minute keeps the current hour (or `00`). There is no Apply step.
+- Minutes are generated from `0` up in `minuteStep` increments. The `HH` and `MM` captions are
+  `aria-hidden` because each trigger already carries a real accessible name.
+- The footer, split off by a top border, has a `ghost` `Clear` (disabled when nothing is set) and an
+  `outline` `Close`; Clear calls `onChange(undefined)` and closes.
+
+## Accessibility
+
+- The trigger's accessible name is `ariaLabel` plus the visible value, for example "Standup start
+  time: 09:00", so the selection is announced without opening the popover.
+- The hour and minute triggers are `combobox` controls named "`<ariaLabel> hours`" and
+  "`<ariaLabel> minutes`". Each opens a radix listbox where Home/End, arrow keys, type-ahead, Enter/Space to choose
+  and Escape to dismiss all work as usual.
+- `Clear` and `Close` are ordinary buttons in the tab order; `Clear` is disabled while no time is set.
+- Escape closes the open select first, then the popover, and focus returns to the trigger.
+
+Known gap: the popover surface is a `dialog` with no accessible name of its own, and there are no
+`min`/`max` bounds, so the full 00:00–23:59 range is always selectable. If your form constrains the
+time, express the limit as visible hint text; the component cannot do it for you.
+
+## FAQ
+
+**What format does `onChange` emit?** A padded 24-hour `HH:mm` string, or `undefined` after `Clear`.
+There is no AM/PM mode.
+
+**What if `value` is malformed?** It is treated as empty. The strict regex rejects things like `9:5`,
+`24:00`, or `08:60`, so the trigger falls back to the placeholder.
+
+**Does `minuteStep` hide the current minute if it is off-grid?** No. The stored minute is added to the
+options and the list re-sorts, so the value stays selected and visible.
+
+## Related
+
+- `Date Picker` for the calendar day.
+- `Date Range Picker` for a start and end day.
+- `Select` for the hour and minute lists this is built on.
+- `Popover` when you build a custom trigger.
+- [Used in the template](https://fish-admin.vercel.app/integrations)

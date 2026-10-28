@@ -1,0 +1,28 @@
+[
+  {
+    "id": "pro-form/basic",
+    "component": "pro-form",
+    "file": "demos/pro-form/basic.tsx",
+    "title": {
+      "en": "Schema-driven member form",
+      "zh": "由字段配置驱动的成员表单"
+    },
+    "description": {
+      "en": "Six field types on a two-column grid, with the submitted payload printed below.",
+      "zh": "两列网格上的六种字段类型，下方展示提交后的数据。"
+    }
+  },
+  {
+    "id": "pro-form/validation",
+    "component": "pro-form",
+    "file": "demos/pro-form/validation.tsx",
+    "title": {
+      "en": "Rule messages in one place",
+      "zh": "集中管理校验文案"
+    },
+    "description": {
+      "en": "validateMessage turns each failed rule into copy for its field label.",
+      "zh": "validateMessage 依据规则与字段标签生成校验提示。"
+    }
+  }
+]

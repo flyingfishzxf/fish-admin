@@ -1,0 +1,28 @@
+[
+  {
+    "id": "upload/basic",
+    "component": "upload",
+    "file": "demos/upload/basic.tsx",
+    "title": {
+      "en": "Files with simulated progress",
+      "zh": "带模拟进度的上传"
+    },
+    "description": {
+      "en": "Picking a file queues it and a timer advances it to done.",
+      "zh": "选择文件后进入队列，由计时器推进到完成。"
+    }
+  },
+  {
+    "id": "upload/progress",
+    "component": "upload",
+    "file": "demos/upload/progress.tsx",
+    "title": {
+      "en": "Size limits and retries",
+      "zh": "大小限制与重试"
+    },
+    "description": {
+      "en": "Oversize files are rejected; a failed row can retry to completion.",
+      "zh": "超限文件会被拒绝；失败项可重试直到完成。"
+    }
+  }
+]

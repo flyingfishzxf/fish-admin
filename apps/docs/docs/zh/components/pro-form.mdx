@@ -1,0 +1,104 @@
+---
+title: ProForm 高级表单
+description: 由字段配置驱动 react-hook-form，统一生成栅格布局、校验规则与提交状态。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ProFormBasic from '@docs/demos/pro-form/basic'
+import basicSource from '@docs/demos/pro-form/basic.tsx?raw'
+import ProFormValidation from '@docs/demos/pro-form/validation'
+import validationSource from '@docs/demos/pro-form/validation.tsx?raw'
+
+# ProForm 高级表单
+
+`ProForm` 用一份 `fields` 数组搭出 react-hook-form 表单：每个配置项都会渲染成 `FormField` 加
+`FormItem`、`FormLabel`、`FormControl`、`FormMessage`，控件则由 `type` 指定为 `Input`、`Textarea`、
+`Select` 或 `Switch`。
+
+<ComponentMeta id="pro-form" />
+
+## 何时使用
+
+- 新增、编辑弹窗里字段固定且大多是常规控件。
+- 需要在多个界面共享同一套校验文案，并按语言切换。
+- 两列排布的管理表单，长字段需要 `colSpan` 占满一行。
+
+## 何时不使用
+
+- 字段会条件出现或存在深层嵌套：直接用 `Form` 与 `FormField` 自行组合。
+- 上传列表、标签选择等非常规控件：改用 `Form` 手写，筛选场景可用 `QueryFilter` 的自定义字段。
+- 只是列表上方的筛选条而不是录入一条记录：使用 `QueryFilter`。
+
+## 基础用法
+
+<Demo title="由字段配置驱动的成员表单" filename="demos/pro-form/basic.tsx" source={basicSource}>
+  <ProFormBasic />
+</Demo>
+
+## 校验规则与提示文案
+
+<Demo title="集中管理校验文案" filename="demos/pro-form/validation.tsx" source={validationSource}>
+  <ProFormValidation />
+</Demo>
+
+## API
+
+<ApiTable component="pro-form" />
+
+## 设计指引
+
+- 初始值由每个字段的 `defaultValue` 计算：`switch` 强制转成布尔值，`number` 只在默认值本身是数字时
+  保留，否则为 `''`，之后再展开覆盖 `defaultValues`。由于结果被缓存在 ref 中，后续修改 `fields`
+  不会重新生成初始值，需要重挂载组件。
+- 布局是 `grid gap-4 sm:grid-cols-2`，宽字段用 `colSpan: 2`（即 `sm:col-span-2`）。按钮区是
+  `flex flex-col-reverse sm:flex-row sm:justify-end`，重置按钮排在提交按钮之前。
+- 支持的 `type` 有 `text`、`email`、`password`、`number`、`textarea`、`select`、`switch`、`date`，
+  不写时按 `text` 处理。`date` 是原生 `<input type="date">`；需要弹层日历和本地化显示请改用
+  `Date Picker`。
+- 规则来自字段标记：`required` 使用 `validateMessage('required', label)` 的返回值；`email` 追加
+  `/^[^\s@]+@[^\s@]+\.[^\s@]+$/` 正则；`min`/`max` 只作用于数字，`minLength`/`maxLength` 作用于文本、
+  邮箱、密码与多行文本。
+- 共用的 `validate` 会在值为空时直接返回通过，因此长度和区间规则不会在留空的选填字段上触发；需要
+  强校验请同时加上 `required`。
+- 数字字段保存的是 `event.target.valueAsNumber`（清空时为 `''`），同时把 `min`/`max` 透传给 DOM，
+  浏览器自带的步进约束会叠加在 JS 规则之上。`maxLength` 会传给输入框和多行文本，`password` 固定
+  `autoComplete="new-password"`。
+- `busy` 等于 `loading || formState.isSubmitting`：两个按钮一起禁用，提交按钮前面出现旋转的
+  `Loader2`。`onSubmit` 返回 Promise 时 `isSubmitting` 才真正有用。
+- 重置调用 `form.reset(initialValues)`，回到默认值而不是清空。
+- 表单设置了 `noValidate`，浏览器原生气泡不会和 `FormMessage` 同时出现。
+
+## 无障碍
+
+- 每个字段都是 `FormField`：`FormLabel` 通过 `htmlFor` 指向控件，`FormControl` 注入字段 id、
+  描述文本的 `aria-describedby`，出错时再加上 `aria-invalid`。
+- `FormMessage` 只在真的有内容时渲染，错误文本不会预先留在无障碍树里；标签也会随之变为强调色
+  （`FormLabel` 的 `data-error` 样式）。
+- `<form>` 上有 `ariaLabel`，提交中还有 `aria-busy`；两个按钮保持可见并禁用，而不是消失。
+- 下拉是 Radix `Select`，与 `FormLabel` 关联；开关同样保持标签关联，因此测试里可以用
+  `getByRole('switch', { name: 'Email alerts' })` 定位。
+- `noValidate` 配合逐字段提示，非法提交会在每个字段下方写明规则文本，不依赖颜色单独表达状态。
+
+已知缺口：提交失败后不会把焦点移动到第一个错误字段，也没有活动区域汇总“有几个字段未通过”，读屏用户
+需要在栅格里逐个 Tab 才能听到提示。
+
+## FAQ
+
+**为什么提示不是我写的句子？** 组件不含任何文案，一律调用你的 `validateMessage(rule, label, limit?)`，
+所以同一条规则可以按界面和语言输出不同文字。
+
+**输入时会即时校验吗？** 首次校验发生在提交时；已经出现错误的字段之后会在 change 时重新校验，这是
+react-hook-form 默认的 `reValidateMode`。
+
+**能塞进自定义控件吗？** `fields` 的 `type` 是固定联合类型，做不到。这类行请用 `Form` + `FormField`
+手写，或干脆移出配置。
+
+## 相关
+
+- 需要完全自定义字段与控制器时使用 `Form`。
+- 列表上方的筛选栏使用 `QueryFilter`。
+- 日期需要弹层日历时使用 `Date Picker`。
+- 新建记录落入的列表使用 `ProTable`。
+- [在模板中的用法](https://fish-admin.vercel.app/integrations)

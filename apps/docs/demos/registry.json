@@ -637,6 +637,32 @@
     }
   },
   {
+    "id": "detail-page/basic",
+    "component": "detail-page",
+    "file": "demos/detail-page/basic.tsx",
+    "title": {
+      "en": "Record header with tabbed sections",
+      "zh": "带标签分区的记录头部"
+    },
+    "description": {
+      "en": "Avatar, title, badges, actions and a tab list of sections.",
+      "zh": "头像、标题、徽章、操作区与分区标签列表。"
+    }
+  },
+  {
+    "id": "detail-page/single-section",
+    "component": "detail-page",
+    "file": "demos/detail-page/single-section.tsx",
+    "title": {
+      "en": "Single body with back and footer",
+      "zh": "单正文配返回与页脚"
+    },
+    "description": {
+      "en": "No tabs: children render as one section, closed by a footer.",
+      "zh": "不用标签：children 作为单个分区渲染，并由页脚收尾。"
+    }
+  },
+  {
     "id": "dialog/basic",
     "component": "dialog",
     "file": "demos/dialog/basic.tsx",
@@ -741,6 +767,32 @@
     }
   },
   {
+    "id": "editable-table/basic",
+    "component": "editable-table",
+    "file": "demos/editable-table/basic.tsx",
+    "title": {
+      "en": "Edit, cancel and delete rows",
+      "zh": "编辑、取消与删除行"
+    },
+    "description": {
+      "en": "One row opens at a time; only Save writes back through onRowsChange.",
+      "zh": "一次只展开一行，只有点击“保存”才会通过 onRowsChange 写回。"
+    }
+  },
+  {
+    "id": "editable-table/dirty",
+    "component": "editable-table",
+    "file": "demos/editable-table/dirty.tsx",
+    "title": {
+      "en": "Draft row, parse and validate",
+      "zh": "草稿行、parse 与 validate"
+    },
+    "description": {
+      "en": "addRow seeds a draft row that never reaches your data until it validates.",
+      "zh": "addRow 生成草稿行，校验通过后才会进入数据。"
+    }
+  },
+  {
     "id": "empty/basic",
     "component": "empty",
     "file": "demos/empty/basic.tsx",
@@ -842,6 +894,32 @@
     "description": {
       "en": "A single attachment without paging, plus the empty state.",
       "zh": "不带翻页的单个附件，以及没有图片时的空态。"
+    }
+  },
+  {
+    "id": "import-wizard/basic",
+    "component": "import-wizard",
+    "file": "demos/import-wizard/basic.tsx",
+    "title": {
+      "en": "Sample CSV through all four steps",
+      "zh": "用示例 CSV 走完四个步骤"
+    },
+    "description": {
+      "en": "Load sample, auto-mapped columns, review counts and a simulated import.",
+      "zh": "载入示例、自动匹配列、复核统计与模拟导入。"
+    }
+  },
+  {
+    "id": "import-wizard/steps",
+    "component": "import-wizard",
+    "file": "demos/import-wizard/steps.tsx",
+    "title": {
+      "en": "Blocked steps and skipped rows",
+      "zh": "被阻断的步骤与被跳过的行"
+    },
+    "description": {
+      "en": "Unmapped required fields keep Next disabled; invalid rows never reach onImport.",
+      "zh": "必填字段未匹配时“下一步”保持禁用；无效行不会进入 onImport。"
     }
   },
   {
@@ -1131,6 +1209,32 @@
     }
   },
   {
+    "id": "pro-form/basic",
+    "component": "pro-form",
+    "file": "demos/pro-form/basic.tsx",
+    "title": {
+      "en": "Schema-driven member form",
+      "zh": "由字段配置驱动的成员表单"
+    },
+    "description": {
+      "en": "Six field types on a two-column grid, with the submitted payload printed below.",
+      "zh": "两列网格上的六种字段类型，下方展示提交后的数据。"
+    }
+  },
+  {
+    "id": "pro-form/validation",
+    "component": "pro-form",
+    "file": "demos/pro-form/validation.tsx",
+    "title": {
+      "en": "Rule messages in one place",
+      "zh": "集中管理校验文案"
+    },
+    "description": {
+      "en": "validateMessage turns each failed rule into copy for its field label.",
+      "zh": "validateMessage 依据规则与字段标签生成校验提示。"
+    }
+  },
+  {
     "id": "pro-table/basic",
     "component": "pro-table",
     "file": "demos/pro-table/basic.tsx",
@@ -1180,6 +1284,32 @@
     "description": {
       "en": "Three task bars at 100%, 64% and 0%, with a control that advances the middle one.",
       "zh": "三个任务进度条分别为 100%、64% 与 0%，并有按钮推进中间一项。"
+    }
+  },
+  {
+    "id": "query-filter/basic",
+    "component": "query-filter",
+    "file": "demos/query-filter/basic.tsx",
+    "title": {
+      "en": "Three filters with an action slot",
+      "zh": "三个筛选项与操作插槽"
+    },
+    "description": {
+      "en": "Text, select and boolean fields; Reset only appears once a filter is active.",
+      "zh": "文本、下拉与布尔字段；只有存在有效筛选时才会出现“重置”。"
+    }
+  },
+  {
+    "id": "query-filter/collapsed",
+    "component": "query-filter",
+    "file": "demos/query-filter/collapsed.tsx",
+    "title": {
+      "en": "Collapsed bar with date range and custom field",
+      "zh": "折叠的筛选栏：日期区间与自定义字段"
+    },
+    "description": {
+      "en": "maxVisible hides the tail of the field list behind a More button.",
+      "zh": "maxVisible 把多余的字段收进“更多”按钮里。"
     }
   },
   {
@@ -1677,6 +1807,32 @@
     }
   },
   {
+    "id": "tags-input/basic",
+    "component": "tags-input",
+    "file": "demos/tags-input/basic.tsx",
+    "title": {
+      "en": "Free-form tags with keyboard commit",
+      "zh": "自由输入标签，键盘提交"
+    },
+    "description": {
+      "en": "Add, deduplicate, and remove tags with Enter, comma, and Backspace.",
+      "zh": "使用 Enter、逗号与 Backspace 添加、去重和删除标签。"
+    }
+  },
+  {
+    "id": "tags-input/suggestions",
+    "component": "tags-input",
+    "file": "demos/tags-input/suggestions.tsx",
+    "title": {
+      "en": "Quick-add suggestions under a cap",
+      "zh": "带数量上限的快捷建议"
+    },
+    "description": {
+      "en": "Dashed suggestion chips share the maxTags budget with typed tags.",
+      "zh": "虚线建议按钮与手动输入共享 maxTags 上限。"
+    }
+  },
+  {
     "id": "textarea/basic",
     "component": "textarea",
     "file": "demos/textarea/basic.tsx",
@@ -1700,6 +1856,58 @@
     "description": {
       "en": "A disabled summary next to a textarea that turns invalid until the reason is long enough.",
       "zh": "禁用的处理摘要，以及内容过短时变为无效状态的文本域。"
+    }
+  },
+  {
+    "id": "time-picker/basic",
+    "component": "time-picker",
+    "file": "demos/time-picker/basic.tsx",
+    "title": {
+      "en": "A 24-hour time stored as HH:mm",
+      "zh": "以 HH:mm 保存的 24 小时制时间"
+    },
+    "description": {
+      "en": "A popover trigger with paired hour and minute selects.",
+      "zh": "带小时与分钟两列下拉的弹层触发器。"
+    }
+  },
+  {
+    "id": "time-picker/steps",
+    "component": "time-picker",
+    "file": "demos/time-picker/steps.tsx",
+    "title": {
+      "en": "Coarser minute grid",
+      "zh": "更粗的分钟刻度"
+    },
+    "description": {
+      "en": "minuteStep limits the MM column while keeping an off-grid value selectable.",
+      "zh": "minuteStep 收窄分钟列，同时保留不在刻度上的当前值。"
+    }
+  },
+  {
+    "id": "timeline/basic",
+    "component": "timeline",
+    "file": "demos/timeline/basic.tsx",
+    "title": {
+      "en": "Audit trail with icons and tones",
+      "zh": "带图标与语义色调的审计轨迹"
+    },
+    "description": {
+      "en": "Ordered events with title, description, timestamp and a tone-colored marker.",
+      "zh": "按顺序排列的事件，含标题、描述、时间与语义色标记。"
+    }
+  },
+  {
+    "id": "timeline/empty",
+    "component": "timeline",
+    "file": "demos/timeline/empty.tsx",
+    "title": {
+      "en": "Empty state via emptyLabel",
+      "zh": "用 emptyLabel 处理空状态"
+    },
+    "description": {
+      "en": "An empty items array shows a muted placeholder, or nothing at all.",
+      "zh": "items 为空时显示弱化占位文案，或不渲染任何内容。"
     }
   },
   {
@@ -1778,6 +1986,188 @@
     "description": {
       "en": "Four triggers that place their tooltip on the top, right, bottom and left.",
       "zh": "四个触发器，将文字提示分别放在上、右、下、左四侧。"
+    }
+  },
+  {
+    "id": "tour/basic",
+    "component": "tour",
+    "file": "demos/tour/basic.tsx",
+    "title": {
+      "en": "Spotlight tour over a setup form",
+      "zh": "在设置表单上的引导式漫游"
+    },
+    "description": {
+      "en": "Steps anchor to real elements; the overlay starts closed and opens on demand.",
+      "zh": "各步骤锚定真实元素；遮罩默认关闭，按需打开。"
+    }
+  },
+  {
+    "id": "tour/resume",
+    "component": "tour",
+    "file": "demos/tour/resume.tsx",
+    "title": {
+      "en": "Finishing hides the launcher",
+      "zh": "完成后隐藏启动入口"
+    },
+    "description": {
+      "en": "onOpenChange owns the open state and onFinish gates whether the tour can reopen.",
+      "zh": "由 onOpenChange 掌握开关，onFinish 决定漫游是否还能再次打开。"
+    }
+  },
+  {
+    "id": "transfer/basic",
+    "component": "transfer",
+    "file": "demos/transfer/basic.tsx",
+    "title": {
+      "en": "Assign teams to a review",
+      "zh": "为评审分配团队"
+    },
+    "description": {
+      "en": "Click an item to move it between the two panels.",
+      "zh": "点击条目即可在两个面板之间移动。"
+    }
+  },
+  {
+    "id": "transfer/searchable",
+    "component": "transfer",
+    "file": "demos/transfer/searchable.tsx",
+    "title": {
+      "en": "Search and groups",
+      "zh": "搜索与分组"
+    },
+    "description": {
+      "en": "Each panel filters label, description and searchText over grouped items.",
+      "zh": "每个面板都可按标签、描述和 searchText 过滤分组条目。"
+    }
+  },
+  {
+    "id": "tree-select/basic",
+    "component": "tree-select",
+    "file": "demos/tree-select/basic.tsx",
+    "title": {
+      "en": "Pick a team by path",
+      "zh": "按路径选择团队"
+    },
+    "description": {
+      "en": "The trigger displays the selected node's full ancestor path.",
+      "zh": "触发器显示所选节点的完整祖先路径。"
+    }
+  },
+  {
+    "id": "tree-select/validation",
+    "component": "tree-select",
+    "file": "demos/tree-select/validation.tsx",
+    "title": {
+      "en": "Required field and disabled state",
+      "zh": "必填与禁用状态"
+    },
+    "description": {
+      "en": "aria-invalid and aria-describedby wire the trigger into form errors.",
+      "zh": "用 aria-invalid 与 aria-describedby 接入表单错误提示。"
+    }
+  },
+  {
+    "id": "tree/basic",
+    "component": "tree",
+    "file": "demos/tree/basic.tsx",
+    "title": {
+      "en": "Org structure with badges",
+      "zh": "带计数徽标的组织架构"
+    },
+    "description": {
+      "en": "Icons, member badges and one selected node, driven by flat parentId links.",
+      "zh": "图标与人数徽标，靠扁平的 parentId 关联出层级并单选。"
+    }
+  },
+  {
+    "id": "tree/expanded",
+    "component": "tree",
+    "file": "demos/tree/expanded.tsx",
+    "title": {
+      "en": "Controlled expansion",
+      "zh": "受控展开"
+    },
+    "description": {
+      "en": "expandedIds and onExpandedChange drive which branches are open.",
+      "zh": "用 expandedIds 与 onExpandedChange 决定哪些分支展开。"
+    }
+  },
+  {
+    "id": "trend/basic",
+    "component": "trend",
+    "file": "demos/trend/basic.tsx",
+    "title": {
+      "en": "KPI deltas with context",
+      "zh": "带上下文的 KPI 涨跌"
+    },
+    "description": {
+      "en": "Sign picks the arrow, tone and format; zero renders flat.",
+      "zh": "正负号决定箭头与色调，零值显示为持平。"
+    }
+  },
+  {
+    "id": "trend/inverted",
+    "component": "trend",
+    "file": "demos/trend/inverted.tsx",
+    "title": {
+      "en": "Lower-is-better metrics",
+      "zh": "越低越好的指标"
+    },
+    "description": {
+      "en": "invert swaps the tone; suffix and precision adapt the unit.",
+      "zh": "invert 反转色彩倾向，suffix 与 precision 调整单位精度。"
+    }
+  },
+  {
+    "id": "upload/basic",
+    "component": "upload",
+    "file": "demos/upload/basic.tsx",
+    "title": {
+      "en": "Files with simulated progress",
+      "zh": "带模拟进度的上传"
+    },
+    "description": {
+      "en": "Picking a file queues it and a timer advances it to done.",
+      "zh": "选择文件后进入队列，由计时器推进到完成。"
+    }
+  },
+  {
+    "id": "upload/progress",
+    "component": "upload",
+    "file": "demos/upload/progress.tsx",
+    "title": {
+      "en": "Size limits and retries",
+      "zh": "大小限制与重试"
+    },
+    "description": {
+      "en": "Oversize files are rejected; a failed row can retry to completion.",
+      "zh": "超限文件会被拒绝；失败项可重试直到完成。"
+    }
+  },
+  {
+    "id": "watermark/basic",
+    "component": "watermark",
+    "file": "demos/watermark/basic.tsx",
+    "title": {
+      "en": "A confidential document overlay",
+      "zh": "机密文档水印"
+    },
+    "description": {
+      "en": "Faint repeating text painted over a content block.",
+      "zh": "在内容块之上叠加淡淡的重复文字。"
+    }
+  },
+  {
+    "id": "watermark/styles",
+    "component": "watermark",
+    "file": "demos/watermark/styles.tsx",
+    "title": {
+      "en": "Tuning the pattern",
+      "zh": "调整水印样式"
+    },
+    "description": {
+      "en": "opacity, fontSize, rotate and gap reshape the tiled look.",
+      "zh": "用 opacity、fontSize、rotate 与 gap 改变平铺效果。"
     }
   }
 ]

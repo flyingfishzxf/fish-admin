@@ -74,13 +74,21 @@ export function ImportWizard({
   ariaLabel,
   className,
 }: {
+  /** Target fields; `aliases` feed the automatic column matching. */
   fields: ImportField[]
+  /** Called with the valid rows only; rejected or thrown errors show `labels.importFailed`. */
   onImport: (rows: Record<string, unknown>[]) => void | Promise<void>
+  /** Every visible string, including the four step names and the row messages. */
   labels: ImportWizardLabels
+  /** CSV text for the "load sample" button; omit the button when undefined. */
   sample?: string
+  /** File name shown for the sample once it is loaded. */
   sampleName?: string
+  /** `accept` attribute for the hidden file input. */
   accept?: string
+  /** Accessible name for the wizard region. */
   ariaLabel?: string
+  /** Extra classes for the outer panel. */
   className?: string
 }) {
   const [step, setStep] = useState(1)

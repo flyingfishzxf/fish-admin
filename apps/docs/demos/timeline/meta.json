@@ -1,0 +1,28 @@
+[
+  {
+    "id": "timeline/basic",
+    "component": "timeline",
+    "file": "demos/timeline/basic.tsx",
+    "title": {
+      "en": "Audit trail with icons and tones",
+      "zh": "带图标与语义色调的审计轨迹"
+    },
+    "description": {
+      "en": "Ordered events with title, description, timestamp and a tone-colored marker.",
+      "zh": "按顺序排列的事件，含标题、描述、时间与语义色标记。"
+    }
+  },
+  {
+    "id": "timeline/empty",
+    "component": "timeline",
+    "file": "demos/timeline/empty.tsx",
+    "title": {
+      "en": "Empty state via emptyLabel",
+      "zh": "用 emptyLabel 处理空状态"
+    },
+    "description": {
+      "en": "An empty items array shows a muted placeholder, or nothing at all.",
+      "zh": "items 为空时显示弱化占位文案，或不渲染任何内容。"
+    }
+  }
+]

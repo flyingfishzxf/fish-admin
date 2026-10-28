@@ -30,13 +30,21 @@ export function QueryFilter({
   extra,
   className,
 }: {
+  /** Field descriptors; order defines the layout order. */
   fields: FilterField[]
+  /** Current filter values, keyed by each field's `name` (or `fromName`/`toName`). */
   value: FilterValue
+  /** Called with the whole next value object on every edit. */
   onChange: (next: FilterValue) => void
+  /** Called after Reset has already cleared every value to `{}`. */
   onReset?: () => void
+  /** Visible strings for the reset, expand and collapse buttons. */
   labels: { reset: string; more: string; less: string }
+  /** How many fields stay visible while collapsed; defaults to 3. */
   maxVisible?: number
+  /** Node rendered at the end of the action row, aligned right. */
   extra?: ReactNode
+  /** Extra classes for the outer wrapper. */
   className?: string
 }) {
   const [expanded, setExpanded] = useState(false)

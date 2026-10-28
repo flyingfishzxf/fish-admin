@@ -1,0 +1,116 @@
+---
+title: Tree
+description: Render a flat parentId-linked hierarchy with keyboard roving focus and single selection.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TreeBasic from '@docs/demos/tree/basic'
+import basicSource from '@docs/demos/tree/basic.tsx?raw'
+import TreeExpanded from '@docs/demos/tree/expanded'
+import expandedSource from '@docs/demos/tree/expanded.tsx?raw'
+
+# Tree
+
+`Tree` turns a flat array of `TreeItem` records linked by `parentId` into an ARIA tree: `buildTree`
+creates the hierarchy, `visibleTreeEntries` flattens the open branches into rows, and one roving
+tab index drives keyboard navigation. Selection is a single node id.
+
+<ComponentMeta id="tree" />
+
+## When to use
+
+- Org charts, department pickers, folder browsers and region/resource lists with real depth.
+- Read-oriented navigation where one node at a time is "active" — pick a department to show its
+  members.
+- Rows that need metadata: a 16 px icon, a count badge and a hover description per node.
+
+## When not to use
+
+- Picking a value for a form field: wrap the same data in `Tree Select` instead of docking a bare
+  tree in a form.
+- Moving items between two sets: use `Transfer`.
+- Ordered path cascades (`Province / City / District`): `Cascader` is the better fit.
+- Deep hierarchies that need searching: `Tree` has no filter input — pre-filter the `items` array
+  yourself or use `Tree Select` alongside a search field.
+
+## Basic usage
+
+<Demo title="Browse an org chart" filename="demos/tree/basic.tsx" source={basicSource}>
+  <TreeBasic />
+</Demo>
+
+The root, its child teams and the selected node are open on mount: in uncontrolled mode the initial
+set is every root that has children plus the ancestors of `selectedId`. Setting `selectedId` to a
+deeper node afterwards also opens its ancestor path automatically.
+
+## Controlled expansion
+
+<Demo title="Expand and collapse all" filename="demos/tree/expanded.tsx" source={expandedSource}>
+  <TreeExpanded />
+</Demo>
+
+Passing `expandedIds` freezes the tree into controlled mode: toggles and selection no longer open
+anything by themselves, and every change is reported through `onExpandedChange`. Drop both props
+and use `defaultExpanded` when you only need a fixed starting state.
+
+## API
+
+<ApiTable component="tree" />
+
+## Design guidance
+
+- Rows are absolutely flat `div`s; indentation is `paddingLeft: depth * 16 + 6px`, so one level
+  equals 16 px.
+- Branch rows start with a 20 px (`size-5`) chevron button (`ChevronRight`, `rotate-90` when open);
+  leaves render an `aria-hidden` dot placeholder (`size-1.5 bg-border`) so labels stay aligned.
+- `icon` renders at `size-4 text-muted-foreground`, `badge` trails the row in `text-xs
+text-muted-foreground`, and `label` truncates via `min-w-0 flex-1 truncate`.
+- Selected rows get `bg-primary/10 font-medium text-accent-foreground`; hover is `bg-accent`;
+  focus draws `border-ring` plus a `ring-[3px] ring-ring/50`. Disabled rows are `opacity-50` with
+  `cursor-not-allowed`, and clicks plus Enter/Space on them do nothing.
+- The container carries `select-none`; `description` is surfaced only as the row's native `title`
+  tooltip.
+- `buildTree` is cycle-safe: records trapped in a parent loop are detached and re-surfaced as roots
+  rather than vanishing from the render.
+
+## Accessibility
+
+- The container is `role="tree"` named by `ariaLabel`; each row is `role="treeitem"` with
+  `aria-level` (depth + 1), `aria-selected`, and `aria-expanded` set only on rows that have
+  children.
+- Roving focus: exactly one visible row has `tabIndex={0}` (initially the selected node or the
+  first row); all others are `-1`. Arrow Down/Up walk visible rows, ArrowRight opens a collapsed
+  branch or enters the first child, ArrowLeft collapses an open branch or jumps to the parent,
+  Home/End go to the first/last visible row, and Enter/Space select the focused row.
+- The chevron is a real `<button>` with an accessible name like "Expand Engineering" / "Collapse
+  Engineering" (`tabIndex={-1}`, clicks stop propagation so it never selects the row).
+- Disabled rows expose `aria-disabled`, and an empty tree renders `emptyLabel` as a centered
+  paragraph.
+
+Known gap: `badge` text is appended to the row's `aria-label` without a separator
+("Platform7"), so screen readers read label and count as one token — prefer descriptive badges or
+move counts into `label` when the number needs explaining. There is also no type-ahead letter
+jumping and no `role="group"` wrappers around child lists.
+
+## FAQ
+
+**What happens to items with a missing or self-referencing `parentId`?** `buildTree` promotes them
+to roots, and nodes caught in a cycle are detached and rendered at the top level — nothing silently
+disappears.
+
+**Does expanding a row select it?** No. The chevron button stops propagation; selection only comes
+from clicking the row body, Enter or Space.
+
+**Why did my tree stop auto-expanding to the selection?** Supplying `expandedIds` puts the tree in
+controlled mode, which disables both the ancestor auto-reveal and `defaultExpanded`. You own the
+set from there.
+
+## Related
+
+- `Tree Select` for the same data as a popover form field.
+- `Transfer` to move items between sets.
+- `Cascader` for ordered path selection.
+- `Combobox` when the hierarchy should collapse into a searchable list.
+- [Used in the template](https://fish-admin.vercel.app/departments)

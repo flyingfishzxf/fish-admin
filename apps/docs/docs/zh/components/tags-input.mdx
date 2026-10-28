@@ -1,0 +1,103 @@
+---
+title: Tags Input 标签输入框
+description: 以标签芯片形式录入自由文本，支持回车与逗号提交、去重、数量上限和快捷建议。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TagsInputBasic from '@docs/demos/tags-input/basic'
+import basicSource from '@docs/demos/tags-input/basic.tsx?raw'
+import TagsInputSuggestions from '@docs/demos/tags-input/suggestions'
+import suggestionsSource from '@docs/demos/tags-input/suggestions.tsx?raw'
+
+# Tags Input 标签输入框
+
+`TagsInput` 是一个带边框的输入区：已提交的标签以 `secondary` 变体的 `Badge` 呈现，右侧是一根原生
+`input`。它会按逗号拆分输入、去掉重复项、遵守 `maxTags` 上限，并可通过 `suggestions` 渲染快捷添加
+芯片。
+
+<ComponentMeta id="tags-input" />
+
+## 何时使用
+
+- 标签、技能、作用域这类取值开放、不固定的集合。
+- 批量录入：用户会从别的工具粘贴一串逗号分隔的值。
+- 有若干常用取值希望一键添加时，用 `suggestions` 提供候选芯片。
+
+## 何时不使用
+
+- 取值是固定的已知集合：改用 `Combobox` 或 `Select`，保证录入值合法。
+- 需要按输入过滤候选列表：`Auto Complete` 才会做匹配过滤，本组件只渲染你传入的芯片。
+- 只需要单个值：普通 `Input` 比标签输入更简洁。
+- 标签需要携带 id、颜色等信息保存：本组件的值始终是 `string[]`。
+
+## 基础用法
+
+<Demo title="自由录入，键盘提交" filename="demos/tags-input/basic.tsx" source={basicSource}>
+  <TagsInputBasic />
+</Demo>
+
+## 快捷建议芯片
+
+`suggestions` 会在输入框下方、一条上边框之后渲染一排虚线芯片。每个芯片走的是与手输相同的提交逻辑，
+因此同样会去重并计入 `maxTags`。达到上限后，输入框和所有芯片会一起禁用，所以这个示例用一个实时区域
+把剩余名额显示出来。
+
+<Demo
+  title="建议芯片与手输共享上限"
+  filename="demos/tags-input/suggestions.tsx"
+  source={suggestionsSource}
+>
+  <TagsInputSuggestions />
+</Demo>
+
+## API
+
+<ApiTable component="tags-input" />
+
+## 设计指引
+
+- 外层是一个 `min-h-9` 的弹性容器，带 `border-input`、`rounded-md`、`shadow-xs`，聚焦时套上
+  `focus-within:ring-[3px] ring-ring/50` 的光环，让整块看起来是单个控件；禁用时外层加
+  `cursor-not-allowed opacity-50`。
+- 每个标签都是 `variant="secondary"` 的 `Badge`，标签文字用 `max-w-40 truncate` 截断，末尾是一个含
+  `size-3` `X` 图标的圆形删除按钮。长标签只截断，不会把芯片撑到换行。
+- 内部输入框为 `h-6 min-w-24 flex-1 text-sm`；`placeholder` 仅在没有任何标签时显示，避免有内容后
+  还残留提示语。
+- 提交时按逗号拆分、去空格，并把每个标签裁剪到 `maxLength`（默认 24）。完全相同（区分大小写）的
+  重复项、以及超过 `maxTags`（默认 8）的标签会被静默丢弃；只有确实新增了标签才会触发 `onChange`。
+- 粘贴 `a,b,c` 会在 `onChange` 中立即触发拆分，不必再按回车。
+- 只有当数组非空时才渲染 `suggestions` 芯片；到达上限或设置 `disabled` 时，芯片与输入框一并禁用。
+
+## 无障碍
+
+- 输入框的可访问名称来自 `ariaLabel` 属性；每个删除按钮读作“移除 `<标签>`”，每个建议按钮读作
+  “建议标签：`<标签>`”，均按当前语言生成。
+- 键盘操作：`Enter` 或 `,` 提交草稿，输入框为空时 `Backspace` 删除最后一个标签，`Escape` 清空草稿
+  而不影响已提交的标签。
+- 删除按钮与建议芯片都是真实的 `<button type="button">`，位于 Tab 顺序中，并带有
+  `focus-visible:ring-2` 焦点环。
+- 由于输入框排在芯片之后，删除某个标签后光标仍在输入框内，焦点不会丢失。
+
+已知缺口：组件本身不会播报已选标签数量或剩余名额；到达 `maxTags` 时输入框只是变成 `disabled`，
+容易被误认为失效，请像示例那样在自己的实时区域里给出计数或提示。此外，重复标签或超长标签被拒绝时
+组件没有任何错误态，校验是刻意静默的。
+
+## FAQ
+
+**`onChange` 收到的是什么？** 变更后的完整 `string[]`，不是增量。直接把它当作新值保存即可。
+
+**去重区分大小写吗？** 区分。内部用精确 `includes` 判断，`Owner` 和 `owner` 会同时保留。若要忽略
+大小写，请在传入前先做归一化。
+
+**能当受控的自动补全用吗？** 不合适。`suggestions` 只是你提供的静态芯片；需要过滤、检索候选时请用
+`Auto Complete` 或 `Combobox`。
+
+## 相关
+
+- `Input`：只需要单个自由文本值时。
+- `Badge`：标签芯片的基础组件。
+- `Auto Complete`：需要对列表做输入过滤时。
+- `Combobox`：标签必须来自已知集合时。
+- [在模板中的用法](https://fish-admin.vercel.app/users/$id)

@@ -40,19 +40,33 @@ export function Upload({
   disabled = false,
   className,
 }: {
+  /** The file rows to render, each carrying name, size and an optional status, progress or error. */
   items: UploadItem[]
+  /** Called with the accepted files that pass the size check, straight from the dropzone. */
   onFiles: (files: File[]) => void
+  /** When provided, every row gets a remove button that calls this with the row. */
   onRemove?: (item: UploadItem) => void
+  /** When provided, error rows get a retry button that calls this with the row. */
   onRetry?: (item: UploadItem) => void
+  /** Native accept hint for the browse dialog; drag and drop is not filtered by it. */
   accept?: string
+  /** Primary instruction and accessible name of the hidden file input. */
   label: string
+  /** Secondary line under the label, for format and size guidance. */
   hint?: string
+  /** Text of the browse button; falls back to the translated default. */
   browseLabel?: string
+  /** Per-file byte ceiling; larger picks are blocked before onFiles runs. */
   maxSize?: number
+  /** Message surfaced as an alert when a file exceeds maxSize. */
   maxSizeLabel?: string
+  /** Builds the accessible name of each remove button from the row. */
   removeLabel?: (item: UploadItem) => string
+  /** Accessible name of the retry button on an error row. */
   retryLabel?: string
+  /** Blocks dragging, the file input and the browse button. */
   disabled?: boolean
+  /** Extra classes for the outer stack wrapper. */
   className?: string
 }) {
   const { t } = useUITranslation()

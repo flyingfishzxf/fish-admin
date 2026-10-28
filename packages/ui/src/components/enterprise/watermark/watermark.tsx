@@ -11,12 +11,19 @@ export function Watermark({
   gap = 96,
   className,
 }: {
+  /** The label repeated across the surface as a decorative, non-accessible tile. */
   text: string
+  /** The content the watermark is painted over. */
   children: ReactNode
+  /** Alpha of each tile from 0 to 1; defaults to a subtle 0.08. */
   opacity?: number
+  /** Font size in pixels used for each repeated tile. */
   fontSize?: number
+  /** Rotation in degrees; a negative value tilts the text up to the right. */
   rotate?: number
+  /** Distance in pixels between tile centers on both axes. */
   gap?: number
+  /** Extra classes for the positioned container. */
   className?: string
 }) {
   const containerRef = useRef<HTMLDivElement>(null)

@@ -1,0 +1,99 @@
+---
+title: Upload 上传
+description: 拖拽区加一个受控文件列表，展示进度、错误与逐行操作。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import UploadBasic from '@docs/demos/upload/basic'
+import basicSource from '@docs/demos/upload/basic.tsx?raw'
+import UploadProgress from '@docs/demos/upload/progress'
+import progressSource from '@docs/demos/upload/progress.tsx?raw'
+
+# Upload 上传
+
+`Upload` 由一个支持多文件的 `Dropzone` 和一个渲染 `Progress` 行的 `<ul>` 列表组合而成。它是完全受控的：
+列表 `items` 和真正的传输都由调用方掌握，组件只通过回调上报选择、移除与重试。
+
+<ComponentMeta id="upload" />
+
+## 何时使用
+
+- 需要收集一个或多个附件，并且队列状态（上传中、完成、错误）要一直可见。
+- 导入或附件流程，既想要拖拽又想要浏览选择，还需要逐文件操作。
+- 需要格式化文件大小，并由自己的上传逻辑驱动进度条的列表场景。
+
+## 何时不使用
+
+- 单个文件、没有进度/重试/列表：直接用 `Dropzone`。
+- 展示已存放在服务端的图片：用 `Image Preview`。
+- 需要接入字段级表单校验：改用 `Dropzone` 配合 `Form`。
+
+## 基础用法
+
+<Demo title="带进度地排队文件" filename="demos/upload/basic.tsx" source={basicSource}>
+  <UploadBasic />
+</Demo>
+
+## 大小限制与错误
+
+`maxSize` 在组件内部先于 `onFiles` 校验：任何超过字节上限的文件都会被拦下，并作为拖拽区的 `error`
+提示呈现，调用方拿不到它。已经进入 `error` 状态的行，在提供 `onRetry` 时会多出一个重试按钮。
+
+<Demo title="拒绝超限文件并重试" filename="demos/upload/progress.tsx" source={progressSource}>
+  <UploadProgress />
+</Demo>
+
+## API
+
+<ApiTable component="upload" />
+
+## 设计指引
+
+- 主体是 `Dropzone`（`multiple`，始终开启）叠加一个可选列表；只有 `items.length > 0` 时才渲染
+  `<ul>`，样式为 `divide-y rounded-lg border`。
+- 每行是一个 `size-9` 的 `bg-muted` `FileText` 图标块、`truncate text-sm font-medium` 的文件名，
+  以及右对齐、`text-xs text-muted-foreground tabular-nums` 的大小。`formatSize` 用 `Intl.NumberFormat`
+  输出 B/KB/MB/GB，最多一位小数；非法或 ≤ 0 的大小显示 `0 B`。
+- `status` 默认为 `done`。`uploading` 行显示一条 6 px（`h-1.5`）、以文件名命名的 `Progress`
+  进度条，右侧是固定宽度 `w-9` 的百分比读数。`error` 行显示 `TriangleAlert` 与破坏色文案
+  （`item.error`，缺失时用翻译的 `enterprise.noData`）。`done` 行显示 `text-success` 的
+  `CheckCircle2`，仅在 `progress === 100` 时打印 `100%`。
+- 重试按钮只在 `error` 行且传入了 `onRetry` 时出现；移除按钮在传入 `onRemove` 时出现在每一行。
+  两者都是 `ghost` 的 `icon-xs` 按钮。
+- `maxSize` 用 `maxSizeLabel`（未提供时为 `Files must be <size> or smaller.`）拒绝超限选择。只要批次里
+  有一个文件超限，整批都会被拦下，而不是只丢掉那一个。
+- 组件不碰网络：`Upload` 对超限输入不会调用 `onFiles`，也不会修改 `items`。进度、完成与恢复都要由
+  你的上传代码自己驱动。
+
+## 无障碍
+
+- 拖拽区里 `sr-only` 的 `<input type="file">` 保留 `aria-label={label}` 且仍在 Tab 顺序中，配套的
+  `outline` 浏览按钮会打开系统选择器，键盘路径完整。
+- `Progress` 是真正的 `progressbar`（来自 Radix），依据 `value` 暴露 `aria-valuenow`，并通过
+  `aria-label` 以文件名命名，读屏会念出"report.pdf，40%"。
+- 仅有图标的重试与移除按钮分别由 `retryLabel` 和 `removeLabel?.(item)` 命名，回退到翻译的
+  `actions.retry` 与 `enterprise.removeFile`。
+
+已知缺口：超限拦截用了 `role="alert"`，但逐行的 `uploading` → `done` / `error` 变化不会被播报——列表
+外层没有活动区域，完成状态只是视觉呈现。此外那个 `sr-only` 输入框是一个不可见的 Tab 停靠点，与紧随
+其前的浏览按钮共用同一个名称。
+
+## FAQ
+
+**Upload 会真的上传吗？** 不会。它只渲染 `items` 并上报事件；真正的传输由你执行，进度与状态再通过数组
+回喂给组件。
+
+**`formatSize` 打印什么？** 字节、KB、MB 或 GB，最多一位小数，例如 `1.4 MB`。为零或非法时显示 `0 B`。
+
+**为什么大文件没进 `onFiles`？** `maxSize` 会先过滤整批。只要有文件超过上限，组件就显示 `error`
+提示并直接返回，不调用 `onFiles`。
+
+## 相关
+
+- `Dropzone`：底层的拖拽与选择区域。
+- `Progress`：每个上传中行渲染的进度条。
+- `Button`：浏览、重试与移除操作。
+- `Image Preview`：文件入库后的展示。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

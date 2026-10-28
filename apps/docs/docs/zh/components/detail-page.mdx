@@ -1,0 +1,104 @@
+---
+title: Detail Page 详情页
+description: 记录头部加上标签化或单块正文，并带操作区与页脚。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import DetailPageBasic from '@docs/demos/detail-page/basic'
+import basicSource from '@docs/demos/detail-page/basic.tsx?raw'
+import DetailPageSingleSection from '@docs/demos/detail-page/single-section'
+import singleSectionSource from '@docs/demos/detail-page/single-section.tsx?raw'
+
+# Detail Page 详情页
+
+`DetailPage` 负责一个记录头部——可选的 `back` 与 `avatar`、一个 `h1` 的 `title`、`subtitle`、
+紧随其后的 `badges`、一行弱化的 `meta` 以及右对齐的 `actions`——头部之下是正文。当 `tabs` 是非空数组时，
+它渲染一个 Radix `Tabs` 标签列表；否则渲染 `children`，`footer` 收尾。
+
+<ComponentMeta id="detail-page" />
+
+## 何时使用
+
+- 任何实体路由（成员、项目、订单、工单）的落地视图，需要一个稳定的头部。
+- 把一条大记录拆成带名称的分区，又不想自己接标签状态。
+- 头部保持稳定、正文在概览/动态/设置之间切换的页面。
+
+## 何时不使用
+
+- 新建或编辑记录：交互面请用 `Pro Form` 或 `Editable Table`。
+- 卡片里的紧凑摘要：`Descriptions` 比整页骨架更轻。
+- 没有头部、头像或操作区的纯内容：这套结构是多余的。
+
+## 基础用法
+
+<Demo title="带标签分区的成员记录" filename="demos/detail-page/basic.tsx" source={basicSource}>
+  <DetailPageBasic />
+</Demo>
+
+## 单块正文与页脚
+
+传 `children` 而不是 `tabs` 会完全跳过标签列表，只渲染一块正文。这个形态还演示了基础示例里没用到的两个
+头部插槽：头部之上的 `back` 节点，以及正文之后的 `footer` 操作行。
+
+<Demo
+  title="无标签的项目记录"
+  filename="demos/detail-page/single-section.tsx"
+  source={singleSectionSource}
+>
+  <DetailPageSingleSection />
+</Demo>
+
+## API
+
+<ApiTable component="detail-page" />
+
+## 设计指引
+
+- 根节点是 `space-y-6` 的纵向堆叠：先 `back`，然后头部，然后正文，最后 `footer`。
+- 头部是 `flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between`。左侧组是
+  `flex min-w-0 items-center gap-4`（头像放进 `shrink-0`，再接文字列）；右侧 `actions` 组是
+  `flex shrink-0 flex-wrap items-center gap-2`，按钮换行而不是溢出。
+- `title` 是 `<h1>`，样式为 `truncate text-2xl font-semibold tracking-tight`；`badges` 紧跟在标题后
+  内联排列。`subtitle` 与 `meta` 都是 `text-sm text-muted-foreground`，其中 `meta` 以 `gap-x-4 gap-y-1`
+  自动换行。
+- 用标签时，正文是 `Tabs defaultValue={defaultTab ?? tabs[0]?.value}`，列表间距为 `gap-4`；每个
+  `DetailPageTab` 变成一个以 `label` 命名的 `TabsTrigger`，以及渲染 `content` 的对应 `TabsContent`。
+  `defaultTab` 决定默认打开的分区，缺省时落到第一个标签。
+- 标签与正文是二选一：`tabs && tabs.length > 0` 时渲染标签列表，`tabs` 缺省或为空时渲染 `children`，
+  绝不会出现标签列表与正文并存。
+- 状态不受控。`Tabs` 拿到的是 `defaultValue`，而非受控值或 `onChange`，所以重新挂载会回到默认分区；需要
+  持久化或深链时请自己上抬状态。
+
+## 无障碍
+
+- `TabsList` 用 `tabsLabel` 取得可访问名称，于是标签组会以"带名称的标签列表"被播报，而不是一堆无名控件。
+  用 `tabs` 时请务必传 `tabsLabel`。
+- Radix Tabs 自带键盘模型：方向键在触发器间移动并维护漫游 tabindex，Home/End 跳到两端，选中项带
+  `aria-selected`，面板再通过 `aria-controls` / `aria-labelledby` 关联回触发器。
+- `title` 渲染成真正的 `<h1>`，为记录提供可供跳转链接和读屏导航的标题。
+- `back`、`actions`、`badges`、`meta`、`footer` 都是原样传入的 `ReactNode` 插槽：纯图标的控件命名由你负责，
+  示例里用带文字的 `Button` 就是这么做的。
+
+已知缺口：`DetailPage` 把标题硬编码成 `<h1>`，若某个路由本身已经有一个一级页面标题，就会出现两个 h1。它
+也没有暴露 `onChange` 或受控值，标签切换既无法持久化，也无法反映到 URL 上。
+
+## FAQ
+
+**DetailPage 会记住打开的是哪个标签吗？** 不会。它不受控——`Tabs` 只拿到 `defaultTab ?? 第一个标签`，
+没有 `onChange`。需要持久化或路由时请自行管理当前分区。
+
+**`tabs` 和 `children` 能一起用吗？** 不能。非空的 `tabs` 渲染标签列表；`tabs` 缺省或为空时改渲染
+`children`。正文模型二选一。
+
+**`badges` 和 `meta` 分别放什么？** `badges` 是标题后内联的短状态徽章。`meta` 是副标题下方一行弱化的
+辅助信息（部门、负责人、日期等）。
+
+## 相关
+
+- `Avatar`：头部里的头像插槽。
+- `Tabs`：`tabs` 属性驱动的底层分区切换器。
+- `Badge`：传给 `badges` 的状态徽章。
+- `Descriptions`：分区内更轻量的键值摘要。
+- [在模板中的用法](https://fish-admin.vercel.app/projects/$id)

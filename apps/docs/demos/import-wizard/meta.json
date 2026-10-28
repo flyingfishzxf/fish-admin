@@ -1,0 +1,28 @@
+[
+  {
+    "id": "import-wizard/basic",
+    "component": "import-wizard",
+    "file": "demos/import-wizard/basic.tsx",
+    "title": {
+      "en": "Sample CSV through all four steps",
+      "zh": "用示例 CSV 走完四个步骤"
+    },
+    "description": {
+      "en": "Load sample, auto-mapped columns, review counts and a simulated import.",
+      "zh": "载入示例、自动匹配列、复核统计与模拟导入。"
+    }
+  },
+  {
+    "id": "import-wizard/steps",
+    "component": "import-wizard",
+    "file": "demos/import-wizard/steps.tsx",
+    "title": {
+      "en": "Blocked steps and skipped rows",
+      "zh": "被阻断的步骤与被跳过的行"
+    },
+    "description": {
+      "en": "Unmapped required fields keep Next disabled; invalid rows never reach onImport.",
+      "zh": "必填字段未匹配时“下一步”保持禁用；无效行不会进入 onImport。"
+    }
+  }
+]

@@ -1,0 +1,106 @@
+---
+title: Timeline
+description: A vertical ordered list of events with tone-colored markers, icons, timestamps, and descriptions.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TimelineBasic from '@docs/demos/timeline/basic'
+import basicSource from '@docs/demos/timeline/basic.tsx?raw'
+import TimelineEmpty from '@docs/demos/timeline/empty'
+import emptySource from '@docs/demos/timeline/empty.tsx?raw'
+
+# Timeline
+
+`Timeline` renders a `TimelineItem[]` as a semantic `<ol>` where each entry has a circular marker
+(optionally a `lucide-react` icon in a tone color) joined by a vertical connector line, plus a title,
+timestamp, and description.
+
+<ComponentMeta id="timeline" />
+
+## When to use
+
+- Audit trails, approval histories, and changelogs where order over time is the point.
+- Compact event streams that mix a headline, a supporting line, and a relative timestamp.
+- Signposting severity or outcome per event using the `tone` markers.
+
+## When not to use
+
+- A process the user advances through: use `Stepper`, which shows progress and current state.
+- A simple bulleted set of rows: `List` is lighter than a timeline.
+- Key/value metadata about one record: use `Descriptions`.
+- Data you must sort or paginate yourself: `Timeline` renders exactly what you pass and does not page.
+
+## Basic usage
+
+<Demo
+  title="Audit trail with icons and tones"
+  filename="demos/timeline/basic.tsx"
+  source={basicSource}
+>
+  <TimelineBasic />
+</Demo>
+
+## Empty state
+
+An empty `items` array never renders a list. If `emptyLabel` is provided you get a muted placeholder
+paragraph; if it is omitted the component returns `null`, which is handy when the parent already owns
+the empty UI. The demo toggles between a populated and an empty array so you can see both.
+
+<Demo
+  title="Clearing and restoring events"
+  filename="demos/timeline/empty.tsx"
+  source={emptySource}
+>
+  <TimelineEmpty />
+</Demo>
+
+## API
+
+<ApiTable component="timeline" />
+
+## Design guidance
+
+- The list is `<ol className="space-y-0">`; spacing comes from each row's `pb-6` (removed on the last
+  item), so rows sit directly above one another.
+- Every marker is a `size-8` rounded badge at `z-10`. It shows the item's `icon` at `size-4`, or a
+  small `size-2` dot tinted with `bg-current` when no icon is set.
+- The connector is a `w-px bg-border` line from the marker down to the next row, rendered on every
+  item except the last, so the line stops cleanly at the newest event.
+- `tone` maps to token classes, not raw colors: `default` is `bg-muted`, `info`/`success`/`warning`
+  use translucent `chart-1`/`chart-3`/`chart-4` fills, and `destructive` is `bg-destructive/10`.
+- `title`, `description`, and `timestamp` are `ReactNode`, so you can pass links or formatted dates.
+  The title is `text-sm font-medium`, the timestamp `text-xs text-muted-foreground` aligned right on
+  the same baseline, and the description `text-sm break-words text-muted-foreground`.
+- Items render in array order; nothing is sorted or reversed internally.
+
+## Accessibility
+
+- The component is a real ordered list (`<ol>` with `<li>` items), so screen readers announce position
+  ("item 3 of 4") and you get list navigation for free.
+- The connector line is `aria-hidden`, so it does not add noise to the announcement of each row.
+- Content is plain text; there are no interactive controls inside the timeline, so nothing needs tab
+  stops, and reading follows normal document order.
+
+Known gap: `tone` communicates severity through color only. Do not rely on it as the sole signal; keep
+the meaning in the `title` or `description` text. The decorative marker icon is not explicitly marked
+`aria-hidden`, so if you use an `icon` that could carry meaning, put that meaning in text as well.
+
+## FAQ
+
+**Can I pass rich content into an item?** Yes. `title`, `description`, and `timestamp` are `ReactNode`,
+so links, code, and formatted dates all work.
+
+**What does `tone` change?** Only the marker badge's background and text color, using chart and
+destructive tokens. It never changes layout.
+
+**Do I control ordering?** Yes. The list renders items in the array order you pass; sort or reverse
+before handing them in.
+
+## Related
+
+- `Stepper` for a user-progressable process.
+- `List` for simple rows without a time axis.
+- `Descriptions` for key/value metadata.
+- [Used in the template](https://fish-admin.vercel.app/workflows/$id)

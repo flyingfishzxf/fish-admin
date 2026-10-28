@@ -36,12 +36,19 @@ export function TimePicker({
   disabled = false,
   className,
 }: {
+  /** Selected time as an `HH:mm` 24-hour string; invalid or empty values show the placeholder. */
   value?: string
+  /** Called with the new `HH:mm` value, or `undefined` when cleared. */
   onChange: (value: string | undefined) => void
+  /** Trigger text shown while no time is selected. */
   placeholder: string
+  /** Accessible name; the display value and the HH/MM select labels are appended to it. */
   ariaLabel: string
+  /** Interval between minute options, clamped to 1–59. Defaults to 5. */
   minuteStep?: number
+  /** Disables the trigger. */
   disabled?: boolean
+  /** Extra classes for the trigger button. */
   className?: string
 }) {
   const { t } = useUITranslation()

@@ -1,0 +1,108 @@
+---
+title: Trend
+description: Render a signed delta as an arrow, localized number and semantic tone in one inline label.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TrendBasic from '@docs/demos/trend/basic'
+import basicSource from '@docs/demos/trend/basic.tsx?raw'
+import TrendInverted from '@docs/demos/trend/inverted'
+import invertedSource from '@docs/demos/trend/inverted.tsx?raw'
+
+# Trend
+
+`Trend` is a single `role="img"` span that turns a number into an arrow icon, a locale-formatted
+signed value via `Intl.NumberFormat` and a semantic tone (`text-success`, `text-destructive` or
+`text-muted-foreground`).
+
+<ComponentMeta id="trend" />
+
+## When to use
+
+- KPI cards and stat rows where a delta needs context at a glance: revenue, churn, latency.
+- Metrics where the sign alone is not enough — `invert` marks "lower is better" series.
+- Inline comparisons that must stay screen-reader friendly without hand-writing the label.
+
+## When not to use
+
+- The absolute value itself: `Statistic` shows the number, `Trend` shows the change.
+- A full chart or sparkline: use `Chart` when shape over time matters.
+- Ratios that need a bar or ring: `Progress` conveys completion better than a percentage delta.
+- Unchanged values: render plain text instead of a flat `Trend` when "no change" is noise.
+
+## Basic usage
+
+<Demo title="KPI deltas with context" filename="demos/trend/basic.tsx" source={basicSource}>
+  <TrendBasic />
+</Demo>
+
+The sign picks everything: positive values get an `ArrowUpRight` in `text-success`, negative values
+an `ArrowDownRight` in `text-destructive`, and zero a muted `Minus` dash formatted as `0%` —
+`signDisplay: 'exceptZero'` keeps the sign off flat deltas.
+
+## When lower is better
+
+<Demo
+  title="Inverted tone for cost metrics"
+  filename="demos/trend/inverted.tsx"
+  source={invertedSource}
+>
+  <TrendInverted />
+</Demo>
+
+`invert` only reassigns the tone: a churn drop of `-0.6%` renders green even though the arrow still
+points down, and a rise in failed logins renders destructive. Pair it with `suffix=" pt"` and a
+`precision` override when the unit is percentage points rather than percent.
+
+## API
+
+<ApiTable component="trend" />
+
+## Design guidance
+
+- The wrapper is `inline-flex items-center gap-1 text-xs font-medium` with `data-slot="trend"`, so
+  it sits on the same line as a `Statistic` or table cell without resetting size.
+- Icons (`ArrowUpRight`, `ArrowDownRight`, `Minus`) are `size-3.5`; the direction tone classes are
+  `text-success`, `text-destructive` and `text-muted-foreground`.
+- Formatting is `new Intl.NumberFormat(locale, { maximumFractionDigits: precision, signDisplay:
+'exceptZero' })` with the `UIProvider` locale and `precision` defaulting to 1 — `12.4` renders
+  `+12.4%`, `-0.6` renders `-0.6%`, `0` renders `0%`.
+- `suffix` (default `%`) is appended without a space; pass `suffix=" pt"` or an empty string for
+  other units.
+- The `label` prop renders after the value in `font-normal text-muted-foreground` — keep it as the
+  neutral comparison caption ("vs last month"), not part of the colored value.
+
+## Accessibility
+
+- The whole component is one `role="img"` whose `aria-label` joins value and label, for example
+  "+12.4% vs last month"; the icon, number and caption inside are `aria-hidden`, so nothing is
+  announced twice. This is asserted by the component's tests.
+- Color never carries meaning alone: every tone is mirrored by the arrow icon and the mathematical
+  sign in the text.
+- A flat `0` still announces the number and label, just with the muted dash.
+
+Known gap: the good/bad judgement encoded by `invert` lives only in the color — screen readers hear
+"-0.6% vs last month" identically with or without `invert`. Put the interpretation into the `label`
+text ("improvement" / "vs last month") for inverted series, and wrap the component in your own
+`aria-live` container when the value updates on the page; `Trend` itself is static.
+
+## FAQ
+
+**Does `Trend` compute the delta?** No. It formats and tones whatever number you pass — calculate
+percent change in your data layer.
+
+**What does `invert` change exactly?** Only the tone class mapping (up↔down); the arrow, sign and
+announced text always follow the raw sign of `value`.
+
+**Why does `0` have no plus sign?** `Intl.NumberFormat` runs with `signDisplay: 'exceptZero'`, and
+zero is deliberately rendered as a flat, muted `0%`.
+
+## Related
+
+- `Statistic` for the headline value next to the delta.
+- `Progress` for completion shares instead of change.
+- `Card` for the KPI container.
+- `ProTable` when trends belong in a sortable column.
+- [Used in the template](https://fish-admin.vercel.app/reports)

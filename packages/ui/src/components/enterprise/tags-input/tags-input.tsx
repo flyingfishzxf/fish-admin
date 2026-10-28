@@ -18,16 +18,27 @@ export function TagsInput({
   suggestions,
   className,
 }: {
+  /** DOM `id` applied to the inner text input for label association. */
   id?: string
+  /** Native `name` applied to the inner text input for form submission. */
   name?: string
+  /** Committed tags, in insertion order. */
   value: string[]
+  /** Called with the full updated tag list on every add or remove. */
   onChange: (value: string[]) => void
+  /** Placeholder shown in the input only while there are no tags. */
   placeholder?: string
+  /** Accessible name for the text input. */
   ariaLabel: string
+  /** Maximum number of tags; the input disables once this is reached. Defaults to 8. */
   maxTags?: number
+  /** Characters each tag is trimmed to when committed. Defaults to 24. */
   maxLength?: number
+  /** Disables the input and every remove button. */
   disabled?: boolean
+  /** Optional quick-add chips rendered below the input. */
   suggestions?: { label: string; value: string }[]
+  /** Extra classes for the bordered wrapper. */
   className?: string
 }) {
   const { t } = useUITranslation()

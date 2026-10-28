@@ -1,0 +1,96 @@
+---
+title: Time Picker 时间选择器
+description: 在弹层里用两列下拉选取时与分，值以 HH:mm 字符串保存。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TimePickerBasic from '@docs/demos/time-picker/basic'
+import basicSource from '@docs/demos/time-picker/basic.tsx?raw'
+import TimePickerSteps from '@docs/demos/time-picker/steps'
+import stepsSource from '@docs/demos/time-picker/steps.tsx?raw'
+
+# Time Picker 时间选择器
+
+`TimePicker` 由一个 `outline` 变体的 `Button` 触发器和一个 `Popover` 组成，弹层里放了“时”和“分”两个
+`Select`。值是 24 小时制的 `HH:mm` 字符串。
+
+<ComponentMeta id="time-picker" />
+
+## 何时使用
+
+- 只需要一天中的某个时刻、不涉及日期的表单与排期，例如站会开始时间、维护窗口。
+- 需要用 `minuteStep` 把录入限制在粗粒度刻度上，例如按一刻钟预约。
+- 与 `Date Picker` 搭配：日期与时间分开保存，比自造一个“日期加时间”控件更省心。
+
+## 何时不使用
+
+- 同时需要日期：先用 `Date Picker` 选日，再用本组件选时刻。
+- 日期与时间必须作为同一个值一起流转：请自行建模，而不是拆成两个字符串。
+- 需要时区或 UTC 时刻：这里的值是墙上时钟，不带任何时区信息。
+- 需要时长或时间段：本组件只返回一个时间点，起止请分别记录。
+
+## 基础用法
+
+<Demo title="一个 24 小时制时刻" filename="demos/time-picker/basic.tsx" source={basicSource}>
+  <TimePickerBasic />
+</Demo>
+
+## 分钟刻度
+
+`minuteStep` 决定“分”这一列展示多少个选项。它会被夹到 1 到 59 之间，传入非有限数值时回退为 5。若
+`value` 里已有的分钟正好不在刻度上，组件仍会把它插入选项列表，所以打开弹层时当前值不会丢。
+
+<Demo title="一刻钟刻度仍保留非刻度值" filename="demos/time-picker/steps.tsx" source={stepsSource}>
+  <TimePickerSteps />
+</Demo>
+
+## API
+
+<ApiTable component="time-picker" />
+
+## 设计指引
+
+- 触发器是标准 36 px 高的 `outline` 按钮，`justify-start` 左对齐，左侧是 `size-4` 的 `Clock` 图标，
+  文字超出会截断；尚未选择时使用 `text-muted-foreground`。
+- `value` 会用正则 `/^([01]\d|2[0-3]):([0-5]\d)$/` 校验。校验不通过或没有值时显示 `placeholder`，
+  两列下拉都停在未选中状态。
+- 弹层为 `align="start"`、`w-auto min-w-64 p-3`；两个 `SelectTrigger` 宽 `w-20`，列表用
+  `position="popper"` 且 `max-h-60`，选项较多时在面板内滚动。
+- 改动任意一列都会以补零后的 `HH:mm` 调用 `onChange`。选“时”时保留当前分钟（没有则为 `00`），选
+  “分”时保留当前小时（没有则为 `00`），没有“确认”这一步。
+- 分钟从 0 开始按 `minuteStep` 递增生成。“时/分”两个小标题是 `aria-hidden` 的，因为每个触发器已经有
+  自己的可访问名称。
+- 底部由上边框分隔，含 `ghost` 变体的“清除”（无值时禁用）与 `outline` 变体的“关闭”；点“清除”会以
+  `undefined` 调用并关闭弹层。
+
+## 无障碍
+
+- 触发器的可访问名称由 `ariaLabel` 与当前显示值拼成，例如“站会开始时间：09:00”，不打开弹层也能听到
+  已选时刻。
+- “时”“分”触发器都是名为“`<ariaLabel> hours`”“`<ariaLabel> minutes`”的 `combobox`；展开后是 radix
+  `listbox`，Home/End、方向键、首字母匹配、Enter/空格选中、Escape 关闭都按常规可用。
+- “清除”和“关闭”都在 Tab 顺序中；没有选中值时“清除”处于禁用态。
+- Escape 会先关掉打开的下拉，再关闭弹层，焦点交还触发器。
+
+已知缺口：弹层本身是 `dialog`，但没有属于自己的可访问名称；组件也没有 `min`/`max` 边界，00:00 到
+23:59 始终全部可选。若业务需要限制时间段，请用可见提示文字表达，组件无法代劳。
+
+## FAQ
+
+**`onChange` 给出什么格式？** 补零的 24 小时制 `HH:mm` 字符串；点击“清除”后是 `undefined`。没有
+12 小时制模式。
+
+**`value` 非法会怎样？** 会被当作空值。严格正则拒绝了 `9:5`、`24:00`、`08:60` 之类的输入，此时触发器
+回退到 `placeholder`。
+
+**当前分钟不在刻度上会被隐藏吗？** 不会。已存的分钟会被并入选项并重新排序，值仍然保持选中且可见。
+
+## 相关
+
+- `Date Picker`：选择自然日。
+- `Date Range Picker`：选择起止日期。
+- `Select`：时、分两列下拉的底层组件。
+- `Popover`：需要自定义触发器时。
+- [在模板中的用法](https://fish-admin.vercel.app/integrations)

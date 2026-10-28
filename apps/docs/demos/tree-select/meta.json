@@ -1,0 +1,28 @@
+[
+  {
+    "id": "tree-select/basic",
+    "component": "tree-select",
+    "file": "demos/tree-select/basic.tsx",
+    "title": {
+      "en": "Pick a team by path",
+      "zh": "按路径选择团队"
+    },
+    "description": {
+      "en": "The trigger displays the selected node's full ancestor path.",
+      "zh": "触发器显示所选节点的完整祖先路径。"
+    }
+  },
+  {
+    "id": "tree-select/validation",
+    "component": "tree-select",
+    "file": "demos/tree-select/validation.tsx",
+    "title": {
+      "en": "Required field and disabled state",
+      "zh": "必填与禁用状态"
+    },
+    "description": {
+      "en": "aria-invalid and aria-describedby wire the trigger into form errors.",
+      "zh": "用 aria-invalid 与 aria-describedby 接入表单错误提示。"
+    }
+  }
+]

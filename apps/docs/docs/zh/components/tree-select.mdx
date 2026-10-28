@@ -1,0 +1,105 @@
+---
+title: Tree Select 树形选择器
+description: 在弹层树中从层级数据里选出一个节点，触发器显示完整路径。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TreeSelectBasic from '@docs/demos/tree-select/basic'
+import basicSource from '@docs/demos/tree-select/basic.tsx?raw'
+import TreeSelectValidation from '@docs/demos/tree-select/validation'
+import validationSource from '@docs/demos/tree-select/validation.tsx?raw'
+
+# Tree Select 树形选择器
+
+`TreeSelect` 由一个 `outline` 变体的 `Button` 触发器和一个 `Popover` 组成，弹层内嵌 `Tree`
+组件，数据仍是扁平的 `TreeItem[]`。值是单个节点 id，触发器用 `treePath` 拼出该节点的完整
+祖先路径来显示。
+
+<ComponentMeta id="tree-select" />
+
+## 何时使用
+
+- 选项天然分层级的表单字段：归属团队、会计科目、存放目录。
+- 希望选中值"看得见上下文"，父级与子级的关系本身就是信息。
+- 数据量适合目视浏览的场景——组件没有搜索框。
+
+## 何时不使用
+
+- 平铺选项列表：`Select` 更轻，还支持首字母定位。
+- 选项需要边输入边检索或异步加载：用 `Combobox`。
+- 逐级点选的窄路径（国家/城市/门店）：`Cascader` 的分列交互更快。
+- 需要一次选多个节点：`TreeSelect` 只支持单值，多选请用 `Transfer` 或 `Tree` 配勾选框。
+
+## 基础用法
+
+<Demo title="选择归属团队" filename="demos/tree-select/basic.tsx" source={basicSource}>
+  <TreeSelectBasic />
+</Demo>
+
+选中“Frontend”后保存的是 id `frontend`，触发器却显示“Engineering / Frontend”——展示层始终是
+拼接后的路径，`onChange` 只交回叶子 id。选中即关闭弹层。
+
+## 校验与清除
+
+<Demo
+  title="必填字段与锁定字段"
+  filename="demos/tree-select/validation.tsx"
+  source={validationSource}
+>
+  <TreeSelectValidation />
+</Demo>
+
+`aria-invalid` 与 `aria-describedby` 会原样透传到触发按钮，按钮因此获得 `Button` 内置的
+`aria-invalid:border-destructive` 红色描边。清除（×）按钮只有在 `value` 与 `onClear` 同时存在
+时才渲染；必填字段可以不传 `onClear`。
+
+## API
+
+<ApiTable component="tree-select" />
+
+## 设计指引
+
+- 触发器是 36 px（`h-9`）的 `outline` 按钮，`w-full justify-between gap-2 pr-14 font-normal`；
+  值超长截断，右端是 16 px、`opacity-60` 的 `ChevronDown`。
+- 未选中时占位文案用 `text-muted-foreground`；id 解析不出路径时同样回退到占位文案。
+- 显示文本由 `treePath(items, value)` 取各级 `label` 以 `/` 连接而成，深层节点一定带着祖先
+  链展示——与测试断言“Engineering / Frontend”一致。
+- 弹层 `align="start"`、`w-80 max-w-[calc(100vw-2rem)] p-1`，内部树在 `max-h-72
+overflow-y-auto p-1` 中滚动。
+- 清除按钮绝对定位在 `right-8`（`z-10`、24 px 见方），内置 14 px 的 `X`；悬停 `bg-accent`、
+  聚焦有描边，并跟随 `disabled` 一起禁用。
+- 选中节点会调用 `onChange(id)` 并关闭弹层；点击外部仅关闭、不改值，与 `DatePicker` 行为一致。
+
+## 无障碍
+
+- 触发器的可访问名称是 `ariaLabel` 加上当前路径或占位符，例如“Deployment region: Europe /
+  eu-central-1 (Frankfurt)”，未打开弹层即可听到已选值。
+- `aria-expanded` 与弹层开合同步。打开后内嵌树提供 `Tree` 页描述的完整键盘模型：漫游焦点、
+  方向键导航、Home/End、Enter/空格选中；Escape 关闭并把焦点还给触发器。
+- 清除按钮在 Tab 顺序中，名称取自 `clearLabel`（缺省为本地化的“清除选择”），随字段一起禁用。
+- `aria-invalid`、`aria-describedby` 均透传给按钮，可见的错误文案（如校验示例中的段落）能与
+  控件关联。
+
+已知缺口：触发器是普通 `<button>`，没有 `role="combobox"` 与 `aria-controls`，读屏播报的是
+“展开/收起”而非下拉选择语义。弹层面板本身也没有可访问名称，上下文由树的 `ariaLabel` 承担；
+不传 `onClear` 时，无法仅用键盘清除已选值。
+
+## FAQ
+
+**`value` 存的到底是什么？** 单个节点 id（`string | null`），不是路径字符串——展示文本是推导
+出来的，id 才是对外契约。
+
+**父节点也能被选中吗？** 可以，除非该条 `items` 自身 `disabled`；没有“仅叶子可选”的模式。
+
+**弹层里有搜索吗？** 没有。大数据集请提前折叠，或在外面加过滤；可搜索的平铺列表用
+`Combobox`。
+
+## 相关
+
+- `Tree`：内嵌的树与键盘行为说明。
+- `Cascader`：分列式路径逐级选择。
+- `Select`：平铺选项的单选字段。
+- `Combobox`：需要输入检索与异步加载时。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

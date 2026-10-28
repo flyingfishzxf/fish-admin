@@ -1,0 +1,28 @@
+[
+  {
+    "id": "editable-table/basic",
+    "component": "editable-table",
+    "file": "demos/editable-table/basic.tsx",
+    "title": {
+      "en": "Edit, cancel and delete rows",
+      "zh": "编辑、取消与删除行"
+    },
+    "description": {
+      "en": "One row opens at a time; only Save writes back through onRowsChange.",
+      "zh": "一次只展开一行，只有点击“保存”才会通过 onRowsChange 写回。"
+    }
+  },
+  {
+    "id": "editable-table/dirty",
+    "component": "editable-table",
+    "file": "demos/editable-table/dirty.tsx",
+    "title": {
+      "en": "Draft row, parse and validate",
+      "zh": "草稿行、parse 与 validate"
+    },
+    "description": {
+      "en": "addRow seeds a draft row that never reaches your data until it validates.",
+      "zh": "addRow 生成草稿行，校验通过后才会进入数据。"
+    }
+  }
+]

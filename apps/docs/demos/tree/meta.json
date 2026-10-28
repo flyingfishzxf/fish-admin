@@ -1,0 +1,28 @@
+[
+  {
+    "id": "tree/basic",
+    "component": "tree",
+    "file": "demos/tree/basic.tsx",
+    "title": {
+      "en": "Org structure with badges",
+      "zh": "带计数徽标的组织架构"
+    },
+    "description": {
+      "en": "Icons, member badges and one selected node, driven by flat parentId links.",
+      "zh": "图标与人数徽标，靠扁平的 parentId 关联出层级并单选。"
+    }
+  },
+  {
+    "id": "tree/expanded",
+    "component": "tree",
+    "file": "demos/tree/expanded.tsx",
+    "title": {
+      "en": "Controlled expansion",
+      "zh": "受控展开"
+    },
+    "description": {
+      "en": "expandedIds and onExpandedChange drive which branches are open.",
+      "zh": "用 expandedIds 与 onExpandedChange 决定哪些分支展开。"
+    }
+  }
+]

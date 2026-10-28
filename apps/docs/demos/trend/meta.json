@@ -1,0 +1,28 @@
+[
+  {
+    "id": "trend/basic",
+    "component": "trend",
+    "file": "demos/trend/basic.tsx",
+    "title": {
+      "en": "KPI deltas with context",
+      "zh": "带上下文的 KPI 涨跌"
+    },
+    "description": {
+      "en": "Sign picks the arrow, tone and format; zero renders flat.",
+      "zh": "正负号决定箭头与色调，零值显示为持平。"
+    }
+  },
+  {
+    "id": "trend/inverted",
+    "component": "trend",
+    "file": "demos/trend/inverted.tsx",
+    "title": {
+      "en": "Lower-is-better metrics",
+      "zh": "越低越好的指标"
+    },
+    "description": {
+      "en": "invert swaps the tone; suffix and precision adapt the unit.",
+      "zh": "invert 反转色彩倾向，suffix 与 precision 调整单位精度。"
+    }
+  }
+]

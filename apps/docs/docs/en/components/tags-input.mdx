@@ -1,0 +1,113 @@
+---
+title: Tags Input
+description: A chip-style tag field with Enter and comma commit, dedupe, a tag cap, and quick-add suggestions.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TagsInputBasic from '@docs/demos/tags-input/basic'
+import basicSource from '@docs/demos/tags-input/basic.tsx?raw'
+import TagsInputSuggestions from '@docs/demos/tags-input/suggestions'
+import suggestionsSource from '@docs/demos/tags-input/suggestions.tsx?raw'
+
+# Tags Input
+
+`TagsInput` is a bordered field that renders committed tags as secondary `Badge` chips beside a
+bare text `input`. It splits comma-separated input, deduplicates, enforces `maxTags`, and can render
+quick-add `suggestions` chips.
+
+<ComponentMeta id="tags-input" />
+
+## When to use
+
+- Free-form labels, skills, or scopes where the set is open-ended rather than a fixed enum.
+- Bulk entry, when users paste a comma-separated list from another tool.
+- Curated entry, when a handful of common values should be one tap away via `suggestions`.
+
+## When not to use
+
+- A fixed list of known options: use `Combobox` or `Select` so values stay valid.
+- Type-ahead against a server list: `Auto Complete` filters matches; this component only shows the
+  chips you pass in.
+- A single value: a plain `Input` is simpler than a chip field.
+- Tags you must persist as objects with ids and colors: the value here is `string[]`.
+
+## Basic usage
+
+<Demo
+  title="Free-form labels with keyboard commit"
+  filename="demos/tags-input/basic.tsx"
+  source={basicSource}
+>
+  <TagsInputBasic />
+</Demo>
+
+## Quick-add suggestions
+
+`suggestions` draws a dashed chip row below the input, separated by a top border. Each chip calls the
+same commit path as typing, so it dedupes and respects `maxTags`. When the cap is hit, the input and
+every chip disable together, which is why this variant keeps the budget visible in a live region.
+
+<Demo
+  title="Suggestion chips sharing a cap"
+  filename="demos/tags-input/suggestions.tsx"
+  source={suggestionsSource}
+>
+  <TagsInputSuggestions />
+</Demo>
+
+## API
+
+<ApiTable component="tags-input" />
+
+## Design guidance
+
+- The wrapper is a `min-h-9` flex box with `border-input`, `rounded-md`, `shadow-xs`, and a
+  `focus-within:ring-[3px] ring-ring/50` halo, so the whole field reads as one control. Disabled
+  state applies `cursor-not-allowed opacity-50` to the wrapper.
+- Each tag is a `Badge` at `variant="secondary"` with a `max-w-40 truncate` label and a circular
+  remove button holding a `size-3` `X`. Long labels truncate; they never wrap the chip.
+- The inner input is `h-6 min-w-24 flex-1 text-sm`. `placeholder` only renders while there are zero
+  tags, so the field is not noisy once it has content.
+- Committing splits on commas, trims, and slices each tag to `maxLength` (default 24). Exact-match
+  duplicates (case-sensitive) and anything past `maxTags` (default 8) are dropped silently, and
+  `onChange` fires only when a tag was actually added.
+- Pasting `a,b,c` triggers the split immediately on `onChange`; you do not need to press Enter.
+- `suggestions` chips render only when the array is non-empty, and are disabled alongside the input
+  at the cap or when `disabled` is set.
+
+## Accessibility
+
+- The text input carries `aria-label` from the `ariaLabel` prop; each remove button is named
+  "Remove `<tag>`" and each suggestion chip "Suggested tag: `<label>`" through the active locale.
+- Keyboard: `Enter` or `,` commits the draft, `Backspace` on an empty draft removes the last tag, and
+  `Escape` clears the draft without touching committed tags.
+- Remove buttons and suggestion chips are real `<button type="button">` elements in the tab order,
+  with a `focus-visible:ring-2` indicator.
+- Removing a tag keeps focus usable because the input sits after the chips, so the caret does not
+  vanish when a chip is deleted.
+
+Known gap: the component does not announce the tag count or the remaining slots. At `maxTags` the
+input simply becomes `disabled`, which can read as a bug; surface a counter or hint in your own live
+region, as the demos do. The component also has no built-in error tone for a rejected duplicate or an
+over-long tag; validation is intentionally silent.
+
+## FAQ
+
+**What does `onChange` receive?** The full next `string[]`, not a delta. Treat it as the new value
+and store it directly.
+
+**Is duplicate detection case-insensitive?** No. It is an exact `includes` check, so `Owner` and
+`owner` both fit. Normalize before passing values in if you want case-insensitive dedupe.
+
+**Can I use it as a controlled autocomplete?** Not really. `suggestions` are static chips you supply;
+for filtered, searchable options use `Auto Complete` or `Combobox`.
+
+## Related
+
+- `Input` for a single free-text field.
+- `Badge` the chips are built on.
+- `Auto Complete` for type-ahead over a list.
+- `Combobox` when tags must come from a known set.
+- [Used in the template](https://fish-admin.vercel.app/users/$id)

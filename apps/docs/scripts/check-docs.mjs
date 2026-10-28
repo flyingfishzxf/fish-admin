@@ -184,6 +184,31 @@ function demoImports(source) {
   return [...source.matchAll(/from '@docs\/demos\/([^']+)'/g)].map((match) => match[1])
 }
 
+function checkJsxImports(file, body) {
+  const names = new Set(
+    [...body.matchAll(/^import\s+(?:(\w+)|\{([^}]*)\})\s+from\s+'([^']+)'/gm)].flatMap((match) =>
+      match[1]
+        ? [match[1]]
+        : match[2]
+            .split(',')
+            .map((entry) =>
+              entry
+                .trim()
+                .split(/\s+as\s+/)
+                .pop(),
+            )
+            .filter(Boolean),
+    ),
+  )
+  const prose = body
+    .replace(/^import\s.*$/gm, '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`\n]*`/g, '')
+  for (const match of prose.matchAll(/<([A-Z][\w]*)/g)) {
+    if (!names.has(match[1])) fail(`${rel(file)}: <${match[1]}> is used but never imported`)
+  }
+}
+
 function checkDocumentedPages(registry, demos) {
   const documentedFile = path.join(docsRoot, 'generated/documented.json')
   const documented = readJson(documentedFile).components
@@ -224,6 +249,7 @@ function checkDocumentedPages(registry, demos) {
       const source = read(file)
       const body = bodyAfterFrontmatter(source)
       checkImportOrder(file, body)
+      checkJsxImports(file, body)
       const frontmatter = source.match(/^---\n([\s\S]*?)\n---\n/)
       const frontmatterBody = frontmatter?.[1] ?? ''
       if (!/^title:\s*\S/m.test(frontmatterBody)) fail(`${rel(file)}: missing frontmatter title`)

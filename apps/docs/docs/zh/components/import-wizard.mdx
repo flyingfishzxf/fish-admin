@@ -1,0 +1,112 @@
+---
+title: Import Wizard 导入向导
+description: 四步 CSV 导入流程，包含拖拽上传、列映射与逐行校验。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ImportWizardBasic from '@docs/demos/import-wizard/basic'
+import basicSource from '@docs/demos/import-wizard/basic.tsx?raw'
+import ImportWizardSteps from '@docs/demos/import-wizard/steps'
+import stepsSource from '@docs/demos/import-wizard/steps.tsx?raw'
+
+# Import Wizard 导入向导
+
+`ImportWizard` 按上传、映射、复核、完成四步推进。文件（或 `sample` 字符串）先交给内置的
+`parseCsvTable` 解析成表头与数据行，再用原生 `<select>` 完成列映射，最后由字段级校验产出
+`onImport` 收到的行结果。
+
+<ComponentMeta id="import-wizard" />
+
+## 何时使用
+
+- 从表格软件导出文件，批量导入成员、供应商或发票。
+- 不同来源的列名不一致，需要用户自己指定对应关系。
+- 无效行需要逐条提示并跳过，而不是整批拒绝。
+
+## 何时不使用
+
+- 表单里只是附带一个文件：使用 `Dropzone`。
+- 只有少量记录：直接在 `Editable Table` 里改。
+- XLSX、JSON 等非 CSV 格式：自行解析后再组织步骤，本组件的解析只认 CSV。
+
+## 基础用法
+
+<Demo title="示例 CSV 走完四个步骤" filename="demos/import-wizard/basic.tsx" source={basicSource}>
+  <ImportWizardBasic />
+</Demo>
+
+## 被阻断的步骤与被跳过的行
+
+<Demo
+  title="被阻断的步骤与被跳过的行"
+  filename="demos/import-wizard/steps.tsx"
+  source={stepsSource}
+>
+  <ImportWizardSteps />
+</Demo>
+
+## API
+
+<ApiTable component="import-wizard" />
+
+## 设计指引
+
+- 步骤条文案来自 `labels.steps`，数组长度即步骤数。它渲染成 `<ol>`，序号圆点为 20 px：当前步骤
+  `border-primary bg-primary text-primary-foreground`，已完成步骤是
+  `border-primary/40 bg-primary/10 text-primary` 并显示 `CheckCircle2` 图标。
+- 第一步是虚线面板（`border-dashed bg-muted/20 px-4 py-8 text-center`）配 `UploadCloud` 图标。拖拽
+  只取第一个文件；`sr-only` 的 `<input type="file">` 在每次选择后会清空 `value`，因此可以重复选择
+  同一个文件。
+- 传入 `sample` 会多出一个 ghost 按钮，把字符串按 `sampleName` 当作文件名载入——文档与演示最常用，
+  也是唯一完全不接触文件系统的入口。
+- `parseCsvTable` 会去掉开头的 BOM，识别引号包裹与 `""` 转义，并忽略空行。没有表头或没有数据行时报
+  `labels.emptyFile`，读取失败报 `labels.parseError`。
+- 自动映射先把两边归一化（转小写、剔除非字母数字字符），再与 `key`、`label` 和 `aliases` 比较；一个
+  源列只能对应一个字段。想接受 "Full name""E-Mail""Department" 这类写法，就写进 `aliases`。
+- 映射控件是普通 `<select>`，含一个值为 `-1` 的跳过选项。`missingRequiredFields` 非空时“下一步”禁用，
+  并用 `mapRequired` 列出尚未映射的必填字段名称。
+- 映射页的预览只展示已映射字段的前三行；复核表格展示前十行，表头使用 `bg-muted` 且 `sticky`，外层是
+  `max-h-64` 的滚动面板。单元格在 `max-w-40` 处截断，空值显示为 `—`。
+- 校验按字段逐行进行：`required` 判空、`type: 'email'` 匹配邮箱正则、`type: 'number'` 判断
+  `Number.isNaN`。行号从 2 开始，因为第 1 行是表头。
+- 只有校验通过的行会交给 `onImport`，且 `toImportPayload` 会把非空的 number 字段转成 `Number`。导入
+  按钮文案来自 `labels.import(validCount)`，有效行为 0 时禁用。
+- `onImport` 返回的 Promise 被拒绝时停留在复核页并显示 `labels.importFailed`；成功则进入完成页，并把
+  有效行数交给 `labels.doneHint`。
+
+## 无障碍
+
+- 整个流程是一个由 `ariaLabel` 命名的 `<section>`；同一页面放两个向导时务必使用不同的标签。
+- 当前步骤带 `aria-current="step"`，且每个步骤的序号都以数字文本呈现，不依赖颜色即可读懂。“上一步”
+  “下一步”都是常规按钮，处于 Tab 顺序中。
+- 文件输入用 `sr-only` 隐藏但保持可聚焦，名称取自 `labels.browse`；解析错误用 `role="alert"`，映射
+  错误用 `role="status"`，两者都会被读屏播报。
+- 映射用的 `<select>` 外层有 `<label>`，同时设置 `aria-label`；必填标记 `*` 是 `aria-hidden`，必填
+  语义由 `mapRequired` 文案说明。
+- 预览与复核都使用真实 `<table>` 结构和表头行，状态列写出“可导入”“已跳过”或具体错误文本，而不是只靠
+  颜色区分。
+
+已知缺口：切换步骤时焦点不会移动，读屏只能依靠状态文本感知；已完成步骤只有一个勾选图标，没有文字。
+预览/复核的 `<th>` 缺少 `scope`，复核面板的 `overflow-auto` 容器既不可聚焦也没有命名，单元格错误仅通过
+`title` 属性提供。
+
+## FAQ
+
+**它会把文件上传出去吗？** 不会。文件用 `file.text()`（不支持时回退 `FileReader`）在本地读取，只有
+校验通过的行才会进入 `onImport`，传输方式完全由你决定。
+
+**校验失败的行去哪了？** 计入 `invalidCount`，在复核页显示具体原因，并且不会出现在 payload 里。只有
+一行都没有有效数据时，导入按钮才会禁用。
+
+**为什么某列没有被自动映射？** 归一化后必须完全相等才会命中，"E-Mail" 这类写法需要写进 `aliases`，
+否则只能手动选择。
+
+## 相关
+
+- 只需要选取一个文件、无需映射时使用 `Dropzone`。
+- 提交前先修正个别行时使用 `Editable Table`。
+- 导入结果落到的列表使用 `ProTable`。
+- 需要独立的完成面板时使用 `Result`。
+- [在模板中的用法](https://fish-admin.vercel.app/users)

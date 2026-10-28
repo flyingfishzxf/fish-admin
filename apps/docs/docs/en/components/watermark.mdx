@@ -1,0 +1,109 @@
+---
+title: Watermark
+description: A decorative, aria-hidden canvas overlay that repeats rotated text across any content.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import WatermarkBasic from '@docs/demos/watermark/basic'
+import basicSource from '@docs/demos/watermark/basic.tsx?raw'
+import WatermarkStyles from '@docs/demos/watermark/styles'
+import stylesSource from '@docs/demos/watermark/styles.tsx?raw'
+
+# Watermark
+
+`Watermark` wraps `children` in a `relative` box and paints the `text` as a tiled, rotated grid on an
+absolutely-positioned `<canvas>`. The canvas is `aria-hidden` and `pointer-events-none`, and it
+redraws on resize (a `ResizeObserver`) and on theme changes (a `MutationObserver` on `documentElement`).
+
+<ComponentMeta id="watermark" />
+
+## When to use
+
+- Stamping an owner or state mark—confidential, draft, a user or tenant id—over a document or preview.
+- Discouraging casual screenshots or leaks with a visible, hard-to-crop mark.
+- Branding a surface that looks like a downloadable file.
+
+## When not to use
+
+- Carrying the only copy of any information: the overlay is decorative and skipped by assistive tech.
+- Watermark text that users must select, search or copy: it is canvas pixels, not DOM text.
+- An accessible caption or label: put that in real readable content instead.
+
+## Basic usage
+
+<Demo
+  title="Marking an export confidential"
+  filename="demos/watermark/basic.tsx"
+  source={basicSource}
+>
+  <WatermarkBasic />
+</Demo>
+
+## Tuning the look
+
+`opacity`, `fontSize`, `rotate` and `gap` fully control the tile: alpha per tile, the font size in
+pixels, the rotation in degrees, and the spacing between tile centers on both axes. The paint color is
+not a prop—it reads `getComputedStyle(container).color`, so it follows the surrounding text color and
+theme.
+
+<Demo title="Comparing three patterns" filename="demos/watermark/styles.tsx" source={stylesSource}>
+  <WatermarkStyles />
+</Demo>
+
+## API
+
+<ApiTable component="watermark" />
+
+## Design guidance
+
+- The container is `relative`; children render first, then the canvas sits on top with `absolute
+inset-0 z-10 pointer-events-none select-none rounded-[inherit]`.
+- Tiles are laid out on a `gap` grid starting at `gap / 2` in both axes, so edge tiles are centered on
+  the boundary rather than clipped at a corner.
+- The canvas is scaled by `devicePixelRatio` (its backing store is `width * ratio`, CSS size stays in
+  px), keeping the text crisp on high-DPI screens.
+- Each tile is drawn with `globalAlpha = opacity` (default 0.08), `fillStyle` from the container's
+  computed `color`, and `font = "{fontSize}px ui-sans-serif, system-ui, sans-serif"`; text is centred
+  on both axes. `rotate` is applied per tile with `context.rotate`.
+- The draw effect depends on `[fontSize, gap, opacity, rotate, text]`, then observes the container for
+  size and `documentElement` for `class`/`style` changes; both observers disconnect on cleanup, so a
+  theme switch repaints with the new color.
+- Nothing about the component blocks interaction: `pointer-events-none` means clicks and scroll pass
+  through to the children underneath.
+
+## Accessibility
+
+- The overlay is `aria-hidden` and `pointer-events-none`, so screen readers ignore it and it never
+  intercepts focus or clicks; `children` stay in the accessibility tree exactly as authored.
+- Because the layer is decorative, the watermark text must never be the only place a piece of
+  information appears. Any meaning it conveys—"confidential", an owner id—has to also live as real,
+  readable DOM text, as the basic demo shows.
+- Contrast: the default `opacity` of 0.08 is far too faint to affect the contrast ratio of the body
+  copy it sits over. If you raise `opacity` or `fontSize` so tiles fall behind readable text, re-check
+  that the text still meets 4.5:1, since the paint is drawn over, not under, the content.
+
+Known gap: the canvas has no accessible name (by design) and the `text` string is not surfaced anywhere
+else automatically, so assistive technology cannot perceive the mark at all. This is intentional for a
+decorative overlay, but it means the pattern alone can never satisfy a disclosure requirement.
+
+## FAQ
+
+**Can users select or search the watermark text?** No. It is rasterized onto a canvas. If the string
+must be selectable or indexable, render it in the DOM and keep the watermark purely decorative.
+
+**Why does the color follow my theme?** `fillStyle` is `getComputedStyle(container).color`, and a
+`MutationObserver` on `documentElement` repaints when the class or style changes, so light/dark swaps
+update the mark automatically.
+
+**Is it safe to hide confidential info in the watermark only?** No. `aria-hidden` means assistive tech
+misses it entirely. Always duplicate the real information in readable content.
+
+## Related
+
+- `Image Preview` to mark an enlarged file or attachment.
+- `Upload` to overlay a queue of files with an owner mark.
+- `Card` as the content surface a watermark wraps.
+- `Result` to stamp a status page without leaking the mark into its copy.
+- [Used in the template](https://fish-admin.vercel.app/files)

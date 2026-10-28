@@ -1,0 +1,107 @@
+---
+title: Upload
+description: A dropzone plus a controlled file list that renders progress, errors and per-row actions.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import UploadBasic from '@docs/demos/upload/basic'
+import basicSource from '@docs/demos/upload/basic.tsx?raw'
+import UploadProgress from '@docs/demos/upload/progress'
+import progressSource from '@docs/demos/upload/progress.tsx?raw'
+
+# Upload
+
+`Upload` composes a multi-file `Dropzone` with a `<ul>` of `Progress` rows. It is fully controlled:
+you own the `items` list and the real transfer, and the component only reports picks, removals and
+retries through callbacks.
+
+<ComponentMeta id="upload" />
+
+## When to use
+
+- Collecting one or many attachments where the queue state (uploading, done, error) has to stay visible.
+- Import or attachment flows that want drag-and-drop plus a browse path and per-file actions.
+- Any list that should format sizes and drive a progress bar from your own upload logic.
+
+## When not to use
+
+- A single file with no progress, retry or list: use `Dropzone` directly.
+- Showing images already stored on the server: use `Image Preview`.
+- Wiring into field-level form validation: pair `Dropzone` with `Form` instead.
+
+## Basic usage
+
+<Demo title="Queueing files with progress" filename="demos/upload/basic.tsx" source={basicSource}>
+  <UploadBasic />
+</Demo>
+
+## Size limits and errors
+
+`maxSize` is checked inside the component before `onFiles` runs: any file larger than the byte
+ceiling is blocked and surfaced as the dropzone `error` alert, so the caller never receives it. Rows
+that reach an `error` status gain a retry button when `onRetry` is supplied.
+
+<Demo
+  title="Rejecting oversize files and retrying"
+  filename="demos/upload/progress.tsx"
+  source={progressSource}
+>
+  <UploadProgress />
+</Demo>
+
+## API
+
+<ApiTable component="upload" />
+
+## Design guidance
+
+- The body stacks a `Dropzone` (`multiple`, always on) over an optional list; the `<ul>` only renders
+  when `items.length > 0` and uses `divide-y rounded-lg border`.
+- Each row is a `size-9` `bg-muted` `FileText` tile, a `truncate text-sm font-medium` name, and a
+  right-aligned size in `text-xs text-muted-foreground tabular-nums`. `formatSize` renders B/KB/MB/GB
+  with at most one decimal via `Intl.NumberFormat`; a non-finite or ≤ 0 size shows `0 B`.
+- `status` defaults to `done`. An `uploading` row shows a 6 px (`h-1.5`) `Progress` bar labelled with
+  the file name plus a fixed-width `w-9` percentage readout. An `error` row shows a `TriangleAlert`
+  and destructive text (`item.error`, or the translated `enterprise.noData` when missing). A `done`
+  row shows a `CheckCircle2` in `text-success`, printing `100%` only when `progress === 100`.
+- The retry button appears solely on `error` rows and only when `onRetry` is present; the remove
+  button appears on every row when `onRemove` is present. Both are `ghost` `icon-xs` buttons.
+- `maxSize` rejects oversize picks with `maxSizeLabel`, or `Files must be <size> or smaller.` when you
+  do not provide one. Passing any oversize file aborts the whole batch rather than dropping just it.
+- Nothing here touches the network: `Upload` never calls `onFiles` for oversize input and never mutates
+  `items`. Progress, completion and recovery are yours to drive from your upload code.
+
+## Accessibility
+
+- The dropzone's `sr-only` `<input type="file">` keeps its `aria-label={label}` and stays in the tab
+  order, and the outline browse button opens the native picker, so the keyboard path is complete.
+- The `Progress` bar is a real `progressbar` (Radix) that exposes `aria-valuenow` from `value` and is
+  named after the file via `aria-label`, so a screen reader hears "report.pdf, 40%".
+- The icon-only retry and remove buttons are labelled by `retryLabel` and `removeLabel?.(item)`,
+  falling back to the translated `actions.retry` and `enterprise.removeFile`.
+
+Known gap: size-limit rejections use `role="alert"`, but per-row `uploading` → `done` / `error`
+transitions are not announced — there is no live region around the list, so completion is visual only.
+The `sr-only` input is also an invisible tab stop sharing the label with the browse button just before
+it.
+
+## FAQ
+
+**Does Upload actually upload anything?** No. It renders `items` and reports events; you run the real
+transfer and feed progress and status back through the array.
+
+**What does `formatSize` print?** Bytes, KB, MB or GB with one decimal max, e.g. `1.4 MB`. Zero or
+invalid sizes show `0 B`.
+
+**Why didn't a large file reach `onFiles`?** `maxSize` filters the batch first. If any file exceeds it,
+the component shows the `error` alert and returns without calling `onFiles`.
+
+## Related
+
+- `Dropzone` for the underlying pick-and-drag surface.
+- `Progress` for the bar each uploading row renders.
+- `Button` for the browse, retry and remove actions.
+- `Image Preview` to show files once they are stored.
+- [Used in the template](https://fish-admin.vercel.app/files)

@@ -42,14 +42,23 @@ export function Tree({
   emptyLabel,
   className,
 }: {
+  /** Flat records linked by `parentId`; unknown parents become roots. */
   items: TreeItem[]
+  /** Currently selected node id, or `null` for none. */
   selectedId?: string | null
+  /** Called with the node id when a row is clicked or Enter/Space is pressed. */
   onSelect?: (id: string) => void
+  /** Controlled set of node ids whose children are visible. */
   expandedIds?: ReadonlySet<string>
+  /** Called with the next expansion set whenever a branch is toggled. */
   onExpandedChange?: (ids: Set<string>) => void
+  /** Initial open branches in uncontrolled mode; auto-reveals parents otherwise. */
   defaultExpanded?: string[]
+  /** Accessible name for the tree container. */
   ariaLabel: string
+  /** Centered text rendered when no nodes are visible. */
   emptyLabel?: string
+  /** Extra classes for the tree container. */
   className?: string
 }) {
   const { t } = useUITranslation()

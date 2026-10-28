@@ -39,13 +39,21 @@ export function EditableTable({
   ariaLabel,
   className,
 }: {
+  /** Column definitions: editor type, options, alignment, `render`, `parse` and `validate`. */
   columns: EditableTableColumn[]
+  /** Committed rows; the component never mutates them. */
   rows: EditableTableRow[]
+  /** Called with the next row array when a save or delete succeeds. */
   onRowsChange: (rows: EditableTableRow[]) => void
+  /** When provided, renders the Add button and seeds the draft row it opens. */
   addRow?: () => EditableTableRow
+  /** Short human name for a row, used in the Edit and Delete button labels. */
   rowLabel?: (row: EditableTableRow) => string
+  /** Every visible string: add, save, cancel, edit, delete, actions and empty. */
   labels: EditableTableLabels
+  /** Accessible name for the underlying table. */
   ariaLabel: string
+  /** Extra classes for the outer wrapper. */
   className?: string
 }) {
   const [editingId, setEditingId] = useState<string | null>(null)

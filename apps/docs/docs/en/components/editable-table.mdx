@@ -1,0 +1,118 @@
+---
+title: Editable Table
+description: Inline row editing with per-column editors, parse and validate hooks over rows you own.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import EditableTableBasic from '@docs/demos/editable-table/basic'
+import basicSource from '@docs/demos/editable-table/basic.tsx?raw'
+import EditableTableDirty from '@docs/demos/editable-table/dirty'
+import dirtySource from '@docs/demos/editable-table/dirty.tsx?raw'
+
+# Editable Table
+
+`EditableTable` renders a semantic `<table>` from the `rows` array you pass in and swaps one row at a
+time into `Input` fields, native `<select>` controls and `Button` actions. Column definitions carry
+the editor, the `parse` step and the `validate` rule; your data only changes when a row saves.
+
+<ComponentMeta id="editable-table" />
+
+## When to use
+
+- A configuration grid where a few fields per row change often — owners, delivery plans, quotas.
+- Small, fully client-side row sets that do not need sorting, pagination or virtualization.
+- Editing that must reject bad values before they ever reach your store.
+
+## When not to use
+
+- A read-only list with search and bulk actions: use `ProTable`.
+- Long server-paged grids with sorting: use `ProTable` with a TanStack instance.
+- A record form rather than a grid: use `ProForm` or `Form`.
+
+## Basic usage
+
+<Demo
+  title="Edit, cancel and delete rows"
+  filename="demos/editable-table/basic.tsx"
+  source={basicSource}
+>
+  <EditableTableBasic />
+</Demo>
+
+## Draft rows, parse and validate
+
+<Demo
+  title="Draft row, parse and validate"
+  filename="demos/editable-table/dirty.tsx"
+  source={dirtySource}
+>
+  <EditableTableDirty />
+</Demo>
+
+## API
+
+<ApiTable component="editable-table" />
+
+## Design guidance
+
+- Only one row is open at a time: `editingId` plus a `draft` copy of that row, so Cancel and Escape
+  discard edits instead of rolling them back.
+- The open row is highlighted with `bg-muted/30`; every cell keeps `px-3 py-2` and `align-top` so the
+  taller editor row does not shift neighbouring cells.
+- Editors are 32 px (`h-8`): `Input` gets `min-w-32`, a select gets `min-w-28`; both keep
+  `focus-visible:ring-2 focus-visible:ring-ring/50`. An errored cell switches its border to
+  `border-destructive` and renders the message in `text-xs text-destructive` under the field.
+- `editor` chooses the control — `'number'` renders `type="number"`, `'select'` renders
+  `column.options`, anything else is text. Omit it and the cell is text.
+- On save, every column's `parse` runs first against `String(value ?? '')`, then `validate` receives
+  the parsed value and the whole candidate row. Any message blocks `onRowsChange` entirely.
+- `render` only runs in read mode, so format a plan id or number there; an empty or `undefined` cell
+  falls back to a muted `—`.
+- `addRow` both shows the Add button and supplies the draft row, which is appended last on save.
+  Give it a unique `id` — rows are keyed by `id`, and the sentinel `__new__` is reserved.
+- The wrapper adds an Actions column, so `columns.length + 1` is the `colSpan` used by the empty
+  state. Keep `labels.actions` short; the column is right-aligned and `whitespace-nowrap`.
+- Wide tables scroll inside `overflow-x-auto rounded-lg border` and the table itself is
+  `min-w-[40rem]`; the Add button sits above the frame, right-aligned.
+
+## Accessibility
+
+- The table is real table markup: `aria-label` names it, each `<th>` has `scope="col"`, and the
+  Actions header is a `<th>` too.
+- Editors are named with `aria-label={column.header}`, so a screen reader reads "Owner, edit" while
+  typing; error messages set `aria-invalid` on the field.
+- Edit and Delete icon buttons are labelled `"<edit> <row name>"` and `"<delete> <row name>"` through
+  `rowLabel`; the `Pencil`/`Trash2` glyphs are `aria-hidden`.
+- Escape cancels the open row, and every control is `type="button"` so an editing session cannot
+  submit an enclosing page form.
+- The scroll frame is `tabIndex={0}`, which keeps a wide table keyboard-scrollable; the outer wrapper
+  is `role="presentation"`.
+
+Known gap: opening a row does not move focus into its first field, and errors are printed as plain
+text rather than linked with `aria-describedby` or announced in a live region, so a screen reader
+user must Tab back into the cell to find out why Save was refused. `labels` must also be
+translated by the caller — there is no built-in default copy.
+
+## FAQ
+
+**Does the component keep unsaved changes?** Only the open row, in its `draft` copy. Nothing reaches
+`onRowsChange` until Save passes validation, and Cancel or Escape drops the draft.
+
+**Why did my number arrive as a string?** Without `parse`, the raw field value is stored. Add
+`parse: (raw) => Number(raw)` and `validate` sees the number.
+
+**Can two rows be edited together?** No — one `editingId` at a time, so cross-row rules are limited
+to what `validate` can read from the row being saved.
+
+**What does Delete do to pending edits?** It removes the row immediately through `onRowsChange` and
+closes the editor if that row was open.
+
+## Related
+
+- `ProTable` for read-only lists with search, filters and bulk actions.
+- `Query Filter` for the filter bar above such a grid.
+- `Form` and `ProForm` when the same fields belong in a form instead of a row.
+- `Table` primitives when you need to build the editing shell yourself.
+- [Used in the template](https://fish-admin.vercel.app/integrations)

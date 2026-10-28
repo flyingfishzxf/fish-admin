@@ -1,0 +1,116 @@
+---
+title: Query Filter
+description: A controlled filter bar that renders text, select, switch, date-range and custom fields above a list.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import QueryFilterBasic from '@docs/demos/query-filter/basic'
+import basicSource from '@docs/demos/query-filter/basic.tsx?raw'
+import QueryFilterCollapsed from '@docs/demos/query-filter/collapsed'
+import collapsedSource from '@docs/demos/query-filter/collapsed.tsx?raw'
+
+# Query Filter
+
+`QueryFilter` renders a field descriptor array into a responsive grid of `Input`, `Select`,
+`Switch` and `DateRangePicker` controls. It holds no state of its own: `value` and `onChange` are
+yours, and `filter-utils` decide which values count as active.
+
+<ComponentMeta id="query-filter" />
+
+## When to use
+
+- A filter bar directly above a `ProTable` or card grid.
+- Screens where users stack several conditions and want one reset.
+- Long condition lists that should start collapsed behind a More button.
+
+## When not to use
+
+- Creating or editing a record: use `ProForm` or `Form`.
+- One search box only: a plain `Input` with `ProTable`'s `search` config is enough.
+- Filters that must apply per keystroke against an expensive query — this bar has no debounce, so
+  throttle in your own `onChange`.
+
+## Basic usage
+
+<Demo
+  title="Three filters with an action slot"
+  filename="demos/query-filter/basic.tsx"
+  source={basicSource}
+>
+  <QueryFilterBasic />
+</Demo>
+
+## Collapsed fields and custom controls
+
+<Demo
+  title="Collapsed bar with date range and custom field"
+  filename="demos/query-filter/collapsed.tsx"
+  source={collapsedSource}
+>
+  <QueryFilterCollapsed />
+</Demo>
+
+## API
+
+<ApiTable component="query-filter" />
+
+## Design guidance
+
+- The grid is `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3` with `gap-3`; every field is a
+  `flex min-w-0 flex-col gap-1.5` column under `data-slot="query-filter-field"`.
+- `maxVisible` (default 3, clamped at 0) slices the rendered fields, and the More/Less button only
+  exists while `fields.length > maxVisible`. Collapsed fields unmount, but their values stay in your
+  `value` object — collapsing is layout, not clearing.
+- The action row appears when there is something to show: expand, reset, or your `extra` node.
+  `extra` is pushed right with `ml-auto`, which is where an Apply or Export button belongs.
+- Reset renders only while `countActiveFilters(fields, value) > 0`, and it emits `{}` — every field,
+  visible or not, is cleared. `onReset` fires after `onChange`, which is the hook for refetching or
+  clearing a saved view.
+- Activity is per type: text, select and custom count any non-blank string or non-empty array;
+  boolean counts only `true`; `dateRange` counts when either `fromName` or `toName` has a value.
+- `select` with `allLabel` maps that option to an internal sentinel and writes `''` back, so "All"
+  stays out of your query string; the trigger's display falls back to `allLabel ?? label`.
+- `dateRange` writes two `YYYY-MM-DD` strings (empty string when cleared) into `fromName` and
+  `toName` — keep those two keys out of any other field.
+- `custom` renders inside `role="group"` labelled by the field `label`, with your `render(value, onChange)`
+  as the control; give that control its own accessible name.
+- Keys are derived from `type` plus field name, so switching a field's type remounts its control.
+
+## Accessibility
+
+- Text and boolean fields use `useId` to wire `Label htmlFor` to the `Input` or `Switch`, so the
+  visible label is the accessible name.
+- The select trigger carries both the `id` referenced by its label and an `aria-label` with the same
+  text, which is how `getByRole('combobox', { name: 'Status' })` finds it.
+- The expand button exposes `aria-expanded` and swaps its own label between More and Less, so state is
+  conveyed as text and attribute rather than by the chevron glyph alone.
+- Custom fields sit in a named `group`, and controls inside keep focus order — the field label
+  announces the group when focus enters.
+- Every control is fully controlled and updates on change, so nothing needs a hidden submit step.
+
+Known gap: the `dateRange` label is rendered without `htmlFor`, so it is not programmatically tied to
+the `DateRangePicker` button (which is why that control needs its own `ariaLabel`). Reset appears and
+disappears instead of disabling, and there is no live region — active-filter counts must be announced
+by the caller, as both demos do with a polite paragraph. The bar itself is a plain `div`, not a
+landmark.
+
+## FAQ
+
+**Does it fetch or filter data?** No. It only reports values through `onChange`; filtering,
+debouncing and refetching stay in your query layer.
+
+**Why did Reset clear a field I never expanded?** `clearFilterValues` returns an empty object, and the
+component does not know which fields were visible. Clear selectively if you need that.
+
+**Can I keep a filter out of the collapsed area?** Order matters: everything after `maxVisible` is
+hidden first, so put the conditions users touch most at the front of `fields`.
+
+## Related
+
+- `ProTable` for the list this bar drives.
+- `Date Range Picker` when you need the range control standalone.
+- `ProForm` for record editing instead of filtering.
+- `Segmented` for one-of-a-few views that do not belong in the filter object.
+- [Used in the template](https://fish-admin.vercel.app/projects)

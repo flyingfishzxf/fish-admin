@@ -116,7 +116,7 @@ Same recipe; enterprise sources live in `packages/ui/src/components/enterprise/<
 - [x] **Step 1:** dispatch batches and collect the files
 - [x] **Step 2:** `pnpm gen-api` + review api.json descriptions for the wave (JSDoc coverage 19.31% → 49.21%)
 - [x] **Step 3:** gate set + full axe sweep (218 passed) + browser spot check
-- [ ] **Step 4:** commit
+- [x] **Step 4:** commit
 
 ---
 
@@ -124,7 +124,18 @@ Same recipe; enterprise sources live in `packages/ui/src/components/enterprise/<
 
 **Components:** tags-input, time-picker, timeline, tour, transfer, tree, tree-select, trend, upload, watermark, detail-page, editable-table, import-wizard, pro-form, pro-table _(pilot)_, query-filter.
 
-Pro sources live in `packages/ui/src/components/pro/<id>.tsx`. Commit `feat(docs): document wave 4 enterprise and pro components`.
+Pro sources live in `packages/ui/src/components/pro/<id>/<id>.tsx`. Commit `feat(docs): document wave 4 enterprise and pro components`.
+
+- [x] **Step 1:** dispatch batches and collect the files
+- [x] **Step 2:** `pnpm gen-api` + review api.json descriptions for the wave (JSDoc coverage 49.21% → 78.80%)
+- [x] **Step 3:** `docs:check --complete` (83 components, 167 demos) + full axe sweep (263 passed) + browser spot check
+- [x] **Step 4:** commit
+
+Two build regressions the wave introduced and how they were closed:
+
+- Unescaped `<tag>` / `<ariaLabel>` placeholders in prose broke MDX compilation; wrapped them in code spans.
+- Seven pages imported the basic demo as `Demo`, shadowing `@docs/theme/Demo`. `check-docs.mjs` now fails on any
+  JSX element used without a matching import, so the class of bug is gated instead of caught by the build.
 
 ---
 

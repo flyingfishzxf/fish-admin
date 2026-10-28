@@ -25,18 +25,31 @@ export function TreeSelect({
   'aria-invalid': ariaInvalid,
   'aria-describedby': ariaDescribedBy,
 }: {
+  /** DOM id forwarded to the trigger button. */
   id?: string
+  /** Flat tree records rendered inside the popover. */
   items: TreeItem[]
+  /** Selected node id; `null` or `undefined` shows the placeholder. */
   value?: string | null
+  /** Called with the node id when a row is picked. */
   onChange: (id: string) => void
+  /** Provide to render the clear button; called when it is clicked. */
   onClear?: () => void
+  /** Trigger text while nothing is selected. */
   placeholder: string
+  /** Accessible name; the selected path or placeholder is appended to it. */
   ariaLabel: string
+  /** Accessible name for the clear button; defaults to the locale "Clear selection". */
   clearLabel?: string
+  /** Text shown in the popover when the tree has no nodes. */
   emptyLabel?: string
+  /** Disables the trigger and the clear button. */
   disabled?: boolean
+  /** Extra classes for the relative wrapper. */
   className?: string
+  /** Marks the field invalid; forwarded to the trigger button. */
   'aria-invalid'?: AriaAttributes['aria-invalid']
+  /** Ids of hint or error text; forwarded to the trigger button. */
   'aria-describedby'?: string
 }) {
   const { t } = useUITranslation()

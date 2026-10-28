@@ -24,18 +24,31 @@ export function DetailPage({
   children,
   className,
 }: {
+  /** Node rendered above the header, typically a back link or breadcrumb. */
   back?: ReactNode
+  /** Leading media such as an Avatar, pinned to the left of the header. */
   avatar?: ReactNode
+  /** The record name, shown as the page `h1` and truncated when long. */
   title: string
+  /** Short secondary line under the title, such as an email or handle. */
   subtitle?: string
+  /** Status chips rendered inline right after the title. */
   badges?: ReactNode
+  /** Muted supporting facts, laid out in a wrapping row under the subtitle. */
   meta?: ReactNode
+  /** Buttons aligned to the right of the header. */
   actions?: ReactNode
+  /** Sections shown as a tab list; when empty or absent, `children` renders instead. */
   tabs?: DetailPageTab[]
+  /** The tab value opened first; falls back to the first tab. */
   defaultTab?: string
+  /** Accessible name of the tab list. */
   tabsLabel?: string
+  /** Content rendered after the body, often a secondary action row. */
   footer?: ReactNode
+  /** Body content shown when no tabs are supplied. */
   children?: ReactNode
+  /** Extra classes for the outer stack. */
   className?: string
 }) {
   return (

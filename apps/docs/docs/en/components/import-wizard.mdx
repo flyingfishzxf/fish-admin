@@ -1,0 +1,121 @@
+---
+title: Import Wizard
+description: A four-step CSV import flow with drag-and-drop upload, column mapping and row validation.
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import ImportWizardBasic from '@docs/demos/import-wizard/basic'
+import basicSource from '@docs/demos/import-wizard/basic.tsx?raw'
+import ImportWizardSteps from '@docs/demos/import-wizard/steps'
+import stepsSource from '@docs/demos/import-wizard/steps.tsx?raw'
+
+# Import Wizard
+
+`ImportWizard` walks Upload → Map → Review → Done over a `File` (or the `sample` string) that the
+built-in `parseCsvTable` reader turns into headers and rows. Native `<select>` controls handle
+mapping, and a per-field validator produces the row results your `onImport` receives.
+
+<ComponentMeta id="import-wizard" />
+
+## When to use
+
+- Bulk-adding records — members, vendors, invoices — from a spreadsheet export.
+- Any import where column names differ per source and the user has to map them.
+- When invalid rows must be reported and skipped rather than rejected as a batch.
+
+## When not to use
+
+- A single file attachment on a form: use `Dropzone`.
+- A handful of records: edit them in an `Editable Table`.
+- Formats other than CSV — parse XLSX or JSON yourself and drive your own steps.
+
+## Basic usage
+
+<Demo
+  title="Sample CSV through all four steps"
+  filename="demos/import-wizard/basic.tsx"
+  source={basicSource}
+>
+  <ImportWizardBasic />
+</Demo>
+
+## Blocked steps and skipped rows
+
+<Demo
+  title="Blocked steps and skipped rows"
+  filename="demos/import-wizard/steps.tsx"
+  source={stepsSource}
+>
+  <ImportWizardSteps />
+</Demo>
+
+## API
+
+<ApiTable component="import-wizard" />
+
+## Design guidance
+
+- The step rail comes from `labels.steps`, so the array length is the flow length; it is rendered as
+  an `<ol>` of 20 px badges, current step `border-primary bg-primary text-primary-foreground`,
+  completed steps `border-primary/40 bg-primary/10 text-primary` with a `CheckCircle2` glyph.
+- Step 1 is a dashed panel (`border-dashed bg-muted/20 px-4 py-8 text-center`) with an `UploadCloud`
+  icon. Dropping uses the first file only, and the `sr-only` `<input type="file">` is reset after each
+  pick so the same file can be chosen again.
+- Passing `sample` adds a ghost button that loads the string as `sampleName` — useful in docs and
+  demos, and the only path that never touches the file system.
+- `parseCsvTable` strips a leading BOM, understands quoted cells and `""` escapes, and drops blank
+  rows. No headers or no data rows means `labels.emptyFile` in an alert; an unreadable file means
+  `labels.parseError`.
+- Auto-mapping normalizes both sides (lowercased, non-alphanumerics removed) and compares against
+  `key`, `label` and `aliases`; each source column can serve only one field, so `aliases` are how you
+  accept "Full name", "E-Mail" or "Department".
+- Mapping controls are plain `<select>` elements with a `-1` "skip" option; `missingRequiredFields`
+  disables Next and prints `mapRequired` with the unmapped labels until it is empty.
+- The mapping preview shows the first three rows of mapped fields only; the review table shows the
+  first ten and uses a sticky `bg-muted` header inside a `max-h-64` pane. Cells truncate at
+  `max-w-40`, and empty values print `—`.
+- Validation is per field and per row: empty + `required`, `type: 'email'` against an email pattern,
+  `type: 'number'` against `Number.isNaN`. Line numbers start at 2 because row 1 is the header.
+- Only valid rows are handed to `onImport`, and `toImportPayload` converts non-empty number fields to
+  `Number`. The import button label is `labels.import(validCount)` and it is disabled at zero.
+- A rejected promise from `onImport` keeps the user on Review with `labels.importFailed`; success
+  advances to Done and stores the count for `labels.doneHint`.
+
+## Accessibility
+
+- The whole flow is a `<section>` named by `ariaLabel`; with two wizards on one page, give each a
+  different label.
+- The active step carries `aria-current="step"`, and every step badge shows its number, so the rail
+  is readable without colour. `Back` and `Next` are ordinary buttons in the tab order.
+- The file input stays keyboard reachable behind `sr-only` and is labelled by `labels.browse`; parse
+  errors render as `role="alert"` and mapping errors as `role="status"`, both announced.
+- Mapping selects are wrapped in a `<label>` and also get `aria-label`; the required marker `*` is
+  `aria-hidden`, and required-ness is stated by the `mapRequired` message instead.
+- Preview and review tables are real `<table>` markup with header rows, and status text is written
+  out ("Ready", "Skipped", or the joined messages) rather than signalled by colour alone.
+
+Known gap: step changes do not move focus, so a screen reader only learns the new step from the
+announced status text; completed steps are distinguished by a check icon with no text. Preview and
+review `<th>` elements omit `scope`, the review pane's `overflow-auto` wrapper is neither focusable
+nor labelled, and per-cell errors are exposed only through the `title` attribute.
+
+## FAQ
+
+**Does it upload anything?** No. The file is read locally with `file.text()` (or a `FileReader`
+fallback) and only the validated rows reach `onImport`, where you decide the transport.
+
+**What happens to rows that fail validation?** They are counted in `invalidCount`, shown with their
+messages on Review, and excluded from the payload. Import is disabled only when nothing is valid.
+
+**Why is my column not mapped?** Matching is exact after normalization, so "E-Mail" works only if you
+list it in `aliases`. Everything else needs a manual pick.
+
+## Related
+
+- `Dropzone` when one file is enough and no mapping is needed.
+- `Editable Table` to fix rows before they are committed.
+- `ProTable` for the list an import feeds.
+- `Result` for a standalone completion panel when you split the steps apart.
+- [Used in the template](https://fish-admin.vercel.app/users)

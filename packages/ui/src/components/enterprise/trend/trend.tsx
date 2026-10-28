@@ -17,11 +17,17 @@ export function Trend({
   invert = false,
   className,
 }: {
+  /** Signed delta to format; its sign decides the arrow and direction. */
   value: number
+  /** Context announced and shown after the value, e.g. "vs last month". */
   label?: string
+  /** Text appended directly after the formatted number. */
   suffix?: string
+  /** Maximum fraction digits passed to `Intl.NumberFormat`. */
   precision?: number
+  /** Flips the success/destructive tone for metrics where lower is better. */
   invert?: boolean
+  /** Extra classes for the inline wrapper. */
   className?: string
 }) {
   const { locale } = useUITranslation()

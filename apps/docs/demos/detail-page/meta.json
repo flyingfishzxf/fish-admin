@@ -1,0 +1,28 @@
+[
+  {
+    "id": "detail-page/basic",
+    "component": "detail-page",
+    "file": "demos/detail-page/basic.tsx",
+    "title": {
+      "en": "Record header with tabbed sections",
+      "zh": "带标签分区的记录头部"
+    },
+    "description": {
+      "en": "Avatar, title, badges, actions and a tab list of sections.",
+      "zh": "头像、标题、徽章、操作区与分区标签列表。"
+    }
+  },
+  {
+    "id": "detail-page/single-section",
+    "component": "detail-page",
+    "file": "demos/detail-page/single-section.tsx",
+    "title": {
+      "en": "Single body with back and footer",
+      "zh": "单正文配返回与页脚"
+    },
+    "description": {
+      "en": "No tabs: children render as one section, closed by a footer.",
+      "zh": "不用标签：children 作为单个分区渲染，并由页脚收尾。"
+    }
+  }
+]

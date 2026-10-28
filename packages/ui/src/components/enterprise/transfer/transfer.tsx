@@ -30,15 +30,25 @@ export function Transfer({
   disabled = false,
   className,
 }: {
+  /** Full item pool; `value` decides which panel each item renders in. */
   items: TransferItem[]
+  /** Keys currently sitting in the target panel. */
   value: string[]
+  /** Called with the complete next key list on every move. */
   onChange: (value: string[]) => void
+  /** Heading of the available-items panel. */
   sourceTitle: string
+  /** Heading of the assigned-items panel. */
   targetTitle: string
+  /** Search input placeholder in both panels; defaults to the locale "Search". */
   searchPlaceholder?: string
+  /** Text shown when the filtered source panel has no rows. */
   emptySourceLabel?: string
+  /** Text shown when the filtered target panel has no rows. */
   emptyTargetLabel?: string
+  /** Disables both panels: search inputs, select-all checkboxes and rows. */
   disabled?: boolean
+  /** Extra classes for the two-column grid wrapper. */
   className?: string
 }) {
   const [sourceSearch, setSourceSearch] = useState('')

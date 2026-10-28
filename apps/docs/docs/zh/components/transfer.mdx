@@ -1,0 +1,101 @@
+---
+title: Transfer 穿梭框
+description: 在可选列表与已选列表之间移动条目，两侧面板均可搜索并支持全选。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TransferBasic from '@docs/demos/transfer/basic'
+import basicSource from '@docs/demos/transfer/basic.tsx?raw'
+import TransferSearchable from '@docs/demos/transfer/searchable'
+import searchableSource from '@docs/demos/transfer/searchable.tsx?raw'
+
+# Transfer 穿梭框
+
+`Transfer` 是一个 `md:grid-cols-2` 的双面板组件，面板使用 `bg-card` 描边卡片样式，内部由 `Input`
+搜索框、`Checkbox` 全选框和一组 option 按钮组成。它的值是位于目标面板的 key 数组，点击任意一行
+即在该数组中切换成员身份。
+
+<ComponentMeta id="transfer" />
+
+## 何时使用
+
+- 把一组对象分配给另一个对象：给发布单指派评审人、给集成绑定仓库、给角色勾选权限。
+- 候选项带有需要浏览的附加信息，例如描述、分组标题以及两侧面板各自的计数。
+- 候选数量较多，左右两侧都需要独立的搜索框。
+
+## 何时不使用
+
+- 只选一个值：用 `Select` 或 `Radio Group`。
+- 候选项本身有层级：`Tree` 或 `Tree Select` 能更好地表达结构。
+- 只有两三个选项：勾选框组比双面板轻量得多。
+- 需要保留选择顺序：值是成员集合，行的排列跟随源数组，而不是移动先后。
+
+## 基础用法
+
+<Demo title="指派评审人" filename="demos/transfer/basic.tsx" source={basicSource}>
+  <TransferBasic />
+</Demo>
+
+点击某一行时，`onChange` 收到的是完整更新后的 key 数组：新选入的 key 追加在末尾，移回的 key
+从数组中过滤掉，其余 key 保持原有位置。
+
+## 搜索与分组
+
+<Demo title="在分组数据中过滤" filename="demos/transfer/searchable.tsx" source={searchableSource}>
+  <TransferSearchable />
+</Demo>
+
+两个面板共用一个 `searchPlaceholder`，但各自维护自己的关键词。匹配规则是把查询词去空格转小写后，
+检查它是否出现在 `label + description + searchText` 拼接串中。带 `group` 字段的条目会按源数组顺序
+显示弱化色的分组标题；`disabled` 条目不参与全选，也无法被点击移动。
+
+## API
+
+<ApiTable component="transfer" />
+
+## 设计指引
+
+- 外层是 `grid gap-3 md:grid-cols-2`，面板为 `flex-col gap-2`、`rounded-lg border bg-card p-3`，
+  窄视口自动堆叠成单列。
+- 面板头部由 `h3`（`text-sm font-medium`）加未过滤条数（`text-xs text-muted-foreground`）组成，
+  计数不随搜索变化。
+- 搜索框使用 `h-8` 的 `Input`；未传 `searchPlaceholder` 时回退到本地化的“搜索”。
+- 全选框只看当前可见且可选的行：全部命中为选中，部分命中为不确定态，没有可选行时禁用。
+- 行按钮内边距为 `px-2 py-1.5`，悬停显示 `hover:bg-accent`。目标面板的行有 `bg-primary/5` 底色，
+  勾选框填充主色并带 `Check` 图标；源面板显示空心方框。标签超长会截断，`description` 以 12 px
+  弱化色排在下方。
+- 列表在 `max-h-64 overflow-y-auto pr-1` 内滚动，条目再多也不会撑高页面。
+- 过滤后没有结果时显示 `emptySourceLabel` / `emptyTargetLabel`，缺省为本地化的“无匹配项”。
+
+## 无障碍
+
+- 每个面板都是被标题标记的 `<section>`，在航标列表中显示为“团队成员”“评审人”等具名区域。
+- 滚动列表是 `role="listbox"` 并设置 `aria-multiselectable="true"`，名称取自面板标题；每行是真正的
+  `<button role="option">`，`aria-selected` 表示它是否位于目标面板；装饰性勾选方框标记为
+  `aria-hidden`，状态由 option 本身承载。
+- 搜索框的可访问名称为“面板标题 — 搜索”，全选 `Checkbox` 绑定可见的“全选”标签，部分选中通过
+  checked 状态表达。
+- 行按钮进入 Tab 顺序，Enter 与空格触发移动，聚焦时有 `focus-visible:ring-[3px] ring-ring/50`
+  描边；禁用行是真正的 `<button disabled>`，会被 Tab 跳过。
+
+已知缺口：列表内没有方向键导航，行间只能靠 Tab 逐个移动；而且刚点击的行会随面板切换而卸载，
+焦点每次移动条目后都会丢失。请像基础示例那样用 `aria-live` 区域播报结果，不要依赖焦点回传。
+
+## FAQ
+
+**`onChange` 收到什么？** 完整的下一个 `value` 数组，而不是增量。新选入的 key 追加在末尾，移除
+的 key 直接从数组过滤，其余顺序不变。
+
+**“全选”会选中整个池子吗？** 不会，只作用于过滤后可见的行，`disabled` 条目永远不会被带上。
+
+**能读取或重置搜索词吗？** 不能，它是每个面板内部的 `useState`，没有受控属性；`value` 变化也不会
+清空搜索词。
+
+## 相关
+
+- `Tree`、`Tree Select`：候选池本身有层级时。
+- `Tags Input`：需要输入自由文本而不是从池中挑选时。
+- `Checkbox`：全选框的底层组件。
+- [在模板中的用法](https://fish-admin.vercel.app/roles)

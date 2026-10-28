@@ -1,0 +1,103 @@
+---
+title: Query Filter 筛选查询条
+description: 把文本、下拉、开关、日期区间与自定义字段渲染成响应式筛选栏，值完全由外部受控。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import QueryFilterBasic from '@docs/demos/query-filter/basic'
+import basicSource from '@docs/demos/query-filter/basic.tsx?raw'
+import QueryFilterCollapsed from '@docs/demos/query-filter/collapsed'
+import collapsedSource from '@docs/demos/query-filter/collapsed.tsx?raw'
+
+# Query Filter 筛选查询条
+
+`QueryFilter` 把一组字段描述渲染成自适应栅格，控件分别是 `Input`、`Select`、`Switch` 与
+`DateRangePicker`。它自身不保存状态：`value` 与 `onChange` 都由调用方持有，哪些值算“生效”则交给
+`filter-utils` 判断。
+
+<ComponentMeta id="query-filter" />
+
+## 何时使用
+
+- 直接放在 `ProTable` 或卡片列表上方的筛选条。
+- 用户会叠加多个条件，并且需要一个统一重置入口。
+- 条件较多，默认收起、通过“更多”展开的场景。
+
+## 何时不使用
+
+- 新增或编辑记录：使用 `ProForm` 或 `Form`。
+- 只有一个搜索框：`ProTable` 的 `search` 配置加一个 `Input` 就够了。
+- 每次输入都要立刻执行的重查询：本组件不带防抖，需要在自己的 `onChange` 里节流。
+
+## 基础用法
+
+<Demo title="三个筛选项与操作插槽" filename="demos/query-filter/basic.tsx" source={basicSource}>
+  <QueryFilterBasic />
+</Demo>
+
+## 折叠字段与自定义控件
+
+<Demo
+  title="折叠的筛选栏：日期区间与自定义字段"
+  filename="demos/query-filter/collapsed.tsx"
+  source={collapsedSource}
+>
+  <QueryFilterCollapsed />
+</Demo>
+
+## API
+
+<ApiTable component="query-filter" />
+
+## 设计指引
+
+- 栅格是 `grid-cols-1 sm:grid-cols-2 lg:grid-cols-3`、`gap-3`；每个字段都是
+  `data-slot="query-filter-field"` 下的 `flex min-w-0 flex-col gap-1.5` 列。
+- `maxVisible` 默认 3（小于 0 时按 0 处理），只有 `fields.length > maxVisible` 才会出现“更多/收起”
+  按钮。收起时后面的字段会卸载，但值仍留在你的 `value` 对象里——折叠只是布局，不是清空。
+- 操作行只在有需要时渲染：展开按钮、重置按钮或 `extra` 节点。`extra` 通过 `ml-auto` 顶到最右，适合放
+  “应用筛选”或“导出”。
+- 重置按钮仅在 `countActiveFilters(fields, value) > 0` 时出现，点击后 `onChange({})`——不区分是否
+  可见，一次清空全部；随后调用 `onReset`，可以用它重新请求或清掉已保存的视图。
+- “是否生效”按类型判断：文本、下拉、自定义字段只要字符串非空白或数组非空即生效；布尔只认 `true`；
+  `dateRange` 只要 `fromName` 或 `toName` 有值就算生效。
+- 下拉设置 `allLabel` 时，该选项内部映射成哨兵值，写回的是 `''`，因此“全部”不会混进查询参数；触发器
+  显示文案回退顺序是 `allLabel ?? label`。
+- `dateRange` 会写入两个 `YYYY-MM-DD` 字符串（清空时为空串），请确保 `fromName` 与 `toName` 这两个键
+  不被其他字段占用。
+- `custom` 字段渲染在由 `label` 命名的 `role="group"` 里，控件由 `render(value, onChange)` 提供，记得
+  给控件自己加上可访问名称。
+- React 的 key 取自 `type` 与字段名，因此改动某个字段的 `type` 会让控件重新挂载。
+
+## 无障碍
+
+- 文本与布尔字段用 `useId` 把 `Label htmlFor` 接到 `Input` 或 `Switch`，可见标签即无障碍名称。
+- 下拉触发器既带被标签引用的 `id`，又带同文案的 `aria-label`，因此可以用
+  `getByRole('combobox', { name: 'Status' })` 定位。
+- 展开按钮同时提供 `aria-expanded`，并把文案在“更多/收起”之间切换，状态不只靠箭头图标表达。
+- 自定义字段处于有名称的 `group` 中，内部控件保持正常 Tab 顺序，焦点进入时会读到该组名称。
+- 所有字段完全受控、变更即回传，没有隐藏的提交步骤。
+
+已知缺口：`dateRange` 的 `Label` 没有 `htmlFor`，与 `DateRangePicker` 触发按钮之间没有程序化关联（因此
+该控件需要自己的 `ariaLabel`）。重置按钮是出现/消失而不是禁用，且没有活动区域，生效条件数量需要由调用方
+播报——两个示例都用 `aria-live="polite"` 段落做了这件事。筛选条本身是普通 `div`，不构成地标。
+
+## FAQ
+
+**它会帮我请求或过滤数据吗？** 不会，只通过 `onChange` 回传值；过滤、防抖和重新请求都留在查询层。
+
+**为什么重置把我没展开的字段也清了？** `clearFilterValues` 直接返回空对象，组件并不知道哪些字段当前可见。
+需要部分清空请在 `onChange` 里自行构造。
+
+**能把某个字段固定在收起区之外吗？** 取决于顺序：超过 `maxVisible` 的部分先被隐藏，所以请把最常用的条件
+放在 `fields` 前面。
+
+## 相关
+
+- 筛选条驱动的列表使用 `ProTable`。
+- 需要单独的区间控件时使用 `Date Range Picker`。
+- 录入记录而不是筛选时使用 `ProForm`。
+- 少量互斥视图切换可使用 `Segmented`。
+- [在模板中的用法](https://fish-admin.vercel.app/projects)

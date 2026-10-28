@@ -1,0 +1,101 @@
+---
+title: Tour 新手引导
+description: 受控的聚光灯式引导，把每一步卡片锚定到页面上的真实元素。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TourBasic from '@docs/demos/tour/basic'
+import basicSource from '@docs/demos/tour/basic.tsx?raw'
+import TourResume from '@docs/demos/tour/resume'
+import resumeSource from '@docs/demos/tour/resume.tsx?raw'
+
+# Tour 新手引导
+
+`Tour` 是一个基于 Portal 的分步引导：它对每个 `TourStep` 测量目标元素，围绕目标画一圈 `ring-primary`
+聚光高亮，再弹出一张 `role="dialog"` 卡片，提供下一步、上一步、跳过、完成四个操作。开关完全由父级通过
+`onOpenChange` 掌控。
+
+<ComponentMeta id="tour" />
+
+## 何时使用
+
+- 首次进入的引导，希望指向真实控件而不是截图。
+- 对一个表单或工具条做线性走查，每一步高亮一个元素。
+- 需要把“已完成”状态持久化的场景：由你的代码在 `onFinish` 里决定。
+
+## 何时不使用
+
+- 非线性的帮助或参考文档：直接写文字，不要强塞一套固定顺序。
+- 只给单个元素加提示：用 `Popover` 或 `Tooltip`，Tour 意味着多步流程。
+- 需要阻断页面、锁死焦点的流程：Tour 没有焦点陷阱，它是引导而非模态门禁。
+- 需要服务端渲染的内容：`Tour` 通过 `document.body` 的 Portal 挂载，只在打开时存在。
+
+## 基础用法
+
+示例把 `open` 默认设为 false，所以被抓取扫描的页面只有触发按钮和目标字段。点击“Start tour”才会挂载
+聚光灯和对话框；各步骤分别锚定工作空间名称、套餐下拉和保存按钮。
+
+<Demo title="设置表单上的聚光灯引导" filename="demos/tour/basic.tsx" source={basicSource}>
+  <TourBasic />
+</Demo>
+
+## 受控开关与完成回调
+
+`open` 由父级持有，每次重新打开时内部步骤索引都会回到第一步。`onFinish` 只在最后一步点击“完成”时触发，
+紧接着关闭引导。这里用它把启动入口隐藏起来，于是完成过的引导不会再提示重开。
+
+<Demo title="完成后隐藏启动入口" filename="demos/tour/resume.tsx" source={resumeSource}>
+  <TourResume />
+</Demo>
+
+## API
+
+<ApiTable component="tour" />
+
+## 设计指引
+
+- 当 `open` 为 false 或没有当前步骤时，`Tour` 返回 `null`，什么都不渲染，静息页面因此不会多出额外的地标。
+- 打开后它会向 `document.body` 挂载三层：`z-[80]` 的 `bg-black/45` 遮罩（点击即关闭）、`aria-hidden` 的
+  聚光环（`z-[81]`），以及位于 `z-[82]` 的对话框。
+- 卡片宽 `w-80 max-w-[calc(100vw-1rem)]`，样式为 `rounded-xl border bg-popover p-4 shadow-xl`，位置按
+  一个 320×190 的模型盒计算，步距 12 px、视口留边 8 px。
+- `placement`（`top`、`bottom`、`left`、`right`，默认 `bottom`）决定卡片相对目标的方位，且位置会被夹紧，
+  保证卡片始终留在视口内。
+- `target()` 返回要高亮的元素；若解析为 `null`，则跳过高亮环，卡片改为在视口中居中。`resize` 与任意
+  `scroll` 都会触发重新定位。
+- `labels` 为必填，且是唯一的文案来源（组件不带内置语言）：需要提供 `next`、`previous`、`skip`、`finish`
+  以及一个 `step(current, total)` 格式化函数。步骤计数与“跳过”位于同一行，标题是 `<h2>`，底部是“上一步/
+  下一步”（`ghost` 与默认 `size="sm"` 按钮）。
+
+## 无障碍
+
+- 卡片是 `role="dialog" aria-modal="true"`，通过 `aria-labelledby` 用当前步骤标题命名；打开以及每次切换
+  步骤时都会聚焦到卡片（`tabIndex={-1}`），从而播报新的标题。
+- `Escape` 会关闭引导，并在卸载时把焦点交还给打开前处于活动状态的元素；点击“跳过”或点击遮罩同样会调用
+  `onOpenChange(false)`。
+- 第一步时“上一步”是真实的禁用按钮；点“下一步”前进，最后一步换成“完成”，先触发 `onFinish` 再关闭。所有
+  操作都能从聚焦的卡片用键盘到达。
+- 遮罩与聚光环都是 `aria-hidden`，无障碍树里只保留对话框内容。
+
+已知缺口：组件没有实现焦点陷阱，Tab 仍可能把焦点移动到打开的对话框后方的页面内容，对指针用户而言
+`aria-modal` 并未真正生效。步骤计数是静态文本而非实时区域，读屏在前进时不一定重新播报“第 2 步，共 3 步”，
+除非标题的变化引起了注意。请把引导当作辅助提示。
+
+## FAQ
+
+**未打开时引导长什么样？** 什么都没有。`open` 为 false 时 `Tour` 返回 `null`，静息页面只有你自己的触发
+按钮与目标元素。
+
+**某一步的目标元素找不到怎么办？** 会跳过高亮环，卡片改在视口居中，所以即使元素不在屏幕内或尚未渲染，
+引导依然可用。
+
+**按钮文案自带翻译吗？** 不带。你必须传入 `labels` 对象；组件刻意把全部文案外置，方便你自行本地化。
+
+## 相关
+
+- `Dialog`：需要阻断页面并锁住焦点的模态框。
+- `Popover`：只给单个锚点做提示，而非多步流程时。
+- `Button`：用于打开引导的触发按钮。
+- [在模板中的用法](https://fish-admin.vercel.app/)

@@ -1,0 +1,96 @@
+---
+title: Trend 趋势标记
+description: 把带符号的变化量渲染为箭头、本地化数字与语义色调组成的行内标签。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TrendBasic from '@docs/demos/trend/basic'
+import basicSource from '@docs/demos/trend/basic.tsx?raw'
+import TrendInverted from '@docs/demos/trend/inverted'
+import invertedSource from '@docs/demos/trend/inverted.tsx?raw'
+
+# Trend 趋势标记
+
+`Trend` 是一个 `role="img"` 的行内 `span`：用 `Intl.NumberFormat` 把数字格式化成带符号文本，
+配上方向箭头图标，并按语义着色（`text-success`、`text-destructive` 或 `text-muted-foreground`）。
+
+<ComponentMeta id="trend" />
+
+## 何时使用
+
+- KPI 卡片、指标行里需要一眼看懂的变化量：营收、流失率、延迟。
+- 仅靠正负号不足以表达好坏的指标——用 `invert` 标记"越低越好"的序列。
+- 需要行内对比、且不想手写读屏文案的场合。
+
+## 何时不使用
+
+- 展示绝对值本身：数值交给 `Statistic`，`Trend` 只负责变化。
+- 需要看走势形状：用 `Chart` 画折线或迷你图。
+- 表达完成度占比：`Progress` 的条形或环形比涨跌更直观。
+- "持平"没有信息量的场景：值没变化时直接渲染普通文本即可。
+
+## 基础用法
+
+<Demo title="带上下文的 KPI 涨跌" filename="demos/trend/basic.tsx" source={basicSource}>
+  <TrendBasic />
+</Demo>
+
+正负号决定一切：正值显示 `ArrowUpRight` 加 `text-success`，负值显示 `ArrowDownRight` 加
+`text-destructive`，零值则是弱化色的 `Minus` 短横，文本渲染为 `0%`——
+`signDisplay: 'exceptZero'` 保证持平不带符号。
+
+## 越低越好的指标
+
+<Demo title="成本类指标反向着色" filename="demos/trend/inverted.tsx" source={invertedSource}>
+  <TrendInverted />
+</Demo>
+
+`invert` 只调换色调：流失率下降 `-0.6%` 尽管箭头朝下也渲染为绿色，失败登录上升 `4.2%` 则渲染为
+红色。单位是"百分点"而非"百分比"时，配合 `suffix=" pt"` 与 `precision` 覆写即可。
+
+## API
+
+<ApiTable component="trend" />
+
+## 设计指引
+
+- 外层为 `inline-flex items-center gap-1 text-xs font-medium`，并带 `data-slot="trend"`，与
+  `Statistic` 或表格单元同行排布时不会撑破行高。
+- 图标（`ArrowUpRight`、`ArrowDownRight`、`Minus`）为 `size-3.5`；三种色调类分别是
+  `text-success`、`text-destructive`、`text-muted-foreground`。
+- 数值用 `UIProvider` 的 locale 走 `Intl.NumberFormat`，参数为
+  `maximumFractionDigits: precision`（默认 1）与 `signDisplay: 'exceptZero'`：`12.4` 显示
+  `+12.4%`，`-0.6` 显示 `-0.6%`，`0` 显示 `0%`。
+- `suffix` 默认 `%`，紧跟数字、不加空格；其他单位传 `suffix=" pt"` 或空串。
+- `label` 渲染在数值之后，样式为 `font-normal text-muted-foreground`，适合放中性的对比说明
+  （"较上月"），不要混入着色数值。
+
+## 无障碍
+
+- 整个组件是一个 `role="img"`，`aria-label` 把数值与说明拼成一句，如 "+12.4% vs last month"；
+  内部图标、数字、说明均标记 `aria-hidden`，不会重复播报。组件测试对此有断言。
+- 颜色从不单独承载信息：每种色调都有箭头图标和文本中的正负号与之对应。
+- 零值仍会播报数字和说明，只是换成弱化色的短横。
+
+已知缺口：`invert` 表达的"好坏"只存在于颜色里——不加 `label` 说明时，读屏听到 "-0.6% vs last
+month" 与是否 `invert` 完全相同。反向指标请把结论写进 `label` 文案；`Trend` 本身是静态的，数值
+刷新时需自行套一层 `aria-live` 容器。
+
+## FAQ
+
+**`Trend` 会自己算涨跌吗？** 不会，它只格式化你传入的数字，百分比变化请在数据层算好。
+
+**`invert` 到底改了什么？** 只改色调映射（好坏互换）；箭头、符号和播报文本始终跟随 `value`
+的正负。
+
+**为什么 `0` 没有加号？** 格式化用了 `signDisplay: 'exceptZero'`，零值刻意渲染为中性的 `0%`。
+
+## 相关
+
+- `Statistic`：与涨跌并排的主数值。
+- `Progress`：表达完成度而非变化量。
+- `Card`：KPI 卡片容器。
+- `ProTable`：把趋势放进可排序列时。
+- [在模板中的用法](https://fish-admin.vercel.app/reports)

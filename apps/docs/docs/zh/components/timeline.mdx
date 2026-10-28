@@ -1,0 +1,90 @@
+---
+title: Timeline 时间线
+description: 纵向有序列表，事件带语义色圆点标记、图标、时间戳与描述。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import TimelineBasic from '@docs/demos/timeline/basic'
+import basicSource from '@docs/demos/timeline/basic.tsx?raw'
+import TimelineEmpty from '@docs/demos/timeline/empty'
+import emptySource from '@docs/demos/timeline/empty.tsx?raw'
+
+# Timeline 时间线
+
+`Timeline` 把 `TimelineItem[]` 渲染成语义的 `<ol>`：每条事件有一个圆形标记（可按 `tone` 配色显示
+`lucide-react` 图标），用一条竖向连接线串起来，再配上标题、时间戳与描述。
+
+<ComponentMeta id="timeline" />
+
+## 何时使用
+
+- 审计轨迹、审批历史、更新日志等以时间顺序为核心信息的内容。
+- 需要在标题之外，再加一行补充说明与相对时间的紧凑事件流。
+- 需要按事件的重要程度或结果，用 `tone` 标记区分的场景。
+
+## 何时不使用
+
+- 用户要一步步推进的流程：用 `Stepper`，它会表达进度与当前状态。
+- 只是一组没有时间轴的普通行：`List` 比时间线更轻。
+- 单条记录的键值元信息：用 `Descriptions`。
+- 需要组件自己排序或分页：`Timeline` 只按你传入的内容原样渲染，不分页。
+
+## 基础用法
+
+<Demo title="带图标与语义色的审计轨迹" filename="demos/timeline/basic.tsx" source={basicSource}>
+  <TimelineBasic />
+</Demo>
+
+## 空状态
+
+`items` 为空数组时不会渲染列表。若提供 `emptyLabel`，会显示一段弱化占位文字；若不提供，组件返回
+`null`，方便由父级自己接管空状态。示例在“有事件”和“空数组”之间来回切换，可以直观看到两种结果。
+
+<Demo title="清空与恢复事件" filename="demos/timeline/empty.tsx" source={emptySource}>
+  <TimelineEmpty />
+</Demo>
+
+## API
+
+<ApiTable component="timeline" />
+
+## 设计指引
+
+- 列表是 `<ol className="space-y-0">`，间距来自每行的 `pb-6`（最后一行去掉），因此各行紧密相接。
+- 标记统一是 `size-8` 的圆形徽章，位于 `z-10`。它按 `size-4` 渲染条目的 `icon`；没有图标时，改为一枚
+  `size-2`、用 `bg-current` 着色的小圆点。
+- 连接线是一条 `w-px bg-border` 的竖线，从标记延伸到下一行，除最后一条外的每个条目都会画它，所以线条
+  会干净地停在最新事件处。
+- `tone` 映射到 token 类名而非硬编码颜色：`default` 用 `bg-muted`，`info`/`success`/`warning` 使用半透明的
+  `chart-1`/`chart-3`/`chart-4`，`destructive` 用 `bg-destructive/10`。
+- `title`、`description`、`timestamp` 都是 `ReactNode`，可以传链接或格式化后的日期。标题为 `text-sm
+font-medium`，时间戳是 `text-xs text-muted-foreground` 与标题同基线右对齐，描述为 `text-sm break-words
+text-muted-foreground`。
+- 条目按数组顺序渲染，组件内部不做排序或反转。
+
+## 无障碍
+
+- 组件是真正的有序列表（`<ol>` 内含 `<li>`），读屏会播报位置（“第 3 项，共 4 项”），并自带列表导航。
+- 连接线标注了 `aria-hidden`，不会给每行的朗读增添杂音。
+- 内容都是纯文本，时间线内部没有任何交互控件，因此不需要额外 Tab 停靠点，阅读顺序就是文档顺序。
+
+已知缺口：`tone` 只通过颜色表达严重程度，请勿把它当作唯一信号，应把语义写进 `title` 或 `description`
+文字里。装饰性的标记图标没有被显式标记为 `aria-hidden`，如果图标本身承载含义，请务必同时在文字里表达。
+
+## FAQ
+
+**能在条目里放富文本吗？** 可以。`title`、`description`、`timestamp` 都是 `ReactNode`，链接、代码、
+格式化日期都能用。
+
+**`tone` 改变了什么？** 只改变标记徽章的背景与文字颜色，取自 chart 与 destructive token，不影响布局。
+
+**顺序由谁控制？** 由你控制。列表按传入数组的顺序渲染，请在传入前先排序或反转。
+
+## 相关
+
+- `Stepper`：需要用户逐步推进的流程。
+- `List`：没有时间轴的普通行集合。
+- `Descriptions`：键值元信息。
+- [在模板中的用法](https://fish-admin.vercel.app/workflows/$id)

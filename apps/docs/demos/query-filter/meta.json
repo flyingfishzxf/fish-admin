@@ -1,0 +1,28 @@
+[
+  {
+    "id": "query-filter/basic",
+    "component": "query-filter",
+    "file": "demos/query-filter/basic.tsx",
+    "title": {
+      "en": "Three filters with an action slot",
+      "zh": "三个筛选项与操作插槽"
+    },
+    "description": {
+      "en": "Text, select and boolean fields; Reset only appears once a filter is active.",
+      "zh": "文本、下拉与布尔字段；只有存在有效筛选时才会出现“重置”。"
+    }
+  },
+  {
+    "id": "query-filter/collapsed",
+    "component": "query-filter",
+    "file": "demos/query-filter/collapsed.tsx",
+    "title": {
+      "en": "Collapsed bar with date range and custom field",
+      "zh": "折叠的筛选栏：日期区间与自定义字段"
+    },
+    "description": {
+      "en": "maxVisible hides the tail of the field list behind a More button.",
+      "zh": "maxVisible 把多余的字段收进“更多”按钮里。"
+    }
+  }
+]

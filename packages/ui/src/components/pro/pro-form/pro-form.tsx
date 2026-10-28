@@ -79,14 +79,23 @@ export function ProForm({
   ariaLabel,
   className,
 }: {
+  /** Field definitions rendered in order on a two-column grid. */
   fields: ProFormField[]
+  /** Overrides for the values built from each field's `defaultValue`. */
   defaultValues?: Partial<ProFormValues>
+  /** Called with the form values only after every rule passes. */
   onSubmit: (values: ProFormValues) => void | Promise<void>
+  /** Message builder for a failed rule; receives the rule name, field label and limit. */
   validateMessage: (rule: ProFormRule, label: string, limit?: number) => string
+  /** Submit button label. */
   submitLabel: string
+  /** When set, renders an outline button that resets to the initial values. */
   resetLabel?: string
+  /** External pending flag; combined with `isSubmitting` for the busy state. */
   loading?: boolean
+  /** Accessible name for the `<form>` element. */
   ariaLabel?: string
+  /** Extra classes for the `<form>` element. */
   className?: string
 }) {
   const initialValues = useRef<ProFormValues | null>(null)

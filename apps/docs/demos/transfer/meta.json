@@ -1,0 +1,28 @@
+[
+  {
+    "id": "transfer/basic",
+    "component": "transfer",
+    "file": "demos/transfer/basic.tsx",
+    "title": {
+      "en": "Assign teams to a review",
+      "zh": "为评审分配团队"
+    },
+    "description": {
+      "en": "Click an item to move it between the two panels.",
+      "zh": "点击条目即可在两个面板之间移动。"
+    }
+  },
+  {
+    "id": "transfer/searchable",
+    "component": "transfer",
+    "file": "demos/transfer/searchable.tsx",
+    "title": {
+      "en": "Search and groups",
+      "zh": "搜索与分组"
+    },
+    "description": {
+      "en": "Each panel filters label, description and searchText over grouped items.",
+      "zh": "每个面板都可按标签、描述和 searchText 过滤分组条目。"
+    }
+  }
+]

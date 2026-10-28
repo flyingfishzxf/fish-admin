@@ -1,0 +1,96 @@
+---
+title: Watermark 水印
+description: 一层装饰性、aria-hidden 的画布，把旋转重复的文字铺在任何内容之上。
+---
+
+import ApiTable from '@docs/theme/ApiTable'
+import ComponentMeta from '@docs/theme/ComponentMeta'
+import Demo from '@docs/theme/Demo'
+import WatermarkBasic from '@docs/demos/watermark/basic'
+import basicSource from '@docs/demos/watermark/basic.tsx?raw'
+import WatermarkStyles from '@docs/demos/watermark/styles'
+import stylesSource from '@docs/demos/watermark/styles.tsx?raw'
+
+# Watermark 水印
+
+`Watermark` 把 `children` 包进一个 `relative` 容器，并在一张绝对定位的 `<canvas>` 上，把 `text`
+按网格平铺、旋转绘制出来。画布是 `aria-hidden` 且 `pointer-events-none` 的，会在尺寸变化时用
+`ResizeObserver` 重绘，也会在主题变化时通过监听 `documentElement` 的 `MutationObserver` 重绘。
+
+<ComponentMeta id="watermark" />
+
+## 何时使用
+
+- 在文档或预览上盖一个归属或状态标记——机密、草稿、某个用户或租户 id。
+- 用一块可见、难以裁掉的水印，降低随手截图、外泄的可能。
+- 给看起来像可下载文件的界面加上品牌标识。
+
+## 何时不使用
+
+- 承载某条信息的唯一副本：这一层是装饰性的，会被辅助技术忽略。
+- 需要用户选中、搜索或复制水印文字：它是画布像素，不是 DOM 文本。
+- 当作无障碍的标题或标签：这类信息应放进真正可读的内容里。
+
+## 基础用法
+
+<Demo title="给导出件盖上机密标记" filename="demos/watermark/basic.tsx" source={basicSource}>
+  <WatermarkBasic />
+</Demo>
+
+## 调整外观
+
+`opacity`、`fontSize`、`rotate`、`gap` 完全控制每一块平铺：单块透明度、字号（像素）、旋转角度，
+以及两个轴上平铺中心之间的间距。绘制颜色不是一个 prop——它读取
+`getComputedStyle(container).color`，因此跟随周围文字的颜色与主题。
+
+<Demo title="三种平铺效果对比" filename="demos/watermark/styles.tsx" source={stylesSource}>
+  <WatermarkStyles />
+</Demo>
+
+## API
+
+<ApiTable component="watermark" />
+
+## 设计指引
+
+- 容器是 `relative`；先渲染 `children`，随后画布以 `absolute inset-0 z-10 pointer-events-none
+select-none rounded-[inherit]` 盖在其上。
+- 平铺按 `gap` 网格排布，起点在两个轴的 `gap / 2`，所以边缘的块以边界为中心，而不是被裁在角落。
+- 画布按 `devicePixelRatio` 缩放（后备像素为 `width * ratio`，CSS 尺寸仍用 px），保证高分屏下文字清晰。
+- 每块用 `globalAlpha = opacity`（默认 0.08）、`fillStyle` 取容器计算后的 `color`、
+  `font = "{fontSize}px ui-sans-serif, system-ui, sans-serif"` 绘制，文字水平垂直都居中；
+  `rotate` 用 `context.rotate` 逐块施加。
+- 绘制 effect 的依赖是 `[fontSize, gap, opacity, rotate, text]`，随后观察容器尺寸与 `documentElement`
+  的 `class`/`style` 变化；两个观察器都在清理时断开，所以切换主题会用新颜色重绘。
+- 组件完全不阻挡交互：`pointer-events-none` 让点击与滚动都穿透到下层 `children`。
+
+## 无障碍
+
+- 这一层是 `aria-hidden` 且 `pointer-events-none` 的，读屏会忽略它，也不会截取焦点或点击；
+  `children` 在无障碍树里保持原样。
+- 因为这层是装饰性的，水印文字绝不能是某条信息的唯一出处。它想传达的含义——"机密"、归属
+  id——必须同时以真正可读的 DOM 文本存在，基础示例就是这么做的。
+- 对比度：默认 `opacity` 0.08 太淡，不会影响其下方正文文字的对比度。若把 `opacity` 或 `fontSize`
+  调高、让平铺压到正文之后，请重新核对文字是否仍满足 4.5:1，因为绘制是盖在内容之上，而非其下。
+
+已知缺口：画布没有可访问名称（这是有意为之），`text` 字符串也不会自动出现在别处，所以辅助技术完全
+感知不到这个标记。对装饰性覆盖层来说这是合理的，但也意味着单靠水印永远无法满足信息披露要求。
+
+## FAQ
+
+**水印文字能被选中或搜索吗？** 不能。它被光栅化到了画布上。如果这个字符串必须可选中或可索引，就把它
+渲染进 DOM，水印只保留装饰作用。
+
+**颜色为什么跟着主题走？** `fillStyle` 取的是 `getComputedStyle(container).color`，而 `documentElement`
+上的 `MutationObserver` 会在 class 或 style 变化时重绘，明暗切换会自动更新标记。
+
+**只把机密信息藏在水印里安全吗？** 不安全。`aria-hidden` 意味着辅助技术完全读不到。务必把真正的信息
+在可读内容里重复一份。
+
+## 相关
+
+- `Image Preview`：在放大查看的文件或附件上加盖标记。
+- `Upload`：给上传队列盖上归属水印。
+- `Card`：被水印包裹的内容表面。
+- `Result`：给状态页盖水印，又不污染其正文。
+- [在模板中的用法](https://fish-admin.vercel.app/files)

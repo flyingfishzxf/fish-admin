@@ -1,0 +1,28 @@
+[
+  {
+    "id": "tour/basic",
+    "component": "tour",
+    "file": "demos/tour/basic.tsx",
+    "title": {
+      "en": "Spotlight tour over a setup form",
+      "zh": "在设置表单上的引导式漫游"
+    },
+    "description": {
+      "en": "Steps anchor to real elements; the overlay starts closed and opens on demand.",
+      "zh": "各步骤锚定真实元素；遮罩默认关闭，按需打开。"
+    }
+  },
+  {
+    "id": "tour/resume",
+    "component": "tour",
+    "file": "demos/tour/resume.tsx",
+    "title": {
+      "en": "Finishing hides the launcher",
+      "zh": "完成后隐藏启动入口"
+    },
+    "description": {
+      "en": "onOpenChange owns the open state and onFinish gates whether the tour can reopen.",
+      "zh": "由 onOpenChange 掌握开关，onFinish 决定漫游是否还能再次打开。"
+    }
+  }
+]
