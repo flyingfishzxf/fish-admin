@@ -1,11 +1,18 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 import { Compass } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@fish-admin/react'
+import { docsUrlFor } from '@/config/site'
 import { useDocumentTitle } from '@/lib/document-title'
 
 export const Route = createFileRoute('/_app/$')({
+  // The catalog and playground routes are gone; their old links keep working for
+  // one release when the deployment names a docs site, and 404 when it does not.
+  beforeLoad: ({ location }) => {
+    const target = docsUrlFor(location.pathname)
+    if (target) throw redirect({ href: target })
+  },
   component: InShellNotFound,
 })
 

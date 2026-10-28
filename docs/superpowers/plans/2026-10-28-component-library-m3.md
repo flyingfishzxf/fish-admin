@@ -988,7 +988,7 @@ Old READMEs, issues and bookmarks point at `/components` and `/ui`. With the rou
 - Consumes: `docsUrlFor(pathname)` from `src/config/site.ts`.
 - Produces: nothing downstream depends on it.
 
-- [ ] **Step 1: Add the redirect to the catch-all route**
+- [x] **Step 1: Add the redirect to the catch-all route**
 
 In [src/routes/_app/$.tsx](../../../src/routes/_app/$.tsx) extend the `createFileRoute` call. `redirect({ href })` is how TanStack Router leaves the app:
 
@@ -1006,7 +1006,7 @@ export const Route = createFileRoute('/_app/$')({
 
 with `import { redirect } from '@tanstack/react-router'` and `import { docsUrlFor } from '@/config/site'` added.
 
-- [ ] **Step 2: Write the e2e guard for the default build**
+- [x] **Step 2: Write the e2e guard for the default build**
 
 Create `e2e/docs-link.spec.ts`. The suite's build has no `VITE_DOCS_URL`, which is the case adopters get:
 
@@ -1034,12 +1034,12 @@ test.describe('docs seam', () => {
 })
 ```
 
-- [ ] **Step 3: Run it to verify it passes**
+- [x] **Step 3: Run it to verify it passes**
 
 Run: `pnpm test:e2e -- e2e/docs-link.spec.ts --workers=1`
 Expected: 2 passed. The 404 assertion is the regression guard: if the redirect fired without a configured URL, the heading assertion fails.
 
-- [ ] **Step 4: Verify the configured path locally**
+- [x] **Step 4: Verify the configured path locally**
 
 Rebuild with the seam set and intercept the docs origin so no network is needed:
 
@@ -1052,12 +1052,20 @@ Then in a scratch Playwright script: `page.route('**docs.invalid**', route => ro
 
 Expected: both redirects land. If `/components` renders the 404 instead, `env.docsUrl` was inlined as `undefined` — the build did not see the variable.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/routes/_app/\$.tsx e2e/docs-link.spec.ts
 git commit -m "feat(template): redirect the retired catalog routes to the docs site"
 ```
+
+**Measured, and where this task departed from the plan.** `redirect({ href })` is real in the pinned router (`@tanstack/router-core@1.171.38` documents `href` as "absolute URL for external redirects"), so the catch-all needed no workaround.
+
+- Step 3's command ran the whole suite, not the one file. `test:e2e` is `cross-env VITE_ENABLE_MOCK=true pnpm build && playwright test`, so arguments after `--` land on `pnpm run` and never reach Playwright. The result is still the evidence: **76 passed**, which is the previous 74 plus these two.
+- The 404 assertion in the plan (`a[href^="https://fish-admin-docs"]`) is a needle that can never match, because no build ever used that origin. Replaced with `a[href^="http"]:not([href^="http://localhost"])` over the whole document, plus `aside a[target="_blank"]` in the sidebar guard. Both are honest only because `grep -rn 'href="http' src` matches nothing outside `src/components/layout/nav-item-link.tsx:39`, i.e. the app renders no absolute link of its own; if a later feature adds one, this guard needs rescoping.
+- Step 4's "scratch Playwright script" could not be a standalone `.mjs`: `import { chromium } from 'playwright'` fails with `ERR_MODULE_NOT_FOUND` (only `@playwright/test` is a root dependency), and the exact-name `getByRole('button', { name: 'admin@fish.dev' })` the script would need times out because the demo-account button carries more text than the email — `signInAs` matches it with a regex. Ran it as a temporary `e2e/scratch-docs-redirect.spec.ts` under the Playwright runner against the already-built `dist`, then deleted it. **4 passed**: the sidebar entry renders once with `target="_blank"`; `/components` → `https://docs.invalid/components`; `/ui` → `https://docs.invalid/guide/theming` (both landing on the stub heading, so the intercept was the navigation target, not a failed request); and `/retired-page` still renders "Page not found" with the URL configured.
+- `dist` was rebuilt with `VITE_ENABLE_MOCK=true` and no `VITE_DOCS_URL` after the scratch run, so the committed suite's expectations match what is on disk.
+- Format/lint/typecheck green on the two files; the full `pnpm test:e2e` run exercised them from a fresh `pnpm build`, so `tsc --noEmit` ran twice with no error.
 
 ---
 
