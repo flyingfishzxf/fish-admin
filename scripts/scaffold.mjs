@@ -336,8 +336,6 @@ function firstLine(value) {
 // Shared transforms
 // ---------------------------------------------------------------------------
 
-const VISUAL_SCREENSHOTS = 'e2e/visual/__screenshots__'
-
 /**
  * The Playwright suite drives the app through the demo backend and the demo
  * dataset, so both are removed together with it: there is nothing left for the
@@ -473,63 +471,6 @@ function brandStep({ editor, options }) {
       `        name: '${slug}:strip-mock-worker',`,
     )
   }
-}
-
-const CATALOG_DELETIONS = [
-  'src/features/playground',
-  'src/routes/_app/ui.tsx',
-  'src/routes/_app/components.tsx',
-  'src/config/components.ts',
-  'src/config/components.test.ts',
-  'e2e/components-catalog.spec.ts',
-  'e2e/ui-playground.spec.ts',
-  `${VISUAL_SCREENSHOTS}/pages.spec.ts/components-linux.png`,
-]
-
-function catalogStep({ editor, options }) {
-  editor.delete(...CATALOG_DELETIONS)
-
-  for (const locale of options.keptLocales) {
-    editor.delete(`src/locales/${locale}/catalog.json`, `src/locales/${locale}/ui.json`)
-  }
-
-  editor
-    .sub('src/config/nav.ts', text("  | '/ui'", "  | '/components'"), '')
-    .sub('src/config/nav.ts', '  Boxes,\n', '')
-    .sub('src/config/nav.ts', '  Palette,\n', '')
-    .sub(
-      'src/config/nav.ts',
-      text(
-        '      {',
-        "        titleKey: 'nav:items.ui',",
-        "        to: '/ui',",
-        '        icon: Palette,',
-        '      },',
-        '      {',
-        "        titleKey: 'nav:items.components',",
-        "        to: '/components',",
-        '        icon: Boxes,',
-        '      },',
-      ),
-      '',
-    )
-
-  editor
-    .block(
-      'e2e/a11y.spec.ts',
-      "  test('component catalog and ui playground', async ({ page }) => {",
-      '  })',
-    )
-    .block(
-      'e2e/visual/pages.spec.ts',
-      "  test('component catalog hero', async ({ page }) => {",
-      '  })',
-    )
-    .sub(
-      'e2e/security.spec.ts',
-      "    for (const path of ['/', '/users', '/reports', '/files', '/components', '/settings']) {",
-      "    for (const path of ['/', '/users', '/reports', '/files', '/projects', '/settings']) {",
-    )
 }
 
 const THEME_ONLY_SPEC = text(
@@ -873,12 +814,6 @@ const API_ONLY_ENV_EXAMPLE = text(
 export const PLAN_STEPS = [
   { id: 'brand', title: 'rebrand the app identity', run: brandStep, when: () => true },
   {
-    id: 'catalog',
-    title: 'remove the component catalog and the UI playground',
-    run: catalogStep,
-    when: (options) => options.catalog === 'strip',
-  },
-  {
     id: 'locales',
     title: 'drop the unused locales',
     run: localeStep,
@@ -911,7 +846,6 @@ export function buildOptions(input) {
     tagline: input.tagline ?? 'Admin Dashboard',
     taglineProvided: Boolean(input.tagline),
     keepMock: input.keepMock !== false,
-    catalog: input.catalog ?? 'keep',
     locales,
     keptLocales,
     droppedLocales: locales.filter((locale) => !keptLocales.includes(locale)),
@@ -960,7 +894,6 @@ export function checkPlan(root, selectOverrides = () => ({})) {
   const options = buildOptions({
     slug: 'acme-console',
     tagline: 'Operations Console',
-    catalog: 'strip',
     keptLocales: [BASE_LOCALE],
     locales,
     ...selectOverrides(locales),
@@ -977,9 +910,9 @@ export function checkPlan(root, selectOverrides = () => ({})) {
 export const PLAN_VARIANTS = [
   {
     label: 'rename only',
-    overrides: (locales) => ({ keepMock: true, catalog: 'keep', keptLocales: locales }),
+    overrides: (locales) => ({ keepMock: true, keptLocales: locales }),
   },
-  { label: 'catalog and locale strip, mock kept' },
+  { label: 'locale strip, mock kept' },
   { label: 'everything stripped, mock API removed', overrides: () => ({ keepMock: false }) },
 ]
 
@@ -988,15 +921,7 @@ export const PLAN_VARIANTS = [
 // ---------------------------------------------------------------------------
 
 const BOOLEAN_FLAGS = new Set(['dry-run', 'force', 'help', 'yes'])
-const VALUE_FLAGS = new Set([
-  'catalog',
-  'display-name',
-  'locales',
-  'mock',
-  'name',
-  'tagline',
-  'target',
-])
+const VALUE_FLAGS = new Set(['display-name', 'locales', 'mock', 'name', 'tagline', 'target'])
 
 export function parseFlags(argv) {
   const flags = {}
@@ -1048,14 +973,12 @@ export function optionsFromFlags(flags, locales, fallbackSlug) {
   }
 
   const mock = choice('mock', ['keep', 'drop'])
-  const catalog = choice('catalog', ['keep', 'strip'])
 
   return {
     slug: typeof flags.name === 'string' ? flags.name : fallbackSlug,
     displayName: typeof flags['display-name'] === 'string' ? flags['display-name'] : undefined,
     tagline: typeof flags.tagline === 'string' ? flags.tagline : undefined,
     keepMock: mock !== 'drop',
-    catalog: catalog ?? 'keep',
     locales,
     keptLocales: kept,
   }
@@ -1092,9 +1015,6 @@ async function collect({ rl, flags, locales, fallbackSlug }) {
   const tagline = (await rl.question(`Tagline [Admin Dashboard]: `)).trim()
 
   const keepMock = await askYesNo(rl, 'Keep the mock API (the demo backend)', true)
-  const catalog = (await askYesNo(rl, 'Keep the component catalog and the /ui playground', true))
-    ? 'keep'
-    : 'strip'
 
   const keptLocales = [BASE_LOCALE]
   for (const locale of locales.filter((entry) => entry !== BASE_LOCALE)) {
@@ -1106,7 +1026,6 @@ async function collect({ rl, flags, locales, fallbackSlug }) {
     displayName: displayName || undefined,
     tagline: tagline || undefined,
     keepMock,
-    catalog,
     locales,
     keptLocales,
   }
@@ -1116,27 +1035,12 @@ function describe(options, applied) {
   const lines = [
     `App:        ${options.displayName} (${options.slug}) — ${options.tagline}`,
     `Mock API:   ${options.keepMock ? 'kept' : 'removed'}`,
-    `Catalog:    ${options.catalog === 'strip' ? 'removed' : 'kept'}`,
     `Locales:    ${options.keptLocales.join(', ')}`,
     '',
     'Applied:',
     ...applied.map((id) => `  • ${PLAN_STEPS.find((step) => step.id === id)?.title ?? id}`),
   ]
   return lines.join('\n')
-}
-
-function regenerateRouteTree(root) {
-  const vite = join(root, 'node_modules', 'vite', 'bin', 'vite.js')
-  assert(existsSync(vite), 'vite is not installed; run `pnpm install`, then `pnpm build` once')
-
-  const result = spawnSync(process.execPath, [vite, 'build', '--logLevel=error'], {
-    cwd: root,
-    stdio: 'inherit',
-  })
-  assert(
-    result.status === 0,
-    'the route tree could not be regenerated; run `pnpm build` and fix the errors',
-  )
 }
 
 export async function run(argv, { cwd = process.cwd(), interactive = Boolean(stdin.isTTY) } = {}) {
@@ -1193,11 +1097,6 @@ export async function run(argv, { cwd = process.cwd(), interactive = Boolean(std
     'utf8',
   )
 
-  if (options.catalog === 'strip') {
-    stdout.write('Regenerating the route tree...\n')
-    regenerateRouteTree(root)
-  }
-
   stdout.write(`\nDone. Next steps:\n${nextSteps(options).join('\n')}\n`)
   return 0
 }
@@ -1213,12 +1112,6 @@ function nextSteps(options) {
   } else {
     lines.push('  .env.local                     # point VITE_API_BASE_URL at your backend')
     lines.push('  src/features/*/api.ts          # the request shapes the mock used to answer')
-  }
-
-  if (options.catalog === 'strip') {
-    lines.push(
-      '  src/config/nav.ts              # the nav is the app map; rename the groups you keep',
-    )
   }
 
   if (options.keepMock) {
@@ -1243,7 +1136,6 @@ export const USAGE = text(
   '  --display-name=<name>    brand shown in the shell, titles and the boot screen',
   '  --tagline=<text>         subtitle under the brand',
   '  --mock=keep|drop         drop removes src/mocks, MSW, and the Playwright suite',
-  '  --catalog=keep|strip     strip removes /ui, /components and the component catalog',
   '  --locales=en,zh-CN       which locales to keep; en is always required',
   '  --target <dir>           directory to transform (default: the current directory)',
   '  --dry-run                print the plan without writing',

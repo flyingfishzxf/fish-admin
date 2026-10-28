@@ -8,8 +8,6 @@
   "items": {
     "dashboard": "工作台",
     "reports": "数据报表",
-    "ui": "组件库",
-    "components": "组件目录",
     "projects": "项目",
     "workflows": "审批中心",
     "files": "资源库",

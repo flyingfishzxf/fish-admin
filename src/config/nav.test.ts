@@ -119,7 +119,7 @@ describe('navigation config', () => {
     ]
 
     expect(findNavItem('/reports', withChildren)?.titleKey).toBe('nav:items.reports')
-    expect(findNavItem('/ui', withChildren)).toBeUndefined()
+    expect(findNavItem('/nope', withChildren)).toBeUndefined()
     expect(flattenNavItems(withChildren).map((item) => item.to)).toEqual(['/', '/reports'])
   })
 

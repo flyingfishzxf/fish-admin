@@ -75,16 +75,12 @@ describe('scaffold options', () => {
     expect(() => flags(['--name=acme', '--mock=remove'], ['en'])).toThrow(
       /--mock=remove is not one of/,
     )
-    expect(() => flags(['--name=acme', '--catalog=yes'], ['en'])).toThrow(
-      /--catalog=yes is not one of/,
-    )
   })
 
   it('keeps every locale when --locales is absent', () => {
     const options = flags(['--name=acme', '--yes'], ['en', 'zh-CN'])
     expect(options.keptLocales).toEqual(['en', 'zh-CN'])
     expect(options.droppedLocales).toEqual([])
-    expect(options.catalog).toBe('keep')
     expect(options.keepMock).toBe(true)
   })
 
@@ -94,10 +90,9 @@ describe('scaffold options', () => {
     expect(options.droppedLocales).toEqual(['zh-CN'])
   })
 
-  it('reads --mock=drop and --catalog=strip as removals', () => {
-    const options = flags(['--name=acme', '--yes', '--mock=drop', '--catalog=strip'], ['en'])
+  it('reads --mock=drop as a removal', () => {
+    const options = flags(['--name=acme', '--yes', '--mock=drop'], ['en'])
     expect(options.keepMock).toBe(false)
-    expect(options.catalog).toBe('strip')
   })
 
   it('falls back to the directory name when --name is absent', () => {

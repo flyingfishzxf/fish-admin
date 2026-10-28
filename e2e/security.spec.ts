@@ -57,7 +57,7 @@ test.describe('response header policy', () => {
     await signInAs(page, 'admin')
     found.push(...(await readViolations(page)))
 
-    for (const path of ['/', '/users', '/reports', '/files', '/components', '/settings']) {
+    for (const path of ['/', '/users', '/reports', '/files', '/projects', '/settings']) {
       await page.goto(path)
       // Several demo pages nest their own <main>, so the shell's account menu is
       // the unambiguous "the app rendered" signal.

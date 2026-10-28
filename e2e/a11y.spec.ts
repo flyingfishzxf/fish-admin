@@ -208,19 +208,4 @@ test.describe('accessibility', () => {
     await expect(page.getByRole('heading', { name: 'New connection' })).toBeVisible()
     await expectNoViolations(page, 'integration form drawer')
   })
-
-  test('component catalog and ui playground', async ({ page }) => {
-    test.slow()
-    await signInAs(page, 'admin')
-
-    await page.goto('/components')
-    await expect(
-      page.getByRole('heading', { name: '83 components, 83 live demos on this page', level: 1 }),
-    ).toBeVisible()
-    await expectNoViolations(page, 'component catalog')
-
-    await page.goto('/ui')
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
-    await expectNoViolations(page, 'ui playground')
-  })
 })

@@ -11,12 +11,13 @@ const API = env.apiBaseUrl
 
 export const navigationHandlers = [
   // Reading your own menu takes a session, not a permission: which entries exist
-  // is the thing the backend is deciding.
+  // is the thing the backend is deciding, and each one carries the permission
+  // code the client re-checks against the session.
   http.get(`${API}/menu`, ({ request }) =>
     run(() => {
       const db = readDb()
-      const actor = authenticate(db, request)
-      return buildMenuPayload(actor.permissions)
+      authenticate(db, request)
+      return buildMenuPayload()
     }),
   ),
 ]

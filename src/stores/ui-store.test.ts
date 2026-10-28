@@ -91,10 +91,10 @@ describe('ui store', () => {
   it('prunes tabs outside the server menu without churning on a no-op', () => {
     const state = useUiStore.getState()
     state.openTab({ to: '/', search: {}, pinned: false })
-    state.openTab({ to: '/components', search: {}, pinned: false })
+    state.openTab({ to: '/reports', search: {}, pinned: false })
 
     const before = useUiStore.getState().tabs
-    state.keepOnlyTabs(['/', '/components'])
+    state.keepOnlyTabs(['/', '/reports'])
     expect(useUiStore.getState().tabs).toBe(before)
 
     useUiStore.getState().keepOnlyTabs(['/'])

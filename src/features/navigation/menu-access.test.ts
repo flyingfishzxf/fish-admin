@@ -60,9 +60,9 @@ describe('enforceMenuAccess', () => {
   it('403s a page the server hid although the session permits it', async () => {
     fetchQuery.mockResolvedValue(MENU)
 
-    // `/components` has no permission in the shipped nav, so the client's own
+    // `/notifications` has no permission in the shipped nav, so the client's own
     // codes could never hide it: only the menu can.
-    await expect(redirectTo('/components')).resolves.toBe('/403')
+    await expect(redirectTo('/notifications')).resolves.toBe('/403')
   })
 
   it('treats a detail route as its parent menu entry', async () => {
@@ -76,7 +76,7 @@ describe('enforceMenuAccess', () => {
 
     await expect(redirectTo('/')).resolves.toBeUndefined()
     await expect(redirectTo('/users')).resolves.toBeUndefined()
-    await expect(redirectTo('/components')).resolves.toBeUndefined()
+    await expect(redirectTo('/notifications')).resolves.toBeUndefined()
   })
 
   it('applies the session to the shipped nav after a failed fetch', async () => {

@@ -19,7 +19,6 @@ import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AppSplatRouteImport } from './routes/_app/$'
 import { Route as App403RouteImport } from './routes/_app/403'
 import { Route as AppAuditLogsRouteImport } from './routes/_app/audit-logs'
-import { Route as AppComponentsRouteImport } from './routes/_app/components'
 import { Route as AppDepartmentsRouteImport } from './routes/_app/departments'
 import { Route as AppDictionariesRouteImport } from './routes/_app/dictionaries'
 import { Route as AppFilesRouteImport } from './routes/_app/files'
@@ -32,7 +31,6 @@ import { Route as AppReportsRouteImport } from './routes/_app/reports'
 import { Route as AppRolesRouteImport } from './routes/_app/roles'
 import { Route as AppSecurityRouteImport } from './routes/_app/security'
 import { Route as AppSettingsRouteImport } from './routes/_app/settings'
-import { Route as AppUiRouteImport } from './routes/_app/ui'
 import { Route as AppUsersRouteImport } from './routes/_app/users'
 import { Route as AppWorkflowsRouteImport } from './routes/_app/workflows'
 import { Route as AuthAcceptInviteRouteImport } from './routes/_auth/accept-invite'
@@ -95,11 +93,6 @@ const AppAuditLogsRoute = AppAuditLogsRouteImport.update({
   path: '/audit-logs',
   getParentRoute: () => AppRouteRoute,
 } as any)
-const AppComponentsRoute = AppComponentsRouteImport.update({
-  id: '/components',
-  path: '/components',
-  getParentRoute: () => AppRouteRoute,
-} as any)
 const AppDepartmentsRoute = AppDepartmentsRouteImport.update({
   id: '/departments',
   path: '/departments',
@@ -158,11 +151,6 @@ const AppSecurityRoute = AppSecurityRouteImport.update({
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => AppRouteRoute,
-} as any)
-const AppUiRoute = AppUiRouteImport.update({
-  id: '/ui',
-  path: '/ui',
   getParentRoute: () => AppRouteRoute,
 } as any)
 const AppUsersRoute = AppUsersRouteImport.update({
@@ -240,7 +228,6 @@ export interface FileRoutesByFullPath {
   '/$': typeof AppSplatRoute
   '/403': typeof App403Route
   '/audit-logs': typeof AppAuditLogsRoute
-  '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
   '/dictionaries': typeof AppDictionariesRoute
   '/files': typeof AppFilesRoute
@@ -253,7 +240,6 @@ export interface FileRoutesByFullPath {
   '/roles': typeof AppRolesRoute
   '/security': typeof AppSecurityRoute
   '/settings': typeof AppSettingsRoute
-  '/ui': typeof AppUiRoute
   '/users': typeof AppUsersRoute
   '/workflows': typeof AppWorkflowsRoute
   '/accept-invite': typeof AuthAcceptInviteRoute
@@ -277,7 +263,6 @@ export interface FileRoutesByTo {
   '/$': typeof AppSplatRoute
   '/403': typeof App403Route
   '/audit-logs': typeof AppAuditLogsRoute
-  '/components': typeof AppComponentsRoute
   '/departments': typeof AppDepartmentsRoute
   '/dictionaries': typeof AppDictionariesRoute
   '/files': typeof AppFilesRoute
@@ -290,7 +275,6 @@ export interface FileRoutesByTo {
   '/roles': typeof AppRolesRoute
   '/security': typeof AppSecurityRoute
   '/settings': typeof AppSettingsRoute
-  '/ui': typeof AppUiRoute
   '/users': typeof AppUsersRoute
   '/workflows': typeof AppWorkflowsRoute
   '/accept-invite': typeof AuthAcceptInviteRoute
@@ -316,7 +300,6 @@ export interface FileRoutesById {
   '/_app/$': typeof AppSplatRoute
   '/_app/403': typeof App403Route
   '/_app/audit-logs': typeof AppAuditLogsRoute
-  '/_app/components': typeof AppComponentsRoute
   '/_app/departments': typeof AppDepartmentsRoute
   '/_app/dictionaries': typeof AppDictionariesRoute
   '/_app/files': typeof AppFilesRoute
@@ -329,7 +312,6 @@ export interface FileRoutesById {
   '/_app/roles': typeof AppRolesRoute
   '/_app/security': typeof AppSecurityRoute
   '/_app/settings': typeof AppSettingsRoute
-  '/_app/ui': typeof AppUiRoute
   '/_app/users': typeof AppUsersRoute
   '/_app/workflows': typeof AppWorkflowsRoute
   '/_auth/accept-invite': typeof AuthAcceptInviteRoute
@@ -356,7 +338,6 @@ export interface FileRouteTypes {
     | '/$'
     | '/403'
     | '/audit-logs'
-    | '/components'
     | '/departments'
     | '/dictionaries'
     | '/files'
@@ -369,7 +350,6 @@ export interface FileRouteTypes {
     | '/roles'
     | '/security'
     | '/settings'
-    | '/ui'
     | '/users'
     | '/workflows'
     | '/accept-invite'
@@ -393,7 +373,6 @@ export interface FileRouteTypes {
     | '/$'
     | '/403'
     | '/audit-logs'
-    | '/components'
     | '/departments'
     | '/dictionaries'
     | '/files'
@@ -406,7 +385,6 @@ export interface FileRouteTypes {
     | '/roles'
     | '/security'
     | '/settings'
-    | '/ui'
     | '/users'
     | '/workflows'
     | '/accept-invite'
@@ -431,7 +409,6 @@ export interface FileRouteTypes {
     | '/_app/$'
     | '/_app/403'
     | '/_app/audit-logs'
-    | '/_app/components'
     | '/_app/departments'
     | '/_app/dictionaries'
     | '/_app/files'
@@ -444,7 +421,6 @@ export interface FileRouteTypes {
     | '/_app/roles'
     | '/_app/security'
     | '/_app/settings'
-    | '/_app/ui'
     | '/_app/users'
     | '/_app/workflows'
     | '/_auth/accept-invite'
@@ -542,13 +518,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuditLogsRouteImport
       parentRoute: typeof AppRouteRoute
     }
-    '/_app/components': {
-      id: '/_app/components'
-      path: '/components'
-      fullPath: '/components'
-      preLoaderRoute: typeof AppComponentsRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
     '/_app/departments': {
       id: '/_app/departments'
       path: '/departments'
@@ -631,13 +600,6 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
-      parentRoute: typeof AppRouteRoute
-    }
-    '/_app/ui': {
-      id: '/_app/ui'
-      path: '/ui'
-      fullPath: '/ui'
-      preLoaderRoute: typeof AppUiRouteImport
       parentRoute: typeof AppRouteRoute
     }
     '/_app/users': {
@@ -738,7 +700,6 @@ interface AppRouteRouteChildren {
   AppSplatRoute: typeof AppSplatRoute
   App403Route: typeof App403Route
   AppAuditLogsRoute: typeof AppAuditLogsRoute
-  AppComponentsRoute: typeof AppComponentsRoute
   AppDepartmentsRoute: typeof AppDepartmentsRoute
   AppDictionariesRoute: typeof AppDictionariesRoute
   AppFilesRoute: typeof AppFilesRoute
@@ -751,7 +712,6 @@ interface AppRouteRouteChildren {
   AppRolesRoute: typeof AppRolesRoute
   AppSecurityRoute: typeof AppSecurityRoute
   AppSettingsRoute: typeof AppSettingsRoute
-  AppUiRoute: typeof AppUiRoute
   AppUsersRoute: typeof AppUsersRoute
   AppWorkflowsRoute: typeof AppWorkflowsRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -765,7 +725,6 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppSplatRoute: AppSplatRoute,
   App403Route: App403Route,
   AppAuditLogsRoute: AppAuditLogsRoute,
-  AppComponentsRoute: AppComponentsRoute,
   AppDepartmentsRoute: AppDepartmentsRoute,
   AppDictionariesRoute: AppDictionariesRoute,
   AppFilesRoute: AppFilesRoute,
@@ -778,7 +737,6 @@ const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppRolesRoute: AppRolesRoute,
   AppSecurityRoute: AppSecurityRoute,
   AppSettingsRoute: AppSettingsRoute,
-  AppUiRoute: AppUiRoute,
   AppUsersRoute: AppUsersRoute,
   AppWorkflowsRoute: AppWorkflowsRoute,
   AppIndexRoute: AppIndexRoute,

@@ -10,13 +10,6 @@ const resources = import.meta.glob('../locales/*/*.json', {
   import: 'default',
 }) as Record<string, JsonObject>
 
-// Read as source so the catalog check follows the file set: a scaffolded copy
-// without the playground has nothing to scan and stays green.
-const catalogDemoSources = import.meta.glob(
-  '../features/playground/components/component-catalog-demos*.tsx',
-  { eager: true, query: '?raw', import: 'default' },
-) as Record<string, string>
-
 const locales = new Map<string, Map<string, JsonObject>>()
 
 for (const [path, resource] of Object.entries(resources)) {
@@ -129,17 +122,6 @@ describe('locale resources', () => {
       for (const group of PERMISSION_GROUPS) {
         const key = `permissions:groups.${group}`
         expect(lookup(language, key), key).toEqual(expect.any(String))
-      }
-    }
-  })
-
-  it('translates every literal key used by the catalog demos', () => {
-    for (const [file, source] of Object.entries(catalogDemoSources)) {
-      for (const match of source.matchAll(/\bt\('(catalog:[^']+)'/g)) {
-        const key = match[1]
-        for (const language of LOCALES) {
-          expect(lookup(language, key), `${file}: ${key}`).toEqual(expect.any(String))
-        }
       }
     }
   })

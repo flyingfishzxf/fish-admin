@@ -24,20 +24,12 @@ async function signOut(page: Page) {
 }
 
 /**
- * Which entries the server withholds belongs to the demo backend, not to this spec:
- * `src/mocks/menu.ts` hides the design-system surfaces from roles without `*`, and a
- * product built with `pnpm scaffold --catalog=strip` has nothing left to hide. So the
- * two payloads decide what gets asserted, and the spec skips rather than fails where
- * the server stops shortening the menu.
+ * The demo backend serializes the shipped nav for every role, so there is no
+ * entry it withholds on its own: which pages a role loses is decided by the
+ * permission codes each entry carries. `src/features/navigation/menu-access.test.ts`
+ * covers the case a stubbed menu withholds a page the session permits, because
+ * that needs a payload the demo server never sends.
  */
-async function hiddenForViewer(page: Page) {
-  const admin = await menuPaths(page, 'admin')
-  await signOut(page)
-  const viewer = await menuPaths(page, 'viewer')
-
-  return admin.filter((path) => !viewer.includes(path))
-}
-
 test.describe('server-driven menu', () => {
   test('the sidebar renders what the API returned', async ({ page }) => {
     const paths = await menuPaths(page, 'admin')
@@ -47,28 +39,6 @@ test.describe('server-driven menu', () => {
     // Every entry the API named is on screen, in the order it sent them.
     for (const path of paths) {
       await expect(page.locator(`a[href="${path}"]`).first()).toBeVisible()
-    }
-  })
-
-  test('the server shortens the menu for a lower role', async ({ page }) => {
-    const hidden = await hiddenForViewer(page)
-    test.skip(hidden.length === 0, 'this build withholds no entry from a lower role')
-
-    // Nothing in the viewer's permission codes hides these, so only the menu can.
-    for (const path of hidden) {
-      await expect(page.locator(`a[href="${path}"]`)).toHaveCount(0)
-    }
-    await expect(page.locator('a[href="/users"]')).toBeVisible()
-  })
-
-  test('a page the menu hid is unreachable by URL', async ({ page }) => {
-    const hidden = await hiddenForViewer(page)
-    test.skip(hidden.length === 0, 'this build withholds no entry from a lower role')
-
-    for (const path of hidden) {
-      await page.goto(path)
-      await expect(page).toHaveURL(/\/403/)
-      await expect(page.getByRole('heading', { name: 'Access denied' })).toBeVisible()
     }
   })
 

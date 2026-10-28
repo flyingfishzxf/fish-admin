@@ -92,15 +92,6 @@ test.describe('visual regression', () => {
     await expect(page).toHaveScreenshot('settings.png', { fullPage: true })
   })
 
-  test('component catalog hero', async ({ page }) => {
-    await signIn(page)
-    await visit(page, '/components')
-    await expect(
-      page.getByRole('heading', { name: '83 components, 83 live demos on this page', level: 1 }),
-    ).toBeVisible()
-    await expect(page).toHaveScreenshot('components.png')
-  })
-
   test('projects board', async ({ page }) => {
     await signIn(page)
     await visit(page, '/projects')

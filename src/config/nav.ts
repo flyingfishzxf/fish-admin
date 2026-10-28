@@ -2,14 +2,12 @@ import {
   BarChart3,
   Bell,
   BookMarked,
-  Boxes,
   FolderKanban,
   FolderOpen,
   KeyRound,
   LayoutDashboard,
   LockKeyhole,
   Network,
-  Palette,
   Plug,
   ScrollText,
   Settings2,
@@ -24,8 +22,6 @@ import { PERMISSION_CODES, type PermissionCode } from '@/config/permissions'
 
 export type AppPath =
   | '/'
-  | '/ui'
-  | '/components'
   | '/projects'
   | '/workflows'
   | '/reports'
@@ -70,16 +66,6 @@ export const NAV_GROUPS: NavGroup[] = [
         to: '/reports',
         icon: BarChart3,
         permission: PERMISSION_CODES.reportRead,
-      },
-      {
-        titleKey: 'nav:items.ui',
-        to: '/ui',
-        icon: Palette,
-      },
-      {
-        titleKey: 'nav:items.components',
-        to: '/components',
-        icon: Boxes,
       },
     ],
   },
@@ -187,8 +173,8 @@ export function flattenNavItems(groups: NavGroup[]): NavItem[] {
 }
 
 // The menu a server sends can only point at a route this build actually has:
-// anything else renders the shell's 404, so the scaffolded copies that drop the
-// playground also drop its paths here and the resolver follows automatically.
+// anything else renders the shell's 404, so a backend that lists a page this
+// template no longer ships drops out here and the resolver follows automatically.
 const NAV_PATHS: readonly string[] = flattenNavItems(NAV_GROUPS).map((item) => item.to)
 
 export function isAppPath(value: unknown): value is AppPath {

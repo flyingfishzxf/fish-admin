@@ -8,8 +8,6 @@
   "items": {
     "dashboard": "Dashboard",
     "reports": "Reports",
-    "ui": "UI Kit",
-    "components": "Components",
     "projects": "Projects",
     "workflows": "Approvals",
     "files": "Files",

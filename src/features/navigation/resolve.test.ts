@@ -53,7 +53,7 @@ describe('resolveMenuGroups', () => {
     expect(paths).not.toContain('/users')
     expect(paths).not.toContain('/reports')
     // Nothing in the nav claims a permission, so the menu keeps them anyway.
-    expect(paths).toContain('/components')
+    expect(paths).toContain('/notifications')
   })
 
   it('maps a server payload, including its icons', () => {
