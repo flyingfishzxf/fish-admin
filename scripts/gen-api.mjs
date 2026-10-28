@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 const require = createRequire(import.meta.url)
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const configPath = path.join(repoRoot, 'src/config/components.ts')
+const registryPath = path.join(repoRoot, 'packages/ui/registry.json')
 const uiRoot = path.join(repoRoot, 'packages/ui/src')
 const outDir = path.join(repoRoot, 'apps/docs/generated')
 
@@ -59,26 +59,11 @@ const EXTRA_UNRESOLVED = {
 }
 
 function readRegistry() {
-  const source = fs.readFileSync(configPath, 'utf8')
-  const start = source.indexOf('export const COMPONENTS')
-  const end = source.indexOf('export const COMPONENT_COUNTS')
-  if (start === -1 || end === -1) throw new Error('COMPONENTS block not found')
-  const block = source.slice(start, end)
-  return [...block.matchAll(/\{([^}]*)\}/g)].map((match) => {
-    const body = match[1]
-    const get = (key) => (body.match(new RegExp(`${key}: '([^']*)'`)) || [])[1]
-    const id = get('id')
-    const name = get('name')
-    const category = get('category')
-    const usedIn = get('usedIn')
-    if (!id || !name || !category || !usedIn) throw new Error(`Bad registry entry: ${body}`)
-    return {
-      id,
-      name,
-      category,
-      usedIn,
-      isNew: /isNew: true/.test(body),
-    }
+  const { components } = JSON.parse(fs.readFileSync(registryPath, 'utf8'))
+  return components.map((entry) => {
+    const { id, name, category, usedIn } = entry
+    if (!id || !name || !category || !usedIn) throw new Error(`Bad registry entry: ${id}`)
+    return { id, name, category, usedIn, isNew: entry.isNew === true }
   })
 }
 

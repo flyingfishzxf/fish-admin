@@ -57,11 +57,11 @@ The registry currently lives at [src/config/components.ts](../../../src/config/c
 **Interfaces:**
 
 - Consumes: nothing.
-- Produces: `packages/ui/registry.json` — `{ version: 1, components: Array<{ id, name, category, usedIn, isNew? }> }`, sorted by `id`. Every script that needs the inventory reads this one file. `src/config/components.ts` keeps working until Task 2 deletes it.
+- Produces: `packages/ui/registry.json` — `{ version: 1, components: Array<{ id, name, category, usedIn, isNew? }> }`, grouped by category (`primitive` → `enterprise` → `pro`) and sorted by `id` inside each group, which is the exact order `src/config/components.ts` emits today, so `apps/docs/generated/*` stays byte-identical. Every script that needs the inventory reads this one file. `src/config/components.ts` keeps working until Task 2 deletes it.
 
-- [ ] **Step 1: Generate the JSON from the current TS source**
+- [x] **Step 1: Generate the JSON from the current TS source**
 
-The parser already exists in [apps/docs/scripts/check-docs.mjs:53-68](../../../apps/docs/scripts/check-docs.mjs#L53-L68); reuse it so the JSON cannot drift from what `gen-api` produces today. Run from the repo root:
+The parser already exists in [apps/docs/scripts/check-docs.mjs:53-68](../../../apps/docs/scripts/check-docs.mjs#L53-L68); reuse it so the JSON cannot drift from what `gen-api` produces today. Sort by _first-appearance_ category, then id — a global id sort would reorder `generated/registry.json` and fail Step 4. Run from the repo root:
 
 ```bash
 node --input-type=module -e "
@@ -77,8 +77,11 @@ const components = [...block.matchAll(/\{([^}]*)\}/g)].map((match) => {
     usedIn: get('usedIn'),
     ...( /isNew: true/.test(match[1]) ? { isNew: true } : {} ),
   }
-}).sort((a, b) => a.id.localeCompare(b.id))
+}).filter((entry) => entry.id && entry.name && entry.category && entry.usedIn)
 if (components.length !== 83) throw new Error('Expected 83 entries, got ' + components.length)
+const groupOrder = []
+for (const entry of components) if (!groupOrder.includes(entry.category)) groupOrder.push(entry.category)
+components.sort((a, b) => groupOrder.indexOf(a.category) - groupOrder.indexOf(b.category) || a.id.localeCompare(b.id))
 fs.writeFileSync('packages/ui/registry.json', JSON.stringify({ version: 1, components }, null, 2) + '\n')
 console.log('wrote', components.length, 'entries')
 "
@@ -88,11 +91,11 @@ Expected: `wrote 83 entries`. Spot-check the first entry with `head -12 packages
 
 - [ ] **Step 2: Write the failing package test**
 
-Create `packages/ui/src/registry.test.ts`. The JSON is read with `readFileSync` so the test does not depend on `resolveJsonModule`, and the barrel is imported as the consumer would:
+Create `packages/ui/src/registry.test.ts`. The JSON is read with `readFileSync` so the test does not depend on `resolveJsonModule`, and the barrel is imported as the consumer would. Resolve the path with `join(import.meta.dirname, ...)`, not `new URL(..., import.meta.url)`: the jsdom environment replaces the global `URL`, so a relative URL resolves against `http://localhost:3000/` and `fileURLToPath` throws.
 
 ```ts
 import { readFileSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
@@ -106,9 +109,10 @@ interface RegistryEntry {
   isNew?: boolean
 }
 
-const registry = JSON.parse(
-  readFileSync(fileURLToPath(new URL('../registry.json', import.meta.url)), 'utf8'),
-).components as RegistryEntry[]
+// jsdom replaces the global URL, so `new URL('../registry.json', import.meta.url)`
+// would resolve against the document base; join against the real module dir instead.
+const registry = JSON.parse(readFileSync(join(import.meta.dirname, '../registry.json'), 'utf8'))
+  .components as RegistryEntry[]
 
 // Registry ids -> export names; these four ids do not map by PascalCase.
 const EXPORT_NAME_OVERRIDES: Record<string, string> = {
@@ -165,19 +169,22 @@ describe('component registry', () => {
     }
   })
 
-  it('is sorted by id so generated manifests are stable', () => {
-    const ids = registry.map((entry) => entry.id)
-    expect(ids).toEqual([...ids].sort((a, b) => a.localeCompare(b)))
+  it('groups by layer and sorts by id so manifests stay stable', () => {
+    const LAYER_ORDER = { primitive: 0, enterprise: 1, pro: 2 } as const
+    const expected = [...registry].sort(
+      (a, b) => LAYER_ORDER[a.category] - LAYER_ORDER[b.category] || a.id.localeCompare(b.id),
+    )
+    expect(registry.map((entry) => entry.id)).toEqual(expected.map((entry) => entry.id))
   })
 })
 ```
 
-- [ ] **Step 3: Run it to verify it passes against the new JSON**
+- [x] **Step 3: Run it to verify it passes against the new JSON**
 
 Run: `pnpm --filter @fish-admin/react test src/registry`
-Expected: PASS, 5 tests. If `tracks 83 shared components` fails, Step 1's extraction dropped a field — fix the JSON, not the test.
+Measured: PASS, 5 tests.
 
-- [ ] **Step 4: Repoint `scripts/gen-api.mjs`**
+- [x] **Step 4: Repoint `scripts/gen-api.mjs`**
 
 Replace the path constant at [scripts/gen-api.mjs:8](../../../scripts/gen-api.mjs#L8) and the whole `readRegistry` body (lines 61-83) with a JSON read. The generated `apps/docs/generated/registry.json` must stay byte-identical, so keep the field order `{ id, name, category, usedIn, isNew }`:
 
@@ -199,9 +206,9 @@ function readRegistry() {
 ```
 
 Run: `pnpm gen-api` then `git diff --stat apps/docs/generated`
-Expected: no diff — the generated registry and api are unchanged. If `registry.json` reorders, Step 1's sort is wrong.
+Measured: no diff; coverage stayed at `78.80% (floor 78.70%)`.
 
-- [ ] **Step 5: Repoint `scripts/check-package.mjs`**
+- [x] **Step 5: Repoint `scripts/check-package.mjs`**
 
 At [scripts/check-package.mjs:33-34](../../../scripts/check-package.mjs#L33-L34) replace the regex read:
 
@@ -220,9 +227,9 @@ const ids = components.map((entry) => entry.id)
 ```
 
 Run: `pnpm check:package`
-Expected: `check-package: 83 component exports verified`.
+Measured: `check-package: 83 component exports verified`.
 
-- [ ] **Step 6: Repoint `apps/docs/scripts/check-docs.mjs`**
+- [x] **Step 6: Repoint `apps/docs/scripts/check-docs.mjs`**
 
 Replace `extractRegistry()` ([apps/docs/scripts/check-docs.mjs:52-69](../../../apps/docs/scripts/check-docs.mjs#L52-L69)) with the same JSON read, keeping the returned shape the rest of the file already expects:
 
@@ -247,13 +254,15 @@ if (source.length !== 83)
 ```
 
 Run: `pnpm docs:check`
-Expected: `docs:check passed: 83 registry entries, 83 documented components, 167 demos, 20 template pages`.
+Measured: `docs:check passed: 83 registry entries, 83 documented components, 167 demos, 20 template pages`.
 
-- [ ] **Step 7: Prove the gate still catches drift**
+- [x] **Step 7: Prove the gate still catches drift**
 
 Temporarily change one `name` in `packages/ui/registry.json` to `Accordionx`, run `pnpm docs:check`, and confirm it fails with `generated/registry.json is stale; run pnpm gen-api`. Revert the edit and re-run to green. This is the check that the relocation did not quietly sever the lock-step.
 
-- [ ] **Step 8: Run the surrounding gates and commit**
+Measured: the injected drift failed with exactly `::error::generated/registry.json is stale; run pnpm gen-api`; regenerating the JSON from `src/config/components.ts` restored green.
+
+- [x] **Step 8: Run the surrounding gates and commit**
 
 ```bash
 pnpm format:check && pnpm lint && pnpm typecheck
@@ -265,6 +274,7 @@ git commit -m "refactor(ui): move the component registry into the package"
 ```
 
 Expected: every command exits 0 and `src/config/components.ts` is untouched — Task 2 removes it.
+Measured: format/lint/typecheck green (one pre-existing `react-refresh` warning in `apps/docs/theme/index.tsx`), 165 package tests across 43 files pass, and the three generators/checks stayed green.
 
 ---
 

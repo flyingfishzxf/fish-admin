@@ -50,20 +50,11 @@ function rel(file) {
 }
 
 function extractRegistry() {
-  const source = read(path.join(repoRoot, 'src/config/components.ts'))
-  const start = source.indexOf('export const COMPONENTS')
-  const end = source.indexOf('export const COMPONENT_COUNTS')
-  if (start === -1 || end === -1) throw new Error('COMPONENTS block not found')
-  const block = source.slice(start, end)
-  return [...block.matchAll(/\{([^}]*)\}/g)].map((match) => {
-    const body = match[1]
-    const get = (key) => (body.match(new RegExp(`${key}: '([^']*)'`)) || [])[1]
-    const id = get('id')
-    const name = get('name')
-    const category = get('category')
-    const usedIn = get('usedIn')
-    if (!id || !name || !category || !usedIn) throw new Error(`Bad registry entry: ${body}`)
-    return { id, name, category, usedIn, isNew: /isNew: true/.test(body) }
+  const { components } = readJson(path.join(repoRoot, 'packages/ui/registry.json'))
+  return components.map((entry) => {
+    const { id, name, category, usedIn } = entry
+    if (!id || !name || !category || !usedIn) throw new Error(`Bad registry entry: ${id}`)
+    return { id, name, category, usedIn, isNew: entry.isNew === true }
   })
 }
 
@@ -71,7 +62,8 @@ function checkRegistry() {
   const source = extractRegistry()
   const generated = readJson(path.join(docsRoot, 'generated/registry.json'))
   const api = readJson(path.join(docsRoot, 'generated/api.json'))
-  if (source.length !== 83) fail(`components.ts has ${source.length} entries, expected 83`)
+  if (source.length !== 83)
+    fail(`packages/ui/registry.json has ${source.length} entries, expected 83`)
   if (generated.components.length !== source.length) {
     fail(
       `generated/registry.json has ${generated.components.length} entries, expected ${source.length}`,

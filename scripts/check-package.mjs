@@ -30,8 +30,10 @@ const overrides = {
   resizable: 'ResizablePanelGroup',
   sonner: 'Toaster',
 }
-const registry = fs.readFileSync(path.join(root, 'src/config/components.ts'), 'utf8')
-const ids = [...registry.matchAll(/^\s+id: '([^']+)'/gm)].map((match) => match[1])
+const { components } = JSON.parse(
+  fs.readFileSync(path.join(root, 'packages/ui/registry.json'), 'utf8'),
+)
+const ids = components.map((entry) => entry.id)
 const exportNames = ids.map(
   (id) =>
     overrides[id] ??
