@@ -17,7 +17,9 @@ export default defineConfig({
       animations: 'disabled',
       caret: 'hide',
       scale: 'css',
-      maxDiffPixelRatio: 0.001,
+      // A whole-page shot is ~5.6M pixels; the stock 0.1% allowance hid real
+      // sidebar changes behind anti-aliasing noise, so keep this tight.
+      maxDiffPixelRatio: 0.0002,
     },
   },
   use: {

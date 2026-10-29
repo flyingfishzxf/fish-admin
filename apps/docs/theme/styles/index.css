@@ -109,21 +109,26 @@ body .rp-search-button {
 body .rp-doc-layout__sidebar {
   background: var(--sidebar-bg);
   border-right: 1px solid var(--border);
-  padding: 16px 12px 32px;
+  padding: 14px 12px 32px;
+  scrollbar-color: color-mix(in oklch, var(--muted-foreground) 28%, transparent) transparent;
+  scrollbar-width: thin;
 }
 
 body .rp-sidebar-item {
-  gap: 6px;
+  gap: 8px;
   margin-top: 1px;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 8px;
   color: var(--muted-foreground);
-  font-size: 13.5px;
-  line-height: 22px;
+  font-size: 13px;
+  line-height: 21px;
+  transition:
+    color 0.15s,
+    background-color 0.15s;
 }
 
 body .rp-sidebar-item:hover {
-  background: color-mix(in oklch, var(--muted) 70%, transparent);
+  background: color-mix(in oklch, var(--muted) 65%, transparent);
   color: var(--foreground);
 }
 
@@ -134,32 +139,87 @@ body .rp-sidebar-item--active:hover {
   font-weight: 600;
 }
 
+/* The stock tree rails sit at a fixed 12px offset; the pill rows read cleaner without them. */
+body .rp-sidebar-item--group-item:before,
+body .rp-sidebar-item--group-item.rp-sidebar-item--active .rp-sidebar-item__left:before {
+  display: none;
+}
+
+body .rp-sidebar-item__left {
+  min-width: 0;
+}
+
+body .rp-sidebar-item .rp-doc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body .rp-sidebar-item__right {
+  flex: none;
+  gap: 4px;
+  color: var(--muted-foreground);
+}
+
 body .rp-sidebar-item.rp-sidebar-group {
   color: var(--foreground);
+  font-weight: 600;
+}
+
+body .rp-sidebar-item.rp-sidebar-group[data-depth='0'] {
+  margin-top: 8px;
+  font-size: 13.5px;
   font-weight: 650;
 }
 
-body .rp-sidebar-item.rp-sidebar-group[data-depth='0'],
 body .rp-sidebar-item.rp-sidebar-group[data-depth='1'] {
-  margin-top: 8px;
+  margin-top: 10px;
   color: var(--muted-foreground);
-  font-size: 12px;
-  font-weight: 650;
+  font-size: 11.5px;
+  font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-body .rp-sidebar-item.rp-sidebar-group[data-depth='0'] {
-  margin-top: 14px;
+html:lang(zh) body .rp-sidebar-item.rp-sidebar-group[data-depth='1'] {
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  text-transform: none;
 }
 
-/* Rspress sets the indent inline; tighten the two nested levels. */
+body .rp-sidebar-item.rp-sidebar-group .rp-sidebar-item__right svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+}
+
+/* Counts sit in a quiet pill so the label stays the loudest thing in the row. */
+body .rp-sidebar-item .rp-badge {
+  height: 18px;
+  min-width: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--muted) 75%, transparent);
+  color: var(--muted-foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+body .rp-sidebar-item.rp-sidebar-group:hover .rp-badge {
+  color: var(--foreground);
+}
+
+/* Rspress sets the indent inline; give the three levels one consistent rhythm. */
 body .rp-sidebar-item[data-depth='1'] {
-  padding-left: 10px !important;
+  padding-left: 24px !important;
 }
 
 body .rp-sidebar-item[data-depth='2'] {
-  padding-left: 22px !important;
+  padding-left: 36px !important;
 }
 
 /* ---------- content ---------- */
@@ -494,6 +554,11 @@ body .rp-search-button__hotkey > span {
   background: var(--card);
   color: var(--card-foreground);
   text-decoration: none;
+}
+
+/* Rspress's `.rp-doc a` sets inline display and outranks the plain class here. */
+body .rp-doc .fish-index .fish-index__item {
+  display: flex;
 }
 
 .fish-index__item:hover {

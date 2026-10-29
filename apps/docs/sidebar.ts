@@ -30,6 +30,7 @@ type Page = { text: string; link: string }
 type Group = {
   text: string
   link?: string
+  tag?: string
   collapsible?: boolean
   collapsed?: boolean
   items: Array<Page | Group>
@@ -37,6 +38,13 @@ type Group = {
 
 function readJson<T>(file: string): T {
   return JSON.parse(fs.readFileSync(file, 'utf8')) as T
+}
+
+// Chinese component titles are bilingual ("Anchor Nav 锚点导航"); the sidebar only needs the Chinese half.
+function sidebarLabel(lang: DocsLang, title: string): string {
+  if (lang !== 'zh') return title
+  const firstCjk = title.search(/[\u3400-\u9fff]/)
+  return firstCjk > 0 ? title.slice(firstCjk).trim() : title
 }
 
 function frontmatterTitle(lang: DocsLang, dir: string, slug: string): string {
@@ -81,11 +89,12 @@ export function createSidebar(lang: DocsLang): Sidebar {
   const categories: Group[] = CATEGORIES.map((category) => {
     const entries = registry.components.filter((entry) => entry.category === category)
     return {
-      text: `${CATEGORY_LABELS[lang][category]} · ${entries.length}`,
+      text: CATEGORY_LABELS[lang][category],
+      tag: String(entries.length),
       collapsible: true,
       collapsed: true,
       items: entries.map((entry) => ({
-        text: frontmatterTitle(lang, 'components', entry.id),
+        text: sidebarLabel(lang, frontmatterTitle(lang, 'components', entry.id)),
         link: `/components/${entry.id}`,
       })),
     }
