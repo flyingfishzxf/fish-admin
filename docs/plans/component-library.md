@@ -551,7 +551,87 @@ M1 只证明管道能跑。真正的产品是 83 个页面 × 两种语言：每
 
 ### 执行记录
 
-（待实现后填写）
+**规模（8 个提交，2026-10-28）**
+
+- `46e6402` 把组件注册表搬进包里：`packages/ui/registry.json` + `packages/ui/src/registry.ts`
+  与它的单测，`scripts/gen-api.mjs`、`scripts/check-package.mjs` 改读包内文件（6 files，
+  +668/−60）。文档站的 `apps/docs/generated/registry.json` 仍是生成物，模板不再持有组件清单。
+- `7f63333` 删除应用内演示：`/components`、`/ui` 两条路由、`src/config/components.ts`、
+  `src/features/playground/*`、`components-catalog.spec.ts`、`ui-playground.spec.ts` 和
+  `components.png` 一张基线（57 files，+55/−10 448）。
+- `c824c31` 文档地址走 env 层：`src/config/site.ts` 读 `VITE_DOCS_URL`，`NavItem` 增
+  `href`/`external` 与 `isExternalNavItem`，侧栏、命令面板、chip 行三个消费者共用同一份配置
+  （24 files，+526/−100）。
+- `a818943` 旧路径重定向（3 files，+50/−6）＋ 新增 `e2e/docs-link.spec.ts`；
+  `b9c58bc` 登录页加「组件文档」链接（6 files，+115/−12）。
+- `720835e` README / `index.html` meta / og 与截图（16 files，+245/−124，`public/og.png` 重做）；
+  `861d752` 模板文档与 CONTRIBUTING 收口（23 files，+107/−74）；
+  `91649da` 版本号 2.0.0、版本页、CHANGELOG 与 18 张基线重录（29 files，+136/−36）。
+- 门禁结果：模板单测 48 文件 375 条、覆盖率 73.87% stmts / 77.41% branch / 67.75% funcs /
+  75.18% lines；包 165 条；`check:package` 83 个导出；`test:e2e --workers=1` 77 条；
+  `test:visual:docker` 16 通过 4 跳过零 diff；`test:docs:visual:docker` 8 张零 diff；
+  `DOCS_FULL_AXE=1 pnpm test:docs` 263 条；`docs:check` 83 registry / 83 documented /
+  167 demos / 20 模板页；`docs:build` 201 页 13693.5 kB（gzip 2188.1 kB）。
+- 预算四项：firstPaintJs 175.2 / 180 KB（余 4.8）、largestAsyncJs 103.2 / 115 KB（余 11.8）、
+  totalJs 707.0 / 800 KB（余 93.0）、totalCss 22.7 / 30 KB（余 7.3）。首屏 31 个 chunk。
+- `gen-api:check` 78.80%（下限 78.70%）；`format:check`、`lint`（仅 1 条
+  `react-refresh` 既有告警）、三段 `typecheck` 全过。
+
+**真实安装与浏览器走查**
+
+- `pnpm pack` 产物 273,176 B / 321 个条目：`dist/index.js`、`dist/index.d.ts`、
+  `dist/styles.css`、`dist/preflight.css`、`README.md`、`LICENSE`、`package.json`；
+  `registry.json` 没有进包（`files` 是 `["dist","README.md"]`），符合预期。
+- 仓库外的 Vite 8 + React 19.3.1 临时工程 `npm install` 该 tarball：147 个包无 peer 冲突，
+  `vite build` 通过（315.96 kB JS / gzip 100.94，121.03 kB CSS / gzip 18.79）。浏览器里
+  `Button` 拿到品牌色 `oklch(0.57 0.235 292.5)`、圆角 10 px、高 36 px，`preflight.css` 生效
+  （`body` margin 0），包内 i18n 串经 `UIProvider` 渲染为 “Cancel”，Tooltip 正常开合，
+  console 零错误。包样式单文件 116,606 B，文档与 README 未对其宣称体积。
+- 门面链路（模板构建带 `VITE_DOCS_URL=http://localhost:4174`，全站为生产构建 + preview）：
+  文档站首页 → 组件索引（83 个组件链接）→ `button` 页 3 个 demo、API 表 5 行、
+  「Used in the template」= `https://fish-admin.vercel.app/` `target=_blank`、「View source」
+  指向 `blob/main/apps/docs/demos/button/basic.tsx`；深色切换后 demo 底色
+  `lab(100 0 0)` → `lab(6.06 …)`；中文页 3 个 demo、「在模板中的用法」4 条、API 表 5 行；
+  搜索 “ProTable” 命中 `/components/pro-table`。`/zh/components/pro-table.html` 在 375 px
+  无横向溢出。
+- 模板侧：登录页 `Component documentation`（`href` = 文档站根、新标签）→ 登录后 `/components`
+  落 `/components/index.html`、`/ui` 落 `/guide/theming.html`；侧栏 `Component docs` 点击开新标签
+  到文档站；中文 + 深色下 `组件文档` 仍在，`html.class = dark`；未注册的 `/catalog` 落
+  「页面不存在」；375 px 用户大表无横向溢出。整条走查 console 零错误、零失败请求。
+- 文档站本地 preview 首屏（无网络节流，冷缓存）：首页 LCP 76 ms、256.2 KB JS / 33.6 KB CSS、
+  9 个请求；`button` 108 ms / 549.7 KB JS；`pro-table` 112 ms / 611.1 KB JS；
+  `zh/pro-table` 96 ms / 610.7 KB JS。搜索索引 en 493.2 KB、zh 474.4 KB（按需拉取，不进首屏）。
+
+**偏差**
+
+- 验收里的「首屏不高于 172.4 + 1 KB」是抽包前的旧基线，2.0.0 的首屏含包代码，实测 175.2 KB；
+  按预算 180 KB 判定通过，旧数字不再作为门禁。
+- 截图位置：做法 4 写 `public/screenshots/`，Rspress 把正文里的绝对路径解析到
+  `<root>/public`（root 是 `apps/docs/docs`），实际落在 `apps/docs/docs/public/screenshots/`，
+  否则 `docs:build` 的死链检查直接失败。README 与文档站共用这一份，站点路径仍是 `/screenshots/`。
+- 视觉基线不会因版本号变化而报警：`maxDiffPixelRatio: 0.001` 吞掉了侧栏与页脚那处版本号文字
+  差异，`--update` 不写文件、复跑依旧零 diff。做法是先删 18 张基线再在
+  `mcr.microsoft.com/playwright:v1.64.1-noble` 内重录，复跑零 diff。代价是以后单纯改版本号不会
+  刷新基线，需要手动重录。4 张 README 截图里 `roles-mobile.png` 与基线 `login-linux.png`
+  字节未变，其余 3 张随 2.0.0 重拍。
+- e2e 条数：Task 2 删除目录后是 74 条（计划预测 77），Task 3–5 补上 `docs-link`（3 条）与登录页
+  用例后回到 77 条。
+- 版本页与 CHANGELOG 按事实写：包「Repository only; not published to npm yet」、模板
+  「Pending release；线上仍是 1.7.0」、文档站「随 2.0.0 一起部署」。Task 10 完成后才翻转。
+- 登录页文案是 `Component documentation`、侧栏条目是 `Component docs`（两套 i18n key），走查按
+  各自文案断言，不是同一字符串。
+- `readHttpsUrl` 允许 `http://`，所以本地预览可以用 `http://localhost:4174`；计划里写的
+  `4175` 是文档视觉链路的端口，功能走查改用 4174 以免与 `docs:preview` 抢端口。
+- `pnpm test:e2e` 的构建不带 `VITE_DOCS_URL`，因此 CI 覆盖的是「未配置」状态（旧路径 404、
+  页面无外链）；「已配置」状态由上面的生产构建走查与 Task 3 的临时用例覆盖，尚未进常驻用例。
+
+**未验证（等 Task 10 的外部动作）**
+
+- npm 未发布，公网安装（非本地 tarball）与 `dist` 在真实 CDN 上的表现未验证。
+- 文档站未部署：线上 headers / 缓存 / 搜索索引下载体积、真实网络下的 LCP 未测。
+- 模板 Vercel 项目尚未设置 `VITE_DOCS_URL`，线上侧栏与登录页仍指向无文档站的状态。
+- `main`、`v2.0.0` tag、GitHub Release、仓库描述与 topics 都还没动。
+- 81 条 props 仍缺 JSDoc（下限锁在 78.70%）；移动端只有布局断言，没有截图基线。
 
 ---
 

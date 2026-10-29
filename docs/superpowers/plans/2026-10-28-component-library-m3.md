@@ -1569,7 +1569,7 @@ release.` — the third row takes its version from `apps/docs/package.json` (`0.
 
 - Modify: `docs/plans/component-library.md` (the `M3 / 执行记录` section)
 
-- [ ] **Step 1: Run every gate**
+- [x] **Step 1: Run every gate**
 
 ```bash
 pnpm format:check
@@ -1592,7 +1592,7 @@ DOCS_FULL_AXE=1 pnpm test:docs
 
 Expected: all green. Record the four budget numbers and the docs test count verbatim for the record.
 
-- [ ] **Step 2: Pack and install the package for real**
+- [x] **Step 2: Pack and install the package for real**
 
 ```bash
 pnpm --filter @fish-admin/react build
@@ -1605,15 +1605,22 @@ console.log(execSync('tar -tzf /tmp/fish-admin-react-0.1.0.tgz').toString().spli
 
 Expected: `package/dist/index.js`, `package/dist/styles.css`, `package/dist/preflight.css`, `package/README.md`, `package/package.json`. Then create a throwaway Vite + React 19 app outside the repo, install the tarball, import `Button` and `styles.css`, build it, and note the result. `registry.json` must not appear in the tarball (`files` is `["dist","README.md"]`).
 
-- [ ] **Step 3: Walk the whole front door in a browser**
+- [x] **Step 3: Walk the whole front door in a browser**
 
 With `VITE_DOCS_URL=http://localhost:4175`, the docs preview on 4175 and the demo running: README → docs home → component index → one component page → its demo source toggle → the "Used in the template" link → login → a business page → the sidebar docs entry back to the docs site. Repeat once in Chinese, once in dark mode, once at 375 px. Note console errors; there must be none.
 
-- [ ] **Step 4: Fill the M3 execution record**
+- [x] **Step 4: Fill the M3 execution record**
 
 Replace `（待实现后填写）` under `## M3` → `### 执行记录` in [docs/plans/component-library.md](../../plans/component-library.md) with: what was deleted (files, lines, specs, one baseline), the registry relocation, the docs seam and its three consumers, README/meta/screenshot changes, versions, the full gate list with real numbers, deviations (including the stale `172.4 + 1 KB` ceiling and the `public/screenshots/` location change), and what remains unverified until the external actions in Task 10 are approved.
 
-- [ ] **Step 5: Commit**
+**Measured, and where this task departed from the plan.** Every gate is green and the figures are written up verbatim in the record: 375 template tests (48 files, coverage 73.87 / 77.41 / 67.75 / 75.18), 165 package tests, `check:package` 83 exports, budgets 175.2 / 103.2 / 707.0 / 22.7 against 180 / 115 / 800 / 30, `gen-api:check` 78.80% over a 78.70% floor, `docs:check` 83 / 83 / 167 / 20, `docs:build` 201 pages, 77 e2e, 16 visual + 4 skipped with zero diff, 8 docs baselines, 263 docs tests under `DOCS_FULL_AXE=1`.
+
+- Step 2 ran as written. The tarball is 273,176 B / 321 entries and carries no `registry.json`. The scratch Vite 8 + React 19.3.1 app needed `@vitejs/plugin-react@6.1.2` — 5.1.1 refuses Vite 8 — then installed 147 packages with no peer conflict and built 315.96 kB JS / 121.03 kB CSS. In the browser the packed `Button` renders `oklch(0.57 0.235 292.5)` at 10 px radius, preflight zeroes the body margin, `UIProvider` + `useUITranslation` yields "Cancel", the tooltip opens, console is empty.
+- Step 3 walked the chain with a production template build seeded with `VITE_DOCS_URL=http://localhost:4174`, not `4175`: that port belongs to the docs visual lane, and `readHttpsUrl` accepts plain http, so a local preview works. A fresh context must pin `locale: 'en-US'` — the machine default is zh-CN, which routes the docs site to `/zh/` and the template to Chinese labels, and the sidebar entry is `Component docs` while the login page says `Component documentation`. The sidebar link is `target="_blank"`, so the walk asserts the popup URL instead of the current tab.
+- Docs load was measured cold, one context per route: home 76 ms LCP / 256.2 KB JS / 9 requests, `button` 108 ms / 549.7 KB, `pro-table` 112 ms / 611.1 KB, `zh/pro-table` 96 ms / 610.7 KB. Search indexes are now `search_index.{en,zh}.<hash>.json` under `doc_build/static/` (493.2 KB / 474.4 KB) — the M1/M2 write-up's sizes predate this build.
+- The search probe needed a wait for the result panel and a page-id query: "pro-table" tokenises to nothing, "ProTable" hits, and "高级表格" misses because the zh title is "ProTable 数据表格". Three apparent defects in the first pass were all harness bugs — signed-out legacy routes landing on `/login?redirect=…` is the auth guard doing its job, and the signed-in run confirms `/components` → `/components/index.html`, `/ui` → `/guide/theming.html`.
+
+- [x] **Step 5: Commit**
 
 ```bash
 git add -A
