@@ -1633,13 +1633,15 @@ git commit -m "docs: record the M3 template closeout"
 
 Do not start any step here without the user confirming that specific action. Each line is its own approval.
 
-- [ ] Publish `@fish-admin/react@0.1.0` to npm. The user types their own password and 2FA code; 2FA must already be enabled. Never fill or ask for the credential.
-- [ ] Create the Vercel project for `apps/docs` (Root Directory `apps/docs`, "Include files outside of Root Directory" enabled) and deploy; then verify headers, cache and the search-index download with the CSP from `apps/docs/vercel.json`.
-- [ ] Set `VITE_DOCS_URL` on the template's Vercel project to the deployed docs URL, redeploy, and re-verify the sidebar entry, login link and `/components` redirect against the live sites.
-- [ ] Push `main` and the `v2.0.0` tag.
-- [ ] Create the GitHub Release for `v2.0.0` (keep the existing Release's Latest flag behaviour as-is) with the CHANGELOG body.
-- [ ] Update the repository description and topics to lead with the component library.
-- [ ] Only after all of the above: flip the `Repository only` and `M1` rows in `apps/docs/docs/{en,zh}/versions.md` to the published values and redeploy the docs site.
+- [x] Publish `@fish-admin/react@0.1.0` to npm. The user types their own password and 2FA code; 2FA must already be enabled. Never fill or ask for the credential.
+- [x] Create the Vercel project for `apps/docs` (Root Directory `apps/docs`, "Include files outside of Root Directory" enabled) and deploy; then verify headers, cache and the search-index download with the CSP from `apps/docs/vercel.json`.
+- [x] Set `VITE_DOCS_URL` on the template's Vercel project to the deployed docs URL, redeploy, and re-verify the sidebar entry, login link and `/components` redirect against the live sites.
+- [x] Push `main` and the `v2.0.0` tag.
+- [x] Create the GitHub Release for `v2.0.0` (keep the existing Release's Latest flag behaviour as-is) with the CHANGELOG body.
+- [x] Update the repository description and topics to lead with the component library.
+- [x] Only after all of the above: flip the `Repository only` and `M1` rows in `apps/docs/docs/{en,zh}/versions.md` to the published values and redeploy the docs site.
+
+All seven completed on 2026-10-29. The execution record, with the real registry / deployment / verification numbers and the deviations (tarball publish, reauth-free redeploy via the approved push, dependabot-sourced first docs deployment, no HSTS on `*.vercel.app`), is in [docs/plans/component-library.md](../../plans/component-library.md) under `Task 10 执行记录`.
 
 ---
 

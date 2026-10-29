@@ -625,13 +625,58 @@ M1 只证明管道能跑。真正的产品是 83 个页面 × 两种语言：每
 - `pnpm test:e2e` 的构建不带 `VITE_DOCS_URL`，因此 CI 覆盖的是「未配置」状态（旧路径 404、
   页面无外链）；「已配置」状态由上面的生产构建走查与 Task 3 的临时用例覆盖，尚未进常驻用例。
 
-**未验证（等 Task 10 的外部动作）**
+**仍未验证**
 
-- npm 未发布，公网安装（非本地 tarball）与 `dist` 在真实 CDN 上的表现未验证。
-- 文档站未部署：线上 headers / 缓存 / 搜索索引下载体积、真实网络下的 LCP 未测。
-- 模板 Vercel 项目尚未设置 `VITE_DOCS_URL`，线上侧栏与登录页仍指向无文档站的状态。
-- `main`、`v2.0.0` tag、GitHub Release、仓库描述与 topics 都还没动。
 - 81 条 props 仍缺 JSDoc（下限锁在 78.70%）；移动端只有布局断言，没有截图基线。
+- 文档站没有在真实网络下测 LCP；线上只验了 headers、缓存、搜索索引与页面行为。
+
+### Task 10 执行记录：发布与部署（2026-10-29）
+
+Task 10 的每一项都单独获批后执行；npm 凭据与 2FA 全程由账号本人输入，未经过本会话。
+
+- **npm**：`@fish-admin/react@0.1.0` 于 2026-10-29T01:54:39Z 发布，`latest` 指向 0.1.0；
+  registry 记录 320 个文件 / 解包 1,122,559 B，shasum `6890db36…69125b`。此前已有一次
+  `0.0.0-stage` 占位发布，不影响 `latest`。从公网 registry 在仓库外的新工程安装（147 个包、
+  无 peer 冲突）→ `vite build` 315.96 kB JS / 121.03 kB CSS → 真实浏览器里品牌色
+  `oklch(0.57 0.235 292.5)`、`preflight.css` 生效、Tooltip 与包内 i18n（“Cancel”）正常，
+  console 零错误；npm 包页在登录态浏览器里正常渲染（headless 会被 Cloudflare 403 拦截）。
+- **文档站**：Vercel 项目 `fish-admin-docs`，Root Directory `apps/docs`、读取根目录外文件、
+  Output `doc_build`、Production Branch `main`，线上 `https://fish-admin-docs.vercel.app`。
+  首页与 `/components/*.html` 返回 CSP（含 `frame-ancestors 'none'`）、`X-Content-Type-Options`、
+  `Referrer-Policy`；`/static/*` 带 `max-age=31536000, immutable`；搜索索引是带哈希的
+  `/static/search_index.en.c4c36f45.json`（503,945 字符），按需拉取。深色、中文页与 375 px
+  布局、button demo、搜索、`/versions.html` 均正常。
+- **模板**：`VITE_DOCS_URL=https://fish-admin-docs.vercel.app` 写入 Development / Preview /
+  Production（All Environments），生产部署 `67e1ccd`（Ready 12 s，`main`）。线上核验：
+  侧栏「组件文档」`target=_blank` 指向文档站，管理员与访客两种角色都出现；登录页
+  「组件文档」链接同样开新标签；`/components` 落 `/components/index.html`、`/ui` 落
+  `/guide/theming.html`；页脚 `2.0.0`，登录页保留「前端权限是体验层，不是安全边界」。
+- **Git 与 GitHub**：`main` 由 `375b3c4` 推到 `67e1ccd`（版本页翻转），annotated tag
+  `v2.0.0`（tag 对象 `cca225bd…`）指向 `375b3c4`；Release [`v2.0.0`](https://github.com/flyingfishzxf/fish-admin/releases/tag/v2.0.0)
+  于 2026-10-29T02:28:17Z 发布并持有 Latest，正文是 CHANGELOG 2.0.0 节 + npm / 文档站 /
+  演示链接 + RBAC 提醒。仓库描述改为以组件库开头（“React 19 component library + enterprise
+  admin template …”），topics 由 11 个扩到 18 个（新增 `component-library`、`design-system`、
+  `admin-template`、`react-components`、`radix-ui`、`rspress`、`accessibility`），homepage 仍是演示站。
+- **版本页**：en/zh 两行由「待发布 / 仅存在于仓库」翻成「已部署于 …」；文档站自身的版本号
+  保持 0.1.0（它跟包版本走），模板是 2.0.0。文档站随 `67e1ccd` 由 `main` 重新生产部署
+  （Ready 30 s），线上两语版本页与仓库一致。
+
+**偏差**
+
+- npm 10.9.4 的 arborist 在 pnpm 软链工作区里直接 `npm publish` 会崩；改为 `pnpm pack`
+  后 `npm publish <tarball>`，与包内容一致（本地 273,176 B / 321 条，registry 320 条，
+  少的是一条打包器元数据）。
+- Vercel 的 Redeploy 按钮提交后会要求邮箱验证码再认证，账号本人不在场时无法完成；审批过的
+  `main` 推送本身就是一次生产部署，`VITE_DOCS_URL` 在 `67e1ccd` 上生效，遂以此代替手动
+  Redeploy，未绕过任何验证。
+- 文档站第一次生产部署来自 dependabot 预览分支（内容已含 `main`），`main` 推送后才有真正的
+  main 生产部署；此后以 `main` 为准。
+- 两个 `*.vercel.app` 站点都没有观测到 `Strict-Transport-Security`；CSP、`frame-ancestors`、
+  `nosniff`、`Referrer-Policy` 与静态资源缓存均在。HSTS 只能在自有 TLS 域名上作为门禁。
+- 仓库 Release 与描述/topics 都通过已登录的浏览器会话完成：本机没有 `gh`，保存的 `gho_`
+  token 401。
+
+---
 
 ---
 
