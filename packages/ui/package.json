@@ -4,6 +4,18 @@
   "description": "FishAdmin UI — React components and design tokens for the FishAdmin admin template.",
   "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyingfishzxf/fish-admin.git",
+    "directory": "packages/ui"
+  },
+  "homepage": "https://github.com/flyingfishzxf/fish-admin#readme",
+  "bugs": {
+    "url": "https://github.com/flyingfishzxf/fish-admin/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": [
     "**/*.css"
   ],
