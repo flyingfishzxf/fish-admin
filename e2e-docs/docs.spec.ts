@@ -72,21 +72,32 @@ test('the component index lists all 83 components and links documented pages', a
   expect(hrefs.sort()).toEqual(documented.components.map((id) => `/components/${id}.html`).sort())
 })
 
-test('the button page renders every demo, its source and the template link', async ({ page }) => {
+test('the button page renders every demo with a preview-first source toggle', async ({ page }) => {
   const buttonDemos = demos.filter((demo) => demo.component === 'button').map((demo) => demo.id)
   await page.goto('/components/button')
   await expect(page.locator('[data-demo^="button/"]')).toHaveCount(buttonDemos.length)
   for (const id of buttonDemos) {
     const demo = page.locator(`[data-demo="${id}"]`)
     await expect(demo.locator('button').first()).toBeVisible()
+    await expect(demo.getByRole('tab', { name: 'Preview' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
+    await expect(demo.locator('.fish-demo__preview')).toBeVisible()
+    await expect(demo.locator('.fish-demo__source')).toBeHidden()
     await expect(demo.locator('.fish-demo__source')).toContainText('export default function')
   }
-  await expect(page.locator('[data-demo="button/basic"] .fish-demo__source')).toContainText(
-    'ButtonBasic',
+
+  const basic = page.locator('[data-demo="button/basic"]')
+  await basic.getByRole('tab', { name: 'Code' }).click()
+  await expect(basic.getByRole('tab', { name: 'Code' })).toHaveAttribute('aria-selected', 'true')
+  await expect(basic.locator('.fish-demo__source')).toBeVisible()
+  await expect(basic.locator('.fish-demo__preview')).toBeHidden()
+  await expect(basic.locator('.fish-demo__source')).toContainText('ButtonBasic')
+  await expect(basic.locator('a', { hasText: 'Used in the template' })).toHaveAttribute(
+    'href',
+    'https://fish-admin.vercel.app/',
   )
-  await expect(
-    page.locator('[data-demo="button/basic"] a', { hasText: 'Used in the template' }),
-  ).toHaveAttribute('href', 'https://fish-admin.vercel.app/')
 })
 
 test('the ProTable demos filter rows and track the selection count', async ({ page }) => {
@@ -128,6 +139,9 @@ test('the Chinese button page is localized', async ({ page }) => {
   await expect(page.getByRole('heading', { name: '何时使用' })).toBeVisible()
   await expect(page.getByRole('heading', { name: '主按钮、次按钮、描边与幽灵' })).toBeVisible()
   await expect(page.locator('[data-demo="button/basic"]')).toHaveCount(1)
+  await expect(
+    page.locator('[data-demo="button/basic"]').getByRole('tab', { name: '代码' }),
+  ).toBeVisible()
 })
 
 test('dark mode switches the document and the demo surface', async ({ page }) => {
@@ -155,7 +169,7 @@ test('search finds the Button component page', async ({ page }) => {
   ).toBeVisible()
 })
 
-test('the pilot pages have no axe violations', async ({ page }) => {
+test('the key pages have no axe violations', async ({ page }) => {
   for (const route of AXE_ROUTES) {
     await test.step(route, async () => {
       await page.goto(route)

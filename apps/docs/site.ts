@@ -10,9 +10,12 @@ export type DocsLang = 'en' | 'zh'
 export const UI_TEXT: Record<DocsLang, Record<string, string>> = {
   en: {
     demoPreview: 'Preview',
-    demoSource: 'Source',
+    demoSource: 'Code',
     demoUsedIn: 'Used in the template',
     demoViewSource: 'View source',
+    demoCopy: 'Copy code',
+    demoCopied: 'Copied',
+    demoLines: 'lines',
     docsPending: 'Documentation in progress',
     categoryPrimitive: 'Primitive',
     categoryEnterprise: 'Enterprise',
@@ -31,9 +34,12 @@ export const UI_TEXT: Record<DocsLang, Record<string, string>> = {
   },
   zh: {
     demoPreview: '预览',
-    demoSource: '源码',
+    demoSource: '代码',
     demoUsedIn: '在模板中的用法',
     demoViewSource: '查看源码',
+    demoCopy: '复制代码',
+    demoCopied: '已复制',
+    demoLines: '行',
     docsPending: '文档撰写中',
     categoryPrimitive: '基础组件',
     categoryEnterprise: '企业组件',
