@@ -664,8 +664,8 @@ Task 10 的每一项都单独获批后执行；npm 凭据与 2FA 全程由账号
 **偏差**
 
 - npm 10.9.4 的 arborist 在 pnpm 软链工作区里直接 `npm publish` 会崩；改为 `pnpm pack`
-  后 `npm publish <tarball>`，与包内容一致（本地 273,176 B / 321 条，registry 320 条，
-  少的是一条打包器元数据）。
+  后 `npm publish <tarball>`。最终发布的 tarball 是 270,894 B / 320 条，registry 上的
+  文件数与解包体积（320 / 1,122,559 B）与它一致。
 - Vercel 的 Redeploy 按钮提交后会要求邮箱验证码再认证，账号本人不在场时无法完成；审批过的
   `main` 推送本身就是一次生产部署，`VITE_DOCS_URL` 在 `67e1ccd` 上生效，遂以此代替手动
   Redeploy，未绕过任何验证。
