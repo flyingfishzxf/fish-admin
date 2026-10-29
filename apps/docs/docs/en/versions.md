@@ -7,7 +7,7 @@ description: Package, template and documentation versions.
 
 | Surface             | Version | Status                                                             |
 | ------------------- | ------- | ------------------------------------------------------------------ |
-| `@fish-admin/react` | 0.1.0   | Repository only; not published to npm yet.                         |
+| `@fish-admin/react` | 0.1.0   | Published to npm on 2026-10-29.                                    |
 | Template            | 2.0.0   | Pending release; <https://fish-admin.vercel.app> still runs 1.7.0. |
 | Docs site           | 0.1.0   | Repository only; deployed with the 2.0.0 release.                  |
 
