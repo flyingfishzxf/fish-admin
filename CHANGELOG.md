@@ -4,6 +4,41 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-10-30
+
+A documentation and component-fix release: the docs site moves onto the package's own tokens and
+typography, every demo now renders exactly like the template, and two interaction bugs are fixed in
+`@fish-admin/react` 0.1.1. The template moves to 2.0.1.
+
+### Added
+
+- **Preview-first demos.** Every demo opens on the rendered preview, with a Code tab, copy button and
+  line count in both locales. The sidebar groups the 83 components by Primitive, Enterprise and Pro
+  with counts, and the shell maps Rspress variables to the package tokens, self-hosts Inter and adds
+  the project logo.
+
+### Changed
+
+- **Demos render with app-native CSS.** The preview panel opts out of Rspress prose (`rp-not-doc`);
+  the docs theme restores the list and mono resets that Rspress's preflight omits, clears
+  form-control backgrounds body-wide at zero specificity so portaled close buttons keep their
+  variants, and ports the template's global scrollbar skin so scrollable dialogs no longer draw
+  native stepper arrows on their rounded corners.
+- **Demos use the template's own composition.** Accordion frames take the app's 1 rem radius,
+  Calendar sits in a `Card > CardContent`, and the component pages describe both.
+- **The Chinese sidebar** keeps only the Chinese half of each label, moves counts into a pill and
+  gives all three indent levels one rhythm.
+
+### Fixed
+
+- **`AnchorNav` highlighted the previous section** after a click. A browser-rounded scroll position
+  can land a fraction of a pixel past the offset line, and the strict comparison kept the earlier
+  item active; the threshold now allows 1 px.
+- **`AutoComplete` flashed its suggestions when the input was focused.** Radix mounts the popover
+  layer while the `focusin` that opened it is still propagating, so the anchor input was reported as
+  an outside focus and dismissed the list right away. Focus and clicks on the input no longer
+  dismiss it.
+
 ## [2.0.0] - 2026-10-28
 
 Delivered against the [component library plan](./docs/plans/component-library.md).
@@ -492,7 +527,9 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v1.7.0...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/flyingfishzxf/fish-admin/compare/v2.0.0...v2.0.1
+[2.0.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.7.0...v2.0.0
 [1.7.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.4.0...v1.5.0

@@ -7,9 +7,9 @@ description: Package, template and documentation versions.
 
 | Surface             | Version | Status                                            |
 | ------------------- | ------- | ------------------------------------------------- |
-| `@fish-admin/react` | 0.1.0   | Published to npm on 2026-10-29.                   |
-| Template            | 2.0.0   | Deployed at <https://fish-admin.vercel.app>.      |
-| Docs site           | 0.1.0   | Deployed at <https://fish-admin-docs.vercel.app>. |
+| `@fish-admin/react` | 0.1.1   | Published to npm on 2026-10-30.                   |
+| Template            | 2.0.1   | Deployed at <https://fish-admin.vercel.app>.      |
+| Docs site           | 0.1.1   | Deployed at <https://fish-admin-docs.vercel.app>. |
 
 The package follows semantic versioning after its first public release. Until then the minor
 version can change between repository checkpoints.

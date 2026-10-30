@@ -7,9 +7,9 @@ description: 组件包、模板与文档站的版本。
 
 | 表面                | 版本  | 状态                                            |
 | ------------------- | ----- | ----------------------------------------------- |
-| `@fish-admin/react` | 0.1.0 | 已于 2026-10-29 发布到 npm。                    |
-| 模板                | 2.0.0 | 已部署于 <https://fish-admin.vercel.app>。      |
-| 文档站              | 0.1.0 | 已部署于 <https://fish-admin-docs.vercel.app>。 |
+| `@fish-admin/react` | 0.1.1 | 已于 2026-10-30 发布到 npm。                    |
+| 模板                | 2.0.1 | 已部署于 <https://fish-admin.vercel.app>。      |
+| 文档站              | 0.1.1 | 已部署于 <https://fish-admin-docs.vercel.app>。 |
 
 组件包首次公开发布后遵循语义化版本。在那之前，次版本号可能随仓库检查点变化。
 

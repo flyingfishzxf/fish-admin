@@ -1,6 +1,6 @@
 {
   "name": "@fish-admin/react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "FishAdmin UI — React components and design tokens for the FishAdmin admin template.",
   "license": "MIT",
   "type": "module",
