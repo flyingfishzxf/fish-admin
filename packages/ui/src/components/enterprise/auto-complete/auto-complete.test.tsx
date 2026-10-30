@@ -74,4 +74,25 @@ describe('AutoComplete', () => {
     expect(input).toHaveValue('custom squad')
     expect(onSelect).not.toHaveBeenCalled()
   })
+
+  it('keeps the list open when the anchor input is clicked again', async () => {
+    const user = userEvent.setup()
+    render(
+      <>
+        <Harness />
+        <button type="button">Elsewhere</button>
+      </>,
+    )
+    const input = screen.getByRole('combobox', { name: 'Team' })
+
+    await user.click(input)
+    expect(screen.getByRole('listbox', { name: 'Team' })).toBeInTheDocument()
+
+    // The input is the widget's anchor, not an outside target.
+    await user.click(input)
+    expect(screen.getByRole('listbox', { name: 'Team' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Elsewhere' }))
+    expect(screen.queryByRole('listbox', { name: 'Team' })).not.toBeInTheDocument()
+  })
 })

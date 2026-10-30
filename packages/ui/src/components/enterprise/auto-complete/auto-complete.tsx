@@ -1,4 +1,4 @@
-import { useId, useMemo, useState, type KeyboardEvent } from 'react'
+import { useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 
 import { Input } from '../../ui/input'
 import { Popover, PopoverAnchor, PopoverContent } from '../../ui/popover'
@@ -50,6 +50,7 @@ export function AutoComplete({
   className?: string
 }) {
   const listId = useId()
+  const inputRef = useRef<HTMLInputElement>(null)
   const [open, setOpen] = useState(false)
   const [activeIndex, setActiveIndex] = useState(-1)
 
@@ -104,6 +105,7 @@ export function AutoComplete({
     >
       <PopoverAnchor asChild>
         <Input
+          ref={inputRef}
           id={id}
           type="text"
           role="combobox"
@@ -135,6 +137,11 @@ export function AutoComplete({
         align="start"
         className="w-(--radix-popover-trigger-width) min-w-56 p-1"
         onOpenAutoFocus={(event) => event.preventDefault()}
+        onInteractOutside={(event) => {
+          // Radix reports the anchor as an outside focus while the focusin that
+          // opened it is still propagating; the anchor is part of the widget.
+          if (event.target === inputRef.current) event.preventDefault()
+        }}
       >
         <ul id={listId} role="listbox" aria-label={ariaLabel} className="max-h-64 overflow-y-auto">
           {loading ? (
