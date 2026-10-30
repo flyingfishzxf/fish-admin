@@ -39,7 +39,9 @@ export function AnchorNav({
       for (const item of items) {
         const element = document.getElementById(item.id)
         if (!element) continue
-        if (element.getBoundingClientRect().top <= boundary) current = item.id
+        // scrollTo lands within a device pixel of the line; without slack the
+        // section just scrolled to can stay one step behind.
+        if (element.getBoundingClientRect().top <= boundary + 1) current = item.id
         else break
       }
 
