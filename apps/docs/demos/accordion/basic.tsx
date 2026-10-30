@@ -3,14 +3,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@f
 const PANEL_STYLE = {
   width: '100%',
   border: '1px solid var(--border)',
-  borderRadius: '0.5rem',
+  borderRadius: '1rem',
   padding: '0 1rem',
-  background: 'var(--card)',
 }
 
 export default function AccordionBasic() {
   return (
-    <div className="fish-demo-stack">
+    <div className="fish-demo-stack fish-demo-stack--wide">
       <Accordion type="single" collapsible defaultValue="billing" style={PANEL_STYLE}>
         <AccordionItem value="billing">
           <AccordionTrigger>How does per-seat billing work?</AccordionTrigger>

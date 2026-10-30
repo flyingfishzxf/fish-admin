@@ -127,7 +127,7 @@ export default function Demo({ title, source, filename, children }: DemoProps) {
           role="tabpanel"
           aria-labelledby={`${id}-preview-tab`}
           hidden={view !== 'preview'}
-          className="fish-demo__panel fish-demo__preview"
+          className="fish-demo__panel fish-demo__preview rp-not-doc"
         >
           <UIProvider locale={lang === 'zh' ? 'zh-CN' : 'en'} theme={theme}>
             {children}

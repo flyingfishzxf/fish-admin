@@ -59,6 +59,9 @@ and a third starts over. The demo reports the window and night count outside the
 
 - Day cells are 32 × 32 px (`--cell-size` resolves to `--spacing(8)`); the root adds 12 px padding
   (`p-3`) and is `w-fit`, so it never stretches to fill its container.
+- The calendar has no frame of its own. The template places it inside a `Card` > `CardContent`;
+  there the calendar drops its `bg-background` (`[[data-slot=card-content]_&]:bg-transparent`) and
+  sits directly on the card surface, which the demos on this page mirror.
 - The weekday row is 0.8 rem and muted, and every week gets 8 px of top margin (`mt-2`).
 - A single selection paints the day with `bg-primary` / `text-primary-foreground`; a range uses
   primary on the start and end cells and `bg-accent` for the days in between, with square inner

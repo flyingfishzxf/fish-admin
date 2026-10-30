@@ -11,9 +11,8 @@ import {
 const PANEL_STYLE = {
   width: '100%',
   border: '1px solid var(--border)',
-  borderRadius: '0.5rem',
+  borderRadius: '1rem',
   padding: '0 1rem',
-  background: 'var(--card)',
 }
 
 const QUESTIONS = {
@@ -26,7 +25,7 @@ export default function AccordionControlled() {
   const [openItems, setOpenItems] = useState<string[]>(['notifications', 'audit'])
 
   return (
-    <div className="fish-demo-stack">
+    <div className="fish-demo-stack fish-demo-stack--wide">
       <Accordion type="multiple" value={openItems} onValueChange={setOpenItems} style={PANEL_STYLE}>
         <AccordionItem value="notifications">
           <AccordionTrigger>{QUESTIONS.notifications}</AccordionTrigger>

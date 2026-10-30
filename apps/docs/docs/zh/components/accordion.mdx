@@ -59,7 +59,7 @@ import controlledSource from '@docs/demos/accordion/controlled.tsx?raw'
 - 标题行 `py-4`（上下各 16 px）包裹 14 px 文本，整行约 52 px 高；`gap-4` 让箭头与长标题之间
   留出间距。
 - 各项之间用底部描边分隔，最后一项去掉该描边（`last:border-b-0`）。组件不自带圆角、背景或
-  外边距，示例自行添加 1 px `var(--border)` 描边、8 px 圆角与 16 px 左右内边距。
+  外边距，示例自行添加 1 px `var(--border)` 描边、1 rem 圆角与 16 px 左右内边距。
 - 箭头固定为 16 px（`size-4`），展开时在 200 ms 内旋转 180°；没有替换箭头的属性。
 - 面板文本为 `text-sm`，内边距 `pt-0 pb-4`：紧贴标题下方，与下一条分隔线之间留 16 px。展开与
   收起通过主题中的 `accordion-down` / `accordion-up` 关键帧播放动画。

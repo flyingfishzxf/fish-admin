@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Calendar } from '@fish-admin/react'
-
-const CALENDAR_STYLE = {
-  border: '1px solid var(--border)',
-  borderRadius: '0.5rem',
-  background: 'var(--card)',
-}
+import { Calendar, Card, CardContent } from '@fish-admin/react'
 
 const DATE_FORMAT = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' })
 
@@ -20,13 +14,17 @@ export default function CalendarBasic() {
 
   return (
     <div className="fish-demo-stack">
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        labels={{ labelNav: () => 'Access review calendar navigation' }}
-        style={CALENDAR_STYLE}
-      />
+      {/* Same composition as the template: Card > CardContent > Calendar. */}
+      <Card className="w-fit">
+        <CardContent>
+          <Calendar
+            mode="single"
+            selected={date}
+            onSelect={setDate}
+            labels={{ labelNav: () => 'Access review calendar navigation' }}
+          />
+        </CardContent>
+      </Card>
       <p className="fish-demo-muted" aria-live="polite">
         {date
           ? `Next access review: ${DATE_FORMAT.format(date)}`

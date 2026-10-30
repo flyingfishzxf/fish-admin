@@ -1,12 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Button, Calendar } from '@fish-admin/react'
-
-const CALENDAR_STYLE = {
-  border: '1px solid var(--border)',
-  borderRadius: '0.5rem',
-  background: 'var(--card)',
-}
+import { Button, Calendar, Card, CardContent } from '@fish-admin/react'
 
 const DATE_FORMAT = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' })
 
@@ -34,13 +28,17 @@ export default function CalendarRange() {
 
   return (
     <div className="fish-demo-stack">
-      <Calendar
-        mode="range"
-        selected={range}
-        onSelect={(next) => setRange(next)}
-        labels={{ labelNav: () => 'Maintenance window calendar navigation' }}
-        style={CALENDAR_STYLE}
-      />
+      {/* Same composition as the template: Card > CardContent > Calendar. */}
+      <Card className="w-fit">
+        <CardContent>
+          <Calendar
+            mode="range"
+            selected={range}
+            onSelect={(next) => setRange(next)}
+            labels={{ labelNav: () => 'Maintenance window calendar navigation' }}
+          />
+        </CardContent>
+      </Card>
       <div className="fish-demo-row">
         <span className="fish-demo-muted" aria-live="polite">
           {range?.from

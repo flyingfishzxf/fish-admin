@@ -54,6 +54,8 @@ import rangeSource from '@docs/demos/calendar/range.tsx?raw'
 
 - 日期单元为 32 × 32 px（`--cell-size` 解析为 `--spacing(8)`）；根节点再加 12 px 内边距（`p-3`）
   且为 `w-fit`，因此不会撑满容器。
+- 日历本身没有外框。模板把它放进 `Card` 的 `CardContent`：此时日历会去掉自身的 `bg-background`
+  （`[[data-slot=card-content]_&]:bg-transparent`），直接落在卡片表面上，本页示例沿用同样的组合。
 - 星期行字号 0.8 rem 并使用弱化色，每周之间留 8 px 顶部间距（`mt-2`）。
 - 单选时当天使用 `bg-primary` / `text-primary-foreground`；区间选择时起止单元用主色，中间日期
   用 `bg-accent` 并把内侧圆角收方。今天在未选中时显示 `bg-accent`。

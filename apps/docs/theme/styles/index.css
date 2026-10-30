@@ -1,3 +1,4 @@
+@import '@fontsource-variable/inter';
 @import '@fish-admin/react/styles.css';
 
 .fish-visually-hidden {
@@ -13,6 +14,8 @@
 }
 
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   --rp-c-bg: var(--background);
   --rp-c-bg-soft: var(--muted);
   --rp-c-bg-mute: var(--muted);
@@ -35,8 +38,8 @@ body {
   --rp-radius-small: 8px;
   --rp-radius-large: 16px;
   --rp-font-family-base:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
-    'Microsoft YaHei', system-ui, sans-serif;
+    'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
   --rp-home-hero-secondary-color: #e84393;
   --rp-home-hero-title-bg: linear-gradient(
     90deg,
@@ -48,6 +51,29 @@ body {
 
 html.rp-dark body {
   --rp-c-link: var(--rp-c-brand-light);
+}
+
+/* Same scrollbar skin as the template (src/styles/index.css). Without it the docs
+   host falls back to native scrollbars, whose arrow buttons sit on rounded panels. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--foreground) 18%, transparent);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklch, var(--foreground) 30%, transparent);
+  background-clip: content-box;
 }
 
 /* Demo overlays use z-50; the sticky docs nav is z-60 and would cover them. */
@@ -223,13 +249,14 @@ body .rp-sidebar-item[data-depth='2'] {
 }
 
 /* ---------- content ---------- */
+/* Mirrors Rspress's prose gate: demo previews (`.rp-not-doc`) render app-native typography. */
 
-body .rp-doc h1 {
+body .rp-doc h1:not(:where(.rp-not-doc, .rp-not-doc *)) {
   font-size: 2.1rem;
   letter-spacing: -0.025em;
 }
 
-body .rp-doc h2 {
+body .rp-doc h2:not(:where(.rp-not-doc, .rp-not-doc *)) {
   margin-top: 2.75rem;
   padding-top: 1.4rem;
   border-top: 1px solid var(--border);
@@ -242,12 +269,12 @@ body .rp-doc h2:first-of-type:before {
   display: none;
 }
 
-body .rp-doc h3 {
+body .rp-doc h3:not(:where(.rp-not-doc, .rp-not-doc *)) {
   margin-top: 1.75rem;
   font-size: 1.08rem;
 }
 
-body .rp-doc :not(pre) > code {
+body .rp-doc :not(pre) > code:not(:where(.rp-not-doc, .rp-not-doc *)) {
   padding: 0.12em 0.38em;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -460,14 +487,50 @@ body .rp-search-button__hotkey > span {
   align-items: flex-start;
   gap: 1.25rem;
   padding: 2rem 1.5rem;
-  background: var(--card);
+  /* The app canvas is --background; card surfaces only read as cards against it. */
+  background: var(--background);
   color: var(--card-foreground);
   overflow-x: auto;
 }
 
-/* The package ships without Tailwind preflight, so bare buttons would keep the UA button face. */
-.fish-demo__preview button:not([class*='bg-']) {
-  background-color: transparent;
+/*
+ * The package ships without Tailwind preflight, so bare buttons would keep the UA button face.
+ * Scoped to the whole docs body because the package renders close buttons inside portals that
+ * live outside .fish-demo__preview. Zero specificity inside the utilities layer keeps every
+ * bg-* utility on the component in charge, including variants such as `hover:bg-accent`.
+ */
+@layer utilities {
+  :where(body) :where(button, input, select, optgroup, textarea) {
+    background-color: transparent;
+  }
+
+  /*
+   * Rspress's own preflight keeps the UA list and mono defaults Tailwind removes; restore the
+   * Tailwind behavior inside demos so lists inside Breadcrumb, Pagination, Sidebar and friends
+   * render the way they do in the template.
+   */
+  :where(.fish-demo__preview) :where(ol, ul, menu) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  :where(.fish-demo__preview) :where(code, kbd, samp, pre) {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+      monospace;
+  }
+}
+
+/* Demo captions stay documentation: keep the inline-code chip the preview no longer inherits. */
+.fish-demo-muted code,
+.fish-demo-label code {
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--muted);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.88em;
 }
 
 .fish-demo__source {
@@ -504,6 +567,11 @@ body .rp-search-button__hotkey > span {
   gap: 0.75rem;
   width: 100%;
   max-width: 42rem;
+}
+
+/* Demos that mirror a full-width template surface, such as the accordion panel. */
+.fish-demo-stack--wide {
+  max-width: none;
 }
 
 .fish-demo-row {
