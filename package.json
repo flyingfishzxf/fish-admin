@@ -15,6 +15,7 @@
     "dev": "vite",
     "prebuild": "pnpm build:tokens",
     "build": "tsc --noEmit && vite build",
+    "prebuild:demo": "pnpm build:tokens",
     "build:demo": "cross-env VITE_ENABLE_MOCK=true vite build",
     "build:tokens": "pnpm --filter @fish-admin/tokens build",
     "check:tokens": "pnpm --filter @fish-admin/tokens check && node scripts/check-tokens.mjs",
