@@ -179,7 +179,7 @@ export function EditableTable({
             key={column.key}
             className={cn(
               'px-3 py-2 align-top',
-              column.align === 'right' && 'text-right',
+              column.align === 'right' && 'text-end',
               column.align === 'center' && 'text-center',
             )}
             style={{ width: column.width }}
@@ -204,7 +204,7 @@ export function EditableTable({
             )}
           </td>
         ))}
-        <td className="px-3 py-2 text-right align-top whitespace-nowrap">
+        <td className="px-3 py-2 text-end align-top whitespace-nowrap">
           {editing ? (
             <span className="flex min-h-8 items-center justify-end gap-1">
               <Button type="button" size="sm" onClick={save}>
@@ -255,14 +255,14 @@ export function EditableTable({
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- the scroll container must be reachable so keyboard users can scroll wide tables */}
       <div tabIndex={0} className="overflow-x-auto rounded-lg border">
         <table aria-label={ariaLabel} className="w-full min-w-[40rem] text-sm">
-          <thead className="bg-muted/40 text-left text-xs text-muted-foreground">
+          <thead className="bg-muted/40 text-start text-xs text-muted-foreground">
             <tr>
               {columns.map((column) => (
                 <th key={column.key} scope="col" className="px-3 py-2 font-medium">
                   {column.header}
                 </th>
               ))}
-              <th scope="col" className="px-3 py-2 text-right font-medium">
+              <th scope="col" className="px-3 py-2 text-end font-medium">
                 {labels.actions}
               </th>
             </tr>

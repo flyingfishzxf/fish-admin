@@ -1,0 +1,45 @@
+---
+title: 主题编辑器
+description: 在浏览器里给 FishAdmin 配色，检查对比度，并导出 CSS、JSON 或分享链接。
+---
+
+import ThemeEditor from '@docs/theme/ThemeEditor'
+
+# 主题编辑器
+
+这一页直接跑真实的 token 契约。每个控件都会把 CSS 自定义属性写到文档根节点，因此预览区、
+文档站自身的外壳和 portal 出去的 Dialog 会一起更新。所有修改都不持久化：离开页面后文档站
+恢复原来的主题。
+
+<ThemeEditor />
+
+## 可以调整什么
+
+- **强调色预设**替换强调色拥有的变量（`--primary`、`--primary-foreground`、品牌渐变和
+  `--chart-1`）；对其他 token 的手动修改会保留。
+- **颜色**支持 `oklch()`、hex、`rgb()`、`hsl()` 或 `var(--token)`。无法解析的值会标为无效，
+  不会写入页面。
+- **圆角**和**动效时长**在浅色与深色间共享，与 token 契约一致。
+- **高对比度**预览当前强调色在 `prefers-contrast: more` 下的取值。
+
+优先级从高到低是：手动修改、高对比度预设、强调色预设。对比度面板读取的是最终生效的值，
+低对比组合会立刻暴露，而不是等到评审时才发现。
+
+## 导出
+
+**CSS** 标签输出 `:root` 与 `.dark` 两个块，形状与生成的 `tokens.css` 相同。开启高对比度后，
+还会追加一个 `@media (prefers-contrast: more)` 块，只包含真正发生变化的 token。
+
+**JSON** 标签是两种模式下的完整生效快照。**分享链接**把紧凑的
+`{ accent, highContrast, light, dark }` 载荷放进 `?theme=`；页面加载时用同一套清洗规则丢弃
+未知 token 名、错误类型或不安全字符，所以手改链接也无法注入 CSS。
+
+## 范围
+
+编辑器是文档工具，不是模板功能。它不写 localStorage，也不改模板的设置页；调好后把导出的
+CSS 或 JSON 复制到你自己的主题层即可。
+
+## 相关
+
+- [设计令牌](/zh/guide/tokens)：完整清单与浅色/深色取值。
+- [主题定制](/zh/guide/theming)：运行时侧，即 `dark`、`data-accent` 与 `UIProvider`。

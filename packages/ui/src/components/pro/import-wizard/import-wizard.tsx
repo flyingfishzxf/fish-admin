@@ -311,7 +311,7 @@ export function ImportWizard({
               <p className="text-xs font-medium">{labels.previewTitle}</p>
               <div className="overflow-x-auto rounded-md border">
                 <table className="w-full text-xs">
-                  <thead className="bg-muted/40 text-left text-muted-foreground">
+                  <thead className="bg-muted/40 text-start text-muted-foreground">
                     <tr>
                       {mappedFields.map((field) => (
                         <th key={field.key} className="px-2 py-1.5 font-medium">
@@ -376,7 +376,7 @@ export function ImportWizard({
 
           <div className="max-h-64 overflow-auto rounded-md border">
             <table className="w-full text-xs">
-              <thead className="sticky top-0 bg-muted text-left text-muted-foreground">
+              <thead className="sticky top-0 bg-muted text-start text-muted-foreground">
                 <tr>
                   <th className="px-2 py-1.5 font-medium">{labels.rowNumber}</th>
                   {fields.map((field) => (

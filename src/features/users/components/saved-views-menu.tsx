@@ -141,7 +141,7 @@ export function SavedViewsMenu({
               >
                 <button
                   type="button"
-                  className="flex-1 truncate px-2 py-2 text-left text-sm"
+                  className="flex-1 truncate px-2 py-2 text-start text-sm"
                   onClick={() => {
                     onApply(view)
                     setOpen(false)

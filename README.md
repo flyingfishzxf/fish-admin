@@ -50,7 +50,8 @@ The same four files are served by the [documentation site](https://fish-admin-do
 - **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings.
 - **Dashboard** — KPI cards, revenue area chart, traffic bars, acquisition donut and recent activity, with a 7/30-day switch. Charts are lazy-loaded with the dashboard route.
 - **83 components, one package** — `@fish-admin/react` exports 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`). Each of the 83 has a page on the [documentation site](https://fish-admin-docs.vercel.app), in English and Chinese, with a business-framed live demo, the copyable import path and the generated props table. `pnpm check:package` fails the build if the barrel stops exporting any of them, and `pnpm docs:check` fails if a page, demo or registry entry drifts. ProTable powers the users and audit pages, so the template is the package's first consumer.
-- **Product-style design system** — light, dark and system modes, five accent colors, oklch tokens, refined shadows and a FOUC-free first paint.
+- **Design tokens as a contract** — light, dark and system modes, five accent colors, oklch tokens, refined shadows, six motion tokens and high-contrast values. `@fish-admin/tokens` compiles one JSON source into plain CSS, a Tailwind 4 theme entry, a bilingual manifest and browser-safe editor helpers; the [reference](https://fish-admin-docs.vercel.app/guide/tokens) and [live theme editor](https://fish-admin-docs.vercel.app/guide/theme-editor) run on the same contract. Seven signature overlays honour `prefers-reduced-motion`, and `@fish-admin/react` inlines the compiled tokens so npm consumers still install one package.
+- **Honest RTL audit** — `pnpm check:rtl` regenerates a report of physical-direction utilities (412 across 228 files today) and fails when it drifts. 52 text alignments are logical now; the rest is documented at [RTL readiness](https://fish-admin-docs.vercel.app/guide/rtl-readiness) instead of claimed as support.
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
 - **Responsive layout** — mobile sidebar sheet, adaptive tables and drawers that work at 375, 768 and 1440 pixels.
@@ -268,16 +269,21 @@ Access tokens are fake base64url JWTs valid for 15 minutes; refresh tokens last 
 ## Project structure
 
 ```text
+packages/tokens/             # @fish-admin/tokens — JSON contract, generated CSS/manifest/editor helpers
+├─ src/tokens.json           # the only place a token may be declared
+├─ src/editor/               # sanitise, validate, contrast and serialise helpers
+└─ scripts/                  # build + consistency check
 packages/ui/                 # @fish-admin/react — the component library
 ├─ src/components/           # ui (47 primitives), enterprise (30), pro (6), data-table, common
 ├─ src/locales/              # en + zh-CN strings the components ship with
-├─ src/styles/               # tokens, utilities, preflight and the app-owned base
+├─ src/styles/               # token import, utilities, preflight, a11y and the app-owned base
 ├─ registry.json             # the 83-entry inventory gen-api reads
 └─ test/                     # package-level tests
 apps/docs/                   # the Rspress documentation site
 ├─ docs/{en,zh}/             # 83 component pages, guides and the versions page
 ├─ demos/<component>/        # the live example each page renders
-├─ generated/                # registry.json + the API tables, produced by pnpm gen-api
+├─ theme/                    # token reference, theme editor and RTL audit views
+├─ generated/                # registry.json, API tables and rtl-audit.json
 └─ docs/public/screenshots/  # the README and docs hero shots
 src/                         # the template
 ├─ routes/                   # File-based routes; routeTree.gen.ts is generated
@@ -297,37 +303,42 @@ docs/{en,zh-CN}/             # Repository documentation (the site above is the p
 
 ## Scripts
 
-| Command                             | Description                                                |
-| ----------------------------------- | ---------------------------------------------------------- |
-| `pnpm scaffold`                     | Rebrand the clone and drop the parts you do not want       |
-| `pnpm dev`                          | Start Vite with the mock API enabled                       |
-| `pnpm build`                        | Type-check and build for production (mock off by default)  |
-| `pnpm build:demo`                   | Build with the mock API enabled, as used by the live demo  |
-| `pnpm preview`                      | Preview the production build                               |
-| `pnpm build:ui` / `pnpm test:ui`    | Build / test `@fish-admin/react`                           |
-| `pnpm check:package`                | Fail unless the barrel exports every registry entry        |
-| `pnpm gen-api` / `gen-api:check`    | Regenerate / verify the docs API tables and coverage floor |
-| `pnpm docs:dev` / `docs:build`      | Run / build the documentation site                         |
-| `pnpm docs:check`                   | Fail on a missing page, demo or registry drift             |
-| `pnpm test:docs`                    | Build the site, then run its Playwright suite              |
-| `pnpm lint` / `pnpm lint:fix`       | Run ESLint                                                 |
-| `pnpm format` / `pnpm format:check` | Run Prettier                                               |
-| `pnpm typecheck`                    | Run TypeScript without emitting                            |
-| `pnpm test` / `pnpm test:watch`     | Run unit tests                                             |
-| `pnpm test:coverage`                | Unit tests with a coverage report                          |
-| `pnpm test:e2e`                     | Build the demo, then run E2E, axe and performance specs    |
-| `pnpm perf`                         | Run only the runtime performance budgets                   |
-| `pnpm size`                         | Build production and check gzip budgets                    |
-| `pnpm test:visual:docker`           | Compare screenshots in the Playwright Docker image         |
+| Command                              | Description                                                    |
+| ------------------------------------ | -------------------------------------------------------------- |
+| `pnpm scaffold`                      | Rebrand the clone and drop the parts you do not want           |
+| `pnpm dev`                           | Start Vite with the mock API enabled                           |
+| `pnpm build`                         | Type-check and build for production (mock off by default)      |
+| `pnpm build:demo`                    | Build with the mock API enabled, as used by the live demo      |
+| `pnpm preview`                       | Preview the production build                                   |
+| `pnpm build:tokens` / `check:tokens` | Build / verify `@fish-admin/tokens`, reject stray declarations |
+| `pnpm test:tokens`                   | Unit-test sanitisation, contrast and serialisation             |
+| `pnpm audit:rtl` / `pnpm check:rtl`  | Regenerate / verify the RTL audit report                       |
+| `pnpm build:ui` / `pnpm test:ui`     | Build / test `@fish-admin/react`                               |
+| `pnpm check:package`                 | Fail unless the barrel exports every registry entry            |
+| `pnpm gen-api` / `gen-api:check`     | Regenerate / verify the docs API tables and coverage floor     |
+| `pnpm docs:dev` / `docs:build`       | Run / build the documentation site                             |
+| `pnpm docs:check`                    | Fail on a missing page, demo or registry drift                 |
+| `pnpm test:docs`                     | Build the site, then run its Playwright suite                  |
+| `pnpm lint` / `pnpm lint:fix`        | Run ESLint                                                     |
+| `pnpm format` / `pnpm format:check`  | Run Prettier                                                   |
+| `pnpm typecheck`                     | Run TypeScript without emitting                                |
+| `pnpm test` / `pnpm test:watch`      | Run unit tests                                                 |
+| `pnpm test:coverage`                 | Unit tests with a coverage report                              |
+| `pnpm test:e2e`                      | Build the demo, then run E2E, axe and performance specs        |
+| `pnpm perf`                          | Run only the runtime performance budgets                       |
+| `pnpm size`                          | Build production and check gzip budgets                        |
+| `pnpm test:visual:docker`            | Compare screenshots in the Playwright Docker image             |
 
 ## Quality gates
 
 CI runs these gates on every push and pull request:
 
-- **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans twelve flows (login in light, dark and Simplified Chinese; dashboard in both themes; users list and create dialog; user detail; roles and permission matrix; audit log; security and settings; projects board, create dialog and project detail; file library, upload drawer and preview; notification inbox and preferences; reports and the integration form) against WCAG 2.1 A/AA with axe. Any violation fails the run. The documentation site has its own axe scan in `e2e-docs/axe-full.spec.ts`.
+- **Accessibility** — `eslint-plugin-jsx-a11y` runs with the lint job, and `e2e/a11y.spec.ts` scans twelve flows (login in light, dark and Simplified Chinese; dashboard in both themes; users list and create dialog; user detail; roles and permission matrix; audit log; security and settings; projects board, create dialog and project detail; file library, upload drawer and preview; notification inbox and preferences; reports and the integration form) against WCAG 2.1 A/AA with axe. Any violation fails the run. A forced-colors smoke test checks the settings focus ring, and the docs site has its own axe routes plus `e2e-docs/forced-colors.spec.ts` for focus, disabled text and reduced motion.
+- **Design token contract** — `pnpm check:tokens` fails when a token is declared outside `packages/tokens/src/tokens.json`, the generated CSS or manifest is stale, or a Tailwind mapping is missing. `pnpm test:tokens` covers sanitisation, contrast and serialisation, including 7:1 checks for the high-contrast values across every accent.
+- **RTL audit** — `pnpm check:rtl` regenerates `apps/docs/generated/rtl-audit.json` in memory and fails when the committed report differs from the current class names. The docs page renders that report; the scan is a gap list, not a support claim.
 - **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html`, together with the shell's blocking `/theme-bootstrap.js` — 31 chunks totalling 175.2 KB — because that set, not the entry file alone, is what the browser downloads before it paints. The CSS total counts the linked `/boot.css` as well.
 - **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
-- **Visual regression** — eighteen template screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, projects, project detail, files, reports in both themes, notifications, integrations, approval center, approval detail and dictionaries) plus eight docs baselines (home, installation, one primitive and one pro page, each in light and dark) are compared against images rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable. `e2e/visual/readme-shots.spec.ts` lives in the same run but only writes files, and only when `README_SHOTS=1`.
+- **Visual regression** — eighteen template screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, projects, project detail, files, reports in both themes, notifications, integrations, approval center, approval detail and dictionaries) plus twelve docs baselines (home, installation, one primitive, one pro page, the theme editor and RTL readiness, each in light and dark) are compared against images rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable. `e2e/visual/readme-shots.spec.ts` lives in the same run but only writes files, and only when `README_SHOTS=1`.
 - **Security headers** — `e2e/security.spec.ts` checks that `/`, `/index.html`, a hashed asset and the two shell files all carry the identical header set, then walks sign-in, dashboard, users, reports, files, projects and settings with a `securitypolicyviolation` listener that must stay empty. See [docs/en/security-headers.md](docs/en/security-headers.md).
 - **Documentation** — `pnpm gen-api:check` fails when the generated props tables drift from the package source, `pnpm docs:check` fails when a registry entry has no page, no demo or no translation, and `pnpm test:docs` runs the site's own Playwright suite.
 - **Supply chain** — `pnpm audit --audit-level=high` fails the quality job, CodeQL analyses JavaScript and TypeScript on every push, pull request and weekly schedule, [`.github/dependabot.yml`](.github/dependabot.yml) opens grouped minor/patch and major pull requests for npm and for the actions, every workflow runs on a read-scoped token (`permissions: contents: read`), and the build job uploads the bundle it measured.
@@ -353,7 +364,7 @@ Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).
 
 ## Documentation
 
-**Component documentation: <https://fish-admin-docs.vercel.app>** — 83 pages in English and Chinese, each with a live demo, the import path and the generated props table, plus the installation, quick-start and theming guides.
+**Component documentation: <https://fish-admin-docs.vercel.app>** — 83 pages in English and Chinese, each with a live demo, the import path and the generated props table, plus the installation, quick-start and theming guides, the [token reference](https://fish-admin-docs.vercel.app/guide/tokens), the [theme editor](https://fish-admin-docs.vercel.app/guide/theme-editor) and the [RTL audit](https://fish-admin-docs.vercel.app/guide/rtl-readiness).
 
 The pages below document the template itself:
 

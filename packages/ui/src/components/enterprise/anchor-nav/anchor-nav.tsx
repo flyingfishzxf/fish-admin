@@ -109,7 +109,7 @@ export function AnchorNav({
               'shrink-0 text-sm whitespace-nowrap transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50',
               horizontal
                 ? '-mb-px border-b-2 px-3 py-2'
-                : '-ml-px border-l-2 px-3 py-1.5 text-left',
+                : '-ml-px border-l-2 px-3 py-1.5 text-start',
               active
                 ? 'border-primary font-medium text-primary'
                 : 'border-transparent text-muted-foreground',

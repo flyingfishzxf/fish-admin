@@ -153,7 +153,7 @@ export function FileList({
             <TableHead className="hidden @lg:table-cell">{t('list.size')}</TableHead>
             <TableHead className="hidden @xl:table-cell">{t('list.visibility')}</TableHead>
             <TableHead className="hidden @3xl:table-cell">{t('list.updated')}</TableHead>
-            <TableHead className="text-right">{t('list.actions')}</TableHead>
+            <TableHead className="text-end">{t('list.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -181,7 +181,7 @@ export function FileList({
                       type="button"
                       onClick={() => onOpen(file)}
                       className={cn(
-                        'flex w-full max-w-64 min-w-0 items-center gap-2 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
+                        'flex w-full max-w-64 min-w-0 items-center gap-2 rounded-md text-start outline-none focus-visible:ring-2 focus-visible:ring-ring/50',
                         selected && 'font-medium text-accent-foreground',
                       )}
                     >
@@ -321,7 +321,7 @@ export function FileList({
               <button
                 type="button"
                 onClick={() => onOpen(file)}
-                className="flex flex-1 flex-col text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                className="flex flex-1 flex-col text-start outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               >
                 <span className="sr-only">{t('list.openFile', { name: file.name })}</span>
                 <span className="flex aspect-4/3 items-center justify-center overflow-hidden bg-muted/40">

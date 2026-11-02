@@ -29,7 +29,12 @@ pnpm format:check
 pnpm lint
 pnpm typecheck
 pnpm test
+pnpm test:tokens
+pnpm check:tokens
+pnpm check:rtl
 ```
+
+`pnpm dev`, `pnpm build` and the docs prebuild scripts compile `@fish-admin/tokens` first. If you edit `packages/tokens/src/tokens.json`, run `pnpm build:tokens` before anything that consumes the generated CSS or manifest.
 
 For changes that affect a user flow, also run the end-to-end suite:
 
@@ -54,7 +59,7 @@ pnpm test:visual:docker            # verify a change did not move anything else
 
 The mock database is seeded and each test freezes the clock, so dates and chart series stay stable. Review the regenerated `.png` files before committing them — an unexpected diff is usually the bug.
 
-The docs site has its own baseline set: `e2e-docs/visual.spec.ts` compares four routes (home, installation, button, pro-table) in light and dark — eight baselines, stored under `e2e-docs/__screenshots__/visual.spec.ts/` — against images from the same container, served on port 4175.
+The docs site has its own baseline set: `e2e-docs/visual.spec.ts` compares six routes (home, installation, button, pro-table, theme editor and RTL readiness) in light and dark — twelve baselines, stored under `e2e-docs/__screenshots__/visual.spec.ts/` — against images from the same container, served on port 4175.
 
 ```bash
 pnpm test:docs:visual:docker --update   # regenerate the docs baselines
@@ -92,6 +97,7 @@ Reviewers may ask for changes or suggest splitting a large pull request. That is
 - Use the `@/` alias for imports from `src`.
 - `packages/ui/src/components/ui` contains the shadcn/ui primitives the package builds on. Do not hand-edit them; update them through the CLI or keep local changes minimal and documented.
 - The components live in `packages/ui` (`@fish-admin/react`), not in `src`. A new component needs a `packages/ui/registry.json` entry, an export from `packages/ui/src/index.ts`, a page under `apps/docs/docs/{en,zh}/components/`, and at least two demos in `apps/docs/demos/<id>/` with its own `meta.json`; run `pnpm gen-api` after changing props so the generated tables match.
+- Design tokens live only in `packages/tokens/src/tokens.json`; never declare `--background`, `--primary` or another token in a stylesheet. `pnpm check:tokens` rejects stray declarations, stale generated files and missing Tailwind mappings. New animated UI should use the `--motion-duration-*` / `--motion-ease-*` tokens and pair every animation with `motion-reduce:` classes.
 - Put feature-specific code under `src/features/<feature>` — API calls, query options, schemas and components stay together.
 - Do not call `fetch` from components. Go through `apiRequest` and TanStack Query.
 - Template UI strings belong in `src/locales/{en,zh-CN}`; component strings belong in `packages/ui/src/locales`. Add both languages in the same pull request. The locale parity tests enforce this.
@@ -113,6 +119,7 @@ Reviewers may ask for changes or suggest splitting a large pull request. That is
 - `docs/en` and `docs/zh-CN` should stay structurally aligned. When you change one, update the other.
 - `docs/{en,zh-CN}` describe the template. `pnpm docs:build` copies them into the Rspress site under `apps/docs/docs/{en,zh}/template`; those copies are generated and gitignored, so never edit them directly.
 - The component reference is written in the site itself, under `apps/docs/docs/{en,zh}/components/<id>.mdx` with its demos in `apps/docs/demos/<id>/`. `pnpm gen-api` regenerates the props tables from `packages/ui`, and `pnpm docs:check` fails when a registry entry has no page, no demo or no translation.
+- The design-system guides are `apps/docs/docs/{en,zh}/guide/tokens.mdx`, `theme-editor.mdx` and `rtl-readiness.mdx`. The token page and editor read `@fish-admin/tokens` at build time; the RTL page reads the committed audit report. Update both locales together and rerun `pnpm check:rtl` after touching direction utilities.
 - Prefer short examples over long prose. Test commands and file paths before documenting them.
 
 ## License

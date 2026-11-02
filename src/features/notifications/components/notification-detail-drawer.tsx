@@ -126,7 +126,7 @@ export function NotificationDetailDrawer({
                 </div>
                 <div className="flex items-center justify-between gap-3">
                   <dt className="text-muted-foreground">{t('detail.entity')}</dt>
-                  <dd className="text-right">
+                  <dd className="text-end">
                     <EntityLink notification={notification} />
                   </dd>
                 </div>

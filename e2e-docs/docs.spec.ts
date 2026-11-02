@@ -21,7 +21,11 @@ const AXE_ROUTES = [
   '/components/button',
   '/components/pro-table',
   '/components/date-range-picker',
+  '/guide/theme-editor',
+  '/guide/rtl-readiness',
   '/zh/components/button',
+  '/zh/guide/theme-editor',
+  '/zh/guide/rtl-readiness',
 ]
 
 function watchConsole(page: Page): string[] {
@@ -144,6 +148,32 @@ test('the Chinese button page is localized', async ({ page }) => {
   ).toBeVisible()
 })
 
+test('the button page survives a right-to-left document direction', async ({ page }) => {
+  const errors = watchConsole(page)
+  await page.goto('/components/button')
+  // Rspress ships `body { direction: ltr }`, so the chrome itself stays LTR.
+  // Override it on the body to exercise the demo surface in RTL.
+  await page.evaluate(() => {
+    document.documentElement.dir = 'rtl'
+    document.body.style.direction = 'rtl'
+  })
+
+  await expect(page.getByRole('heading', { name: 'Button', level: 1 })).toBeVisible()
+  const basic = page.locator('[data-demo="button/basic"]')
+  await expect(basic.locator('button').first()).toBeVisible()
+
+  const metrics = await page.evaluate(() => ({
+    bodyDirection: getComputedStyle(document.body).direction,
+    headingAlign: getComputedStyle(document.querySelector('h1')!).textAlign,
+    scrollWidth: document.documentElement.scrollWidth,
+    innerWidth: window.innerWidth,
+  }))
+  expect(metrics.bodyDirection).toBe('rtl')
+  expect(metrics.headingAlign).toBe('start')
+  expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.innerWidth + 1)
+  expect(errors).toEqual([])
+})
+
 test('dark mode switches the document and the demo surface', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/components/button')
@@ -170,6 +200,9 @@ test('search finds the Button component page', async ({ page }) => {
 })
 
 test('the key pages have no axe violations', async ({ page }) => {
+  // The RTL audit page renders a 400-row table; axe needs well over the
+  // default 30 s once it reaches that route.
+  test.setTimeout(180_000)
   for (const route of AXE_ROUTES) {
     await test.step(route, async () => {
       await page.goto(route)

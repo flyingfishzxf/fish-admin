@@ -170,7 +170,7 @@ export function LoginPage({ redirect, email }: { redirect?: string; email?: stri
               type="button"
               onClick={() => fillDemoAccount(account.email, account.password)}
               title={t(`auth:demo.${account.role}Hint`)}
-              className="group rounded-xl border bg-background/60 p-3 text-left transition hover:border-primary/40 hover:bg-primary/5"
+              className="group rounded-xl border bg-background/60 p-3 text-start transition hover:border-primary/40 hover:bg-primary/5"
             >
               <span className="flex items-center justify-between gap-1">
                 <span className="text-xs font-semibold">{t(`auth:demo.${account.role}`)}</span>

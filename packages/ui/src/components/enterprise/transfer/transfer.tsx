@@ -186,7 +186,7 @@ function TransferPanel({
                     disabled={disabled || item.disabled}
                     onClick={() => onChange(toggleTransferValue(value, item.key))}
                     className={cn(
-                      'flex w-full items-start gap-2 rounded-md px-2 py-1.5 text-left transition-colors outline-none hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50',
+                      'flex w-full items-start gap-2 rounded-md px-2 py-1.5 text-start transition-colors outline-none hover:bg-accent focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50',
                       target && 'bg-primary/5',
                     )}
                   >

@@ -77,7 +77,7 @@ export function Stepper({
               <button
                 type="button"
                 onClick={() => onStepClick(index)}
-                className="relative z-10 flex flex-1 items-start gap-3 rounded-md text-left outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                className="relative z-10 flex flex-1 items-start gap-3 rounded-md text-start outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
               >
                 {content}
               </button>

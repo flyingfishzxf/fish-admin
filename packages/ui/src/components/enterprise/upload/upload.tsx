@@ -121,7 +121,7 @@ export function Upload({
                         aria-label={item.name}
                         className="h-1.5"
                       />
-                      <span className="w-9 text-right text-[11px] text-muted-foreground tabular-nums">
+                      <span className="w-9 text-end text-[11px] text-muted-foreground tabular-nums">
                         {item.progress ?? 0}%
                       </span>
                     </div>

@@ -209,3 +209,28 @@ test.describe('accessibility', () => {
     await expectNoViolations(page, 'integration form drawer')
   })
 })
+
+test.describe('forced colors', () => {
+  test.use({ forcedColors: 'active' })
+
+  test('settings keeps a visible focus ring', async ({ page }) => {
+    await signInAs(page, 'admin')
+    await page.goto('/settings')
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+    await page.keyboard.press('Tab')
+
+    const focused = await page.evaluate(() => {
+      const element = document.activeElement as HTMLElement | null
+      if (!element) return null
+      const style = getComputedStyle(element)
+      return {
+        tag: element.tagName,
+        outlineStyle: style.outlineStyle,
+        outlineWidth: Number.parseFloat(style.outlineWidth),
+      }
+    })
+    expect(focused?.tag).not.toBe('BODY')
+    expect(focused?.outlineStyle).toBe('solid')
+    expect(focused?.outlineWidth).toBeGreaterThanOrEqual(2)
+  })
+})

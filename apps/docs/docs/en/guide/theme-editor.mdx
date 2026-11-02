@@ -1,0 +1,49 @@
+---
+title: Theme editor
+description: Recolor FishAdmin in the browser, check contrast and export the result as CSS, JSON or a share link.
+---
+
+import ThemeEditor from '@docs/theme/ThemeEditor'
+
+# Theme editor
+
+This page runs the real token contract in the browser. Each control writes a CSS custom property to
+the document root, so the preview, the docs chrome and any portalled Dialog update together. Nothing
+is persisted: leaving the page restores the docs theme.
+
+<ThemeEditor />
+
+## What you can change
+
+- **Accent preset** replaces the accent-owned variables (`--primary`, `--primary-foreground`, the
+  brand gradient and `--chart-1`). Manual edits to other tokens are kept.
+- **Colors** accepts `oklch()`, hex, `rgb()`, `hsl()` or `var(--token)`. A value that does not parse
+  is marked invalid and never reaches the page.
+- **Radius** and **motion durations** are shared between light and dark, matching the token contract.
+- **High contrast** previews the `prefers-contrast: more` values for the current accent.
+
+Manual edits take precedence over the high-contrast preset, and the high-contrast preset takes
+precedence over the accent preset. The contrast panel reads the effective values, so a low-contrast
+combination shows up immediately instead of at review time.
+
+## Export
+
+The **CSS** tab emits a `:root` block and a `.dark` block in the same shape as the generated
+`tokens.css`. With high contrast enabled it appends a `@media (prefers-contrast: more)` block that
+contains only the tokens that actually change.
+
+The **JSON** tab is the full effective snapshot for both modes. The **Share URL** tab stores a
+compact `{ accent, highContrast, light, dark }` payload in `?theme=`; the same sanitizer that guards
+the URL on load drops unknown token names, wrong value types or unsafe characters, so an edited link
+cannot inject CSS.
+
+## Scope
+
+The editor is a documentation tool, not a template feature. It does not write to localStorage or to
+the template's settings page; copy the exported CSS or JSON into your own theme layer when you are
+happy with the result.
+
+## Related
+
+- [Design tokens](/guide/tokens) for the full manifest and both modes.
+- [Theming](/guide/theming) for the runtime side: `dark`, `data-accent` and `UIProvider`.

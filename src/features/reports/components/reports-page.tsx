@@ -499,13 +499,11 @@ export function ReportsPage({
                           <TableRow>
                             <TableHead>{t('detail.columns.date')}</TableHead>
                             <TableHead>{t('detail.columns.channel')}</TableHead>
-                            <TableHead className="text-right">
+                            <TableHead className="text-end">
                               {t('detail.columns.revenue')}
                             </TableHead>
-                            <TableHead className="text-right">
-                              {t('detail.columns.orders')}
-                            </TableHead>
-                            <TableHead className="text-right">
+                            <TableHead className="text-end">{t('detail.columns.orders')}</TableHead>
+                            <TableHead className="text-end">
                               {t('detail.columns.refunds')}
                             </TableHead>
                           </TableRow>
@@ -515,13 +513,13 @@ export function ReportsPage({
                             <TableRow key={row.id}>
                               <TableCell>{formatDayDisplay(row.date, i18n.language)}</TableCell>
                               <TableCell>{channelName(row)}</TableCell>
-                              <TableCell className="text-right tabular-nums">
+                              <TableCell className="text-end tabular-nums">
                                 {formatCurrency(row.revenue, i18n.language)}
                               </TableCell>
-                              <TableCell className="text-right tabular-nums">
+                              <TableCell className="text-end tabular-nums">
                                 {row.orders.toLocaleString(i18n.language)}
                               </TableCell>
-                              <TableCell className="text-right tabular-nums">
+                              <TableCell className="text-end tabular-nums">
                                 {formatCurrency(row.refunds, i18n.language)}
                               </TableCell>
                             </TableRow>

@@ -59,6 +59,40 @@ palette stays neutral on purpose.
 component concern: use `size="sm"` on buttons and the table density prop instead of shrinking the
 whole page with CSS.
 
+## Motion
+
+Motion is part of the token contract, so a theme editor can speed up or slow down every signature
+transition without touching component code.
+
+| Token                      | Value                               | Used for                         |
+| -------------------------- | ----------------------------------- | -------------------------------- |
+| `--motion-duration-fast`   | `150ms`                             | Tooltips, popovers and menus     |
+| `--motion-duration-base`   | `200ms`                             | Dialogs, accordions and chevrons |
+| `--motion-duration-slow`   | `300ms`                             | Sheets opening and closing       |
+| `--motion-ease-standard`   | `cubic-bezier(0.2, 0, 0, 1)`        | Enter and exit                   |
+| `--motion-ease-emphasized` | `cubic-bezier(0.25, 1.15, 0.35, 1)` | Optional overshoot               |
+| `--motion-ease-exit`       | `cubic-bezier(0.4, 0, 1, 1)`        | Exits                            |
+
+Dialog, sheet, drawer, dropdown menu, popover, tooltip and accordion consume these tokens. Under
+`prefers-reduced-motion: reduce` those seven components drop their transitions and animations via
+`motion-reduce:` utilities instead of a global rule that would also freeze loading indicators. The
+theme editor writes the same variables, so dragging a duration slider updates the preview live.
+
+## High contrast
+
+High contrast has two independent layers:
+
+- `@media (prefers-contrast: more)` overrides the core text pairs in `tokens.css`: foreground,
+  card and popover text, muted text, and the secondary and primary pairs. Every accent is checked
+  to reach WCAG AAA (7:1) for those pairs, and `pnpm test:tokens` enforces the contract.
+- `@media (forced-colors: active)` in `a11y.css` restores what Windows High Contrast Mode flattens:
+  a 2 px `Highlight` focus ring, `GrayText` for disabled controls, a `CanvasText` outline on
+  shadow-only surfaces, and a `Highlight` border on selected tabs and other
+  `[data-state="active"]` elements.
+
+The template has no high-contrast switch; the token overrides follow the OS setting. To preview or
+export them, use the High contrast preset in the [theme editor](/guide/theme-editor).
+
 ## Do not fork the tokens
 
 - Do not add a second set of `--color-*` variables; extend the semantic tokens instead.

@@ -1,5 +1,7 @@
 @import '@fontsource-variable/inter';
 @import '@fish-admin/react/styles.css';
+@import './theme-editor.css';
+@import './rtl-audit.css';
 
 .fish-visually-hidden {
   position: absolute;
@@ -690,6 +692,106 @@ body .rp-doc .fish-index .fish-index__item {
   margin-top: 0.75rem;
   font-size: 0.85rem;
   color: var(--muted-foreground);
+}
+
+/* ---------- token reference ---------- */
+
+.fish-tokens {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.fish-tokens__group {
+  margin-top: 1.5rem;
+}
+
+.fish-tokens__summary {
+  margin: -0.25rem 0 0.9rem;
+  font-size: 0.9rem;
+  color: var(--muted-foreground);
+}
+
+.fish-tokens__table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.fish-tokens__table {
+  min-width: 760px;
+}
+
+.fish-tokens__table th {
+  background: color-mix(in oklch, var(--muted) 45%, var(--card));
+}
+
+.fish-tokens__table td {
+  vertical-align: middle;
+}
+
+.fish-tokens__type {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.68rem;
+}
+
+.fish-tokens__value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: 19rem;
+}
+
+.fish-tokens__value code,
+.fish-tokens__high-contrast code {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  word-break: break-all;
+}
+
+.fish-token-swatch {
+  display: inline-block;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.fish-tokens__high-contrast {
+  display: grid;
+  gap: 4px;
+}
+
+.fish-tokens__high-contrast > span {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.fish-tokens__mode {
+  width: 0.8rem;
+  color: var(--muted-foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.66rem;
+}
+
+.fish-tokens__empty {
+  color: var(--muted-foreground);
+}
+
+.fish-tokens__description {
+  min-width: 12rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 640px) {
+  .fish-tokens__table {
+    min-width: 680px;
+  }
 }
 
 @media (max-width: 640px) {

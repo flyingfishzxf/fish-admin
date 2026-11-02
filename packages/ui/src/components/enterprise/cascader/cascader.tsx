@@ -134,7 +134,7 @@ export function Cascader({
                           disabled={option.disabled}
                           onClick={() => select(depth, option)}
                           className={cn(
-                            'flex w-full items-center gap-1.5 rounded-sm px-2 py-1.5 text-left text-sm transition-colors outline-none hover:bg-accent focus-visible:bg-accent disabled:cursor-not-allowed disabled:opacity-50',
+                            'flex w-full items-center gap-1.5 rounded-sm px-2 py-1.5 text-start text-sm transition-colors outline-none hover:bg-accent focus-visible:bg-accent disabled:cursor-not-allowed disabled:opacity-50',
                             selected && 'bg-primary/10 font-medium text-accent-foreground',
                           )}
                         >

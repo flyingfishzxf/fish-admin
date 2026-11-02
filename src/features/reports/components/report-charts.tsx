@@ -201,7 +201,7 @@ export function ReportChannelsChart({ data }: { data: ReportChannel[] }) {
                 <span className="font-medium tabular-nums">
                   {formatCurrency(channel.value, i18n.language)}
                 </span>
-                <span className="w-14 text-right text-xs text-muted-foreground tabular-nums">
+                <span className="w-14 text-end text-xs text-muted-foreground tabular-nums">
                   {formatPercent(share, i18n.language)}
                 </span>
               </div>

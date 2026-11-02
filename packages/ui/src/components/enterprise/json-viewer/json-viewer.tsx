@@ -67,7 +67,7 @@ function JsonNode({
         type="button"
         aria-expanded={expanded}
         onClick={() => setExpanded((current) => !current)}
-        className="flex items-center gap-1 rounded-sm py-0.5 text-left outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
+        className="flex items-center gap-1 rounded-sm py-0.5 text-start outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
       >
         <ChevronRight
           aria-hidden

@@ -50,7 +50,8 @@ FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深
 - **可见的异常处理** —— `401`、`403`、`500`、`503` 与维护页各有专页，断网时显示离线横幅并在恢复后提示，路由错误由 error boundary 兜底，设置页提供直达预览入口。
 - **工作台** —— KPI 卡片、收入面积图、流量柱状图、渠道环形图、最近活动，支持 7/30 天切换；图表随路由懒加载。
 - **83 个组件，一个包** —— `@fish-admin/react` 导出 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）。83 个组件在[文档站点](https://fish-admin-docs.vercel.app)各有一页，中英双语，都带贴合业务场景的实时演示、可复制的 import 路径与自动生成的属性表。`pnpm check:package` 会在出口文件少导出任一条目时让构建失败，`pnpm docs:check` 会在页面、演示或登记项漂移时失败。ProTable 已用于用户与审计页，模板本身就是这个包的第一个使用者。
-- **明快产品风设计系统** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，首屏无闪烁。
+- **设计令牌成为契约** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，6 个动效令牌与高对比度取值。`@fish-admin/tokens` 把一份 JSON 源编译成纯 CSS、Tailwind 4 主题入口、双语 manifest 与浏览器安全的编辑器辅助函数；[令牌参考](https://fish-admin-docs.vercel.app/zh/guide/tokens)与[主题编辑器](https://fish-admin-docs.vercel.app/zh/guide/theme-editor)共用这份契约。7 个有动效的浮层尊重 `prefers-reduced-motion`；`@fish-admin/react` 内联编译后的令牌，npm 用户仍然只装一个包。
+- **诚实的 RTL 审计** —— `pnpm check:rtl` 重新生成物理方向工具类报告（当前 412 处、228 个文件），报告漂移即失败。52 处文本对齐已改成逻辑属性；其余差距写在 [RTL 就绪度](https://fish-admin-docs.vercel.app/zh/guide/rtl-readiness)，而不是宣称已经支持。
 - **中英双语** —— i18next 按 namespace 懒加载，`Intl` 处理日期/数字，校验文案随语言切换。
 - **命令面板** —— `Ctrl/⌘ K` 打开导航与快捷动作，按当前角色过滤。
 - **响应式** —— 移动端侧边栏 Sheet、表格自适应、窄屏抽屉，375 / 768 / 1440 三档可用。
@@ -268,16 +269,21 @@ pnpm scaffold
 ## 目录结构
 
 ```text
+packages/tokens/             # @fish-admin/tokens —— JSON 契约、生成的 CSS/manifest/编辑器辅助函数
+├─ src/tokens.json           # 唯一声明令牌的地方
+├─ src/editor/               # 清洗、校验、对比度与序列化辅助函数
+└─ scripts/                  # 构建与一致性检查
 packages/ui/                 # @fish-admin/react —— 组件库
 ├─ src/components/           # ui（47 个原语）、enterprise（30 个）、pro（6 个）、data-table、common
 ├─ src/locales/              # 组件自带的 en + zh-CN 文案
-├─ src/styles/               # 设计令牌、工具类、preflight 与归应用的 base 样式
+├─ src/styles/               # 令牌导入、工具类、preflight、a11y 与归应用的 base 样式
 ├─ registry.json             # 83 条登记项，gen-api 的输入
 └─ test/                     # 包级测试
 apps/docs/                   # Rspress 文档站点
 ├─ docs/{en,zh}/             # 83 个组件页、指南与版本页
 ├─ demos/<component>/        # 每个页面渲染的实时示例
-├─ generated/                # registry.json 与 API 表，由 pnpm gen-api 生成
+├─ theme/                    # 令牌参考、主题编辑器与 RTL 审计视图
+├─ generated/                # registry.json、API 表与 rtl-audit.json
 └─ docs/public/screenshots/  # README 与文档首屏截图
 src/                         # 模板
 ├─ routes/                   # 文件路由；routeTree.gen.ts 自动生成
@@ -297,37 +303,42 @@ docs/{en,zh-CN}/             # 仓库文档（上面那个站点才是产品文�
 
 ## 常用命令
 
-| 命令                                | 说明                                   |
-| ----------------------------------- | -------------------------------------- |
-| `pnpm scaffold`                     | 重写品牌信息，并删掉不需要的部分       |
-| `pnpm dev`                          | 启动开发服务器（Mock 开启）            |
-| `pnpm build`                        | 类型检查并构建生产包（默认关闭 Mock）  |
-| `pnpm build:demo`                   | 开启 Mock 构建演示包                   |
-| `pnpm preview`                      | 预览生产构建                           |
-| `pnpm build:ui` / `pnpm test:ui`    | 构建 / 测试 `@fish-admin/react`        |
-| `pnpm check:package`                | 导出必须覆盖注册表全部条目，否则失败   |
-| `pnpm gen-api` / `gen-api:check`    | 重新生成 / 校验文档 API 表与覆盖率下限 |
-| `pnpm docs:dev` / `docs:build`      | 运行 / 构建文档站点                    |
-| `pnpm docs:check`                   | 缺页面、缺示例或注册表漂移即失败       |
-| `pnpm test:docs`                    | 构建站点并运行它的 Playwright 用例     |
-| `pnpm lint` / `pnpm lint:fix`       | 运行 ESLint                            |
-| `pnpm format` / `pnpm format:check` | 运行 Prettier                          |
-| `pnpm typecheck`                    | 仅跑 TypeScript 检查                   |
-| `pnpm test` / `pnpm test:watch`     | 单元测试                               |
-| `pnpm test:coverage`                | 带覆盖率的单元测试                     |
-| `pnpm test:e2e`                     | 构建演示包并运行 E2E、axe 与性能用例   |
-| `pnpm perf`                         | 仅运行运行时性能预算                   |
-| `pnpm size`                         | 构建生产包并校验 gzip 体积预算         |
-| `pnpm test:visual:docker`           | 在 Playwright Docker 镜像中比对截图    |
+| 命令                                 | 说明                                           |
+| ------------------------------------ | ---------------------------------------------- |
+| `pnpm scaffold`                      | 重写品牌信息，并删掉不需要的部分               |
+| `pnpm dev`                           | 启动开发服务器（Mock 开启）                    |
+| `pnpm build`                         | 类型检查并构建生产包（默认关闭 Mock）          |
+| `pnpm build:demo`                    | 开启 Mock 构建演示包                           |
+| `pnpm preview`                       | 预览生产构建                                   |
+| `pnpm build:tokens` / `check:tokens` | 构建 / 校验 `@fish-admin/tokens`，拒绝包外声明 |
+| `pnpm test:tokens`                   | 单元测试清洗、对比度与序列化                   |
+| `pnpm audit:rtl` / `pnpm check:rtl`  | 重新生成 / 校验 RTL 审计报告                   |
+| `pnpm build:ui` / `pnpm test:ui`     | 构建 / 测试 `@fish-admin/react`                |
+| `pnpm check:package`                 | 导出必须覆盖注册表全部条目，否则失败           |
+| `pnpm gen-api` / `gen-api:check`     | 重新生成 / 校验文档 API 表与覆盖率下限         |
+| `pnpm docs:dev` / `docs:build`       | 运行 / 构建文档站点                            |
+| `pnpm docs:check`                    | 缺页面、缺示例或注册表漂移即失败               |
+| `pnpm test:docs`                     | 构建站点并运行它的 Playwright 用例             |
+| `pnpm lint` / `pnpm lint:fix`        | 运行 ESLint                                    |
+| `pnpm format` / `pnpm format:check`  | 运行 Prettier                                  |
+| `pnpm typecheck`                     | 仅跑 TypeScript 检查                           |
+| `pnpm test` / `pnpm test:watch`      | 单元测试                                       |
+| `pnpm test:coverage`                 | 带覆盖率的单元测试                             |
+| `pnpm test:e2e`                      | 构建演示包并运行 E2E、axe 与性能用例           |
+| `pnpm perf`                          | 仅运行运行时性能预算                           |
+| `pnpm size`                          | 构建生产包并校验 gzip 体积预算                 |
+| `pnpm test:visual:docker`            | 在 Playwright Docker 镜像中比对截图            |
 
 ## 质量门禁
 
 CI 在每次 push 和 pull request 上跑这些门禁：
 
-- **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描十二个流程（登录页的浅色、深色与中文，仪表盘浅色与深色，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，项目看板/新建弹窗/详情，文件库/上传抽屉/预览，通知中心与偏好，报表与集成表单）。出现任何违规即失败。文档站点另有 `e2e-docs/axe-full.spec.ts` 独立扫描。
+- **无障碍** —— `eslint-plugin-jsx-a11y` 随 lint 一起运行，`e2e/a11y.spec.ts` 用 axe 按 WCAG 2.1 A/AA 扫描十二个流程（登录页的浅色、深色与中文，仪表盘浅色与深色，用户列表与新建弹窗，用户详情，角色与权限矩阵，审计日志，安全与设置，项目看板/新建弹窗/详情，文件库/上传抽屉/预览，通知中心与偏好，报表与集成表单）。出现任何违规即失败。另有 forced-colors 冒烟测试检查设置页焦点环；文档站有自己的 axe 路由，以及 `e2e-docs/forced-colors.spec.ts` 覆盖焦点、禁用文本与减少动效。
+- **设计令牌契约** —— `pnpm check:tokens` 在令牌声明出现在 `packages/tokens/src/tokens.json` 之外、生成的 CSS 或 manifest 过期、缺少 Tailwind 映射时失败。`pnpm test:tokens` 覆盖清洗、对比度与序列化，包括每套强调色在高对比度下 7:1 的断言。
+- **RTL 审计** —— `pnpm check:rtl` 在内存中重新生成 `apps/docs/generated/rtl-audit.json`，与提交的报告不一致就失败。文档页渲染这份报告；它是差距清单，不是支持声明。
 - **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签，再算上首屏阻塞的 `/theme-bootstrap.js`——现在是 31 个 chunk、共 175.2 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。CSS 总量同样计入通过 `<link>` 引入的 `/boot.css`。
 - **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
-- **视觉回归** —— 模板的十八张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、项目看板、项目详情、资源库、报表浅色与深色、通知中心、集成中心、审批中心、审批详情与数据字典）与文档站的八张基线（首页、安装、一个原语页、一个 pro 页，各取浅色与深色）都和 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的图片比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。`e2e/visual/readme-shots.spec.ts` 在同一次运行里，但它只写文件，且只有设置 `README_SHOTS=1` 时才执行。
+- **视觉回归** —— 模板的十八张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、项目看板、项目详情、资源库、报表浅色与深色、通知中心、集成中心、审批中心、审批详情与数据字典）与文档站的十二张基线（首页、安装、一个原语页、一个 pro 页、主题编辑器与 RTL 就绪度，各取浅色与深色）都和 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的图片比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。`e2e/visual/readme-shots.spec.ts` 在同一次运行里，但它只写文件，且只有设置 `README_SHOTS=1` 时才执行。
 - **安全响应头** —— `e2e/security.spec.ts` 先比对 `/`、`/index.html`、一个带 hash 的资源与两个外壳文件的响应头是否完全一致，再带着 `securitypolicyviolation` 监听器走完登录、仪表盘、用户、报表、文件、项目与设置，监听器必须始终为空。详见 [docs/zh-CN/security-headers.md](docs/zh-CN/security-headers.md)。
 - **文档站** —— `pnpm gen-api:check` 在生成的 props 表与包源码不一致时失败，`pnpm docs:check` 在某个注册表条目缺少页面、缺少示例或缺少译文时失败，`pnpm test:docs` 跑文档站自己的 Playwright 用例。
 - **依赖供应链** —— `pnpm audit --audit-level=high` 有高危漏洞就让质量 job 失败，CodeQL 在每次 push、pull request 与每周定时任务中分析 JavaScript 和 TypeScript，[`.github/dependabot.yml`](.github/dependabot.yml) 为 npm 与 actions 分别开分组后的 minor/patch 和 major 升级 PR，所有 workflow 使用只读 token（`permissions: contents: read`），构建 job 还会上传被度量的产物。
@@ -353,7 +364,7 @@ CI 在每次 push 和 pull request 上跑这些门禁：
 
 ## 文档
 
-**组件文档：<https://fish-admin-docs.vercel.app>** —— 83 个组件页，中英双语，每页都有实时示例、导入路径与自动生成的 props 表，另有安装、快速开始与主题定制指南。
+**组件文档：<https://fish-admin-docs.vercel.app>** —— 83 个组件页，中英双语，每页都有实时示例、导入路径与自动生成的 props 表，另有安装、快速开始与主题定制指南、[令牌参考](https://fish-admin-docs.vercel.app/zh/guide/tokens)、[主题编辑器](https://fish-admin-docs.vercel.app/zh/guide/theme-editor)与 [RTL 审计](https://fish-admin-docs.vercel.app/zh/guide/rtl-readiness)。
 
 下面的文档讲的是模板本身：
 

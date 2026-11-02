@@ -2,11 +2,19 @@ import { expect, test, type Page } from '@playwright/test'
 
 type Appearance = 'light' | 'dark'
 
-const ROUTES: Array<{ name: string; path: string; heading: RegExp }> = [
+const ROUTES: Array<{ name: string; path: string; heading: RegExp; fullPage?: boolean }> = [
   { name: 'home', path: '/', heading: /FishAdmin UI/ },
   { name: 'installation', path: '/guide/installation', heading: /Install/ },
   { name: 'button', path: '/components/button', heading: /Button/ },
   { name: 'pro-table', path: '/components/pro-table', heading: /ProTable/ },
+  { name: 'theme-editor', path: '/guide/theme-editor', heading: /Theme editor/ },
+  // The audit table is 400+ rows; a viewport shot keeps the baseline small.
+  {
+    name: 'rtl-readiness',
+    path: '/guide/rtl-readiness',
+    heading: /RTL readiness/,
+    fullPage: false,
+  },
 ]
 
 // Rspress reads its theme from localStorage and the cookie banner hides itself
@@ -30,7 +38,9 @@ for (const route of ROUTES) {
     test(`${route.name} ${appearance}`, async ({ page }) => {
       await open(page, route.path, appearance)
       await expect(page.locator('h1').first()).toContainText(route.heading)
-      await expect(page).toHaveScreenshot(`${route.name}-${appearance}.png`, { fullPage: true })
+      await expect(page).toHaveScreenshot(`${route.name}-${appearance}.png`, {
+        fullPage: route.fullPage ?? true,
+      })
     })
   }
 }

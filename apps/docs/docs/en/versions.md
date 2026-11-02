@@ -5,14 +5,17 @@ description: Package, template and documentation versions.
 
 # Versions
 
-| Surface             | Version | Status                                            |
-| ------------------- | ------- | ------------------------------------------------- |
-| `@fish-admin/react` | 0.1.1   | Published to npm on 2026-10-30.                   |
-| Template            | 2.0.1   | Deployed at <https://fish-admin.vercel.app>.      |
-| Docs site           | 0.1.1   | Deployed at <https://fish-admin-docs.vercel.app>. |
+| Surface              | Version | Status                                          |
+| -------------------- | ------- | ----------------------------------------------- |
+| `@fish-admin/react`  | 0.2.0   | Prepared; npm still serves 0.1.1.               |
+| `@fish-admin/tokens` | 0.1.0   | Prepared; not yet published to npm.             |
+| Template             | 2.1.0   | Prepared; the demo still serves 2.0.1.          |
+| Docs site            | 0.2.0   | Prepared; the deployed site still serves 0.1.1. |
 
-The package follows semantic versioning after its first public release. Until then the minor
-version can change between repository checkpoints.
+The table lists the versions in this repository. "Prepared" means the version passes the release
+gates; npm and the deployed sites are updated separately. The package follows semantic versioning
+after its first public release. Until then the minor version can change between repository
+checkpoints.
 
 ## Release notes
 

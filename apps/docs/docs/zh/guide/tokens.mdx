@@ -1,0 +1,42 @@
+---
+title: 设计令牌
+description: FishAdmin 每个颜色、圆角与动效值背后的 JSON 契约。
+---
+
+import TokenReference from '@docs/theme/TokenReference'
+
+# 设计令牌
+
+FishAdmin 的每个组件都用语义化 CSS 自定义属性上色。从 2.1.0 开始，唯一事实来源是
+`@fish-admin/tokens` 里的 JSON 契约；React 包、模板与文档站都消费生成后的 CSS。
+
+## 如何消费契约
+
+`@fish-admin/react/styles.css` 已经内联了生成后的令牌，应用不需要额外安装。如果你需要原始 CSS，
+或者要自己搭建 Tailwind 入口：
+
+```bash
+pnpm add @fish-admin/tokens
+```
+
+```css
+/* 纯 CSS：只引入变量 */
+@import '@fish-admin/tokens/tokens.css';
+
+/* Tailwind 4：变量 + @theme 映射 */
+@import '@fish-admin/tokens/theme.css';
+```
+
+`@fish-admin/tokens/manifest.json` 是契约的机器可读版本：分组、双语说明、浅色/深色/高对比度值、
+强调色预设以及可编辑标记。主题编辑器和下面的参考表都直接读取这份 manifest。
+
+## 令牌规则
+
+- 组件引用 `bg-primary` 这类语义工具类，不写死 `oklch()` 数值。
+- `--radius` 派生 `--radius-sm` 到 `--radius-2xl` 的圆角阶梯。
+- 强调色预设只覆盖 `--primary`、品牌渐变与 `--chart-1`，其余色板保持中性。
+- 所有声明都归 tokens 包所有。仓库检查会拒绝 `packages/tokens` 之外的第二份 `--background:`。
+
+## 参考
+
+<TokenReference />

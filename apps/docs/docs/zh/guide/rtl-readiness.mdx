@@ -1,0 +1,56 @@
+---
+title: RTL 就绪度
+description: 对组件库与模板中物理方向工具类的可复现审计。
+---
+
+import RtlAudit from '@docs/theme/RtlAudit'
+
+# RTL 就绪度
+
+FishAdmin 目前是 LTR 产品。这一页如实报告差距，而不是宣称已经支持 RTL：
+`scripts/audit-rtl.mjs` 扫描组件库与模板业务页，下面渲染的就是提交到仓库的 JSON 报告。
+代码与报告不一致时 CI 会失败，所以数字不会悄悄过期。
+
+## 审计范围
+
+- `packages/ui/src/components` — 对外发布的组件面。
+- `src/features` — 模板的业务页面。
+
+统计的物理方向工具类包括：`ml-`/`mr-`、`pl-`/`pr-`、`left-`/`right-`、
+`text-left`/`text-right`、`border-l`/`border-r`、`rounded-l`/`rounded-r`、`space-x`/`space-y`
+以及 `translate-x`。测试与 stories 不计入。
+
+## 已完成的修复
+
+52 处 `text-left` / `text-right` 已改为 `text-start` / `text-end`。LTR 下渲染完全不变；
+`dir="rtl"` 时对齐会跟随书写方向。本轮没有做其他自动改写。
+
+## 需要人工评估
+
+- **间距与定位**（`ml-*`、`pl-*`、`left-*`、`border-l-*`、`rounded-l-*`）需要换成逻辑等价类：
+  `ms-*`、`me-*`、`ps-*`、`pe-*`、`start-*`、`end-*`、`border-s-*`、`border-e-*`、
+  `rounded-s-*`、`rounded-e-*`。
+- **`space-y-*`** 是垂直方向，与书写方向无关。统一改成 `gap-*` 会让普通块级容器失去间距
+  （`gap` 只在 flex/grid 父级生效），所以保留给人工评估。
+- **`space-x-*`** 才是真正的 RTL 问题，但当前审计结果为 0。
+- **Sheet 与 Drawer** 的默认方向和动画都基于物理方位。支持 RTL 需要根据文档方向映射
+  `side`，而不是只换一个类名。
+- **图表、拖拽、`translate-x` 以及文档站的 Rspress chrome** 不在本轮范围内。
+
+`e2e-docs/docs.spec.ts` 里有一条冒烟测试：把 `/components/button` 切到 `dir="rtl"`，并覆盖
+Rspress 的 `body { direction: ltr }`，确认内容可见且没有横向溢出。它是护栏，不代表所有页面
+都已 RTL 就绪。
+
+## 复现报告
+
+```bash
+pnpm audit:rtl
+pnpm check:rtl
+```
+
+`audit:rtl` 写入 `apps/docs/generated/rtl-audit.json`；`check:rtl` 在内存中重新生成报告，
+与提交的文件不一致就失败。
+
+## 审计结果
+
+<RtlAudit />

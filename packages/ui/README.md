@@ -27,8 +27,8 @@ Import the compiled stylesheet once, usually next to your app entry:
 import '@fish-admin/react/styles.css'
 ```
 
-`styles.css` contains the design tokens, the `bg-brand` / `shadow-soft` style
-utilities and a minimal base layer. It deliberately does **not** include
+`styles.css` contains the compiled design tokens, the `bg-brand` / `shadow-soft`
+style utilities and a minimal base layer. It deliberately does **not** include
 Tailwind's preflight, so it cannot reset an existing application's CSS. If your
 app has no reset of its own, opt in explicitly:
 
@@ -36,6 +36,21 @@ app has no reset of its own, opt in explicitly:
 import '@fish-admin/react/preflight.css'
 import '@fish-admin/react/styles.css'
 ```
+
+## Design tokens
+
+The colour, radius and motion values are generated from
+[`@fish-admin/tokens`](../tokens), inlined into `styles.css`; you do not need to
+install that package to use the components. `styles.css` also carries the
+`prefers-contrast: more` overrides and the forced-colors rules that keep focus,
+disabled and selected states visible.
+
+Seven overlays — Dialog, Sheet, Drawer, DropdownMenu, Popover, Tooltip and
+Accordion — animate with `--motion-duration-fast/base/slow` and
+`--motion-ease-standard/emphasized/exit`, and disable their animation under
+`prefers-reduced-motion: reduce`. Override those custom properties to retime
+them. To read the full contract, build a theme editor or export CSS, install
+`@fish-admin/tokens` separately; its `editor` entry point is browser-safe.
 
 ### Tailwind CSS v4
 

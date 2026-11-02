@@ -1,0 +1,25 @@
+/* Forced-colors mode replaces authored colors with system palettes, which can
+   flatten focus rings, disabled text and elevation. These rules restore the
+   affordances the palette swap would otherwise hide. */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px;
+  }
+
+  :disabled,
+  [aria-disabled='true'] {
+    color: GrayText !important;
+  }
+
+  .shadow-soft,
+  .shadow-glow {
+    outline: 1px solid CanvasText;
+  }
+
+  [aria-selected='true'],
+  [data-state='active'] {
+    outline: 1px solid Highlight;
+    outline-offset: -1px;
+  }
+}

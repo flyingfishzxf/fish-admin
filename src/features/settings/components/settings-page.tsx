@@ -165,7 +165,7 @@ export function SettingsPage() {
                       aria-pressed={active}
                       onClick={() => setMode(option)}
                       className={cn(
-                        'rounded-xl border p-4 text-left transition-colors',
+                        'rounded-xl border p-4 text-start transition-colors',
                         active
                           ? 'border-primary bg-primary/5 ring-1 ring-primary/30'
                           : 'hover:bg-muted/50',
@@ -285,7 +285,7 @@ export function SettingsPage() {
               </div>
               <div className="flex items-center justify-between gap-3">
                 <span className="text-muted-foreground">{t('settings:about.stack')}</span>
-                <span className="text-right text-xs">React 19 · TanStack Router · Tailwind 4</span>
+                <span className="text-end text-xs">React 19 · TanStack Router · Tailwind 4</span>
               </div>
               <div className="flex items-center justify-between gap-3">
                 <span className="text-muted-foreground">{t('settings:about.license')}</span>
@@ -367,7 +367,7 @@ export function SettingsPage() {
             <CollapsibleTrigger asChild>
               <button
                 type="button"
-                className="group w-full rounded-xl p-6 text-left transition-colors hover:bg-muted/30 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                className="group w-full rounded-xl p-6 text-start transition-colors hover:bg-muted/30 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1.5">
@@ -500,7 +500,7 @@ function ShellOptionRow<V extends string>({
               aria-pressed={active}
               onClick={() => onSelect(option.value)}
               className={cn(
-                'rounded-xl border p-4 text-left transition-colors',
+                'rounded-xl border p-4 text-start transition-colors',
                 active ? 'border-primary bg-primary/5 ring-1 ring-primary/30' : 'hover:bg-muted/50',
               )}
             >

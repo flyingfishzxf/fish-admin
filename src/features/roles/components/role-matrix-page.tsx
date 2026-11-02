@@ -172,7 +172,7 @@ export function RoleMatrixPage() {
               <tr>
                 <th
                   scope="col"
-                  className="sticky left-0 z-30 min-w-64 bg-background px-4 py-3 text-left text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+                  className="sticky left-0 z-30 min-w-64 bg-background px-4 py-3 text-start text-xs font-semibold tracking-wide text-muted-foreground uppercase"
                 >
                   {t('roles:matrix.permission')}
                 </th>
@@ -216,7 +216,7 @@ export function RoleMatrixPage() {
                   <tr className="border-t bg-muted/40">
                     <th
                       scope="row"
-                      className="sticky left-0 z-10 bg-muted/40 px-4 py-2 text-left text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+                      className="sticky left-0 z-10 bg-muted/40 px-4 py-2 text-start text-xs font-semibold tracking-wide text-muted-foreground uppercase"
                     >
                       {groupLabel}
                     </th>
@@ -254,7 +254,7 @@ export function RoleMatrixPage() {
                       >
                         <th
                           scope="row"
-                          className="sticky left-0 z-10 bg-background px-4 py-2.5 text-left font-normal"
+                          className="sticky left-0 z-10 bg-background px-4 py-2.5 text-start font-normal"
                         >
                           <span className="block text-sm">{label}</span>
                           <code className="block font-mono text-[10px] text-muted-foreground">

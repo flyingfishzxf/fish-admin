@@ -1,0 +1,52 @@
+{
+  "name": "@fish-admin/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for FishAdmin — one JSON contract compiled to CSS, a manifest and browser-safe editor helpers.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyingfishzxf/fish-admin.git",
+    "directory": "packages/tokens"
+  },
+  "homepage": "https://github.com/flyingfishzxf/fish-admin#readme",
+  "bugs": {
+    "url": "https://github.com/flyingfishzxf/fish-admin/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./tokens.css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css",
+    "./manifest.json": "./dist/manifest.json",
+    "./editor": {
+      "types": "./dist/editor/index.d.ts",
+      "import": "./dist/editor/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs && tsc -p tsconfig.build.json",
+    "check": "node scripts/check.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}

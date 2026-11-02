@@ -1,0 +1,46 @@
+---
+title: Design tokens
+description: The JSON contract behind every FishAdmin color, radius and motion value.
+---
+
+import TokenReference from '@docs/theme/TokenReference'
+
+# Design tokens
+
+Every FishAdmin component is colored by semantic CSS custom properties. Since 2.1.0 the source of
+truth is a JSON contract in `@fish-admin/tokens`; the React package, the template and this docs site
+all consume the generated CSS.
+
+## How the contract is consumed
+
+`@fish-admin/react/styles.css` already inlines the generated tokens, so an application does not need
+a second install. If you need the raw CSS, or you build your own Tailwind entry:
+
+```bash
+pnpm add @fish-admin/tokens
+```
+
+```css
+/* Plain CSS: variables only */
+@import '@fish-admin/tokens/tokens.css';
+
+/* Tailwind 4: variables plus the @theme mapping */
+@import '@fish-admin/tokens/theme.css';
+```
+
+`@fish-admin/tokens/manifest.json` is the machine-readable version of the contract: groups, bilingual
+descriptions, light/dark/high-contrast values, accent presets and editability flags. The theme editor
+and the reference table below read that manifest directly.
+
+## Token rules
+
+- Components reference semantic utilities such as `bg-primary`, never raw `oklch()` values.
+- `--radius` derives the `--radius-sm` through `--radius-2xl` scale.
+- Accent presets override `--primary`, the brand gradient and `--chart-1`; the rest of the palette
+  stays neutral.
+- The tokens package owns every declaration. The repository check rejects a second `--background:`
+  outside `packages/tokens`.
+
+## Reference
+
+<TokenReference />

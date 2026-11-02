@@ -43,6 +43,11 @@ jobs:
         # package should not hold a template release hostage.
         run: pnpm audit --audit-level=high
 
+      - name: Build design tokens
+        # The docs and the component package consume generated artifacts, and
+        # typecheck resolves the manifest through the package export.
+        run: pnpm build:tokens
+
       - name: Check formatting
         run: pnpm format:check
 
@@ -54,6 +59,21 @@ jobs:
 
       - name: Unit tests
         run: pnpm test:coverage
+
+      - name: Token tests
+        run: pnpm test:tokens
+
+      - name: Component tests
+        run: pnpm test:ui
+
+      - name: Package contract
+        run: pnpm check:package
+
+      - name: Token contract
+        run: pnpm check:tokens
+
+      - name: RTL audit is current
+        run: pnpm check:rtl
 
   build:
     name: Build

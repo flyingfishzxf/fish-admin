@@ -108,12 +108,12 @@ export function createWorkflowColumns({
       header: () => t('workflows:columns.amount'),
       meta: {
         label: t('workflows:columns.amount'),
-        className: 'text-right',
+        className: 'text-end',
         group: 'details',
         groupLabel: t('workflows:columnGroups.details'),
       },
       cell: ({ row }) => (
-        <span className="block text-right text-sm tabular-nums">
+        <span className="block text-end text-sm tabular-nums">
           {row.original.amount === undefined ? '—' : formatCurrency(row.original.amount, language)}
         </span>
       ),
@@ -144,7 +144,7 @@ export function createWorkflowColumns({
       header: () => <span className="sr-only">{t('workflows:columns.open')}</span>,
       meta: {
         label: t('workflows:columns.open'),
-        className: 'text-right',
+        className: 'text-end',
         group: 'actions',
         groupLabel: '',
       },

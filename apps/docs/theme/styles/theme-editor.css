@@ -1,0 +1,627 @@
+/* The docs site has no Tailwind build, so the editor chrome is plain CSS. */
+
+.fish-editor {
+  display: grid;
+  grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0 3rem;
+  align-items: start;
+}
+
+.fish-editor__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.75rem;
+  min-width: 0;
+}
+
+.fish-editor button:focus-visible,
+.fish-editor input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+/* ---------- controls ---------- */
+
+.fish-editor-controls {
+  position: sticky;
+  top: calc(var(--rp-nav-height, 64px) + 16px);
+  max-height: calc(100vh - var(--rp-nav-height, 64px) - 32px);
+  overflow-y: auto;
+  padding: 1rem 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--rp-radius-large);
+  background: var(--card);
+  color: var(--card-foreground);
+  scrollbar-width: thin;
+}
+
+.fish-editor-controls__section + .fish-editor-controls__section {
+  margin-top: 1.1rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+}
+
+.fish-editor-controls h3 {
+  margin: 0 0 0.6rem;
+  color: var(--muted-foreground);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fish-editor-subhead {
+  margin: 1rem 0 0.1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.fish-editor-hint {
+  margin: 0.55rem 0 0;
+  color: var(--muted-foreground);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.fish-editor-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 9px;
+  background: color-mix(in oklch, var(--muted) 80%, var(--card));
+}
+
+.fish-editor-mode {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.5rem;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fish-editor-mode:hover {
+  color: var(--foreground);
+}
+
+.fish-editor-mode[aria-pressed='true'] {
+  background: var(--card);
+  box-shadow:
+    0 1px 2px rgb(23 15 40 / 0.12),
+    0 0 0 1px color-mix(in oklch, var(--border) 70%, transparent);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.fish-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.65rem;
+}
+
+.fish-editor-accents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.fish-editor-accent {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.74rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fish-editor-accent:hover {
+  color: var(--foreground);
+}
+
+.fish-editor-accent[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: color-mix(in oklch, var(--primary) 10%, transparent);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.fish-editor-accent__dot {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border: 1px solid color-mix(in oklch, var(--foreground) 18%, transparent);
+  border-radius: 999px;
+}
+
+.fish-editor-colors {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.fish-color-field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.fish-color-field__label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--muted-foreground);
+  font-size: 0.72rem;
+}
+
+.fish-color-field__label code {
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.7rem;
+}
+
+.fish-color-field__swatch {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.fish-color-field__input {
+  width: 100%;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.72rem;
+}
+
+.fish-color-field__input[aria-invalid='true'] {
+  border-color: var(--destructive);
+}
+
+.fish-color-field__error {
+  color: var(--destructive);
+  font-size: 0.7rem;
+}
+
+.fish-range {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.fish-range + .fish-range {
+  margin-top: 0.55rem;
+}
+
+.fish-range__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fish-range__value {
+  color: var(--foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.7rem;
+}
+
+.fish-range input {
+  width: 100%;
+  accent-color: var(--primary);
+}
+
+/* ---------- contrast ---------- */
+
+.fish-contrast {
+  min-width: 0;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--rp-radius-large);
+  background: var(--card);
+  color: var(--card-foreground);
+}
+
+.fish-contrast__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.fish-contrast__head h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.fish-contrast__head p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+}
+
+.fish-contrast__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  gap: 0.6rem;
+}
+
+.fish-contrast__item {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.fish-contrast__swatches {
+  display: flex;
+}
+
+.fish-contrast__swatches span {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+.fish-contrast__swatches span + span {
+  margin-left: -5px;
+}
+
+.fish-contrast__pair {
+  color: var(--muted-foreground);
+  font-size: 0.74rem;
+}
+
+.fish-contrast__reading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fish-contrast__ratio {
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.72rem;
+}
+
+.fish-contrast__level {
+  padding: 0.12rem 0.45rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+/* Tint the badge edge, not the text: the accent may be too light for small copy. */
+.fish-contrast__level[data-level='aaa'] {
+  border-color: color-mix(in oklch, var(--primary) 55%, var(--border));
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+.fish-contrast__level[data-level='fail'] {
+  border-color: color-mix(in oklch, var(--destructive) 55%, var(--border));
+  color: var(--foreground);
+}
+
+/* ---------- export ---------- */
+
+.fish-export {
+  min-width: 0;
+  padding: 1.15rem 1.25rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--rp-radius-large);
+  background: var(--card);
+  color: var(--card-foreground);
+}
+
+.fish-export__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.9rem;
+  margin-bottom: 0.9rem;
+}
+
+.fish-export__head h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.fish-export__head p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+}
+
+.fish-export__card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+}
+
+.fish-export__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklch, var(--muted) 40%, var(--card));
+}
+
+.fish-export__tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 9px;
+  background: color-mix(in oklch, var(--muted) 80%, var(--card));
+}
+
+.fish-export__tab {
+  appearance: none;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.fish-export__tab:hover {
+  color: var(--foreground);
+}
+
+.fish-export__tab[aria-selected='true'] {
+  background: var(--card);
+  box-shadow:
+    0 1px 2px rgb(23 15 40 / 0.12),
+    0 0 0 1px color-mix(in oklch, var(--border) 70%, transparent);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.fish-export__tab:focus-visible,
+.fish-export__copy:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.fish-export__copy {
+  padding: 0.32rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--card);
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.fish-export__copy:hover {
+  color: var(--foreground);
+}
+
+.fish-export__copy[data-copied] {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.fish-export__code {
+  max-height: 360px;
+  margin: 0;
+  padding: 0.9rem 1rem;
+  overflow: auto;
+  background: var(--card);
+  color: var(--foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  white-space: pre;
+  overscroll-behavior: contain;
+}
+
+/* ---------- gallery ---------- */
+
+.fish-gallery {
+  min-width: 0;
+}
+
+.fish-gallery__head h2 {
+  margin: 0;
+  font-size: 1.35rem;
+  letter-spacing: -0.012em;
+}
+
+.fish-gallery__head p {
+  margin: 0.3rem 0 0;
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+}
+
+.fish-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.fish-gallery__card {
+  min-width: 0;
+}
+
+.fish-gallery__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--rp-radius-large);
+  background: var(--card);
+  color: var(--card-foreground);
+}
+
+.fish-gallery__panel--plain {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.fish-gallery__panel-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.fish-gallery__between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.fish-gallery__stack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.fish-gallery__tab-panel {
+  padding-top: 0.9rem;
+}
+
+.fish-gallery__field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.fish-gallery__owner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.fish-gallery__owner-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fish-gallery__name {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.fish-gallery__meta {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+
+.fish-gallery__label {
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+}
+
+.fish-gallery__metric {
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.fish-gallery__metric-block {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.fish-gallery__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.fish-motion__track {
+  position: relative;
+  width: 172px;
+  max-width: 100%;
+  height: 28px;
+  padding: 7px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--muted) 60%, transparent);
+}
+
+.fish-motion__dot {
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--primary);
+  transition: transform var(--motion-duration-slow) var(--motion-ease-standard);
+}
+
+.fish-motion__dot[data-moved] {
+  transform: translateX(142px);
+}
+
+.fish-motion__meta {
+  color: var(--muted-foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.7rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fish-motion__dot {
+    transition-duration: 1ms;
+  }
+}
+
+@media (max-width: 960px) {
+  .fish-editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fish-editor-controls {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .fish-gallery__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fish-editor {
+    margin-top: 1.5rem;
+  }
+}

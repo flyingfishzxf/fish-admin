@@ -66,7 +66,7 @@ export function List({
                 <Icon aria-hidden className="size-4" />
               </span>
             ) : null}
-            <span className="min-w-0 flex-1 text-left">
+            <span className="min-w-0 flex-1 text-start">
               <span className="block truncate text-sm font-medium">{item.title}</span>
               {item.description ? (
                 <span className="block truncate text-xs text-muted-foreground">
@@ -96,7 +96,7 @@ export function List({
                 disabled={item.disabled}
                 aria-current={selected ? 'true' : undefined}
                 onClick={() => onItemClick(item)}
-                className="flex min-w-0 flex-1 items-center gap-3 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed"
+                className="flex min-w-0 flex-1 items-center gap-3 rounded-md text-start outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:cursor-not-allowed"
               >
                 {content}
               </button>

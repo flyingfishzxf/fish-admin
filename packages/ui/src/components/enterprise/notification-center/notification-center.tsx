@@ -105,7 +105,7 @@ export function NotificationCenter({
                       type="button"
                       onClick={() => onItemClick?.(item)}
                       className={cn(
-                        'flex w-full items-start gap-3 px-4 py-3 text-left transition-colors outline-none hover:bg-accent focus-visible:bg-accent',
+                        'flex w-full items-start gap-3 px-4 py-3 text-start transition-colors outline-none hover:bg-accent focus-visible:bg-accent',
                         !item.read && 'bg-primary/5',
                       )}
                     >

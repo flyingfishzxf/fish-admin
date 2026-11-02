@@ -1,0 +1,59 @@
+---
+title: RTL readiness
+description: A reproducible audit of physical-direction utilities in the component library and template.
+---
+
+import RtlAudit from '@docs/theme/RtlAudit'
+
+# RTL readiness
+
+FishAdmin ships as an LTR product today. This page reports the gap instead of claiming support:
+`scripts/audit-rtl.mjs` scans the component library and the template features, and the committed
+JSON report is rendered below. CI fails when the code and the report drift apart, so the numbers
+stay honest.
+
+## What is audited
+
+- `packages/ui/src/components` — the published component surface.
+- `src/features` — the template's business screens.
+
+The scan counts physical-direction utilities: `ml-`/`mr-`, `pl-`/`pr-`, `left-`/`right-`,
+`text-left`/`text-right`, `border-l`/`border-r`, `rounded-l`/`rounded-r`, `space-x`/`space-y`
+and `translate-x`. Tests and stories are excluded.
+
+## What was fixed
+
+The 52 `text-left` and `text-right` classes are now `text-start` and `text-end`. LTR rendering is
+identical; under `dir="rtl"` the alignment follows the writing direction. No other automatic
+rewrites were applied in this round.
+
+## What stays manual
+
+- **Spacing and positioning** (`ml-*`, `pl-*`, `left-*`, `border-l-*`, `rounded-l-*`) need the
+  logical equivalents: `ms-*`, `me-*`, `ps-*`, `pe-*`, `start-*`, `end-*`, `border-s-*`,
+  `border-e-*`, `rounded-s-*`, `rounded-e-*`.
+- **`space-y-*`** is vertical and does not depend on writing direction. A blanket `gap-*` rewrite
+  would break plain block containers, where `gap` has no effect, so it is left for manual review.
+- **`space-x-*`** would be a genuine RTL issue, but the audit currently finds none.
+- **Sheet and Drawer** default to a side and animate with physical transforms. Supporting RTL means
+  mapping `side` from the document direction, not just swapping a class.
+- **Charts, drag-and-drop, `translate-x` and the docs site's Rspress chrome** are outside this
+  round's scope.
+
+The smoke test in `e2e-docs/docs.spec.ts` flips `/components/button` to `dir="rtl"`, overrides the
+Rspress `body { direction: ltr }` rule, and checks that the content stays visible without horizontal
+overflow. It is a guard rail, not a promise that every page is RTL-ready.
+
+## Reproduce the report
+
+```bash
+pnpm audit:rtl
+pnpm check:rtl
+```
+
+`audit:rtl` writes `apps/docs/generated/rtl-audit.json`; `check:rtl` regenerates the report in
+memory and fails if the committed file differs.
+
+## Audit
+
+<RtlAudit />

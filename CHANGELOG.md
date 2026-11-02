@@ -4,6 +4,55 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-11-02
+
+A design-system release: tokens become an independently consumable package with a generated
+contract, the docs site gains a live theme editor and a reproducible RTL audit, and the component
+library adopts motion tokens, high-contrast values and forced-colors support. The template moves to
+2.1.0, `@fish-admin/react` to 0.2.0, and `@fish-admin/tokens` ships as 0.1.0.
+
+### Added
+
+- **`@fish-admin/tokens`.** One JSON contract in `packages/tokens/src/tokens.json` compiles to
+  `tokens.css`, the Tailwind 4 `theme.css` entry, a bilingual `manifest.json`, typed artifacts and
+  browser-safe editor helpers (validation, sanitisation, contrast calculation, CSS/JSON/URL
+  serialisation). `packages/ui/src/styles/tokens.css` now imports the package instead of declaring
+  a second copy; the built `@fish-admin/react/styles.css` still inlines every token, so npm
+  consumers do not need the extra package. `@fish-admin/tokens/editor` is what the docs theme editor
+  runs on.
+- **Token reference page.** `/guide/tokens` renders every group from the manifest with light, dark
+  and high-contrast swatches, raw values and bilingual descriptions. `pnpm check:tokens` rejects
+  token declarations outside the package and a stale build.
+- **Live theme editor.** `/guide/theme-editor` edits accent presets, core colours, radius and motion
+  durations against the real component set, previews five contrast pairs with AA/AAA badges, and
+  exports `:root`/`.dark` CSS or JSON. The whole theme round-trips through a `?theme=` share URL;
+  unsanitised input falls back to the default theme instead of reaching the DOM. Tokens are written
+  to the document root so portalled dialogs and sheets follow the preview, and the originals are
+  restored when the page unmounts.
+- **Motion tokens.** `--motion-duration-fast/base/slow` and
+  `--motion-ease-standard/emphasized/exit` drive Dialog, Sheet, Drawer, DropdownMenu, Popover,
+  Tooltip and Accordion. All seven honour `prefers-reduced-motion`; Vaul's inline transitions are
+  neutralised separately.
+- **High contrast and forced colours.** The contract generates `prefers-contrast: more` overrides for
+  the seven text/surface pairs, each verified at 7:1 or better across every accent in both modes.
+  `a11y.css` restores focus rings, disabled text, elevation outlines and selected states under
+  `forced-colors: active`.
+- **RTL audit.** `scripts/audit-rtl.mjs` scans `packages/ui/src/components` and `src/features` for
+  physical-direction utilities — currently 412 occurrences across 228 files — and commits the report
+  as `apps/docs/generated/rtl-audit.json`. `/guide/rtl-readiness` renders it, `pnpm check:rtl`
+  fails on drift, and CI runs the check. 52 `text-left`/`text-right` utilities became
+  `text-start`/`text-end`; the rest is documented as manual work.
+
+### Changed
+
+- **Docs gates cover the new surfaces.** The axe sweep includes the token, theme editor and RTL
+  pages in both locales; the docs suite adds a theme-editor round-trip, a forced-colors smoke test
+  and an RTL `dir` smoke test; visual baselines include the three new guide pages.
+- **CI quality job** now builds tokens, runs `check:tokens`, `test:tokens`, `test:ui`,
+  `check:package` and `check:rtl`.
+- **Version surfaces:** template 2.1.0, `@fish-admin/react` 0.2.0, `@fish-admin/tokens` 0.1.0,
+  docs site 0.2.0.
+
 ## [2.0.1] - 2026-10-30
 
 A documentation and component-fix release: the docs site moves onto the package's own tokens and

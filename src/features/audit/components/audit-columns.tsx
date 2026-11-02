@@ -117,7 +117,7 @@ export function createAuditColumns({
       header: () => <span className="sr-only">{t('audit:columns.details')}</span>,
       meta: {
         label: t('audit:columns.details'),
-        className: 'text-right',
+        className: 'text-end',
       },
       cell: ({ row }) => (
         <Button

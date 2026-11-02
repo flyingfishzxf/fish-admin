@@ -3,6 +3,7 @@
 
 @import '../../packages/ui/src/styles/tokens.css';
 @import '../../packages/ui/src/styles/utilities.css';
+@import '../../packages/ui/src/styles/a11y.css';
 
 @source '../../packages/ui/src';
 

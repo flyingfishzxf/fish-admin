@@ -637,7 +637,7 @@ export function ProjectsPage({
                     onClick={() => handleSort('budget')}
                   />
                 </TableHead>
-                <TableHead className="text-right">{t('projects:list.actions')}</TableHead>
+                <TableHead className="text-end">{t('projects:list.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -690,7 +690,7 @@ export function ProjectsPage({
                       {formatCurrency(project.budget, i18n.language)}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-end">
                     <Button asChild variant="ghost" size="icon-sm">
                       <Link
                         to="/projects/$id"
@@ -789,7 +789,7 @@ function SortButton({
       type="button"
       onClick={onClick}
       aria-label={active ? `${label} · ${order === 'asc' ? '▲' : '▼'}` : label}
-      className="inline-flex items-center gap-1 rounded-sm text-left font-medium hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+      className="inline-flex items-center gap-1 rounded-sm text-start font-medium hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
     >
       {label}
       <span aria-hidden className="text-[10px]">

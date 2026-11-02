@@ -188,7 +188,7 @@ export function DictionariesPage() {
                         aria-pressed={active}
                         onClick={() => setSelectedId(type.id)}
                         className={cn(
-                          'flex w-full flex-col gap-1 rounded-md px-2.5 py-2 text-left transition-colors outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50',
+                          'flex w-full flex-col gap-1 rounded-md px-2.5 py-2 text-start transition-colors outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50',
                           active && 'bg-accent',
                         )}
                       >

@@ -260,7 +260,7 @@ export function NotificationsPage({
                               <button
                                 type="button"
                                 onClick={() => openDetail(notification)}
-                                className="min-w-0 flex-1 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+                                className="min-w-0 flex-1 rounded-md text-start outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                               >
                                 <span className="flex items-start justify-between gap-2">
                                   <span className="text-sm font-medium">{title}</span>

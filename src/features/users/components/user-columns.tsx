@@ -260,7 +260,7 @@ export function createUserColumns({
       header: () => <span className="sr-only">{t('users:columns.actions')}</span>,
       meta: {
         label: t('users:columns.actions'),
-        className: 'text-right',
+        className: 'text-end',
         group: 'actions',
         groupLabel: '',
       },
