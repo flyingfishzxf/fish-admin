@@ -5,17 +5,17 @@ description: Package, template and documentation versions.
 
 # Versions
 
-| Surface              | Version | Status                              |
-| -------------------- | ------- | ----------------------------------- |
-| `@fish-admin/react`  | 0.2.0   | Prepared; npm still serves 0.1.1.   |
-| `@fish-admin/tokens` | 0.1.0   | Prepared; not yet published to npm. |
-| Template             | 2.1.0   | Live; the demo serves 2.1.0.        |
-| Docs site            | 0.2.0   | Live; deployed from `main`.         |
+| Surface              | Version | Status                            |
+| -------------------- | ------- | --------------------------------- |
+| `@fish-admin/react`  | 0.2.0   | Live on npm.                      |
+| `@fish-admin/tokens` | 0.1.1   | Live on npm; 0.1.0 is superseded. |
+| Template             | 2.1.0   | Live; the demo serves 2.1.0.      |
+| Docs site            | 0.2.0   | Live; deployed from `main`.       |
 
-The table lists the versions in this repository. "Prepared" means the version passes the release
-gates but is not on npm yet. "Live" means the site is deployed from `main`; npm is updated
-separately. The package follows semantic versioning after its first public release. Until then the
-minor version can change between repository checkpoints.
+The table lists the versions in this repository. "Live" means the package is on npm or the site is
+deployed from `main`. `@fish-admin/tokens` 0.1.0 was replaced by 0.1.1 on the same day: 0.1.0
+shipped extensionless imports in its `/editor` entry, which bundlers accept but Node's ESM loader
+rejects.
 
 ## Release notes
 

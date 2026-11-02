@@ -34,6 +34,17 @@ if (stale.length) {
   fail(`generated files need a rebuild:\n  - ${stale.join('\n  - ')}`)
 }
 
+const editorDir = path.join(paths.dist, 'editor')
+for (const file of fs.readdirSync(editorDir).filter((name) => name.endsWith('.js'))) {
+  const code = fs.readFileSync(path.join(editorDir, file), 'utf8')
+  const specifiers = [...code.matchAll(/(?:from|import)\s*\(?\s*['"](\.\.?\/[^'"]+)['"]/g)]
+  for (const match of specifiers) {
+    if (!/\.(?:js|json|css)$/.test(match[1])) {
+      fail(`editor/${file} imports ${match[1]} without an extension; Node ESM cannot resolve it`)
+    }
+  }
+}
+
 const tokensCss = files.get('tokens.css')
 const themeCss = files.get('theme.css')
 if (!tokensCss.includes('@media (prefers-contrast: more)')) {

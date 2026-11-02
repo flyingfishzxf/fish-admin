@@ -9,7 +9,7 @@ All notable changes to this project are documented here. The format is based on
 A design-system release: tokens become an independently consumable package with a generated
 contract, the docs site gains a live theme editor and a reproducible RTL audit, and the component
 library adopts motion tokens, high-contrast values and forced-colors support. The template moves to
-2.1.0, `@fish-admin/react` to 0.2.0, and `@fish-admin/tokens` ships as 0.1.0.
+2.1.0, `@fish-admin/react` to 0.2.0, and `@fish-admin/tokens` ships as 0.1.1.
 
 ### Added
 
@@ -50,8 +50,15 @@ library adopts motion tokens, high-contrast values and forced-colors support. Th
   and an RTL `dir` smoke test; visual baselines include the three new guide pages.
 - **CI quality job** now builds tokens, runs `check:tokens`, `test:tokens`, `test:ui`,
   `check:package` and `check:rtl`.
-- **Version surfaces:** template 2.1.0, `@fish-admin/react` 0.2.0, `@fish-admin/tokens` 0.1.0,
+- **Version surfaces:** template 2.1.0, `@fish-admin/react` 0.2.0, `@fish-admin/tokens` 0.1.1,
   docs site 0.2.0.
+
+### Fixed
+
+- **`@fish-admin/tokens` 0.1.1.** The 0.1.0 build of `@fish-admin/tokens/editor` emitted
+  extensionless relative imports, which bundlers resolve but Node's ESM loader rejects. 0.1.1
+  emits `.js` specifiers, and `pnpm check:tokens` now fails when the compiled editor entry has an
+  extensionless import. 0.1.0 is superseded; the template remains 2.1.0.
 
 ## [2.0.1] - 2026-10-30
 

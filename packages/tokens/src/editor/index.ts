@@ -1,7 +1,7 @@
-export { contrastRatio, parseColor, relativeLuminance, wcagLevel } from './contrast'
-export type { WcagLevel } from './contrast'
-export { sanitizeTheme } from './sanitize'
-export { decodeTheme, encodeTheme, themeToCss } from './serialize'
+export { contrastRatio, parseColor, relativeLuminance, wcagLevel } from './contrast.js'
+export type { WcagLevel } from './contrast.js'
+export { sanitizeTheme } from './sanitize.js'
+export { decodeTheme, encodeTheme, themeToCss } from './serialize.js'
 export type {
   AccentDefinition,
   HighContrastValues,
@@ -11,7 +11,7 @@ export type {
   TokenDefinition,
   TokenGroup,
   TokenType,
-} from './types'
+} from './types.js'
 export {
   isSafeValue,
   isTokenName,
@@ -20,4 +20,4 @@ export {
   isValidEasingValue,
   isValidLengthValue,
   isValidValueForType,
-} from './validate'
+} from './validate.js'

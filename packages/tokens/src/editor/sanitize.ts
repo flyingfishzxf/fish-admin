@@ -1,5 +1,5 @@
-import type { ThemeManifest, ThemeSnapshot, TokenType } from './types'
-import { isValidValueForType } from './validate'
+import type { ThemeManifest, ThemeSnapshot, TokenType } from './types.js'
+import { isValidValueForType } from './validate.js'
 
 function sanitizeValues(
   input: unknown,

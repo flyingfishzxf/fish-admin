@@ -1,4 +1,4 @@
-import type { ThemeSnapshot } from './types'
+import type { ThemeSnapshot } from './types.js'
 
 const MAX_URL_LENGTH = 4096
 

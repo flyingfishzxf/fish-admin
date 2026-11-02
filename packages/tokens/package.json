@@ -1,6 +1,6 @@
 {
   "name": "@fish-admin/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Design tokens for FishAdmin — one JSON contract compiled to CSS, a manifest and browser-safe editor helpers.",
   "license": "MIT",
   "type": "module",

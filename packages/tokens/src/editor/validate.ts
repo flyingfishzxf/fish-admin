@@ -1,4 +1,4 @@
-import type { TokenType } from './types'
+import type { TokenType } from './types.js'
 
 const TOKEN_NAME = /^[a-z][a-z0-9-]*$/
 const MAX_VALUE_LENGTH = 160
