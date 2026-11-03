@@ -5,7 +5,7 @@
       "id": "accordion",
       "name": "Accordion",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects/$id",
       "isNew": false
@@ -14,7 +14,7 @@
       "id": "alert",
       "name": "Alert",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": false
@@ -23,7 +23,7 @@
       "id": "alert-dialog",
       "name": "Alert Dialog",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -32,7 +32,7 @@
       "id": "avatar",
       "name": "Avatar",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -41,7 +41,7 @@
       "id": "badge",
       "name": "Badge",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": false
@@ -50,7 +50,7 @@
       "id": "breadcrumb",
       "name": "Breadcrumb",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": false
@@ -59,7 +59,7 @@
       "id": "button",
       "name": "Button",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -68,7 +68,7 @@
       "id": "calendar",
       "name": "Calendar",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects/$id",
       "isNew": false
@@ -77,7 +77,7 @@
       "id": "card",
       "name": "Card",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -86,7 +86,7 @@
       "id": "chart",
       "name": "Chart",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -95,7 +95,7 @@
       "id": "checkbox",
       "name": "Checkbox",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": false
@@ -104,7 +104,7 @@
       "id": "collapsible",
       "name": "Collapsible",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/settings",
       "isNew": false
@@ -113,7 +113,7 @@
       "id": "color-picker",
       "name": "Color Picker",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -122,7 +122,7 @@
       "id": "command",
       "name": "Command",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -131,7 +131,7 @@
       "id": "context-menu",
       "name": "Context Menu",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": false
@@ -140,7 +140,7 @@
       "id": "dialog",
       "name": "Dialog",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -149,7 +149,7 @@
       "id": "drawer",
       "name": "Drawer",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/integrations",
       "isNew": false
@@ -158,7 +158,7 @@
       "id": "dropdown-menu",
       "name": "Dropdown Menu",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": false
@@ -167,7 +167,7 @@
       "id": "empty",
       "name": "Empty",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": true
@@ -176,7 +176,7 @@
       "id": "form",
       "name": "Form",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -185,7 +185,7 @@
       "id": "hover-card",
       "name": "Hover Card",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/notifications",
       "isNew": false
@@ -194,7 +194,7 @@
       "id": "input",
       "name": "Input",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -203,7 +203,7 @@
       "id": "input-number",
       "name": "Input Number",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -212,7 +212,7 @@
       "id": "input-otp",
       "name": "Input OTP",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/login",
       "isNew": false
@@ -221,7 +221,7 @@
       "id": "label",
       "name": "Label",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -230,7 +230,7 @@
       "id": "pagination",
       "name": "Pagination",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": false
@@ -239,7 +239,7 @@
       "id": "popover",
       "name": "Popover",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/notifications",
       "isNew": false
@@ -248,7 +248,7 @@
       "id": "progress",
       "name": "Progress",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": false
@@ -257,7 +257,7 @@
       "id": "radio-group",
       "name": "Radio Group",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": false
@@ -266,7 +266,7 @@
       "id": "resizable",
       "name": "Resizable",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": false
@@ -275,7 +275,7 @@
       "id": "scroll-area",
       "name": "Scroll Area",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/notifications",
       "isNew": false
@@ -284,7 +284,7 @@
       "id": "segmented",
       "name": "Segmented",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -293,7 +293,7 @@
       "id": "select",
       "name": "Select",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -302,7 +302,7 @@
       "id": "separator",
       "name": "Separator",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -311,7 +311,7 @@
       "id": "sheet",
       "name": "Sheet",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/audit-logs",
       "isNew": false
@@ -320,7 +320,7 @@
       "id": "sidebar",
       "name": "Sidebar",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -329,7 +329,7 @@
       "id": "skeleton",
       "name": "Skeleton",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -338,7 +338,7 @@
       "id": "slider",
       "name": "Slider",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -347,7 +347,7 @@
       "id": "sonner",
       "name": "Sonner",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -356,7 +356,7 @@
       "id": "spinner",
       "name": "Spinner",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": true
@@ -365,7 +365,7 @@
       "id": "switch",
       "name": "Switch",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/dictionaries",
       "isNew": false
@@ -374,7 +374,7 @@
       "id": "table",
       "name": "Table",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -383,7 +383,7 @@
       "id": "tabs",
       "name": "Tabs",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/workflows",
       "isNew": false
@@ -392,7 +392,7 @@
       "id": "textarea",
       "name": "Textarea",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": false
@@ -401,7 +401,7 @@
       "id": "toggle",
       "name": "Toggle",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": false
@@ -410,7 +410,7 @@
       "id": "toggle-group",
       "name": "Toggle Group",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": false
@@ -419,7 +419,7 @@
       "id": "tooltip",
       "name": "Tooltip",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": false
@@ -428,7 +428,7 @@
       "id": "anchor-nav",
       "name": "Anchor Nav",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -437,7 +437,7 @@
       "id": "auto-complete",
       "name": "Auto Complete",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": true
@@ -446,7 +446,7 @@
       "id": "back-top",
       "name": "Back Top",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -455,7 +455,7 @@
       "id": "carousel",
       "name": "Carousel",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": true
@@ -464,7 +464,7 @@
       "id": "cascader",
       "name": "Cascader",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": true
@@ -473,7 +473,7 @@
       "id": "combobox",
       "name": "Combobox",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/integrations",
       "isNew": true
@@ -482,7 +482,7 @@
       "id": "date-picker",
       "name": "Date Picker",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": true
@@ -491,7 +491,7 @@
       "id": "date-range-picker",
       "name": "Date Range Picker",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/workflows",
       "isNew": false
@@ -500,7 +500,7 @@
       "id": "descriptions",
       "name": "Descriptions",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users/$id",
       "isNew": false
@@ -509,7 +509,7 @@
       "id": "dropzone",
       "name": "Dropzone",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/profile",
       "isNew": false
@@ -518,7 +518,7 @@
       "id": "image-preview",
       "name": "Image Preview",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": true
@@ -527,7 +527,7 @@
       "id": "json-viewer",
       "name": "JSON Viewer",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/audit-logs",
       "isNew": true
@@ -536,7 +536,7 @@
       "id": "list",
       "name": "List",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/integrations",
       "isNew": true
@@ -545,7 +545,7 @@
       "id": "notification-center",
       "name": "Notification Center",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/notifications",
       "isNew": true
@@ -554,7 +554,7 @@
       "id": "page-container",
       "name": "Page Container",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -563,7 +563,7 @@
       "id": "popconfirm",
       "name": "Popconfirm",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/workflows/$id",
       "isNew": true
@@ -572,7 +572,7 @@
       "id": "rate",
       "name": "Rate",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects/$id",
       "isNew": true
@@ -581,7 +581,7 @@
       "id": "result",
       "name": "Result",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users/$id",
       "isNew": false
@@ -590,7 +590,7 @@
       "id": "statistic",
       "name": "Statistic",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -599,7 +599,7 @@
       "id": "stepper",
       "name": "Stepper",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/roles",
       "isNew": false
@@ -608,7 +608,7 @@
       "id": "tags-input",
       "name": "Tags Input",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users/$id",
       "isNew": false
@@ -617,7 +617,7 @@
       "id": "time-picker",
       "name": "Time Picker",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/integrations",
       "isNew": true
@@ -626,7 +626,7 @@
       "id": "timeline",
       "name": "Timeline",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/workflows/$id",
       "isNew": false
@@ -635,7 +635,7 @@
       "id": "tour",
       "name": "Tour",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/",
       "isNew": true
@@ -644,7 +644,7 @@
       "id": "transfer",
       "name": "Transfer",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/roles",
       "isNew": false
@@ -653,7 +653,7 @@
       "id": "tree",
       "name": "Tree",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/departments",
       "isNew": false
@@ -662,7 +662,7 @@
       "id": "tree-select",
       "name": "Tree Select",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": true
@@ -671,7 +671,7 @@
       "id": "trend",
       "name": "Trend",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/reports",
       "isNew": true
@@ -680,7 +680,7 @@
       "id": "upload",
       "name": "Upload",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": true
@@ -689,7 +689,7 @@
       "id": "watermark",
       "name": "Watermark",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/files",
       "isNew": true
@@ -698,7 +698,7 @@
       "id": "detail-page",
       "name": "Detail Page",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects/$id",
       "isNew": true
@@ -707,7 +707,7 @@
       "id": "editable-table",
       "name": "Editable Table",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/integrations",
       "isNew": true
@@ -716,7 +716,7 @@
       "id": "import-wizard",
       "name": "Import Wizard",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": true
@@ -725,7 +725,7 @@
       "id": "pro-form",
       "name": "ProForm",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/integrations",
       "isNew": true
@@ -734,7 +734,7 @@
       "id": "pro-table",
       "name": "ProTable",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/users",
       "isNew": true
@@ -743,7 +743,7 @@
       "id": "query-filter",
       "name": "Query Filter",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "usedIn": "/projects",
       "isNew": true

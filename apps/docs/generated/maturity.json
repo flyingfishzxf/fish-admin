@@ -2,27 +2,27 @@
   "version": 1,
   "summary": {
     "total": 83,
-    "stable": 0,
-    "beta": 83,
+    "stable": 83,
+    "beta": 0,
     "missingTest": 0,
-    "missingVisual": 83,
+    "missingVisual": 0,
     "missingDemo": 0,
-    "betaWithoutReason": 83
+    "betaWithoutReason": 0
   },
   "components": [
     {
       "id": "accordion",
       "name": "Accordion",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -33,15 +33,15 @@
       "id": "alert",
       "name": "Alert",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -52,15 +52,15 @@
       "id": "alert-dialog",
       "name": "Alert Dialog",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -71,15 +71,15 @@
       "id": "avatar",
       "name": "Avatar",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -90,15 +90,15 @@
       "id": "badge",
       "name": "Badge",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -109,15 +109,15 @@
       "id": "breadcrumb",
       "name": "Breadcrumb",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -128,15 +128,15 @@
       "id": "button",
       "name": "Button",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -147,15 +147,15 @@
       "id": "calendar",
       "name": "Calendar",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -166,15 +166,15 @@
       "id": "card",
       "name": "Card",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -185,15 +185,15 @@
       "id": "chart",
       "name": "Chart",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -204,15 +204,15 @@
       "id": "checkbox",
       "name": "Checkbox",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -223,15 +223,15 @@
       "id": "collapsible",
       "name": "Collapsible",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -242,15 +242,15 @@
       "id": "color-picker",
       "name": "Color Picker",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -261,15 +261,15 @@
       "id": "command",
       "name": "Command",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -280,15 +280,15 @@
       "id": "context-menu",
       "name": "Context Menu",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -299,15 +299,15 @@
       "id": "dialog",
       "name": "Dialog",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -318,15 +318,15 @@
       "id": "drawer",
       "name": "Drawer",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -337,15 +337,15 @@
       "id": "dropdown-menu",
       "name": "Dropdown Menu",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -356,15 +356,15 @@
       "id": "empty",
       "name": "Empty",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -375,15 +375,15 @@
       "id": "form",
       "name": "Form",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -394,15 +394,15 @@
       "id": "hover-card",
       "name": "Hover Card",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -413,15 +413,15 @@
       "id": "input",
       "name": "Input",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -432,15 +432,15 @@
       "id": "input-number",
       "name": "Input Number",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -451,15 +451,15 @@
       "id": "input-otp",
       "name": "Input OTP",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -470,15 +470,15 @@
       "id": "label",
       "name": "Label",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -489,15 +489,15 @@
       "id": "pagination",
       "name": "Pagination",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -508,15 +508,15 @@
       "id": "popover",
       "name": "Popover",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -527,15 +527,15 @@
       "id": "progress",
       "name": "Progress",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -546,15 +546,15 @@
       "id": "radio-group",
       "name": "Radio Group",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -565,15 +565,15 @@
       "id": "resizable",
       "name": "Resizable",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -584,15 +584,15 @@
       "id": "scroll-area",
       "name": "Scroll Area",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -603,15 +603,15 @@
       "id": "segmented",
       "name": "Segmented",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -622,15 +622,15 @@
       "id": "select",
       "name": "Select",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -641,15 +641,15 @@
       "id": "separator",
       "name": "Separator",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -660,15 +660,15 @@
       "id": "sheet",
       "name": "Sheet",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -679,15 +679,15 @@
       "id": "sidebar",
       "name": "Sidebar",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -698,15 +698,15 @@
       "id": "skeleton",
       "name": "Skeleton",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -717,15 +717,15 @@
       "id": "slider",
       "name": "Slider",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -736,15 +736,15 @@
       "id": "sonner",
       "name": "Sonner",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -755,15 +755,15 @@
       "id": "spinner",
       "name": "Spinner",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -774,15 +774,15 @@
       "id": "switch",
       "name": "Switch",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -793,15 +793,15 @@
       "id": "table",
       "name": "Table",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -812,15 +812,15 @@
       "id": "tabs",
       "name": "Tabs",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -831,15 +831,15 @@
       "id": "textarea",
       "name": "Textarea",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -850,15 +850,15 @@
       "id": "toggle",
       "name": "Toggle",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -869,15 +869,15 @@
       "id": "toggle-group",
       "name": "Toggle Group",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -888,15 +888,15 @@
       "id": "tooltip",
       "name": "Tooltip",
       "category": "primitive",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -907,15 +907,15 @@
       "id": "anchor-nav",
       "name": "Anchor Nav",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -926,15 +926,15 @@
       "id": "auto-complete",
       "name": "Auto Complete",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -945,15 +945,15 @@
       "id": "back-top",
       "name": "Back Top",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -964,15 +964,15 @@
       "id": "carousel",
       "name": "Carousel",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -983,15 +983,15 @@
       "id": "cascader",
       "name": "Cascader",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1002,15 +1002,15 @@
       "id": "combobox",
       "name": "Combobox",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1021,15 +1021,15 @@
       "id": "date-picker",
       "name": "Date Picker",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1040,15 +1040,15 @@
       "id": "date-range-picker",
       "name": "Date Range Picker",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1059,15 +1059,15 @@
       "id": "descriptions",
       "name": "Descriptions",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1078,15 +1078,15 @@
       "id": "dropzone",
       "name": "Dropzone",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1097,15 +1097,15 @@
       "id": "image-preview",
       "name": "Image Preview",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1116,15 +1116,15 @@
       "id": "json-viewer",
       "name": "JSON Viewer",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1135,15 +1135,15 @@
       "id": "list",
       "name": "List",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1154,15 +1154,15 @@
       "id": "notification-center",
       "name": "Notification Center",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1173,15 +1173,15 @@
       "id": "page-container",
       "name": "Page Container",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1192,15 +1192,15 @@
       "id": "popconfirm",
       "name": "Popconfirm",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1211,15 +1211,15 @@
       "id": "rate",
       "name": "Rate",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1230,15 +1230,15 @@
       "id": "result",
       "name": "Result",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1249,15 +1249,15 @@
       "id": "statistic",
       "name": "Statistic",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1268,15 +1268,15 @@
       "id": "stepper",
       "name": "Stepper",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1287,15 +1287,15 @@
       "id": "tags-input",
       "name": "Tags Input",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1306,15 +1306,15 @@
       "id": "time-picker",
       "name": "Time Picker",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1325,15 +1325,15 @@
       "id": "timeline",
       "name": "Timeline",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1344,15 +1344,15 @@
       "id": "tour",
       "name": "Tour",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1363,15 +1363,15 @@
       "id": "transfer",
       "name": "Transfer",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1382,15 +1382,15 @@
       "id": "tree",
       "name": "Tree",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1401,15 +1401,15 @@
       "id": "tree-select",
       "name": "Tree Select",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1420,15 +1420,15 @@
       "id": "trend",
       "name": "Trend",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1439,15 +1439,15 @@
       "id": "upload",
       "name": "Upload",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1458,15 +1458,15 @@
       "id": "watermark",
       "name": "Watermark",
       "category": "enterprise",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1477,15 +1477,15 @@
       "id": "detail-page",
       "name": "Detail Page",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1496,15 +1496,15 @@
       "id": "editable-table",
       "name": "Editable Table",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1515,15 +1515,15 @@
       "id": "import-wizard",
       "name": "Import Wizard",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1534,15 +1534,15 @@
       "id": "pro-form",
       "name": "ProForm",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1553,15 +1553,15 @@
       "id": "pro-table",
       "name": "ProTable",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
@@ -1572,15 +1572,15 @@
       "id": "query-filter",
       "name": "Query Filter",
       "category": "pro",
-      "status": "beta",
+      "status": "stable",
       "since": "0.1.0",
       "statusReason": null,
       "evidence": {
         "test": true,
         "axe": true,
         "visual": {
-          "light": false,
-          "dark": false
+          "light": true,
+          "dark": true
         },
         "demo": true,
         "docs": true
