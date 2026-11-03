@@ -28,6 +28,7 @@ function Spinner({ size = 'default', label, className }: SpinnerProps) {
       data-slot="spinner"
       data-size={size}
       role={label ? 'status' : undefined}
+      aria-label={label}
       aria-hidden={label ? undefined : true}
       className={cn('inline-flex shrink-0 items-center justify-center', className)}
     >

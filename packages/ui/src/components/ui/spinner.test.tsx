@@ -7,7 +7,10 @@ describe('Spinner', () => {
   it('exposes a status role with its label', () => {
     render(<Spinner label="Loading data" />)
 
-    expect(screen.getByRole('status')).toHaveTextContent('Loading data')
+    const status = screen.getByRole('status')
+
+    expect(status).toHaveTextContent('Loading data')
+    expect(status).toHaveAccessibleName('Loading data')
   })
 
   it('is hidden from assistive technology without a label', () => {
