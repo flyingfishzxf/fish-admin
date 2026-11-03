@@ -70,4 +70,39 @@ describe('ColorPicker', () => {
     await user.click(trigger)
     expect(screen.queryByRole('group')).not.toBeInTheDocument()
   })
+
+  it('opens the panel and restores the committed colour when the draft is cleared', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(
+      <ColorPicker
+        value="#6366f1"
+        onValueChange={onValueChange}
+        ariaLabel="Brand color"
+        hexLabel="Brand color hex"
+        pickerLabel="Brand color swatch"
+        presetsLabel="Brand color presets"
+      />,
+    )
+
+    expect(screen.queryByRole('group', { name: 'Brand color presets' })).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Brand color: #6366f1' }))
+
+    const presets = screen.getByRole('group', { name: 'Brand color presets' })
+    const hexInput = screen.getByRole('textbox', { name: 'Brand color hex' })
+
+    expect(presets).toBeVisible()
+    expect(screen.getByLabelText('Brand color swatch')).toHaveAttribute('type', 'color')
+    expect(hexInput).toHaveValue('#6366f1')
+    expect(screen.getByRole('button', { name: '#6366f1' })).toHaveAttribute('aria-pressed', 'true')
+
+    await user.clear(hexInput)
+    expect(hexInput).toHaveValue('')
+
+    await user.tab()
+
+    expect(onValueChange).not.toHaveBeenCalled()
+    expect(hexInput).toHaveValue('#6366f1')
+  })
 })
