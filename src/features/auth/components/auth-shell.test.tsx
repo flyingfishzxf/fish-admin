@@ -35,11 +35,13 @@ function renderShell(Shell: Awaited<ReturnType<typeof loadAuthShell>>) {
 }
 
 beforeAll(async () => {
-  // The first dynamic import of the shell graph costs seconds of transform on a
-  // cold cache, which is enough to blow the 5 s per-test budget when the whole
-  // suite runs in parallel. Pay it once here instead.
+  // The first dynamic import of the shell graph (lucide icons included) costs
+  // seconds of transform on a cold cache, which is enough to blow the 5 s
+  // per-test budget when the whole suite runs in parallel. Pay it once here
+  // instead, with enough headroom for the 10 s default hook budget to hold on
+  // a loaded machine.
   await loadAuthShell('')
-})
+}, 30_000)
 
 describe('AuthShell docs link', () => {
   it('renders nothing docs-related without a configured site', async () => {
