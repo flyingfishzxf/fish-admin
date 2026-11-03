@@ -63,8 +63,8 @@ jobs:
       - name: Token tests
         run: pnpm test:tokens
 
-      - name: Component tests
-        run: pnpm test:ui
+      - name: Component tests with coverage floor
+        run: pnpm --filter @fish-admin/react test:coverage
 
       - name: Package contract
         run: pnpm check:package
