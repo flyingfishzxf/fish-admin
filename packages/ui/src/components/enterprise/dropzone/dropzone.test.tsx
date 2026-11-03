@@ -66,7 +66,7 @@ describe('Dropzone', () => {
     expect(onFiles).not.toHaveBeenCalled()
   })
 
-  it('only forwards accept to the native picker, so drops are not filtered by it', () => {
+  it('forwards accept to the native picker while drops bypass it (documented contract)', () => {
     const onFiles = vi.fn()
     const { container } = render(
       <Dropzone onFiles={onFiles} accept=".csv" label="Import members" />,
