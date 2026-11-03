@@ -664,6 +664,16 @@ body .rp-doc .fish-index .fish-index__item {
   background: var(--muted);
 }
 
+.fish-component-meta__badge.is-stable {
+  border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
+  color: var(--primary);
+}
+
+.fish-component-meta__badge.is-beta {
+  border-color: var(--border);
+  color: var(--muted-foreground);
+}
+
 .fish-api {
   width: 100%;
   border-collapse: collapse;

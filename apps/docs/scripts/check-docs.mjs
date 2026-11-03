@@ -52,9 +52,19 @@ function rel(file) {
 function extractRegistry() {
   const { components } = readJson(path.join(repoRoot, 'packages/ui/registry.json'))
   return components.map((entry) => {
-    const { id, name, category, usedIn } = entry
-    if (!id || !name || !category || !usedIn) throw new Error(`Bad registry entry: ${id}`)
-    return { id, name, category, usedIn, isNew: entry.isNew === true }
+    const { id, name, category, status, since, statusReason, usedIn } = entry
+    if (!id || !name || !category || !status || !since || !usedIn)
+      throw new Error(`Bad registry entry: ${id}`)
+    return {
+      id,
+      name,
+      category,
+      status,
+      since,
+      ...(statusReason ? { statusReason } : {}),
+      usedIn,
+      isNew: entry.isNew === true,
+    }
   })
 }
 
