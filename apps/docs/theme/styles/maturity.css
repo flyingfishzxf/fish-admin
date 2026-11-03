@@ -1,0 +1,208 @@
+.fish-maturity {
+  display: grid;
+  gap: 1.25rem;
+  margin-block: 1.5rem;
+  min-width: 0;
+}
+
+/* Rspress owns `.rp-doc h2`; the matrix title is a section label, not a prose divider. */
+body .rp-doc .fish-maturity__title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+}
+
+.fish-maturity__intro {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted-foreground);
+}
+
+.fish-maturity__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+}
+
+.fish-maturity__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.fish-maturity__stat-value {
+  font-size: 1.65rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.fish-maturity__stat-label {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.fish-maturity__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.fish-maturity__filters {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 9px;
+  background: color-mix(in oklch, var(--muted) 80%, var(--card));
+}
+
+.fish-maturity__filter {
+  appearance: none;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+}
+
+.fish-maturity__filter:hover {
+  color: var(--foreground);
+}
+
+.fish-maturity__filter[aria-pressed='true'] {
+  background: var(--card);
+  box-shadow:
+    0 1px 2px rgb(23 15 40 / 0.12),
+    0 0 0 1px color-mix(in oklch, var(--border) 70%, transparent);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.fish-maturity__filter:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.fish-maturity__count {
+  font-size: 0.78rem;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.fish-maturity__table-wrap {
+  min-width: 0;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+/* Rspress sets `min-width: 100%` on prose tables; keep the audit table wide enough to stay readable. */
+body .rp-doc .fish-maturity__table {
+  min-width: 720px;
+}
+
+.fish-maturity__table th {
+  background: color-mix(in oklch, var(--muted) 45%, var(--card));
+}
+
+.fish-maturity__table th,
+.fish-maturity__table td {
+  /* Rspress gives every table cell min-width: 8rem; the evidence columns do not need it. */
+  min-width: 0;
+  text-align: start;
+}
+
+.fish-maturity__table td {
+  vertical-align: middle;
+}
+
+.fish-maturity__name {
+  font-weight: 500;
+}
+
+.fish-maturity__since {
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.fish-maturity__status {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--muted);
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.fish-maturity__status.is-stable {
+  border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
+  background: color-mix(in oklch, var(--primary) 8%, var(--card));
+  color: var(--primary);
+}
+
+.fish-maturity__evidence-cell {
+  white-space: nowrap;
+}
+
+.fish-maturity__evidence {
+  display: inline-block;
+  min-width: 2.4rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--muted);
+  font-size: 0.72rem;
+  text-align: center;
+  color: var(--muted-foreground);
+}
+
+.fish-maturity__evidence.is-yes {
+  border-color: color-mix(in oklch, var(--primary) 35%, var(--border));
+  background: color-mix(in oklch, var(--primary) 8%, var(--card));
+  color: var(--foreground);
+}
+
+.fish-maturity__evidence.is-no {
+  border-color: color-mix(in oklch, var(--destructive) 30%, var(--border));
+  background: color-mix(in oklch, var(--destructive) 8%, var(--card));
+  color: var(--foreground);
+}
+
+.fish-maturity__empty {
+  margin: 0;
+  padding: 1rem 1.15rem;
+  font-size: 0.82rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 640px) {
+  .fish-maturity__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body .rp-doc .fish-maturity__table {
+    min-width: 640px;
+  }
+}

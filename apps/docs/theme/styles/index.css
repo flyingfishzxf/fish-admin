@@ -2,6 +2,7 @@
 @import '@fish-admin/react/styles.css';
 @import './theme-editor.css';
 @import './rtl-audit.css';
+@import './maturity.css';
 
 .fish-visually-hidden {
   position: absolute;

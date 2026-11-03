@@ -1,0 +1,18 @@
+---
+title: 组件成熟度
+description: 哪些组件已经稳定，以及支撑这个状态的证据。
+---
+
+import MaturityMatrix from '@docs/theme/MaturityMatrix'
+
+# 组件成熟度
+
+`stable` 表示组件有文档页面、可运行的示例、至少一个行为测试、完整的 axe 覆盖，以及亮色/暗色
+视觉基线。缺少其中任意一项就是 `beta`；这个状态衡量的是证据，而不是 API 质量。
+
+## 晋升规则
+
+只有当 `pnpm check:maturity` 看到所有证据项都已补齐时，组件才会被晋升。删除一个测试、一份
+基线或文档页面，都会在同一个 pull request 中把它降回 `beta`。
+
+<MaturityMatrix />
