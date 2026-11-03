@@ -52,6 +52,19 @@ describe('maturity', () => {
     expect(result.evidence.visual).toEqual({ light: false, dark: false })
   })
 
+  it('fails a beta component without a written reason', () => {
+    const result = evaluateComponent({
+      entry: { ...base, status: 'beta' },
+      hasTest: true,
+      hasAxe: true,
+      hasVisualLight: true,
+      hasVisualDark: true,
+      hasDemo: true,
+      hasDocs: true,
+    })
+    expect(result.problems).toContain('missing status reason')
+  })
+
   it('summarizes stable and beta counts', () => {
     const components = [
       {

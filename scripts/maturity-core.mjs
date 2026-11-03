@@ -25,6 +25,7 @@ export function evaluateComponent({
     if (!hasVisualLight || !hasVisualDark) problems.push('missing visual baseline')
     if (!entry.since) problems.push('missing since')
   }
+  if (entry.status === 'beta' && !entry.statusReason) problems.push('missing status reason')
   if (!['stable', 'beta'].includes(entry.status)) problems.push('invalid status')
   return {
     id: entry.id,
