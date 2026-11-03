@@ -23,9 +23,11 @@ const AXE_ROUTES = [
   '/components/date-range-picker',
   '/guide/theme-editor',
   '/guide/rtl-readiness',
+  '/guide/maturity',
   '/zh/components/button',
   '/zh/guide/theme-editor',
   '/zh/guide/rtl-readiness',
+  '/zh/guide/maturity',
 ]
 
 function watchConsole(page: Page): string[] {

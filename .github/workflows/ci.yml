@@ -189,6 +189,8 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
 
       - name: Build the docs site and run the docs tests
+        env:
+          DOCS_FULL_AXE: '1'
         run: pnpm test:docs
 
       - name: Upload Playwright report
