@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './e2e-docs',
   // Linux-rendered screenshot baselines have their own runner; see
   // playwright.docs-visual.config.ts.
-  testIgnore: '**/visual.spec.ts',
+  testIgnore: ['**/visual.spec.ts', '**/component-visual.spec.ts'],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
