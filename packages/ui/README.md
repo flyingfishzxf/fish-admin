@@ -93,8 +93,8 @@ fall back to English and the light theme, so a provider is optional.
 
 All 83 components are `stable`. A component counts as stable only while it holds
 this evidence: a documentation page in both locales, a live demo, a behavioural
-test, full axe coverage and light and dark visual baselines. The docs site
-renders the matrix at `/guide/maturity`.
+test, axe coverage of its documented route and light and dark visual baselines.
+The docs site renders the matrix at `/guide/maturity`.
 
 ```bash
 pnpm --filter @fish-admin/react test

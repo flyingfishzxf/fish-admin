@@ -26,8 +26,8 @@ The template moves to 2.2.0 and the docs site to 0.3.0; `@fish-admin/react` move
 ### Fixed
 
 - **Stable badge contrast.** The component meta badge and the maturity table's status badge now
-  use `--accent-foreground`, restoring WCAG AA contrast (7.4:1 light, 13.4:1 dark) once every
-  component page rendered a stable badge.
+  use `--accent-foreground`, bringing both to 7.4–7.5:1 in light and 13.3–13.7:1 in dark once
+  every component page rendered a stable badge.
 
 ## [2.1.1] - 2026-11-03
 
