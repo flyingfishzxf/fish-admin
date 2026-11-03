@@ -167,7 +167,7 @@ function TransferPanel({
         role="listbox"
         aria-label={title}
         aria-multiselectable="true"
-        className="max-h-64 space-y-1 overflow-y-auto pr-1"
+        className="max-h-64 space-y-1 overflow-y-auto pe-1"
       >
         {groups.map((group) => (
           <li key={group.key || '__ungrouped'} role="presentation">

@@ -14,7 +14,7 @@ export function HeaderActions() {
   const setCommandOpen = useUiStore((state) => state.setCommandOpen)
 
   return (
-    <div className="ml-auto flex items-center gap-0.5 sm:gap-1">
+    <div className="ms-auto flex items-center gap-0.5 sm:gap-1">
       <Button
         variant="outline"
         size="sm"
@@ -24,7 +24,7 @@ export function HeaderActions() {
       >
         <Search className="size-3.5" />
         <span>{t('header.search')}</span>
-        <kbd className="pointer-events-none ml-5 rounded border bg-muted px-1.5 font-mono text-[10px] text-muted-foreground">
+        <kbd className="pointer-events-none ms-5 rounded border bg-muted px-1.5 font-mono text-[10px] text-muted-foreground">
           {t('command.shortcut')}
         </kbd>
       </Button>

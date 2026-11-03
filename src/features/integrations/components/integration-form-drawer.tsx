@@ -144,7 +144,7 @@ export function IntegrationFormDrawer({
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
       <DrawerContent className="w-full sm:max-w-lg">
-        <DrawerHeader className="border-b pr-12">
+        <DrawerHeader className="border-b pe-12">
           <DrawerTitle>{t(isEdit ? 'form.editTitle' : 'form.createTitle')}</DrawerTitle>
           <DrawerDescription>
             {t(isEdit ? 'form.editDescription' : 'form.createDescription')}

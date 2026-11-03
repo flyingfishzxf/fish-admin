@@ -137,7 +137,7 @@ export function SavedViewsMenu({
             views.map((view) => (
               <div
                 key={view.id}
-                className="flex items-center gap-1 rounded-md pr-1 hover:bg-muted/60"
+                className="flex items-center gap-1 rounded-md pe-1 hover:bg-muted/60"
               >
                 <button
                   type="button"

@@ -34,7 +34,7 @@ export function OfflineBanner() {
       <Button
         variant="outline"
         size="sm"
-        className="ml-auto h-7 border-amber-500/30 bg-transparent text-amber-800 hover:bg-amber-500/10 dark:text-amber-300"
+        className="ms-auto h-7 border-amber-500/30 bg-transparent text-amber-800 hover:bg-amber-500/10 dark:text-amber-300"
         onClick={() => window.location.reload()}
       >
         <RefreshCw className="size-3.5" />

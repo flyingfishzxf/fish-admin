@@ -205,7 +205,7 @@ export function ReportChannelsChart({ data }: { data: ReportChannel[] }) {
                   {formatPercent(share, i18n.language)}
                 </span>
               </div>
-              <div className="ml-4.5 h-1.5 overflow-hidden rounded-full bg-muted">
+              <div className="ms-4.5 h-1.5 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full rounded-full"
                   style={{ width: `${share}%`, backgroundColor: item?.color }}

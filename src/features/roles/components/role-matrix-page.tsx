@@ -172,7 +172,7 @@ export function RoleMatrixPage() {
               <tr>
                 <th
                   scope="col"
-                  className="sticky left-0 z-30 min-w-64 bg-background px-4 py-3 text-start text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+                  className="sticky start-0 z-30 min-w-64 bg-background px-4 py-3 text-start text-xs font-semibold tracking-wide text-muted-foreground uppercase"
                 >
                   {t('roles:matrix.permission')}
                 </th>
@@ -180,7 +180,7 @@ export function RoleMatrixPage() {
                   <th
                     key={role.id}
                     scope="col"
-                    className="min-w-40 border-l px-3 py-2 text-center align-middle"
+                    className="min-w-40 border-s px-3 py-2 text-center align-middle"
                   >
                     <div className="flex items-center justify-center gap-1.5">
                       <span className="truncate text-sm font-semibold">{role.name}</span>
@@ -216,14 +216,14 @@ export function RoleMatrixPage() {
                   <tr className="border-t bg-muted/40">
                     <th
                       scope="row"
-                      className="sticky left-0 z-10 bg-muted/40 px-4 py-2 text-start text-xs font-semibold tracking-wide text-muted-foreground uppercase"
+                      className="sticky start-0 z-10 bg-muted/40 px-4 py-2 text-start text-xs font-semibold tracking-wide text-muted-foreground uppercase"
                     >
                       {groupLabel}
                     </th>
                     {roles.map((role) => {
                       const state = groupState(effective[role.id] ?? [], codes)
                       return (
-                        <td key={role.id} className="border-l px-3 py-2 text-center">
+                        <td key={role.id} className="border-s px-3 py-2 text-center">
                           <Checkbox
                             checked={
                               state === 'all' ? true : state === 'some' ? 'indeterminate' : false
@@ -254,7 +254,7 @@ export function RoleMatrixPage() {
                       >
                         <th
                           scope="row"
-                          className="sticky left-0 z-10 bg-background px-4 py-2.5 text-start font-normal"
+                          className="sticky start-0 z-10 bg-background px-4 py-2.5 text-start font-normal"
                         >
                           <span className="block text-sm">{label}</span>
                           <code className="block font-mono text-[10px] text-muted-foreground">
@@ -264,7 +264,7 @@ export function RoleMatrixPage() {
                         {roles.map((role) => {
                           const selected = (effective[role.id] ?? []).includes(permission.code)
                           return (
-                            <td key={role.id} className="border-l px-3 py-2.5 text-center">
+                            <td key={role.id} className="border-s px-3 py-2.5 text-center">
                               <Checkbox
                                 checked={selected}
                                 disabled={!canUpdate || isImmutableRole(role) || saving}

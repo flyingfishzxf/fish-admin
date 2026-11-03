@@ -7,39 +7,70 @@ import RtlAudit from '@docs/theme/RtlAudit'
 
 # RTL 就绪度
 
-FishAdmin 目前是 LTR 产品。这一页如实报告差距，而不是宣称已经支持 RTL：
-`scripts/audit-rtl.mjs` 扫描组件库与模板业务页，下面渲染的就是提交到仓库的 JSON 报告。
-代码与报告不一致时 CI 会失败，所以数字不会悄悄过期。
+FishAdmin 是 LTR 产品。组件库已经没有未处理的物理方向工具类，但这不等于"模板可以在阿拉伯语
+环境下直接使用"。这一页如实报告差距：`scripts/audit-rtl.mjs` 扫描组件库与模板，下面渲染的是
+提交到仓库的 JSON 报告；数字回升或报告过期时，`pnpm check:rtl` 都会失败。
 
 ## 审计范围
 
 - `packages/ui/src/components` — 对外发布的组件面。
 - `src/features` — 模板的业务页面。
+- `src/components` — 模板外壳。
 
-统计的物理方向工具类包括：`ml-`/`mr-`、`pl-`/`pr-`、`left-`/`right-`、
-`text-left`/`text-right`、`border-l`/`border-r`、`rounded-l`/`rounded-r`、`space-x`/`space-y`
-以及 `translate-x`。测试与 stories 不计入。
+统计的是依赖书写方向的工具类：`ml-`/`mr-`、`pl-`/`pr-`、`left-`/`right-`、
+`text-left`/`text-right`、`border-l`/`border-r`、`rounded-l`/`rounded-r`（含四角形式）以及
+`translate-x`。测试与 stories 不计入。
+
+`space-x-*` 与 `space-y-*` **不**计入。Tailwind CSS v4 会把它们编译成逻辑属性
+`margin-inline` / `margin-block`，本身已经跟随书写方向；在 v3 里它们才是真问题，继续统计只会
+虚增报告。
 
 ## 已完成的修复
 
-52 处 `text-left` / `text-right` 已改为 `text-start` / `text-end`。LTR 下渲染完全不变；
-`dir="rtl"` 时对齐会跟随书写方向。本轮没有做其他自动改写。
+所有存在逻辑等价类的工具类都已转换：
 
-## 需要人工评估
+- `ml`/`mr` → `ms`/`me`，`pl`/`pr` → `ps`/`pe`
+- `left`/`right` → `start`/`end`
+- `text-left`/`text-right` → `text-start`/`text-end`
+- `border-l`/`border-r` → `border-s`/`border-e`
+- `rounded-l/r/tl/tr/bl/br` → `rounded-s/e/ss/se/es/ee`
 
-- **间距与定位**（`ml-*`、`pl-*`、`left-*`、`border-l-*`、`rounded-l-*`）需要换成逻辑等价类：
-  `ms-*`、`me-*`、`ps-*`、`pe-*`、`start-*`、`end-*`、`border-s-*`、`border-e-*`、
-  `rounded-s-*`、`rounded-e-*`。
-- **`space-y-*`** 是垂直方向，与书写方向无关。统一改成 `gap-*` 会让普通块级容器失去间距
-  （`gap` 只在 flex/grid 父级生效），所以保留给人工评估。
-- **`space-x-*`** 才是真正的 RTL 问题，但当前审计结果为 0。
-- **Sheet 与 Drawer** 的默认方向和动画都基于物理方位。支持 RTL 需要根据文档方向映射
-  `side`，而不是只换一个类名。
-- **图表、拖拽、`translate-x` 以及文档站的 Rspress chrome** 不在本轮范围内。
+少数组件需要的不只是改名：
 
-`e2e-docs/docs.spec.ts` 里有一条冒烟测试：把 `/components/button` 切到 `dir="rtl"`，并覆盖
-Rspress 的 `body { direction: ltr }`，确认内容可见且没有横向溢出。它是护栏，不代表所有页面
-都已 RTL 就绪。
+- **Dialog 与 AlertDialog** 改用 `inset-x-0 mx-auto` 加纵向位移居中，不再依赖物理 `left`。
+- **Switch** 的选中位移写了两份：`ltr:` 用 `translate-x-[calc(100%-2px)]`，`rtl:` 用它的负值。
+- **Sheet 与 Sidebar** 的 `side` 是物理 prop，几何保持物理方向，并用 `rtl-exempt` 标注，
+  而不是假装这些类与方向无关。
+- **Sidebar** 子菜单与 **Carousel** 箭头使用成对的 `ltr:`/`rtl:` 位移和 `rtl:rotate-180`；
+  **RadioGroup** 的指示点改用 flex 居中，不再使用绝对偏移。
+
+## 报告如何分类
+
+审计不会悄悄丢弃无法改写的匹配。每个剩余匹配都会归入以下四类之一：
+
+- **未处理** — 需要逻辑等价类，必须保持为 0，否则 CI 失败。
+- **显式豁免** — 物理 prop 或几何位置，在源码里用 `rtl-exempt:start` / `rtl-exempt:end` 标注。
+  右侧 Sheet 在两个方向下都留在右侧。
+- **方向限定** — 显式 `rtl:`/`ltr:` 变体或物理方位变体（`data-[side=left]`、
+  `data-[vaul-drawer-direction=right]`），两个方向的行为都是刻意设计的。
+- **居中 / 中性** — 补偿位移（`left-1/2 -translate-x-1/2`）与零位移，两个方向下渲染结果一致。
+
+## 仍然不做的事
+
+- **完整的 RTL 产品支持。** 没有由语言驱动的 `dir` 切换，没有 Rspress 文档外壳的 RTL 样式，
+  也没有把模板自身布局做 RTL 镜像。
+- **Sheet、Drawer、Sidebar 的 `side` 映射。** 这些 prop 目前是物理方向。支持 RTL 需要根据
+  文档方向映射，而不是换一个类名。
+- **图表、拖拽与 JS 驱动的位移。** Carousel 轨道用内联 `translateX` 定位；箭头会翻转，
+  但幻灯片顺序与拖拽行为仍按 LTR。
+- **双向图标与内容。** 除 Carousel 箭头外的方向性图标、图片与插画的镜像属于设计决策，
+  留给使用方。
+
+## 护栏
+
+`e2e-docs/docs.spec.ts` 会把 `/components/button` 切到 `dir="rtl"`，覆盖 Rspress 的
+`body { direction: ltr }`，确认内容可见且没有横向溢出；同时校验 Dialog 在两个方向下都居中、
+Switch 滑块移动到相反的行内边缘。这些是护栏，不代表所有页面都已 RTL 就绪。
 
 ## 复现报告
 
@@ -49,7 +80,7 @@ pnpm check:rtl
 ```
 
 `audit:rtl` 写入 `apps/docs/generated/rtl-audit.json`；`check:rtl` 在内存中重新生成报告，
-与提交的文件不一致就失败。
+存在未处理匹配或与提交文件不一致都会失败。
 
 ## 审计结果
 

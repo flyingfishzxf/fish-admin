@@ -34,7 +34,7 @@ export function StatusScreen({
   return (
     <div className="bg-brand-soft relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 py-16 text-center">
       <div className="bg-grid pointer-events-none absolute inset-0 opacity-20" />
-      <div className="absolute top-4 right-4 flex items-center gap-1">
+      <div className="absolute end-4 top-4 flex items-center gap-1">
         <ThemeToggle />
         <LanguageToggle />
       </div>

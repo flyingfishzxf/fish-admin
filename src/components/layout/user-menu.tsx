@@ -39,7 +39,7 @@ export function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="h-9 gap-2 px-1.5 md:pr-2"
+          className="h-9 gap-2 px-1.5 md:pe-2"
           aria-label={`${getInitials(user.name)} ${user.name} — ${t('common:header.account')}`}
           data-tour="account"
         >

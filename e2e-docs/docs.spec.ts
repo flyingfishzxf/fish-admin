@@ -37,6 +37,15 @@ function watchConsole(page: Page): string[] {
   return errors
 }
 
+async function flipToRtl(page: Page) {
+  // Rspress ships `body { direction: ltr }`, so the chrome itself stays LTR.
+  // Override it on the body to exercise the demo surface in RTL.
+  await page.evaluate(() => {
+    document.documentElement.dir = 'rtl'
+    document.body.style.direction = 'rtl'
+  })
+}
+
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => window.localStorage.setItem('rspress-visited', '1'))
 })
@@ -151,12 +160,7 @@ test('the Chinese button page is localized', async ({ page }) => {
 test('the button page survives a right-to-left document direction', async ({ page }) => {
   const errors = watchConsole(page)
   await page.goto('/components/button')
-  // Rspress ships `body { direction: ltr }`, so the chrome itself stays LTR.
-  // Override it on the body to exercise the demo surface in RTL.
-  await page.evaluate(() => {
-    document.documentElement.dir = 'rtl'
-    document.body.style.direction = 'rtl'
-  })
+  await flipToRtl(page)
 
   await expect(page.getByRole('heading', { name: 'Button', level: 1 })).toBeVisible()
   const basic = page.locator('[data-demo="button/basic"]')
@@ -172,6 +176,49 @@ test('the button page survives a right-to-left document direction', async ({ pag
   expect(metrics.headingAlign).toBe('start')
   expect(metrics.scrollWidth).toBeLessThanOrEqual(metrics.innerWidth + 1)
   expect(errors).toEqual([])
+})
+
+test('the dialog stays centred when the document flips to RTL', async ({ page }) => {
+  const errors = watchConsole(page)
+  await page.goto('/components/dialog')
+  const demo = page.locator('[data-demo="dialog/basic"]')
+  await flipToRtl(page)
+
+  await demo.getByRole('button', { name: 'Invite member' }).click()
+  const content = page.locator('[data-slot="dialog-content"]')
+  await expect(content).toBeVisible()
+
+  const box = await content.boundingBox()
+  const viewport = page.viewportSize()
+  expect(box).not.toBeNull()
+  expect(viewport).not.toBeNull()
+  const centre = box!.x + box!.width / 2
+  expect(Math.abs(centre - viewport!.width / 2)).toBeLessThanOrEqual(2)
+
+  await page.keyboard.press('Escape')
+  await expect(content).toHaveCount(0)
+  expect(errors).toEqual([])
+})
+
+test('the switch thumb follows the writing direction', async ({ page }) => {
+  await page.goto('/components/switch')
+  const demo = page.locator('[data-demo="switch/basic"]')
+  const control = demo.locator('#demo-switch-2fa')
+  const thumb = control.locator('[data-slot="switch-thumb"]')
+  await expect(control).toBeVisible()
+
+  const offsetFromCentre = async () => {
+    const rootBox = await control.boundingBox()
+    const thumbBox = await thumb.boundingBox()
+    if (!rootBox || !thumbBox) return Number.NaN
+    return thumbBox.x + thumbBox.width / 2 - (rootBox.x + rootBox.width / 2)
+  }
+
+  // The demo starts checked: the thumb sits past the centre in LTR.
+  await expect.poll(offsetFromCentre).toBeGreaterThan(0)
+  await flipToRtl(page)
+  // Under RTL the flex line starts on the right, so the same state sits left of centre.
+  await expect.poll(offsetFromCentre).toBeLessThan(0)
 })
 
 test('dark mode switches the document and the demo surface', async ({ page }) => {

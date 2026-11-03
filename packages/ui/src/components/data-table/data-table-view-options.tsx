@@ -89,7 +89,7 @@ export function DataTableViewOptions<TData>({ table }: { table: TableInstance<TD
                   clearDragState()
                 }}
                 className={cn(
-                  'flex items-center gap-1.5 rounded-md py-0.5 pr-1.5 pl-0.5 transition-colors',
+                  'flex items-center gap-1.5 rounded-md py-0.5 ps-0.5 pe-1.5 transition-colors',
                   isDragging && 'opacity-50',
                   isDropTarget && 'bg-accent ring-1 ring-primary/40',
                 )}

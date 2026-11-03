@@ -4,6 +4,19 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **RTL audit reaches zero.** `scripts/audit-rtl.mjs` now counts only direction-dependent
+  utilities and fails CI on any unhandled match. Physical-direction utilities were converted to
+  logical equivalents across 62 files; the remaining 34 matches are 14 direction-scoped, 7
+  centring/neutral and 13 annotated exemptions for physical `side` props. Dialog and AlertDialog
+  centre with `inset-x-0 mx-auto`, Switch uses paired `ltr:`/`rtl:` transforms, and Carousel
+  chevrons mirror under RTL. Sheet and Sidebar keep their physical geometry by design.
+- **RTL docs and tests.** `/guide/rtl-readiness` renders the new report shape in both languages,
+  and the RTL smoke tests now cover dialog centring and switch thumb movement.
+
 ## [2.1.0] - 2026-11-02
 
 A design-system release: tokens become an independently consumable package with a generated

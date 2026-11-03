@@ -50,7 +50,7 @@ export function BackTop({
         if (element) element.scrollTo({ top: 0, behavior })
         else window.scrollTo({ top: 0, behavior })
       }}
-      className={cn('fixed right-6 bottom-6 z-40 rounded-full shadow-lg', className)}
+      className={cn('fixed end-6 bottom-6 z-40 rounded-full shadow-lg', className)}
     >
       <ArrowUp aria-hidden />
     </Button>

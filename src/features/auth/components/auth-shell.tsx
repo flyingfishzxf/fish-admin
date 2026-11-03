@@ -67,7 +67,7 @@ export function AuthShell({
       </aside>
 
       <main className="relative flex flex-1 items-center justify-center px-5 py-10 sm:px-8">
-        <div className="absolute top-4 right-4 flex items-center gap-1">
+        <div className="absolute end-4 top-4 flex items-center gap-1">
           <ThemeToggle />
           <LanguageToggle />
         </div>

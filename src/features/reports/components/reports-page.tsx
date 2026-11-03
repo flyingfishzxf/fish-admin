@@ -278,7 +278,7 @@ export function ReportsPage({
           <div className="flex items-center justify-between gap-3">
             <AnchorNav items={anchors} ariaLabel={t('anchors.label')} orientation="horizontal" />
             {query.isFetching && !query.isPending ? (
-              <Spinner label={t('detail.loading')} className="mr-1 shrink-0" />
+              <Spinner label={t('detail.loading')} className="me-1 shrink-0" />
             ) : null}
           </div>
         }

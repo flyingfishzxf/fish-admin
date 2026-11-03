@@ -98,7 +98,7 @@ export function QueryFilter({
               {labels.reset}
             </Button>
           ) : null}
-          {extra ? <div className="ml-auto">{extra}</div> : null}
+          {extra ? <div className="ms-auto">{extra}</div> : null}
         </div>
       ) : null}
     </div>

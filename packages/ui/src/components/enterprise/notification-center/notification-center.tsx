@@ -70,7 +70,7 @@ export function NotificationCenter({
           {unread > 0 ? (
             <span
               aria-hidden
-              className="absolute -top-0.5 -right-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] leading-none font-semibold text-primary-foreground"
+              className="absolute -end-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] leading-none font-semibold text-primary-foreground"
             >
               {unread > 9 ? '9+' : unread}
             </span>

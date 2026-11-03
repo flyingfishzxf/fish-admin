@@ -364,7 +364,7 @@ export function ProjectsPage({
           id: project.id,
           content: (
             <div className="grid gap-5 p-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
-              <div className="min-w-0 space-y-3 pl-6 sm:pl-8">
+              <div className="min-w-0 space-y-3 ps-6 sm:ps-8">
                 <div className="flex flex-wrap items-center gap-2">
                   <ProjectKeyMark projectKey={project.key} />
                   <ProjectStatusBadge

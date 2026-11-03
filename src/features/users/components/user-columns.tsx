@@ -272,7 +272,7 @@ export function createUserColumns({
               <Button
                 variant="ghost"
                 size="icon-sm"
-                className="ml-auto"
+                className="ms-auto"
                 aria-label={t('users:columns.actions')}
               >
                 <MoreHorizontal className="size-4" />

@@ -178,7 +178,7 @@ export function AuditDetailDrawer({
   return (
     <Sheet open={Boolean(eventId)} onOpenChange={(open) => !open && onClose()}>
       <SheetContent className="flex w-full flex-col gap-0 p-0 sm:max-w-xl">
-        <SheetHeader className="border-b p-5 pr-12">
+        <SheetHeader className="border-b p-5 pe-12">
           <SheetTitle className="text-base">{t('audit:detail.title')}</SheetTitle>
           <SheetDescription>{t('audit:detail.description')}</SheetDescription>
         </SheetHeader>

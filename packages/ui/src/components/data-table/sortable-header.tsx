@@ -15,7 +15,7 @@ export function SortableHeader({
     <Button
       variant="ghost"
       size="sm"
-      className="-ml-2 h-7 gap-1 px-2 text-[11px] font-semibold tracking-wide uppercase"
+      className="-ms-2 h-7 gap-1 px-2 text-[11px] font-semibold tracking-wide uppercase"
       onClick={onToggle}
     >
       {label}

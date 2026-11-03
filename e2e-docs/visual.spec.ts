@@ -8,7 +8,7 @@ const ROUTES: Array<{ name: string; path: string; heading: RegExp; fullPage?: bo
   { name: 'button', path: '/components/button', heading: /Button/ },
   { name: 'pro-table', path: '/components/pro-table', heading: /ProTable/ },
   { name: 'theme-editor', path: '/guide/theme-editor', heading: /Theme editor/ },
-  // The audit table is 400+ rows; a viewport shot keeps the baseline small.
+  // The page stacks several classification tables; a viewport shot keeps the baseline small.
   {
     name: 'rtl-readiness',
     path: '/guide/rtl-readiness',

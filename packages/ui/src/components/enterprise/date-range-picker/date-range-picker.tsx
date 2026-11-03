@@ -78,7 +78,7 @@ export function DateRangePicker({
       <PopoverContent align="start" className="w-auto max-w-[calc(100vw-2rem)] p-3">
         <div className="flex flex-col gap-3 sm:flex-row">
           {presets && presets.length > 0 ? (
-            <div className="flex shrink-0 flex-row gap-1 overflow-x-auto sm:w-36 sm:flex-col sm:overflow-visible sm:border-r sm:pr-3">
+            <div className="flex shrink-0 flex-row gap-1 overflow-x-auto sm:w-36 sm:flex-col sm:overflow-visible sm:border-e sm:pe-3">
               {presets.map((preset) => {
                 const active = preset.from === value.from && preset.to === value.to
                 return (

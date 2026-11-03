@@ -186,7 +186,7 @@ function InputNumber({
         disabled={disabled || atMin}
         onClick={() => stepBy(-1)}
         className={cn(
-          'inline-flex h-full shrink-0 items-center justify-center border-r border-input text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground disabled:pointer-events-none disabled:opacity-40',
+          'inline-flex h-full shrink-0 items-center justify-center border-e border-input text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground disabled:pointer-events-none disabled:opacity-40',
           buttonSize,
         )}
       >
@@ -226,7 +226,7 @@ function InputNumber({
         disabled={disabled || atMax}
         onClick={() => stepBy(1)}
         className={cn(
-          'inline-flex h-full shrink-0 items-center justify-center border-l border-input text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground disabled:pointer-events-none disabled:opacity-40',
+          'inline-flex h-full shrink-0 items-center justify-center border-s border-input text-muted-foreground transition-colors outline-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground disabled:pointer-events-none disabled:opacity-40',
           buttonSize,
         )}
       >

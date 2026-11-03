@@ -289,7 +289,7 @@ export function FileList({
                 selected && 'border-primary ring-1 ring-primary/30',
               )}
             >
-              <div className="absolute top-2 left-2 z-10">
+              <div className="absolute start-2 top-2 z-10">
                 <Checkbox
                   checked={selectedIds.has(file.id)}
                   aria-label={t('list.selectFile', { name: file.name })}
@@ -309,7 +309,7 @@ export function FileList({
                 }
                 onClick={() => onToggleFavorite(file)}
                 className={cn(
-                  'absolute top-1.5 right-1.5 z-10 bg-background/80 backdrop-blur',
+                  'absolute end-1.5 top-1.5 z-10 bg-background/80 backdrop-blur',
                   !canManage && 'hidden',
                 )}
               >

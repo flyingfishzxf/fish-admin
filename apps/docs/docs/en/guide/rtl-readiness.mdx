@@ -7,42 +7,76 @@ import RtlAudit from '@docs/theme/RtlAudit'
 
 # RTL readiness
 
-FishAdmin ships as an LTR product today. This page reports the gap instead of claiming support:
-`scripts/audit-rtl.mjs` scans the component library and the template features, and the committed
-JSON report is rendered below. CI fails when the code and the report drift apart, so the numbers
-stay honest.
+FishAdmin is an LTR product. The component library no longer carries unhandled physical-direction
+utilities, but that is a different claim from "the template works in Arabic". This page reports the
+exact gap: `scripts/audit-rtl.mjs` scans the component library and the template, the committed JSON
+report is rendered below, and `pnpm check:rtl` fails when the number goes up or the report goes stale.
 
 ## What is audited
 
 - `packages/ui/src/components` — the published component surface.
 - `src/features` — the template's business screens.
+- `src/components` — the template shell.
 
-The scan counts physical-direction utilities: `ml-`/`mr-`, `pl-`/`pr-`, `left-`/`right-`,
-`text-left`/`text-right`, `border-l`/`border-r`, `rounded-l`/`rounded-r`, `space-x`/`space-y`
+The scan counts direction-dependent utilities: `ml-`/`mr-`, `pl-`/`pr-`, `left-`/`right-`,
+`text-left`/`text-right`, `border-l`/`border-r`, `rounded-l`/`rounded-r` (including corner forms)
 and `translate-x`. Tests and stories are excluded.
 
-## What was fixed
+`space-x-*` and `space-y-*` are **not** counted. Tailwind CSS v4 compiles them to logical
+`margin-inline` / `margin-block`, so they already follow the writing direction. In v3 they were a
+real problem; counting them would inflate the report.
 
-The 52 `text-left` and `text-right` classes are now `text-start` and `text-end`. LTR rendering is
-identical; under `dir="rtl"` the alignment follows the writing direction. No other automatic
-rewrites were applied in this round.
+## What changed
 
-## What stays manual
+Every utility with a logical equivalent was converted:
 
-- **Spacing and positioning** (`ml-*`, `pl-*`, `left-*`, `border-l-*`, `rounded-l-*`) need the
-  logical equivalents: `ms-*`, `me-*`, `ps-*`, `pe-*`, `start-*`, `end-*`, `border-s-*`,
-  `border-e-*`, `rounded-s-*`, `rounded-e-*`.
-- **`space-y-*`** is vertical and does not depend on writing direction. A blanket `gap-*` rewrite
-  would break plain block containers, where `gap` has no effect, so it is left for manual review.
-- **`space-x-*`** would be a genuine RTL issue, but the audit currently finds none.
-- **Sheet and Drawer** default to a side and animate with physical transforms. Supporting RTL means
-  mapping `side` from the document direction, not just swapping a class.
-- **Charts, drag-and-drop, `translate-x` and the docs site's Rspress chrome** are outside this
-  round's scope.
+- `ml`/`mr` → `ms`/`me`, `pl`/`pr` → `ps`/`pe`
+- `left`/`right` → `start`/`end`
+- `text-left`/`text-right` → `text-start`/`text-end`
+- `border-l`/`border-r` → `border-s`/`border-e`
+- `rounded-l/r/tl/tr/bl/br` → `rounded-s/e/ss/se/es/ee`
 
-The smoke test in `e2e-docs/docs.spec.ts` flips `/components/button` to `dir="rtl"`, overrides the
-Rspress `body { direction: ltr }` rule, and checks that the content stays visible without horizontal
-overflow. It is a guard rail, not a promise that every page is RTL-ready.
+A handful of components needed more than a rename:
+
+- **Dialog and AlertDialog** are centred with `inset-x-0 mx-auto` plus a vertical translate, so the
+  box stays centred without a physical `left`.
+- **Switch** writes the checked transform twice: `translate-x-[calc(100%-2px)]` for `ltr:` and its
+  negative for `rtl:`.
+- **Sheet and Sidebar** keep physical geometry because `side` is a physical prop, and annotate it
+  with `rtl-exempt` markers instead of pretending the classes are layout-neutral.
+- **Sidebar** menu sub-items and **Carousel** chevrons use paired `ltr:`/`rtl:` transforms and
+  `rtl:rotate-180`; **RadioGroup** centres its indicator with flexbox instead of an absolute offset.
+
+## What the report classifies
+
+The audit does not silently drop matches it cannot rewrite. Every remaining match gets one of four
+labels:
+
+- **Unhandled** — needs a logical equivalent. Must stay at zero; CI fails otherwise.
+- **Annotated exemption** — a physical prop or geometry, marked with `rtl-exempt:start` /
+  `rtl-exempt:end` in source. A right sheet stays on the right in both directions.
+- **Direction-scoped** — explicit `rtl:`/`ltr:` variants or physical placement variants
+  (`data-[side=left]`, `data-[vaul-drawer-direction=right]`). Both directions are intentional.
+- **Centring / neutral** — compensating transforms (`left-1/2 -translate-x-1/2`) and zero
+  translates, which render the same in both directions.
+
+## What still stays out of scope
+
+- **Full RTL product support.** There is no locale-driven `dir` switch, no RTL styles for the
+  Rspress docs chrome, and no RTL translation of the template's own layout.
+- **Sheet, Drawer and Sidebar `side` mapping.** The props are physical today. Supporting RTL means
+  mapping them from the document direction, not swapping a class.
+- **Charts, drag-and-drop and JS-driven transforms.** The Carousel track is positioned with an
+  inline `translateX`; the chevrons flip, but slide order and drag behaviour remain LTR.
+- **Bidirectional icons and content.** Directional icons other than the carousel chevrons, and
+  mirroring images or illustrations, are design decisions left to the consumer.
+
+## Guards
+
+`e2e-docs/docs.spec.ts` flips `/components/button` to `dir="rtl"`, overrides Rspress's
+`body { direction: ltr }`, and checks the content stays visible without horizontal overflow. It also
+verifies that the Dialog is centred in both directions and that the Switch thumb moves to the
+opposite inline edge. These are guard rails, not a promise that every page is RTL-ready.
 
 ## Reproduce the report
 
@@ -52,7 +86,7 @@ pnpm check:rtl
 ```
 
 `audit:rtl` writes `apps/docs/generated/rtl-audit.json`; `check:rtl` regenerates the report in
-memory and fails if the committed file differs.
+memory, fails on any unhandled match, and fails if the committed file differs.
 
 ## Audit
 

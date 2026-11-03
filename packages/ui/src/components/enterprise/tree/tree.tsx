@@ -206,7 +206,7 @@ export function Tree({
             }}
             onFocus={() => setFocusedId(item.id)}
             className={cn(
-              'flex items-center gap-1.5 rounded-md border border-transparent py-1.5 pr-2 text-sm transition-colors outline-none hover:bg-accent focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
+              'flex items-center gap-1.5 rounded-md border border-transparent py-1.5 pe-2 text-sm transition-colors outline-none hover:bg-accent focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
               isSelected && 'bg-primary/10 font-medium text-accent-foreground',
               item.disabled && 'cursor-not-allowed opacity-50',
             )}

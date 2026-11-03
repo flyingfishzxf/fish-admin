@@ -108,7 +108,7 @@ export function UserDetailPage({ userId }: { userId: string }) {
     <>
       <DetailPage
         back={
-          <Button variant="ghost" size="sm" className="-ml-2" onClick={goBack}>
+          <Button variant="ghost" size="sm" className="-ms-2" onClick={goBack}>
             <ArrowLeft className="size-4" />
             {t('users:detail.back')}
           </Button>

@@ -47,7 +47,7 @@ export function Timeline({
         return (
           <li key={item.id} className="relative flex gap-3 pb-6 last:pb-0">
             {index < items.length - 1 ? (
-              <span aria-hidden className="absolute top-8 bottom-0 left-4 w-px bg-border" />
+              <span aria-hidden className="absolute start-4 top-8 bottom-0 w-px bg-border" />
             ) : null}
             <span
               className={cn(

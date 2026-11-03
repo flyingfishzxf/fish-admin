@@ -163,7 +163,7 @@ export function AppTabs() {
       <Button
         variant="ghost"
         size="sm"
-        className="ml-auto h-6 shrink-0 px-2 text-xs text-muted-foreground"
+        className="ms-auto h-6 shrink-0 px-2 text-xs text-muted-foreground"
         onClick={closeAll}
       >
         {t('tabs.closeAll')}

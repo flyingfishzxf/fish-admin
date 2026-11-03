@@ -84,7 +84,7 @@ function JsonNode({
         <span className="text-muted-foreground">{summary}</span>
       </button>
       {expanded ? (
-        <div className="ml-1.5 border-l pl-3">
+        <div className="ms-1.5 border-s ps-3">
           {entries.map(([key, entry]) => (
             <JsonNode
               key={key}

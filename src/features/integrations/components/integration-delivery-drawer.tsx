@@ -80,7 +80,7 @@ export function IntegrationDeliveryDrawer({
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
       <DrawerContent className="w-full sm:max-w-xl">
-        <DrawerHeader className="border-b pr-12">
+        <DrawerHeader className="border-b pe-12">
           <DrawerTitle>{t('deliveries.title', { name: integration?.name ?? '' })}</DrawerTitle>
           <DrawerDescription>
             {t('deliveries.description', { endpoint: integration?.endpoint ?? '' })}

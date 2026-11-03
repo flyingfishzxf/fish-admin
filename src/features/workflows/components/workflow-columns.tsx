@@ -152,7 +152,7 @@ export function createWorkflowColumns({
         <Button
           variant="ghost"
           size="icon-sm"
-          className="ml-auto"
+          className="ms-auto"
           aria-label={`${t('workflows:columns.open')}: ${row.original.title}`}
           onClick={(event) => {
             event.stopPropagation()

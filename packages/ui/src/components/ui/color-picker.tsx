@@ -105,7 +105,7 @@ export function ColorPicker({
             style={{ backgroundColor: color }}
           />
           <span className="font-mono text-xs uppercase">{color}</span>
-          <ChevronsUpDown aria-hidden className="ml-auto size-4 shrink-0 opacity-60" />
+          <ChevronsUpDown aria-hidden className="ms-auto size-4 shrink-0 opacity-60" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-64 space-y-3 p-3">

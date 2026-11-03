@@ -123,7 +123,7 @@ export function createAuditColumns({
         <Button
           variant="ghost"
           size="icon-sm"
-          className="ml-auto"
+          className="ms-auto"
           aria-label={`${t('audit:detail.open')}: ${t(`audit:actions.${row.original.action}`)}`}
           onClick={(event) => {
             event.stopPropagation()

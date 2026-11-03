@@ -135,9 +135,9 @@ export function Carousel({
             size="icon-xs"
             aria-label={previousLabel}
             onClick={() => goTo(activeIndex - 1)}
-            className="absolute top-1/2 left-2 -translate-y-1/2 shadow-sm"
+            className="absolute start-2 top-1/2 -translate-y-1/2 shadow-sm"
           >
-            <ChevronLeft aria-hidden className="size-4" />
+            <ChevronLeft aria-hidden className="size-4 rtl:rotate-180" />
           </Button>
           <Button
             type="button"
@@ -145,9 +145,9 @@ export function Carousel({
             size="icon-xs"
             aria-label={nextLabel}
             onClick={() => goTo(activeIndex + 1)}
-            className="absolute top-1/2 right-2 -translate-y-1/2 shadow-sm"
+            className="absolute end-2 top-1/2 -translate-y-1/2 shadow-sm"
           >
-            <ChevronRight aria-hidden className="size-4" />
+            <ChevronRight aria-hidden className="size-4 rtl:rotate-180" />
           </Button>
           <div className="mt-2 flex justify-center gap-1.5" role="group">
             {slides.map((slide, slideIndex) => (

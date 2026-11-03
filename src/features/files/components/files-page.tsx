@@ -450,7 +450,7 @@ export function FilesPage({
             >
               <FolderOpen aria-hidden className="size-4" />
               {t('folders.all')}
-              <span className="ml-auto text-xs text-muted-foreground">
+              <span className="ms-auto text-xs text-muted-foreground">
                 {foldersQuery.data?.total ?? 0}
               </span>
             </Button>

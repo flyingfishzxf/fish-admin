@@ -42,7 +42,7 @@ export function ThemeToggle() {
             <DropdownMenuItem key={option} onClick={() => setMode(option)}>
               <Icon className="size-4" />
               {t(`theme.${option}`)}
-              {mode === option ? <Check className="ml-auto size-4" /> : null}
+              {mode === option ? <Check className="ms-auto size-4" /> : null}
             </DropdownMenuItem>
           )
         })}

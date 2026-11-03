@@ -88,21 +88,21 @@ export function ProTable<TData>({
             <div className="relative w-full min-w-0 sm:w-auto sm:max-w-xs sm:flex-1">
               <Search
                 aria-hidden
-                className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+                className="pointer-events-none absolute start-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
               />
               <Input
                 value={search.value}
                 onChange={(event) => search.onChange(event.target.value)}
                 placeholder={search.placeholder}
                 aria-label={search.ariaLabel}
-                className="h-9 pl-9"
+                className="h-9 ps-9"
               />
               {search.value ? (
                 <Button
                   type="button"
                   variant="ghost"
                   size="icon-xs"
-                  className="absolute top-1/2 right-2 -translate-y-1/2"
+                  className="absolute end-2 top-1/2 -translate-y-1/2"
                   aria-label={search.clearLabel}
                   onClick={() => search.onChange('')}
                 >

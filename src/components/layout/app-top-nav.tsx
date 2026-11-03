@@ -39,7 +39,7 @@ export function AppTopNav() {
       <button
         type="button"
         onClick={() => navigate({ to: '/' })}
-        className="flex items-center gap-2.5 rounded-lg px-1.5 py-1 text-left transition-colors hover:bg-muted/60"
+        className="flex items-center gap-2.5 rounded-lg px-1.5 py-1 text-start transition-colors hover:bg-muted/60"
         aria-label={t('app.name')}
       >
         <BrandMark />
@@ -48,7 +48,7 @@ export function AppTopNav() {
         </span>
       </button>
 
-      <nav className="no-scrollbar ml-2 flex min-w-0 items-center gap-0.5 overflow-x-auto">
+      <nav className="no-scrollbar ms-2 flex min-w-0 items-center gap-0.5 overflow-x-auto">
         {groups.map((group) => {
           const inGroup = internalNavItems(group.items).some((item) => item.to === activeItem?.to)
           return (

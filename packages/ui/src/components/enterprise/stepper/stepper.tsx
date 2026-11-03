@@ -70,7 +70,7 @@ export function Stepper({
             {index < steps.length - 1 ? (
               <span
                 aria-hidden
-                className="absolute top-4 right-2 left-8 hidden h-px bg-border sm:block"
+                className="absolute start-8 end-2 top-4 hidden h-px bg-border sm:block"
               />
             ) : null}
             {onStepClick && index <= current ? (

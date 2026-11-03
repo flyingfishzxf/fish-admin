@@ -31,7 +31,7 @@ export function LanguageToggle() {
         {SUPPORTED_LANGUAGES.map((language) => (
           <DropdownMenuItem key={language.code} onClick={() => void changeLanguage(language.code)}>
             {language.label}
-            {i18n.resolvedLanguage === language.code ? <Check className="ml-auto size-4" /> : null}
+            {i18n.resolvedLanguage === language.code ? <Check className="ms-auto size-4" /> : null}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

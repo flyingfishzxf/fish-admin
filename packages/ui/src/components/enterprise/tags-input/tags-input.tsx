@@ -85,7 +85,7 @@ export function TagsInput({
       )}
     >
       {value.map((tag) => (
-        <Badge key={tag} variant="secondary" className="gap-1 py-0.5 pr-1">
+        <Badge key={tag} variant="secondary" className="gap-1 py-0.5 pe-1">
           <span className="max-w-40 truncate">{tag}</span>
           <button
             type="button"

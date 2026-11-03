@@ -74,7 +74,7 @@ export function TreeSelect({
             aria-describedby={ariaDescribedBy}
             disabled={disabled}
             className={cn(
-              'w-full justify-between gap-2 pr-14 font-normal',
+              'w-full justify-between gap-2 pe-14 font-normal',
               !selectedLabel && 'text-muted-foreground',
             )}
           >
@@ -102,7 +102,7 @@ export function TreeSelect({
           aria-label={clearLabel ?? t('enterprise.clearSelection')}
           disabled={disabled}
           onClick={onClear}
-          className="absolute top-1/2 right-8 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none"
+          className="absolute end-8 top-1/2 z-10 flex size-6 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring/50 disabled:pointer-events-none"
         >
           <X className="size-3.5" />
         </button>

@@ -51,7 +51,7 @@ FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深
 - **工作台** —— KPI 卡片、收入面积图、流量柱状图、渠道环形图、最近活动，支持 7/30 天切换；图表随路由懒加载。
 - **83 个组件，一个包** —— `@fish-admin/react` 导出 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）。83 个组件在[文档站点](https://fish-admin-docs.vercel.app)各有一页，中英双语，都带贴合业务场景的实时演示、可复制的 import 路径与自动生成的属性表。`pnpm check:package` 会在出口文件少导出任一条目时让构建失败，`pnpm docs:check` 会在页面、演示或登记项漂移时失败。ProTable 已用于用户与审计页，模板本身就是这个包的第一个使用者。
 - **设计令牌成为契约** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，6 个动效令牌与高对比度取值。`@fish-admin/tokens` 把一份 JSON 源编译成纯 CSS、Tailwind 4 主题入口、双语 manifest 与浏览器安全的编辑器辅助函数；[令牌参考](https://fish-admin-docs.vercel.app/zh/guide/tokens)与[主题编辑器](https://fish-admin-docs.vercel.app/zh/guide/theme-editor)共用这份契约。7 个有动效的浮层尊重 `prefers-reduced-motion`；`@fish-admin/react` 内联编译后的令牌，npm 用户仍然只装一个包。
-- **诚实的 RTL 审计** —— `pnpm check:rtl` 重新生成物理方向工具类报告（当前 412 处、228 个文件），报告漂移即失败。52 处文本对齐已改成逻辑属性；其余差距写在 [RTL 就绪度](https://fish-admin-docs.vercel.app/zh/guide/rtl-readiness)，而不是宣称已经支持。
+- **诚实的 RTL 审计** —— `pnpm check:rtl` 在存在未处理的物理方向工具类或报告过期时失败。当前 253 个文件中未处理项为 0；34 处有意保留的匹配在 [RTL 就绪度](https://fish-admin-docs.vercel.app/zh/guide/rtl-readiness) 分类说明，而不是宣称已完整支持 RTL。
 - **中英双语** —— i18next 按 namespace 懒加载，`Intl` 处理日期/数字，校验文案随语言切换。
 - **命令面板** —— `Ctrl/⌘ K` 打开导航与快捷动作，按当前角色过滤。
 - **响应式** —— 移动端侧边栏 Sheet、表格自适应、窄屏抽屉，375 / 768 / 1440 三档可用。

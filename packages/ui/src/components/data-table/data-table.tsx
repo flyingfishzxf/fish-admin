@@ -205,7 +205,7 @@ export function DataTable<TData>({
                         virtualized ? 'sticky z-[2] bg-muted' : 'bg-muted/35',
                         header.column.columnDef.meta?.headerClassName,
                         pinned && 'bg-muted',
-                        header.column.getCanResize() && 'border-r last:border-r-0',
+                        header.column.getCanResize() && 'border-e last:border-e-0',
                       )}
                     >
                       {header.isPlaceholder
@@ -219,7 +219,7 @@ export function DataTable<TData>({
                           onMouseDown={header.getResizeHandler()}
                           onTouchStart={header.getResizeHandler()}
                           className={cn(
-                            'absolute inset-y-0 right-0 z-10 w-1.5 cursor-col-resize touch-none bg-transparent transition-colors hover:bg-primary/40',
+                            'absolute inset-y-0 end-0 z-10 w-1.5 cursor-col-resize touch-none bg-transparent transition-colors hover:bg-primary/40',
                             header.column.getIsResizing() && 'bg-primary/60',
                           )}
                         />

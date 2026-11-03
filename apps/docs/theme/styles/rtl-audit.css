@@ -7,7 +7,7 @@
 
 .fish-rtl__stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
   gap: 0.75rem;
 }
 
@@ -30,6 +30,77 @@
 }
 
 .fish-rtl__stat-label {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.fish-rtl__stat--accent {
+  border-color: color-mix(in oklch, var(--primary) 35%, var(--border));
+  background: color-mix(in oklch, var(--primary) 8%, var(--card));
+}
+
+.fish-rtl__success {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid color-mix(in oklch, var(--primary) 35%, var(--border));
+  border-inline-start: 3px solid var(--primary);
+  border-radius: var(--radius);
+  background: color-mix(in oklch, var(--primary) 8%, var(--card));
+  font-size: 0.82rem;
+  color: var(--muted-foreground);
+}
+
+.fish-rtl__success strong {
+  font-size: 0.88rem;
+  color: var(--foreground);
+}
+
+.fish-rtl__section {
+  display: grid;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.fish-rtl__section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.fish-rtl__section-head h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.fish-rtl__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--muted);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+}
+
+.fish-rtl__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.fish-rtl__reason {
+  font-size: 0.78rem;
+  color: var(--foreground);
+}
+
+.fish-rtl__empty {
+  margin: 0;
   font-size: 0.8rem;
   color: var(--muted-foreground);
 }
@@ -123,18 +194,8 @@
   white-space: nowrap;
 }
 
-.fish-rtl__suggestion {
-  font-size: 0.78rem;
-  color: var(--foreground);
-}
-
-.fish-rtl__manual {
-  font-size: 0.78rem;
-  color: var(--muted-foreground);
-}
-
 @media (max-width: 640px) {
   .fish-rtl__stats {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
