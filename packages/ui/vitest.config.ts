@@ -8,5 +8,11 @@ export default defineConfig({
     css: false,
     clearMocks: true,
     restoreMocks: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html'],
+      include: ['src/components/**/*.{ts,tsx}', 'src/lib/**/*.ts'],
+      exclude: ['src/**/*.test.{ts,tsx}', 'src/components/**/index.ts'],
+    },
   },
 })

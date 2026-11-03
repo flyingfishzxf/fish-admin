@@ -45,7 +45,8 @@
     "build:css": "pnpm --filter @fish-admin/tokens build && tailwindcss -i src/styles/index.css -o dist/styles.css --minify && tailwindcss -i src/styles/preflight.css -o dist/preflight.css --minify",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "peerDependencies": {
     "react": "^19.0.0",
