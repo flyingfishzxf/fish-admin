@@ -5,7 +5,7 @@ import { defineConfig, devices } from '@playwright/test'
 // `pnpm test:docs:visual:docker --update` before committing docs layout changes.
 export default defineConfig({
   testDir: './e2e-docs',
-  testMatch: 'visual.spec.ts',
+  testMatch: ['visual.spec.ts', 'component-visual.spec.ts'],
   snapshotPathTemplate: '{testDir}/__screenshots__/{testFileName}/{arg}{-snapshotSuffix}{ext}',
   fullyParallel: false,
   workers: 1,
