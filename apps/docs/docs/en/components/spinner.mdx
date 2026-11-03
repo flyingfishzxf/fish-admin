@@ -42,8 +42,10 @@ technology. `LoadingOverlay` composes it to cover a region while that region rel
 
 ## Labeled loading region
 
-Passing `label` changes the wrapper from `aria-hidden` to `role="status"` with a visually hidden
-text node. `LoadingOverlay` uses that same label and sets `aria-busy` on the region it covers.
+Passing `label` changes the wrapper from `aria-hidden` to `role="status"` whose accessible name is
+the label (`aria-label`). The label text also stays in the DOM as a visually hidden node, but that
+node carries `aria-hidden`, so the region is announced once. `LoadingOverlay` uses that same label
+and sets `aria-busy` on the region it covers.
 
 <Demo
   title="Labeled spinner and overlay"
@@ -72,8 +74,9 @@ text node. `LoadingOverlay` uses that same label and sets `aria-busy` on the reg
 `Spinner` has no keyboard behavior: it is not focusable, takes no key presses and never traps
 focus. Its only accessible surface is the live region described below.
 
-- With `label`, the wrapper is a `status` region whose text is the label; without it, the wrapper
-  is `aria-hidden="true"`.
+- With `label`, the wrapper is a `status` region whose accessible name is the label (`aria-label`);
+  its text node is visually hidden and `aria-hidden`, so the name is not announced twice. Without a
+  label, the wrapper is `aria-hidden="true"`.
 - `LoadingOverlay` sets `aria-busy` on its wrapper and puts the labeled spinner inside the
   covering layer.
 - The icon itself is `aria-hidden`, so the loader is announced once, by the label, not twice.

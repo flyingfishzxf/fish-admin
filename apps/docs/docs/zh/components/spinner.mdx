@@ -39,8 +39,9 @@ import labeledSource from '@docs/demos/spinner/labeled.tsx?raw'
 
 ## 带标签的加载区域
 
-传入 `label` 后，外层容器会从 `aria-hidden` 变为 `role="status"`，并带上一段视觉隐藏的文本。
-`LoadingOverlay` 复用同一个标签，并为被覆盖的区域设置 `aria-busy`。
+传入 `label` 后，外层容器会从 `aria-hidden` 变为 `role="status"`，其无障碍名称由标签通过
+`aria-label` 提供；标签文本同时保留为一段视觉隐藏的节点，但该节点带有 `aria-hidden`，因此只会朗读
+一次。`LoadingOverlay` 复用同一个标签，并为被覆盖的区域设置 `aria-busy`。
 
 <Demo title="带标签的加载器与覆盖层" filename="demos/spinner/labeled.tsx" source={labeledSource}>
   <SpinnerLabeled />
@@ -61,7 +62,8 @@ import labeledSource from '@docs/demos/spinner/labeled.tsx?raw'
 
 `Spinner` 没有键盘行为：它不可聚焦、不接收按键，也不会抢占焦点。它唯一的无障碍接口是下面的实时区域。
 
-- 传入 `label` 时，外层容器是由标签文本组成的 `status` 区域；不传时外层容器为 `aria-hidden="true"`。
+- 传入 `label` 时，外层容器是以标签为无障碍名称的 `status` 区域（通过 `aria-label`）；标签文本节点
+  视觉隐藏且带 `aria-hidden`，因此名称不会被重复朗读。不传时外层容器为 `aria-hidden="true"`。
 - `LoadingOverlay` 在外层容器上设置 `aria-busy`，并把带标签的加载器放进覆盖层中。
 - 图标本身是 `aria-hidden`，因此加载状态只会通过标签朗读一次，而不是两次。
 
