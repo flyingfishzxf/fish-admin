@@ -64,4 +64,23 @@ describe('Segmented', () => {
     expect(screen.getByRole('radio', { name: 'List' })).toBeDisabled()
     expect(screen.getByRole('radio', { name: 'Grid' })).toBeDisabled()
   })
+
+  it('reports the chosen value and follows an externally controlled value', () => {
+    const onValueChange = vi.fn()
+    const { rerender } = render(
+      <Segmented aria-label="View" options={options} value="list" onValueChange={onValueChange} />,
+    )
+
+    fireEvent.click(screen.getByRole('radio', { name: 'Grid' }))
+
+    expect(onValueChange).toHaveBeenCalledWith('grid')
+    expect(screen.getByRole('radio', { name: 'List' })).toHaveAttribute('aria-checked', 'true')
+
+    rerender(
+      <Segmented aria-label="View" options={options} value="grid" onValueChange={onValueChange} />,
+    )
+
+    expect(screen.getByRole('radio', { name: 'Grid' })).toHaveAttribute('aria-checked', 'true')
+    expect(screen.getByRole('radio', { name: 'List' })).toHaveAttribute('aria-checked', 'false')
+  })
 })

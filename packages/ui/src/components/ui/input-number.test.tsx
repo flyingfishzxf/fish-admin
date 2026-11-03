@@ -106,4 +106,30 @@ describe('InputNumber', () => {
     expect(screen.getByRole('button', { name: 'Decrease' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Increase' })).toBeDisabled()
   })
+
+  it('clamps keyboard stepping at the upper bound', () => {
+    const onValueChange = vi.fn()
+    render(
+      <InputNumber aria-label="Quantity" value={2} min={0} max={2} onValueChange={onValueChange} />,
+    )
+    const input = screen.getByRole('spinbutton', { name: 'Quantity' })
+
+    fireEvent.keyDown(input, { key: 'ArrowUp' })
+
+    expect(input).toHaveValue('2')
+    expect(input).toHaveAttribute('aria-valuenow', '2')
+    expect(onValueChange).toHaveBeenLastCalledWith(2)
+  })
+
+  it('clamps typed values to the lower bound on blur', () => {
+    render(<Harness initialValue={1} min={0} max={10} />)
+    const input = screen.getByRole('spinbutton', { name: 'Quantity' })
+
+    fireEvent.focus(input)
+    fireEvent.change(input, { target: { value: '-4' } })
+    fireEvent.blur(input)
+
+    expect(input).toHaveValue('0')
+    expect(input).toHaveAttribute('aria-valuenow', '0')
+  })
 })

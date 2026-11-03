@@ -52,4 +52,27 @@ describe('Slider', () => {
     fireEvent.keyDown(thumb, { key: 'ArrowRight' })
     expect(thumb).toHaveAttribute('aria-valuenow', '25')
   })
+
+  it('steps by the step prop when arrowing', () => {
+    render(<Slider defaultValue={[10]} step={5} min={0} max={100} thumbLabels={['Zoom']} />)
+    const thumb = screen.getByRole('slider', { name: 'Zoom' })
+
+    fireEvent.keyDown(thumb, { key: 'ArrowRight' })
+    expect(thumb).toHaveAttribute('aria-valuenow', '15')
+
+    fireEvent.keyDown(thumb, { key: 'ArrowLeft' })
+    fireEvent.keyDown(thumb, { key: 'ArrowLeft' })
+    expect(thumb).toHaveAttribute('aria-valuenow', '5')
+  })
+
+  it('jumps to the bounds with Home and End', () => {
+    render(<Slider defaultValue={[40]} min={0} max={100} thumbLabels={['Volume']} />)
+    const thumb = screen.getByRole('slider', { name: 'Volume' })
+
+    fireEvent.keyDown(thumb, { key: 'End' })
+    expect(thumb).toHaveAttribute('aria-valuenow', '100')
+
+    fireEvent.keyDown(thumb, { key: 'Home' })
+    expect(thumb).toHaveAttribute('aria-valuenow', '0')
+  })
 })
