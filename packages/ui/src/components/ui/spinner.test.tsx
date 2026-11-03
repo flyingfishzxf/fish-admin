@@ -13,6 +13,16 @@ describe('Spinner', () => {
     expect(status).toHaveAccessibleName('Loading data')
   })
 
+  it('takes its accessible name from aria-label and hides the duplicate text node', () => {
+    render(<Spinner label="Loading data" />)
+
+    const status = screen.getByRole('status', { name: 'Loading data' })
+    const text = screen.getByText('Loading data')
+
+    expect(status).toHaveAccessibleName('Loading data')
+    expect(text).toHaveAttribute('aria-hidden', 'true')
+  })
+
   it('is hidden from assistive technology without a label', () => {
     const { container } = render(<Spinner />)
 

@@ -13,6 +13,13 @@ export default defineConfig({
       reporter: ['text', 'html'],
       include: ['src/components/**/*.{ts,tsx}', 'src/lib/**/*.ts'],
       exclude: ['src/**/*.test.{ts,tsx}', 'src/components/**/index.ts'],
+      thresholds: {
+        // Floor = final M2 actual minus 5 percentage points; raise as coverage grows.
+        statements: 77,
+        branches: 68,
+        functions: 78,
+        lines: 79,
+      },
     },
   },
 })

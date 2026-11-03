@@ -33,7 +33,11 @@ function Spinner({ size = 'default', label, className }: SpinnerProps) {
       className={cn('inline-flex shrink-0 items-center justify-center', className)}
     >
       <Loader2 aria-hidden="true" className={cn('animate-spin', spinnerSizeClasses[size])} />
-      {label ? <span className="sr-only">{label}</span> : null}
+      {label ? (
+        <span aria-hidden="true" className="sr-only">
+          {label}
+        </span>
+      ) : null}
     </span>
   )
 }
