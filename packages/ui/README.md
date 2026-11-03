@@ -89,6 +89,26 @@ resolved theme used by portalled overlays, and the UI copy. Props:
 `{{name}}` placeholders for interpolation. Without a provider the components
 fall back to English and the light theme, so a provider is optional.
 
+## Maturity
+
+All 83 components are `stable`. A component counts as stable only while it holds
+this evidence: a documentation page in both locales, a live demo, a behavioural
+test, full axe coverage and light and dark visual baselines. The docs site
+renders the matrix at `/guide/maturity`.
+
+```bash
+pnpm --filter @fish-admin/react test
+pnpm --filter @fish-admin/react test:coverage
+pnpm check:maturity
+```
+
+The suite is 93 files and 303 tests. `test:coverage` enforces floors of 77%
+statements, 68% branches, 78% functions and 79% lines. `pnpm check:maturity`
+re-derives the evidence from disk and fails when a stable component loses any
+piece of it, so keeping the label means keeping the test, the axe coverage and
+both baselines; without that evidence a component cannot stay `stable` and
+would have to be marked `beta` with a written reason.
+
 ## Entry points
 
 - `@fish-admin/react` — all components, hooks, utilities and `UIProvider`.

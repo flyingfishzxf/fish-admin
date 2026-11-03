@@ -4,6 +4,31 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+A maturity release: every component now has behavioural tests, full axe coverage and light/dark
+visual baselines, and the docs site publishes a stable/beta matrix backed by CI.
+The template moves to 2.2.0 and the docs site to 0.3.0; `@fish-admin/react` moves to 0.2.2 and
+`@fish-admin/tokens` stays at 0.1.1.
+
+### Added
+
+- **Component maturity matrix.** `/guide/maturity` lists all 83 components with their status and
+  evidence; `pnpm check:maturity` fails when a stable component loses a test, axe coverage or a
+  visual baseline.
+
+### Changed
+
+- **Component test coverage.** 50 previously untested components gained behavioural tests (five
+  existing suites were extended), and the UI package enforces a coverage floor.
+- **Accessibility gate.** The full 166-route axe sweep now runs on every pull request.
+
+### Fixed
+
+- **Stable badge contrast.** The component meta badge and the maturity table's status badge now
+  use `--accent-foreground`, restoring WCAG AA contrast (7.4:1 light, 13.4:1 dark) once every
+  component page rendered a stable badge.
+
 ## [2.1.1] - 2026-11-03
 
 A patch release that makes the component library's direction-dependent utilities logical and turns

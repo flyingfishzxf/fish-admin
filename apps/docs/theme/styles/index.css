@@ -667,7 +667,7 @@ body .rp-doc .fish-index .fish-index__item {
 
 .fish-component-meta__badge.is-stable {
   border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
-  color: var(--primary);
+  color: var(--accent-foreground);
 }
 
 .fish-component-meta__badge.is-beta {

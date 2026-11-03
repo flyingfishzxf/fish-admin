@@ -159,7 +159,7 @@ body .rp-doc .fish-maturity__table {
 .fish-maturity__status.is-stable {
   border-color: color-mix(in oklch, var(--primary) 45%, var(--border));
   background: color-mix(in oklch, var(--primary) 8%, var(--card));
-  color: var(--primary);
+  color: var(--accent-foreground);
 }
 
 .fish-maturity__evidence-cell {

@@ -1,7 +1,7 @@
 {
   "name": "fish-admin",
   "private": true,
-  "version": "2.1.1",
+  "version": "2.2.0",
   "type": "module",
   "description": "An MIT-licensed React component library — 83 documented components — plus the RBAC admin template built on them.",
   "license": "MIT",
