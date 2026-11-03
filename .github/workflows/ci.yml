@@ -75,6 +75,9 @@ jobs:
       - name: RTL audit is current
         run: pnpm check:rtl
 
+      - name: Component maturity contract
+        run: pnpm check:maturity
+
   build:
     name: Build
     runs-on: ubuntu-latest
