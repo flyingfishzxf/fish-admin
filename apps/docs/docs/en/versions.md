@@ -7,10 +7,10 @@ description: Package, template and documentation versions.
 
 | Surface              | Version | Status                            |
 | -------------------- | ------- | --------------------------------- |
-| `@fish-admin/react`  | 0.2.0   | Live on npm.                      |
+| `@fish-admin/react`  | 0.2.1   | Live on npm.                      |
 | `@fish-admin/tokens` | 0.1.1   | Live on npm; 0.1.0 is superseded. |
-| Template             | 2.1.0   | Live; the demo serves 2.1.0.      |
-| Docs site            | 0.2.0   | Live; deployed from `main`.       |
+| Template             | 2.1.1   | Live; the demo serves 2.1.1.      |
+| Docs site            | 0.2.1   | Live; deployed from `main`.       |
 
 The table lists the versions in this repository. "Live" means the package is on npm or the site is
 deployed from `main`. `@fish-admin/tokens` 0.1.0 was replaced by 0.1.1 on the same day: 0.1.0

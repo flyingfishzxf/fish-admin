@@ -4,7 +4,11 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.1.1] - 2026-11-03
+
+A patch release that makes the component library's direction-dependent utilities logical and turns
+the RTL audit into a zero-tolerance gate. The template moves to 2.1.1, `@fish-admin/react` to 0.2.1
+and the docs site to 0.2.1; `@fish-admin/tokens` is unchanged at 0.1.1.
 
 ### Changed
 
