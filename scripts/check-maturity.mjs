@@ -43,8 +43,8 @@ const components = registry.components.map((entry) => {
   return evaluateComponent({
     entry,
     hasTest: hasComponentTest(entry.id),
-    // The full axe sweep lands in CI during M3; until it records per-route
-    // results, membership in the documented set is the best available proxy.
+    // The full axe sweep runs in CI; until it persists per-route results,
+    // membership in the documented set is the best available proxy.
     hasAxe: documentedIds.has(entry.id),
     hasVisualLight: fs.existsSync(path.join(visualRoot, `${entry.id}-light-linux.png`)),
     hasVisualDark: fs.existsSync(path.join(visualRoot, `${entry.id}-dark-linux.png`)),

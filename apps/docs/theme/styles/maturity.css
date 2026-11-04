@@ -162,6 +162,13 @@ body .rp-doc .fish-maturity__table {
   color: var(--accent-foreground);
 }
 
+.fish-maturity__reason {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  color: var(--muted-foreground);
+}
+
 .fish-maturity__evidence-cell {
   white-space: nowrap;
 }

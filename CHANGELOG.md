@@ -28,6 +28,14 @@ The template moves to 2.2.0 and the docs site to 0.3.0; `@fish-admin/react` move
 - **Stable badge contrast.** The component meta badge and the maturity table's status badge now
   use `--accent-foreground`, bringing both to 7.4–7.5:1 in light and 13.3–13.7:1 in dark once
   every component page rendered a stable badge.
+- **Progress announces its value.** The new behavioural test showed the Radix root never received
+  `value`, so assistive technology could not read the percentage; it is now forwarded and exposed
+  as `aria-valuenow`.
+- **Skeleton is hidden from assistive technology.** The root now carries `aria-hidden="true"` by
+  default, so a decorative placeholder is no longer announced.
+- **Spinner exposes one accessible name.** When `label` is set, the root takes `aria-label` and the
+  visually hidden text is no longer announced a second time; without a label it stays
+  `aria-hidden`.
 
 ## [2.1.1] - 2026-11-03
 

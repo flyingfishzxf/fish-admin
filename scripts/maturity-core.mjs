@@ -1,5 +1,3 @@
-const EVIDENCE_KEYS = ['test', 'axe', 'visual', 'demo', 'docs']
-
 export function evaluateComponent({
   entry,
   hasTest,
@@ -53,5 +51,3 @@ export function summarize(components) {
       .length,
   }
 }
-
-export { EVIDENCE_KEYS }

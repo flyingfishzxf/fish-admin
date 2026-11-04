@@ -175,6 +175,9 @@ export default function MaturityMatrix() {
                   <span className={`fish-maturity__status is-${entry.status}`}>
                     {statusLabel(entry.status, text)}
                   </span>
+                  {entry.status === 'beta' && entry.statusReason ? (
+                    <span className="fish-maturity__reason">{entry.statusReason}</span>
+                  ) : null}
                 </td>
                 <td className="fish-maturity__since">{entry.since}</td>
                 <EvidenceCell
