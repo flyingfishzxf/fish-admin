@@ -7,8 +7,9 @@ import MaturityMatrix from '@docs/theme/MaturityMatrix'
 
 # 组件成熟度
 
-`stable` 表示组件有文档页面、可运行的示例、至少一个行为测试、完整的 axe 覆盖，以及亮色/暗色
-视觉基线。缺少其中任意一项就是 `beta`；这个状态衡量的是证据，而不是 API 质量。
+`stable` 表示组件有文档页面、可运行的示例、至少一个行为测试、文档路由上的 axe 覆盖，以及
+亮色/暗色视觉基线。缺少其中任意一项就是 `beta`，并且必须写明 `statusReason`；这个状态衡量的
+是证据，而不是 API 质量。完整的 166 条路由 axe 扫描在 CI 中运行。
 
 ## 晋升规则
 
