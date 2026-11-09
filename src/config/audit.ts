@@ -26,79 +26,16 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 
-import type { AuditAction, AuditEntityType } from '@/types'
+import type { AuditAction, AuditTone } from '@fish-admin/contracts/audit'
 
-export const AUDIT_ACTIONS: AuditAction[] = [
-  'user.created',
-  'user.updated',
-  'user.deleted',
-  'user.restored',
-  'role.created',
-  'role.updated',
-  'role.deleted',
-  'department.created',
-  'department.updated',
-  'auth.login',
-  'profile.updated',
-  'project.created',
-  'project.updated',
-  'project.archived',
-  'file.uploaded',
-  'file.updated',
-  'file.deleted',
-  'integration.created',
-  'integration.updated',
-  'integration.deleted',
-  'workflow.approved',
-  'workflow.rejected',
-  'workflow.transferred',
-  'dictionary.created',
-  'dictionary.updated',
-  'dictionary.deleted',
-]
-
-export const AUDIT_ENTITY_TYPES: AuditEntityType[] = [
-  'user',
-  'role',
-  'department',
-  'auth',
-  'project',
-  'file',
-  'integration',
-  'workflow',
-  'dictionary',
-]
-
-export type AuditTone = 'success' | 'info' | 'warning' | 'destructive' | 'neutral'
-
-export const AUDIT_ACTION_TONES: Record<AuditAction, AuditTone> = {
-  'user.created': 'success',
-  'user.updated': 'info',
-  'user.deleted': 'destructive',
-  'user.restored': 'success',
-  'role.created': 'success',
-  'role.updated': 'info',
-  'role.deleted': 'destructive',
-  'department.created': 'success',
-  'department.updated': 'info',
-  'auth.login': 'neutral',
-  'profile.updated': 'info',
-  'project.created': 'success',
-  'project.updated': 'info',
-  'project.archived': 'warning',
-  'file.uploaded': 'success',
-  'file.updated': 'info',
-  'file.deleted': 'destructive',
-  'integration.created': 'success',
-  'integration.updated': 'info',
-  'integration.deleted': 'destructive',
-  'workflow.approved': 'success',
-  'workflow.rejected': 'destructive',
-  'workflow.transferred': 'info',
-  'dictionary.created': 'success',
-  'dictionary.updated': 'info',
-  'dictionary.deleted': 'destructive',
-}
+export {
+  AUDIT_ACTIONS,
+  AUDIT_ACTION_TONES,
+  AUDIT_ENTITY_TYPES,
+  type AuditAction,
+  type AuditEntityType,
+  type AuditTone,
+} from '@fish-admin/contracts/audit'
 
 export const AUDIT_ACTION_ICONS: Record<AuditAction, LucideIcon> = {
   'user.created': UserPlus,

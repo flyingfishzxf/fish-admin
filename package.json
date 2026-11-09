@@ -26,6 +26,7 @@
     "parity:freeze": "node scripts/parity-freeze.mjs",
     "check:parity:freeze": "node scripts/parity-freeze.mjs --check",
     "test:tokens": "pnpm --filter @fish-admin/tokens test",
+    "test:contracts": "pnpm --filter @fish-admin/contracts test",
     "build:ui": "pnpm --filter @fish-admin/react build",
     "test:ui": "pnpm --filter @fish-admin/react test",
     "check:package": "node scripts/check-package.mjs",
@@ -37,7 +38,7 @@
     "gen-api:check": "node scripts/gen-api.mjs --check",
     "test:docs": "pnpm docs:build && playwright test -c playwright.docs.config.ts",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit && pnpm --filter @fish-admin/tokens typecheck && pnpm --filter @fish-admin/react typecheck && pnpm --filter @fish-admin/docs typecheck",
+    "typecheck": "tsc --noEmit && pnpm --filter @fish-admin/contracts typecheck && pnpm --filter @fish-admin/tokens typecheck && pnpm --filter @fish-admin/react typecheck && pnpm --filter @fish-admin/docs typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -58,6 +59,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@fish-admin/contracts": "workspace:*",
     "@fontsource-variable/inter": "^5.3.0",
     "@hookform/resolvers": "^6.0.0",
     "@tanstack/react-query": "^5.104.5",

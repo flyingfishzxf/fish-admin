@@ -1,3 +1,4 @@
+import { MENU_ICON_NAMES, type MenuIconName } from '@fish-admin/contracts/navigation'
 import {
   BarChart3,
   Bell,
@@ -26,7 +27,7 @@ import {
  * `import * as lucide`: a namespace import would put all ~1600 icons in the
  * first-paint graph.
  */
-const MENU_ICONS: Record<string, LucideIcon> = {
+const MENU_ICONS: Record<MenuIconName, LucideIcon> = {
   'bar-chart-3': BarChart3,
   bell: Bell,
   'book-marked': BookMarked,
@@ -52,14 +53,14 @@ const ICON_NAMES = new Map<LucideIcon, string>(
   Object.entries(MENU_ICONS).map(([name, icon]) => [icon, name]),
 )
 
-export const MENU_ICON_NAMES = Object.keys(MENU_ICONS).sort()
+export { MENU_ICON_NAMES }
 
 /**
  * An unrecognised name is a cosmetic miss, so it falls back to a neutral marker
  * instead of throwing while the sidebar renders.
  */
 export function resolveMenuIcon(name: unknown): LucideIcon {
-  if (typeof name === 'string' && name in MENU_ICONS) return MENU_ICONS[name]
+  if (typeof name === 'string' && name in MENU_ICONS) return MENU_ICONS[name as MenuIconName]
   return CircleDot
 }
 

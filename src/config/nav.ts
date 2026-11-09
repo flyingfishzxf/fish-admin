@@ -1,42 +1,10 @@
-import {
-  BarChart3,
-  Bell,
-  BookMarked,
-  FolderKanban,
-  FolderOpen,
-  KeyRound,
-  LayoutDashboard,
-  LockKeyhole,
-  Network,
-  Plug,
-  ScrollText,
-  Settings2,
-  ShieldCheck,
-  UserRound,
-  Users,
-  Workflow,
-  type LucideIcon,
-} from 'lucide-react'
+import { NAV_CONTRACT, type NavRouteContract } from '@fish-admin/contracts/navigation'
+import type { PermissionCode } from '@fish-admin/contracts/permissions'
+import type { LucideIcon } from 'lucide-react'
 
-import { PERMISSION_CODES, type PermissionCode } from '@/config/permissions'
+import { resolveMenuIcon } from '@/features/navigation/menu-icons'
 
-export type AppPath =
-  | '/'
-  | '/projects'
-  | '/workflows'
-  | '/reports'
-  | '/files'
-  | '/notifications'
-  | '/users'
-  | '/departments'
-  | '/roles'
-  | '/permissions'
-  | '/dictionaries'
-  | '/audit-logs'
-  | '/integrations'
-  | '/profile'
-  | '/security'
-  | '/settings'
+export type AppPath = NavRouteContract['to']
 
 interface NavItemBase {
   titleKey: string
@@ -72,120 +40,19 @@ export function internalNavItems(items: NavItem[]): InternalNavItem[] {
   return items.filter((item): item is InternalNavItem => !isExternalNavItem(item))
 }
 
-export const NAV_GROUPS: NavGroup[] = [
-  {
-    titleKey: 'nav:groups.overview',
-    items: [
-      {
-        titleKey: 'nav:items.dashboard',
-        to: '/',
-        icon: LayoutDashboard,
-        permission: PERMISSION_CODES.dashboardRead,
-      },
-      {
-        titleKey: 'nav:items.reports',
-        to: '/reports',
-        icon: BarChart3,
-        permission: PERMISSION_CODES.reportRead,
-      },
-    ],
-  },
-  {
-    titleKey: 'nav:groups.collaboration',
-    items: [
-      {
-        titleKey: 'nav:items.projects',
-        to: '/projects',
-        icon: FolderKanban,
-        permission: PERMISSION_CODES.projectRead,
-      },
-      {
-        titleKey: 'nav:items.workflows',
-        to: '/workflows',
-        icon: Workflow,
-        permission: PERMISSION_CODES.workflowRead,
-      },
-      {
-        titleKey: 'nav:items.files',
-        to: '/files',
-        icon: FolderOpen,
-        permission: PERMISSION_CODES.fileRead,
-      },
-      {
-        titleKey: 'nav:items.notifications',
-        to: '/notifications',
-        icon: Bell,
-      },
-    ],
-  },
-  {
-    titleKey: 'nav:groups.management',
-    items: [
-      {
-        titleKey: 'nav:items.users',
-        to: '/users',
-        icon: Users,
-        permission: PERMISSION_CODES.userRead,
-      },
-      {
-        titleKey: 'nav:items.departments',
-        to: '/departments',
-        icon: Network,
-        permission: PERMISSION_CODES.departmentRead,
-      },
-      {
-        titleKey: 'nav:items.roles',
-        to: '/roles',
-        icon: ShieldCheck,
-        permission: PERMISSION_CODES.roleRead,
-      },
-      {
-        titleKey: 'nav:items.permissions',
-        to: '/permissions',
-        icon: KeyRound,
-        permission: PERMISSION_CODES.permissionRead,
-      },
-      {
-        titleKey: 'nav:items.dictionaries',
-        to: '/dictionaries',
-        icon: BookMarked,
-        permission: PERMISSION_CODES.dictionaryRead,
-      },
-      {
-        titleKey: 'nav:items.auditLogs',
-        to: '/audit-logs',
-        icon: ScrollText,
-        permission: PERMISSION_CODES.auditRead,
-      },
-      {
-        titleKey: 'nav:items.integrations',
-        to: '/integrations',
-        icon: Plug,
-        permission: PERMISSION_CODES.integrationRead,
-      },
-    ],
-  },
-  {
-    titleKey: 'nav:groups.account',
-    items: [
-      {
-        titleKey: 'nav:items.profile',
-        to: '/profile',
-        icon: UserRound,
-      },
-      {
-        titleKey: 'nav:items.security',
-        to: '/security',
-        icon: LockKeyhole,
-      },
-      {
-        titleKey: 'nav:items.settings',
-        to: '/settings',
-        icon: Settings2,
-      },
-    ],
-  },
-]
+function toInternalNavItem(route: NavRouteContract): InternalNavItem {
+  return {
+    titleKey: route.titleKey,
+    to: route.to,
+    icon: resolveMenuIcon(route.icon),
+    ...(route.permission ? { permission: route.permission } : {}),
+  }
+}
+
+export const NAV_GROUPS: NavGroup[] = NAV_CONTRACT.map((group) => ({
+  titleKey: group.titleKey,
+  items: group.items.map(toInternalNavItem),
+}))
 
 export const ALL_NAV_ITEMS: InternalNavItem[] = internalNavItems(
   NAV_GROUPS.flatMap((group) => group.items),

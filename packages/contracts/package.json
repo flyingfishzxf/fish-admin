@@ -1,0 +1,26 @@
+{
+  "name": "@fish-admin/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-neutral FishAdmin contracts: domain types, permissions, navigation, demo data and date helpers.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./types": "./src/types/index.ts",
+    "./demo": "./src/demo.ts",
+    "./permissions": "./src/permissions.ts",
+    "./integrations": "./src/integrations.ts",
+    "./audit": "./src/audit.ts",
+    "./navigation": "./src/navigation.ts",
+    "./date": "./src/date.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}

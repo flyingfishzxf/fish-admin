@@ -1,16 +1,8 @@
+import { hasPermission } from '@fish-admin/contracts/permissions'
+
 import { internalNavItems, isExternalNavItem, type NavGroup, type NavItem } from '@/config/nav'
 
-export function hasPermission(
-  granted: readonly string[] | null | undefined,
-  required?: string | null,
-): boolean {
-  if (!required) return true
-  if (!granted || granted.length === 0) return false
-  if (granted.includes('*') || granted.includes(required)) return true
-
-  const [resource] = required.split(':')
-  return Boolean(resource) && granted.includes(`${resource}:*`)
-}
+export { hasPermission }
 
 function filterItems(items: NavItem[], granted: readonly string[]): NavItem[] {
   return items
