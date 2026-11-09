@@ -113,6 +113,15 @@ Reviewers may ask for changes or suggest splitting a large pull request. That is
 5. Add a matching language tree to the docs site — a directory under `apps/docs/docs/<locale>`, an entry in the multilingual config in `apps/docs/rspress.config.ts`, and the site's own UI strings in `apps/docs/site.ts`.
 6. Run `pnpm test:shared` and `pnpm test` — `src/lib/locales.test.ts` checks namespace and key parity across the template locales, and the package locale parity is enforced by the extractor.
 
+## Parity harness
+
+`parity/` freezes the documented surface of 2.2.0 for the future Vue port. Do not regenerate `parity/baseline/`, screenshots or generated contracts to make a failure disappear — find the code or environment change instead.
+
+- A component that joins the pilot list needs `parity/pilot.json`, a contract regeneration, a behaviour scenario in `parity/scenarios/`, and both light/dark baselines.
+- New targets live in `parity/targets/<name>.json`. A target that cannot match the reference API uses `"mode": "reference"` and records per-pilot differences under `api.deviations`.
+- `pnpm check:parity:freeze`, `pnpm check:parity:contract` and `pnpm check:parity:scenarios` run in CI; the Playwright suite runs in the `parity` job inside the Playwright image.
+- The shared packages must stay framework-neutral. `pnpm test:shared` covers them, and a `react`, `@/` or Lucide import in any package `src` is a review blocker.
+
 ## Documentation
 
 - `README.md` is English; `README.zh-CN.md` is the Chinese mirror.

@@ -47,7 +47,7 @@ pnpm scaffold
 
 **`--mock=drop`** — 删除 `packages/mock`、`public/mockServiceWorker.js`、`src/features/settings/api.ts` 与 `src/config/demo.ts`；移除 `src/main.tsx` 的 MSW 启动代码、`src/config/env.ts` 与 `.env.example` 中的 mock 变量、登录页的演示账号卡片、OTP 页的验证码提示、设置页的「重置演示数据」卡片、Dockerfile 与 Compose 中的 `VITE_ENABLE_MOCK`，以及 `@fish-admin/mock` workspace 依赖、根目录的 `msw` devDependency 与 `msw` init 配置。
 
-由于 Playwright 套件是驱动着演示后端跑的，去掉 mock 就必须连同整个浏览器子系统一起去掉：`e2e`、两个 Playwright 配置、视觉回归脚本、`test:e2e` / `test:visual*` / `perf` 三个 script，以及 `.github/workflows/ci.yml` 末尾的 `e2e` 与 `visual` 两个 job。剩下的 Vitest、ESLint、typecheck、构建与体积预算仍会照常运行。
+由于 Playwright 套件是驱动着演示后端跑的，去掉 mock 就必须连同整个浏览器子系统一起去掉：`e2e`、`e2e-parity`、`parity`、模板/视觉/parity 三个 Playwright 配置（`playwright.config.ts`、`playwright.visual.config.ts`、`playwright.parity.config.ts`）、视觉与 parity 脚本、`test:e2e` / `test:visual*` / `test:parity*` / `perf` 这些 script，以及 `.github/workflows/ci.yml` 末尾的 `e2e`、`visual`、`docs-visual` 与 `parity` 四个 job。文档侧配置（`playwright.docs.config.ts`、`playwright.docs-visual.config.ts`）与 `e2e-docs` 会保留，因为它们不依赖 mock。剩下的 Vitest、共享包测试、ESLint、typecheck、构建与体积预算仍会照常运行。
 
 ## 脚手架之后
 

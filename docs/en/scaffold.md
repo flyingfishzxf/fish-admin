@@ -47,7 +47,7 @@ That prefix is the part that cannot be done by hand in one sitting: ten files re
 
 **`--mock=drop`** — deletes `packages/mock`, `public/mockServiceWorker.js`, `src/features/settings/api.ts` and `src/config/demo.ts`; removes the MSW bootstrap from `src/main.tsx`, the mock keys from `src/config/env.ts` and `.env.example`, the demo-account cards from the login page, the MFA hint from the OTP page, the "Reset demo data" card from settings, `VITE_ENABLE_MOCK` from the Dockerfile and Compose, the `@fish-admin/mock` workspace dependency, the root `msw` devDependency and its `msw` init config.
 
-Because the Playwright suite drives the app through the demo backend, dropping the mock drops the whole browser subsystem: `e2e`, both Playwright configs, the visual scripts, the `test:e2e` / `test:visual*` / `perf` scripts, and the `e2e` and `visual` jobs at the end of `.github/workflows/ci.yml`. What is left — Vitest, ESLint, typecheck, the build and the bundle budget — still runs.
+Because the Playwright suite drives the app through the demo backend, dropping the mock drops the whole browser subsystem: `e2e`, `e2e-parity`, `parity`, the template, visual and parity Playwright configs (`playwright.config.ts`, `playwright.visual.config.ts`, `playwright.parity.config.ts`), the visual and parity scripts, the `test:e2e` / `test:visual*` / `test:parity*` / `perf` scripts, and the `e2e`, `visual`, `docs-visual` and `parity` jobs at the end of `.github/workflows/ci.yml`. The docs-side configs (`playwright.docs.config.ts`, `playwright.docs-visual.config.ts`) and `e2e-docs` stay, because they do not depend on the mock. What is left — Vitest, the shared package tests, ESLint, typecheck, the build and the bundle budget — still runs.
 
 ## After scaffolding
 

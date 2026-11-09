@@ -308,7 +308,13 @@ src/                         # 模板
 ├─ lib/                      # API 客户端、鉴权、i18n 适配层、格式化、CSV、在线状态
 ├─ stores/                   # 会话、主题、UI 状态
 └─ styles/index.css          # 唯一的 Tailwind 入口
+parity/                      # 冻结的跨框架契约与场景
+├─ baseline/2.2.0/           # 2.2.0 表面的 SHA-256 清单
+├─ contract/                 # 生成的组件契约与 docs surface 契约
+├─ scenarios/                # 六个行为场景
+└─ targets/react.json        # Vue target 将对齐的 React target
 e2e/                         # Playwright 用例
+e2e-parity/                  # 与 target 无关的 parity 用例
 docs/{en,zh-CN}/             # 仓库文档（上面那个站点才是产品文档）
 ```
 
@@ -341,6 +347,10 @@ docs/{en,zh-CN}/             # 仓库文档（上面那个站点才是产品文�
 | `pnpm perf`                          | 仅运行运行时性能预算                              |
 | `pnpm size`                          | 构建生产包并校验 gzip 体积预算                    |
 | `pnpm test:visual:docker`            | 在 Playwright Docker 镜像中比对截图               |
+| `pnpm check:parity:freeze`           | 校验冻结的 2.2.0 parity 清单                      |
+| `pnpm check:parity:contract`         | 校验生成的组件契约与 docs surface 契约            |
+| `pnpm check:parity:scenarios`        | 校验六个试点的行为场景                            |
+| `pnpm test:parity:docker`            | 在 Docker 中把 React target 与冻结基线比对        |
 
 ## 质量门禁
 
@@ -353,11 +363,12 @@ CI 在每次 push 和 pull request 上跑这些门禁：
 - **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签，再算上首屏阻塞的 `/theme-bootstrap.js`——现在是 31 个 chunk、共 175.2 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。CSS 总量同样计入通过 `<link>` 引入的 `/boot.css`。
 - **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
 - **视觉回归** —— 模板的十八张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、项目看板、项目详情、资源库、报表浅色与深色、通知中心、集成中心、审批中心、审批详情与数据字典）、文档站的 14 张页面基线（首页、安装、Button、ProTable、主题编辑器、成熟度矩阵与 RTL 就绪度，各取浅色与深色）以及 166 张逐组件基线（83 个组件 × 浅色/深色）都和 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的图片比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。`e2e/visual/readme-shots.spec.ts` 在同一次运行里，但它只写文件，且只有设置 `README_SHOTS=1` 时才执行。
+- **跨框架 parity** —— `parity/` 冻结 2.2.0 的组件契约、文档 DOM 表面与六个可访问行为场景。`pnpm test:parity:docker` 使用文档站同一批 `*-linux.png` 基线运行 119 条检查：83 条 API 合同、12 条 docs surface、6 条行为场景、12 张截图与 6 条 axe 扫描。目前只有 React target；Vue 移植只需新增 `parity/targets/vue.json`，再运行 `PARITY_TARGET=vue pnpm test:parity:docker`。测试台的 `updateSnapshots` 固定为 `'none'`。详见 [docs/zh-CN/vue-port-foundation.md](docs/zh-CN/vue-port-foundation.md)。
 - **安全响应头** —— `e2e/security.spec.ts` 先比对 `/`、`/index.html`、一个带 hash 的资源与两个外壳文件的响应头是否完全一致，再带着 `securitypolicyviolation` 监听器走完登录、仪表盘、用户、报表、文件、项目与设置，监听器必须始终为空。详见 [docs/zh-CN/security-headers.md](docs/zh-CN/security-headers.md)。
 - **文档站** —— `pnpm gen-api:check` 在生成的 props 表与包源码不一致时失败，`pnpm docs:check` 在某个注册表条目缺少页面、缺少示例或缺少译文时失败，`pnpm test:docs` 跑文档站自己的 Playwright 用例。
 - **依赖供应链** —— `pnpm audit --audit-level=high` 有高危漏洞就让质量 job 失败，CodeQL 在每次 push、pull request 与每周定时任务中分析 JavaScript 和 TypeScript，[`.github/dependabot.yml`](.github/dependabot.yml) 为 npm 与 actions 分别开分组后的 minor/patch 和 major 升级 PR，所有 workflow 使用只读 token（`permissions: contents: read`），构建 job 还会上传被度量的产物。
 
-基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。文档站同样有一对命令：`pnpm test:docs:visual` 与 `pnpm test:docs:visual:docker`。
+基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。文档站同样有一对命令：`pnpm test:docs:visual` 与 `pnpm test:docs:visual:docker`。`pnpm test:parity:docker` 复用组件基线，且永不写入。
 
 ## 接入真实后端
 

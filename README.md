@@ -308,7 +308,13 @@ src/                         # the template
 ├─ lib/                      # API client, auth helpers, i18n adapter, formatting, CSV, online status
 ├─ stores/                   # Auth, theme and UI Zustand stores
 └─ styles/index.css          # the only Tailwind entry
+parity/                      # frozen cross-framework contract and scenarios
+├─ baseline/2.2.0/           # SHA-256 manifest of the 2.2.0 surface
+├─ contract/                 # generated component and docs-surface contracts
+├─ scenarios/                # six behaviour scenarios
+└─ targets/react.json        # the React target a Vue target will mirror
 e2e/                         # Playwright specs
+e2e-parity/                  # target-agnostic parity specs
 docs/{en,zh-CN}/             # Repository documentation (the site above is the product one)
 ```
 
@@ -341,6 +347,10 @@ docs/{en,zh-CN}/             # Repository documentation (the site above is the p
 | `pnpm perf`                          | Run only the runtime performance budgets                       |
 | `pnpm size`                          | Build production and check gzip budgets                        |
 | `pnpm test:visual:docker`            | Compare screenshots in the Playwright Docker image             |
+| `pnpm check:parity:freeze`           | Verify the frozen 2.2.0 parity manifest                        |
+| `pnpm check:parity:contract`         | Verify the generated component and docs-surface contracts      |
+| `pnpm check:parity:scenarios`        | Validate the six pilot behaviour scenarios                     |
+| `pnpm test:parity:docker`            | Compare the React target against the frozen baselines          |
 
 ## Quality gates
 
@@ -353,11 +363,12 @@ CI runs these gates on every push and pull request:
 - **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html`, together with the shell's blocking `/theme-bootstrap.js` — 31 chunks totalling 175.2 KB — because that set, not the entry file alone, is what the browser downloads before it paints. The CSS total counts the linked `/boot.css` as well.
 - **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
 - **Visual regression** — eighteen template screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, projects, project detail, files, reports in both themes, notifications, integrations, approval center, approval detail and dictionaries), 14 docs page baselines (home, installation, Button, ProTable, the theme editor, the maturity matrix and RTL readiness, each in light and dark) and 166 per-component baselines (all 83 components in light and dark) are compared against images rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable. `e2e/visual/readme-shots.spec.ts` lives in the same run but only writes files, and only when `README_SHOTS=1`.
+- **Cross-framework parity** — `parity/` freezes the 2.2.0 component contract, docs DOM surface and six accessible behaviour scenarios. `pnpm test:parity:docker` runs 119 checks against the same `*-linux.png` baselines the docs site uses: 83 API contracts, 12 docs-surface checks, six behaviour scenarios, 12 screenshots and six axe scans. React is the only target today; a Vue port adds `parity/targets/vue.json` and runs `PARITY_TARGET=vue pnpm test:parity:docker`. The harness runs with `updateSnapshots: 'none'`. See [docs/en/vue-port-foundation.md](docs/en/vue-port-foundation.md).
 - **Security headers** — `e2e/security.spec.ts` checks that `/`, `/index.html`, a hashed asset and the two shell files all carry the identical header set, then walks sign-in, dashboard, users, reports, files, projects and settings with a `securitypolicyviolation` listener that must stay empty. See [docs/en/security-headers.md](docs/en/security-headers.md).
 - **Documentation** — `pnpm gen-api:check` fails when the generated props tables drift from the package source, `pnpm docs:check` fails when a registry entry has no page, no demo or no translation, and `pnpm test:docs` runs the site's own Playwright suite.
 - **Supply chain** — `pnpm audit --audit-level=high` fails the quality job, CodeQL analyses JavaScript and TypeScript on every push, pull request and weekly schedule, [`.github/dependabot.yml`](.github/dependabot.yml) opens grouped minor/patch and major pull requests for npm and for the actions, every workflow runs on a read-scoped token (`permissions: contents: read`), and the build job uploads the bundle it measured.
 
-Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`. The docs site has the same pair under `pnpm test:docs:visual` and `pnpm test:docs:visual:docker`.
+Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`. The docs site has the same pair under `pnpm test:docs:visual` and `pnpm test:docs:visual:docker`. `pnpm test:parity:docker` reuses the component baselines and never writes them.
 
 ## Connect your own backend
 
