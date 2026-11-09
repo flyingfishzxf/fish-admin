@@ -13,9 +13,9 @@ This directory freezes the documented surface of FishAdmin 2.2.0 and compares a 
 
 ## What a target must match
 
-Every one of the 83 documented components is checked for its route, demo count, demo anchors, preview, source block and a clean console. The six pilots in `pilot.json` add the behaviour scenarios, screenshot comparison and axe checks, and their demo anchors and API-row counts are checked in both locales.
+Every one of the 83 documented components is checked for its route, demo count, demo anchors, preview, source block and a clean console. The six pilots in `pilot.json` add the behaviour scenarios, screenshot comparison and axe checks, and their demo anchors, previews and source blocks are checked in both locales. Their API table (or the "No public props." placeholder) must also be present in both locales; exact API-row counts and contents are compared only by an `api.mode: "exact"` target, in English.
 
-A target in `api.mode: "reference"` must record a deviation entry for each of the six pilots. The harness does not compare API rows for the other 77 components; reference mode is not a per-component API diff. Widen `pilot.json` when a port needs stricter API coverage.
+A target in `api.mode: "reference"` must record a deviation entry for each of the six pilots. The harness does not compare API rows for the other 77 components; reference mode is not a per-component API diff. Add pilots when a port needs stricter behaviour and surface coverage.
 
 Commands (from the repository root):
 
