@@ -24,20 +24,36 @@ describe('i18n resources', () => {
   })
 
   it('picks the other installed language', () => {
-    expect(nextLanguage('en')).toBe('zh-CN')
-    expect(nextLanguage('zh-CN')).toBe('en')
+    const codes = SUPPORTED_LANGUAGES.map((language) => language.code)
+
+    // A scaffolded product may keep a single locale; there is then nothing to
+    // switch to and the shell hides its language switches.
+    if (codes.length === 1) {
+      expect(nextLanguage(codes[0])).toBeUndefined()
+      return
+    }
+
+    for (const code of codes) {
+      const other = nextLanguage(code)
+      expect(other).toBeDefined()
+      expect(codes).toContain(other)
+      expect(other).not.toBe(code)
+    }
   })
 })
 
 describe('setupI18n', () => {
   it('initialises from the storage key and switches language', async () => {
-    localStorage.setItem('test:lang', 'zh-CN')
+    const first = SUPPORTED_LANGUAGES[0].code
+    const last = SUPPORTED_LANGUAGES[SUPPORTED_LANGUAGES.length - 1].code
+
+    localStorage.setItem('test:lang', last)
     const configured = setupI18n({ storageKey: 'test:lang' })
     await configured.ready
 
-    expect(currentLanguage()).toBe('zh-CN')
-    await changeLanguage('en')
-    expect(currentLanguage()).toBe('en')
-    expect(document.documentElement.lang).toBe('en')
+    expect(currentLanguage()).toBe(last)
+    await changeLanguage(first)
+    expect(currentLanguage()).toBe(first)
+    expect(document.documentElement.lang).toBe(first)
   })
 })
