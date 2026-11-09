@@ -6,15 +6,15 @@
 
 ## 代码位置
 
-| 关注点     | 文件                                                                                    |
-| ---------- | --------------------------------------------------------------------------------------- |
-| 类型       | `src/types/workspace.ts`（`WorkflowInstanceRecord`、`WorkflowStep`、`WorkflowComment`） |
-| 客户端 API | `src/features/workflows/api.ts`、`queries.ts`、`search.ts`                              |
-| 界面       | `src/features/workflows/components/*`                                                   |
-| 路由       | `src/routes/_app/workflows.tsx`、`src/routes/_app/workflows_.$id.tsx`                   |
-| Mock 规则  | `packages/mock/src/handlers/workflows.ts`、`packages/mock/src/seed-workflows.ts`        |
-| 权限       | `src/config/permissions.ts` 中的 `workflow:read`、`workflow:approve`                    |
-| 菜单与图标 | `src/config/nav.ts`、`src/features/navigation/menu-icons.ts`（`workflow`）              |
+| 关注点     | 文件                                                                                                       |
+| ---------- | ---------------------------------------------------------------------------------------------------------- |
+| 类型       | `packages/contracts/src/types/workspace.ts`（`WorkflowInstanceRecord`、`WorkflowStep`、`WorkflowComment`） |
+| 客户端 API | `src/features/workflows/api.ts`、`queries.ts`、`search.ts`                                                 |
+| 界面       | `src/features/workflows/components/*`                                                                      |
+| 路由       | `src/routes/_app/workflows.tsx`、`src/routes/_app/workflows_.$id.tsx`                                      |
+| Mock 规则  | `packages/mock/src/handlers/workflows.ts`、`packages/mock/src/seed-workflows.ts`                           |
+| 权限       | `src/config/permissions.ts` 中的 `workflow:read`、`workflow:approve`                                       |
+| 菜单与图标 | `src/config/nav.ts`、`src/features/navigation/menu-icons.ts`（`workflow`）                                 |
 
 ## 路由与视图
 

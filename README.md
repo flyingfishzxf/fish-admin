@@ -160,7 +160,7 @@ Unknown paths render a 404 inside the shell when you are signed in; unauthentica
 
 ### Roles and permissions
 
-Permissions use a `resource:action` format and are defined in [`src/config/permissions.ts`](src/config/permissions.ts). Buttons, menus and routes are all derived from that registry.
+Permissions use a `resource:action` format. They are defined in [`packages/contracts/src/permissions.ts`](packages/contracts/src/permissions.ts) and re-exported through [`src/config/permissions.ts`](src/config/permissions.ts). Buttons, menus and routes are all derived from that registry.
 
 | Role          | Permissions                                                                                                                                                                                                                                                                      |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -304,7 +304,7 @@ src/                         # the template
 ├─ components/
 │  ├─ layout/                # AppShell, sidebar, header, notification bell, breadcrumbs, command menu, offline banner
 │  └─ common/                # Can, EmptyState, StatusScreen, theme/language toggles
-├─ config/                   # env, permissions, audit actions, navigation, theme presets
+├─ config/                   # env, theme presets and app-side permission, audit and navigation adapters
 ├─ lib/                      # API client, auth helpers, i18n adapter, formatting, CSV, online status
 ├─ stores/                   # Auth, theme and UI Zustand stores
 └─ styles/index.css          # the only Tailwind entry

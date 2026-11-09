@@ -160,7 +160,7 @@ pnpm scaffold
 
 ### 角色与权限
 
-权限采用 `resource:action` 格式，注册表位于 [`src/config/permissions.ts`](src/config/permissions.ts)。菜单、按钮和路由都由这份注册表派生。
+权限采用 `resource:action` 格式，定义在 [`packages/contracts/src/permissions.ts`](packages/contracts/src/permissions.ts)，并通过 [`src/config/permissions.ts`](src/config/permissions.ts) 再导出。菜单、按钮和路由都由这份注册表派生。
 
 | 角色   | 权限                                                                                                                                                                                                                                                                             |
 | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -304,7 +304,7 @@ src/                         # 模板
 ├─ components/
 │  ├─ layout/                # AppShell、侧边栏、Header、通知铃铛、面包屑、命令面板、离线横幅
 │  └─ common/                # Can、EmptyState、StatusScreen、主题/语言切换
-├─ config/                   # env、权限、审计动作、导航、主题预设
+├─ config/                   # env、主题预设，以及权限、审计动作与导航的应用侧适配
 ├─ lib/                      # API 客户端、鉴权、i18n 适配层、格式化、CSV、在线状态
 ├─ stores/                   # 会话、主题、UI 状态
 └─ styles/index.css          # 唯一的 Tailwind 入口

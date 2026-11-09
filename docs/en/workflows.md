@@ -6,15 +6,15 @@ The approval center is a worked example of a multi-step business flow: a request
 
 ## Where things live
 
-| Concern        | Files                                                                                  |
-| -------------- | -------------------------------------------------------------------------------------- |
-| Types          | `src/types/workspace.ts` (`WorkflowInstanceRecord`, `WorkflowStep`, `WorkflowComment`) |
-| Client API     | `src/features/workflows/api.ts`, `queries.ts`, `search.ts`                             |
-| UI             | `src/features/workflows/components/*`                                                  |
-| Routes         | `src/routes/_app/workflows.tsx`, `src/routes/_app/workflows_.$id.tsx`                  |
-| Mock rules     | `packages/mock/src/handlers/workflows.ts`, `packages/mock/src/seed-workflows.ts`       |
-| Permissions    | `workflow:read`, `workflow:approve` in `src/config/permissions.ts`                     |
-| Menu and icons | `src/config/nav.ts`, `src/features/navigation/menu-icons.ts` (`workflow`)              |
+| Concern        | Files                                                                                                     |
+| -------------- | --------------------------------------------------------------------------------------------------------- |
+| Types          | `packages/contracts/src/types/workspace.ts` (`WorkflowInstanceRecord`, `WorkflowStep`, `WorkflowComment`) |
+| Client API     | `src/features/workflows/api.ts`, `queries.ts`, `search.ts`                                                |
+| UI             | `src/features/workflows/components/*`                                                                     |
+| Routes         | `src/routes/_app/workflows.tsx`, `src/routes/_app/workflows_.$id.tsx`                                     |
+| Mock rules     | `packages/mock/src/handlers/workflows.ts`, `packages/mock/src/seed-workflows.ts`                          |
+| Permissions    | `workflow:read`, `workflow:approve` in `src/config/permissions.ts`                                        |
+| Menu and icons | `src/config/nav.ts`, `src/features/navigation/menu-icons.ts` (`workflow`)                                 |
 
 ## Routes and views
 

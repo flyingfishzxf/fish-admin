@@ -46,7 +46,7 @@ Each step is one of `click`, `fill`, `press`, `pressKey`, `expectText`, `expectN
 
 ## Targets and commands
 
-`parity/targets/react.json` points at the Rspress docs site built from this repository. `playwright.parity.config.ts` reads `PARITY_TARGET` (default `react`), loads `parity/targets/<name>.json`, starts its web server and writes screenshots to the frozen baseline directory. `updateSnapshots` is `'none'`.
+`parity/targets/react.json` points at the Rspress docs site built from this repository. `playwright.parity.config.ts` reads `PARITY_TARGET` (default `react`), loads `parity/targets/<name>.json`, starts its web server and compares screenshots against the frozen baseline directory; it never writes there. `updateSnapshots` is `'none'`.
 
 ```bash
 pnpm check:parity:freeze

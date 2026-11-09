@@ -46,7 +46,7 @@ target 用 `api.mode` 声明遵循参考 API 的严格程度：
 
 ## Target 与命令
 
-`parity/targets/react.json` 指向本仓库构建的 Rspress 文档站。`playwright.parity.config.ts` 读取 `PARITY_TARGET`（默认 `react`），加载 `parity/targets/<name>.json`，启动对应 web server，并把截图写入冻结基线目录。`updateSnapshots` 固定为 `'none'`。
+`parity/targets/react.json` 指向本仓库构建的 Rspress 文档站。`playwright.parity.config.ts` 读取 `PARITY_TARGET`（默认 `react`），加载 `parity/targets/<name>.json`，启动对应 web server，并把截图与冻结基线目录比对，绝不写回基线。`updateSnapshots` 固定为 `'none'`。
 
 ```bash
 pnpm check:parity:freeze

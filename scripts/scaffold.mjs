@@ -354,7 +354,6 @@ function dropTestBrowsers(editor, state) {
     'playwright.config.ts',
     'playwright.visual.config.ts',
     'playwright.parity.config.ts',
-    'scripts/check-visual-platform.mjs',
     'scripts/visual-regression.mjs',
     'scripts/parity-docker.mjs',
     'scripts/parity-freeze.mjs',

@@ -34,7 +34,7 @@ FishAdmin 演示了一套完整的客户端权限闭环：导航、路由与按�
 
 有若干区域刻意不设权限码：`/notifications`（只暴露当前用户自己的收件箱），以及只对当前用户生效的账户页 `/profile` 与 `/security`。`/settings` 同样仅需登录；组件示例已经彻底离开应用——它们是文档站点里的页面，而文档站没有需要鉴权的会话。
 
-`src/config/permissions.ts` 是唯一事实来源，导出：
+权限注册表位于 `packages/contracts/src/permissions.ts`；`src/config/permissions.ts` 将其原样再导出，应用代码仍只有一个导入路径。它导出：
 
 - `PERMISSION_CODES`：全应用使用的类型化常量。
 - `PERMISSIONS`：角色编辑器与权限页所需的展示元数据（分组、label 与 description 的 i18n key）。
@@ -103,7 +103,7 @@ const canDelete = useCan('user:delete')
 
 假设要新增发票管理，权限码为 `invoice:read`。
 
-1. **注册权限**，修改 `src/config/permissions.ts`：
+1. **注册权限**，修改 `packages/contracts/src/permissions.ts`：
 
    ```ts
    export const PERMISSION_CODES = {

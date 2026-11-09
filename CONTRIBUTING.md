@@ -107,11 +107,10 @@ Reviewers may ask for changes or suggest splitting a large pull request. That is
 ## Adding a language
 
 1. Copy `packages/i18n/locales/en` to `packages/i18n/locales/<locale>` and translate every namespace.
-2. Register the locale in `packages/i18n/src/languages.ts` and the language switcher.
-3. Add the locale to the language names map and the `supportedLngs` list.
-4. Regenerate the package strings: `node scripts/extract-ui-messages.mjs` writes `packages/ui/src/locales/{en,zh-CN}.ts` from the template's `packages/i18n/locales/en/common.json` and throws when a key is missing from a locale, so add the new locale's `read`/`write` pair there instead of hand-editing the generated files. Widen `UILocale` and the `BUILT_IN` map in `packages/ui/src/i18n.tsx` to match.
-5. Add a matching language tree to the docs site — a directory under `apps/docs/docs/<locale>`, an entry in the multilingual config in `apps/docs/rspress.config.ts`, and the site's own UI strings in `apps/docs/site.ts`.
-6. Run `pnpm test:shared` and `pnpm test` — `src/lib/locales.test.ts` checks namespace and key parity across the template locales, and the package locale parity is enforced by the extractor.
+2. Register the locale in `packages/i18n/src/languages.ts`. Its `SUPPORTED_LANGUAGES` entry supplies the language name and the `supportedLngs` list, and the language switcher reads from it.
+3. Regenerate the package strings: `node scripts/extract-ui-messages.mjs` writes `packages/ui/src/locales/{en,zh-CN}.ts` from the template's `packages/i18n/locales/en/common.json` and throws when a key is missing from a locale, so add the new locale's `read`/`write` pair there instead of hand-editing the generated files. Widen `UILocale` and the `BUILT_IN` map in `packages/ui/src/i18n.tsx` to match.
+4. Add a matching language tree to the docs site — a directory under `apps/docs/docs/<locale>`, an entry in the multilingual config in `apps/docs/rspress.config.ts`, and the site's own UI strings in `apps/docs/site.ts`.
+5. Run `pnpm test:shared` and `pnpm test` — `src/lib/locales.test.ts` checks namespace and key parity across the template locales, and the package locale parity is enforced by the extractor.
 
 ## Parity harness
 

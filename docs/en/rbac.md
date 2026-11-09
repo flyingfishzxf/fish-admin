@@ -34,7 +34,7 @@ Permissions use a `resource:action` format:
 
 Several areas deliberately have no permission code: `/notifications` (it only exposes the current user's inbox) and the account pages `/profile` and `/security`, which operate on the current user only. `/settings` is signed-in as well, and the component examples no longer live in the app at all — they are pages on the documentation site, which has no session to authorize.
 
-`src/config/permissions.ts` is the single source of truth. It exports:
+The registry lives in `packages/contracts/src/permissions.ts`; `src/config/permissions.ts` re-exports it so app code keeps one import path. It exports:
 
 - `PERMISSION_CODES` — typed constants used across the app.
 - `PERMISSIONS` — display metadata (group, label and description keys) for the role editor and permissions page.
@@ -103,7 +103,7 @@ const canDelete = useCan('user:delete')
 
 Say you want to add invoice management with `invoice:read`.
 
-1. **Register the permission** in `src/config/permissions.ts`:
+1. **Register the permission** in `packages/contracts/src/permissions.ts`:
 
    ```ts
    export const PERMISSION_CODES = {

@@ -63,6 +63,17 @@ describe.skipIf(!isTemplate)('scaffold plan', () => {
     // `e2e-docs` and the docs Playwright configs stay, so their dependencies do too.
     expect(pkg.devDependencies['@playwright/test']).toBeDefined()
     expect(pkg.devDependencies['@axe-core/playwright']).toBeDefined()
+
+    // The docs visual scripts survive --mock=drop, so every helper they call
+    // must survive with them. A deleted helper is a MODULE_NOT_FOUND at runtime.
+    const deleted = new Set(editor.deletions)
+    const helpers = [...JSON.stringify(pkg.scripts).matchAll(/node (scripts\/[\w.-]+\.mjs)/g)]
+    expect(helpers.length).toBeGreaterThan(0)
+    for (const [, helper] of helpers) {
+      expect(deleted.has(helper)).toBe(false)
+      expect(existsSync(join(root, helper))).toBe(true)
+    }
+    expect(pkg.scripts['test:docs:visual']).toContain('check-visual-platform.mjs')
   })
 
   it('gives every step a title the run summary can print', () => {
