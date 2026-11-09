@@ -1,0 +1,28 @@
+{
+  "name": "@fish-admin/mock",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "FishAdmin demo API: MSW handlers, seeded database and fake auth.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./browser": "./src/browser.ts",
+    "./node": "./src/node.ts",
+    "./runtime": "./src/runtime.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "@fish-admin/contracts": "workspace:*",
+    "msw": "^2.15.0"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}

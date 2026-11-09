@@ -49,10 +49,6 @@ const MENU_ICONS: Record<MenuIconName, LucideIcon> = {
   workflow: Workflow,
 }
 
-const ICON_NAMES = new Map<LucideIcon, string>(
-  Object.entries(MENU_ICONS).map(([name, icon]) => [icon, name]),
-)
-
 export { MENU_ICON_NAMES }
 
 /**
@@ -62,9 +58,4 @@ export { MENU_ICON_NAMES }
 export function resolveMenuIcon(name: unknown): LucideIcon {
   if (typeof name === 'string' && name in MENU_ICONS) return MENU_ICONS[name as MenuIconName]
   return CircleDot
-}
-
-/** Used by the mock backend to serialize the static nav, so the two cannot drift. */
-export function iconNameFor(icon: LucideIcon): string | undefined {
-  return ICON_NAMES.get(icon)
 }

@@ -1,7 +1,9 @@
+import { NAV_CONTRACT } from '@fish-admin/contracts/navigation'
 import { CircleDot, LayoutDashboard, Users } from 'lucide-react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import {
+  ALL_NAV_ITEMS,
   NAV_GROUPS,
   internalNavItems,
   isExternalNavItem,
@@ -10,11 +12,9 @@ import {
 } from '@/config/nav'
 import { PERMISSION_CODES } from '@/config/permissions'
 
-import { MENU_ICON_NAMES, iconNameFor, resolveMenuIcon } from './menu-icons'
+import { MENU_ICON_NAMES, resolveMenuIcon } from './menu-icons'
 import type { MenuPayload, MenuRoutePayload } from './api'
 import { resolveMenuGroups } from './resolve'
-
-const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((group) => group.items)
 
 // The resolver may append the external docs entry, which has no path; the path
 // assertions below only ever care about the internal items.
@@ -34,12 +34,10 @@ function payload(
 }
 
 describe('menu icon registry', () => {
-  it('names every icon the shipped nav uses', () => {
-    // The mock backend serializes NAV_GROUPS through this registry, so an icon
-    // without a name would quietly arrive as the fallback marker.
-    for (const item of ALL_NAV_ITEMS) {
-      expect(iconNameFor(item.icon), item.titleKey).toBeTypeOf('string')
-    }
+  it('derives the shipped nav from the shared contract', () => {
+    expect(ALL_NAV_ITEMS.map((item) => item.to)).toEqual(
+      NAV_CONTRACT.flatMap((group) => group.items.map((item) => item.to)),
+    )
   })
 
   it('resolves a known name and degrades on an unknown one', () => {

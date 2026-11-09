@@ -8,6 +8,7 @@ import { Toaster } from '@fish-admin/react'
 import i18n from 'i18next'
 
 import { AppUIProvider } from '@/components/common/app-ui-provider'
+import { env } from '@/config/env'
 import { setUnauthorizedHandler } from '@/lib/auth-events'
 import { i18nReady } from '@/lib/i18n'
 import { queryClient } from '@/lib/query-client'
@@ -30,7 +31,11 @@ async function start() {
 
   if (mocksEnabled) {
     try {
-      const { worker } = await import('./mocks/browser')
+      const { createMockWorker } = await import('@fish-admin/mock/browser')
+      const worker = await createMockWorker({
+        apiBaseUrl: env.apiBaseUrl,
+        latency: env.mockLatency,
+      })
       await worker.start({
         onUnhandledRequest: 'bypass',
         serviceWorker: {

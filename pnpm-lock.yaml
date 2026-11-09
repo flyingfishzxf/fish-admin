@@ -14,6 +14,9 @@ importers:
       '@fish-admin/i18n':
         specifier: workspace:*
         version: link:packages/i18n
+      '@fish-admin/mock':
+        specifier: workspace:*
+        version: link:packages/mock
       '@fontsource-variable/inter':
         specifier: ^5.3.0
         version: 5.3.0
@@ -105,9 +108,6 @@ importers:
       '@eslint/js':
         specifier: ^9.39.5
         version: 9.39.5
-      '@faker-js/faker':
-        specifier: ^10.6.0
-        version: 10.6.0
       '@playwright/test':
         specifier: ^1.64.1
         version: 1.64.1
@@ -287,6 +287,28 @@ importers:
       vite:
         specifier: ^8.3.4
         version: 8.3.4(@types/node@22.20.5)(jiti@2.7.0)(yaml@2.9.1)
+      vitest:
+        specifier: ^5.0.5
+        version: 5.0.5(@types/node@22.20.5)(@vitest/coverage-v8@5.0.5)(jsdom@30.1.3)(msw@2.15.0(@types/node@22.20.5)(typescript@5.9.3))(vite@8.3.4(@types/node@22.20.5)(jiti@2.7.0)(yaml@2.9.1))
+
+  packages/mock:
+    dependencies:
+      '@faker-js/faker':
+        specifier: ^10.6.0
+        version: 10.6.0
+      '@fish-admin/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      msw:
+        specifier: ^2.15.0
+        version: 2.15.0(@types/node@22.20.5)(typescript@5.9.3)
+    devDependencies:
+      jsdom:
+        specifier: ^30.1.3
+        version: 30.1.3
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
       vitest:
         specifier: ^5.0.5
         version: 5.0.5(@types/node@22.20.5)(@vitest/coverage-v8@5.0.5)(jsdom@30.1.3)(msw@2.15.0(@types/node@22.20.5)(typescript@5.9.3))(vite@8.3.4(@types/node@22.20.5)(jiti@2.7.0)(yaml@2.9.1))

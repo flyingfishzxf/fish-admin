@@ -351,6 +351,8 @@ function dropTestBrowsers(editor, state) {
     'playwright.visual.config.ts',
     'scripts/check-visual-platform.mjs',
     'scripts/visual-regression.mjs',
+    'scripts/parity-freeze.mjs',
+    'scripts/parity-freeze.test.mjs',
   )
 
   editor.json('package.json', (pkg) => {
@@ -360,6 +362,8 @@ function dropTestBrowsers(editor, state) {
       'test:visual:update',
       'test:visual:docker',
       'perf',
+      'check:parity:freeze',
+      'parity:freeze',
     ]) {
       delete pkg.scripts[script]
     }
@@ -456,7 +460,7 @@ function brandStep({ editor, options }) {
     'src/features/users/components/users-page.tsx',
     'src/features/users/components/saved-views-menu.tsx',
     'src/features/users/components/saved-views-menu.test.tsx',
-    'src/mocks/db/types.ts',
+    'packages/mock/src/db/types.ts',
     'e2e/rbac.spec.ts',
     'e2e/users-bulk.spec.ts',
   ])
@@ -540,7 +544,7 @@ function localeStep({ editor, options }) {
 
 function mockStep({ editor, state }) {
   editor.delete(
-    'src/mocks',
+    'packages/mock',
     'public/mockServiceWorker.js',
     'src/features/settings/api.ts',
     'src/config/demo.ts',
@@ -549,6 +553,7 @@ function mockStep({ editor, state }) {
   dropTestBrowsers(editor, state)
 
   editor.json('package.json', (pkg) => {
+    delete pkg.dependencies['@fish-admin/mock']
     for (const script of ['build:demo', 'msw:init']) delete pkg.scripts[script]
     for (const specifier of ['msw', '@faker-js/faker']) delete pkg.devDependencies[specifier]
     delete pkg.msw
@@ -559,6 +564,8 @@ function mockStep({ editor, state }) {
     '  // Inlined instead of reading `env.enableMock` so the bundler can evaluate the',
     '  }',
   )
+
+  editor.dropImport('src/main.tsx', '@/config/env')
 
   editor
     .block(
@@ -1151,7 +1158,7 @@ export const USAGE = text(
   '  --name=<slug>            package name; also the localStorage key prefix',
   '  --display-name=<name>    brand shown in the shell, titles and the boot screen',
   '  --tagline=<text>         subtitle under the brand',
-  '  --mock=keep|drop         drop removes src/mocks, MSW, and the Playwright suite',
+  '  --mock=keep|drop         drop removes packages/mock, MSW, and the Playwright suite',
   '  --locales=en,zh-CN       which locales to keep; en is always required',
   '  --target <dir>           directory to transform (default: the current directory)',
   '  --dry-run                print the plan without writing',
