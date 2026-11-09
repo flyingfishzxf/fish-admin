@@ -142,7 +142,7 @@ Run `pnpm build && pnpm preview` and check the Network panel before shipping: th
 
 1. Leave `VITE_ENABLE_MOCK` unset in a build — `pnpm build` and a default `docker build` both resolve it to `false`. Set it explicitly if a previous `.env*` file pinned it to `true`.
 2. Set `VITE_API_BASE_URL`.
-3. `dist/` already contains no mock code: `vite.config.ts` removes the copied `mockServiceWorker.js` when the flag is off. Delete `src/mocks` and the mock block in `src/main.tsx` only if you want the source gone as well.
+3. `dist/` already contains no mock code: `vite.config.ts` removes the copied `mockServiceWorker.js` when the flag is off. Delete `packages/mock` and the mock block in `src/main.tsx` only if you want the source gone as well.
 
 If the flag is off, `main.tsx` never imports the mock module, so MSW and Faker are not shipped to users. The worker script that `public/mockServiceWorker.js` contributes to `dist/` stays inert: nothing registers it.
 

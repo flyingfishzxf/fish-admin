@@ -142,7 +142,7 @@ docker build \
 
 1. 构建时不要设置 `VITE_ENABLE_MOCK`——`pnpm build` 与默认的 `docker build` 都会把它解析为 `false`。如果此前用某个 `.env*` 文件把它固定成 `true`，需要显式改掉。
 2. 设置 `VITE_API_BASE_URL`。
-3. `dist/` 本身已不含 mock 代码：开关关闭时 `vite.config.ts` 会删除复制出来的 `mockServiceWorker.js`。只有想把源码一并清掉时，才需要删除 `src/mocks` 和 `src/main.tsx` 里的 mock 代码块。
+3. `dist/` 本身已不含 mock 代码：开关关闭时 `vite.config.ts` 会删除复制出来的 `mockServiceWorker.js`。只有想把源码一并清掉时，才需要删除 `packages/mock` 和 `src/main.tsx` 里的 mock 代码块。
 
 开关关闭时，`main.tsx` 不会 import mock 模块，MSW 与 Faker 不会进入用户下载的产物。
 

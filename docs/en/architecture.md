@@ -21,7 +21,7 @@ FishAdmin is a single-page React application built on the `@fish-admin/react` co
 [`src/main.tsx`](../../src/main.tsx) coordinates startup so route guards never run against an unknown session:
 
 1. Wait for `i18nReady`, which loads the bundled `common`, `nav` and `errors` namespaces.
-2. Resolve the mock flag: an explicit `VITE_ENABLE_MOCK` wins, otherwise it is `true` on the dev server and `false` in a build. When it is on, dynamically import `src/mocks/browser` and start the Service Worker. The worker URL is resolved from `import.meta.env.BASE_URL`, so subpath deployments work. Unhandled requests pass through. The test reads `import.meta.env` literals rather than `env.enableMock` on purpose, so a mock-free build tree-shakes the whole MSW chunk away.
+2. Resolve the mock flag: an explicit `VITE_ENABLE_MOCK` wins, otherwise it is `true` on the dev server and `false` in a build. When it is on, dynamically import `@fish-admin/mock/browser`, call `createMockWorker({ apiBaseUrl, latency })` and start the Service Worker. The worker URL is resolved from `import.meta.env.BASE_URL`, so subpath deployments work. Unhandled requests pass through. The test reads `import.meta.env` literals rather than `env.enableMock` on purpose, so a mock-free build tree-shakes the whole MSW chunk away.
 3. Call `useAuthStore.getState().bootstrap()`. With no refresh token the state becomes `anonymous`; otherwise the store refreshes tokens and loads `/auth/me`.
 4. Register the global unauthorized handler used by `apiRequest`.
 5. Mount React: `QueryClientProvider` → `RouterProvider` + `Toaster`.
@@ -167,16 +167,26 @@ features/reports/               features/notifications/       features/integrati
 
 UI components never call `fetch` directly; they use TanStack Query options that wrap the feature API.
 
+## Shared packages
+
+Three private workspace packages hold everything a second renderer needs:
+
+- `@fish-admin/contracts` — domain types, permission codes, `NAV_CONTRACT`, demo, integration and audit data, and the framework-neutral date helpers.
+- `@fish-admin/i18n` — the 21 locale namespaces plus `setupI18n`; `src/lib/i18n.ts` only plugs react-i18next into it.
+- `@fish-admin/mock` — the MSW handlers, the seeded database and `createMockWorker` / `createMockServer`.
+
+None of them imports React, the `@/` alias or Lucide. `parity/` freezes the documented surface and runs the same scenarios against the React baseline and a future Vue target; see [Vue port foundation](vue-port-foundation.md).
+
 ## Mock backend
 
-- `src/mocks/seed.ts` creates the database with Faker using a fixed seed: three demo accounts plus 57 generated users, a 10-node department tree, roles, invitations and 160 audit events spread over 90 days.
-- `src/mocks/seed-workspace.ts` deterministically seeds the business collections shared by seed and migration: 12 projects with 72 tasks, 48 milestones and budget items; 8 file folders and 18 files (image thumbnails are small SVG data URIs); 6 integrations with 24 delivery records; a notification inbox with per-user quiet hours and channel preferences; and 60 audit events tied to real project, file and integration ids.
-- `src/mocks/db/store.ts` reads and writes the database and synchronizes it to `localStorage` on every mutation. `MOCK_DB_VERSION` is 4: it migrates v1 → v2 → v3 → v4, preserves users, roles, departments, sessions and tokens, merges the new permission codes into system roles and appends the workspace collections idempotently. Only an unknown version triggers a reset.
-- Handlers under `src/mocks/handlers` implement the auth lifecycle, users (including bulk, restore and CSV import), departments, roles (including create, rename and delete), permissions, audit events, projects (tasks, milestones and attachments), file folders and files (including bulk delete), reports, notifications and preferences, integrations (deliveries and replay), dashboard and reset endpoints. Write handlers call `authorize()` and return `403` when the token's role lacks the permission.
+- `packages/mock/src/seed.ts` creates the database with Faker using a fixed seed: three demo accounts plus 57 generated users, a 10-node department tree, roles, invitations and 160 audit events spread over 90 days.
+- `packages/mock/src/seed-workspace.ts` deterministically seeds the business collections shared by seed and migration: 12 projects with 72 tasks, 48 milestones and budget items; 8 file folders and 18 files (image thumbnails are small SVG data URIs); 6 integrations with 24 delivery records; a notification inbox with per-user quiet hours and channel preferences; and 60 audit events tied to real project, file and integration ids.
+- `packages/mock/src/db/store.ts` reads and writes the database and synchronizes it to `localStorage` on every mutation. `MOCK_DB_VERSION` is 4: it migrates v1 → v2 → v3 → v4, preserves users, roles, departments, sessions and tokens, merges the new permission codes into system roles and appends the workspace collections idempotently. Only an unknown version triggers a reset.
+- Handlers under `packages/mock/src/handlers` implement the auth lifecycle, users (including bulk, restore and CSV import), departments, roles (including create, rename and delete), permissions, audit events, projects (tasks, milestones and attachments), file folders and files (including bulk delete), reports, notifications and preferences, integrations (deliveries and replay), dashboard and reset endpoints. Write handlers call `authorize()` and return `403` when the token's role lacks the permission.
 - Reports are generated deterministically from the requested range and granularity; thresholds and series colors are presentation-only and never persisted. File uploads send metadata plus an optional data URL; files above 256 KB keep metadata only.
 - Audit events are the single activity log. User, role, department, profile, project, file and integration mutations call `logAuditEvent()`; `logActivity()` remains a thin wrapper, and the dashboard maps the newest events through `recentActivity()`. The list is capped at 500 entries.
 - Tokens are fake but structurally realistic: a base64url access token with an expiry, opaque refresh tokens tied to session records, and separate verification, password-reset and MFA-challenge entries with their own TTLs.
-- `src/mocks/auth.ts` holds the auth rules: session rotation on refresh, five failed passwords locking an email for one minute, an MFA challenge that short-circuits login, and revocation of other sessions when a password changes.
+- `packages/mock/src/auth.ts` holds the auth rules: session rotation on refresh, five failed passwords locking an email for one minute, an MFA challenge that short-circuits login, and revocation of other sessions when a password changes.
 - Deleting a user is soft (`deletedAt`), so `POST /api/users/restore` can undo a bulk delete; deactivating a user revokes their sessions.
 - `VITE_MOCK_LATENCY` adds a default 300 ms delay so loading states are visible. `POST /api/__mock/reset` (requires `demo:reset`) reseeds the database and keeps the current session when the account still exists.
 
@@ -194,7 +204,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Internationalization
 
-- Locale JSON lives in `src/locales/{en,zh-CN}` with 21 namespaces: `common`, `nav`, `auth`, `dashboard`, `projects`, `files`, `reports`, `notifications`, `integrations`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `dictionaries`, `workflows`, `errors`, `validation`. Component strings live in the package, not here — see [`@fish-admin/react` i18n](https://fish-admin-docs.vercel.app/guide/installation).
+- Locale JSON lives in `packages/i18n/locales/{en,zh-CN}` with 21 namespaces: `common`, `nav`, `auth`, `dashboard`, `projects`, `files`, `reports`, `notifications`, `integrations`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `dictionaries`, `workflows`, `errors`, `validation`; `src/lib/i18n.ts` is only the React-i18next adapter over `setupI18n`. Component strings live in the package, not here — see [`@fish-admin/react` i18n](https://fish-admin-docs.vercel.app/guide/installation).
 - `common`, `nav` and `errors` are bundled; other namespaces are loaded on demand with `i18next-resources-to-backend` and `import.meta.glob`.
 - The initial language comes from `localStorage`, then the browser language, then English.
 - `changeLanguage()` persists the choice, switches i18next and updates `<html lang>`.

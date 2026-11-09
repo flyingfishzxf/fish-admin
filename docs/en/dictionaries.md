@@ -6,16 +6,16 @@
 
 ## Where things live
 
-| Concern        | Files                                                                              |
-| -------------- | ---------------------------------------------------------------------------------- |
-| Types          | `src/types/index.ts` (`DictionaryType`, `DictionaryItem`, `DictionaryDetail`)      |
-| Client API     | `src/features/dictionaries/api.ts`, `queries.ts`                                   |
-| UI             | `src/features/dictionaries/components/*`                                           |
-| Route          | `src/routes/_app/dictionaries.tsx`                                                 |
-| Mock rules     | `src/mocks/handlers/dictionaries.ts`, `src/mocks/seed-dictionaries.ts`             |
-| Permissions    | `dictionary:read`, `dictionary:manage` in `src/config/permissions.ts`              |
-| Menu and icons | `src/config/nav.ts`, `src/features/navigation/menu-icons.ts` (`book-marked`)       |
-| Consumer       | `src/features/users/components/tags-editor.tsx` reads the enabled `user_tag` items |
+| Concern        | Files                                                                                  |
+| -------------- | -------------------------------------------------------------------------------------- |
+| Types          | `src/types/index.ts` (`DictionaryType`, `DictionaryItem`, `DictionaryDetail`)          |
+| Client API     | `src/features/dictionaries/api.ts`, `queries.ts`                                       |
+| UI             | `src/features/dictionaries/components/*`                                               |
+| Route          | `src/routes/_app/dictionaries.tsx`                                                     |
+| Mock rules     | `packages/mock/src/handlers/dictionaries.ts`, `packages/mock/src/seed-dictionaries.ts` |
+| Permissions    | `dictionary:read`, `dictionary:manage` in `src/config/permissions.ts`                  |
+| Menu and icons | `src/config/nav.ts`, `src/features/navigation/menu-icons.ts` (`book-marked`)           |
+| Consumer       | `src/features/users/components/tags-editor.tsx` reads the enabled `user_tag` items     |
 
 ## What the page does
 
@@ -135,6 +135,6 @@ The seed contains three system types: `user_tag` (seven items), `expense_categor
 ## Testing
 
 - `e2e/dictionaries.spec.ts` — admin reorders and reloads, creates an item, sees it as a tag suggestion on `/users/user-admin`, renames it, sees the new label, disables it and sees the suggestion disappear; viewer can read but has no create/edit controls and cannot toggle.
-- `src/mocks/db/migrate.test.ts` — v5 → v6 adds the seed and keeps existing data; v4 → v6 chains through both migrations.
+- `packages/mock/src/db/migrate.test.ts` — v5 → v6 adds the seed and keeps existing data; v4 → v6 chains through both migrations.
 - `packages/ui/src/registry.test.ts` — `switch` declares `/dictionaries` as its `usedIn`, so the docs page keeps pointing at a route that exists.
 - Visual baseline — `dictionaries.png` (selected type, reorder handles and reference badges).

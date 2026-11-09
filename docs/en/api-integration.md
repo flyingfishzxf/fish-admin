@@ -18,7 +18,7 @@ To run against a real backend:
 
 1. Set `VITE_ENABLE_MOCK=false` and `VITE_API_BASE_URL=https://api.example.com` in `.env.local`.
 2. Remove the mock bootstrap block from `src/main.tsx` (or keep it guarded by the flag).
-3. Delete `src/mocks` and `public/mockServiceWorker.js` once you no longer need them.
+3. Delete `packages/mock` and `public/mockServiceWorker.js` once you no longer need them.
 4. Point your server at the contract below, or edit `src/features/*/api.ts` to map your own shapes.
 
 > If your API lives on another origin, configure CORS for the app origin and allow the `Authorization` and `Content-Type` headers. If you use cookies instead of bearer tokens, add `credentials: 'include'` in `apiRequest` and update CORS to allow credentials.
@@ -388,20 +388,20 @@ Returns the sidebar for the signed-in user. The sidebar, the command palette, th
 }
 ```
 
-| Field        | Rule                                                                                                                                                                                                                                                                                                                                   |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `titleKey`   | An i18n key rendered with `t()`. A key no locale carries shows the key itself, so reuse `nav:groups.*` / `nav:items.*` or ship the translations in every locale.                                                                                                                                                                       |
-| `path`       | Must be a route this build has; the allowlist is derived from `NAV_GROUPS`, currently `/`, `/reports`, `/projects`, `/workflows`, `/files`, `/notifications`, `/users`, `/departments`, `/roles`, `/permissions`, `/dictionaries`, `/audit-logs`, `/integrations`, `/profile`, `/security`, `/settings`. Anything else is dropped.     |
-| `icon`       | One of the 17 names in `src/features/navigation/menu-icons.ts`: `bar-chart-3`, `bell`, `boxes`, `circle-dot`, `folder-kanban`, `folder-open`, `key-round`, `layout-dashboard`, `lock-keyhole`, `network`, `palette`, `plug`, `scroll-text`, `settings-2`, `shield-check`, `user-round`, `users`. An unknown name renders `circle-dot`. |
-| `permission` | Optional code, intersected with the session's permissions exactly as the static nav is — an entry the menu sends and the session lacks never renders.                                                                                                                                                                                  |
-| `children`   | Optional one-level list, rendered as an indented sub-menu. The parent stays a link.                                                                                                                                                                                                                                                    |
+| Field        | Rule                                                                                                                                                                                                                                                                                                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `titleKey`   | An i18n key rendered with `t()`. A key no locale carries shows the key itself, so reuse `nav:groups.*` / `nav:items.*` or ship the translations in every locale.                                                                                                                                                                                                                     |
+| `path`       | Must be a route this build has; the allowlist is derived from `NAV_GROUPS`, currently `/`, `/reports`, `/projects`, `/workflows`, `/files`, `/notifications`, `/users`, `/departments`, `/roles`, `/permissions`, `/dictionaries`, `/audit-logs`, `/integrations`, `/profile`, `/security`, `/settings`. Anything else is dropped.                                                   |
+| `icon`       | One of the 19 names in `MENU_ICON_NAMES` (`packages/contracts/src/navigation.ts`): `bar-chart-3`, `bell`, `book-marked`, `boxes`, `circle-dot`, `folder-kanban`, `folder-open`, `key-round`, `layout-dashboard`, `lock-keyhole`, `network`, `palette`, `plug`, `scroll-text`, `settings-2`, `shield-check`, `user-round`, `users`, `workflow`. An unknown name renders `circle-dot`. |
+| `permission` | Optional code, intersected with the session's permissions exactly as the static nav is — an entry the menu sends and the session lacks never renders.                                                                                                                                                                                                                                |
+| `children`   | Optional one-level list, rendered as an indented sub-menu. The parent stays a link.                                                                                                                                                                                                                                                                                                  |
 
 How the client treats it (`src/features/navigation/resolve.ts`, `menu-access.ts`):
 
 - Whatever the menu does not carry is not navigable: a directly typed URL to a dropped `path` lands on `/403`, which is how you retire a page without deleting the route. Detail routes follow their parent, so keeping `/users` in the menu keeps `/users/42` reachable.
 - A request that fails, answers with a non-JSON body, or exceeds the 2-second budget falls back to `NAV_GROUPS` in `src/config/nav.ts`. An API that has not implemented the endpoint yet — or no network at all — still gives a working app.
 - The payload is cached under the `['menu']` query key for five minutes and cleared with the session, so signing in as another role refetches it.
-- The demo serializes this endpoint from `NAV_GROUPS` (`src/mocks/menu.ts`) so the mock and the offline fallback cannot drift. Nothing is server-only there: the Component docs entry is appended client-side and never crosses the wire, because a backend that has never heard of the docs site must still produce a working menu.
+- The demo serializes this endpoint from `NAV_CONTRACT` (`packages/mock/src/menu.ts`), the same contract the app derives `NAV_GROUPS` from, so the mock and the offline fallback cannot drift. Nothing is server-only there: the Component docs entry is appended client-side and never crosses the wire, because a backend that has never heard of the docs site must still produce a working menu.
 
 > A server-driven menu changes what the interface shows, nothing more. The payload goes to a client that already holds a token, and every page it lists still answers to anyone who asks. Keep the server authoritative for data — see [RBAC](./rbac.md).
 
@@ -527,10 +527,10 @@ Only exists in the mock, and requires `demo:reset`. It reseeds users, roles, dep
 1. Keep `src/types` as the internal contract, or replace it with generated types from your OpenAPI schema.
 2. Rewrite the feature `api.ts` files (`auth`, `users`, `roles`, `permissions`, `departments`, `audit`, `dashboard`, `profile`, `settings`) to call your endpoints. They are the only places that use `apiRequest`; the security screen reuses `auth/api.ts`.
 3. Keep `apiRequest` for bearer tokens, single-flight refresh and global 401 handling. If your backend uses cookies, simplify it: drop the Authorization header, add `credentials: 'include'`, and keep the 401 redirect.
-4. Implement the auth lifecycle on the server — registration with verification, reset tokens with a TTL, invitations, TOTP, lockout and a session table. `src/mocks/handlers/auth.ts` documents the request/response shape each screen expects, and the client only depends on those shapes.
+4. Implement the auth lifecycle on the server — registration with verification, reset tokens with a TTL, invitations, TOTP, lockout and a session table. `packages/mock/src/handlers/auth.ts` documents the request/response shape each screen expects, and the client only depends on those shapes.
 5. Update the `permissions` field in `/auth/me` to your server's effective permission list.
 6. Decide where roles, departments and permissions live. The demo keeps a full registry on the client for the role editor and matrix; a real backend may expose only the labels it needs, but it must still enforce every code.
-7. Remove `src/mocks` and `public/mockServiceWorker.js`, then verify a production build with `pnpm build && pnpm preview`.
+7. Remove `packages/mock` and `public/mockServiceWorker.js`, then verify a production build with `pnpm build && pnpm preview`.
 
 ## Testing against a real API
 

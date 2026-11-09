@@ -6,15 +6,15 @@ FishAdmin 把后台应用里通常被留作练习的部分补齐了：注册、�
 
 ## 各部分所在位置
 
-| 关注点    | 文件                                                                                  |
-| --------- | ------------------------------------------------------------------------------------- |
-| 页面      | `src/features/auth/components/*`、`src/features/security/*`                           |
-| 请求      | `src/features/auth/api.ts`                                                            |
-| 校验      | `src/features/auth/schemas.ts`、`src/features/auth/password.ts`                       |
-| 会话状态  | `src/stores/auth-store.ts`                                                            |
-| Mock 规则 | `src/mocks/handlers/auth.ts`、`src/mocks/auth.ts`、`src/mocks/jwt.ts`                 |
-| 失败页面  | `src/components/common/status-screen.tsx`、`src/routes/{401,500,503,maintenance}.tsx` |
-| 离线处理  | `src/lib/online.ts`、`src/components/layout/offline-banner.tsx`                       |
+| 关注点    | 文件                                                                                          |
+| --------- | --------------------------------------------------------------------------------------------- |
+| 页面      | `src/features/auth/components/*`、`src/features/security/*`                                   |
+| 请求      | `src/features/auth/api.ts`                                                                    |
+| 校验      | `src/features/auth/schemas.ts`、`src/features/auth/password.ts`                               |
+| 会话状态  | `src/stores/auth-store.ts`                                                                    |
+| Mock 规则 | `packages/mock/src/handlers/auth.ts`、`packages/mock/src/auth.ts`、`packages/mock/src/jwt.ts` |
+| 失败页面  | `src/components/common/status-screen.tsx`、`src/routes/{401,500,503,maintenance}.tsx`         |
+| 离线处理  | `src/lib/online.ts`、`src/components/layout/offline-banner.tsx`                               |
 
 ## 登录与两步验证
 
@@ -41,7 +41,7 @@ FishAdmin 把后台应用里通常被留作练习的部分补齐了：注册、�
 
 ## 登录锁定
 
-`src/mocks/auth.ts` 在 mock 数据库里为每个邮箱维护计数。失败五次会设置 `lockedUntil = now + 60s`；此后即便密码正确，继续尝试也返回 `429 ACCOUNT_LOCKED`。登录成功会清除该记录，修改密码和重置密码同样如此。
+`packages/mock/src/auth.ts` 在 mock 数据库里为每个邮箱维护计数。失败五次会设置 `lockedUntil = now + 60s`；此后即便密码正确，继续尝试也返回 `429 ACCOUNT_LOCKED`。登录成功会清除该记录，修改密码和重置密码同样如此。
 
 ## 会话
 

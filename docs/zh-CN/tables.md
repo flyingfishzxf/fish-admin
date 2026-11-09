@@ -80,7 +80,7 @@ initialState: {
 打开 `/users?dataset=large`。这是 Mock 专属能力：
 
 - 路由校验器强制 `pageSize=5000`，该模式下隐藏分页。工具栏徽标与 `aria-rowcount` 都按 5 000 行显示。
-- 行由 `src/mocks/db/synthetic-users.ts` 在**内存**中按固定 faker 种子生成，不写进 `localStorage`，
+- 行由 `packages/mock/src/db/synthetic-users.ts` 在**内存**中按固定 faker 种子生成，不写进 `localStorage`，
   也不进入种子库；常规列表仍然只返回存储中的用户。
 - 批量改状态、删除与恢复只改内存数组，刷新即还原。其他写操作仍作用于存储库，
   因此不要把合成行当成持久记录。

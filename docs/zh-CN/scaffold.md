@@ -43,9 +43,9 @@ pnpm scaffold
 
 **组件目录不再需要裁剪。** `/components` 与 `/ui` 曾经是可选删除项，脚本里对应一个 `catalog` 步骤；它们现在分别搬到了文档站点与 `@fish-admin/react` 包里，模板本身已经不带这两个路由，所以脚本里也没有这一步了。
 
-**`--locales=<list>`** — 删除被舍弃语言的目录、`src/lib/i18n.ts` 中对应的三个 import、`SUPPORTED_LANGUAGES` 条目与 resources 区块，把 `e2e/i18n-theme.spec.ts` 重写为只保留主题断言，并删掉 `e2e/a11y.spec.ts` 里的中文登录审计。只剩一种语言时，语言切换按钮与命令面板中的切换项会自动隐藏。
+**`--locales=<list>`** — 删除被舍弃语言的目录、`packages/i18n/src/resources.ts` 中对应的三个 import 与 resources 区块，以及 `packages/i18n/src/languages.ts` 中的 `SUPPORTED_LANGUAGES` 条目，把 `e2e/i18n-theme.spec.ts` 重写为只保留主题断言，并删掉 `e2e/a11y.spec.ts` 里的中文登录审计。只剩一种语言时，语言切换按钮与命令面板中的切换项会自动隐藏。
 
-**`--mock=drop`** — 删除 `src/mocks`、`public/mockServiceWorker.js`、`src/features/settings/api.ts` 与 `src/config/demo.ts`；移除 `src/main.tsx` 的 MSW 启动代码、`src/config/env.ts` 与 `.env.example` 中的 mock 变量、登录页的演示账号卡片、OTP 页的验证码提示、设置页的「重置演示数据」卡片、Dockerfile 与 Compose 中的 `VITE_ENABLE_MOCK`，以及 `msw` / `@faker-js/faker` 两个 devDependency。
+**`--mock=drop`** — 删除 `packages/mock`、`public/mockServiceWorker.js`、`src/features/settings/api.ts` 与 `src/config/demo.ts`；移除 `src/main.tsx` 的 MSW 启动代码、`src/config/env.ts` 与 `.env.example` 中的 mock 变量、登录页的演示账号卡片、OTP 页的验证码提示、设置页的「重置演示数据」卡片、Dockerfile 与 Compose 中的 `VITE_ENABLE_MOCK`，以及 `@fish-admin/mock` workspace 依赖、根目录的 `msw` devDependency 与 `msw` init 配置。
 
 由于 Playwright 套件是驱动着演示后端跑的，去掉 mock 就必须连同整个浏览器子系统一起去掉：`e2e`、两个 Playwright 配置、视觉回归脚本、`test:e2e` / `test:visual*` / `perf` 三个 script，以及 `.github/workflows/ci.yml` 末尾的 `e2e` 与 `visual` 两个 job。剩下的 Vitest、ESLint、typecheck、构建与体积预算仍会照常运行。
 

@@ -12,7 +12,7 @@ The approval center is a worked example of a multi-step business flow: a request
 | Client API     | `src/features/workflows/api.ts`, `queries.ts`, `search.ts`                             |
 | UI             | `src/features/workflows/components/*`                                                  |
 | Routes         | `src/routes/_app/workflows.tsx`, `src/routes/_app/workflows_.$id.tsx`                  |
-| Mock rules     | `src/mocks/handlers/workflows.ts`, `src/mocks/seed-workflows.ts`                       |
+| Mock rules     | `packages/mock/src/handlers/workflows.ts`, `packages/mock/src/seed-workflows.ts`       |
 | Permissions    | `workflow:read`, `workflow:approve` in `src/config/permissions.ts`                     |
 | Menu and icons | `src/config/nav.ts`, `src/features/navigation/menu-icons.ts` (`workflow`)              |
 
@@ -81,7 +81,7 @@ An instance stores `approverIds` (the chain), `currentStep` (the position waitin
 - Transferring rewrites `approverIds[currentStep]` and appends a `transferred` step with the new approver. The timeline records both the actor and the target.
 - Closed requests reject every further decision.
 
-The seed in `src/mocks/seed-workflows.ts` replays exactly this logic, so a timeline can never disagree with the stored status.
+The seed in `packages/mock/src/seed-workflows.ts` replays exactly this logic, so a timeline can never disagree with the stored status.
 
 ## Data and the mock database
 
@@ -103,5 +103,5 @@ The client is deliberately thin, because none of it is trustworthy:
 ## Testing
 
 - `e2e/workflows.spec.ts` — admin approves `WF-2026-0142` (status, timeline, reload, audit event); viewer has no menu entry and lands on `/403`.
-- `src/mocks/db/migrate.test.ts` — v4 → v5 keeps existing data, seeds the chain, and merges the new permission codes.
+- `packages/mock/src/db/migrate.test.ts` — v4 → v5 keeps existing data, seeds the chain, and merges the new permission codes.
 - Visual baselines — `workflows.png` (pending queue) and `approval-detail.png` (timeline, snapshot, decision panel).

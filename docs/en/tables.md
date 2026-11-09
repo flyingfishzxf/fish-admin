@@ -86,7 +86,7 @@ Open `/users?dataset=large`. This is a mock-only affordance:
 
 - The route validator forces `pageSize=5000` and hides pagination in this mode. The badge in the
   toolbar and the `aria-rowcount` both reflect 5 000 rows.
-- Rows are generated **in memory** by `src/mocks/db/synthetic-users.ts` with a fixed faker seed.
+- Rows are generated **in memory** by `packages/mock/src/db/synthetic-users.ts` with a fixed faker seed.
   They are not written into `localStorage` and not added to the seed database; the regular list
   still returns stored users only.
 - Bulk status, delete and restore work against the in-memory array and reset on reload. Every other

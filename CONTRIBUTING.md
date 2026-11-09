@@ -100,18 +100,18 @@ Reviewers may ask for changes or suggest splitting a large pull request. That is
 - Design tokens live only in `packages/tokens/src/tokens.json`; never declare `--background`, `--primary` or another token in a stylesheet. `pnpm check:tokens` rejects stray declarations, stale generated files and missing Tailwind mappings. New animated UI should use the `--motion-duration-*` / `--motion-ease-*` tokens and pair every animation with `motion-reduce:` classes.
 - Put feature-specific code under `src/features/<feature>` — API calls, query options, schemas and components stay together.
 - Do not call `fetch` from components. Go through `apiRequest` and TanStack Query.
-- Template UI strings belong in `src/locales/{en,zh-CN}`; component strings belong in `packages/ui/src/locales`. Add both languages in the same pull request. The locale parity tests enforce this.
+- Template UI strings belong in `packages/i18n/locales/{en,zh-CN}`; component strings belong in `packages/ui/src/locales`. Add both languages in the same pull request. The locale parity tests enforce this. `packages/contracts`, `packages/i18n` and `packages/mock` must stay framework-neutral: no React, no `@/` alias, no Lucide imports.
 - Permission checks must use the existing registry — see [docs/en/rbac.md](./docs/en/rbac.md). A new permission needs a registry entry, a navigation item when relevant, a route guard and role grants.
 - Client-side permissions are for UX only. Any new write endpoint must also be authorized by the backend or mock handler.
 
 ## Adding a language
 
-1. Copy `src/locales/en` to `src/locales/<locale>` and translate every namespace.
-2. Register the locale in `src/lib/i18n.ts` and the language switcher.
+1. Copy `packages/i18n/locales/en` to `packages/i18n/locales/<locale>` and translate every namespace.
+2. Register the locale in `packages/i18n/src/languages.ts` and the language switcher.
 3. Add the locale to the language names map and the `supportedLngs` list.
-4. Regenerate the package strings: `node scripts/extract-ui-messages.mjs` writes `packages/ui/src/locales/{en,zh-CN}.ts` from the template's `common.json` and throws when a key is missing from a locale, so add the new locale's `read`/`write` pair there instead of hand-editing the generated files. Widen `UILocale` and the `BUILT_IN` map in `packages/ui/src/i18n.tsx` to match.
+4. Regenerate the package strings: `node scripts/extract-ui-messages.mjs` writes `packages/ui/src/locales/{en,zh-CN}.ts` from the template's `packages/i18n/locales/en/common.json` and throws when a key is missing from a locale, so add the new locale's `read`/`write` pair there instead of hand-editing the generated files. Widen `UILocale` and the `BUILT_IN` map in `packages/ui/src/i18n.tsx` to match.
 5. Add a matching language tree to the docs site — a directory under `apps/docs/docs/<locale>`, an entry in the multilingual config in `apps/docs/rspress.config.ts`, and the site's own UI strings in `apps/docs/site.ts`.
-6. Run `pnpm test` — `src/lib/locales.test.ts` checks namespace and key parity across the template locales, and the package locale parity is enforced by the extractor.
+6. Run `pnpm test:shared` and `pnpm test` — `src/lib/locales.test.ts` checks namespace and key parity across the template locales, and the package locale parity is enforced by the extractor.
 
 ## Documentation
 

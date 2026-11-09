@@ -6,16 +6,16 @@
 
 ## 代码位置
 
-| 关注点     | 文件                                                                           |
-| ---------- | ------------------------------------------------------------------------------ |
-| 类型       | `src/types/index.ts`（`DictionaryType`、`DictionaryItem`、`DictionaryDetail`） |
-| 客户端 API | `src/features/dictionaries/api.ts`、`queries.ts`                               |
-| 界面       | `src/features/dictionaries/components/*`                                       |
-| 路由       | `src/routes/_app/dictionaries.tsx`                                             |
-| Mock 规则  | `src/mocks/handlers/dictionaries.ts`、`src/mocks/seed-dictionaries.ts`         |
-| 权限       | `src/config/permissions.ts` 中的 `dictionary:read`、`dictionary:manage`        |
-| 菜单与图标 | `src/config/nav.ts`、`src/features/navigation/menu-icons.ts`（`book-marked`）  |
-| 消费方     | `src/features/users/components/tags-editor.tsx` 读取启用的 `user_tag` 字典项   |
+| 关注点     | 文件                                                                                   |
+| ---------- | -------------------------------------------------------------------------------------- |
+| 类型       | `src/types/index.ts`（`DictionaryType`、`DictionaryItem`、`DictionaryDetail`）         |
+| 客户端 API | `src/features/dictionaries/api.ts`、`queries.ts`                                       |
+| 界面       | `src/features/dictionaries/components/*`                                               |
+| 路由       | `src/routes/_app/dictionaries.tsx`                                                     |
+| Mock 规则  | `packages/mock/src/handlers/dictionaries.ts`、`packages/mock/src/seed-dictionaries.ts` |
+| 权限       | `src/config/permissions.ts` 中的 `dictionary:read`、`dictionary:manage`                |
+| 菜单与图标 | `src/config/nav.ts`、`src/features/navigation/menu-icons.ts`（`book-marked`）          |
+| 消费方     | `src/features/users/components/tags-editor.tsx` 读取启用的 `user_tag` 字典项           |
 
 ## 页面行为
 
@@ -135,6 +135,6 @@ Mock 数据库版本为 `6`。从 v5 迁移时会补上 `dictionaryTypes` 与 `d
 ## 测试
 
 - `e2e/dictionaries.spec.ts` —— admin 排序后刷新仍在；新建项后在 `/users/user-admin` 看到标签建议；改名后看到新 label；停用后建议消失；viewer 可读但没有新建/编辑入口，也不能切换状态。
-- `src/mocks/db/migrate.test.ts` —— v5 → v6 补种并保留原有数据；v4 → v6 串起两次迁移。
+- `packages/mock/src/db/migrate.test.ts` —— v5 → v6 补种并保留原有数据；v4 → v6 串起两次迁移。
 - `packages/ui/src/registry.test.ts` —— `switch` 的 `usedIn` 指向 `/dictionaries`，文档页因此始终链接到一个真实存在的路由。
 - 视觉基线 —— `dictionaries.png`（选中类型、排序把手与引用徽标）。

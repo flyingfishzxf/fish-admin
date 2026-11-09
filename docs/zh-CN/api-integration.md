@@ -18,7 +18,7 @@
 
 1. 在 `.env.local` 中设置 `VITE_ENABLE_MOCK=false`、`VITE_API_BASE_URL=https://api.example.com`。
 2. 移除 `src/main.tsx` 中的 mock 启动代码（或继续用开关保护）。
-3. 不再需要演示后端后，删除 `src/mocks` 与 `public/mockServiceWorker.js`。
+3. 不再需要演示后端后，删除 `packages/mock` 与 `public/mockServiceWorker.js`。
 4. 让服务端实现下述契约，或修改 `src/features/*/api.ts` 适配你自己的数据结构。
 
 > 若 API 位于其他源，需为应用源配置 CORS，允许 `Authorization` 与 `Content-Type` 请求头。如果改用 Cookie 认证，请在 `apiRequest` 中加入 `credentials: 'include'`，并让 CORS 允许携带凭据。
@@ -388,20 +388,20 @@
 }
 ```
 
-| 字段         | 规则                                                                                                                                                                                                                                                                                                                                 |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `titleKey`   | 交给 `t()` 渲染的 i18n key。任何语言包都没有的 key 会直接显示 key 本身，因此请复用 `nav:groups.*` / `nav:items.*`，或在每种语言里补齐翻译。                                                                                                                                                                                          |
-| `path`       | 必须是本次构建真实存在的路由；白名单由 `NAV_GROUPS` 推导，当前是 `/`、`/reports`、`/projects`、`/workflows`、`/files`、`/notifications`、`/users`、`/departments`、`/roles`、`/permissions`、`/dictionaries`、`/audit-logs`、`/integrations`、`/profile`、`/security`、`/settings`。其余一律丢弃。                                   |
-| `icon`       | `src/features/navigation/menu-icons.ts` 注册表里的 17 个名字之一：`bar-chart-3`、`bell`、`boxes`、`circle-dot`、`folder-kanban`、`folder-open`、`key-round`、`layout-dashboard`、`lock-keyhole`、`network`、`palette`、`plug`、`scroll-text`、`settings-2`、`shield-check`、`user-round`、`users`。不认识的名字降级为 `circle-dot`。 |
-| `permission` | 可选权限码，与静态导航一样会和会话权限求交集——菜单发了但会话没有的条目不会渲染。                                                                                                                                                                                                                                                     |
-| `children`   | 可选的一层子项，渲染成缩进的子菜单；父项本身仍然是链接。                                                                                                                                                                                                                                                                             |
+| 字段         | 规则                                                                                                                                                                                                                                                                                                                                                                         |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `titleKey`   | 交给 `t()` 渲染的 i18n key。任何语言包都没有的 key 会直接显示 key 本身，因此请复用 `nav:groups.*` / `nav:items.*`，或在每种语言里补齐翻译。                                                                                                                                                                                                                                  |
+| `path`       | 必须是本次构建真实存在的路由；白名单由 `NAV_GROUPS` 推导，当前是 `/`、`/reports`、`/projects`、`/workflows`、`/files`、`/notifications`、`/users`、`/departments`、`/roles`、`/permissions`、`/dictionaries`、`/audit-logs`、`/integrations`、`/profile`、`/security`、`/settings`。其余一律丢弃。                                                                           |
+| `icon`       | `MENU_ICON_NAMES`（`packages/contracts/src/navigation.ts`）里的 19 个名字之一：`bar-chart-3`、`bell`、`book-marked`、`boxes`、`circle-dot`、`folder-kanban`、`folder-open`、`key-round`、`layout-dashboard`、`lock-keyhole`、`network`、`palette`、`plug`、`scroll-text`、`settings-2`、`shield-check`、`user-round`、`users`、`workflow`。不认识的名字降级为 `circle-dot`。 |
+| `permission` | 可选权限码，与静态导航一样会和会话权限求交集——菜单发了但会话没有的条目不会渲染。                                                                                                                                                                                                                                                                                             |
+| `children`   | 可选的一层子项，渲染成缩进的子菜单；父项本身仍然是链接。                                                                                                                                                                                                                                                                                                                     |
 
 客户端的处理方式（`src/features/navigation/resolve.ts`、`menu-access.ts`）：
 
 - 菜单里没有的就进不去：直接输入被丢弃 `path` 的 URL 会落到 `/403`，这是下线某个页面却不必删除路由的做法。详情路由跟随父级，所以菜单保留 `/users` 时 `/users/42` 依然可达。
 - 请求失败、返回非 JSON 或超过 2 秒预算时，回落到 `src/config/nav.ts` 的 `NAV_GROUPS`。后端还没实现这个接口、甚至完全离线，应用照样可用。
 - 载荷以 `['menu']` 缓存五分钟，并随会话一起清空，所以换角色登录会重新拉取。
-- 演示环境里这个接口由 `NAV_GROUPS` 序列化而来（`src/mocks/menu.ts`），保证 mock 与离线回落不会走偏。这里没有纯服务端决定的条目：组件文档入口是客户端追加的，从不过网络，因此一个从未听说过文档站的后端也能给出完整可用的菜单。
+- 演示环境里这个接口由 `NAV_CONTRACT` 序列化而来（`packages/mock/src/menu.ts`），应用侧的 `NAV_GROUPS` 也由同一份契约派生，保证 mock 与离线回落不会走偏。这里没有纯服务端决定的条目：组件文档入口是客户端追加的，从不过网络，因此一个从未听说过文档站的后端也能给出完整可用的菜单。
 
 > 服务端驱动的菜单改变的只是界面展示。这份载荷发给了已经持有令牌的客户端，它列出的每个页面依旧对任何请求者敞开。数据权限仍必须由服务端把关——见 [RBAC](./rbac.md)。
 
@@ -527,10 +527,10 @@
 1. 继续使用 `src/types` 作为内部契约，或用 OpenAPI schema 生成的类型替换。
 2. 重写各 feature 的 `api.ts`（`auth`、`users`、`roles`、`permissions`、`departments`、`audit`、`dashboard`、`profile`、`settings`），让它们调用你的接口。它们是仅有的使用 `apiRequest` 的位置；安全页面复用 `auth/api.ts`。
 3. 保留 `apiRequest` 以复用 Bearer 令牌、单飞刷新与全局 401 处理。若后端使用 Cookie，可简化：去掉 Authorization 头、加入 `credentials: 'include'`，保留 401 跳转逻辑。
-4. 在服务端实现完整的认证生命周期——注册与邮箱验证、带 TTL 的重置令牌、邀请、TOTP、登录锁定以及会话表。`src/mocks/handlers/auth.ts` 记录了每个界面所期待的请求/响应结构，客户端只依赖这些结构。
+4. 在服务端实现完整的认证生命周期——注册与邮箱验证、带 TTL 的重置令牌、邀请、TOTP、登录锁定以及会话表。`packages/mock/src/handlers/auth.ts` 记录了每个界面所期待的请求/响应结构，客户端只依赖这些结构。
 5. 把 `/auth/me` 的 `permissions` 字段换成服务端计算的有效权限列表。
 6. 决定角色、部门与权限数据放在哪里。演示为了方便角色编辑器与权限矩阵在客户端保留完整注册表；真实后端可以只返回展示所需的标签，但仍必须在服务端强制校验每个权限码。
-7. 删除 `src/mocks` 与 `public/mockServiceWorker.js`，然后用 `pnpm build && pnpm preview` 验证生产构建。
+7. 删除 `packages/mock` 与 `public/mockServiceWorker.js`，然后用 `pnpm build && pnpm preview` 验证生产构建。
 
 ## 针对真实 API 的测试
 

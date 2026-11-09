@@ -21,7 +21,7 @@ FishAdmin 是一个单页 React 应用，构建在 `@fish-admin/react` 组件包
 [`src/main.tsx`](../../src/main.tsx) 负责编排启动顺序，确保路由守卫不会在会话状态未知时运行：
 
 1. 等待 `i18nReady`，加载内置的 `common`、`nav`、`errors` namespace。
-2. 解析 mock 开关：显式设置的 `VITE_ENABLE_MOCK` 优先，未设置时开发服务器为 `true`、构建产物为 `false`。开关为真时动态 import `src/mocks/browser` 并启动 Service Worker。worker 地址由 `import.meta.env.BASE_URL` 推导，因此支持子路径部署；未匹配的请求直接放行。这里的判断刻意直接读 `import.meta.env` 字面量而不是 `env.enableMock`，这样不含 mock 的构建能把整个 MSW chunk 摇掉。
+2. 解析 mock 开关：显式设置的 `VITE_ENABLE_MOCK` 优先，未设置时开发服务器为 `true`、构建产物为 `false`。开关为真时动态 import `@fish-admin/mock/browser`，调用 `createMockWorker({ apiBaseUrl, latency })` 并启动 Service Worker。worker 地址由 `import.meta.env.BASE_URL` 推导，因此支持子路径部署；未匹配的请求直接放行。这里的判断刻意直接读 `import.meta.env` 字面量而不是 `env.enableMock`，这样不含 mock 的构建能把整个 MSW chunk 摇掉。
 3. 调用 `useAuthStore.getState().bootstrap()`。没有 refresh token 时状态为 `anonymous`；否则刷新令牌并请求 `/auth/me`。
 4. 注册 `apiRequest` 使用的全局未授权处理器。
 5. 挂载 React：`QueryClientProvider` → `RouterProvider` + `Toaster`。
@@ -166,16 +166,26 @@ features/reports/               features/notifications/       features/integrati
 
 UI 组件不直接调用 `fetch`，而是使用包装了 feature API 的 TanStack Query options。
 
+## 共享包
+
+三个私有 workspace 包承载第二个渲染框架所需的一切：
+
+- `@fish-admin/contracts` —— 领域类型、权限码、`NAV_CONTRACT`、演示/集成/审计数据，以及与框架无关的日期工具。
+- `@fish-admin/i18n` —— 21 个语言 namespace 与 `setupI18n`；`src/lib/i18n.ts` 只负责把 react-i18next 接进来。
+- `@fish-admin/mock` —— MSW handler、种子数据库，以及 `createMockWorker` / `createMockServer`。
+
+三者都不导入 React、`@/` 别名或 Lucide。`parity/` 冻结文档表面，并用同一套场景同时跑 React 基线与未来的 Vue target；见 [Vue 移植地基](vue-port-foundation.md)。
+
 ## Mock 后端
 
-- `src/mocks/seed.ts` 使用固定种子通过 Faker 生成数据库：三个演示账号加 57 个生成用户、10 个部门节点、角色、邀请，以及分布在 90 天内的 160 条审计事件。
-- `src/mocks/seed-workspace.ts` 为 seed 与迁移共用一套确定性的业务数据：12 个项目含 72 条任务、48 个里程碑与预算项；8 个文件夹与 18 个文件（图片缩略图使用小体积 SVG data URI）；6 个集成连接与 24 条投递记录；按用户保存的通知收件箱、免打扰时段与渠道偏好；以及 60 条引用真实项目、文件与集成 ID 的审计事件。
-- `src/mocks/db/store.ts` 负责读写数据库，每次变更同步到 `localStorage`。`MOCK_DB_VERSION` 为 4：按 v1 → v2 → v3 → v4 迁移，保留用户、角色、部门、会话与令牌，把新权限码合并进系统角色，并幂等追加工作区集合；只有未知版本才重置。
-- `src/mocks/handlers` 下的 handler 实现认证生命周期、用户（含批量操作、恢复与 CSV 导入）、部门、角色（含新建、重命名与删除）、权限、审计事件、项目（任务、里程碑与附件）、文件夹与文件（含批量删除）、报表、通知与偏好、集成（投递与重放）、工作台与重置接口。写操作会先调用 `authorize()`，token 所属角色缺少权限时返回 `403`。
+- `packages/mock/src/seed.ts` 使用固定种子通过 Faker 生成数据库：三个演示账号加 57 个生成用户、10 个部门节点、角色、邀请，以及分布在 90 天内的 160 条审计事件。
+- `packages/mock/src/seed-workspace.ts` 为 seed 与迁移共用一套确定性的业务数据：12 个项目含 72 条任务、48 个里程碑与预算项；8 个文件夹与 18 个文件（图片缩略图使用小体积 SVG data URI）；6 个集成连接与 24 条投递记录；按用户保存的通知收件箱、免打扰时段与渠道偏好；以及 60 条引用真实项目、文件与集成 ID 的审计事件。
+- `packages/mock/src/db/store.ts` 负责读写数据库，每次变更同步到 `localStorage`。`MOCK_DB_VERSION` 为 4：按 v1 → v2 → v3 → v4 迁移，保留用户、角色、部门、会话与令牌，把新权限码合并进系统角色，并幂等追加工作区集合；只有未知版本才重置。
+- `packages/mock/src/handlers` 下的 handler 实现认证生命周期、用户（含批量操作、恢复与 CSV 导入）、部门、角色（含新建、重命名与删除）、权限、审计事件、项目（任务、里程碑与附件）、文件夹与文件（含批量删除）、报表、通知与偏好、集成（投递与重放）、工作台与重置接口。写操作会先调用 `authorize()`，token 所属角色缺少权限时返回 `403`。
 - 报表完全由请求区间与粒度确定性生成；阈值与系列颜色只影响展示，不写库。文件上传发送元数据和可选的 data URL；超过 256 KB 的文件只保留元数据。
 - 审计事件是唯一的活动日志。用户、角色、部门、个人资料、项目、文件与集成的变更都调用 `logAuditEvent()`；`logActivity()` 保留为薄包装，工作台通过 `recentActivity()` 映射最新事件。日志上限 500 条。
 - 令牌是假令牌，但结构贴近真实：带过期时间的 base64url access token、与会话记录绑定的不透明 refresh token，以及各自带 TTL 的验证、密码重置和 MFA 挑战条目。
-- `src/mocks/auth.ts` 集中认证规则：刷新时轮换会话、同一邮箱密码错误五次锁定一分钟、MFA 挑战会中断登录流程、修改密码时撤销其他会话。
+- `packages/mock/src/auth.ts` 集中认证规则：刷新时轮换会话、同一邮箱密码错误五次锁定一分钟、MFA 挑战会中断登录流程、修改密码时撤销其他会话。
 - 删除用户是软删除（`deletedAt`），因此 `POST /api/users/restore` 可以撤销批量删除；停用用户会撤销其会话。
 - `VITE_MOCK_LATENCY` 默认增加 300ms 延迟，让加载态可见。`POST /api/__mock/reset`（需要 `demo:reset`）重新播种数据库，若当前账号仍然存在则保留会话。
 
@@ -193,7 +203,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 国际化
 
-- 语言 JSON 位于 `src/locales/{en,zh-CN}`，共 21 个 namespace：`common`、`nav`、`auth`、`dashboard`、`projects`、`files`、`reports`、`notifications`、`integrations`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`dictionaries`、`workflows`、`errors`、`validation`。组件自身的文案在包里，由 `UIProvider` 提供语言，见[安装指南](https://fish-admin-docs.vercel.app/guide/installation)。
+- 语言 JSON 位于 `packages/i18n/locales/{en,zh-CN}`，共 21 个 namespace：`common`、`nav`、`auth`、`dashboard`、`projects`、`files`、`reports`、`notifications`、`integrations`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`dictionaries`、`workflows`、`errors`、`validation`；`src/lib/i18n.ts` 只是 `setupI18n` 之上的 react-i18next 适配层。组件自身的文案在包里，由 `UIProvider` 提供语言，见[安装指南](https://fish-admin-docs.vercel.app/guide/installation)。
 - `common`、`nav`、`errors` 直接打入主包；其余通过 `i18next-resources-to-backend` 与 `import.meta.glob` 按需加载。
 - 初始语言依次取 `localStorage`、浏览器语言，最后回退英文。
 - `changeLanguage()` 持久化选择、切换 i18next 并同步 `<html lang>`。

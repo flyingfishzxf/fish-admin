@@ -12,7 +12,7 @@
 | 客户端 API | `src/features/workflows/api.ts`、`queries.ts`、`search.ts`                              |
 | 界面       | `src/features/workflows/components/*`                                                   |
 | 路由       | `src/routes/_app/workflows.tsx`、`src/routes/_app/workflows_.$id.tsx`                   |
-| Mock 规则  | `src/mocks/handlers/workflows.ts`、`src/mocks/seed-workflows.ts`                        |
+| Mock 规则  | `packages/mock/src/handlers/workflows.ts`、`packages/mock/src/seed-workflows.ts`        |
 | 权限       | `src/config/permissions.ts` 中的 `workflow:read`、`workflow:approve`                    |
 | 菜单与图标 | `src/config/nav.ts`、`src/features/navigation/menu-icons.ts`（`workflow`）              |
 
@@ -81,7 +81,7 @@
 - 转交重写 `approverIds[currentStep]`，追加一条同时记录操作人与目标审批人的 `transferred` 步骤。
 - 已结束的申请拒绝任何后续决定。
 
-`src/mocks/seed-workflows.ts` 用完全相同的逻辑回放种子数据，因此时间线不可能与存储的状态互相矛盾。
+`packages/mock/src/seed-workflows.ts` 用完全相同的逻辑回放种子数据，因此时间线不可能与存储的状态互相矛盾。
 
 ## 数据与 Mock 数据库
 
@@ -103,5 +103,5 @@ Mock 数据库版本为 `5`。从 v4 迁移时会补上 `workflows`、`workflowS
 ## 测试
 
 - `e2e/workflows.spec.ts` —— admin 同意 `WF-2026-0142`（状态、时间线、刷新后仍在、审计事件）；viewer 没有菜单入口且直达落 `/403`。
-- `src/mocks/db/migrate.test.ts` —— v4 → v5 保留原有数据、补种审批链并合并新的权限码。
+- `packages/mock/src/db/migrate.test.ts` —— v4 → v5 保留原有数据、补种审批链并合并新的权限码。
 - 视觉基线 —— `workflows.png`（待办队列）与 `approval-detail.png`（时间线、快照、处理面板）。

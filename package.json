@@ -29,6 +29,7 @@
     "test:contracts": "pnpm --filter @fish-admin/contracts test",
     "test:i18n": "pnpm --filter @fish-admin/i18n test",
     "test:mock": "pnpm --filter @fish-admin/mock test",
+    "test:shared": "pnpm --filter @fish-admin/contracts test && pnpm --filter @fish-admin/i18n test && pnpm --filter @fish-admin/mock test",
     "build:ui": "pnpm --filter @fish-admin/react build",
     "test:ui": "pnpm --filter @fish-admin/react test",
     "check:package": "node scripts/check-package.mjs",

@@ -46,6 +46,7 @@ describe.skipIf(!isTemplate)('scaffold plan', () => {
     const pkg = JSON.parse(editor.buffers.get('package.json'))
     expect(pkg.scripts['test:mock']).toBeUndefined()
     expect(pkg.scripts.typecheck).not.toContain('@fish-admin/mock')
+    expect(pkg.scripts['test:shared']).not.toContain('@fish-admin/mock')
   })
 
   it('gives every step a title the run summary can print', () => {

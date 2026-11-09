@@ -565,6 +565,10 @@ function mockStep({ editor, state }) {
       ' && pnpm --filter @fish-admin/mock typecheck',
       '',
     )
+    pkg.scripts['test:shared'] = pkg.scripts['test:shared'].replace(
+      ' && pnpm --filter @fish-admin/mock test',
+      '',
+    )
     for (const specifier of ['msw', '@faker-js/faker']) delete pkg.devDependencies[specifier]
     delete pkg.msw
   })

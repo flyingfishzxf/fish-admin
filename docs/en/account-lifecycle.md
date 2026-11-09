@@ -6,15 +6,15 @@ FishAdmin wires the parts of an admin app that are usually left as an exercise: 
 
 ## Where things live
 
-| Concern          | Files                                                                                 |
-| ---------------- | ------------------------------------------------------------------------------------- |
-| Pages            | `src/features/auth/components/*`, `src/features/security/*`                           |
-| Requests         | `src/features/auth/api.ts`                                                            |
-| Validation       | `src/features/auth/schemas.ts`, `src/features/auth/password.ts`                       |
-| Session state    | `src/stores/auth-store.ts`                                                            |
-| Mock rules       | `src/mocks/handlers/auth.ts`, `src/mocks/auth.ts`, `src/mocks/jwt.ts`                 |
-| Failure screens  | `src/components/common/status-screen.tsx`, `src/routes/{401,500,503,maintenance}.tsx` |
-| Offline handling | `src/lib/online.ts`, `src/components/layout/offline-banner.tsx`                       |
+| Concern          | Files                                                                                         |
+| ---------------- | --------------------------------------------------------------------------------------------- |
+| Pages            | `src/features/auth/components/*`, `src/features/security/*`                                   |
+| Requests         | `src/features/auth/api.ts`                                                                    |
+| Validation       | `src/features/auth/schemas.ts`, `src/features/auth/password.ts`                               |
+| Session state    | `src/stores/auth-store.ts`                                                                    |
+| Mock rules       | `packages/mock/src/handlers/auth.ts`, `packages/mock/src/auth.ts`, `packages/mock/src/jwt.ts` |
+| Failure screens  | `src/components/common/status-screen.tsx`, `src/routes/{401,500,503,maintenance}.tsx`         |
+| Offline handling | `src/lib/online.ts`, `src/components/layout/offline-banner.tsx`                               |
 
 ## Sign-in and the second factor
 
@@ -41,7 +41,7 @@ A production server emails a link with a single-use token and returns an opaque 
 
 ## Lockout
 
-`src/mocks/auth.ts` keeps per-email counters in the mock database. Five failures set `lockedUntil = now + 60s`; further attempts return `429 ACCOUNT_LOCKED` even with the right password. A successful sign-in clears the record, and so do password changes and resets.
+`packages/mock/src/auth.ts` keeps per-email counters in the mock database. Five failures set `lockedUntil = now + 60s`; further attempts return `429 ACCOUNT_LOCKED` even with the right password. A successful sign-in clears the record, and so do password changes and resets.
 
 ## Sessions
 

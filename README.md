@@ -280,6 +280,18 @@ packages/ui/                 # @fish-admin/react — the component library
 ├─ src/styles/               # token import, utilities, preflight, a11y and the app-owned base
 ├─ registry.json             # the 83-entry inventory gen-api reads
 └─ test/                     # package-level tests
+packages/contracts/          # @fish-admin/contracts — framework-neutral domain contracts
+├─ src/types/                # domain and API types shared with a future port
+├─ src/navigation.ts         # APP_PATHS, MENU_ICON_NAMES, NAV_CONTRACT and menu wire types
+├─ src/permissions.ts        # permission codes, role grants and hasPermission
+└─ src/{demo,integrations,audit,date}.ts
+packages/i18n/               # @fish-admin/i18n — locales without a framework
+├─ locales/{en,zh-CN}/       # 21 lazy-loaded namespaces
+└─ src/                      # languages, eager resources and setupI18n
+packages/mock/               # @fish-admin/mock — the demo API without React
+├─ src/handlers/             # 14 MSW handlers
+├─ src/db/                   # seeded database and migrations
+└─ src/{browser,node,runtime}.ts
 apps/docs/                   # the Rspress documentation site
 ├─ docs/{en,zh}/             # 83 component pages, guides and the versions page
 ├─ demos/<component>/        # the live example each page renders
@@ -293,11 +305,9 @@ src/                         # the template
 │  ├─ layout/                # AppShell, sidebar, header, notification bell, breadcrumbs, command menu, offline banner
 │  └─ common/                # Can, EmptyState, StatusScreen, theme/language toggles
 ├─ config/                   # env, permissions, audit actions, navigation, theme presets
-├─ lib/                      # API client, auth helpers, i18n, formatting, CSV, online status
+├─ lib/                      # API client, auth helpers, i18n adapter, formatting, CSV, online status
 ├─ stores/                   # Auth, theme and UI Zustand stores
-├─ locales/{en,zh-CN}/       # Lazy-loaded namespaces
-├─ mocks/                    # MSW handlers, seeded database, workspace seed and fake auth
-└─ styles/index.css
+└─ styles/index.css          # the only Tailwind entry
 e2e/                         # Playwright specs
 docs/{en,zh-CN}/             # Repository documentation (the site above is the product one)
 ```
@@ -313,6 +323,7 @@ docs/{en,zh-CN}/             # Repository documentation (the site above is the p
 | `pnpm preview`                       | Preview the production build                                   |
 | `pnpm build:tokens` / `check:tokens` | Build / verify `@fish-admin/tokens`, reject stray declarations |
 | `pnpm test:tokens`                   | Unit-test sanitisation, contrast and serialisation             |
+| `pnpm test:shared`                   | Test `contracts`, `i18n` and `mock` as one unit                |
 | `pnpm audit:rtl` / `pnpm check:rtl`  | Regenerate / verify the RTL audit report                       |
 | `pnpm build:ui` / `pnpm test:ui`     | Build / test `@fish-admin/react`                               |
 | `pnpm check:package`                 | Fail unless the barrel exports every registry entry            |
@@ -351,7 +362,7 @@ Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required)
 ## Connect your own backend
 
 1. Set `VITE_API_BASE_URL=https://your-api.example.com`, and `VITE_ENABLE_MOCK=false` too if you want the dev server to stop mocking — builds already leave it off. `VITE_DOCS_URL` is optional: name a documentation deployment and the shell, the command palette and the wide login layout gain the Component docs entry.
-2. Remove the mock bootstrap block in `src/main.tsx`, then delete `src/mocks` and `public/mockServiceWorker.js`.
+2. Remove the mock bootstrap block in `src/main.tsx`, then delete `packages/mock` and `public/mockServiceWorker.js`.
 3. Implement the endpoints in [docs/en/api-integration.md](docs/en/api-integration.md). You can keep the response shapes and adjust only the base URL while developing.
 4. Enforce every permission on the server. The client checks improve UX; they do not protect your data.
 

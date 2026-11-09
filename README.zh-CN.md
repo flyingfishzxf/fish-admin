@@ -280,6 +280,18 @@ packages/ui/                 # @fish-admin/react —— 组件库
 ├─ src/styles/               # 令牌导入、工具类、preflight、a11y 与归应用的 base 样式
 ├─ registry.json             # 83 条登记项，gen-api 的输入
 └─ test/                     # 包级测试
+packages/contracts/          # @fish-admin/contracts —— 框架无关的领域契约
+├─ src/types/                # 与未来移植共享的领域与 API 类型
+├─ src/navigation.ts         # APP_PATHS、MENU_ICON_NAMES、NAV_CONTRACT 与菜单 wire 类型
+├─ src/permissions.ts        # 权限码、角色授权与 hasPermission
+└─ src/{demo,integrations,audit,date}.ts
+packages/i18n/               # @fish-admin/i18n —— 不依赖框架的语言资源
+├─ locales/{en,zh-CN}/       # 21 个懒加载 namespace
+└─ src/                      # 语言列表、eager resources 与 setupI18n
+packages/mock/               # @fish-admin/mock —— 不依赖 React 的演示 API
+├─ src/handlers/             # 14 个 MSW handler
+├─ src/db/                   # 种子数据库与迁移
+└─ src/{browser,node,runtime}.ts
 apps/docs/                   # Rspress 文档站点
 ├─ docs/{en,zh}/             # 83 个组件页、指南与版本页
 ├─ demos/<component>/        # 每个页面渲染的实时示例
@@ -293,43 +305,42 @@ src/                         # 模板
 │  ├─ layout/                # AppShell、侧边栏、Header、通知铃铛、面包屑、命令面板、离线横幅
 │  └─ common/                # Can、EmptyState、StatusScreen、主题/语言切换
 ├─ config/                   # env、权限、审计动作、导航、主题预设
-├─ lib/                      # API 客户端、鉴权、i18n、格式化、CSV、在线状态
+├─ lib/                      # API 客户端、鉴权、i18n 适配层、格式化、CSV、在线状态
 ├─ stores/                   # 会话、主题、UI 状态
-├─ locales/{en,zh-CN}/       # 懒加载语言包
-├─ mocks/                    # MSW handlers、种子数据库、工作区种子与假鉴权
-└─ styles/index.css
+└─ styles/index.css          # 唯一的 Tailwind 入口
 e2e/                         # Playwright 用例
 docs/{en,zh-CN}/             # 仓库文档（上面那个站点才是产品文档）
 ```
 
 ## 常用命令
 
-| 命令                                 | 说明                                           |
-| ------------------------------------ | ---------------------------------------------- |
-| `pnpm scaffold`                      | 重写品牌信息，并删掉不需要的部分               |
-| `pnpm dev`                           | 启动开发服务器（Mock 开启）                    |
-| `pnpm build`                         | 类型检查并构建生产包（默认关闭 Mock）          |
-| `pnpm build:demo`                    | 开启 Mock 构建演示包                           |
-| `pnpm preview`                       | 预览生产构建                                   |
-| `pnpm build:tokens` / `check:tokens` | 构建 / 校验 `@fish-admin/tokens`，拒绝包外声明 |
-| `pnpm test:tokens`                   | 单元测试清洗、对比度与序列化                   |
-| `pnpm audit:rtl` / `pnpm check:rtl`  | 重新生成 / 校验 RTL 审计报告                   |
-| `pnpm build:ui` / `pnpm test:ui`     | 构建 / 测试 `@fish-admin/react`                |
-| `pnpm check:package`                 | 导出必须覆盖注册表全部条目，否则失败           |
-| `pnpm maturity` / `check:maturity`   | 重新生成 / 校验组件成熟度矩阵                  |
-| `pnpm gen-api` / `gen-api:check`     | 重新生成 / 校验文档 API 表与覆盖率下限         |
-| `pnpm docs:dev` / `docs:build`       | 运行 / 构建文档站点                            |
-| `pnpm docs:check`                    | 缺页面、缺示例或注册表漂移即失败               |
-| `pnpm test:docs`                     | 构建站点并运行它的 Playwright 用例             |
-| `pnpm lint` / `pnpm lint:fix`        | 运行 ESLint                                    |
-| `pnpm format` / `pnpm format:check`  | 运行 Prettier                                  |
-| `pnpm typecheck`                     | 仅跑 TypeScript 检查                           |
-| `pnpm test` / `pnpm test:watch`      | 单元测试                                       |
-| `pnpm test:coverage`                 | 带覆盖率的单元测试                             |
-| `pnpm test:e2e`                      | 构建演示包并运行 E2E、axe 与性能用例           |
-| `pnpm perf`                          | 仅运行运行时性能预算                           |
-| `pnpm size`                          | 构建生产包并校验 gzip 体积预算                 |
-| `pnpm test:visual:docker`            | 在 Playwright Docker 镜像中比对截图            |
+| 命令                                 | 说明                                              |
+| ------------------------------------ | ------------------------------------------------- |
+| `pnpm scaffold`                      | 重写品牌信息，并删掉不需要的部分                  |
+| `pnpm dev`                           | 启动开发服务器（Mock 开启）                       |
+| `pnpm build`                         | 类型检查并构建生产包（默认关闭 Mock）             |
+| `pnpm build:demo`                    | 开启 Mock 构建演示包                              |
+| `pnpm preview`                       | 预览生产构建                                      |
+| `pnpm build:tokens` / `check:tokens` | 构建 / 校验 `@fish-admin/tokens`，拒绝包外声明    |
+| `pnpm test:tokens`                   | 单元测试清洗、对比度与序列化                      |
+| `pnpm test:shared`                   | 一次运行 `contracts`、`i18n`、`mock` 三个包的测试 |
+| `pnpm audit:rtl` / `pnpm check:rtl`  | 重新生成 / 校验 RTL 审计报告                      |
+| `pnpm build:ui` / `pnpm test:ui`     | 构建 / 测试 `@fish-admin/react`                   |
+| `pnpm check:package`                 | 导出必须覆盖注册表全部条目，否则失败              |
+| `pnpm maturity` / `check:maturity`   | 重新生成 / 校验组件成熟度矩阵                     |
+| `pnpm gen-api` / `gen-api:check`     | 重新生成 / 校验文档 API 表与覆盖率下限            |
+| `pnpm docs:dev` / `docs:build`       | 运行 / 构建文档站点                               |
+| `pnpm docs:check`                    | 缺页面、缺示例或注册表漂移即失败                  |
+| `pnpm test:docs`                     | 构建站点并运行它的 Playwright 用例                |
+| `pnpm lint` / `pnpm lint:fix`        | 运行 ESLint                                       |
+| `pnpm format` / `pnpm format:check`  | 运行 Prettier                                     |
+| `pnpm typecheck`                     | 仅跑 TypeScript 检查                              |
+| `pnpm test` / `pnpm test:watch`      | 单元测试                                          |
+| `pnpm test:coverage`                 | 带覆盖率的单元测试                                |
+| `pnpm test:e2e`                      | 构建演示包并运行 E2E、axe 与性能用例              |
+| `pnpm perf`                          | 仅运行运行时性能预算                              |
+| `pnpm size`                          | 构建生产包并校验 gzip 体积预算                    |
+| `pnpm test:visual:docker`            | 在 Playwright Docker 镜像中比对截图               |
 
 ## 质量门禁
 
@@ -351,7 +362,7 @@ CI 在每次 push 和 pull request 上跑这些门禁：
 ## 接入真实后端
 
 1. 设置 `VITE_API_BASE_URL=https://your-api.example.com`；若也要让开发服务器停止 Mock，再加 `VITE_ENABLE_MOCK=false`——构建产物本来就不含 Mock。`VITE_DOCS_URL` 可选：填上文档站的地址，侧边栏、命令面板与宽屏登录页就会出现组件文档入口。
-2. 删除 `src/main.tsx` 中的 Mock 启动块，然后删除 `src/mocks` 与 `public/mockServiceWorker.js`。
+2. 删除 `src/main.tsx` 中的 Mock 启动块，然后删除 `packages/mock` 与 `public/mockServiceWorker.js`。
 3. 按 [docs/zh-CN/api-integration.md](docs/zh-CN/api-integration.md) 实现接口。开发阶段可先保持响应结构，只替换 base URL。
 4. 在服务端校验所有权限。前端判断只改善体验，不能保护数据。
 
