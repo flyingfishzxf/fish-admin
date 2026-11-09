@@ -78,6 +78,9 @@ jobs:
       - name: Component maturity contract
         run: pnpm check:maturity
 
+      - name: Parity baseline is unchanged
+        run: pnpm check:parity:freeze
+
   build:
     name: Build
     runs-on: ubuntu-latest

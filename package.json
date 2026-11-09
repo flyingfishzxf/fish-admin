@@ -23,6 +23,8 @@
     "check:rtl": "node scripts/audit-rtl.mjs --check",
     "maturity": "node scripts/check-maturity.mjs",
     "check:maturity": "node scripts/check-maturity.mjs --check",
+    "parity:freeze": "node scripts/parity-freeze.mjs",
+    "check:parity:freeze": "node scripts/parity-freeze.mjs --check",
     "test:tokens": "pnpm --filter @fish-admin/tokens test",
     "build:ui": "pnpm --filter @fish-admin/react build",
     "test:ui": "pnpm --filter @fish-admin/react test",

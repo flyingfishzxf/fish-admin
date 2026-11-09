@@ -20,3 +20,5 @@ video
 # Written by scripts/build-manifests.mjs; its compact arrays are not prettier's output.
 apps/docs/docs/en/components/_meta.json
 apps/docs/docs/zh/components/_meta.json
+# Written by scripts/parity-freeze.mjs; its manifest is not prettier's output.
+parity/baseline
