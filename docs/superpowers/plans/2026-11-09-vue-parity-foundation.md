@@ -4588,7 +4588,6 @@ pnpm check:parity:contract
 pnpm check:parity:scenarios
 pnpm test:parity:docker
 ```
-````
 
 `pnpm test:parity:docker` runs the suite in the Playwright image. The suite has 119 tests: 83 API contracts, 12 docs-surface checks (six pilots × two locales), six behaviour scenarios, 12 screenshots (six pilots × light/dark) and six axe scans. The 12 screenshots compare with the same `*-linux.png` files the docs site uses; no baseline is duplicated.
 
@@ -4609,14 +4608,13 @@ pnpm test:parity:docker
 ## Verification
 
 The foundation is complete when `pnpm check:parity:freeze`, `pnpm check:parity:contract`, `pnpm check:parity:scenarios`, `pnpm test:parity:docker`, the existing Docker visual jobs and the full quality gate all pass without modifying a single `*-linux.png`.
-
 ````
 
 - [ ] **Step 2: 写中文页面**
 
 创建 `docs/zh-CN/vue-port-foundation.md`：
 
-```markdown
+````markdown
 # Vue 移植地基
 
 FishAdmin 2.2.0 是未来 Vue 3 移植的参考版本。本页说明冻结了什么、框架无关包如何分层，以及 parity 测试台如何工作。它不代表 Vue 版本已经存在。
@@ -4633,11 +4631,11 @@ FishAdmin 2.2.0 是未来 Vue 3 移植的参考版本。本页说明冻结了什
 
 ## 共享包
 
-| 包                      | 负责                                                                                  | 禁止包含            |
-| ----------------------- | ------------------------------------------------------------------------------------- | ------------------- |
-| `@fish-admin/contracts` | 领域与 API 类型、权限码与授权、`NAV_CONTRACT`、演示/集成/审计数据、日期工具            | React、`@/`、Lucide |
-| `@fish-admin/i18n`      | 21 个语言 namespace、`SUPPORTED_LANGUAGES`、eager resources 与 `setupI18n`             | React、`@/`、Lucide |
-| `@fish-admin/mock`      | MSW handler、种子数据库与迁移、`createMockWorker` / `createMockServer`、运行时配置     | React、`@/`、Lucide |
+| 包                      | 负责                                                                               | 禁止包含            |
+| ----------------------- | ---------------------------------------------------------------------------------- | ------------------- |
+| `@fish-admin/contracts` | 领域与 API 类型、权限码与授权、`NAV_CONTRACT`、演示/集成/审计数据、日期工具        | React、`@/`、Lucide |
+| `@fish-admin/i18n`      | 21 个语言 namespace、`SUPPORTED_LANGUAGES`、eager resources 与 `setupI18n`         | React、`@/`、Lucide |
+| `@fish-admin/mock`      | MSW handler、种子数据库与迁移、`createMockWorker` / `createMockServer`、运行时配置 | React、`@/`、Lucide |
 
 React 应用只保留适配层：`src/types` re-export contracts，`src/config/nav.ts` 从 `NAV_CONTRACT` 派生 `NAV_GROUPS`，`src/lib/i18n.ts` 把 react-i18next 接入 `setupI18n`，`src/main.tsx` 调用 `createMockWorker`。Vue 应用可以消费同样的三个包，不需要导入 React。
 
@@ -4672,7 +4670,7 @@ pnpm check:parity:freeze
 pnpm check:parity:contract
 pnpm check:parity:scenarios
 pnpm test:parity:docker
-````
+```
 
 `pnpm test:parity:docker` 在 Playwright 镜像中运行。套件共 119 条：83 条 API 合同、12 条 docs surface（六个试点 × 两种语言）、6 条行为场景、12 张截图（六个试点 × 明暗两套）与 6 条 axe 扫描。12 张截图复用文档站已有的 `*-linux.png`，不复制基线。
 
@@ -4693,26 +4691,25 @@ pnpm test:parity:docker
 ## 验收
 
 当 `pnpm check:parity:freeze`、`pnpm check:parity:contract`、`pnpm check:parity:scenarios`、`pnpm test:parity:docker`、现有 Docker 视觉任务与完整质量门禁全部通过，且没有修改任何 `*-linux.png` 时，地基才算完成。
-
 ````
 
 - [ ] **Step 3: 写 parity 目录说明**
 
 创建 `parity/README.md`：
 
-```markdown
+````markdown
 # Parity harness
 
 This directory freezes the documented surface of FishAdmin 2.2.0 and compares a renderer against it.
 
-| Path                         | Purpose                                                                 |
-| ---------------------------- | ----------------------------------------------------------------------- |
-| `baseline/2.2.0/manifest.json` | SHA-256 manifest for screenshots, generated artifacts and docs hooks   |
-| `pilot.json`                 | The six components with behaviour scenarios and screenshot parity        |
-| `contract/components.json`   | Generated reference API for all 83 documented components                |
-| `contract/docs-surface.json` | Generated route, demo anchor, selector and API-row contract             |
-| `scenarios/*.json`           | Accessible-name and ARIA-state behaviour scenarios                      |
-| `targets/react.json`         | The current target; a Vue target will add `vue.json`                    |
+| Path                           | Purpose                                                              |
+| ------------------------------ | -------------------------------------------------------------------- |
+| `baseline/2.2.0/manifest.json` | SHA-256 manifest for screenshots, generated artifacts and docs hooks |
+| `pilot.json`                   | The six components with behaviour scenarios and screenshot parity    |
+| `contract/components.json`     | Generated reference API for all 83 documented components             |
+| `contract/docs-surface.json`   | Generated route, demo anchor, selector and API-row contract          |
+| `scenarios/*.json`             | Accessible-name and ARIA-state behaviour scenarios                   |
+| `targets/react.json`           | The current target; a Vue target will add `vue.json`                 |
 
 Commands (from the repository root):
 
@@ -4722,12 +4719,11 @@ pnpm check:parity:contract
 pnpm check:parity:scenarios
 pnpm test:parity:docker
 PARITY_TARGET=vue pnpm test:parity:docker
-````
+```
 
 `test:parity:docker` runs `playwright.parity.config.ts` in `mcr.microsoft.com/playwright:v1.64.1-noble`. Screenshots compare against `e2e-docs/__screenshots__/component-visual.spec.ts`; `updateSnapshots` is `'none'`, so the harness can never rewrite a baseline.
 
 Read [docs/en/vue-port-foundation.md](../docs/en/vue-port-foundation.md) before adding a target.
-
 ````
 
 - [ ] **Step 4: 更新两份 README**
@@ -4735,11 +4731,11 @@ Read [docs/en/vue-port-foundation.md](../docs/en/vue-port-foundation.md) before 
 `README.md` 的 Scripts 表在 `pnpm test:visual:docker` 之后加入：
 
 ```markdown
-| `pnpm check:parity:freeze`           | Verify the frozen 2.2.0 parity manifest                        |
-| `pnpm check:parity:contract`         | Verify the generated component and docs-surface contracts      |
-| `pnpm check:parity:scenarios`        | Validate the six pilot behaviour scenarios                     |
-| `pnpm test:parity:docker`            | Compare the React target against the frozen baselines          |
-````
+| `pnpm check:parity:freeze` | Verify the frozen 2.2.0 parity manifest |
+| `pnpm check:parity:contract` | Verify the generated component and docs-surface contracts |
+| `pnpm check:parity:scenarios` | Validate the six pilot behaviour scenarios |
+| `pnpm test:parity:docker` | Compare the React target against the frozen baselines |
+```
 
 `README.zh-CN.md` 的常用命令表加入：
 
