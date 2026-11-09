@@ -47,6 +47,8 @@ export function buildContracts({ pilot, registry, documented, api, demos, baseli
 
   const registryById = new Map(registry.components.map((entry) => [entry.id, entry]))
   const demoIds = new Set(demos.map((demo) => demo.id))
+  if (demoIds.size !== demos.length)
+    fail('apps/docs/demos/registry.json contains duplicate demo ids')
 
   const components = [...documented.components].sort().map((id) => {
     const entry = registryById.get(id)

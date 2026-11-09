@@ -89,6 +89,13 @@ describe('parity contract', () => {
     expect(() => buildContracts(input)).toThrow(/button has no demos/)
   })
 
+  it('rejects duplicate demo ids', () => {
+    const input = fixtures()
+    input.demos = [...input.demos, { id: 'button/basic', component: 'button' }]
+
+    expect(() => buildContracts(input)).toThrow(/duplicate demo ids/)
+  })
+
   it('rejects a missing visual baseline', () => {
     const input = fixtures()
     input.baselines.delete('button-dark-linux.png')
