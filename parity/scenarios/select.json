@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "component": "select",
+  "demo": "basic",
+  "appearance": "light",
+  "steps": [
+    {
+      "action": "expectTargetText",
+      "target": { "role": "combobox", "name": "Assign role" },
+      "text": "Admin"
+    },
+    { "action": "expectText", "text": "Admin: Manage members, projects and integrations." },
+    { "action": "click", "target": { "role": "combobox", "name": "Assign role" } },
+    { "action": "expectVisible", "target": { "role": "listbox", "scope": "page" } },
+    { "action": "click", "target": { "role": "option", "name": "Viewer", "scope": "page" } },
+    {
+      "action": "expectTargetText",
+      "target": { "role": "combobox", "name": "Assign role" },
+      "text": "Viewer"
+    },
+    { "action": "expectText", "text": "Viewer: Read-only access to shared projects." },
+    { "action": "click", "target": { "role": "combobox", "name": "Assign role" } },
+    { "action": "expectVisible", "target": { "role": "listbox", "scope": "page" } },
+    { "action": "pressKey", "key": "Escape" },
+    { "action": "expectHidden", "target": { "role": "listbox", "scope": "page" } }
+  ]
+}

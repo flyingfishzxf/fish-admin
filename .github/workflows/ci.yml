@@ -87,6 +87,9 @@ jobs:
       - name: Cross-framework contract is current
         run: pnpm check:parity:contract
 
+      - name: Parity scenarios are valid
+        run: pnpm check:parity:scenarios
+
   build:
     name: Build
     runs-on: ubuntu-latest

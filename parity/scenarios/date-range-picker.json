@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "component": "date-range-picker",
+  "demo": "presets",
+  "appearance": "light",
+  "steps": [
+    {
+      "action": "expectVisible",
+      "target": { "role": "button", "name": "Audit log date range: Sep 28, 2026 – Oct 27, 2026" }
+    },
+    {
+      "action": "click",
+      "target": { "role": "button", "name": "Audit log date range: Sep 28, 2026 – Oct 27, 2026" }
+    },
+    { "action": "click", "target": { "role": "button", "name": "Last 7 days", "scope": "page" } },
+    {
+      "action": "expectVisible",
+      "target": { "role": "button", "name": "Audit log date range: Oct 21, 2026 – Oct 27, 2026" }
+    },
+    { "action": "expectText", "text": "Selected 2026-10-21 – 2026-10-27" },
+    {
+      "action": "click",
+      "target": { "role": "button", "name": "Audit log date range: Oct 21, 2026 – Oct 27, 2026" }
+    },
+    { "action": "click", "target": { "role": "button", "name": "This quarter", "scope": "page" } },
+    {
+      "action": "expectVisible",
+      "target": { "role": "button", "name": "Audit log date range: Oct 1, 2026 – Oct 27, 2026" }
+    },
+    { "action": "expectText", "text": "Selected 2026-10-01 – 2026-10-27" }
+  ]
+}

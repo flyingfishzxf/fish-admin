@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "component": "pro-table",
+  "demo": "basic",
+  "appearance": "light",
+  "steps": [
+    { "action": "expectCount", "target": { "css": "tbody tr" }, "count": 5 },
+    { "action": "expectText", "text": "Ada Lovelace" },
+    { "action": "expectText", "text": "Edsger Dijkstra" },
+    {
+      "action": "fill",
+      "target": { "role": "textbox", "name": "Search members" },
+      "value": "grace"
+    },
+    { "action": "expectText", "text": "Grace Hopper" },
+    { "action": "expectNotText", "text": "Ada Lovelace" },
+    { "action": "expectCount", "target": { "css": "tbody tr" }, "count": 1 },
+    { "action": "click", "target": { "role": "button", "name": "Clear search" } },
+    { "action": "expectCount", "target": { "css": "tbody tr" }, "count": 5 },
+    { "action": "expectText", "text": "Ada Lovelace" },
+    { "action": "fill", "target": { "role": "textbox", "name": "Search members" }, "value": "zzz" },
+    { "action": "expectText", "text": "No members match this search." }
+  ]
+}

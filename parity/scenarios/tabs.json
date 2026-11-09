@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "component": "tabs",
+  "demo": "basic",
+  "appearance": "light",
+  "steps": [
+    {
+      "action": "expectState",
+      "target": { "role": "tab", "name": "Profile" },
+      "state": "selected",
+      "value": true
+    },
+    {
+      "action": "fill",
+      "target": { "role": "textbox", "name": "Display name" },
+      "value": "Katherine G. Johnson"
+    },
+    { "action": "click", "target": { "role": "button", "name": "Save profile" } },
+    { "action": "expectText", "text": "Shown as Katherine G. Johnson" },
+    { "action": "press", "target": { "role": "tab", "name": "Profile" }, "key": "ArrowRight" },
+    {
+      "action": "expectState",
+      "target": { "role": "tab", "name": "Notifications" },
+      "state": "selected",
+      "value": true
+    },
+    { "action": "expectText", "text": "Product update emails are on." },
+    { "action": "click", "target": { "role": "switch", "name": "Product updates" } },
+    { "action": "expectText", "text": "Product update emails are off." },
+    { "action": "click", "target": { "role": "tab", "name": "Security" } },
+    {
+      "action": "expectState",
+      "target": { "role": "switch", "name": "Two-factor authentication" },
+      "state": "checked",
+      "value": false
+    },
+    { "action": "click", "target": { "role": "switch", "name": "Two-factor authentication" } },
+    { "action": "expectText", "text": "Two-factor authentication is on." }
+  ]
+}

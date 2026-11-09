@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "component": "dialog",
+  "demo": "basic",
+  "appearance": "light",
+  "steps": [
+    { "action": "click", "target": { "role": "button", "name": "Invite member" } },
+    {
+      "action": "expectVisible",
+      "target": { "role": "dialog", "name": "Invite a member", "scope": "page" }
+    },
+    {
+      "action": "expectText",
+      "text": "They receive an email with a link to join the Acme Operations workspace."
+    },
+    {
+      "action": "expectState",
+      "target": { "role": "button", "name": "Send invite", "scope": "page" },
+      "state": "disabled",
+      "value": true
+    },
+    {
+      "action": "fill",
+      "target": { "role": "textbox", "name": "Email address", "scope": "page" },
+      "value": "ada@example.com"
+    },
+    { "action": "click", "target": { "role": "combobox", "name": "Role", "scope": "page" } },
+    { "action": "click", "target": { "role": "option", "name": "Admin", "scope": "page" } },
+    { "action": "click", "target": { "role": "button", "name": "Send invite", "scope": "page" } },
+    {
+      "action": "expectHidden",
+      "target": { "role": "dialog", "name": "Invite a member", "scope": "page" }
+    },
+    { "action": "expectText", "text": "Invite sent to ada@example.com as admin." },
+    { "action": "click", "target": { "role": "button", "name": "Invite member" } },
+    {
+      "action": "expectVisible",
+      "target": { "role": "dialog", "name": "Invite a member", "scope": "page" }
+    },
+    { "action": "click", "target": { "role": "button", "name": "Cancel", "scope": "page" } },
+    {
+      "action": "expectHidden",
+      "target": { "role": "dialog", "name": "Invite a member", "scope": "page" }
+    }
+  ]
+}

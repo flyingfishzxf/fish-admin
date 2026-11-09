@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "component": "accordion",
+  "demo": "basic",
+  "appearance": "light",
+  "steps": [
+    { "action": "expectText", "text": "How does per-seat billing work?" },
+    {
+      "action": "expectState",
+      "target": { "role": "button", "name": "How does per-seat billing work?" },
+      "state": "expanded",
+      "value": true
+    },
+    {
+      "action": "expectText",
+      "text": "You are billed for active members at the end of each monthly cycle. Invited members are counted once they accept."
+    },
+    {
+      "action": "click",
+      "target": { "role": "button", "name": "Where is workspace data stored?" }
+    },
+    {
+      "action": "expectState",
+      "target": { "role": "button", "name": "Where is workspace data stored?" },
+      "state": "expanded",
+      "value": true
+    },
+    {
+      "action": "expectState",
+      "target": { "role": "button", "name": "How does per-seat billing work?" },
+      "state": "expanded",
+      "value": false
+    },
+    {
+      "action": "expectText",
+      "text": "Data stays in the region selected at creation time, and audit exports follow the same retention policy."
+    },
+    {
+      "action": "click",
+      "target": { "role": "button", "name": "Where is workspace data stored?" }
+    },
+    {
+      "action": "expectState",
+      "target": { "role": "button", "name": "Where is workspace data stored?" },
+      "state": "expanded",
+      "value": false
+    },
+    {
+      "action": "expectNotText",
+      "text": "Data stays in the region selected at creation time, and audit exports follow the same retention policy."
+    }
+  ]
+}
