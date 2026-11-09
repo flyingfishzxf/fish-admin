@@ -29,7 +29,7 @@ for (const dir of sources) {
 
 function read(locale) {
   const json = JSON.parse(
-    fs.readFileSync(path.join(root, `src/locales/${locale}/common.json`), 'utf8'),
+    fs.readFileSync(path.join(root, `packages/i18n/locales/${locale}/common.json`), 'utf8'),
   )
   const flat = {}
   for (const key of [...keys].sort()) {

@@ -1,0 +1,26 @@
+{
+  "name": "@fish-admin/i18n",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Framework-neutral FishAdmin i18n resources and i18next setup.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./locales/*": "./locales/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "i18next": "^26.5.3",
+    "i18next-resources-to-backend": "^1.2.3"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.3",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}

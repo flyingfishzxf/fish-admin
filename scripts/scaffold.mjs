@@ -73,7 +73,7 @@ export function validateSlug(value) {
 }
 
 export function discoverLocales(root) {
-  const directory = join(root, 'src', 'locales')
+  const directory = join(root, 'packages', 'i18n', 'locales')
   if (!existsSync(directory)) return []
 
   return readdirSync(directory, { withFileTypes: true })
@@ -436,8 +436,8 @@ function brandStep({ editor, options }) {
     )
 
   for (const locale of keptLocales) {
-    editor.json(`src/locales/${locale}/common.json`, (resource) => {
-      assert(resource.app, `src/locales/${locale}/common.json has no app section`)
+    editor.json(`packages/i18n/locales/${locale}/common.json`, (resource) => {
+      assert(resource.app, `packages/i18n/locales/${locale}/common.json has no app section`)
       resource.app.name = displayName
       if (taglineProvided) resource.app.tagline = tagline
     })
@@ -449,6 +449,7 @@ function brandStep({ editor, options }) {
   editor.renameToken(STORAGE_TOKEN, `${slug}:`, [
     'public/theme-bootstrap.js',
     'src/lib/i18n.ts',
+    'packages/i18n/src/index.ts',
     'src/stores/auth-store.ts',
     'src/stores/theme-store.ts',
     'src/stores/ui-store.ts',
@@ -506,17 +507,27 @@ const THEME_ONLY_SPEC = text(
 
 function localeStep({ editor, options }) {
   for (const locale of options.droppedLocales) {
-    editor.delete(`src/locales/${locale}`)
+    editor.delete(`packages/i18n/locales/${locale}`)
 
     editor
       .subRegex(
-        'src/lib/i18n.ts',
-        regex(`^import [A-Za-z]+ from '@/locales/${escapeRegExp(locale)}/[a-z]+\\.json'\\n`),
+        'packages/i18n/src/resources.ts',
+        regex(`^import [A-Za-z]+ from '../locales/${escapeRegExp(locale)}/[a-z]+\\.json'\\n`),
         '',
         3,
       )
-      .subRegex('src/lib/i18n.ts', regex(`^  \\{ code: '${escapeRegExp(locale)}',.*\\n`), '', 1)
-      .subRegex('src/lib/i18n.ts', regex(`^ {4}'${escapeRegExp(locale)}': \\{.*\\},\\n`), '', 1)
+      .subRegex(
+        'packages/i18n/src/languages.ts',
+        regex(`^  \\{ code: '${escapeRegExp(locale)}',.*\\n`),
+        '',
+        1,
+      )
+      .subRegex(
+        'packages/i18n/src/resources.ts',
+        regex(`^  '${escapeRegExp(locale)}': \\{.*\\},\\n`),
+        '',
+        1,
+      )
 
     editor.overwrite('e2e/i18n-theme.spec.ts', THEME_ONLY_SPEC, '简体中文')
     editor.block(

@@ -5,7 +5,7 @@ import { PERMISSIONS, PERMISSION_GROUPS } from '@/config/permissions'
 
 type JsonObject = Record<string, unknown>
 
-const resources = import.meta.glob('../locales/*/*.json', {
+const resources = import.meta.glob('../../packages/i18n/locales/*/*.json', {
   eager: true,
   import: 'default',
 }) as Record<string, JsonObject>
@@ -13,7 +13,8 @@ const resources = import.meta.glob('../locales/*/*.json', {
 const locales = new Map<string, Map<string, JsonObject>>()
 
 for (const [path, resource] of Object.entries(resources)) {
-  const [, language, namespace] = path.match(/\.\.\/locales\/([^/]+)\/([^/]+)\.json$/) ?? []
+  const [, language, namespace] =
+    path.match(/\.\.\/\.\.\/packages\/i18n\/locales\/([^/]+)\/([^/]+)\.json$/) ?? []
   if (!language || !namespace) continue
 
   if (!locales.has(language)) locales.set(language, new Map())

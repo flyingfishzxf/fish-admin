@@ -24,10 +24,10 @@ const router = createRouter({ routeTree })
 // still fails if a label goes missing, and does not fail because a locale the
 // adopter removed is not imported here.
 const navResources = Object.entries(
-  import.meta.glob('../locales/*/nav.json', { eager: true, import: 'default' }) as Record<
-    string,
-    Record<string, unknown>
-  >,
+  import.meta.glob('../../packages/i18n/locales/*/nav.json', {
+    eager: true,
+    import: 'default',
+  }) as Record<string, Record<string, unknown>>,
 )
 
 function expectedRouteId(path: string) {

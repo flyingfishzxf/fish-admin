@@ -13,10 +13,10 @@ import {
 // Discovered rather than listed, the way nav.test.ts does it, so a scaffolded
 // copy that keeps one locale still checks its copy.
 const settingsResources = Object.values(
-  import.meta.glob('../locales/*/settings.json', { eager: true, import: 'default' }) as Record<
-    string,
-    Record<string, unknown>
-  >,
+  import.meta.glob('../../packages/i18n/locales/*/settings.json', {
+    eager: true,
+    import: 'default',
+  }) as Record<string, Record<string, unknown>>,
 )
 
 function lookup(source: Record<string, unknown>, key: string): unknown {
