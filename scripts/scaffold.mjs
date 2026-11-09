@@ -371,6 +371,12 @@ function dropTestBrowsers(editor, state) {
 
   editor.sub('tsconfig.json', text('    "src",', '    "e2e",'), text('    "src",'))
 
+  editor.block(
+    '.github/workflows/ci.yml',
+    '      - name: Parity baseline is unchanged',
+    '        run: pnpm check:parity:freeze',
+  )
+
   editor.contains('.github/workflows/ci.yml', '  e2e:')
   editor.truncateFrom('.github/workflows/ci.yml', '  e2e:')
 
@@ -554,7 +560,11 @@ function mockStep({ editor, state }) {
 
   editor.json('package.json', (pkg) => {
     delete pkg.dependencies['@fish-admin/mock']
-    for (const script of ['build:demo', 'msw:init']) delete pkg.scripts[script]
+    for (const script of ['build:demo', 'msw:init', 'test:mock']) delete pkg.scripts[script]
+    pkg.scripts.typecheck = pkg.scripts.typecheck.replace(
+      ' && pnpm --filter @fish-admin/mock typecheck',
+      '',
+    )
     for (const specifier of ['msw', '@faker-js/faker']) delete pkg.devDependencies[specifier]
     delete pkg.msw
   })

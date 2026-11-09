@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest'
 import {
   PLAN_STEPS,
   PLAN_VARIANTS,
+  applyPlan,
   buildOptions,
   checkPlan,
   discoverLocales,
@@ -35,6 +36,17 @@ describe.skipIf(!isTemplate)('scaffold plan', () => {
       expect(() => checkPlan(root, variant.overrides)).not.toThrow()
     })
   }
+
+  it('drops the parity gate together with the mock package', () => {
+    const options = flags(['--name=acme', '--yes', '--mock=drop'], discoverLocales(root))
+    const { editor } = applyPlan({ root, options, check: true })
+
+    expect(editor.buffers.get('.github/workflows/ci.yml')).not.toContain('check:parity:freeze')
+
+    const pkg = JSON.parse(editor.buffers.get('package.json'))
+    expect(pkg.scripts['test:mock']).toBeUndefined()
+    expect(pkg.scripts.typecheck).not.toContain('@fish-admin/mock')
+  })
 
   it('gives every step a title the run summary can print', () => {
     for (const step of PLAN_STEPS) {
