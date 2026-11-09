@@ -13,7 +13,7 @@
       "value": "grace"
     },
     { "action": "expectText", "text": "Grace Hopper" },
-    { "action": "expectNotText", "text": "Ada Lovelace" },
+    { "action": "expectCount", "target": { "role": "cell", "name": "Ada Lovelace" }, "count": 0 },
     { "action": "expectCount", "target": { "css": "tbody tr" }, "count": 1 },
     { "action": "click", "target": { "role": "button", "name": "Clear search" } },
     { "action": "expectCount", "target": { "css": "tbody tr" }, "count": 5 },
