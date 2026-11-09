@@ -33,11 +33,13 @@
     "src",
     "e2e",
     "e2e-docs",
+    "e2e-parity",
     "vite.config.ts",
     "vite.shared.ts",
     "vitest.config.ts",
     "playwright.config.ts",
     "playwright.visual.config.ts",
-    "playwright.docs.config.ts"
+    "playwright.docs.config.ts",
+    "playwright.parity.config.ts"
   ]
 }

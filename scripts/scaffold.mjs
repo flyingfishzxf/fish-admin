@@ -337,9 +337,11 @@ function firstLine(value) {
 // ---------------------------------------------------------------------------
 
 /**
- * The Playwright suite drives the app through the demo backend and the demo
- * dataset, so both are removed together with it: there is nothing left for the
- * specs to assert on once the mock API or the seeded rows are gone.
+ * The template's e2e, visual and parity suites drive the app through the demo
+ * backend, so they leave with the mock: there is nothing left for those specs
+ * to assert on once the mock API or the seeded rows are gone. The docs suites
+ * render static demos instead, so `e2e-docs` and the docs Playwright configs
+ * stay, and so do the `docs` and `docs-e2e` CI jobs.
  */
 function dropTestBrowsers(editor, state) {
   if (state.testBrowsersDropped) return
@@ -347,12 +349,20 @@ function dropTestBrowsers(editor, state) {
 
   editor.delete(
     'e2e',
+    'e2e-parity',
+    'parity',
     'playwright.config.ts',
     'playwright.visual.config.ts',
+    'playwright.parity.config.ts',
     'scripts/check-visual-platform.mjs',
     'scripts/visual-regression.mjs',
+    'scripts/parity-docker.mjs',
     'scripts/parity-freeze.mjs',
     'scripts/parity-freeze.test.mjs',
+    'scripts/parity-contract.mjs',
+    'scripts/parity-contract.test.mjs',
+    'scripts/parity-scenarios.mjs',
+    'scripts/parity-scenarios.test.mjs',
   )
 
   editor.json('package.json', (pkg) => {
@@ -362,29 +372,40 @@ function dropTestBrowsers(editor, state) {
       'test:visual:update',
       'test:visual:docker',
       'perf',
+      'test:parity',
+      'test:parity:docker',
       'check:parity:freeze',
+      'check:parity:contract',
+      'check:parity:scenarios',
       'parity:freeze',
+      'parity:contract',
     ]) {
       delete pkg.scripts[script]
     }
   })
 
   editor.sub('tsconfig.json', text('    "src",', '    "e2e",'), text('    "src",'))
+  editor.sub('tsconfig.json', '    "e2e-parity",\n', '')
+  editor.sub('tsconfig.json', '    "playwright.parity.config.ts"\n', '')
 
   editor.block(
     '.github/workflows/ci.yml',
     '      - name: Parity baseline is unchanged',
     '        run: pnpm check:parity:freeze',
   )
+  editor.block(
+    '.github/workflows/ci.yml',
+    '      - name: Cross-framework contract is current',
+    '        run: pnpm check:parity:contract',
+  )
+  editor.block(
+    '.github/workflows/ci.yml',
+    '      - name: Parity scenarios are valid',
+    '        run: pnpm check:parity:scenarios',
+  )
 
-  editor.contains('.github/workflows/ci.yml', '  e2e:')
-  editor.truncateFrom('.github/workflows/ci.yml', '  e2e:')
-
-  for (const specifier of ['@axe-core/playwright', '@playwright/test']) {
-    editor.json('package.json', (pkg) => {
-      delete pkg.devDependencies[specifier]
-    })
-  }
+  editor.block('.github/workflows/ci.yml', '  e2e:', '          retention-days: 7')
+  editor.truncateFrom('.github/workflows/ci.yml', '  visual:')
 }
 
 // ---------------------------------------------------------------------------

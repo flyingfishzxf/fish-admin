@@ -1,0 +1,12 @@
+{
+  "name": "react",
+  "baseURL": "http://localhost:4175",
+  "webServer": {
+    "command": "pnpm --filter @fish-admin/docs build && pnpm --filter @fish-admin/docs preview --port 4175",
+    "timeout": 300000
+  },
+  "api": {
+    "mode": "exact",
+    "deviations": {}
+  }
+}

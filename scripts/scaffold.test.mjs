@@ -41,12 +41,28 @@ describe.skipIf(!isTemplate)('scaffold plan', () => {
     const options = flags(['--name=acme', '--yes', '--mock=drop'], discoverLocales(root))
     const { editor } = applyPlan({ root, options, check: true })
 
-    expect(editor.buffers.get('.github/workflows/ci.yml')).not.toContain('check:parity:freeze')
+    const ci = editor.buffers.get('.github/workflows/ci.yml')
+    expect(ci).not.toContain('check:parity:freeze')
+    expect(ci).not.toContain('check:parity:contract')
+    expect(ci).not.toContain('check:parity:scenarios')
+    expect(ci.split('\n').some((line) => line.startsWith('  parity:'))).toBe(false)
+
+    // The mock-free jobs leave; the docs jobs survive because the docs suites
+    // render static demos and never touch the mock API.
+    const lines = ci.split('\n')
+    for (const job of ['  e2e:', '  visual:', '  docs-visual:', '  parity:']) {
+      expect(lines.some((line) => line.startsWith(job))).toBe(false)
+    }
+    expect(lines.some((line) => line.startsWith('  docs:'))).toBe(true)
+    expect(lines.some((line) => line.startsWith('  docs-e2e:'))).toBe(true)
 
     const pkg = JSON.parse(editor.buffers.get('package.json'))
     expect(pkg.scripts['test:mock']).toBeUndefined()
     expect(pkg.scripts.typecheck).not.toContain('@fish-admin/mock')
     expect(pkg.scripts['test:shared']).not.toContain('@fish-admin/mock')
+    // `e2e-docs` and the docs Playwright configs stay, so their dependencies do too.
+    expect(pkg.devDependencies['@playwright/test']).toBeDefined()
+    expect(pkg.devDependencies['@axe-core/playwright']).toBeDefined()
   })
 
   it('gives every step a title the run summary can print', () => {

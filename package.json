@@ -59,6 +59,8 @@
     "test:docs:visual": "node scripts/check-visual-platform.mjs pnpm test:docs:visual:docker && playwright test -c playwright.docs-visual.config.ts",
     "test:docs:visual:update": "node scripts/check-visual-platform.mjs pnpm test:docs:visual:docker && playwright test -c playwright.docs-visual.config.ts --update-snapshots=all",
     "test:docs:visual:docker": "node scripts/visual-regression-docs.mjs",
+    "test:parity": "playwright test -c playwright.parity.config.ts",
+    "test:parity:docker": "node scripts/parity-docker.mjs",
     "size": "pnpm build && node scripts/check-bundle-size.mjs",
     "perf": "playwright test e2e/perf.spec.ts",
     "msw:init": "msw init public --save",
