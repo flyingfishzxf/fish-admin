@@ -25,6 +25,8 @@
     "check:maturity": "node scripts/check-maturity.mjs --check",
     "parity:freeze": "node scripts/parity-freeze.mjs",
     "check:parity:freeze": "node scripts/parity-freeze.mjs --check",
+    "parity:contract": "node scripts/parity-contract.mjs",
+    "check:parity:contract": "node scripts/parity-contract.mjs --check",
     "test:tokens": "pnpm --filter @fish-admin/tokens test",
     "test:contracts": "pnpm --filter @fish-admin/contracts test",
     "test:i18n": "pnpm --filter @fish-admin/i18n test",

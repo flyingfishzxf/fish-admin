@@ -1,0 +1,4 @@
+{
+  "version": 1,
+  "components": ["accordion", "date-range-picker", "dialog", "pro-table", "select", "tabs"]
+}

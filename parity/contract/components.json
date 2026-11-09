@@ -1,0 +1,4193 @@
+{
+  "version": 1,
+  "release": "2.2.0",
+  "pilot": [
+    "accordion",
+    "date-range-picker",
+    "dialog",
+    "pro-table",
+    "select",
+    "tabs"
+  ],
+  "components": [
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Accordion",
+      "source": "packages/ui/src/components/ui/accordion.tsx",
+      "docsPath": "/components/accordion",
+      "demos": [
+        "accordion/basic",
+        "accordion/controlled"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "alert",
+      "name": "Alert",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Alert",
+      "source": "packages/ui/src/components/ui/alert.tsx",
+      "docsPath": "/components/alert",
+      "demos": [
+        "alert/basic",
+        "alert/destructive"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"default\" | \"destructive\" | null",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "alert-dialog",
+      "name": "Alert Dialog",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "AlertDialog",
+      "source": "packages/ui/src/components/ui/alert-dialog.tsx",
+      "docsPath": "/components/alert-dialog",
+      "demos": [
+        "alert-dialog/basic",
+        "alert-dialog/controlled"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "anchor-nav",
+      "name": "Anchor Nav",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "AnchorNav",
+      "source": "packages/ui/src/components/enterprise/anchor-nav/anchor-nav.tsx",
+      "docsPath": "/components/anchor-nav",
+      "demos": [
+        "anchor-nav/basic",
+        "anchor-nav/sticky"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "AnchorItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "rootRef",
+            "type": "RefObject<HTMLElement | null>",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "offset",
+            "type": "number",
+            "required": false,
+            "defaultValue": "88"
+          },
+          {
+            "name": "orientation",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "vertical"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "auto-complete",
+      "name": "Auto Complete",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "AutoComplete",
+      "source": "packages/ui/src/components/enterprise/auto-complete/auto-complete.tsx",
+      "docsPath": "/components/auto-complete",
+      "demos": [
+        "auto-complete/basic",
+        "auto-complete/states"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "options",
+            "type": "AutoCompleteOption[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "loadingLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "openOnFocus",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "true"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "onSelect",
+            "type": "((option: AutoCompleteOption) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Avatar",
+      "source": "packages/ui/src/components/ui/avatar.tsx",
+      "docsPath": "/components/avatar",
+      "demos": [
+        "avatar/basic",
+        "avatar/group"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "size",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "default"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "back-top",
+      "name": "Back Top",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "BackTop",
+      "source": "packages/ui/src/components/enterprise/back-top/back-top.tsx",
+      "docsPath": "/components/back-top",
+      "demos": [
+        "back-top/basic",
+        "back-top/threshold"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "targetRef",
+            "type": "RefObject<HTMLElement | null>",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "threshold",
+            "type": "number",
+            "required": false,
+            "defaultValue": "400"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Badge",
+      "source": "packages/ui/src/components/ui/badge.tsx",
+      "docsPath": "/components/badge",
+      "demos": [
+        "badge/basic",
+        "badge/status"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"default\" | \"secondary\" | \"destructive\" | \"outline\" | \"ghost\" | \"link\" | null",
+            "required": false,
+            "defaultValue": "default"
+          },
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Breadcrumb",
+      "source": "packages/ui/src/components/ui/breadcrumb.tsx",
+      "docsPath": "/components/breadcrumb",
+      "demos": [
+        "breadcrumb/basic",
+        "breadcrumb/overflow"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Button",
+      "source": "packages/ui/src/components/ui/button.tsx",
+      "docsPath": "/components/button",
+      "demos": [
+        "button/basic",
+        "button/icons",
+        "button/states"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "\"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | \"link\" | null",
+            "required": false,
+            "defaultValue": "default"
+          },
+          {
+            "name": "size",
+            "type": "\"default\" | \"xs\" | \"sm\" | \"lg\" | \"icon\" | \"icon-xs\" | \"icon-sm\" | \"icon-lg\" | null",
+            "required": false,
+            "defaultValue": "default"
+          },
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "calendar",
+      "name": "Calendar",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Calendar",
+      "source": "packages/ui/src/components/ui/calendar.tsx",
+      "docsPath": "/components/calendar",
+      "demos": [
+        "calendar/basic",
+        "calendar/range"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "buttonVariant",
+            "type": "\"link\" | \"default\" | \"destructive\" | \"outline\" | \"secondary\" | \"ghost\" | null",
+            "required": false,
+            "defaultValue": "ghost"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Card",
+      "source": "packages/ui/src/components/ui/card.tsx",
+      "docsPath": "/components/card",
+      "demos": [
+        "card/basic",
+        "card/header-action"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "carousel",
+      "name": "Carousel",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Carousel",
+      "source": "packages/ui/src/components/enterprise/carousel/carousel.tsx",
+      "docsPath": "/components/carousel",
+      "demos": [
+        "carousel/basic",
+        "carousel/content"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "slides",
+            "type": "CarouselSlide[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "previousLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "nextLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "goToLabel",
+            "type": "(index: number) => string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "cascader",
+      "name": "Cascader",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Cascader",
+      "source": "packages/ui/src/components/enterprise/cascader/cascader.tsx",
+      "docsPath": "/components/cascader",
+      "demos": [
+        "cascader/basic",
+        "cascader/preset"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "options",
+            "type": "CascaderOption[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string[]",
+            "required": false,
+            "defaultValue": "[]"
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "clearLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(value: string[]) => void",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "onClear",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "chart",
+      "name": "Chart",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ChartContainer",
+      "source": "packages/ui/src/components/ui/chart.tsx",
+      "docsPath": "/components/chart",
+      "demos": [
+        "chart/area-legend",
+        "chart/basic"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "config",
+            "type": "ChartConfig",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "initialDimension",
+            "type": "{ width: number; height: number; }",
+            "required": false,
+            "defaultValue": "{ width: 320, height: 200 } as const"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Checkbox",
+      "source": "packages/ui/src/components/ui/checkbox.tsx",
+      "docsPath": "/components/checkbox",
+      "demos": [
+        "checkbox/basic",
+        "checkbox/group"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "collapsible",
+      "name": "Collapsible",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Collapsible",
+      "source": "packages/ui/src/components/ui/collapsible.tsx",
+      "docsPath": "/components/collapsible",
+      "demos": [
+        "collapsible/basic",
+        "collapsible/chevron"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "color-picker",
+      "name": "Color Picker",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ColorPicker",
+      "source": "packages/ui/src/components/ui/color-picker.tsx",
+      "docsPath": "/components/color-picker",
+      "demos": [
+        "color-picker/basic",
+        "color-picker/presets"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false,
+            "defaultValue": "#6366f1"
+          },
+          {
+            "name": "presets",
+            "type": "string[]",
+            "required": false,
+            "defaultValue": "[\n  '#6366f1',\n  '#8b5cf6',\n  '#ec4899',\n  '#f97316',\n  '#eab308',\n  '#10b981',\n  '#0ea5e9',\n  '#64748b',\n]"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "hexLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "pickerLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "presetsLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "combobox",
+      "name": "Combobox",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Combobox",
+      "source": "packages/ui/src/components/enterprise/combobox/combobox.tsx",
+      "docsPath": "/components/combobox",
+      "demos": [
+        "combobox/basic",
+        "combobox/states"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "options",
+            "type": "ComboboxOption[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "clearLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(value: string) => void",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "onClear",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "command",
+      "name": "Command",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Command",
+      "source": "packages/ui/src/components/ui/command.tsx",
+      "docsPath": "/components/command",
+      "demos": [
+        "command/basic",
+        "command/palette"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "shouldFilter",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "filter",
+            "type": "CommandFilter",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "loop",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disablePointerSelection",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "vimBindings",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "context-menu",
+      "name": "Context Menu",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ContextMenu",
+      "source": "packages/ui/src/components/ui/context-menu.tsx",
+      "docsPath": "/components/context-menu",
+      "demos": [
+        "context-menu/basic",
+        "context-menu/file-actions"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "date-picker",
+      "name": "Date Picker",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "DatePicker",
+      "source": "packages/ui/src/components/enterprise/date-picker/date-picker.tsx",
+      "docsPath": "/components/date-picker",
+      "demos": [
+        "date-picker/basic",
+        "date-picker/bounds"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "min",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "max",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(value: string | undefined) => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "date-range-picker",
+      "name": "Date Range Picker",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "DateRangePicker",
+      "source": "packages/ui/src/components/enterprise/date-range-picker/date-range-picker.tsx",
+      "docsPath": "/components/date-range-picker",
+      "demos": [
+        "date-range-picker/basic",
+        "date-range-picker/presets"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "DateRangeValue",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "presets",
+            "type": "DateRangePreset[]",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(value: DateRangeValue) => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "descriptions",
+      "name": "Descriptions",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Descriptions",
+      "source": "packages/ui/src/components/enterprise/descriptions/descriptions.tsx",
+      "docsPath": "/components/descriptions",
+      "demos": [
+        "descriptions/basic",
+        "descriptions/columns"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "DescriptionItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "columns",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "2"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "detail-page",
+      "name": "Detail Page",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "DetailPage",
+      "source": "packages/ui/src/components/pro/detail-page/detail-page.tsx",
+      "docsPath": "/components/detail-page",
+      "demos": [
+        "detail-page/basic",
+        "detail-page/single-section"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "back",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "avatar",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "subtitle",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "badges",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "meta",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "actions",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "tabs",
+            "type": "DetailPageTab[]",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "defaultTab",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "tabsLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "dialog",
+      "name": "Dialog",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Dialog",
+      "source": "packages/ui/src/components/ui/dialog.tsx",
+      "docsPath": "/components/dialog",
+      "demos": [
+        "dialog/basic",
+        "dialog/long-content"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "drawer",
+      "name": "Drawer",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Drawer",
+      "source": "packages/ui/src/components/ui/drawer.tsx",
+      "docsPath": "/components/drawer",
+      "demos": [
+        "drawer/basic",
+        "drawer/right-side"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "activeSnapPoint",
+            "type": "string | number | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "setActiveSnapPoint",
+            "type": "((snapPoint: string | number | null) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "closeThreshold",
+            "type": "number",
+            "required": false,
+            "defaultValue": "0.25"
+          },
+          {
+            "name": "noBodyStyles",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "shouldScaleBackground",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "setBackgroundColorOnScale",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "true"
+          },
+          {
+            "name": "scrollLockTimeout",
+            "type": "number",
+            "required": false,
+            "defaultValue": "500ms"
+          },
+          {
+            "name": "fixed",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "handleOnly",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "dismissible",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "true"
+          },
+          {
+            "name": "modal",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "true"
+          },
+          {
+            "name": "nested",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "direction",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "'bottom'"
+          },
+          {
+            "name": "defaultOpen",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "disablePreventScroll",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "repositionInputs",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "true when {@link snapPoints } is defined"
+          },
+          {
+            "name": "snapToSequentialPoint",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "container",
+            "type": "HTMLElement | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "preventScrollRestoration",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "autoFocus",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onOpenChange",
+            "type": "((open: boolean) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onDrag",
+            "type": "((event: PointerEvent<HTMLDivElement>, percentageDragged: number) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onRelease",
+            "type": "((event: PointerEvent<HTMLDivElement>, open: boolean) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onClose",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onAnimationEnd",
+            "type": "((open: boolean) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "dropdown-menu",
+      "name": "Dropdown Menu",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "DropdownMenu",
+      "source": "packages/ui/src/components/ui/dropdown-menu.tsx",
+      "docsPath": "/components/dropdown-menu",
+      "demos": [
+        "dropdown-menu/basic",
+        "dropdown-menu/selections"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "dropzone",
+      "name": "Dropzone",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Dropzone",
+      "source": "packages/ui/src/components/enterprise/dropzone/dropzone.tsx",
+      "docsPath": "/components/dropzone",
+      "demos": [
+        "dropzone/basic",
+        "dropzone/multiple"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "multiple",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "browseLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "error",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "preview",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onFile",
+            "type": "((file: File) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onFiles",
+            "type": "((files: File[]) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "editable-table",
+      "name": "Editable Table",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "EditableTable",
+      "source": "packages/ui/src/components/pro/editable-table/editable-table.tsx",
+      "docsPath": "/components/editable-table",
+      "demos": [
+        "editable-table/basic",
+        "editable-table/dirty"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "columns",
+            "type": "EditableTableColumn[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "rows",
+            "type": "EditableTableRow[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "addRow",
+            "type": "(() => EditableTableRow)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "rowLabel",
+            "type": "((row: EditableTableRow) => string)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "labels",
+            "type": "EditableTableLabels",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onRowsChange",
+            "type": "(rows: EditableTableRow[]) => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "empty",
+      "name": "Empty",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Empty",
+      "source": "packages/ui/src/components/ui/empty.tsx",
+      "docsPath": "/components/empty",
+      "demos": [
+        "empty/basic",
+        "empty/compact"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "variant",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "default"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "form",
+      "name": "Form",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "FormItem",
+      "source": "packages/ui/src/components/ui/form.tsx",
+      "docsPath": "/components/form",
+      "demos": [
+        "form/basic",
+        "form/fields"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "hover-card",
+      "name": "Hover Card",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "HoverCard",
+      "source": "packages/ui/src/components/ui/hover-card.tsx",
+      "docsPath": "/components/hover-card",
+      "demos": [
+        "hover-card/basic",
+        "hover-card/profile"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "image-preview",
+      "name": "Image Preview",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ImagePreview",
+      "source": "packages/ui/src/components/enterprise/image-preview/image-preview.tsx",
+      "docsPath": "/components/image-preview",
+      "demos": [
+        "image-preview/basic",
+        "image-preview/single"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "images",
+            "type": "PreviewImage[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "import-wizard",
+      "name": "Import Wizard",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ImportWizard",
+      "source": "packages/ui/src/components/pro/import-wizard/import-wizard.tsx",
+      "docsPath": "/components/import-wizard",
+      "demos": [
+        "import-wizard/basic",
+        "import-wizard/steps"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "fields",
+            "type": "ImportField[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "labels",
+            "type": "ImportWizardLabels",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "sample",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "sampleName",
+            "type": "string",
+            "required": false,
+            "defaultValue": "sample.csv"
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "required": false,
+            "defaultValue": ".csv,text/csv"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onImport",
+            "type": "(rows: Record<string, unknown>[]) => void | Promise<void>",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Input",
+      "source": "packages/ui/src/components/ui/input.tsx",
+      "docsPath": "/components/input",
+      "demos": [
+        "input/basic",
+        "input/types"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "input-number",
+      "name": "Input Number",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "InputNumber",
+      "source": "packages/ui/src/components/ui/input-number.tsx",
+      "docsPath": "/components/input-number",
+      "demos": [
+        "input-number/basic",
+        "input-number/bounded"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "number | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "min",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "step",
+            "type": "number",
+            "required": false,
+            "defaultValue": "1"
+          },
+          {
+            "name": "precision",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "inputClassName",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "size",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "default"
+          }
+        ],
+        "events": [
+          {
+            "name": "onValueChange",
+            "type": "((value: number | null) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "input-otp",
+      "name": "Input OTP",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "InputOTP",
+      "source": "packages/ui/src/components/ui/input-otp.tsx",
+      "docsPath": "/components/input-otp",
+      "demos": [
+        "input-otp/basic",
+        "input-otp/resend"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "maxLength",
+            "type": "number",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "textAlign",
+            "type": "enum",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "pushPasswordManagerStrategy",
+            "type": "enum",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "pasteTransformer",
+            "type": "((pasted: string) => string)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "containerClassName",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "noScriptCSSFallback",
+            "type": "string | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "nonce",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "render",
+            "type": "InputOTPRenderFn",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "((newValue: string) => unknown)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onComplete",
+            "type": "((...args: any[]) => unknown)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "json-viewer",
+      "name": "JSON Viewer",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "JsonViewer",
+      "source": "packages/ui/src/components/enterprise/json-viewer/json-viewer.tsx",
+      "docsPath": "/components/json-viewer",
+      "demos": [
+        "json-viewer/basic",
+        "json-viewer/states"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "unknown",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "defaultExpandedDepth",
+            "type": "number",
+            "required": false,
+            "defaultValue": "2"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Label",
+      "source": "packages/ui/src/components/ui/label.tsx",
+      "docsPath": "/components/label",
+      "demos": [
+        "label/basic",
+        "label/required-disabled"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "list",
+      "name": "List",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "List",
+      "source": "packages/ui/src/components/enterprise/list/list.tsx",
+      "docsPath": "/components/list",
+      "demos": [
+        "list/basic",
+        "list/selectable"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "ListItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "selectedId",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onItemClick",
+            "type": "((item: ListItem) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "notification-center",
+      "name": "Notification Center",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "NotificationCenter",
+      "source": "packages/ui/src/components/enterprise/notification-center/notification-center.tsx",
+      "docsPath": "/components/notification-center",
+      "demos": [
+        "notification-center/basic",
+        "notification-center/empty"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "NotificationItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "unreadCount",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "viewAllLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "markAllLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onItemClick",
+            "type": "((item: NotificationItem) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onMarkAllRead",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onViewAll",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "page-container",
+      "name": "Page Container",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "PageContainer",
+      "source": "packages/ui/src/components/enterprise/page-container/page-container.tsx",
+      "docsPath": "/components/page-container",
+      "demos": [
+        "page-container/basic",
+        "page-container/sections"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "eyebrow",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "actions",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "tabs",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "footer",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "stickyHeader",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Pagination",
+      "source": "packages/ui/src/components/ui/pagination.tsx",
+      "docsPath": "/components/pagination",
+      "demos": [
+        "pagination/basic",
+        "pagination/compact"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "popconfirm",
+      "name": "Popconfirm",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Popconfirm",
+      "source": "packages/ui/src/components/enterprise/popconfirm/popconfirm.tsx",
+      "docsPath": "/components/popconfirm",
+      "demos": [
+        "popconfirm/basic",
+        "popconfirm/placements"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "description",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "confirmLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "cancelLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "pending",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "destructive",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "side",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "top"
+          },
+          {
+            "name": "align",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "center"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onConfirm",
+            "type": "() => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "popover",
+      "name": "Popover",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Popover",
+      "source": "packages/ui/src/components/ui/popover.tsx",
+      "docsPath": "/components/popover",
+      "demos": [
+        "popover/basic",
+        "popover/form"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "pro-form",
+      "name": "ProForm",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ProForm",
+      "source": "packages/ui/src/components/pro/pro-form/pro-form.tsx",
+      "docsPath": "/components/pro-form",
+      "demos": [
+        "pro-form/basic",
+        "pro-form/validation"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "fields",
+            "type": "ProFormField[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "defaultValues",
+            "type": "Partial<ProFormValues>",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "validateMessage",
+            "type": "(rule: ProFormRule, label: string, limit?: number | undefined) => string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "submitLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "resetLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onSubmit",
+            "type": "(values: ProFormValues) => void | Promise<void>",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "pro-table",
+      "name": "ProTable",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ProTable",
+      "source": "packages/ui/src/components/pro/pro-table/pro-table.tsx",
+      "docsPath": "/components/pro-table",
+      "demos": [
+        "pro-table/basic",
+        "pro-table/selection"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "table",
+            "type": "Table<TData>",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "empty",
+            "type": "ReactNode",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "density",
+            "type": "enum",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "search",
+            "type": "ProTableSearchConfig",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "filters",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "actions",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "toolbar",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "selection",
+            "type": "ProTableSelectionConfig",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "pagination",
+            "type": "ProTablePaginationConfig",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "fetching",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "fetchingLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "rowContextMenu",
+            "type": "((row: TData) => ReactNode)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "virtualized",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "virtualRowHeight",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "virtualMaxHeight",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "scrollLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onRowClick",
+            "type": "((row: TData) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "progress",
+      "name": "Progress",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Progress",
+      "source": "packages/ui/src/components/ui/progress.tsx",
+      "docsPath": "/components/progress",
+      "demos": [
+        "progress/basic",
+        "progress/values"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "query-filter",
+      "name": "Query Filter",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "QueryFilter",
+      "source": "packages/ui/src/components/pro/query-filter/query-filter.tsx",
+      "docsPath": "/components/query-filter",
+      "demos": [
+        "query-filter/basic",
+        "query-filter/collapsed"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "fields",
+            "type": "FilterField[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "FilterValue",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "labels",
+            "type": "{ reset: string; more: string; less: string; }",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "maxVisible",
+            "type": "number",
+            "required": false,
+            "defaultValue": "3"
+          },
+          {
+            "name": "extra",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(next: FilterValue) => void",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "onReset",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "radio-group",
+      "name": "Radio Group",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "RadioGroup",
+      "source": "packages/ui/src/components/ui/radio-group.tsx",
+      "docsPath": "/components/radio-group",
+      "demos": [
+        "radio-group/basic",
+        "radio-group/horizontal"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "rate",
+      "name": "Rate",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Rate",
+      "source": "packages/ui/src/components/enterprise/rate/rate.tsx",
+      "docsPath": "/components/rate",
+      "demos": [
+        "rate/basic",
+        "rate/states"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": false,
+            "defaultValue": "0"
+          },
+          {
+            "name": "max",
+            "type": "number",
+            "required": false,
+            "defaultValue": "5"
+          },
+          {
+            "name": "readOnly",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "allowClear",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "true"
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "((value: number) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "resizable",
+      "name": "Resizable",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ResizablePanelGroup",
+      "source": "packages/ui/src/components/ui/resizable.tsx",
+      "docsPath": "/components/resizable",
+      "demos": [
+        "resizable/basic",
+        "resizable/vertical"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "defaultLayout",
+            "type": "Layout",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disableCursor",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "elementRef",
+            "type": "Ref<HTMLDivElement | null>",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "groupRef",
+            "type": "Ref<GroupImperativeHandle | null>",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "resizePreviewMode",
+            "type": "enum",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "resizeTargetMinimumSize",
+            "type": "{ coarse: number; fine: number; }",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "orientation",
+            "type": "enum",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onLayoutChange",
+            "type": "((layout: Layout) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onLayoutChanged",
+            "type": "((layout: Layout, meta: LayoutChangedMeta<Layout>) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "result",
+      "name": "Result",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Result",
+      "source": "packages/ui/src/components/enterprise/result/result.tsx",
+      "docsPath": "/components/result",
+      "demos": [
+        "result/basic",
+        "result/states"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "status",
+            "type": "enum",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "title",
+            "type": "ReactNode",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "description",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "extra",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "scroll-area",
+      "name": "Scroll Area",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ScrollArea",
+      "source": "packages/ui/src/components/ui/scroll-area.tsx",
+      "docsPath": "/components/scroll-area",
+      "demos": [
+        "scroll-area/basic",
+        "scroll-area/visibility"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "segmented",
+      "name": "Segmented",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Segmented",
+      "source": "packages/ui/src/components/ui/segmented.tsx",
+      "docsPath": "/components/segmented",
+      "demos": [
+        "segmented/basic",
+        "segmented/sizes"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "options",
+            "type": "SegmentedOption[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "aria-label",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "size",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "default"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          }
+        ],
+        "events": [
+          {
+            "name": "onValueChange",
+            "type": "(value: string) => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Select",
+      "source": "packages/ui/src/components/ui/select.tsx",
+      "docsPath": "/components/select",
+      "demos": [
+        "select/basic",
+        "select/groups"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "defaultValue",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onValueChange",
+            "type": "((value: string) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "separator",
+      "name": "Separator",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Separator",
+      "source": "packages/ui/src/components/ui/separator.tsx",
+      "docsPath": "/components/separator",
+      "demos": [
+        "separator/basic",
+        "separator/toolbar"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "sheet",
+      "name": "Sheet",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Sheet",
+      "source": "packages/ui/src/components/ui/sheet.tsx",
+      "docsPath": "/components/sheet",
+      "demos": [
+        "sheet/another-side",
+        "sheet/basic"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Sidebar",
+      "source": "packages/ui/src/components/ui/sidebar.tsx",
+      "docsPath": "/components/sidebar",
+      "demos": [
+        "sidebar/basic",
+        "sidebar/nested-menu"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "side",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "left"
+          },
+          {
+            "name": "variant",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "sidebar"
+          },
+          {
+            "name": "collapsible",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "offcanvas"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Skeleton",
+      "source": "packages/ui/src/components/ui/skeleton.tsx",
+      "docsPath": "/components/skeleton",
+      "demos": [
+        "skeleton/basic",
+        "skeleton/list"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Slider",
+      "source": "packages/ui/src/components/ui/slider.tsx",
+      "docsPath": "/components/slider",
+      "demos": [
+        "slider/basic",
+        "slider/range"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "thumbLabels",
+            "type": "string[]",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "sonner",
+      "name": "Sonner",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Toaster",
+      "source": "packages/ui/src/components/ui/sonner.tsx",
+      "docsPath": "/components/sonner",
+      "demos": [
+        "sonner/actions",
+        "sonner/basic"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "spinner",
+      "name": "Spinner",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Spinner",
+      "source": "packages/ui/src/components/ui/spinner.tsx",
+      "docsPath": "/components/spinner",
+      "demos": [
+        "spinner/basic",
+        "spinner/labeled"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "size",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "default"
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "statistic",
+      "name": "Statistic",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Statistic",
+      "source": "packages/ui/src/components/enterprise/statistic/statistic.tsx",
+      "docsPath": "/components/statistic",
+      "demos": [
+        "statistic/basic",
+        "statistic/trend"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string | number",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "precision",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "prefix",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "suffix",
+            "type": "ReactNode",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "trend",
+            "type": "{ value: number; label?: string; }",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "icon",
+            "type": "LucideIcon",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "loading",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "stepper",
+      "name": "Stepper",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Stepper",
+      "source": "packages/ui/src/components/enterprise/stepper/stepper.tsx",
+      "docsPath": "/components/stepper",
+      "demos": [
+        "stepper/basic",
+        "stepper/progress"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "steps",
+            "type": "StepperStep[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "current",
+            "type": "number",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onStepClick",
+            "type": "((index: number) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Switch",
+      "source": "packages/ui/src/components/ui/switch.tsx",
+      "docsPath": "/components/switch",
+      "demos": [
+        "switch/basic",
+        "switch/sizes"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "size",
+            "type": "enum",
+            "required": false,
+            "defaultValue": "default"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Table",
+      "source": "packages/ui/src/components/ui/table.tsx",
+      "docsPath": "/components/table",
+      "demos": [
+        "table/basic",
+        "table/summary"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "container",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "true"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Tabs",
+      "source": "packages/ui/src/components/ui/tabs.tsx",
+      "docsPath": "/components/tabs",
+      "demos": [
+        "tabs/basic",
+        "tabs/vertical"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "tags-input",
+      "name": "Tags Input",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "TagsInput",
+      "source": "packages/ui/src/components/enterprise/tags-input/tags-input.tsx",
+      "docsPath": "/components/tags-input",
+      "demos": [
+        "tags-input/basic",
+        "tags-input/suggestions"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "maxTags",
+            "type": "number",
+            "required": false,
+            "defaultValue": "8"
+          },
+          {
+            "name": "maxLength",
+            "type": "number",
+            "required": false,
+            "defaultValue": "24"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "suggestions",
+            "type": "{ label: string; value: string; }[]",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(value: string[]) => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "textarea",
+      "name": "Textarea",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Textarea",
+      "source": "packages/ui/src/components/ui/textarea.tsx",
+      "docsPath": "/components/textarea",
+      "demos": [
+        "textarea/basic",
+        "textarea/states"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "time-picker",
+      "name": "Time Picker",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "TimePicker",
+      "source": "packages/ui/src/components/enterprise/time-picker/time-picker.tsx",
+      "docsPath": "/components/time-picker",
+      "demos": [
+        "time-picker/basic",
+        "time-picker/steps"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "minuteStep",
+            "type": "number",
+            "required": false,
+            "defaultValue": "5"
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(value: string | undefined) => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Timeline",
+      "source": "packages/ui/src/components/enterprise/timeline/timeline.tsx",
+      "docsPath": "/components/timeline",
+      "demos": [
+        "timeline/basic",
+        "timeline/empty"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "TimelineItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "toggle",
+      "name": "Toggle",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Toggle",
+      "source": "packages/ui/src/components/ui/toggle.tsx",
+      "docsPath": "/components/toggle",
+      "demos": [
+        "toggle/basic",
+        "toggle/variants"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "variant",
+            "type": "\"default\" | \"outline\" | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "size",
+            "type": "\"default\" | \"sm\" | \"lg\" | null",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "toggle-group",
+      "name": "Toggle Group",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "ToggleGroup",
+      "source": "packages/ui/src/components/ui/toggle-group.tsx",
+      "docsPath": "/components/toggle-group",
+      "demos": [
+        "toggle-group/basic",
+        "toggle-group/multiple"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "asChild",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "variant",
+            "type": "\"default\" | \"outline\" | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "size",
+            "type": "\"default\" | \"sm\" | \"lg\" | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "spacing",
+            "type": "number",
+            "required": false,
+            "defaultValue": "0"
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Tooltip",
+      "source": "packages/ui/src/components/ui/tooltip.tsx",
+      "docsPath": "/components/tooltip",
+      "demos": [
+        "tooltip/basic",
+        "tooltip/sides"
+      ],
+      "api": {
+        "props": [],
+        "events": []
+      }
+    },
+    {
+      "id": "tour",
+      "name": "Tour",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Tour",
+      "source": "packages/ui/src/components/enterprise/tour/tour.tsx",
+      "docsPath": "/components/tour",
+      "demos": [
+        "tour/basic",
+        "tour/resume"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "steps",
+            "type": "TourStep[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "open",
+            "type": "boolean",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "labels",
+            "type": "TourLabels",
+            "required": true,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onOpenChange",
+            "type": "(open: boolean) => void",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "onFinish",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "transfer",
+      "name": "Transfer",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Transfer",
+      "source": "packages/ui/src/components/enterprise/transfer/transfer.tsx",
+      "docsPath": "/components/transfer",
+      "demos": [
+        "transfer/basic",
+        "transfer/searchable"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "TransferLike[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "sourceTitle",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "targetTitle",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "searchPlaceholder",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "emptySourceLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyTargetLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(value: string[]) => void",
+            "required": true,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "tree",
+      "name": "Tree",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Tree",
+      "source": "packages/ui/src/components/enterprise/tree/tree.tsx",
+      "docsPath": "/components/tree",
+      "demos": [
+        "tree/basic",
+        "tree/expanded"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "TreeItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "selectedId",
+            "type": "string | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "expandedIds",
+            "type": "ReadonlySet<string>",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "defaultExpanded",
+            "type": "string[]",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onSelect",
+            "type": "((id: string) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onExpandedChange",
+            "type": "((ids: Set<string>) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "tree-select",
+      "name": "Tree Select",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "TreeSelect",
+      "source": "packages/ui/src/components/enterprise/tree-select/tree-select.tsx",
+      "docsPath": "/components/tree-select",
+      "demos": [
+        "tree-select/basic",
+        "tree-select/validation"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "id",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "items",
+            "type": "TreeItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "type": "string | null",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "placeholder",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "ariaLabel",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "clearLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "emptyLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "aria-invalid",
+            "type": "boolean | \"false\" | \"true\" | \"grammar\" | \"spelling\"",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "aria-describedby",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onChange",
+            "type": "(id: string) => void",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "onClear",
+            "type": "(() => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "trend",
+      "name": "Trend",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Trend",
+      "source": "packages/ui/src/components/enterprise/trend/trend.tsx",
+      "docsPath": "/components/trend",
+      "demos": [
+        "trend/basic",
+        "trend/inverted"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "value",
+            "type": "number",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "suffix",
+            "type": "string",
+            "required": false,
+            "defaultValue": "%"
+          },
+          {
+            "name": "precision",
+            "type": "number",
+            "required": false,
+            "defaultValue": "1"
+          },
+          {
+            "name": "invert",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    },
+    {
+      "id": "upload",
+      "name": "Upload",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Upload",
+      "source": "packages/ui/src/components/enterprise/upload/upload.tsx",
+      "docsPath": "/components/upload",
+      "demos": [
+        "upload/basic",
+        "upload/progress"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "items",
+            "type": "UploadItem[]",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "accept",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "label",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "hint",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "browseLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "maxSize",
+            "type": "number",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "maxSizeLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "removeLabel",
+            "type": "((item: UploadItem) => string)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "retryLabel",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "disabled",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": "false"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": [
+          {
+            "name": "onFiles",
+            "type": "(files: File[]) => void",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "onRemove",
+            "type": "((item: UploadItem) => void)",
+            "required": false,
+            "defaultValue": null
+          },
+          {
+            "name": "onRetry",
+            "type": "((item: UploadItem) => void)",
+            "required": false,
+            "defaultValue": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "watermark",
+      "name": "Watermark",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.1.0",
+      "exportName": "Watermark",
+      "source": "packages/ui/src/components/enterprise/watermark/watermark.tsx",
+      "docsPath": "/components/watermark",
+      "demos": [
+        "watermark/basic",
+        "watermark/styles"
+      ],
+      "api": {
+        "props": [
+          {
+            "name": "text",
+            "type": "string",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "children",
+            "type": "ReactNode",
+            "required": true,
+            "defaultValue": null
+          },
+          {
+            "name": "opacity",
+            "type": "number",
+            "required": false,
+            "defaultValue": "0.08"
+          },
+          {
+            "name": "fontSize",
+            "type": "number",
+            "required": false,
+            "defaultValue": "14"
+          },
+          {
+            "name": "rotate",
+            "type": "number",
+            "required": false,
+            "defaultValue": "-20"
+          },
+          {
+            "name": "gap",
+            "type": "number",
+            "required": false,
+            "defaultValue": "96"
+          },
+          {
+            "name": "className",
+            "type": "string",
+            "required": false,
+            "defaultValue": null
+          }
+        ],
+        "events": []
+      }
+    }
+  ]
+}

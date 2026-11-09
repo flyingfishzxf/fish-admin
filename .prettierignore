@@ -22,3 +22,5 @@ apps/docs/docs/en/components/_meta.json
 apps/docs/docs/zh/components/_meta.json
 # Written by scripts/parity-freeze.mjs; its manifest is not prettier's output.
 parity/baseline
+# Written by scripts/parity-contract.mjs; its JSON is not prettier's output.
+parity/contract

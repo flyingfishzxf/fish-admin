@@ -1,0 +1,1919 @@
+{
+  "version": 1,
+  "release": "2.2.0",
+  "routes": [
+    {
+      "id": "accordion",
+      "paths": {
+        "en": "/components/accordion",
+        "zh": "/zh/components/accordion"
+      },
+      "demos": [
+        {
+          "id": "accordion/basic",
+          "anchor": "section[data-demo=\"accordion/basic\"]"
+        },
+        {
+          "id": "accordion/controlled",
+          "anchor": "section[data-demo=\"accordion/controlled\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "alert",
+      "paths": {
+        "en": "/components/alert",
+        "zh": "/zh/components/alert"
+      },
+      "demos": [
+        {
+          "id": "alert/basic",
+          "anchor": "section[data-demo=\"alert/basic\"]"
+        },
+        {
+          "id": "alert/destructive",
+          "anchor": "section[data-demo=\"alert/destructive\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "alert-dialog",
+      "paths": {
+        "en": "/components/alert-dialog",
+        "zh": "/zh/components/alert-dialog"
+      },
+      "demos": [
+        {
+          "id": "alert-dialog/basic",
+          "anchor": "section[data-demo=\"alert-dialog/basic\"]"
+        },
+        {
+          "id": "alert-dialog/controlled",
+          "anchor": "section[data-demo=\"alert-dialog/controlled\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "anchor-nav",
+      "paths": {
+        "en": "/components/anchor-nav",
+        "zh": "/zh/components/anchor-nav"
+      },
+      "demos": [
+        {
+          "id": "anchor-nav/basic",
+          "anchor": "section[data-demo=\"anchor-nav/basic\"]"
+        },
+        {
+          "id": "anchor-nav/sticky",
+          "anchor": "section[data-demo=\"anchor-nav/sticky\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 6
+    },
+    {
+      "id": "auto-complete",
+      "paths": {
+        "en": "/components/auto-complete",
+        "zh": "/zh/components/auto-complete"
+      },
+      "demos": [
+        {
+          "id": "auto-complete/basic",
+          "anchor": "section[data-demo=\"auto-complete/basic\"]"
+        },
+        {
+          "id": "auto-complete/states",
+          "anchor": "section[data-demo=\"auto-complete/states\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 13
+    },
+    {
+      "id": "avatar",
+      "paths": {
+        "en": "/components/avatar",
+        "zh": "/zh/components/avatar"
+      },
+      "demos": [
+        {
+          "id": "avatar/basic",
+          "anchor": "section[data-demo=\"avatar/basic\"]"
+        },
+        {
+          "id": "avatar/group",
+          "anchor": "section[data-demo=\"avatar/group\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 2
+    },
+    {
+      "id": "back-top",
+      "paths": {
+        "en": "/components/back-top",
+        "zh": "/zh/components/back-top"
+      },
+      "demos": [
+        {
+          "id": "back-top/basic",
+          "anchor": "section[data-demo=\"back-top/basic\"]"
+        },
+        {
+          "id": "back-top/threshold",
+          "anchor": "section[data-demo=\"back-top/threshold\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 4
+    },
+    {
+      "id": "badge",
+      "paths": {
+        "en": "/components/badge",
+        "zh": "/zh/components/badge"
+      },
+      "demos": [
+        {
+          "id": "badge/basic",
+          "anchor": "section[data-demo=\"badge/basic\"]"
+        },
+        {
+          "id": "badge/status",
+          "anchor": "section[data-demo=\"badge/status\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 2
+    },
+    {
+      "id": "breadcrumb",
+      "paths": {
+        "en": "/components/breadcrumb",
+        "zh": "/zh/components/breadcrumb"
+      },
+      "demos": [
+        {
+          "id": "breadcrumb/basic",
+          "anchor": "section[data-demo=\"breadcrumb/basic\"]"
+        },
+        {
+          "id": "breadcrumb/overflow",
+          "anchor": "section[data-demo=\"breadcrumb/overflow\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "button",
+      "paths": {
+        "en": "/components/button",
+        "zh": "/zh/components/button"
+      },
+      "demos": [
+        {
+          "id": "button/basic",
+          "anchor": "section[data-demo=\"button/basic\"]"
+        },
+        {
+          "id": "button/icons",
+          "anchor": "section[data-demo=\"button/icons\"]"
+        },
+        {
+          "id": "button/states",
+          "anchor": "section[data-demo=\"button/states\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "calendar",
+      "paths": {
+        "en": "/components/calendar",
+        "zh": "/zh/components/calendar"
+      },
+      "demos": [
+        {
+          "id": "calendar/basic",
+          "anchor": "section[data-demo=\"calendar/basic\"]"
+        },
+        {
+          "id": "calendar/range",
+          "anchor": "section[data-demo=\"calendar/range\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "card",
+      "paths": {
+        "en": "/components/card",
+        "zh": "/zh/components/card"
+      },
+      "demos": [
+        {
+          "id": "card/basic",
+          "anchor": "section[data-demo=\"card/basic\"]"
+        },
+        {
+          "id": "card/header-action",
+          "anchor": "section[data-demo=\"card/header-action\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "carousel",
+      "paths": {
+        "en": "/components/carousel",
+        "zh": "/zh/components/carousel"
+      },
+      "demos": [
+        {
+          "id": "carousel/basic",
+          "anchor": "section[data-demo=\"carousel/basic\"]"
+        },
+        {
+          "id": "carousel/content",
+          "anchor": "section[data-demo=\"carousel/content\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 7
+    },
+    {
+      "id": "cascader",
+      "paths": {
+        "en": "/components/cascader",
+        "zh": "/zh/components/cascader"
+      },
+      "demos": [
+        {
+          "id": "cascader/basic",
+          "anchor": "section[data-demo=\"cascader/basic\"]"
+        },
+        {
+          "id": "cascader/preset",
+          "anchor": "section[data-demo=\"cascader/preset\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 10
+    },
+    {
+      "id": "chart",
+      "paths": {
+        "en": "/components/chart",
+        "zh": "/zh/components/chart"
+      },
+      "demos": [
+        {
+          "id": "chart/area-legend",
+          "anchor": "section[data-demo=\"chart/area-legend\"]"
+        },
+        {
+          "id": "chart/basic",
+          "anchor": "section[data-demo=\"chart/basic\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 2
+    },
+    {
+      "id": "checkbox",
+      "paths": {
+        "en": "/components/checkbox",
+        "zh": "/zh/components/checkbox"
+      },
+      "demos": [
+        {
+          "id": "checkbox/basic",
+          "anchor": "section[data-demo=\"checkbox/basic\"]"
+        },
+        {
+          "id": "checkbox/group",
+          "anchor": "section[data-demo=\"checkbox/group\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "collapsible",
+      "paths": {
+        "en": "/components/collapsible",
+        "zh": "/zh/components/collapsible"
+      },
+      "demos": [
+        {
+          "id": "collapsible/basic",
+          "anchor": "section[data-demo=\"collapsible/basic\"]"
+        },
+        {
+          "id": "collapsible/chevron",
+          "anchor": "section[data-demo=\"collapsible/chevron\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "color-picker",
+      "paths": {
+        "en": "/components/color-picker",
+        "zh": "/zh/components/color-picker"
+      },
+      "demos": [
+        {
+          "id": "color-picker/basic",
+          "anchor": "section[data-demo=\"color-picker/basic\"]"
+        },
+        {
+          "id": "color-picker/presets",
+          "anchor": "section[data-demo=\"color-picker/presets\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 11
+    },
+    {
+      "id": "combobox",
+      "paths": {
+        "en": "/components/combobox",
+        "zh": "/zh/components/combobox"
+      },
+      "demos": [
+        {
+          "id": "combobox/basic",
+          "anchor": "section[data-demo=\"combobox/basic\"]"
+        },
+        {
+          "id": "combobox/states",
+          "anchor": "section[data-demo=\"combobox/states\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 12
+    },
+    {
+      "id": "command",
+      "paths": {
+        "en": "/components/command",
+        "zh": "/zh/components/command"
+      },
+      "demos": [
+        {
+          "id": "command/basic",
+          "anchor": "section[data-demo=\"command/basic\"]"
+        },
+        {
+          "id": "command/palette",
+          "anchor": "section[data-demo=\"command/palette\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 9
+    },
+    {
+      "id": "context-menu",
+      "paths": {
+        "en": "/components/context-menu",
+        "zh": "/zh/components/context-menu"
+      },
+      "demos": [
+        {
+          "id": "context-menu/basic",
+          "anchor": "section[data-demo=\"context-menu/basic\"]"
+        },
+        {
+          "id": "context-menu/file-actions",
+          "anchor": "section[data-demo=\"context-menu/file-actions\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "date-picker",
+      "paths": {
+        "en": "/components/date-picker",
+        "zh": "/zh/components/date-picker"
+      },
+      "demos": [
+        {
+          "id": "date-picker/basic",
+          "anchor": "section[data-demo=\"date-picker/basic\"]"
+        },
+        {
+          "id": "date-picker/bounds",
+          "anchor": "section[data-demo=\"date-picker/bounds\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 8
+    },
+    {
+      "id": "date-range-picker",
+      "paths": {
+        "en": "/components/date-range-picker",
+        "zh": "/zh/components/date-range-picker"
+      },
+      "demos": [
+        {
+          "id": "date-range-picker/basic",
+          "anchor": "section[data-demo=\"date-range-picker/basic\"]"
+        },
+        {
+          "id": "date-range-picker/presets",
+          "anchor": "section[data-demo=\"date-range-picker/presets\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 7
+    },
+    {
+      "id": "descriptions",
+      "paths": {
+        "en": "/components/descriptions",
+        "zh": "/zh/components/descriptions"
+      },
+      "demos": [
+        {
+          "id": "descriptions/basic",
+          "anchor": "section[data-demo=\"descriptions/basic\"]"
+        },
+        {
+          "id": "descriptions/columns",
+          "anchor": "section[data-demo=\"descriptions/columns\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "detail-page",
+      "paths": {
+        "en": "/components/detail-page",
+        "zh": "/zh/components/detail-page"
+      },
+      "demos": [
+        {
+          "id": "detail-page/basic",
+          "anchor": "section[data-demo=\"detail-page/basic\"]"
+        },
+        {
+          "id": "detail-page/single-section",
+          "anchor": "section[data-demo=\"detail-page/single-section\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 13
+    },
+    {
+      "id": "dialog",
+      "paths": {
+        "en": "/components/dialog",
+        "zh": "/zh/components/dialog"
+      },
+      "demos": [
+        {
+          "id": "dialog/basic",
+          "anchor": "section[data-demo=\"dialog/basic\"]"
+        },
+        {
+          "id": "dialog/long-content",
+          "anchor": "section[data-demo=\"dialog/long-content\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "drawer",
+      "paths": {
+        "en": "/components/drawer",
+        "zh": "/zh/components/drawer"
+      },
+      "demos": [
+        {
+          "id": "drawer/basic",
+          "anchor": "section[data-demo=\"drawer/basic\"]"
+        },
+        {
+          "id": "drawer/right-side",
+          "anchor": "section[data-demo=\"drawer/right-side\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 26
+    },
+    {
+      "id": "dropdown-menu",
+      "paths": {
+        "en": "/components/dropdown-menu",
+        "zh": "/zh/components/dropdown-menu"
+      },
+      "demos": [
+        {
+          "id": "dropdown-menu/basic",
+          "anchor": "section[data-demo=\"dropdown-menu/basic\"]"
+        },
+        {
+          "id": "dropdown-menu/selections",
+          "anchor": "section[data-demo=\"dropdown-menu/selections\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "dropzone",
+      "paths": {
+        "en": "/components/dropzone",
+        "zh": "/zh/components/dropzone"
+      },
+      "demos": [
+        {
+          "id": "dropzone/basic",
+          "anchor": "section[data-demo=\"dropzone/basic\"]"
+        },
+        {
+          "id": "dropzone/multiple",
+          "anchor": "section[data-demo=\"dropzone/multiple\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 11
+    },
+    {
+      "id": "editable-table",
+      "paths": {
+        "en": "/components/editable-table",
+        "zh": "/zh/components/editable-table"
+      },
+      "demos": [
+        {
+          "id": "editable-table/basic",
+          "anchor": "section[data-demo=\"editable-table/basic\"]"
+        },
+        {
+          "id": "editable-table/dirty",
+          "anchor": "section[data-demo=\"editable-table/dirty\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 8
+    },
+    {
+      "id": "empty",
+      "paths": {
+        "en": "/components/empty",
+        "zh": "/zh/components/empty"
+      },
+      "demos": [
+        {
+          "id": "empty/basic",
+          "anchor": "section[data-demo=\"empty/basic\"]"
+        },
+        {
+          "id": "empty/compact",
+          "anchor": "section[data-demo=\"empty/compact\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "form",
+      "paths": {
+        "en": "/components/form",
+        "zh": "/zh/components/form"
+      },
+      "demos": [
+        {
+          "id": "form/basic",
+          "anchor": "section[data-demo=\"form/basic\"]"
+        },
+        {
+          "id": "form/fields",
+          "anchor": "section[data-demo=\"form/fields\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "hover-card",
+      "paths": {
+        "en": "/components/hover-card",
+        "zh": "/zh/components/hover-card"
+      },
+      "demos": [
+        {
+          "id": "hover-card/basic",
+          "anchor": "section[data-demo=\"hover-card/basic\"]"
+        },
+        {
+          "id": "hover-card/profile",
+          "anchor": "section[data-demo=\"hover-card/profile\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "image-preview",
+      "paths": {
+        "en": "/components/image-preview",
+        "zh": "/zh/components/image-preview"
+      },
+      "demos": [
+        {
+          "id": "image-preview/basic",
+          "anchor": "section[data-demo=\"image-preview/basic\"]"
+        },
+        {
+          "id": "image-preview/single",
+          "anchor": "section[data-demo=\"image-preview/single\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "import-wizard",
+      "paths": {
+        "en": "/components/import-wizard",
+        "zh": "/zh/components/import-wizard"
+      },
+      "demos": [
+        {
+          "id": "import-wizard/basic",
+          "anchor": "section[data-demo=\"import-wizard/basic\"]"
+        },
+        {
+          "id": "import-wizard/steps",
+          "anchor": "section[data-demo=\"import-wizard/steps\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 8
+    },
+    {
+      "id": "input",
+      "paths": {
+        "en": "/components/input",
+        "zh": "/zh/components/input"
+      },
+      "demos": [
+        {
+          "id": "input/basic",
+          "anchor": "section[data-demo=\"input/basic\"]"
+        },
+        {
+          "id": "input/types",
+          "anchor": "section[data-demo=\"input/types\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "input-number",
+      "paths": {
+        "en": "/components/input-number",
+        "zh": "/zh/components/input-number"
+      },
+      "demos": [
+        {
+          "id": "input-number/basic",
+          "anchor": "section[data-demo=\"input-number/basic\"]"
+        },
+        {
+          "id": "input-number/bounded",
+          "anchor": "section[data-demo=\"input-number/bounded\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 14
+    },
+    {
+      "id": "input-otp",
+      "paths": {
+        "en": "/components/input-otp",
+        "zh": "/zh/components/input-otp"
+      },
+      "demos": [
+        {
+          "id": "input-otp/basic",
+          "anchor": "section[data-demo=\"input-otp/basic\"]"
+        },
+        {
+          "id": "input-otp/resend",
+          "anchor": "section[data-demo=\"input-otp/resend\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 11
+    },
+    {
+      "id": "json-viewer",
+      "paths": {
+        "en": "/components/json-viewer",
+        "zh": "/zh/components/json-viewer"
+      },
+      "demos": [
+        {
+          "id": "json-viewer/basic",
+          "anchor": "section[data-demo=\"json-viewer/basic\"]"
+        },
+        {
+          "id": "json-viewer/states",
+          "anchor": "section[data-demo=\"json-viewer/states\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 4
+    },
+    {
+      "id": "label",
+      "paths": {
+        "en": "/components/label",
+        "zh": "/zh/components/label"
+      },
+      "demos": [
+        {
+          "id": "label/basic",
+          "anchor": "section[data-demo=\"label/basic\"]"
+        },
+        {
+          "id": "label/required-disabled",
+          "anchor": "section[data-demo=\"label/required-disabled\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "list",
+      "paths": {
+        "en": "/components/list",
+        "zh": "/zh/components/list"
+      },
+      "demos": [
+        {
+          "id": "list/basic",
+          "anchor": "section[data-demo=\"list/basic\"]"
+        },
+        {
+          "id": "list/selectable",
+          "anchor": "section[data-demo=\"list/selectable\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 6
+    },
+    {
+      "id": "notification-center",
+      "paths": {
+        "en": "/components/notification-center",
+        "zh": "/zh/components/notification-center"
+      },
+      "demos": [
+        {
+          "id": "notification-center/basic",
+          "anchor": "section[data-demo=\"notification-center/basic\"]"
+        },
+        {
+          "id": "notification-center/empty",
+          "anchor": "section[data-demo=\"notification-center/empty\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 11
+    },
+    {
+      "id": "page-container",
+      "paths": {
+        "en": "/components/page-container",
+        "zh": "/zh/components/page-container"
+      },
+      "demos": [
+        {
+          "id": "page-container/basic",
+          "anchor": "section[data-demo=\"page-container/basic\"]"
+        },
+        {
+          "id": "page-container/sections",
+          "anchor": "section[data-demo=\"page-container/sections\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 9
+    },
+    {
+      "id": "pagination",
+      "paths": {
+        "en": "/components/pagination",
+        "zh": "/zh/components/pagination"
+      },
+      "demos": [
+        {
+          "id": "pagination/basic",
+          "anchor": "section[data-demo=\"pagination/basic\"]"
+        },
+        {
+          "id": "pagination/compact",
+          "anchor": "section[data-demo=\"pagination/compact\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "popconfirm",
+      "paths": {
+        "en": "/components/popconfirm",
+        "zh": "/zh/components/popconfirm"
+      },
+      "demos": [
+        {
+          "id": "popconfirm/basic",
+          "anchor": "section[data-demo=\"popconfirm/basic\"]"
+        },
+        {
+          "id": "popconfirm/placements",
+          "anchor": "section[data-demo=\"popconfirm/placements\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 12
+    },
+    {
+      "id": "popover",
+      "paths": {
+        "en": "/components/popover",
+        "zh": "/zh/components/popover"
+      },
+      "demos": [
+        {
+          "id": "popover/basic",
+          "anchor": "section[data-demo=\"popover/basic\"]"
+        },
+        {
+          "id": "popover/form",
+          "anchor": "section[data-demo=\"popover/form\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "pro-form",
+      "paths": {
+        "en": "/components/pro-form",
+        "zh": "/zh/components/pro-form"
+      },
+      "demos": [
+        {
+          "id": "pro-form/basic",
+          "anchor": "section[data-demo=\"pro-form/basic\"]"
+        },
+        {
+          "id": "pro-form/validation",
+          "anchor": "section[data-demo=\"pro-form/validation\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 9
+    },
+    {
+      "id": "pro-table",
+      "paths": {
+        "en": "/components/pro-table",
+        "zh": "/zh/components/pro-table"
+      },
+      "demos": [
+        {
+          "id": "pro-table/basic",
+          "anchor": "section[data-demo=\"pro-table/basic\"]"
+        },
+        {
+          "id": "pro-table/selection",
+          "anchor": "section[data-demo=\"pro-table/selection\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 18
+    },
+    {
+      "id": "progress",
+      "paths": {
+        "en": "/components/progress",
+        "zh": "/zh/components/progress"
+      },
+      "demos": [
+        {
+          "id": "progress/basic",
+          "anchor": "section[data-demo=\"progress/basic\"]"
+        },
+        {
+          "id": "progress/values",
+          "anchor": "section[data-demo=\"progress/values\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "query-filter",
+      "paths": {
+        "en": "/components/query-filter",
+        "zh": "/zh/components/query-filter"
+      },
+      "demos": [
+        {
+          "id": "query-filter/basic",
+          "anchor": "section[data-demo=\"query-filter/basic\"]"
+        },
+        {
+          "id": "query-filter/collapsed",
+          "anchor": "section[data-demo=\"query-filter/collapsed\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 8
+    },
+    {
+      "id": "radio-group",
+      "paths": {
+        "en": "/components/radio-group",
+        "zh": "/zh/components/radio-group"
+      },
+      "demos": [
+        {
+          "id": "radio-group/basic",
+          "anchor": "section[data-demo=\"radio-group/basic\"]"
+        },
+        {
+          "id": "radio-group/horizontal",
+          "anchor": "section[data-demo=\"radio-group/horizontal\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "rate",
+      "paths": {
+        "en": "/components/rate",
+        "zh": "/zh/components/rate"
+      },
+      "demos": [
+        {
+          "id": "rate/basic",
+          "anchor": "section[data-demo=\"rate/basic\"]"
+        },
+        {
+          "id": "rate/states",
+          "anchor": "section[data-demo=\"rate/states\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 7
+    },
+    {
+      "id": "resizable",
+      "paths": {
+        "en": "/components/resizable",
+        "zh": "/zh/components/resizable"
+      },
+      "demos": [
+        {
+          "id": "resizable/basic",
+          "anchor": "section[data-demo=\"resizable/basic\"]"
+        },
+        {
+          "id": "resizable/vertical",
+          "anchor": "section[data-demo=\"resizable/vertical\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 10
+    },
+    {
+      "id": "result",
+      "paths": {
+        "en": "/components/result",
+        "zh": "/zh/components/result"
+      },
+      "demos": [
+        {
+          "id": "result/basic",
+          "anchor": "section[data-demo=\"result/basic\"]"
+        },
+        {
+          "id": "result/states",
+          "anchor": "section[data-demo=\"result/states\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 5
+    },
+    {
+      "id": "scroll-area",
+      "paths": {
+        "en": "/components/scroll-area",
+        "zh": "/zh/components/scroll-area"
+      },
+      "demos": [
+        {
+          "id": "scroll-area/basic",
+          "anchor": "section[data-demo=\"scroll-area/basic\"]"
+        },
+        {
+          "id": "scroll-area/visibility",
+          "anchor": "section[data-demo=\"scroll-area/visibility\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "segmented",
+      "paths": {
+        "en": "/components/segmented",
+        "zh": "/zh/components/segmented"
+      },
+      "demos": [
+        {
+          "id": "segmented/basic",
+          "anchor": "section[data-demo=\"segmented/basic\"]"
+        },
+        {
+          "id": "segmented/sizes",
+          "anchor": "section[data-demo=\"segmented/sizes\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 7
+    },
+    {
+      "id": "select",
+      "paths": {
+        "en": "/components/select",
+        "zh": "/zh/components/select"
+      },
+      "demos": [
+        {
+          "id": "select/basic",
+          "anchor": "section[data-demo=\"select/basic\"]"
+        },
+        {
+          "id": "select/groups",
+          "anchor": "section[data-demo=\"select/groups\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "separator",
+      "paths": {
+        "en": "/components/separator",
+        "zh": "/zh/components/separator"
+      },
+      "demos": [
+        {
+          "id": "separator/basic",
+          "anchor": "section[data-demo=\"separator/basic\"]"
+        },
+        {
+          "id": "separator/toolbar",
+          "anchor": "section[data-demo=\"separator/toolbar\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "sheet",
+      "paths": {
+        "en": "/components/sheet",
+        "zh": "/zh/components/sheet"
+      },
+      "demos": [
+        {
+          "id": "sheet/another-side",
+          "anchor": "section[data-demo=\"sheet/another-side\"]"
+        },
+        {
+          "id": "sheet/basic",
+          "anchor": "section[data-demo=\"sheet/basic\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "sidebar",
+      "paths": {
+        "en": "/components/sidebar",
+        "zh": "/zh/components/sidebar"
+      },
+      "demos": [
+        {
+          "id": "sidebar/basic",
+          "anchor": "section[data-demo=\"sidebar/basic\"]"
+        },
+        {
+          "id": "sidebar/nested-menu",
+          "anchor": "section[data-demo=\"sidebar/nested-menu\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "skeleton",
+      "paths": {
+        "en": "/components/skeleton",
+        "zh": "/zh/components/skeleton"
+      },
+      "demos": [
+        {
+          "id": "skeleton/basic",
+          "anchor": "section[data-demo=\"skeleton/basic\"]"
+        },
+        {
+          "id": "skeleton/list",
+          "anchor": "section[data-demo=\"skeleton/list\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "slider",
+      "paths": {
+        "en": "/components/slider",
+        "zh": "/zh/components/slider"
+      },
+      "demos": [
+        {
+          "id": "slider/basic",
+          "anchor": "section[data-demo=\"slider/basic\"]"
+        },
+        {
+          "id": "slider/range",
+          "anchor": "section[data-demo=\"slider/range\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 2
+    },
+    {
+      "id": "sonner",
+      "paths": {
+        "en": "/components/sonner",
+        "zh": "/zh/components/sonner"
+      },
+      "demos": [
+        {
+          "id": "sonner/actions",
+          "anchor": "section[data-demo=\"sonner/actions\"]"
+        },
+        {
+          "id": "sonner/basic",
+          "anchor": "section[data-demo=\"sonner/basic\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "spinner",
+      "paths": {
+        "en": "/components/spinner",
+        "zh": "/zh/components/spinner"
+      },
+      "demos": [
+        {
+          "id": "spinner/basic",
+          "anchor": "section[data-demo=\"spinner/basic\"]"
+        },
+        {
+          "id": "spinner/labeled",
+          "anchor": "section[data-demo=\"spinner/labeled\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "statistic",
+      "paths": {
+        "en": "/components/statistic",
+        "zh": "/zh/components/statistic"
+      },
+      "demos": [
+        {
+          "id": "statistic/basic",
+          "anchor": "section[data-demo=\"statistic/basic\"]"
+        },
+        {
+          "id": "statistic/trend",
+          "anchor": "section[data-demo=\"statistic/trend\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 9
+    },
+    {
+      "id": "stepper",
+      "paths": {
+        "en": "/components/stepper",
+        "zh": "/zh/components/stepper"
+      },
+      "demos": [
+        {
+          "id": "stepper/basic",
+          "anchor": "section[data-demo=\"stepper/basic\"]"
+        },
+        {
+          "id": "stepper/progress",
+          "anchor": "section[data-demo=\"stepper/progress\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 5
+    },
+    {
+      "id": "switch",
+      "paths": {
+        "en": "/components/switch",
+        "zh": "/zh/components/switch"
+      },
+      "demos": [
+        {
+          "id": "switch/basic",
+          "anchor": "section[data-demo=\"switch/basic\"]"
+        },
+        {
+          "id": "switch/sizes",
+          "anchor": "section[data-demo=\"switch/sizes\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 2
+    },
+    {
+      "id": "table",
+      "paths": {
+        "en": "/components/table",
+        "zh": "/zh/components/table"
+      },
+      "demos": [
+        {
+          "id": "table/basic",
+          "anchor": "section[data-demo=\"table/basic\"]"
+        },
+        {
+          "id": "table/summary",
+          "anchor": "section[data-demo=\"table/summary\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "tabs",
+      "paths": {
+        "en": "/components/tabs",
+        "zh": "/zh/components/tabs"
+      },
+      "demos": [
+        {
+          "id": "tabs/basic",
+          "anchor": "section[data-demo=\"tabs/basic\"]"
+        },
+        {
+          "id": "tabs/vertical",
+          "anchor": "section[data-demo=\"tabs/vertical\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 1
+    },
+    {
+      "id": "tags-input",
+      "paths": {
+        "en": "/components/tags-input",
+        "zh": "/zh/components/tags-input"
+      },
+      "demos": [
+        {
+          "id": "tags-input/basic",
+          "anchor": "section[data-demo=\"tags-input/basic\"]"
+        },
+        {
+          "id": "tags-input/suggestions",
+          "anchor": "section[data-demo=\"tags-input/suggestions\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 11
+    },
+    {
+      "id": "textarea",
+      "paths": {
+        "en": "/components/textarea",
+        "zh": "/zh/components/textarea"
+      },
+      "demos": [
+        {
+          "id": "textarea/basic",
+          "anchor": "section[data-demo=\"textarea/basic\"]"
+        },
+        {
+          "id": "textarea/states",
+          "anchor": "section[data-demo=\"textarea/states\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "time-picker",
+      "paths": {
+        "en": "/components/time-picker",
+        "zh": "/zh/components/time-picker"
+      },
+      "demos": [
+        {
+          "id": "time-picker/basic",
+          "anchor": "section[data-demo=\"time-picker/basic\"]"
+        },
+        {
+          "id": "time-picker/steps",
+          "anchor": "section[data-demo=\"time-picker/steps\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 7
+    },
+    {
+      "id": "timeline",
+      "paths": {
+        "en": "/components/timeline",
+        "zh": "/zh/components/timeline"
+      },
+      "demos": [
+        {
+          "id": "timeline/basic",
+          "anchor": "section[data-demo=\"timeline/basic\"]"
+        },
+        {
+          "id": "timeline/empty",
+          "anchor": "section[data-demo=\"timeline/empty\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "toggle",
+      "paths": {
+        "en": "/components/toggle",
+        "zh": "/zh/components/toggle"
+      },
+      "demos": [
+        {
+          "id": "toggle/basic",
+          "anchor": "section[data-demo=\"toggle/basic\"]"
+        },
+        {
+          "id": "toggle/variants",
+          "anchor": "section[data-demo=\"toggle/variants\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 3
+    },
+    {
+      "id": "toggle-group",
+      "paths": {
+        "en": "/components/toggle-group",
+        "zh": "/zh/components/toggle-group"
+      },
+      "demos": [
+        {
+          "id": "toggle-group/basic",
+          "anchor": "section[data-demo=\"toggle-group/basic\"]"
+        },
+        {
+          "id": "toggle-group/multiple",
+          "anchor": "section[data-demo=\"toggle-group/multiple\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 4
+    },
+    {
+      "id": "tooltip",
+      "paths": {
+        "en": "/components/tooltip",
+        "zh": "/zh/components/tooltip"
+      },
+      "demos": [
+        {
+          "id": "tooltip/basic",
+          "anchor": "section[data-demo=\"tooltip/basic\"]"
+        },
+        {
+          "id": "tooltip/sides",
+          "anchor": "section[data-demo=\"tooltip/sides\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 0
+    },
+    {
+      "id": "tour",
+      "paths": {
+        "en": "/components/tour",
+        "zh": "/zh/components/tour"
+      },
+      "demos": [
+        {
+          "id": "tour/basic",
+          "anchor": "section[data-demo=\"tour/basic\"]"
+        },
+        {
+          "id": "tour/resume",
+          "anchor": "section[data-demo=\"tour/resume\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 5
+    },
+    {
+      "id": "transfer",
+      "paths": {
+        "en": "/components/transfer",
+        "zh": "/zh/components/transfer"
+      },
+      "demos": [
+        {
+          "id": "transfer/basic",
+          "anchor": "section[data-demo=\"transfer/basic\"]"
+        },
+        {
+          "id": "transfer/searchable",
+          "anchor": "section[data-demo=\"transfer/searchable\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 10
+    },
+    {
+      "id": "tree",
+      "paths": {
+        "en": "/components/tree",
+        "zh": "/zh/components/tree"
+      },
+      "demos": [
+        {
+          "id": "tree/basic",
+          "anchor": "section[data-demo=\"tree/basic\"]"
+        },
+        {
+          "id": "tree/expanded",
+          "anchor": "section[data-demo=\"tree/expanded\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 9
+    },
+    {
+      "id": "tree-select",
+      "paths": {
+        "en": "/components/tree-select",
+        "zh": "/zh/components/tree-select"
+      },
+      "demos": [
+        {
+          "id": "tree-select/basic",
+          "anchor": "section[data-demo=\"tree-select/basic\"]"
+        },
+        {
+          "id": "tree-select/validation",
+          "anchor": "section[data-demo=\"tree-select/validation\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 13
+    },
+    {
+      "id": "trend",
+      "paths": {
+        "en": "/components/trend",
+        "zh": "/zh/components/trend"
+      },
+      "demos": [
+        {
+          "id": "trend/basic",
+          "anchor": "section[data-demo=\"trend/basic\"]"
+        },
+        {
+          "id": "trend/inverted",
+          "anchor": "section[data-demo=\"trend/inverted\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 6
+    },
+    {
+      "id": "upload",
+      "paths": {
+        "en": "/components/upload",
+        "zh": "/zh/components/upload"
+      },
+      "demos": [
+        {
+          "id": "upload/basic",
+          "anchor": "section[data-demo=\"upload/basic\"]"
+        },
+        {
+          "id": "upload/progress",
+          "anchor": "section[data-demo=\"upload/progress\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 14
+    },
+    {
+      "id": "watermark",
+      "paths": {
+        "en": "/components/watermark",
+        "zh": "/zh/components/watermark"
+      },
+      "demos": [
+        {
+          "id": "watermark/basic",
+          "anchor": "section[data-demo=\"watermark/basic\"]"
+        },
+        {
+          "id": "watermark/styles",
+          "anchor": "section[data-demo=\"watermark/styles\"]"
+        }
+      ],
+      "selectors": {
+        "preview": ".fish-demo__preview",
+        "source": ".fish-demo__source",
+        "apiTable": "table.fish-api"
+      },
+      "apiRows": 7
+    }
+  ]
+}
