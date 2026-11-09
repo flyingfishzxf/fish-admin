@@ -74,3 +74,11 @@ pnpm test:parity:docker
 ## Verification
 
 The foundation is complete when `pnpm check:parity:freeze`, `pnpm check:parity:contract`, `pnpm check:parity:scenarios`, `pnpm test:parity:docker`, the existing Docker visual jobs and the full quality gate all pass without modifying a single `*-linux.png`.
+
+### 2026-11-09 run
+
+- Static gates: format, lint, typecheck, package, tokens, RTL, maturity, gen-api, parity contract, parity scenarios — all pass.
+- Unit suites: root 383, tokens 94, UI 303, shared 31.
+- Browser: template 78 passed; docs 106 passed / 166 skipped; full axe 272 passed.
+- Visual: template 18/18, docs 180/180, parity 119/119, zero baseline changes.
+- Bundle: first paint 174.2 KB, largest async 103.2 KB, total JS 711.6 KB, total CSS 23.8 KB.
