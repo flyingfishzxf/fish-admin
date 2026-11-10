@@ -7,7 +7,8 @@ const IMAGE = 'mcr.microsoft.com/playwright:v1.64.1-noble'
 const update = process.argv.includes('--update')
 
 const steps = [
-  'corepack enable',
+  // The image moved to Node 26, which no longer bundles corepack.
+  'npm install -g --no-fund --no-audit pnpm@9.1.1',
   // The workspace is a bind mount on a different filesystem than HOME, so pnpm
   // would otherwise create a project-local .pnpm-store and copy 400 MB of
   // packages out of the mounted store.

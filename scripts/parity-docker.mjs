@@ -5,7 +5,8 @@ const IMAGE = 'mcr.microsoft.com/playwright:v1.64.1-noble'
 const target = process.env.PARITY_TARGET ?? 'react'
 
 const steps = [
-  'corepack enable',
+  // The image moved to Node 26, which no longer bundles corepack.
+  'npm install -g --no-fund --no-audit pnpm@9.1.1',
   'pnpm install --frozen-lockfile --store-dir /root/.local/share/pnpm/store',
   'pnpm test:parity',
 ]

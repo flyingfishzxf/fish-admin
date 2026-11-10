@@ -223,12 +223,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Enable pnpm
+        # The playwright image moved to Node 26, which no longer bundles corepack.
         run: |
-          # The image's home for uid 1001 has no ~/.local yet, and corepack
-          # fails to install shims into a directory that does not exist.
-          mkdir -p "$HOME/.local/bin"
-          corepack enable --install-directory "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          npm install -g --prefix /tmp/pnpm-home --no-fund --no-audit pnpm@9.1.1
+          echo /tmp/pnpm-home/bin >> "$GITHUB_PATH"
 
       - name: Install dependencies
         # The workspace is on a different filesystem than HOME, which makes pnpm
@@ -258,10 +256,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Enable pnpm
+        # The playwright image moved to Node 26, which no longer bundles corepack.
         run: |
-          mkdir -p "$HOME/.local/bin"
-          corepack enable --install-directory "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          npm install -g --prefix /tmp/pnpm-home --no-fund --no-audit pnpm@9.1.1
+          echo /tmp/pnpm-home/bin >> "$GITHUB_PATH"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --store-dir /tmp/pnpm-store
@@ -289,10 +287,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Enable pnpm
+        # The playwright image moved to Node 26, which no longer bundles corepack.
         run: |
-          mkdir -p "$HOME/.local/bin"
-          corepack enable --install-directory "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          npm install -g --prefix /tmp/pnpm-home --no-fund --no-audit pnpm@9.1.1
+          echo /tmp/pnpm-home/bin >> "$GITHUB_PATH"
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --store-dir /tmp/pnpm-store
