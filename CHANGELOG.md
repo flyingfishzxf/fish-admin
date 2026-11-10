@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.2.0] - 2026-11-10
 
 A maturity release: every component now has behavioural tests, full axe coverage and light/dark
 visual baselines, and the docs site publishes a stable/beta matrix backed by CI.
@@ -16,6 +16,10 @@ The template moves to 2.2.0 and the docs site to 0.3.0; `@fish-admin/react` move
 - **Component maturity matrix.** `/guide/maturity` lists all 83 components with their status and
   evidence; `pnpm check:maturity` fails when a stable component loses a test, axe coverage or a
   visual baseline.
+- **Cross-framework parity foundation.** Framework-neutral `@fish-admin/contracts`,
+  `@fish-admin/i18n` and `@fish-admin/mock` packages, a SHA-256 manifest of the 2.2.0 surface,
+  target-agnostic behaviour scenarios and a React reference target prepare a future Vue 3 port
+  without changing the published component API.
 
 ### Changed
 
@@ -633,7 +637,10 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v2.2.0...HEAD
+[2.2.0]: https://github.com/flyingfishzxf/fish-admin/compare/v2.1.1...v2.2.0
+[2.1.1]: https://github.com/flyingfishzxf/fish-admin/compare/v2.1.0...v2.1.1
+[2.1.0]: https://github.com/flyingfishzxf/fish-admin/compare/v2.0.0...v2.1.0
 [2.0.1]: https://github.com/flyingfishzxf/fish-admin/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.7.0...v2.0.0
 [1.7.0]: https://github.com/flyingfishzxf/fish-admin/compare/v1.6.0...v1.7.0
