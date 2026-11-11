@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ChevronDownIcon } from 'lucide-vue-next'
-import { SelectIcon, SelectTrigger as SelectTriggerPrimitive } from 'reka-ui'
-import { computed } from 'vue'
+import {
+  injectSelectRootContext,
+  SelectIcon,
+  SelectTrigger as SelectTriggerPrimitive,
+} from 'reka-ui'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 import { cn } from '../../../lib/utils'
 
@@ -18,10 +22,39 @@ const classes = computed(() =>
     props.class,
   ),
 )
+
+const rootContext = injectSelectRootContext()
+const trigger = ref<InstanceType<typeof SelectTriggerPrimitive> | null>(null)
+
+// Vue 3.5 stamps a shared `_vts` on every event and skips invokers attached at or before that
+// stamp. With a frozen clock those stamps are all equal, so Reka's own pointerdown listener is
+// skipped whenever an ancestor DismissableLayer (a Dialog content) handled the capture phase
+// first. Re-apply Reka's plain-left-click rule natively; the Vue listener remains the primary path.
+function onNativePointerDown(event: PointerEvent) {
+  if (event.defaultPrevented || event.button !== 0 || event.ctrlKey) return
+  if (event.pointerType === 'touch') return
+  if (rootContext.disabled?.value || props.disabled) return
+  rootContext.onOpenChange(true)
+}
+
+let triggerElement: HTMLElement | null = null
+
+onMounted(() => {
+  const element = trigger.value?.$el
+  if (!(element instanceof HTMLElement)) return
+  triggerElement = element
+  element.addEventListener('pointerdown', onNativePointerDown)
+})
+
+onBeforeUnmount(() => {
+  triggerElement?.removeEventListener('pointerdown', onNativePointerDown)
+  triggerElement = null
+})
 </script>
 
 <template>
   <SelectTriggerPrimitive
+    ref="trigger"
     v-bind="$attrs"
     data-slot="select-trigger"
     :data-size="size"

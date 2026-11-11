@@ -12,6 +12,10 @@ import SelectBasic from '../demos/select/basic.vue'
 import selectBasicSource from '../demos/select/basic.vue?raw'
 import SelectGroups from '../demos/select/groups.vue'
 import selectGroupsSource from '../demos/select/groups.vue?raw'
+import DialogBasic from '../demos/dialog/basic.vue'
+import dialogBasicSource from '../demos/dialog/basic.vue?raw'
+import DialogLongContent from '../demos/dialog/long-content.vue'
+import dialogLongContentSource from '../demos/dialog/long-content.vue?raw'
 
 export const DEMOS: DemoEntry[] = [
   {
@@ -67,5 +71,23 @@ export const DEMOS: DemoEntry[] = [
     filename: 'demos/select/groups.tsx',
     source: selectGroupsSource,
     view: SelectGroups,
+  },
+  {
+    id: 'dialog/basic',
+    componentId: 'dialog',
+    title: { en: 'Basic usage', zh: '基础用法' },
+    lines: 101,
+    filename: 'demos/dialog/basic.tsx',
+    source: dialogBasicSource,
+    view: DialogBasic,
+  },
+  {
+    id: 'dialog/long-content',
+    componentId: 'dialog',
+    title: { en: 'Long, scrollable content', zh: '长内容滚动' },
+    lines: 76,
+    filename: 'demos/dialog/long-content.tsx',
+    source: dialogLongContentSource,
+    view: DialogLongContent,
   },
 ]
