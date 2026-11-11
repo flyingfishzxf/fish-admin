@@ -19,7 +19,7 @@
       "pro-table": [
         "`table` accepts a `@tanstack/vue-table` `Table<TData>` instead of the React instance.",
         "`empty`, `filters`, `actions`, `toolbar` and `selection-actions` are named slots.",
-        "`onRowClick` becomes the `row-click` event.",
+        "`onRowClick` stays available under the same name as a callback prop.",
         "`pagination` is not ported in this slice.",
         "`rowContextMenu`, `virtualized`, `density` and `scrollLabel` are not ported in this slice."
       ],
