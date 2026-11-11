@@ -93,4 +93,4 @@ The foundation is complete when `pnpm check:parity:freeze`, `pnpm check:parity:c
 - Unit suites: Vue 25 and the parity app 4; the root, token, UI and shared suites are unchanged.
 - Browser: React target 119/119; Vue target 42/42 (six API contracts, 12 docs-surface checks, six behaviour scenarios, 12 screenshots and six axe scans).
 - Baselines: all 198 `*-linux.png` files unchanged; no snapshot update command was run.
-- Bundle: all four `pnpm size` budgets pass and the template bundle does not grow.
+- Bundle: all four `pnpm size` budgets pass; this slice adds no template JavaScript or CSS, so the template bundle is unchanged.

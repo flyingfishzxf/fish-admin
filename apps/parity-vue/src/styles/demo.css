@@ -48,8 +48,7 @@ html.dark body {
   /*
    * The docs place their first demo at a sub-pixel page offset (y = 976.703125 px, a multiple of
    * the 1/64 px layout unit) because of the header and prose above it. Playwright clips an element
-   * screenshot on whole pixels, so an offset of 0 here rendered the section one pixel higher and
-   * one pixel shorter than the frozen baseline. Reproduce just the fractional part.
+   * screenshot on whole pixels, so the parity app reproduces just the fractional part of that offset.
    */
   padding-top: 0.703125px;
 }

@@ -93,4 +93,4 @@ pnpm test:parity:vue
 - 单元测试：Vue 25、parity 应用 4；根、tokens、UI 与 shared 套件数量不变。
 - 浏览器：React target 119/119；Vue target 42/42（6 条 API 合同、12 条 docs surface、6 条行为场景、12 张截图、6 条 axe 扫描）。
 - 基线：198 张 `*-linux.png` 零改动；未运行任何截图更新命令。
-- 体积：`pnpm size` 的四项预算全部通过，模板包体积不增长。
+- 体积：`pnpm size` 的四项预算全部通过；本切片没有改动模板的 JavaScript 或 CSS，模板包体积不变。

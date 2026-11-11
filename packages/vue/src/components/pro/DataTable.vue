@@ -20,6 +20,7 @@ const scrollClass =
   'overflow-auto focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset'
 const headBase =
   'h-10 px-2 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]'
+// React adds these separators only when a column can resize; resizing is not ported, so match the demo rendering.
 const headClass = cn(
   headBase,
   'relative text-[11px] font-semibold tracking-wide text-muted-foreground uppercase',
