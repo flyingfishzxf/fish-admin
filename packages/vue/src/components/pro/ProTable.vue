@@ -27,7 +27,12 @@ function clearSelection() {
 
 <template>
   <div data-slot="pro-table">
-    <DataTable :table="table" :loading="loading" :on-row-click="onRowClick">
+    <DataTable
+      :table="table"
+      :table-label="tableLabel"
+      :loading="loading"
+      :on-row-click="onRowClick"
+    >
       <template v-if="slots.toolbar" #toolbar>
         <slot name="toolbar" />
       </template>

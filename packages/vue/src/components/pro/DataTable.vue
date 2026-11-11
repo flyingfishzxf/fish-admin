@@ -8,6 +8,7 @@ import Skeleton from '../ui/skeleton/Skeleton.vue'
 const props = withDefaults(
   defineProps<{
     table: Table<TData>
+    tableLabel?: string
     loading?: boolean
     skeletonRows?: number
     onRowClick?: (row: TData) => void
@@ -47,6 +48,11 @@ function onRowKeydown(event: KeyboardEvent, row: TData) {
   event.preventDefault()
   props.onRowClick(row)
 }
+
+function ariaSort(column: { getIsSorted: () => false | 'asc' | 'desc' }) {
+  const sorted = column.getIsSorted()
+  return sorted === 'asc' ? 'ascending' : sorted === 'desc' ? 'descending' : undefined
+}
 </script>
 
 <template>
@@ -55,7 +61,7 @@ function onRowKeydown(event: KeyboardEvent, row: TData) {
       <slot name="toolbar" />
     </div>
     <div tabindex="0" :class="scrollClass">
-      <table data-slot="table" class="w-full caption-bottom text-sm">
+      <table data-slot="table" class="w-full caption-bottom text-sm" :aria-label="tableLabel">
         <thead data-slot="table-header" class="[&_tr]:border-b">
           <tr
             v-for="headerGroup in table.getHeaderGroups()"
@@ -69,6 +75,7 @@ function onRowKeydown(event: KeyboardEvent, row: TData) {
               data-slot="table-head"
               :style="{ width: `${header.getSize()}px` }"
               :class="headClass"
+              :aria-sort="header.column.getCanSort() ? ariaSort(header.column) : undefined"
             >
               <FlexRender
                 v-if="!header.isPlaceholder"

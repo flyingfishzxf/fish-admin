@@ -2,7 +2,7 @@ import type { ColumnDef, Table } from '@tanstack/vue-table'
 import { getCoreRowModel, useVueTable } from '@tanstack/vue-table'
 import { mount } from '@vue/test-utils'
 import type { Component } from 'vue'
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, nextTick } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 
 import BulkActionsBar from './BulkActionsBar.vue'
@@ -11,32 +11,37 @@ import DataTable from './DataTable.vue'
 type Member = { id: string; name: string }
 
 const members: Member[] = [{ id: 'm1', name: 'Ada' }]
-const columns: ColumnDef<Member>[] = [{ accessorKey: 'name', header: 'Name' }]
+const columns: ColumnDef<Member>[] = [{ accessorKey: 'name', header: 'Name', enableSorting: true }]
 
 const TableView = DataTable as unknown as Component<{
   table: Table<Member>
+  tableLabel?: string
   onRowClick?: (row: Member) => void
 }>
 
+function makeTable() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks -- Vue composable, not a React hook.
+  return useVueTable({
+    data: members,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+}
+
 function mountTable(onRowClick?: (row: Member) => void) {
+  const table = makeTable()
   const Host = defineComponent({
     setup() {
-      // eslint-disable-next-line react-hooks/rules-of-hooks -- Vue composable, not a React hook.
-      const table = useVueTable({
-        data: members,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-      })
       return () => h(TableView, { table, onRowClick })
     },
   })
 
-  return mount(Host)
+  return { wrapper: mount(Host), table }
 }
 
 describe('DataTable', () => {
   it('leaves rows inert without a click handler', () => {
-    const wrapper = mountTable()
+    const { wrapper } = mountTable()
     const row = wrapper.get('tbody [data-slot="table-row"]')
 
     expect(row.attributes('tabindex')).toBeUndefined()
@@ -45,7 +50,7 @@ describe('DataTable', () => {
 
   it('makes rows focusable and clickable when given a handler', async () => {
     const onRowClick = vi.fn()
-    const wrapper = mountTable(onRowClick)
+    const { wrapper } = mountTable(onRowClick)
     const row = wrapper.get('tbody [data-slot="table-row"]')
 
     expect(row.attributes('tabindex')).toBe('0')
@@ -57,6 +62,23 @@ describe('DataTable', () => {
 
     expect(onRowClick).toHaveBeenCalledTimes(3)
     expect(onRowClick).toHaveBeenNthCalledWith(1, members[0])
+  })
+
+  it('labels the table region', () => {
+    const wrapper = mount(TableView, {
+      props: { table: makeTable(), tableLabel: 'Members' },
+    })
+    expect(wrapper.get('table').attributes('aria-label')).toBe('Members')
+  })
+
+  it('exposes aria-sort on sortable headers', async () => {
+    const { wrapper, table } = mountTable()
+    table.getColumn('name')?.toggleSorting(false)
+    await nextTick()
+    expect(wrapper.get('thead th').attributes('aria-sort')).toBe('ascending')
+    table.getColumn('name')?.toggleSorting(true)
+    await nextTick()
+    expect(wrapper.get('thead th').attributes('aria-sort')).toBe('descending')
   })
 })
 

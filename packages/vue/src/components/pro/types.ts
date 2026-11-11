@@ -18,6 +18,7 @@ export type ProTableSelectionConfig = {
 
 export type ProTableProps<TData> = {
   table: Table<TData>
+  tableLabel?: string
   loading?: boolean
   search?: ProTableSearchConfig
   selection?: ProTableSelectionConfig
