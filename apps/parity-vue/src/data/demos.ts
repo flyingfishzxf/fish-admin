@@ -8,6 +8,10 @@ import TabsBasic from '../demos/tabs/basic.vue'
 import tabsBasicSource from '../demos/tabs/basic.vue?raw'
 import TabsVertical from '../demos/tabs/vertical.vue'
 import tabsVerticalSource from '../demos/tabs/vertical.vue?raw'
+import SelectBasic from '../demos/select/basic.vue'
+import selectBasicSource from '../demos/select/basic.vue?raw'
+import SelectGroups from '../demos/select/groups.vue'
+import selectGroupsSource from '../demos/select/groups.vue?raw'
 
 export const DEMOS: DemoEntry[] = [
   {
@@ -45,5 +49,23 @@ export const DEMOS: DemoEntry[] = [
     filename: 'demos/tabs/vertical.tsx',
     source: tabsVerticalSource,
     view: TabsVertical,
+  },
+  {
+    id: 'select/basic',
+    componentId: 'select',
+    title: { en: 'Basic usage', zh: '基础用法' },
+    lines: 45,
+    filename: 'demos/select/basic.tsx',
+    source: selectBasicSource,
+    view: SelectBasic,
+  },
+  {
+    id: 'select/groups',
+    componentId: 'select',
+    title: { en: 'Groups and disabled options', zh: '分组与禁用选项' },
+    lines: 74,
+    filename: 'demos/select/groups.tsx',
+    source: selectGroupsSource,
+    view: SelectGroups,
   },
 ]
