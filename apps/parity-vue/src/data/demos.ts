@@ -16,6 +16,10 @@ import DialogBasic from '../demos/dialog/basic.vue'
 import dialogBasicSource from '../demos/dialog/basic.vue?raw'
 import DialogLongContent from '../demos/dialog/long-content.vue'
 import dialogLongContentSource from '../demos/dialog/long-content.vue?raw'
+import DateRangePickerBasic from '../demos/date-range-picker/basic.vue'
+import dateRangePickerBasicSource from '../demos/date-range-picker/basic.vue?raw'
+import DateRangePickerPresets from '../demos/date-range-picker/presets.vue'
+import dateRangePickerPresetsSource from '../demos/date-range-picker/presets.vue?raw'
 
 export const DEMOS: DemoEntry[] = [
   {
@@ -89,5 +93,23 @@ export const DEMOS: DemoEntry[] = [
     filename: 'demos/dialog/long-content.tsx',
     source: dialogLongContentSource,
     view: DialogLongContent,
+  },
+  {
+    id: 'date-range-picker/basic',
+    componentId: 'date-range-picker',
+    title: { en: 'Basic range', zh: '基础范围选择' },
+    lines: 21,
+    filename: 'demos/date-range-picker/basic.tsx',
+    source: dateRangePickerBasicSource,
+    view: DateRangePickerBasic,
+  },
+  {
+    id: 'date-range-picker/presets',
+    componentId: 'date-range-picker',
+    title: { en: 'Presets', zh: '预设范围' },
+    lines: 28,
+    filename: 'demos/date-range-picker/presets.tsx',
+    source: dateRangePickerPresetsSource,
+    view: DateRangePickerPresets,
   },
 ]

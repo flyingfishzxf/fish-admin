@@ -36,3 +36,8 @@ export { default as DialogHeader } from './components/ui/dialog/DialogHeader.vue
 export { default as DialogFooter } from './components/ui/dialog/DialogFooter.vue'
 export { default as DialogTitle } from './components/ui/dialog/DialogTitle.vue'
 export { default as DialogDescription } from './components/ui/dialog/DialogDescription.vue'
+export { default as DateRangePicker } from './components/enterprise/date-range-picker/DateRangePicker.vue'
+export type {
+  DateRangePreset,
+  DateRangeValue,
+} from './components/enterprise/date-range-picker/types'

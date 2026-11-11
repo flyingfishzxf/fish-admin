@@ -6,10 +6,16 @@ type Messages = Record<string, string>
 const BUILT_IN: Record<UILocale, Messages> = {
   en: {
     'actions.close': 'Close',
+    'calendar.label': 'Calendar',
+    'calendar.nextMonth': 'Next month',
+    'calendar.previousMonth': 'Previous month',
     'enterprise.clear': 'Clear',
   },
   'zh-CN': {
     'actions.close': '关闭',
+    'calendar.label': '日历',
+    'calendar.nextMonth': '下个月',
+    'calendar.previousMonth': '上个月',
     'enterprise.clear': '清除',
   },
 }
