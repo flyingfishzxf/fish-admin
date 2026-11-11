@@ -76,6 +76,14 @@ export default tseslint.config(
     },
   },
   {
+    // Pinia's `use*Store()` helpers are only shaped like React hooks; the Vue
+    // template's entry point calls them from a plain module.
+    files: ['apps/vue-template/src/main.ts'],
+    rules: {
+      'react-hooks/rules-of-hooks': 'off',
+    },
+  },
+  {
     // The CSP in src/config/security-headers.ts grants no 'unsafe-eval', and zod's
     // default validator compiler calls `new Function` on first parse. Every schema
     // has to arrive through the module that pins zod to jitless mode.
