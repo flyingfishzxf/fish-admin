@@ -21,7 +21,7 @@ export default tseslint.config(
       'apps/docs/docs/en/template',
       'apps/docs/docs/zh/template',
       'src/routeTree.gen.ts',
-      'public/mockServiceWorker.js',
+      '**/mockServiceWorker.js',
       'video',
     ],
   },

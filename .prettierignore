@@ -5,7 +5,7 @@ pnpm-lock.yaml
 playwright-report
 test-results
 src/routeTree.gen.ts
-public/mockServiceWorker.js
+**/mockServiceWorker.js
 .pnpm-store
 # Written by scripts/scaffold.mjs; its compact arrays are not prettier's output.
 .scaffold.json

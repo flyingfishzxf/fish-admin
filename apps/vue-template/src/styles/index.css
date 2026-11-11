@@ -1,0 +1,18 @@
+@import '@fontsource-variable/inter';
+@import '@fish-admin/vue/styles/index.css';
+@import 'tailwindcss/preflight.css' layer(base);
+
+/* Tailwind preflight resets `border: 0 solid`; restore the package border token. */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border);
+  }
+}
+
+@source '../';
+/* Four levels up lands on the repo root; `packages/vue/src` must be scanned too. */
+@source '../../../../packages/vue/src';
