@@ -12,3 +12,7 @@ export { default as AccordionHeader } from './components/ui/accordion/AccordionH
 export { default as AccordionItem } from './components/ui/accordion/AccordionItem.vue'
 export { default as AccordionTrigger } from './components/ui/accordion/AccordionTrigger.vue'
 export { default as AccordionContent } from './components/ui/accordion/AccordionContent.vue'
+export { default as Tabs } from './components/ui/tabs/Tabs.vue'
+export { default as TabsList } from './components/ui/tabs/TabsList.vue'
+export { default as TabsTrigger } from './components/ui/tabs/TabsTrigger.vue'
+export { default as TabsContent } from './components/ui/tabs/TabsContent.vue'
