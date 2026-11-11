@@ -29,11 +29,15 @@ const trigger = ref<InstanceType<typeof SelectTriggerPrimitive> | null>(null)
 // Vue 3.5 stamps a shared `_vts` on every event and skips invokers attached at or before that
 // stamp. With a frozen clock those stamps are all equal, so Reka's own pointerdown listener is
 // skipped whenever an ancestor DismissableLayer (a Dialog content) handled the capture phase
-// first. Re-apply Reka's plain-left-click rule natively; the Vue listener remains the primary path.
+// first. Re-apply Reka's plain-left-click rule natively, but only when Reka's listener was
+// skipped: this native listener is attached in `onMounted`, after Reka's patch-time invoker, so
+// on a normal clock Reka has already opened the menu and the `open` guard makes the call inert.
+// The Vue listener remains the primary path.
 function onNativePointerDown(event: PointerEvent) {
   if (event.defaultPrevented || event.button !== 0 || event.ctrlKey) return
   if (event.pointerType === 'touch') return
   if (rootContext.disabled?.value || props.disabled) return
+  if (rootContext.open?.value) return
   rootContext.onOpenChange(true)
 }
 
