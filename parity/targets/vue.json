@@ -1,0 +1,34 @@
+{
+  "name": "vue",
+  "baseURL": "http://localhost:4176",
+  "webServer": {
+    "command": "pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/parity-vue build && pnpm --filter @fish-admin/parity-vue preview --port 4176",
+    "timeout": 300000
+  },
+  "contract": { "scope": "pilot" },
+  "api": {
+    "mode": "reference",
+    "deviations": {
+      "accordion": ["`asChild` stays available on the Reka trigger under the same name."],
+      "date-range-picker": [
+        "`value` becomes `modelValue` with `v-model`.",
+        "`onChange` becomes the `update:modelValue` event.",
+        "`className` becomes the native `class` attribute."
+      ],
+      "dialog": [],
+      "pro-table": [
+        "`table` accepts a `@tanstack/vue-table` `Table<TData>` instead of the React instance.",
+        "`empty`, `filters`, `actions`, `toolbar` and `selection-actions` are named slots.",
+        "`onRowClick` becomes the `row-click` event.",
+        "`pagination` is not ported in this slice.",
+        "`rowContextMenu`, `virtualized`, `density` and `scrollLabel` are not ported in this slice."
+      ],
+      "select": [
+        "`value` becomes `modelValue` with `v-model`.",
+        "`onValueChange` becomes the `update:modelValue` event.",
+        "`SelectValue` takes an explicit `label` because Reka cannot resolve the selected item text while the content is unmounted."
+      ],
+      "tabs": ["`asChild` stays available on the Reka trigger under the same name."]
+    }
+  }
+}

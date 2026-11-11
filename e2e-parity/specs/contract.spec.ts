@@ -52,7 +52,13 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => window.localStorage.setItem('rspress-visited', '1'))
 })
 
-for (const component of contract.components) {
+const scope = target.contract?.scope ?? 'all'
+const components =
+  scope === 'pilot'
+    ? contract.components.filter((component) => contract.pilot.includes(component.id))
+    : contract.components
+
+for (const component of components) {
   const route = routes.get(component.id)
   if (!route) throw new Error(`docs surface is missing ${component.id}`)
 

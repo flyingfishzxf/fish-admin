@@ -69,6 +69,9 @@ jobs:
       - name: Shared package tests
         run: pnpm test:shared
 
+      - name: Vue package tests
+        run: pnpm --filter @fish-admin/vue test
+
       - name: Package contract
         run: pnpm check:package
 
@@ -303,6 +306,39 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: parity-report
+          path: |
+            playwright-report/parity
+            test-results/parity
+          retention-days: 7
+
+  parity-vue:
+    name: Parity (Vue)
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001 --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        # The playwright image moved to Node 26, which no longer bundles corepack.
+        run: |
+          npm install -g --prefix /tmp/pnpm-home --no-fund --no-audit pnpm@9.1.1
+          echo /tmp/pnpm-home/bin >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --store-dir /tmp/pnpm-store
+
+      - name: Run the Vue parity suite
+        run: pnpm test:parity
+        env:
+          PARITY_TARGET: vue
+
+      - name: Upload Vue parity report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parity-vue-report
           path: |
             playwright-report/parity
             test-results/parity

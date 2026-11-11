@@ -62,6 +62,7 @@
     "test:docs:visual:docker": "node scripts/visual-regression-docs.mjs",
     "test:parity": "playwright test -c playwright.parity.config.ts",
     "test:parity:docker": "node scripts/parity-docker.mjs",
+    "test:parity:vue": "cross-env PARITY_TARGET=vue node scripts/parity-docker.mjs",
     "size": "pnpm build && node scripts/check-bundle-size.mjs",
     "perf": "playwright test e2e/perf.spec.ts",
     "msw:init": "msw init public --save",

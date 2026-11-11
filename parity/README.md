@@ -9,13 +9,16 @@ This directory freezes the documented surface of FishAdmin 2.2.0 and compares a 
 | `contract/components.json`     | Generated reference API for all 83 documented components             |
 | `contract/docs-surface.json`   | Generated route, demo anchor, selector and API-row contract          |
 | `scenarios/*.json`             | Accessible-name and ARIA-state behaviour scenarios                   |
-| `targets/react.json`           | The current target; a Vue target will add `vue.json`                 |
+| `targets/react.json`           | The React reference target; `contract.scope` defaults to `all`       |
+| `targets/vue.json`             | The Vue slice target; `contract.scope: "pilot"` limits it to six     |
 
 ## What a target must match
 
 Every one of the 83 documented components is checked for its route, demo count, demo anchors, preview, source block and a clean console. The six pilots in `pilot.json` add the behaviour scenarios, screenshot comparison and axe checks, and their demo anchors, previews and source blocks are checked in both locales. Their API table (or the "No public props." placeholder) must also be present in both locales; exact API-row counts and contents are compared only by an `api.mode: "exact"` target, in English.
 
 A target in `api.mode: "reference"` must record a deviation entry for each of the six pilots. The harness does not compare API rows for the other 77 components; reference mode is not a per-component API diff. Add pilots when a port needs stricter behaviour and surface coverage.
+
+A target may set `"contract": { "scope": "pilot" }` to run the 83-component contract for the six pilots only; the default is `"all"`. React keeps `all` (119 checks); Vue uses `pilot` (42 checks). Reference mode never compares API rows, so the Vue target can ship six pilots while the other 77 React routes stay unported.
 
 Commands (from the repository root):
 

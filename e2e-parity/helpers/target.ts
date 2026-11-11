@@ -2,11 +2,13 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 export type ApiMode = 'exact' | 'reference'
+export type ContractScope = 'all' | 'pilot'
 
 export interface ParityTarget {
   name: string
   baseURL: string
   webServer: { command: string; timeout: number }
+  contract?: { scope: ContractScope }
   api: { mode: ApiMode; deviations: Record<string, string[]> }
 }
 
