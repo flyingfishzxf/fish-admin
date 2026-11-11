@@ -161,6 +161,7 @@
   },
   "footer": {
     "builtWith": "基于 React、TanStack Router 与 shadcn/ui 构建。",
+    "builtWithVue": "基于 Vue 3、Vue Router 与 Pinia 构建。",
     "license": "MIT 许可证"
   },
   "tabs": {
