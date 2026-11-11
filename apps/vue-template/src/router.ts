@@ -53,7 +53,7 @@ router.beforeEach(async (to) => {
     return { name: 'login', query: { redirect: to.fullPath } }
   }
   if (to.name === 'login' && auth.status === 'authenticated') {
-    return { path: sanitizeRedirect(to.query.redirect as string) ?? '/' }
+    return { path: sanitizeRedirect(to.query.redirect) ?? '/' }
   }
   const permission = to.meta.permission as string | undefined
   if (permission && !hasPermission(auth.user?.permissions, permission)) {

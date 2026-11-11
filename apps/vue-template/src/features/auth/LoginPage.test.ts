@@ -102,4 +102,36 @@ describe('LoginPage', () => {
     await flushPromises()
     expect(router.currentRoute.value.path).toBe('/users')
   })
+
+  // The mock answers MFA-capable accounts with HTTP 200 plus an MFA payload,
+  // so the sign-in must be reported and the page must not navigate.
+  it('reports unsupported MFA and stays on /login', async () => {
+    vi.mocked(loginRequest).mockResolvedValue({
+      mfaRequired: true,
+      challengeId: 'challenge-1',
+      expiresAt: new Date(Date.now() + 60_000).toISOString(),
+    })
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: '/login', component: LoginPage },
+        { path: '/users', component: { template: '<div>users</div>' } },
+        { path: '/', component: { template: '<div>home</div>' } },
+      ],
+    })
+    await router.push('/login?redirect=/users')
+    await router.isReady()
+    const wrapper = mount(LoginPage, { global: { plugins: [router] } })
+    await wrapper.get('#login-email').setValue('ada@fish.dev')
+    await wrapper.get('#login-password').setValue('secret123')
+    await wrapper.get('form').trigger('submit')
+    await flushPromises()
+    expect(loginRequest).toHaveBeenCalledWith('ada@fish.dev', 'secret123')
+    expect(meRequest).not.toHaveBeenCalled()
+    expect(wrapper.get('[role="alert"]').text()).toBe(
+      "Two-factor sign-in isn't supported in this Vue demo. Use a demo account without 2FA.",
+    )
+    expect(router.currentRoute.value.path).toBe('/login')
+    expect(router.currentRoute.value.query.redirect).toBe('/users')
+  })
 })

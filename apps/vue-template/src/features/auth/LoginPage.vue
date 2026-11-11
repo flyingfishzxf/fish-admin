@@ -47,7 +47,7 @@ async function onSubmit() {
   submitting.value = true
   try {
     await auth.login(values.email.trim(), values.password)
-    await router.replace(sanitizeRedirect(route.query.redirect as string) ?? '/')
+    await router.replace(sanitizeRedirect(route.query.redirect) ?? '/')
   } catch (error) {
     serverError.value = resolveLoginError(error)
   } finally {

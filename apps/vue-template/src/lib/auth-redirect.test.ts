@@ -17,4 +17,13 @@ describe('sanitizeRedirect', () => {
   ])('rejects %s', (value) => {
     expect(sanitizeRedirect(value)).toBeUndefined()
   })
+
+  // Vue Router hands back `string | null | (string | null)[]` for a query
+  // param, so a repeated `?redirect=/a&redirect=/b` arrives as an array.
+  it.each([[['/users', '/admin']], [null], [42], [{ path: '/users' }]])(
+    'rejects non-string %s',
+    (value) => {
+      expect(sanitizeRedirect(value)).toBeUndefined()
+    },
+  )
 })
