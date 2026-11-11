@@ -1,0 +1,8 @@
+@import '@fontsource-variable/inter';
+@import '@fish-admin/vue/styles/index.css';
+@import 'tailwindcss/preflight.css' layer(base);
+@import './demo.css';
+
+@source '../';
+/* Four levels up from this file, not three: three lands on apps/packages, which does not exist. */
+@source '../../../../packages/vue/src';

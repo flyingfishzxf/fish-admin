@@ -1,0 +1,424 @@
+html {
+  font-size: 16px;
+  line-height: 1.7;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  font-family:
+    'Inter Variable',
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    'PingFang SC',
+    'Hiragino Sans GB',
+    'Microsoft YaHei',
+    sans-serif;
+  font-size: 16px;
+  color: var(--foreground);
+  background: var(--background);
+  font-synthesis: style;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --rp-c-link: color-mix(in oklch, var(--primary) 80%, black);
+  --rp-radius-large: 16px;
+  --rp-font-family-mono: Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+html.dark body {
+  --rp-c-link: color-mix(in oklch, var(--primary) 72%, white);
+}
+
+.fish-page,
+.rp-doc {
+  width: 876px;
+  max-width: 100%;
+}
+
+.fish-page {
+  margin: 0 auto;
+}
+
+/* Copied from the top of the docs stylesheet: DemoBlock's role="status" span relies on it. */
+.fish-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- demo ---------- */
+
+.fish-demo {
+  margin: 1.75rem 0 2.75rem;
+}
+
+.fish-demo__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.fish-demo__title {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.fish-demo__links {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+}
+
+.fish-demo__links a {
+  color: var(--rp-c-link);
+  text-decoration: none;
+}
+
+.fish-demo__links a:hover {
+  text-decoration: underline;
+}
+
+.fish-demo__card {
+  border: 1px solid var(--border);
+  border-radius: var(--rp-radius-large);
+  background: var(--card);
+  box-shadow:
+    0 1px 2px rgb(23 15 40 / 0.04),
+    0 16px 40px -32px rgb(23 15 40 / 0.25);
+  overflow: hidden;
+}
+
+.fish-demo__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in oklch, var(--muted) 40%, var(--card));
+}
+
+.fish-demo__tabs {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 9px;
+  background: color-mix(in oklch, var(--muted) 80%, var(--card));
+}
+
+.fish-demo__tab {
+  appearance: none;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+}
+
+.fish-demo__tab:hover {
+  color: var(--foreground);
+}
+
+.fish-demo__tab[aria-selected='true'] {
+  background: var(--card);
+  box-shadow:
+    0 1px 2px rgb(23 15 40 / 0.12),
+    0 0 0 1px color-mix(in oklch, var(--border) 70%, transparent);
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.fish-demo__tab:focus-visible,
+.fish-demo__copy:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.fish-demo__tools {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.fish-demo__meta {
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.72rem;
+}
+
+.fish-demo__copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.fish-demo__copy:hover {
+  border-color: var(--border);
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.fish-demo__copy[data-copied] {
+  color: var(--rp-c-link);
+}
+
+.fish-demo__copy svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.3;
+}
+
+.fish-demo__panel[hidden] {
+  display: none;
+}
+
+.fish-demo__preview {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1.25rem;
+  padding: 2rem 1.5rem;
+  /* The app canvas is --background; card surfaces only read as cards against it. */
+  background: var(--background);
+  color: var(--card-foreground);
+  overflow-x: auto;
+}
+
+/*
+ * The package ships without Tailwind preflight, so bare buttons would keep the UA button face.
+ * Scoped to the whole docs body because the package renders close buttons inside portals that
+ * live outside .fish-demo__preview. Zero specificity inside the utilities layer keeps every
+ * bg-* utility on the component in charge, including variants such as `hover:bg-accent`.
+ */
+@layer utilities {
+  :where(body) :where(button, input, select, optgroup, textarea) {
+    background-color: transparent;
+  }
+
+  /*
+   * Rspress's own preflight keeps the UA list and mono defaults Tailwind removes; restore the
+   * Tailwind behavior inside demos so lists inside Breadcrumb, Pagination, Sidebar and friends
+   * render the way they do in the template.
+   */
+  :where(.fish-demo__preview) :where(ol, ul, menu) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  :where(.fish-demo__preview) :where(code, kbd, samp, pre) {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+      monospace;
+  }
+}
+
+/* Demo captions stay documentation: keep the inline-code chip the preview no longer inherits. */
+.fish-demo-muted code,
+.fish-demo-label code {
+  padding: 0.1em 0.35em;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--muted);
+  font-family: var(--rp-font-family-mono);
+  font-size: 0.88em;
+}
+
+.fish-demo__source {
+  max-height: 540px;
+  background: var(--card);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.fish-demo__source .rp-codeblock {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.fish-demo__source .rp-codeblock__title {
+  background: color-mix(in oklch, var(--muted) 30%, var(--card));
+}
+
+.fish-demo__source .rp-codeblock__content {
+  background: var(--card);
+}
+
+.fish-demo__placeholder {
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+}
+
+.fish-demo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 42rem;
+}
+
+/* Demos that mirror a full-width template surface, such as the accordion panel. */
+.fish-demo-stack--wide {
+  max-width: none;
+}
+
+.fish-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.fish-demo-label {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.fish-demo-muted {
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.fish-demo-w-72 {
+  width: 18rem;
+  max-width: 100%;
+}
+
+.fish-api {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.fish-api th,
+.fish-api td {
+  padding: 0.5rem 0.65rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.fish-api th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fish-api code {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.fish-api-note {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+/* ---------- prose emulation ---------- */
+
+/*
+ * Rspress prose sizes the docs h3 through `body .rp-doc h3` and outranks the `.fish-demo__title`
+ * base rule copied above. These are the probed computed values for the demo title; the selector
+ * has one class, so it only wins when it stays after the copied block.
+ */
+.fish-demo__title {
+  margin: 28px 0 20px;
+  font-size: 17.28px;
+  line-height: 29.376px;
+  font-weight: 600;
+  letter-spacing: -0.1728px;
+}
+
+.rp-not-doc h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 27.2px;
+}
+
+.fish-demo__code {
+  margin: 0;
+  padding: 16px;
+  font-family: var(--rp-font-family-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre;
+}
+
+@layer utilities {
+  :where(body) :where(button, input, select, optgroup, textarea) {
+    background-color: transparent;
+  }
+
+  :where(.fish-demo__preview) :where(ol, ul, menu) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  :where(.fish-demo__preview) :where(code, kbd, samp, pre) {
+    font-family:
+      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+      monospace;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--foreground) 18%, transparent);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklch, var(--foreground) 30%, transparent);
+  background-clip: content-box;
+}
