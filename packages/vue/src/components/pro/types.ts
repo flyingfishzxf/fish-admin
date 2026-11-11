@@ -23,4 +23,5 @@ export type ProTableProps<TData> = {
   selection?: ProTableSelectionConfig
   fetching?: boolean
   fetchingLabel?: string
+  onRowClick?: (row: TData) => void
 }

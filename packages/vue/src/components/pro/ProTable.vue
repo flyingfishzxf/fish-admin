@@ -10,7 +10,6 @@ import DataTable from './DataTable.vue'
 import type { ProTableProps } from './types'
 
 const props = defineProps<ProTableProps<TData>>()
-const emit = defineEmits<{ 'row-click': [row: TData] }>()
 const slots = useSlots()
 
 const hasDefaultToolbar = computed(() =>
@@ -28,7 +27,7 @@ function clearSelection() {
 
 <template>
   <div data-slot="pro-table">
-    <DataTable :table="table" :loading="loading" @row-click="emit('row-click', $event)">
+    <DataTable :table="table" :loading="loading" :on-row-click="onRowClick">
       <template v-if="slots.toolbar" #toolbar>
         <slot name="toolbar" />
       </template>

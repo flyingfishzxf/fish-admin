@@ -6,11 +6,14 @@ import { cn } from '../../lib/utils'
 import Skeleton from '../ui/skeleton/Skeleton.vue'
 
 const props = withDefaults(
-  defineProps<{ table: Table<TData>; loading?: boolean; skeletonRows?: number }>(),
+  defineProps<{
+    table: Table<TData>
+    loading?: boolean
+    skeletonRows?: number
+    onRowClick?: (row: TData) => void
+  }>(),
   { loading: false, skeletonRows: 6 },
 )
-
-const emit = defineEmits<{ 'row-click': [row: TData] }>()
 
 const rows = computed(() => props.table.getRowModel().rows)
 const columnCount = computed(() => props.table.getVisibleLeafColumns().length)
@@ -39,10 +42,10 @@ const clickableRowClass =
   'cursor-pointer focus-visible:bg-muted/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset'
 
 function onRowKeydown(event: KeyboardEvent, row: TData) {
-  if (event.target !== event.currentTarget) return
+  if (!props.onRowClick || event.target !== event.currentTarget) return
   if (event.key !== 'Enter' && event.key !== ' ') return
   event.preventDefault()
-  emit('row-click', row)
+  props.onRowClick(row)
 }
 </script>
 
@@ -99,9 +102,11 @@ function onRowKeydown(event: KeyboardEvent, row: TData) {
               :key="row.id"
               data-slot="table-row"
               :data-state="row.getIsSelected() ? 'selected' : undefined"
-              tabindex="0"
-              :class="cn(rowClass, row.getIsSelected() && 'bg-muted/60', clickableRowClass)"
-              @click="emit('row-click', row.original)"
+              :tabindex="onRowClick ? 0 : undefined"
+              :class="
+                cn(rowClass, row.getIsSelected() && 'bg-muted/60', onRowClick && clickableRowClass)
+              "
+              @click="onRowClick?.(row.original)"
               @keydown="onRowKeydown($event, row.original)"
             >
               <td
