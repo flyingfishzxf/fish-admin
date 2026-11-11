@@ -1,11 +1,11 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, markRaw } from 'vue'
 
 import DemoBlock from '../src/components/DemoBlock.vue'
 import type { ComponentEntry, DemoEntry } from '../src/data/types'
 
-const Preview = defineComponent({ render: () => h('p', 'Preview body') })
+const Preview = markRaw(defineComponent({ render: () => h('p', 'Preview body') }))
 
 const demo: DemoEntry = {
   id: 'accordion/basic',
