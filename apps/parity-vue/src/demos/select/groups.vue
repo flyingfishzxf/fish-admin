@@ -36,7 +36,7 @@ const permissionLabel = computed(() => PERMISSION_LABELS[permission.value] ?? pe
         <SelectTrigger id="demo-select-groups-permission" class="fish-demo-w-72">
           <SelectValue :label="permissionLabel" placeholder="Choose a permission" />
         </SelectTrigger>
-        <SelectContent position="popper">
+        <SelectContent>
           <SelectGroup>
             <SelectLabel>Inherited from the folder</SelectLabel>
             <SelectItem value="none">No access</SelectItem>
@@ -62,7 +62,7 @@ const permissionLabel = computed(() => PERMISSION_LABELS[permission.value] ?? pe
         <SelectTrigger id="demo-select-groups-locked" class="fish-demo-w-72">
           <SelectValue label="Team default" />
         </SelectTrigger>
-        <SelectContent position="popper">
+        <SelectContent>
           <SelectItem value="team-default">Team default</SelectItem>
         </SelectContent>
       </Select>

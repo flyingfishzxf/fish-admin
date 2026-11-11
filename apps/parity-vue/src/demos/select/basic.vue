@@ -33,7 +33,7 @@ const current = computed(() => ROLES.find((option) => option.value === role.valu
         <SelectTrigger id="demo-select-role" class="fish-demo-w-72">
           <SelectValue :label="current?.label" placeholder="Choose a role" />
         </SelectTrigger>
-        <SelectContent position="popper">
+        <SelectContent>
           <SelectItem v-for="option in ROLES" :key="option.value" :value="option.value">
             {{ option.label }}
           </SelectItem>
