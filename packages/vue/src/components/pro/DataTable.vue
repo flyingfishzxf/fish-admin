@@ -23,6 +23,7 @@ const headBase =
 const headClass = cn(
   headBase,
   'relative text-[11px] font-semibold tracking-wide text-muted-foreground uppercase',
+  'border-e last:border-e-0',
   'bg-muted/35',
 )
 const cellBase =

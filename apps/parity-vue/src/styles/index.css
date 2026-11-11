@@ -3,6 +3,21 @@
 @import 'tailwindcss/preflight.css' layer(base);
 @import './demo.css';
 
+/*
+ * Tailwind's preflight resets `border: 0 solid` after the package's `* { @apply border-border }`,
+ * which leaves every bare `border-b` on currentColor. The docs host keeps the theme border, so the
+ * accordion dividers rendered dark instead of `var(--border)`; restore the package default here.
+ */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border);
+  }
+}
+
 @source '../';
 /* Four levels up from this file, not three: three lands on apps/packages, which does not exist. */
 @source '../../../../packages/vue/src';
