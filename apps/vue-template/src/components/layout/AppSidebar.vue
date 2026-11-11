@@ -69,24 +69,26 @@ watch(
         >
           {{ t(group.titleKey) }}
         </p>
-        <RouterLink
-          v-for="item in group.items"
-          :key="item.to"
-          :to="item.to"
-          data-sidebar-link
-          :title="ui.collapsed ? t(item.titleKey) : undefined"
-          :aria-current="isActive(item.to) ? 'page' : undefined"
-          class="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-          :class="
-            isActive(item.to)
-              ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
-              : undefined
-          "
-          @click="ui.closeMobile()"
-        >
-          <component :is="item.icon" class="size-4 shrink-0" />
-          <span :class="ui.collapsed ? 'hidden' : undefined">{{ t(item.titleKey) }}</span>
-        </RouterLink>
+        <ul role="list" class="space-y-0.5">
+          <li v-for="item in group.items" :key="item.to">
+            <RouterLink
+              :to="item.to"
+              data-sidebar-link
+              :title="ui.collapsed ? t(item.titleKey) : undefined"
+              :aria-current="isActive(item.to) ? 'page' : undefined"
+              class="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              :class="
+                isActive(item.to)
+                  ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                  : undefined
+              "
+              @click="ui.closeMobile()"
+            >
+              <component :is="item.icon" class="size-4 shrink-0" />
+              <span :class="ui.collapsed ? 'hidden' : undefined">{{ t(item.titleKey) }}</span>
+            </RouterLink>
+          </li>
+        </ul>
       </div>
     </nav>
 
@@ -148,23 +150,25 @@ watch(
             <p class="px-2 text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
               {{ t(group.titleKey) }}
             </p>
-            <RouterLink
-              v-for="item in group.items"
-              :key="item.to"
-              :to="item.to"
-              data-sidebar-link
-              :aria-current="isActive(item.to) ? 'page' : undefined"
-              class="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              :class="
-                isActive(item.to)
-                  ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
-                  : undefined
-              "
-              @click="ui.closeMobile()"
-            >
-              <component :is="item.icon" class="size-4 shrink-0" />
-              <span>{{ t(item.titleKey) }}</span>
-            </RouterLink>
+            <ul role="list" class="space-y-0.5">
+              <li v-for="item in group.items" :key="item.to">
+                <RouterLink
+                  :to="item.to"
+                  data-sidebar-link
+                  :aria-current="isActive(item.to) ? 'page' : undefined"
+                  class="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  :class="
+                    isActive(item.to)
+                      ? 'bg-sidebar-accent font-medium text-sidebar-accent-foreground'
+                      : undefined
+                  "
+                  @click="ui.closeMobile()"
+                >
+                  <component :is="item.icon" class="size-4 shrink-0" />
+                  <span>{{ t(item.titleKey) }}</span>
+                </RouterLink>
+              </li>
+            </ul>
           </div>
         </nav>
 
