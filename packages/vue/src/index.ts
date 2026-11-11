@@ -41,3 +41,7 @@ export type {
   DateRangePreset,
   DateRangeValue,
 } from './components/enterprise/date-range-picker/types'
+export { default as ProTable } from './components/pro/ProTable.vue'
+export { default as DataTable } from './components/pro/DataTable.vue'
+export { default as BulkActionsBar } from './components/pro/BulkActionsBar.vue'
+export type { ProTableSearchConfig, ProTableSelectionConfig } from './components/pro/types'

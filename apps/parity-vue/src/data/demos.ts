@@ -20,6 +20,10 @@ import DateRangePickerBasic from '../demos/date-range-picker/basic.vue'
 import dateRangePickerBasicSource from '../demos/date-range-picker/basic.vue?raw'
 import DateRangePickerPresets from '../demos/date-range-picker/presets.vue'
 import dateRangePickerPresetsSource from '../demos/date-range-picker/presets.vue?raw'
+import ProTableBasic from '../demos/pro-table/basic.vue'
+import proTableBasicSource from '../demos/pro-table/basic.vue?raw'
+import ProTableSelection from '../demos/pro-table/selection.vue'
+import proTableSelectionSource from '../demos/pro-table/selection.vue?raw'
 
 export const DEMOS: DemoEntry[] = [
   {
@@ -111,5 +115,23 @@ export const DEMOS: DemoEntry[] = [
     filename: 'demos/date-range-picker/presets.tsx',
     source: dateRangePickerPresetsSource,
     view: DateRangePickerPresets,
+  },
+  {
+    id: 'pro-table/basic',
+    componentId: 'pro-table',
+    title: { en: 'Basic table with search', zh: '带搜索的基础表格' },
+    lines: 41,
+    filename: 'demos/pro-table/basic.tsx',
+    source: proTableBasicSource,
+    view: ProTableBasic,
+  },
+  {
+    id: 'pro-table/selection',
+    componentId: 'pro-table',
+    title: { en: 'Row selection', zh: '行选择' },
+    lines: 68,
+    filename: 'demos/pro-table/selection.tsx',
+    source: proTableSelectionSource,
+    view: ProTableSelection,
   },
 ]
