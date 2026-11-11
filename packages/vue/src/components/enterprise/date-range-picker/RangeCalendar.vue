@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseDate } from '@internationalized/date'
+import { parseDate, type DateValue } from '@internationalized/date'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next'
 import {
   RangeCalendarCell,
@@ -45,8 +45,27 @@ const navClass =
   'inline-flex size-8 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none'
 
 const cellClass = cn(
-  'size-8 rounded-md p-0 text-center text-sm font-normal transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[selected]:bg-primary data-[selected]:text-primary-foreground data-[selection-start]:rounded-s-md data-[selection-end]:rounded-e-md data-[outside-view]:text-muted-foreground data-[outside-view]:opacity-50 data-[today]:bg-accent data-[today]:text-accent-foreground',
+  'size-8 rounded-md p-0 text-center text-sm font-normal transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 data-[outside-view]:text-muted-foreground data-[outside-view]:opacity-50 data-[today]:bg-accent data-[today]:text-accent-foreground',
 )
+
+// Mirrors the React DayPicker modifiers: only the endpoints are primary, the days
+// strictly between them sit on an accent band. Reka marks every in-range day with
+// data-selected, so the highlight is decided from the value instead of variants.
+function rangeHighlightClass(day: DateValue): string | undefined {
+  const { from, to } = props.modelValue
+  if (!from && !to) return undefined
+
+  const iso = day.toString()
+  if (from && to && from === to) {
+    return iso === from ? 'bg-primary text-primary-foreground' : undefined
+  }
+  if (from && iso === from) return 'bg-primary text-primary-foreground rounded-s-md'
+  if (to && iso === to) return 'bg-primary text-primary-foreground rounded-e-md'
+  if (from && to && iso > from && iso < to) {
+    return 'bg-accent text-accent-foreground rounded-none'
+  }
+  return undefined
+}
 </script>
 
 <template>
@@ -96,7 +115,11 @@ const cellClass = cn(
               :date="day"
               class="relative h-8 w-8 p-0 text-center text-sm"
             >
-              <RangeCalendarCellTrigger :day="day" :month="month.value" :class="cellClass" />
+              <RangeCalendarCellTrigger
+                :day="day"
+                :month="month.value"
+                :class="cn(cellClass, rangeHighlightClass(day))"
+              />
             </RangeCalendarCell>
           </RangeCalendarGridRow>
         </RangeCalendarGridBody>
