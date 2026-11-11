@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Private Vue 3 pilot slice.** `@fish-admin/vue@0.1.0` and the private `@fish-admin/parity-vue@0.1.0`
+  target port Accordion, Tabs, Select, Dialog, DateRangePicker and ProTable to Vue 3 with Reka UI and
+  TanStack Table. The Vue target passes 42 frozen parity checks, the React target still passes 119,
+  and every `*-linux.png` baseline is untouched. Neither package is published.
+
 ## [2.2.0] - 2026-11-10
 
 A maturity release: every component now has behavioural tests, full axe coverage and light/dark

@@ -1,6 +1,6 @@
 # Vue port foundation
 
-FishAdmin 2.2.0 is the reference release for a future Vue 3 port. This page documents what is frozen, how the framework-neutral packages are laid out, and how the parity harness works. It does not claim that a Vue port exists.
+FishAdmin 2.2.0 is the reference release for the Vue 3 port. This page documents what is frozen, how the framework-neutral packages are laid out, and how the parity harness works. A private six-component pilot slice in `apps/parity-vue` now runs the harness end to end; it is not published and does not change the React package.
 
 ## What is frozen
 
@@ -53,15 +53,18 @@ pnpm check:parity:freeze
 pnpm check:parity:contract
 pnpm check:parity:scenarios
 pnpm test:parity:docker
+pnpm test:parity:vue
 ```
 
 `pnpm test:parity:docker` runs the suite in the Playwright image. The suite has 119 tests: 83 API contracts, 12 docs-surface checks (six pilots × two locales), six behaviour scenarios, 12 screenshots (six pilots × light/dark) and six axe scans. The 12 screenshots compare with the same `*-linux.png` files the docs site uses; no baseline is duplicated.
+
+The private Vue target runs 42 checks: six API contracts, 12 docs-surface checks (six pilots × two locales), six behaviour scenarios, 12 screenshots and six axe scans.
 
 ## Adding a Vue target
 
 1. Build a Vue docs target that serves the same component routes, demo IDs and `section[data-demo]` anchors. Keep the same fixed clock and storage keys so screenshots are comparable.
 2. Add `parity/targets/vue.json` with its `baseURL`, `webServer` and `"api": { "mode": "reference", "deviations": { ... } }`. Record all six pilots; use `[]` when a component has no API differences.
-3. Run `PARITY_TARGET=vue pnpm test:parity:docker`.
+3. Run `pnpm test:parity:vue`, or `PARITY_TARGET=vue pnpm test:parity:docker`.
 4. Fix behaviour, accessibility and pixel differences in the Vue implementation. Never run an update flag to make a parity screenshot pass.
 
 ## What parity does not prove
@@ -82,3 +85,12 @@ The foundation is complete when `pnpm check:parity:freeze`, `pnpm check:parity:c
 - Browser: template 78 passed; docs 106 passed / 166 skipped; full axe 272 passed.
 - Visual: template 18/18, docs 180/180, parity 119/119, zero baseline changes.
 - Bundle: first paint 174.2 KB, largest async 103.2 KB, total JS 711.6 KB, total CSS 23.8 KB.
+
+### 2026-11-11 slice 1 run
+
+- Scope: six pilots — Accordion, Tabs, Select, Dialog, DateRangePicker and ProTable — in the private `@fish-admin/vue@0.1.0` package and the `@fish-admin/parity-vue@0.1.0` target.
+- Static gates: format, lint, typecheck, tokens, package, RTL, maturity, gen-api, parity freeze, parity contract and parity scenarios — all pass.
+- Unit suites: Vue 25 and the parity app 4; the root, token, UI and shared suites are unchanged.
+- Browser: React target 119/119; Vue target 42/42 (six API contracts, 12 docs-surface checks, six behaviour scenarios, 12 screenshots and six axe scans).
+- Baselines: all 198 `*-linux.png` files unchanged; no snapshot update command was run.
+- Bundle: all four `pnpm size` budgets pass and the template bundle does not grow.

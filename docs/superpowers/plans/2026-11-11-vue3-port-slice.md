@@ -5311,6 +5311,19 @@ Expected: 提交成功，工作区干净。不 push、不打 tag、不执行 `np
 
 - [ ] **Step 12: 汇报**
 
-向用户报告：React 119/119、Vue 42/42、198 张基线零改动、`test:vue` 26 个测试、双语文档与 CHANGELOG 已更新、提交哈希。明确说明没有 push、没有发布，`@fish-admin/vue` 与 `@fish-admin/parity-vue` 仍是私有包。
+向用户报告：React 119/119、Vue 42/42、198 张基线零改动、`test:vue` 29 个测试、双语文档与 CHANGELOG 已更新、提交哈希。明确说明没有 push、没有发布，`@fish-admin/vue` 与 `@fish-admin/parity-vue` 仍是私有包。
 
 ---
+
+## Slice 1 execution evidence (2026-11-11)
+
+| Gate            | Command                                                                                                                                                                                                       | Result             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| Static gates    | `pnpm lint`, `pnpm format:check`, `pnpm check:tokens`, `pnpm check:rtl`, `pnpm check:maturity`, `pnpm gen-api:check`, `pnpm check:parity:freeze`, `pnpm check:parity:contract`, `pnpm check:parity:scenarios` | all pass           |
+| Unit suites     | `pnpm test:shared`, `pnpm test:ui`, `pnpm test:vue`                                                                                                                                                           | 31 + 303 + 29 pass |
+| Type and builds | `pnpm typecheck`, `pnpm build`, `pnpm check:package`, `pnpm size`, `pnpm --filter @fish-admin/parity-vue build`                                                                                               | all pass           |
+| React parity    | `pnpm test:parity:docker`                                                                                                                                                                                     | 119/119            |
+| Vue parity      | `pnpm test:parity:vue`                                                                                                                                                                                        | 42/42              |
+| Baselines       | `git diff --name-only -- 'parity/baseline/**/*-linux.png'`                                                                                                                                                    | empty              |
+
+The Vue package ships 25 unit tests and the parity app 4 (29 total); fix rounds in Tasks 8–10 added the difference from this plan's original 22. The first Vue parity run exposed four presentation gaps — demo titles, the docs page's fractional top offset, the Tailwind preflight border colour and ProTable's header separators — fixed in `fix(vue): match the react demo titles and table chrome` before the 42/42 run. No baseline was regenerated.

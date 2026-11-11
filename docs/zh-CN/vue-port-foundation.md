@@ -1,6 +1,6 @@
 # Vue 移植地基
 
-FishAdmin 2.2.0 是未来 Vue 3 移植的参考版本。本页说明冻结了什么、框架无关包如何分层，以及 parity 测试台如何工作。它不代表 Vue 版本已经存在。
+FishAdmin 2.2.0 是 Vue 3 移植的参考版本。本页说明冻结了什么、框架无关包如何分层，以及 parity 测试台如何工作。`apps/parity-vue` 中的私有六组件试点切片已经端到端跑通测试台；它尚未发布，也不改动 React 包。
 
 ## 冻结范围
 
@@ -53,15 +53,18 @@ pnpm check:parity:freeze
 pnpm check:parity:contract
 pnpm check:parity:scenarios
 pnpm test:parity:docker
+pnpm test:parity:vue
 ```
 
 `pnpm test:parity:docker` 在 Playwright 镜像中运行。套件共 119 条：83 条 API 合同、12 条 docs surface（六个试点 × 两种语言）、6 条行为场景、12 张截图（六个试点 × 明暗两套）与 6 条 axe 扫描。12 张截图复用文档站已有的 `*-linux.png`，不复制基线。
+
+私有 Vue target 运行 42 条检查：6 条 API 合同、12 条 docs surface（六个试点 × 两种语言）、6 条行为场景、12 张截图与 6 条 axe 扫描。
 
 ## 增加 Vue target
 
 1. 构建一个 Vue 文档 target，提供相同的组件路由、demo ID 与 `section[data-demo]` anchor。保持相同的固定时钟与 storage key，截图才可比较。
 2. 新增 `parity/targets/vue.json`，填写 `baseURL`、`webServer` 与 `"api": { "mode": "reference", "deviations": { ... } }`。六个试点都要有记录；没有差异时写 `[]`。
-3. 运行 `PARITY_TARGET=vue pnpm test:parity:docker`。
+3. 运行 `pnpm test:parity:vue`，或 `PARITY_TARGET=vue pnpm test:parity:docker`。
 4. 在 Vue 实现里修正行为、无障碍与像素差异。绝不能用更新参数让 parity 截图通过。
 
 ## Parity 不能证明什么
@@ -82,3 +85,12 @@ pnpm test:parity:docker
 - Browser: template 78 passed; docs 106 passed / 166 skipped; full axe 272 passed.
 - Visual: template 18/18, docs 180/180, parity 119/119, zero baseline changes.
 - Bundle: first paint 174.2 KB, largest async 103.2 KB, total JS 711.6 KB, total CSS 23.8 KB.
+
+### 2026-11-11 切片 1 运行
+
+- 范围：Accordion、Tabs、Select、Dialog、DateRangePicker 与 ProTable 六个试点，位于私有 `@fish-admin/vue@0.1.0` 包与 `@fish-admin/parity-vue@0.1.0` target。
+- 静态门禁：format、lint、typecheck、tokens、package、RTL、maturity、gen-api、parity freeze、parity contract 与 parity scenarios —— 全部通过。
+- 单元测试：Vue 25、parity 应用 4；根、tokens、UI 与 shared 套件数量不变。
+- 浏览器：React target 119/119；Vue target 42/42（6 条 API 合同、12 条 docs surface、6 条行为场景、12 张截图、6 条 axe 扫描）。
+- 基线：198 张 `*-linux.png` 零改动；未运行任何截图更新命令。
+- 体积：`pnpm size` 的四项预算全部通过，模板包体积不增长。
