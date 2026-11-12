@@ -111,8 +111,12 @@ const columns = computed(() =>
 )
 
 const table = useVueTable({
-  data: rows,
-  // A computed ref cannot cross into table-core; the getters unwrap it at read time.
+  // Computed refs cannot cross into table-core; the getters unwrap it at read
+  // time. `data` must stay a getter too: passing the ref directly makes
+  // vue-table snapshot it, and the rendered rows never follow refetches.
+  get data() {
+    return rows.value
+  },
   get columns() {
     return columns.value
   },
