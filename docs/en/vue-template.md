@@ -86,7 +86,7 @@ Implementation details that also differ from the React template:
 ## Tests
 
 Vitest covers redirects, permissions, auth/session, i18n, theme, login, users
-and the sidebar: 54 tests in 14 files. Six Playwright smoke tests cover the
+and the sidebar: 64 tests in 15 files. Six Playwright smoke tests cover the
 golden paths; they do not produce or compare screenshots.
 
 ## Client-side permission boundary

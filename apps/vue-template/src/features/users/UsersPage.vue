@@ -55,6 +55,20 @@ const optionsQuery = useQuery(userOptionsQueryOptions)
 const rows = computed(() => usersQuery.data.value?.items ?? [])
 const pageCount = computed(() => Math.max(usersQuery.data.value?.pageCount ?? 1, 1))
 const hasFilters = computed(() => Boolean(search.q || search.status))
+
+// The API clamps an out-of-range page to the last available one. Keep the
+// requested page in step with the server response: deleting the only row on the
+// final page, or a refetch that fails and later succeeds, must not leave the
+// pager (and every subsequent query) pointing past the end. Placeholder data is
+// skipped because it belongs to the previous query key, not to this page.
+watch(
+  [() => usersQuery.data.value?.pageCount, () => usersQuery.isPlaceholderData.value],
+  ([availablePages, isPlaceholder]) => {
+    if (isPlaceholder || availablePages === undefined) return
+    const lastPage = Math.max(availablePages, 1)
+    if (search.page > lastPage) search.page = lastPage
+  },
+)
 // `SelectValue` renders the label it is given rather than the selected item text.
 const statusLabel = computed(() =>
   search.status ? t(`common:status.${search.status}`) : undefined,

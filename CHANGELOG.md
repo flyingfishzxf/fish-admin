@@ -16,6 +16,12 @@ All notable changes to this project are documented here. The format is based on
   theme and language switching, a dashboard and a users CRUD page; adds Avatar and DropdownMenu
   wrappers to `@fish-admin/vue`.
 
+### Fixed
+
+- **Vue template shell:** deleting the last row on the final page now brings the pager back to a
+  valid page, and a startup failure shows a readable error with a reload button instead of a blank
+  screen.
+
 ## [2.2.0] - 2026-11-10
 
 A maturity release: every component now has behavioural tests, full axe coverage and light/dark

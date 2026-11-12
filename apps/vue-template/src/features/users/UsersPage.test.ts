@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import { useAuthStore } from '../../stores/auth'
 import UsersPage from './UsersPage.vue'
-import { fetchDepartments, fetchRoleOptions, fetchUsers } from './api'
+import { deleteUser, fetchDepartments, fetchRoleOptions, fetchUsers } from './api'
 
 vi.mock('./api', () => ({
   fetchUsers: vi.fn(),
@@ -153,6 +153,67 @@ describe('UsersPage', () => {
         expect.anything(),
       ),
     )
+  })
+
+  it('clamps the pager when the server reports fewer pages', async () => {
+    const page = mountPage(['user:read', 'user:delete'])
+    await waitForRows(page)
+
+    await page.get('[aria-label="Next page"]').trigger('click')
+    await flushPromises()
+
+    // Once the last row is gone the API clamps page 2 back to page 1. This must
+    // work for any refetch, not only for the delete that triggered it.
+    vi.mocked(fetchUsers).mockResolvedValue({
+      items: [ada],
+      total: 1,
+      page: 1,
+      pageSize: 10,
+      pageCount: 1,
+    })
+    await queryClient.invalidateQueries({ queryKey: ['users'] })
+
+    await vi.waitFor(() => expect(page.text()).toContain('Page 1 of 1'))
+    await vi.waitFor(() =>
+      expect(fetchUsers).toHaveBeenLastCalledWith(
+        expect.objectContaining({ page: 1 }),
+        expect.anything(),
+      ),
+    )
+  })
+
+  it('returns to a valid page through the real delete flow', async () => {
+    const page = mountPage(['user:read', 'user:delete'])
+    await waitForRows(page)
+
+    await page.get('[aria-label="Next page"]').trigger('click')
+    await flushPromises()
+
+    let deleted = false
+    vi.mocked(fetchUsers).mockImplementation(async (params) =>
+      deleted
+        ? { items: [ada], total: 1, page: 1, pageSize: 10, pageCount: 1 }
+        : { items: [ada], total: 11, page: params.page, pageSize: 10, pageCount: 2 },
+    )
+    vi.mocked(deleteUser).mockImplementation(async () => {
+      deleted = true
+    })
+
+    await page.get('[aria-label="Actions"]').trigger('click')
+    const menuItem = Array.from(
+      document.body.querySelectorAll('[data-slot="dropdown-menu-item"]'),
+    ).find((item) => item.textContent?.trim() === 'Delete user')
+    expect(menuItem).toBeTruthy()
+    menuItem!.dispatchEvent(new Event('click', { bubbles: true }))
+    await flushPromises()
+
+    const confirm = Array.from(document.body.querySelectorAll('button')).find(
+      (button) => button.textContent?.trim() === 'Delete user',
+    )
+    expect(confirm).toBeTruthy()
+    confirm!.dispatchEvent(new Event('click', { bubbles: true }))
+
+    await vi.waitFor(() => expect(page.text()).toContain('Page 1 of 1'))
   })
 
   it('sorts by the joined header button', async () => {

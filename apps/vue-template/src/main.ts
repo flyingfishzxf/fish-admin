@@ -7,6 +7,7 @@ import { env } from './config/env'
 import { configureApi } from './lib/api-client'
 import { i18nReady } from './lib/i18n'
 import { queryClient } from './lib/query-client'
+import { handleStartupFailure } from './lib/startup-error'
 import { router } from './router'
 import { useAuthStore } from './stores/auth'
 import { useThemeStore } from './stores/theme'
@@ -65,4 +66,6 @@ async function start() {
   app.mount('#app')
 }
 
-void start()
+// Spec §5.3: a failed startup must not mount the Vue app. The handler renders a
+// plain-DOM error so the failure is visible instead of an unexplained blank page.
+void start().catch(handleStartupFailure)
