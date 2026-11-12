@@ -12,9 +12,25 @@ const setup = setupI18n({ storageKey: 'fish-admin:lang' })
 
 export const i18n = setup.i18n
 export const language = ref<SupportedLanguage>(setup.initialLanguage)
-export const i18nReady = setup.ready.then(() =>
-  ensureNamespaces(['auth', 'dashboard', 'users', 'validation']),
-)
+
+// Every namespace a shipped page can read must be loaded before the first
+// render. Adding a page without adding its namespace here shows raw keys on a
+// cold start, so `i18n.test.ts` asserts the whole list.
+export const REQUIRED_NAMESPACES = [
+  'auth',
+  'dashboard',
+  'users',
+  'validation',
+  'reports',
+  'departments',
+  'roles',
+  'permissions',
+  'dictionaries',
+  'audit',
+  'integrations',
+] as const
+
+export const i18nReady = setup.ready.then(() => ensureNamespaces([...REQUIRED_NAMESPACES]))
 
 i18n.on('languageChanged', () => {
   language.value = currentLanguage()

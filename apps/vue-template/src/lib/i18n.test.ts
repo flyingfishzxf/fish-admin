@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { i18nReady, language, setLanguage, useT } from './i18n'
+import { i18n, i18nReady, language, REQUIRED_NAMESPACES, setLanguage, useT } from './i18n'
 
 describe('i18n', () => {
   beforeEach(async () => {
@@ -21,5 +21,34 @@ describe('i18n', () => {
     expect(t('actions.save')).toBe('Save')
     await setLanguage('zh-CN')
     expect(t('actions.save')).toBe('保存')
+  })
+
+  it('loads real translations for every namespace a shipped page can read', async () => {
+    await i18nReady
+    expect(REQUIRED_NAMESPACES).toEqual([
+      'auth',
+      'dashboard',
+      'users',
+      'validation',
+      'reports',
+      'departments',
+      'roles',
+      'permissions',
+      'dictionaries',
+      'audit',
+      'integrations',
+    ])
+
+    // `hasLoadedNamespace` also returns true when a backend load failed, so a
+    // misspelled namespace or a missing JSON would pass that check. Assert that
+    // both languages really contain translations instead.
+    await setLanguage('en')
+    for (const namespace of REQUIRED_NAMESPACES) {
+      expect(Object.keys(i18n.getResourceBundle('en', namespace) ?? {})).not.toHaveLength(0)
+    }
+    await setLanguage('zh-CN')
+    for (const namespace of REQUIRED_NAMESPACES) {
+      expect(Object.keys(i18n.getResourceBundle('zh-CN', namespace) ?? {})).not.toHaveLength(0)
+    }
   })
 })
