@@ -12,6 +12,9 @@ All notable changes to this project are documented here. The format is based on
   target port Accordion, Tabs, Select, Dialog, DateRangePicker and ProTable to Vue 3 with Reka UI and
   TanStack Table. The Vue target passes 42 frozen parity checks, the React target still passes 119,
   and every `*-linux.png` baseline is untouched. Neither package is published.
+- **Vue template shell:** a private Vue 3 admin app with sign-in, permission-filtered navigation,
+  theme and language switching, a dashboard and a users CRUD page; adds Avatar and DropdownMenu
+  wrappers to `@fish-admin/vue`.
 
 ## [2.2.0] - 2026-11-10
 
