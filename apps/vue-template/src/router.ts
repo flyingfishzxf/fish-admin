@@ -118,6 +118,13 @@ export const router = createRouter({
           component: () => import('./features/integrations/IntegrationsPage.vue'),
           meta: { permission: 'integration:read' },
         },
+        {
+          // Account pages need a session but no permission: every signed-in role
+          // can read and edit its own profile.
+          path: 'profile',
+          name: 'profile',
+          component: () => import('./features/profile/ProfilePage.vue'),
+        },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
       ],

@@ -28,6 +28,7 @@ export const REQUIRED_NAMESPACES = [
   'dictionaries',
   'audit',
   'integrations',
+  'profile',
 ] as const
 
 export const i18nReady = setup.ready.then(() => ensureNamespaces([...REQUIRED_NAMESPACES]))
