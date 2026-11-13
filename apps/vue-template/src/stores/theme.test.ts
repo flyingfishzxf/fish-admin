@@ -53,4 +53,47 @@ describe('theme store', () => {
     store.dispose()
     expect(remove).toHaveBeenCalled()
   })
+
+  it('restores a stored accent and paints it on the root element', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ state: { mode: 'light', accent: 'emerald' }, version: 1 }),
+    )
+    const store = useThemeStore()
+    store.init()
+
+    expect(store.accent).toBe('emerald')
+    expect(document.documentElement.dataset.accent).toBe('emerald')
+    store.dispose()
+  })
+
+  it('persists a new accent and applies it immediately', () => {
+    const store = useThemeStore()
+    store.setAccent('rose')
+
+    expect(store.accent).toBe('rose')
+    expect(document.documentElement.dataset.accent).toBe('rose')
+    expect(JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}')).toEqual({
+      state: { mode: 'system', accent: 'rose' },
+      version: 1,
+    })
+  })
+
+  it('falls back to violet for sessions stored before the palettes existed', () => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ state: { mode: 'dark' }, version: 1 }))
+    const store = useThemeStore()
+
+    expect(store.mode).toBe('dark')
+    expect(store.accent).toBe('violet')
+  })
+
+  it('ignores an accent this build does not ship', () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ state: { mode: 'light', accent: 'purple' }, version: 1 }),
+    )
+    const store = useThemeStore()
+
+    expect(store.accent).toBe('violet')
+  })
 })

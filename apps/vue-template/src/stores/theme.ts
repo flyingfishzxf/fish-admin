@@ -1,11 +1,18 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import { applyTheme, readStoredTheme, STORAGE_KEY, type ThemeMode } from '../config/theme'
+import {
+  applyTheme,
+  readStoredTheme,
+  STORAGE_KEY,
+  type Accent,
+  type ThemeMode,
+} from '../config/theme'
 
 export const useThemeStore = defineStore('theme', () => {
   const stored = readStoredTheme()
   const mode = ref<ThemeMode>(stored.mode)
+  const accent = ref<Accent>(stored.accent)
   const systemDark = ref(false)
   let media: MediaQueryList | null = null
 
@@ -16,12 +23,12 @@ export const useThemeStore = defineStore('theme', () => {
   function persist() {
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ state: { mode: mode.value, accent: 'violet' }, version: 1 }),
+      JSON.stringify({ state: { mode: mode.value, accent: accent.value }, version: 1 }),
     )
   }
 
   function apply() {
-    applyTheme(resolvedMode.value, 'violet')
+    applyTheme(resolvedMode.value, accent.value)
   }
 
   function handleChange(event: MediaQueryListEvent) {
@@ -31,6 +38,12 @@ export const useThemeStore = defineStore('theme', () => {
 
   function setMode(next: ThemeMode) {
     mode.value = next
+    persist()
+    apply()
+  }
+
+  function setAccent(next: Accent) {
+    accent.value = next
     persist()
     apply()
   }
@@ -47,5 +60,5 @@ export const useThemeStore = defineStore('theme', () => {
     media = null
   }
 
-  return { mode, systemDark, resolvedMode, setMode, init, dispose }
+  return { mode, accent, systemDark, resolvedMode, setMode, setAccent, init, dispose }
 })
