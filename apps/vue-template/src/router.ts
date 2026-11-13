@@ -35,6 +35,18 @@ export const router = createRouter({
       meta: { public: true, authEntry: true },
     },
     {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: () => import('./features/auth/ForgotPasswordPage.vue'),
+      meta: { public: true, authEntry: true },
+    },
+    {
+      path: '/reset-password',
+      name: 'reset-password',
+      component: () => import('./features/auth/ResetPasswordPage.vue'),
+      meta: { public: true, authEntry: true },
+    },
+    {
       path: '/',
       component: ShellLayout,
       children: [

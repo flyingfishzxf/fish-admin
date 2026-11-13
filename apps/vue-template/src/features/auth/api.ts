@@ -59,3 +59,19 @@ export function verifyEmailRequest(token: string) {
     auth: false,
   })
 }
+
+export function forgotPasswordRequest(email: string) {
+  return apiRequest<{ demoResetToken?: string }>('/auth/forgot-password', {
+    method: 'POST',
+    body: { email },
+    auth: false,
+  })
+}
+
+export function resetPasswordRequest(input: { token: string; password: string }) {
+  return apiRequest<void>('/auth/reset-password', {
+    method: 'POST',
+    body: input,
+    auth: false,
+  })
+}
