@@ -47,6 +47,12 @@ export const router = createRouter({
       meta: { public: true, authEntry: true },
     },
     {
+      path: '/accept-invite',
+      name: 'accept-invite',
+      component: () => import('./features/auth/AcceptInvitePage.vue'),
+      meta: { public: true, authEntry: true },
+    },
+    {
       path: '/',
       component: ShellLayout,
       children: [

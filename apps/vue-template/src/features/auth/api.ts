@@ -75,3 +75,26 @@ export function resetPasswordRequest(input: { token: string; password: string })
     auth: false,
   })
 }
+
+export interface InvitePreview {
+  email: string
+  name?: string
+  roleName: string
+  invitedByName: string
+  expiresAt: string
+}
+
+export function getInviteRequest(token: string, signal?: AbortSignal) {
+  return apiRequest<InvitePreview>(`/auth/invites/${encodeURIComponent(token)}`, {
+    signal,
+    auth: false,
+  })
+}
+
+export function acceptInviteRequest(input: RegisterInput & { token: string }) {
+  return apiRequest<TokenPair>('/auth/accept-invite', {
+    method: 'POST',
+    body: input,
+    auth: false,
+  })
+}

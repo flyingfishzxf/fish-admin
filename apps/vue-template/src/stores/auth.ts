@@ -166,6 +166,7 @@ export const useAuthStore = defineStore('auth', () => {
     refreshToken,
     status,
     login,
+    completeLogin,
     logout,
     bootstrap,
     refreshSession,
