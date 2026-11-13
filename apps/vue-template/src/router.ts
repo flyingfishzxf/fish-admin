@@ -125,6 +125,11 @@ export const router = createRouter({
           name: 'profile',
           component: () => import('./features/profile/ProfilePage.vue'),
         },
+        {
+          path: 'security',
+          name: 'security',
+          component: () => import('./features/security/SecurityPage.vue'),
+        },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
       ],

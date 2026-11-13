@@ -170,6 +170,17 @@ export const useAuthStore = defineStore('auth', () => {
     return refreshInFlight
   }
 
+  /**
+   * Re-reads the signed-in user after a change the server owns, such as
+   * enabling two-factor authentication. A failure leaves the previous user in
+   * place: the page reports the mutation error, not a surprise sign-out.
+   */
+  async function refreshUser() {
+    if (!accessToken.value) return null
+    user.value = await meRequest(accessToken.value)
+    return user.value
+  }
+
   return {
     user,
     accessToken,
@@ -178,6 +189,7 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     completeLogin,
     completeMfa,
+    refreshUser,
     logout,
     bootstrap,
     refreshSession,
