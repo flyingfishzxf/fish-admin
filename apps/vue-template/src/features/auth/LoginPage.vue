@@ -39,7 +39,18 @@ async function onSubmit() {
 
   submitting.value = true
   try {
-    await auth.login(values.email.trim(), values.password)
+    const outcome = await auth.login(values.email.trim(), values.password)
+    if (outcome.status === 'mfa') {
+      await router.replace({
+        name: 'otp',
+        query: {
+          challenge: outcome.challengeId,
+          email: outcome.email,
+          ...(route.query.redirect ? { redirect: String(route.query.redirect) } : {}),
+        },
+      })
+      return
+    }
     await router.replace(sanitizeRedirect(route.query.redirect) ?? '/')
   } catch (error) {
     serverError.value = resolveLoginError(error)
@@ -66,8 +77,6 @@ function resolveLoginError(error: unknown) {
       return t('auth:errors.emailNotVerified')
     case 'ACCOUNT_INACTIVE':
       return t('auth:errors.inactive')
-    case 'MFA_NOT_SUPPORTED':
-      return t('auth:mfaUnsupported')
     default:
       return t('auth:loginError')
   }

@@ -53,6 +53,12 @@ export const router = createRouter({
       meta: { public: true, authEntry: true },
     },
     {
+      path: '/otp',
+      name: 'otp',
+      component: () => import('./features/auth/OtpPage.vue'),
+      meta: { public: true, authEntry: true },
+    },
+    {
       path: '/',
       component: ShellLayout,
       children: [

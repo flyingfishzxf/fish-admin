@@ -57,7 +57,7 @@ describe('auth store', () => {
     expect(isMfaRequired({ accessToken: 'x', refreshToken: 'y' })).toBe(false)
   })
 
-  it('surfaces an MFA challenge as an unsupported ApiError', async () => {
+  it('returns the MFA challenge without a session', async () => {
     vi.mocked(loginRequest).mockResolvedValue({
       mfaRequired: true,
       challengeId: 'c1',
@@ -65,11 +65,13 @@ describe('auth store', () => {
     })
     const store = useAuthStore()
 
-    await expect(store.login('ada@fish.dev', 'secret')).rejects.toMatchObject({
-      status: 200,
-      code: 'MFA_NOT_SUPPORTED',
+    await expect(store.login('ada@fish.dev', 'secret')).resolves.toEqual({
+      status: 'mfa',
+      challengeId: 'c1',
+      email: 'ada@fish.dev',
     })
     expect(store.status).toBe('anonymous')
+    expect(store.accessToken).toBeNull()
     expect(meRequest).not.toHaveBeenCalled()
   })
 

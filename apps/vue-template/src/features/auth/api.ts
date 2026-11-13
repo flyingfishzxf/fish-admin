@@ -98,3 +98,11 @@ export function acceptInviteRequest(input: RegisterInput & { token: string }) {
     auth: false,
   })
 }
+
+export function verifyMfaRequest(challengeId: string, code: string) {
+  return apiRequest<TokenPair>('/auth/mfa/verify', {
+    method: 'POST',
+    body: { challengeId, code },
+    auth: false,
+  })
+}

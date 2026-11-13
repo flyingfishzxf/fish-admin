@@ -89,6 +89,7 @@ describe('LoginPage', () => {
       history: createMemoryHistory(),
       routes: [
         { path: '/login', component: LoginPage },
+        { path: '/otp', name: 'otp', component: { template: '<div>otp</div>' } },
         { path: '/users', component: { template: '<div>users</div>' } },
         { path: '/', component: { template: '<div>home</div>' } },
       ],
@@ -103,9 +104,9 @@ describe('LoginPage', () => {
     expect(router.currentRoute.value.path).toBe('/users')
   })
 
-  // The mock answers MFA-capable accounts with HTTP 200 plus an MFA payload,
-  // so the sign-in must be reported and the page must not navigate.
-  it('reports unsupported MFA and stays on /login', async () => {
+  // The mock answers MFA-capable accounts with HTTP 200 plus an MFA payload, so
+  // the page must hand the challenge to /otp instead of signing in.
+  it('forwards an MFA challenge to the OTP page', async () => {
     vi.mocked(loginRequest).mockResolvedValue({
       mfaRequired: true,
       challengeId: 'challenge-1',
@@ -115,6 +116,7 @@ describe('LoginPage', () => {
       history: createMemoryHistory(),
       routes: [
         { path: '/login', component: LoginPage },
+        { path: '/otp', name: 'otp', component: { template: '<div>otp</div>' } },
         { path: '/users', component: { template: '<div>users</div>' } },
         { path: '/', component: { template: '<div>home</div>' } },
       ],
@@ -128,10 +130,11 @@ describe('LoginPage', () => {
     await flushPromises()
     expect(loginRequest).toHaveBeenCalledWith('ada@fish.dev', 'secret123')
     expect(meRequest).not.toHaveBeenCalled()
-    expect(wrapper.get('[role="alert"]').text()).toBe(
-      "Two-factor sign-in isn't supported in this Vue demo. Use a demo account without 2FA.",
-    )
-    expect(router.currentRoute.value.path).toBe('/login')
-    expect(router.currentRoute.value.query.redirect).toBe('/users')
+    expect(router.currentRoute.value.path).toBe('/otp')
+    expect(router.currentRoute.value.query).toEqual({
+      challenge: 'challenge-1',
+      email: 'ada@fish.dev',
+      redirect: '/users',
+    })
   })
 })

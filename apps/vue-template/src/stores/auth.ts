@@ -8,11 +8,13 @@ import {
   logoutRequest,
   meRequest,
   refreshRequest,
-  type LoginResponse,
+  verifyMfaRequest,
   type TokenPair,
 } from '../features/auth/api'
-import { ApiError } from '../lib/api-error'
 import { queryClient } from '../lib/query-client'
+
+export type LoginOutcome =
+  { status: 'authenticated' } | { status: 'mfa'; challengeId: string; email: string }
 
 export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'anonymous'
 const SESSION_KEY = 'fish-admin:session'
@@ -74,19 +76,27 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login(email: string, password: string): Promise<LoginResponse> {
+  async function login(email: string, password: string): Promise<LoginOutcome> {
     status.value = 'loading'
     try {
       const result = await loginRequest(email, password)
       if (isMfaRequired(result)) {
-        throw new ApiError(200, 'MFA_NOT_SUPPORTED', 'Two-factor sign-in is not supported.')
+        // The password was accepted but no session exists yet; the challenge is
+        // only exchangeable at /otp, so stay anonymous until the code is verified.
+        status.value = 'anonymous'
+        return { status: 'mfa', challengeId: result.challengeId, email }
       }
       await completeLogin(result)
-      return result
+      return { status: 'authenticated' }
     } catch (error) {
       clearSession()
       throw error
     }
+  }
+
+  async function completeMfa(challengeId: string, code: string) {
+    const tokens = await verifyMfaRequest(challengeId, code)
+    await completeLogin(tokens)
   }
 
   async function logout() {
@@ -167,6 +177,7 @@ export const useAuthStore = defineStore('auth', () => {
     status,
     login,
     completeLogin,
+    completeMfa,
     logout,
     bootstrap,
     refreshSession,
