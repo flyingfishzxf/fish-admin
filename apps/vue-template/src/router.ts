@@ -74,6 +74,12 @@ export const router = createRouter({
           component: () => import('./features/audit/AuditLogsPage.vue'),
           meta: { permission: 'audit:read' },
         },
+        {
+          path: 'integrations',
+          name: 'integrations',
+          component: () => import('./features/integrations/IntegrationsPage.vue'),
+          meta: { permission: 'integration:read' },
+        },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
       ],
