@@ -5,10 +5,19 @@ import { router } from '../router'
 import { findNavGroup, findNavItem, IMPLEMENTED_PATHS, NAV_GROUPS, type NavGroup } from './nav'
 
 describe('nav', () => {
-  it('exposes exactly the nine implemented paths', () => {
+  it('exposes exactly the twelve implemented paths', () => {
     const paths = NAV_GROUPS.flatMap((group) => group.items.map((item) => item.to))
     expect(paths.sort()).toEqual([...IMPLEMENTED_PATHS].sort())
-    expect(paths).toHaveLength(9)
+    expect(paths).toHaveLength(12)
+  })
+
+  it('ships the three account pages without a permission key', () => {
+    const account = NAV_GROUPS.find((group) => group.titleKey === 'nav:groups.account')
+    expect(account?.items.map((item) => item.to)).toEqual(['/profile', '/security', '/settings'])
+    for (const item of account?.items ?? []) {
+      expect(item.permission).toBeUndefined()
+      expect(router.resolve(item.to).meta.permission).toBeUndefined()
+    }
   })
 
   it('matches every nav permission with the route it opens', () => {

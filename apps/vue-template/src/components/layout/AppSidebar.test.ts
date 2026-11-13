@@ -16,6 +16,9 @@ function makeRouter() {
     routes: [
       { path: '/', component: Stub },
       { path: '/users', component: Stub },
+      { path: '/profile', component: Stub },
+      { path: '/security', component: Stub },
+      { path: '/settings', component: Stub },
     ],
   })
 }
@@ -61,9 +64,21 @@ describe('AppSidebar', () => {
     const wrapper = mount(AppSidebar, { global: { plugins: [router] } })
 
     const links = wrapper.findAll('nav a[data-sidebar-link]')
-    expect(links.map((link) => link.text())).toEqual(['Dashboard', 'Users'])
+    // The three account pages carry no permission key, so they survive a
+    // viewer's narrow permission set — this is UX, not a security boundary.
+    expect(links.map((link) => link.text())).toEqual([
+      'Dashboard',
+      'Users',
+      'Profile',
+      'Security',
+      'Settings',
+    ])
     expect(wrapper.get('a[aria-current="page"]').attributes('href')).toBe('/users')
-    expect(groupKeys(wrapper)).toEqual(['nav:groups.overview', 'nav:groups.management'])
+    expect(groupKeys(wrapper)).toEqual([
+      'nav:groups.overview',
+      'nav:groups.management',
+      'nav:groups.account',
+    ])
   })
 
   it('hides users without user:read', () => {
@@ -79,7 +94,7 @@ describe('AppSidebar', () => {
 
     // `Management` ships only Users in this build, so denying user:read must
     // remove the heading too — never leave a bare group title behind.
-    expect(groupKeys(wrapper)).toEqual(['nav:groups.overview'])
+    expect(groupKeys(wrapper)).toEqual(['nav:groups.overview', 'nav:groups.account'])
     expect(wrapper.text()).not.toContain('Management')
   })
 

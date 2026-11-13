@@ -68,6 +68,9 @@ export const IMPLEMENTED_PATHS = new Set([
   '/dictionaries',
   '/audit-logs',
   '/integrations',
+  '/profile',
+  '/security',
+  '/settings',
 ])
 
 export const NAV_GROUPS: NavGroup[] = NAV_CONTRACT.map((group) => ({

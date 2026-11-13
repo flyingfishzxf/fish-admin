@@ -184,6 +184,11 @@ router.beforeEach(async (to) => {
   if (to.name === 'login' && auth.status === 'authenticated') {
     return { path: sanitizeRedirect(to.query.redirect) ?? '/' }
   }
+  // Registration, password reset and the OTP step have nothing to offer a
+  // signed-in user, so an old bookmark must not strand them there.
+  if (to.meta.authEntry === true && auth.status === 'authenticated') {
+    return { path: '/' }
+  }
   const permission = to.meta.permission as string | undefined
   if (permission && !hasPermission(auth.user?.permissions, permission)) {
     return { name: 'forbidden' }
