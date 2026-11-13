@@ -68,6 +68,12 @@ export const router = createRouter({
           component: () => import('./features/dictionaries/DictionariesPage.vue'),
           meta: { permission: 'dictionary:read' },
         },
+        {
+          path: 'audit',
+          name: 'audit',
+          component: () => import('./features/audit/AuditLogsPage.vue'),
+          meta: { permission: 'audit:read' },
+        },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
       ],
