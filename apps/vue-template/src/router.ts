@@ -69,8 +69,10 @@ export const router = createRouter({
           meta: { permission: 'dictionary:read' },
         },
         {
-          path: 'audit',
-          name: 'audit',
+          // The nav contract names this path `/audit-logs`, so the route has to
+          // match it or the sidebar entry would never resolve.
+          path: 'audit-logs',
+          name: 'audit-logs',
           component: () => import('./features/audit/AuditLogsPage.vue'),
           meta: { permission: 'audit:read' },
         },

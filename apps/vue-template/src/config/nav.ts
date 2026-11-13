@@ -55,7 +55,20 @@ const ICONS: Record<string, Component> = {
   workflow: Workflow,
 }
 
-export const IMPLEMENTED_PATHS = new Set(['/', '/users'])
+// Every path in this set has a route with a matching `meta.permission`; a path
+// the build cannot open must not appear in the sidebar. `nav.test.ts` compares
+// the two so the set cannot drift from `router.ts`.
+export const IMPLEMENTED_PATHS = new Set([
+  '/',
+  '/reports',
+  '/users',
+  '/departments',
+  '/roles',
+  '/permissions',
+  '/dictionaries',
+  '/audit-logs',
+  '/integrations',
+])
 
 export const NAV_GROUPS: NavGroup[] = NAV_CONTRACT.map((group) => ({
   titleKey: group.titleKey,
@@ -75,7 +88,17 @@ export function isPathActive(pathname: string, path: string) {
 }
 
 export function findNavItem(pathname: string, groups: NavGroup[] = NAV_GROUPS) {
-  return groups.flatMap((group) => group.items).find((item) => isPathActive(pathname, item.to))
+  // Longest matching prefix wins: `/roles/matrix` resolves to Roles because no
+  // deeper item exists, and a future `/roles/:id` entry would take precedence
+  // instead of depending on the order of `NAV_CONTRACT`.
+  let best: NavItem | undefined
+  for (const group of groups) {
+    for (const item of group.items) {
+      if (!isPathActive(pathname, item.to)) continue
+      if (!best || item.to.length > best.to.length) best = item
+    }
+  }
+  return best
 }
 
 export function findNavGroup(pathname: string, groups: NavGroup[] = NAV_GROUPS) {
