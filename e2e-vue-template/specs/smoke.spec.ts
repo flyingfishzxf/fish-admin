@@ -61,7 +61,9 @@ test('creates, edits and deletes a user', async ({ page }) => {
   await createDialog.getByLabel('Full name').fill(name)
   await createDialog.getByLabel('Email').fill(email)
   await createDialog.getByRole('combobox', { name: 'Role' }).click()
-  await page.getByRole('option').first().click()
+  // Name the option instead of taking the first one: Reka keeps an offscreen
+  // measurement copy of the list, and `first()` could resolve to it.
+  await page.getByRole('option', { name: 'Viewer' }).click()
   await createDialog.getByRole('combobox', { name: 'Department' }).click()
   await page.getByRole('option', { name: 'Engineering' }).click()
   await createDialog.getByRole('button', { name: 'Add user' }).click()
