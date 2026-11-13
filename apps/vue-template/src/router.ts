@@ -50,6 +50,12 @@ export const router = createRouter({
           component: () => import('./features/roles/RolesPage.vue'),
           meta: { permission: 'role:read' },
         },
+        {
+          path: 'roles/matrix',
+          name: 'roles-matrix',
+          component: () => import('./features/roles/RoleMatrixPage.vue'),
+          meta: { permission: 'role:read' },
+        },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
       ],

@@ -1,4 +1,5 @@
 import type { Role, RoleOption } from '@fish-admin/contracts'
+import type { PermissionDefinition } from '@fish-admin/contracts/permissions'
 
 import { apiRequest } from '../../lib/api-client'
 
@@ -31,6 +32,12 @@ export function updateRole(id: string, input: Partial<RoleInput>) {
 
 export function deleteRole(id: string) {
   return apiRequest<void>(`/roles/${encodeURIComponent(id)}`, { method: 'DELETE' })
+}
+
+// `GET /permissions` requires `permission:read`, not `role:read`, and returns the
+// whole registry. The matrix needs it to group codes; Task 6 renders it directly.
+export function fetchPermissions(signal?: AbortSignal) {
+  return apiRequest<PermissionDefinition[]>('/permissions', { signal })
 }
 
 export function updateRolePermissions(id: string, permissions: string[]) {

@@ -3,6 +3,7 @@ import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
 import { ApiError } from '../../lib/api-error'
 import { i18nReady, setLanguage } from '../../lib/i18n'
@@ -66,8 +67,17 @@ function mountPage(permissions: string[]) {
   queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   })
+  // The header links to the permission matrix, so the page needs a router.
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/roles', name: 'roles', component: RolesPage },
+      { path: '/roles/matrix', name: 'roles-matrix', component: { template: '<div />' } },
+      { path: '/:pathMatch(.*)*', component: { template: '<div />' } },
+    ],
+  })
   wrapper = mount(RolesPage, {
-    global: { plugins: [pinia, [VueQueryPlugin, { queryClient }]] },
+    global: { plugins: [pinia, router, [VueQueryPlugin, { queryClient }]] },
   })
   return wrapper
 }
@@ -127,6 +137,14 @@ describe('RolesPage', () => {
     expect(page.text()).toContain('All permissions')
     expect(page.text()).toContain('3 users')
     expect(page.text()).toContain('2 permissions')
+  })
+
+  it('links to the permission matrix even without write permissions', async () => {
+    const page = mountPage(['role:read'])
+    await vi.waitFor(() => expect(page.text()).toContain('Support'))
+
+    const link = page.get('a[href="/roles/matrix"]')
+    expect(link.text()).toBe('Permission matrix')
   })
 
   it('filters roles by name and description', async () => {

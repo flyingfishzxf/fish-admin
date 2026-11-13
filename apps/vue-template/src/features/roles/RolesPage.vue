@@ -15,6 +15,7 @@ import {
 } from '@fish-admin/vue'
 import { Pencil, Plus, Trash2 } from 'lucide-vue-next'
 import { computed, h, onBeforeUnmount, ref, watch, type VNode } from 'vue'
+import { RouterLink } from 'vue-router'
 
 import EmptyState from '../../components/common/EmptyState.vue'
 import ErrorState from '../../components/common/ErrorState.vue'
@@ -307,8 +308,11 @@ const table = useVueTable({
 <template>
   <div class="space-y-6">
     <ListPageHeader :title="t('title')" :description="t('subtitle')">
-      <template v-if="canCreate" #actions>
-        <Button @click="openDialog('create')">
+      <template #actions>
+        <Button variant="outline" as-child>
+          <RouterLink to="/roles/matrix">{{ t('permissionMatrix') }}</RouterLink>
+        </Button>
+        <Button v-if="canCreate" @click="openDialog('create')">
           <Plus class="size-4" aria-hidden="true" />
           {{ t('newRole') }}
         </Button>
