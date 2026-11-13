@@ -33,7 +33,23 @@ export const REQUIRED_NAMESPACES = [
   'settings',
 ] as const
 
-export const i18nReady = setup.ready.then(() => ensureNamespaces([...REQUIRED_NAMESPACES]))
+// `packages/i18n` is shared with the React template, so a few strings name React
+// or its tooling. The Vue app keeps the same keys and overrides just those
+// values at boot, rather than forking the locale package or shipping a second
+// copy of every namespace.
+const APP_OVERRIDES: Record<SupportedLanguage, Record<string, Record<string, unknown>>> = {
+  en: { common: { app: { tagline: 'A modern admin starter for Vue teams' } } },
+  'zh-CN': { common: { app: { tagline: '为 Vue 团队打造的后台模板' } } },
+}
+
+export const i18nReady = setup.ready.then(async () => {
+  await ensureNamespaces([...REQUIRED_NAMESPACES])
+  for (const [code, bundles] of Object.entries(APP_OVERRIDES)) {
+    for (const [namespace, bundle] of Object.entries(bundles)) {
+      i18n.addResourceBundle(code, namespace, bundle, true, true)
+    }
+  }
+})
 
 i18n.on('languageChanged', () => {
   language.value = currentLanguage()

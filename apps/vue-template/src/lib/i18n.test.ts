@@ -23,6 +23,11 @@ describe('i18n', () => {
     expect(t('actions.save')).toBe('保存')
   })
 
+  it('overrides the shared React wording with the Vue wording', () => {
+    const t = useT('common')
+    expect(t('app.tagline')).toBe('A modern admin starter for Vue teams')
+  })
+
   it('loads real translations for every namespace a shipped page can read', async () => {
     await i18nReady
     expect(REQUIRED_NAMESPACES).toEqual([
