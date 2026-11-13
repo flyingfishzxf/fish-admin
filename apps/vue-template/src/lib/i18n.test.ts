@@ -39,6 +39,7 @@ describe('i18n', () => {
       'integrations',
       'profile',
       'security',
+      'settings',
     ])
 
     // `hasLoadedNamespace` also returns true when a backend load failed, so a

@@ -30,6 +30,7 @@ export const REQUIRED_NAMESPACES = [
   'integrations',
   'profile',
   'security',
+  'settings',
 ] as const
 
 export const i18nReady = setup.ready.then(() => ensureNamespaces([...REQUIRED_NAMESPACES]))

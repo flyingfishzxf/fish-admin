@@ -58,6 +58,32 @@ export const router = createRouter({
       component: () => import('./features/auth/OtpPage.vue'),
       meta: { public: true, authEntry: true },
     },
+    // Full-page status states sit outside the shell: they are reached from a
+    // failed navigation and must render even when the workspace chrome cannot.
+    {
+      path: '/401',
+      name: 'unauthorized',
+      component: () => import('./pages/UnauthorizedPage.vue'),
+      meta: { public: true },
+    },
+    {
+      path: '/500',
+      name: 'server-error',
+      component: () => import('./pages/ServerErrorPage.vue'),
+      meta: { public: true },
+    },
+    {
+      path: '/503',
+      name: 'service-unavailable',
+      component: () => import('./pages/ServiceUnavailablePage.vue'),
+      meta: { public: true },
+    },
+    {
+      path: '/maintenance',
+      name: 'maintenance',
+      component: () => import('./pages/MaintenancePage.vue'),
+      meta: { public: true },
+    },
     {
       path: '/',
       component: ShellLayout,
@@ -129,6 +155,11 @@ export const router = createRouter({
           path: 'security',
           name: 'security',
           component: () => import('./features/security/SecurityPage.vue'),
+        },
+        {
+          path: 'settings',
+          name: 'settings',
+          component: () => import('./features/settings/SettingsPage.vue'),
         },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
