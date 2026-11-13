@@ -23,6 +23,18 @@ export const router = createRouter({
   routes: [
     { path: '/login', name: 'login', component: LoginPage, meta: { public: true } },
     {
+      path: '/register',
+      name: 'register',
+      component: () => import('./features/auth/RegisterPage.vue'),
+      meta: { public: true, authEntry: true },
+    },
+    {
+      path: '/verify-email',
+      name: 'verify-email',
+      component: () => import('./features/auth/VerifyEmailPage.vue'),
+      meta: { public: true, authEntry: true },
+    },
+    {
       path: '/',
       component: ShellLayout,
       children: [

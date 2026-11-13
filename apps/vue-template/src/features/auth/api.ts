@@ -37,3 +37,25 @@ export function logoutRequest(refreshToken: string) {
 export function meRequest(accessToken: string) {
   return apiRequest<AuthUser>('/auth/me', { token: accessToken, auth: false })
 }
+
+export interface RegisterInput {
+  name: string
+  email: string
+  password: string
+}
+
+export function registerRequest(input: RegisterInput) {
+  return apiRequest<{ email: string; verificationToken: string }>('/auth/register', {
+    method: 'POST',
+    body: input,
+    auth: false,
+  })
+}
+
+export function verifyEmailRequest(token: string) {
+  return apiRequest<{ email: string }>('/auth/verify-email', {
+    method: 'POST',
+    body: { token },
+    auth: false,
+  })
+}
