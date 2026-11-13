@@ -20,12 +20,19 @@ All notable changes to this project are documented here. The format is based on
   integrations — each with its filters, tables or drawers. Dictionaries add two-pane type/item
   maintenance with reordering, the audit log adds a detail drawer with raw metadata, and
   integrations add a delivery history with replay. 200 Vitest tests and 10 Playwright specs.
+- **Vue template auth and account domain:** six auth entries (register, verify email, forgot
+  password, reset password, accept invite and the OTP step) plus profile, security and settings.
+  Two-factor sign-in replaces the `MFA_NOT_SUPPORTED` stub, the sidebar grows from 9 to 12 pages,
+  settings keeps the five accent palettes, and four full-page status states (401, 500, 503,
+  maintenance) are routable outside the shell. 297 Vitest tests and 14 Playwright specs.
 
 ### Fixed
 
 - **Vue template shell:** deleting the last row on the final page now brings the pager back to a
   valid page, and a startup failure shows a readable error with a reload button instead of a blank
   screen.
+- **Vue template copy:** the shared `common:app.tagline` named React in the Vue app's sidebar; the
+  app now overrides that one string with the Vue wording at boot instead of forking `packages/i18n`.
 
 ## [2.2.0] - 2026-11-10
 
