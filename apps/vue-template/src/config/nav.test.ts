@@ -1,7 +1,8 @@
+import { ShieldCheck } from 'lucide-vue-next'
 import { describe, expect, it } from 'vitest'
 
 import { router } from '../router'
-import { findNavGroup, findNavItem, IMPLEMENTED_PATHS, NAV_GROUPS } from './nav'
+import { findNavGroup, findNavItem, IMPLEMENTED_PATHS, NAV_GROUPS, type NavGroup } from './nav'
 
 describe('nav', () => {
   it('exposes exactly the nine implemented paths', () => {
@@ -33,12 +34,12 @@ describe('nav', () => {
     expect(findNavItem('/roles/matrix')?.to).toBe('/roles')
     expect(findNavGroup('/roles/matrix')?.titleKey).toBe('nav:groups.management')
 
-    const nested = [
+    const nested: NavGroup[] = [
       {
         titleKey: 'test',
         items: [
-          { titleKey: 'roles', to: '/roles', icon: 'shield-check' },
-          { titleKey: 'matrix', to: '/roles/matrix', icon: 'shield-check' },
+          { titleKey: 'roles', to: '/roles', icon: ShieldCheck },
+          { titleKey: 'matrix', to: '/roles/matrix', icon: ShieldCheck },
         ],
       },
     ]

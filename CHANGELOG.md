@@ -15,6 +15,11 @@ All notable changes to this project are documented here. The format is based on
 - **Vue template shell:** a private Vue 3 admin app with sign-in, permission-filtered navigation,
   theme and language switching, a dashboard and a users CRUD page; adds Avatar and DropdownMenu
   wrappers to `@fish-admin/vue`.
+- **Vue template management pages:** the sidebar now exposes all 9 shipped pages — reports,
+  departments, roles, the permission matrix, permissions, dictionaries, the audit log and
+  integrations — each with its filters, tables or drawers. Dictionaries add two-pane type/item
+  maintenance with reordering, the audit log adds a detail drawer with raw metadata, and
+  integrations add a delivery history with replay. 200 Vitest tests and 10 Playwright specs.
 
 ### Fixed
 
