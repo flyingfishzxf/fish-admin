@@ -14,6 +14,7 @@ import { ApiError } from '../../lib/api-error'
 import { useT } from '../../lib/i18n'
 import { hasPermission } from '../../lib/permissions'
 import { useAuthStore } from '../../stores/auth'
+import { permissionsQueryOptions } from '../permissions/queries'
 import { updateRolePermissions } from './api'
 import {
   expandWildcard,
@@ -22,7 +23,7 @@ import {
   permissionsEqual,
   toggleGroupSelection,
 } from './permissions'
-import { permissionsQueryOptions, rolesQueryOptions } from './queries'
+import { rolesQueryOptions } from './queries'
 
 const t = useT('roles')
 const commonT = useT('common')

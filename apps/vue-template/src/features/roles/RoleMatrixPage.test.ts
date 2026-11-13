@@ -9,17 +9,21 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import { ApiError } from '../../lib/api-error'
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import { useAuthStore } from '../../stores/auth'
-import { fetchPermissions, fetchRoles, updateRolePermissions } from './api'
+import { fetchPermissions } from '../permissions/api'
+import { fetchRoles, updateRolePermissions } from './api'
 import RoleMatrixPage from './RoleMatrixPage.vue'
 
 vi.mock('./api', () => ({
   fetchRoles: vi.fn(),
-  fetchPermissions: vi.fn(),
   fetchRoleOptions: vi.fn(),
   createRole: vi.fn(),
   updateRole: vi.fn(),
   deleteRole: vi.fn(),
   updateRolePermissions: vi.fn(),
+}))
+
+vi.mock('../permissions/api', () => ({
+  fetchPermissions: vi.fn(),
 }))
 
 function role(id: string, name: string, extra: Partial<Role> = {}): Role {
