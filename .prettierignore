@@ -17,6 +17,8 @@ apps/docs/docs/zh/template
 video
 # Local superpowers/SDD orchestration workspace.
 .superpowers
+# Local agent workspace (excluded from git via .git/info/exclude).
+.workbuddy
 # Written by scripts/build-manifests.mjs; its compact arrays are not prettier's output.
 apps/docs/docs/en/components/_meta.json
 apps/docs/docs/zh/components/_meta.json
