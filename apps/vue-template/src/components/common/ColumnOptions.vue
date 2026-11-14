@@ -9,6 +9,7 @@ import Popover from '../ui/Popover.vue'
 interface ColumnMeta {
   label?: string
   group?: string
+  groupLabel?: string
 }
 
 const props = defineProps<{
@@ -24,16 +25,18 @@ interface Option {
 }
 
 const groups = computed(() => {
-  const map = new Map<string, Option[]>()
+  const map = new Map<string, { key: string; heading: string; options: Option[] }>()
   for (const column of props.table.getAllLeafColumns()) {
     if (!column.getCanHide()) continue
     const meta = (column.columnDef.meta ?? {}) as ColumnMeta
-    const heading = meta.group ?? ''
-    const entries = map.get(heading) ?? []
-    entries.push({ id: column.id, label: meta.label ?? column.id })
-    map.set(heading, entries)
+    // Grouped by the stable key, headed by the translated label: the same split
+    // the table header band uses, so a language switch moves both together.
+    const key = meta.group ?? ''
+    const entry = map.get(key) ?? { key, heading: meta.groupLabel ?? key, options: [] }
+    entry.options.push({ id: column.id, label: meta.label ?? column.id })
+    map.set(key, entry)
   }
-  return [...map.entries()].map(([heading, options]) => ({ heading, options }))
+  return [...map.values()]
 })
 
 function isVisible(id: string) {
@@ -55,8 +58,8 @@ function toggle(id: string, next: boolean | 'indeterminate') {
       </Button>
     </template>
 
-    <div class="p-4">
-      <div v-for="group in groups" :key="group.heading" data-column-group class="space-y-2">
+    <div class="space-y-4 p-4">
+      <div v-for="group in groups" :key="group.key" data-column-group class="space-y-2">
         <p
           v-if="group.heading"
           class="text-xs font-medium tracking-wide text-muted-foreground uppercase"

@@ -119,7 +119,11 @@ export function createUserColumns({
               'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
                 row.toggleSelected(value === true),
             }),
-          meta: { label: t('users:bulk.selectAll'), group: t('users:columnGroups.identity') },
+          meta: {
+            label: t('users:bulk.selectAll'),
+            group: 'identity',
+            groupLabel: t('users:columnGroups.identity'),
+          },
         },
       ]
     : []
@@ -130,7 +134,11 @@ export function createUserColumns({
       size: WIDTH.name,
       header: sortableHeader(t('users:columns.name')),
       enableHiding: false,
-      meta: { label: t('users:columns.name'), group: t('users:columnGroups.identity') },
+      meta: {
+        label: t('users:columns.name'),
+        group: 'identity',
+        groupLabel: t('users:columnGroups.identity'),
+      },
       cell: ({ row }) => {
         const user = row.original
         return h('div', { class: 'flex items-center gap-3' }, [
@@ -149,7 +157,11 @@ export function createUserColumns({
       size: WIDTH.email,
       enableSorting: false,
       header: () => t('users:columns.email'),
-      meta: { label: t('users:columns.email'), group: t('users:columnGroups.contact') },
+      meta: {
+        label: t('users:columns.email'),
+        group: 'contact',
+        groupLabel: t('users:columnGroups.contact'),
+      },
       cell: ({ row }) => h('span', { class: 'text-sm text-muted-foreground' }, row.original.email),
     },
     {
@@ -158,7 +170,11 @@ export function createUserColumns({
       size: WIDTH.role,
       enableSorting: false,
       header: () => t('users:columns.role'),
-      meta: { label: t('users:columns.role'), group: t('users:columnGroups.access') },
+      meta: {
+        label: t('users:columns.role'),
+        group: 'access',
+        groupLabel: t('users:columnGroups.access'),
+      },
       cell: ({ row }) =>
         h(Badge, { variant: 'secondary', class: 'font-normal' }, () => row.original.roleName),
     },
@@ -167,7 +183,11 @@ export function createUserColumns({
       size: WIDTH.department,
       enableSorting: false,
       header: () => t('users:columns.department'),
-      meta: { label: t('users:columns.department'), group: t('users:columnGroups.access') },
+      meta: {
+        label: t('users:columns.department'),
+        group: 'access',
+        groupLabel: t('users:columnGroups.access'),
+      },
       cell: ({ row }) =>
         h(
           'span',
@@ -184,7 +204,11 @@ export function createUserColumns({
       size: WIDTH.status,
       enableSorting: false,
       header: () => t('users:columns.status'),
-      meta: { label: t('users:columns.status'), group: t('users:columnGroups.access') },
+      meta: {
+        label: t('users:columns.status'),
+        group: 'access',
+        groupLabel: t('users:columnGroups.access'),
+      },
       cell: ({ row }) => {
         const status = row.original.status
         return h(Badge, { variant: STATUS_VARIANTS[status], class: 'gap-1.5 font-normal' }, () => [
@@ -200,7 +224,11 @@ export function createUserColumns({
       accessorKey: 'createdAt',
       size: WIDTH.createdAt,
       header: sortableHeader(t('users:columns.createdAt')),
-      meta: { label: t('users:columns.createdAt'), group: t('users:columnGroups.activity') },
+      meta: {
+        label: t('users:columns.createdAt'),
+        group: 'activity',
+        groupLabel: t('users:columnGroups.activity'),
+      },
       cell: ({ row }) =>
         h(
           'span',
@@ -212,7 +240,11 @@ export function createUserColumns({
       accessorKey: 'lastActiveAt',
       size: WIDTH.lastActive,
       header: sortableHeader(t('users:columns.lastActive')),
-      meta: { label: t('users:columns.lastActive'), group: t('users:columnGroups.activity') },
+      meta: {
+        label: t('users:columns.lastActive'),
+        group: 'activity',
+        groupLabel: t('users:columnGroups.activity'),
+      },
       cell: ({ row }) =>
         h(
           'span',
@@ -229,7 +261,7 @@ export function createUserColumns({
       enableSorting: false,
       enableHiding: false,
       header: () => h('span', { class: 'sr-only' }, t('users:columns.actions')),
-      meta: { label: t('users:columns.actions') },
+      meta: { label: t('users:columns.actions'), group: 'actions', groupLabel: '' },
       cell: ({ row }) => {
         const user = row.original
         return h(DropdownMenu, null, {

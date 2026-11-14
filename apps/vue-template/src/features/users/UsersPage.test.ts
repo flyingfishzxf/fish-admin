@@ -126,6 +126,17 @@ describe('UsersPage', () => {
     )
   })
 
+  it('bands the columns the way the React table does', async () => {
+    const page = mountPage(['user:read'])
+    await waitForRows(page)
+
+    // A read-only viewer sees no actions column, and department is hidden by
+    // default, so its group still shows once — four bands over eight leaves.
+    expect(
+      page.findAll('thead th[data-slot="table-group-head"]').map((cell) => cell.text()),
+    ).toEqual(['Identity', 'Contact', 'Access', 'Activity'])
+  })
+
   it('debounces the search box into the query', async () => {
     const page = mountPage(['user:read'])
     await waitForRows(page)

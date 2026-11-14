@@ -91,8 +91,12 @@ describe('ColumnOptions', () => {
     const wrapper = mountHost()
     await flushPromises()
 
-    // `status` starts hidden, so its tick is off and its header is gone.
-    expect(wrapper.findAll('th').map((cell) => cell.text())).toEqual(['Name', 'Email'])
+    // `status` starts hidden, so its tick is off and its header is gone. The
+    // group band cells are `th` too, so the query names the header slot.
+    expect(wrapper.findAll('th[data-slot="table-head"]').map((cell) => cell.text())).toEqual([
+      'Name',
+      'Email',
+    ])
 
     openMenu()
     await flushPromises()
@@ -104,7 +108,11 @@ describe('ColumnOptions', () => {
     statusTick.dispatchEvent(new Event('click', { bubbles: true }))
     await flushPromises()
 
-    expect(wrapper.findAll('th').map((cell) => cell.text())).toEqual(['Name', 'Email', 'Status'])
+    expect(wrapper.findAll('th[data-slot="table-head"]').map((cell) => cell.text())).toEqual([
+      'Name',
+      'Email',
+      'Status',
+    ])
 
     wrapper.unmount()
   })
