@@ -31,6 +31,7 @@ export const REQUIRED_NAMESPACES = [
   'profile',
   'security',
   'settings',
+  'notifications',
 ] as const
 
 // `packages/i18n` is shared with the React template, so a few strings name React

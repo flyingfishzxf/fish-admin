@@ -5,6 +5,7 @@ import { Search } from 'lucide-vue-next'
 import { useT } from '../../lib/i18n'
 import { useUiStore } from '../../stores/ui'
 import LanguageToggle from './LanguageToggle.vue'
+import NotificationBell from './NotificationBell.vue'
 import ThemeToggle from './ThemeToggle.vue'
 import UserMenu from './UserMenu.vue'
 
@@ -30,6 +31,7 @@ const ui = useUiStore()
         {{ t('command.shortcut') }}
       </kbd>
     </Button>
+    <NotificationBell />
     <ThemeToggle />
     <LanguageToggle />
     <span class="mx-1 hidden h-4 w-px bg-border sm:block" aria-hidden="true" />

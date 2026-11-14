@@ -1,3 +1,4 @@
+import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -6,6 +7,14 @@ import { createMemoryHistory, createRouter } from 'vue-router'
 import { i18nReady } from '../../lib/i18n'
 import { useAuthStore } from '../../stores/auth'
 import AppTopNav from './AppTopNav.vue'
+
+vi.mock('../../features/notifications/api', () => ({
+  fetchNotifications: vi.fn(() =>
+    Promise.resolve({ items: [], total: 0, page: 1, pageSize: 5, pageCount: 0, unreadCount: 0 }),
+  ),
+  updateNotification: vi.fn(),
+  markAllNotificationsRead: vi.fn(),
+}))
 
 const Stub = { template: '<div />' }
 
@@ -35,6 +44,10 @@ function seedAdmin() {
   auth.status = 'authenticated'
 }
 
+function testQueryClient() {
+  return new QueryClient({ defaultOptions: { queries: { retry: false } } })
+}
+
 describe('AppTopNav', () => {
   beforeEach(async () => {
     await i18nReady
@@ -48,7 +61,9 @@ describe('AppTopNav', () => {
 
   it('renders one menu per reachable group and the shared header actions', async () => {
     seedAdmin()
-    const wrapper = mount(AppTopNav, { global: { plugins: [makeRouter()] } })
+    const wrapper = mount(AppTopNav, {
+      global: { plugins: [makeRouter(), [VueQueryPlugin, { queryClient: testQueryClient() }]] },
+    })
 
     expect(wrapper.attributes('data-tour')).toBe('topnav')
     // Overview, Management and Account keep at least one reachable item once the
@@ -67,7 +82,7 @@ describe('AppTopNav', () => {
     await router.push('/')
     await router.isReady()
     const wrapper = mount(AppTopNav, {
-      global: { plugins: [router] },
+      global: { plugins: [router, [VueQueryPlugin, { queryClient: testQueryClient() }]] },
       attachTo: document.body,
     })
 
