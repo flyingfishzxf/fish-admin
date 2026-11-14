@@ -1,5 +1,5 @@
 import type { ReportData } from '@fish-admin/contracts'
-import { Select } from '@fish-admin/vue'
+import { DropdownMenuItem, Select } from '@fish-admin/vue'
 import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
@@ -7,9 +7,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import { fetchReports } from './api'
+import { downloadCsv } from './csv'
 import ReportsPage from './ReportsPage.vue'
 
 vi.mock('./api', () => ({ fetchReports: vi.fn() }))
+vi.mock('./csv', () => ({ downloadCsv: vi.fn(), toCsv: vi.fn() }))
 
 function reportRow(index: number): ReportData['rows'][number] {
   return {
@@ -22,7 +24,10 @@ function reportRow(index: number): ReportData['rows'][number] {
   }
 }
 
-function makeReport(rows: ReportData['rows'] = []): ReportData {
+function makeReport(
+  rows: ReportData['rows'] = [],
+  overrides: Partial<ReportData> = {},
+): ReportData {
   return {
     from: '2026-01-01',
     to: '2026-01-30',
@@ -37,7 +42,23 @@ function makeReport(rows: ReportData['rows'] = []): ReportData {
     channels: [],
     rows,
     generatedAt: '2026-01-30T00:00:00.000Z',
+    ...overrides,
   }
+}
+
+/** A report with the series and channels the two charts need. */
+function chartReport(): ReportData {
+  return makeReport([reportRow(1)], {
+    series: [
+      { date: '2026-01-01', revenue: 3200, orders: 32, days: 1 },
+      { date: '2026-01-02', revenue: 4800, orders: 48, days: 1 },
+      { date: '2026-01-03', revenue: 4100, orders: 41, days: 1 },
+    ],
+    channels: [
+      { name: 'direct', value: 6000 },
+      { name: 'organic', value: 4000 },
+    ],
+  })
 }
 
 let wrapper: VueWrapper | null = null
@@ -152,5 +173,76 @@ describe('ReportsPage', () => {
     vi.mocked(fetchReports).mockResolvedValue(makeReport([reportRow(1), reportRow(2)]))
     await queryClient.invalidateQueries({ queryKey: ['reports'] })
     await vi.waitFor(() => expect(page.text()).toContain('Page 1 of 1'))
+  })
+
+  it('draws the trend and channel charts', async () => {
+    vi.mocked(fetchReports).mockResolvedValue(chartReport())
+    const page = mountPage()
+
+    await vi.waitFor(() => expect(page.find('[data-report-chart="trend"]').exists()).toBe(true))
+    expect(page.find('[data-chart-line]').exists()).toBe(true)
+    expect(page.find('[data-chart-area]').exists()).toBe(true)
+    expect(page.find('[data-chart-reference]').exists()).toBe(true)
+    expect(page.findAll('[data-donut-segment]')).toHaveLength(2)
+    expect(page.findAll('[data-report-channel]')).toHaveLength(2)
+    expect(page.get('[data-report-channel="direct"]').text()).toContain('60%')
+  })
+
+  it('drops the target line when the metric switches to orders', async () => {
+    vi.mocked(fetchReports).mockResolvedValue(chartReport())
+    const page = mountPage()
+    await vi.waitFor(() => expect(page.find('[data-chart-reference]').exists()).toBe(true))
+
+    await page.get('[data-radio-option="orders"]').setValue(true)
+    await flushPromises()
+
+    expect(page.find('[data-chart-reference]').exists()).toBe(false)
+    expect(page.get('[data-radio-option="orders"]').attributes('checked')).toBeDefined()
+  })
+
+  it('moves the target from the stepper', async () => {
+    vi.mocked(fetchReports).mockResolvedValue(chartReport())
+    const page = mountPage()
+    await vi.waitFor(() => expect(page.find('[data-input-number]').exists()).toBe(true))
+
+    expect((page.get('[data-input-number]').element as HTMLInputElement).value).toBe('5800')
+    await page.get('[data-input-number-step="up"]').trigger('click')
+    await flushPromises()
+
+    expect((page.get('[data-input-number]').element as HTMLInputElement).value).toBe('5900')
+  })
+
+  it('exports the summary and the detail CSV', async () => {
+    vi.mocked(fetchReports).mockResolvedValue(chartReport())
+    const page = mountPage()
+    await vi.waitFor(() => expect(page.text()).toContain('Showing 1 of 1 rows'))
+
+    // Reka opens the menu from the keyboard in jsdom; the pointer path is
+    // covered by the shared dropdown tests.
+    await page.get('[data-report-export]').trigger('keydown', { key: 'Enter' })
+    await flushPromises()
+
+    const items = page.findAllComponents(DropdownMenuItem)
+    expect(items).toHaveLength(2)
+
+    items[0]!.vm.$emit('select')
+    await flushPromises()
+    expect(downloadCsv).toHaveBeenCalledWith(
+      'report-2026-01-01-2026-01-30.csv',
+      expect.arrayContaining([expect.arrayContaining(['2026-01-01', 3200, 32])]),
+    )
+
+    items[1]!.vm.$emit('select')
+    await flushPromises()
+    expect(downloadCsv).toHaveBeenCalledWith(
+      'report-detail-2026-01-01-2026-01-30.csv',
+      expect.arrayContaining([expect.arrayContaining(['2026-01-15', 'Direct', 101, 3, 2])]),
+    )
+  })
+
+  it('shows the empty channel card when the range has no channels', async () => {
+    const page = mountPage()
+    await vi.waitFor(() => expect(page.text()).toContain('No channel breakdown'))
+    expect(page.findAll('[data-donut-segment]')).toHaveLength(0)
   })
 })
