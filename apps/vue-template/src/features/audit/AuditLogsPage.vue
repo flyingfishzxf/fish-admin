@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import type { AuditAction, AuditEntityType, AuditEvent } from '@fish-admin/contracts'
-import {
-  AUDIT_ACTIONS,
-  AUDIT_ACTION_TONES,
-  AUDIT_ENTITY_TYPES,
-  type AuditTone,
-} from '@fish-admin/contracts/audit'
+import { AUDIT_ACTIONS, AUDIT_ENTITY_TYPES } from '@fish-admin/contracts/audit'
 import { useQuery } from '@tanstack/vue-query'
 import { getCoreRowModel, useVueTable, type ColumnDef } from '@tanstack/vue-table'
 import {
@@ -32,6 +27,7 @@ import { formatDateTime, formatRelativeTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import AuditDetailDrawer from './AuditDetailDrawer.vue'
 import { auditListQueryOptions } from './queries'
+import { toneClass } from './tones'
 import {
   AUDIT_PRESET_ORDER,
   DEFAULT_AUDIT_SEARCH,
@@ -42,14 +38,6 @@ import {
 
 const t = useT('audit')
 const commonT = useT('common')
-
-const TONE_CLASSES: Record<AuditTone, string> = {
-  success: 'border-chart-3/30 bg-chart-3/12 text-chart-3-foreground',
-  info: 'border-chart-1/30 bg-chart-1/12 text-chart-1-foreground',
-  warning: 'border-chart-4/30 bg-chart-4/14 text-chart-4-foreground',
-  destructive: 'border-destructive/25 bg-destructive/10 text-destructive',
-  neutral: 'border-border bg-muted text-muted-foreground',
-}
 
 const search = reactive<AuditSearch>({ ...DEFAULT_AUDIT_SEARCH })
 const list = useQuery(computed(() => auditListQueryOptions({ ...search })))
@@ -124,10 +112,6 @@ const summary = computed(() => {
 
 function actionLabel(action: AuditAction) {
   return t(`actions.${action}`)
-}
-
-function toneClass(action: AuditAction) {
-  return TONE_CLASSES[AUDIT_ACTION_TONES[action]] ?? TONE_CLASSES.neutral
 }
 
 const selectedEventId = ref<string | null>(null)
