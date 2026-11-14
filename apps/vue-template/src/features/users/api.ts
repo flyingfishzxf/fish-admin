@@ -69,6 +69,25 @@ export function fetchUserActivity(id: string, limit = 20, signal?: AbortSignal) 
   return apiRequest<PaginatedResult<AuditEvent>>(`/audit-events?${search.toString()}`, { signal })
 }
 
+export interface UserImportRow {
+  name: string
+  email: string
+  role?: string
+  department?: string
+}
+
+export interface UserImportResult {
+  created: User[]
+  skipped: Array<{ email: string; message: string }>
+}
+
+export function importUsers(rows: UserImportRow[]) {
+  return apiRequest<UserImportResult>('/users/import', {
+    method: 'POST',
+    body: { users: rows },
+  })
+}
+
 /** Enabled `user_tag` entries are the tag suggestions on the detail page. */
 export function fetchUserTagOptions(signal?: AbortSignal) {
   return apiRequest<DictionaryDetail>('/dictionaries/user_tag', { signal })

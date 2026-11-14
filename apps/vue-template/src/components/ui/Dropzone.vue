@@ -12,6 +12,8 @@ const props = withDefaults(
     label: string
     accept?: string
     hint?: string
+    /** Defaults to the shared enterprise label; a page may name its own action. */
+    browseLabel?: string
     disabled?: boolean
     error?: string
     class?: string
@@ -19,6 +21,7 @@ const props = withDefaults(
   {
     accept: undefined,
     hint: undefined,
+    browseLabel: undefined,
     disabled: false,
     error: undefined,
     class: undefined,
@@ -109,7 +112,7 @@ function browse() {
       @change="change"
     />
     <Button type="button" variant="outline" size="sm" :disabled="disabled" @click="browse">
-      {{ commonT('enterprise.browse') }}
+      {{ browseLabel ?? commonT('enterprise.browse') }}
     </Button>
     <p v-if="error" role="alert" class="text-xs text-destructive" data-slot="dropzone-error">
       {{ error }}

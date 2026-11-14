@@ -27,6 +27,7 @@ import {
   BadgeCheck,
   ChevronDown,
   Download,
+  FileUp,
   Loader2,
   Plus,
   SearchX,
@@ -51,6 +52,7 @@ import { useAuthStore } from '../../stores/auth'
 import { bulkDeleteUsers, bulkUpdateUserStatus, fetchUsers, restoreUsers } from './api'
 import { createUserColumns } from './columns'
 import DeleteUserDialog from './DeleteUserDialog.vue'
+import ImportWizardDialog from './ImportWizardDialog.vue'
 import { userOptionsQueryOptions, usersQueryOptions } from './queries'
 import SavedViewsMenu from './SavedViewsMenu.vue'
 import type { SavedView } from './saved-views'
@@ -100,6 +102,18 @@ const exporting = ref(false)
 const density = ref<Density>(readDensity())
 const columnVisibility = ref<VisibilityState>(readVisibility())
 const { message: notice, action: noticeAction, show: showNotice } = useTransientMessage()
+
+const importOpen = ref(false)
+
+function handleImported({ created, skipped }: { created: number; skipped: number }) {
+  // One notice, not two: a page-level toast queue would leave the last message
+  // visible and hide the count the user is more likely to care about.
+  const parts = [
+    created > 0 ? t('users:import.imported', { count: created }) : null,
+    skipped > 0 ? t('users:import.skipped', { count: skipped }) : null,
+  ].filter(Boolean)
+  if (parts.length > 0) showNotice(parts.join(' '))
+}
 
 watch(density, (value) => localStorage.setItem(DENSITY_KEY, value))
 watch(
@@ -452,6 +466,10 @@ async function handleExport() {
   <div class="space-y-6">
     <PageHeader :title="t('users:title')" :description="t('users:subtitle')">
       <template v-if="canCreate" #actions>
+        <Button variant="outline" data-import-users @click="importOpen = true">
+          <FileUp class="size-4" aria-hidden="true" />
+          {{ t('users:import.action') }}
+        </Button>
         <Button @click="openCreate">
           <Plus class="size-4" aria-hidden="true" />
           {{ t('users:addUser') }}
@@ -674,5 +692,6 @@ async function handleExport() {
       @saved="handleSaved"
     />
     <DeleteUserDialog :user="deleting" @update:user="deleting = $event" @deleted="handleDeleted" />
+    <ImportWizardDialog v-model:open="importOpen" @finished="handleImported" />
   </div>
 </template>
