@@ -44,6 +44,12 @@ All notable changes to this project are documented here. The format is based on
   bulk delete (both undoable from the inline notice) and a CSV export that walks every page of the
   filtered result. Adds an optional `density` prop to `DataTable` and the column group band the React
   table draws from `meta.group`. 470 Vitest tests and 31 Playwright specs.
+- **Vue template user detail:** `/users/:id` adds the identity header, a nine-field overview,
+  inline tag editing with dictionary suggestions, avatar upload and removal, and an audit activity
+  timeline gated by `audit:read`. A missing user stays inside the shell with a back button. The
+  list name links to the detail and the row menu gains View details. Adds app-level `Timeline`,
+  `TagsInput` and `Dropzone`, and lifts the avatar encoder into `lib/image.ts` for the profile
+  page to share. 502 Vitest tests and 34 Playwright specs.
 
 ### Fixed
 

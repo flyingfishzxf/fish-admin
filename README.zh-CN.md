@@ -344,7 +344,7 @@ docs/{en,zh-CN}/             # 仓库文档（上面那个站点才是产品文�
 | `pnpm test:vue`                      | 测试 `@fish-admin/vue` 与 Vue parity 应用         |
 | `pnpm dev:vue-template`              | 在 4177 端口运行 Vue 模板                         |
 | `pnpm test:vue-template`             | Vue 模板的 Vitest 单元测试                        |
-| `pnpm test:e2e:vue-template`         | 三十一条 Playwright 功能用例                      |
+| `pnpm test:e2e:vue-template`         | 三十四条 Playwright 功能用例                      |
 | `pnpm check:package`                 | 导出必须覆盖注册表全部条目，否则失败              |
 | `pnpm maturity` / `check:maturity`   | 重新生成 / 校验组件成熟度矩阵                     |
 | `pnpm gen-api` / `gen-api:check`     | 重新生成 / 校验文档 API 表与覆盖率下限            |
