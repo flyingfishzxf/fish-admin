@@ -6,6 +6,7 @@ import { useT } from '../../lib/i18n'
 import { useUiStore } from '../../stores/ui'
 import AppHeader from './AppHeader.vue'
 import AppSidebar from './AppSidebar.vue'
+import AppTabs from './AppTabs.vue'
 import AppTopNav from './AppTopNav.vue'
 import CommandPalette from './CommandPalette.vue'
 
@@ -62,6 +63,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <div class="flex min-w-0 flex-1 flex-col">
       <AppTopNav v-if="ui.layout === 'header'" />
       <AppHeader v-else />
+      <AppTabs />
       <main class="mx-auto w-full flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8" :class="mainWidth">
         <slot />
       </main>
