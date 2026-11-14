@@ -73,6 +73,8 @@ describe('AppShell', () => {
     expect(wrapper.find('[data-tour="topnav"]').exists()).toBe(false)
     expect(document.documentElement.dataset.density).toBe('default')
     expect(wrapper.get('main').classes()).toContain('max-w-7xl')
+    // The grouped chips belong to the mixed layout only.
+    expect(wrapper.find('[data-slot="app-subnav"]').exists()).toBe(false)
   })
 
   it('drops the sidebar for the header layout', async () => {
@@ -89,6 +91,7 @@ describe('AppShell', () => {
     wrapper = await mountShell()
 
     expect(wrapper.get('[data-tour="sidebar"]').attributes('data-collapsed')).toBe('true')
+    expect(wrapper.find('[data-slot="app-subnav"]').exists()).toBe(true)
   })
 
   it('writes the density and content width to the document', async () => {
