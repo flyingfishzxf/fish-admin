@@ -10,6 +10,7 @@ import AppSubnav from './AppSubnav.vue'
 import AppTabs from './AppTabs.vue'
 import AppTopNav from './AppTopNav.vue'
 import CommandPalette from './CommandPalette.vue'
+import OfflineBanner from './OfflineBanner.vue'
 
 const t = useT('common')
 const ui = useUiStore()
@@ -64,6 +65,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
     <div class="flex min-w-0 flex-1 flex-col">
       <AppTopNav v-if="ui.layout === 'header'" />
       <AppHeader v-else />
+      <OfflineBanner />
       <AppSubnav v-if="ui.layout === 'mixed'" />
       <AppTabs />
       <main class="mx-auto w-full flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8" :class="mainWidth">
