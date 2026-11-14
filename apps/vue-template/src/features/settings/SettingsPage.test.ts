@@ -9,6 +9,7 @@ import { createMemoryHistory, createRouter, type Router } from 'vue-router'
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import { useAuthStore } from '../../stores/auth'
 import { useThemeStore } from '../../stores/theme'
+import { useUiStore } from '../../stores/ui'
 import { meRequest } from '../auth/api'
 import { resetDemoData } from './api'
 import SettingsPage from './SettingsPage.vue'
@@ -109,6 +110,43 @@ describe('SettingsPage', () => {
     expect(useThemeStore().accent).toBe('emerald')
     expect(document.documentElement.dataset.accent).toBe('emerald')
     expect(page.get('[data-accent-option="emerald"]').attributes('aria-pressed')).toBe('true')
+  })
+
+  it('renders the shell card with its eight options', async () => {
+    const page = mountPage()
+    await flushPromises()
+
+    const options = page.findAll('[data-shell-option]')
+    expect(options).toHaveLength(8)
+    // The defaults come from the store, so the current layout must be pressed.
+    expect(page.get('[data-shell-option="layout-sidebar"]').attributes('aria-pressed')).toBe('true')
+    expect(page.get('[data-shell-option="density-default"]').attributes('aria-pressed')).toBe(
+      'true',
+    )
+    expect(page.get('[data-shell-option="width-contained"]').attributes('aria-pressed')).toBe(
+      'true',
+    )
+  })
+
+  it('stores the shell layout, density and content width', async () => {
+    const page = mountPage()
+    await flushPromises()
+
+    await page.get('[data-shell-option="layout-header"]').trigger('click')
+    await page.get('[data-shell-option="density-compact"]').trigger('click')
+    await page.get('[data-shell-option="width-wide"]').trigger('click')
+
+    const ui = useUiStore()
+    expect(ui.layout).toBe('header')
+    expect(ui.density).toBe('compact')
+    expect(ui.contentWidth).toBe('wide')
+    expect(JSON.parse(localStorage.getItem('fish-admin:ui') ?? '{}').state).toEqual({
+      layout: 'header',
+      density: 'compact',
+      contentWidth: 'wide',
+      tabs: [],
+    })
+    expect(page.get('[data-shell-option="layout-header"]').attributes('aria-pressed')).toBe('true')
   })
 
   it('changes the interface language from the select', async () => {

@@ -16,6 +16,7 @@ import {
   Github,
   Info,
   Languages,
+  LayoutTemplate,
   Palette,
   RotateCcw,
   ShieldCheck,
@@ -29,17 +30,24 @@ import AlertDialog from '../../components/ui/AlertDialog.vue'
 import Card from '../../components/ui/Card.vue'
 import Collapsible from '../../components/ui/Collapsible.vue'
 import { env } from '../../config/env'
+import {
+  SHELL_CONTENT_WIDTH_OPTIONS,
+  SHELL_DENSITY_OPTIONS,
+  SHELL_LAYOUT_OPTIONS,
+} from '../../config/shell'
 import { ACCENTS, THEME_MODES, type Accent } from '../../config/theme'
 import { useT, language, setLanguage } from '../../lib/i18n'
 import { hasPermission } from '../../lib/permissions'
 import { useTransientMessage } from '../../lib/use-transient-message'
 import { useAuthStore } from '../../stores/auth'
 import { useThemeStore } from '../../stores/theme'
+import { useUiStore } from '../../stores/ui'
 import { resetDemoData } from './api'
 
 const t = useT('settings')
 const commonT = useT('common')
 const theme = useThemeStore()
+const ui = useUiStore()
 const auth = useAuthStore()
 const queryClient = useQueryClient()
 const { message: statusMessage, show: showStatus } = useTransientMessage()
@@ -119,6 +127,78 @@ function changeLanguage(value: unknown) {
     </PageHeader>
 
     <div class="grid gap-6 lg:grid-cols-2">
+      <Card
+        class="lg:col-span-2"
+        :title="t('shell.title')"
+        :description="t('shell.description')"
+        :icon="LayoutTemplate"
+      >
+        <div class="space-y-5">
+          <fieldset class="space-y-2">
+            <legend class="text-sm font-medium">{{ t('shell.layout') }}</legend>
+            <p class="text-xs text-muted-foreground">{{ t('shell.layoutDescription') }}</p>
+            <div class="grid gap-2 sm:grid-cols-3">
+              <button
+                v-for="option in SHELL_LAYOUT_OPTIONS"
+                :key="option.value"
+                type="button"
+                :aria-pressed="ui.layout === option.value"
+                :data-shell-option="`layout-${option.value}`"
+                class="rounded-lg border p-3 text-left transition-colors hover:bg-accent/40 aria-pressed:border-primary aria-pressed:bg-primary/5"
+                @click="ui.setLayout(option.value)"
+              >
+                <span class="block text-sm font-medium">{{ t(option.labelKey) }}</span>
+                <span class="mt-0.5 block text-xs text-muted-foreground">
+                  {{ t(option.descriptionKey) }}
+                </span>
+              </button>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-2">
+            <legend class="text-sm font-medium">{{ t('shell.density') }}</legend>
+            <p class="text-xs text-muted-foreground">{{ t('shell.densityDescription') }}</p>
+            <div class="grid gap-2 sm:grid-cols-2">
+              <button
+                v-for="option in SHELL_DENSITY_OPTIONS"
+                :key="option.value"
+                type="button"
+                :aria-pressed="ui.density === option.value"
+                :data-shell-option="`density-${option.value}`"
+                class="rounded-lg border p-3 text-left transition-colors hover:bg-accent/40 aria-pressed:border-primary aria-pressed:bg-primary/5"
+                @click="ui.setDensity(option.value)"
+              >
+                <span class="block text-sm font-medium">{{ t(option.labelKey) }}</span>
+                <span class="mt-0.5 block text-xs text-muted-foreground">
+                  {{ t(option.descriptionKey) }}
+                </span>
+              </button>
+            </div>
+          </fieldset>
+
+          <fieldset class="space-y-2">
+            <legend class="text-sm font-medium">{{ t('shell.contentWidth') }}</legend>
+            <p class="text-xs text-muted-foreground">{{ t('shell.contentWidthDescription') }}</p>
+            <div class="grid gap-2 sm:grid-cols-3">
+              <button
+                v-for="option in SHELL_CONTENT_WIDTH_OPTIONS"
+                :key="option.value"
+                type="button"
+                :aria-pressed="ui.contentWidth === option.value"
+                :data-shell-option="`width-${option.value}`"
+                class="rounded-lg border p-3 text-left transition-colors hover:bg-accent/40 aria-pressed:border-primary aria-pressed:bg-primary/5"
+                @click="ui.setContentWidth(option.value)"
+              >
+                <span class="block text-sm font-medium">{{ t(option.labelKey) }}</span>
+                <span class="mt-0.5 block text-xs text-muted-foreground">
+                  {{ t(option.descriptionKey) }}
+                </span>
+              </button>
+            </div>
+          </fieldset>
+        </div>
+      </Card>
+
       <Card
         :title="t('appearance.title')"
         :description="t('appearance.description')"
