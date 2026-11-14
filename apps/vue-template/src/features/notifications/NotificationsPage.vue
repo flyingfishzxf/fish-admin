@@ -18,6 +18,7 @@ import { clampToPageCount } from '../../lib/list-page'
 import { useTransientMessage } from '../../lib/use-transient-message'
 import { markAllNotificationsRead, markNotificationsRead, updateNotification } from './api'
 import NotificationDetailDrawer from './NotificationDetailDrawer.vue'
+import NotificationPreferencesCard from './NotificationPreferencesCard.vue'
 import { notificationIcon, notificationSummary, notificationTitle } from './notification-meta'
 import {
   notificationDetailQueryOptions,
@@ -298,6 +299,8 @@ function closeDetail(open: boolean) {
         </div>
       </template>
     </Card>
+
+    <NotificationPreferencesCard />
 
     <NotificationDetailDrawer
       :notification="detail"

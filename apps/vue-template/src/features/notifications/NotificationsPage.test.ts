@@ -8,6 +8,7 @@ import { createMemoryHistory, createRouter, type Router } from 'vue-router'
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import {
   fetchNotification,
+  fetchNotificationPreferences,
   fetchNotifications,
   markAllNotificationsRead,
   markNotificationsRead,
@@ -25,6 +26,8 @@ vi.mock('./api', async (importOriginal) => {
     updateNotification: vi.fn(),
     markNotificationsRead: vi.fn(),
     markAllNotificationsRead: vi.fn(),
+    fetchNotificationPreferences: vi.fn(),
+    updateNotificationPreferences: vi.fn(),
   }
 })
 
@@ -116,6 +119,14 @@ describe('NotificationsPage', () => {
     vi.mocked(updateNotification).mockResolvedValue({ ...mention, read: true })
     vi.mocked(markNotificationsRead).mockResolvedValue({ updated: 2 })
     vi.mocked(markAllNotificationsRead).mockResolvedValue({ updated: 2 })
+    // The preferences card is the second card on the page; without a value it
+    // renders nothing and the page tests would silently stop covering it.
+    vi.mocked(fetchNotificationPreferences).mockResolvedValue({
+      quietStart: '22:00',
+      quietEnd: '08:00',
+      digest: 'daily',
+      channels: { inApp: true, email: true, push: false },
+    })
   })
 
   afterEach(() => {
