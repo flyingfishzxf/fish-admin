@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { User, UserStatus } from '@fish-admin/contracts'
 import { useQuery } from '@tanstack/vue-query'
-import { getCoreRowModel, useVueTable, type SortingState } from '@tanstack/vue-table'
+import {
+  getCoreRowModel,
+  useVueTable,
+  type RowSelectionState,
+  type SortingState,
+} from '@tanstack/vue-table'
 import {
   Button,
   ProTable,
@@ -107,6 +112,8 @@ function showFeedback(message: string) {
 }
 
 const sorting = computed<SortingState>(() => [{ id: search.sort, desc: search.order === 'desc' }])
+const rowSelection = ref<RowSelectionState>({})
+const selectable = computed(() => canEdit.value || canDelete.value)
 const columns = computed(() =>
   createUserColumns({
     t,
@@ -114,6 +121,7 @@ const columns = computed(() =>
     currentUserId: auth.user?.id,
     canEdit: canEdit.value,
     canDelete: canDelete.value,
+    selectable: selectable.value,
     onEdit: (user) => {
       editing.value = user
       formOpen.value = true
@@ -138,10 +146,19 @@ const table = useVueTable({
     get sorting() {
       return sorting.value
     },
+    get rowSelection() {
+      return rowSelection.value
+    },
   },
+  // Checkbox state is keyed by row id, so the ids come from the server rows.
+  getRowId: (user) => user.id,
+  enableRowSelection: selectable.value,
   manualSorting: true,
   manualPagination: true,
   pageCount: pageCount.value,
+  onRowSelectionChange: (updater) => {
+    rowSelection.value = typeof updater === 'function' ? updater(rowSelection.value) : updater
+  },
   getCoreRowModel: getCoreRowModel(),
   onSortingChange: (updater) => {
     const next = typeof updater === 'function' ? updater(sorting.value) : updater

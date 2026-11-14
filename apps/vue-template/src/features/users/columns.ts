@@ -9,6 +9,7 @@ import {
   AvatarImage,
   Badge,
   Button,
+  Checkbox,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -16,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@fish-admin/vue'
 
-import { formatDate } from '../../lib/format'
+import { formatDate, formatRelativeTime } from '../../lib/format'
 import { getInitials } from '../../lib/initials'
 import type { Translate } from './form'
 
@@ -26,9 +27,28 @@ export interface UserColumnsOptions {
   currentUserId?: string
   canEdit: boolean
   canDelete: boolean
+  /** Row checkboxes only exist when the user may act on the selection. */
+  selectable: boolean
   onEdit: (user: User) => void
   onDelete: (user: User) => void
 }
+
+/**
+ * Column widths mirror the React table so the two render the same hierarchy.
+ * There are no resize handles here, so `size` is only the width hint the row
+ * template writes onto each cell.
+ */
+const WIDTH = {
+  select: 44,
+  name: 240,
+  email: 200,
+  role: 140,
+  department: 150,
+  status: 130,
+  createdAt: 150,
+  lastActive: 150,
+  actions: 64,
+} as const
 
 const STATUS_VARIANTS = {
   active: 'default',
@@ -69,13 +89,48 @@ export function createUserColumns({
   currentUserId,
   canEdit,
   canDelete,
+  selectable,
   onEdit,
   onDelete,
 }: UserColumnsOptions): ColumnDef<User>[] {
-  const columns: ColumnDef<User>[] = [
+  const columns: ColumnDef<User>[] = selectable
+    ? [
+        {
+          id: 'select',
+          size: WIDTH.select,
+          enableSorting: false,
+          // Both markers keep the column out of the visibility menu: a table
+          // whose checkboxes can be hidden has no way back to them.
+          enableHiding: false,
+          header: ({ table }) =>
+            h(Checkbox, {
+              modelValue:
+                table.getIsAllPageRowsSelected() ||
+                (table.getIsSomePageRowsSelected() ? 'indeterminate' : false),
+              'aria-label': t('users:bulk.selectAll'),
+              'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
+                table.toggleAllPageRowsSelected(value === true),
+            }),
+          cell: ({ row }) =>
+            h(Checkbox, {
+              modelValue: row.getIsSelected(),
+              disabled: !row.getCanSelect(),
+              'aria-label': t('users:bulk.selectRow', { name: row.original.name }),
+              'onUpdate:modelValue': (value: boolean | 'indeterminate') =>
+                row.toggleSelected(value === true),
+            }),
+          meta: { label: t('users:bulk.selectAll'), group: t('users:columnGroups.identity') },
+        },
+      ]
+    : []
+
+  columns.push(
     {
       accessorKey: 'name',
+      size: WIDTH.name,
       header: sortableHeader(t('users:columns.name')),
+      enableHiding: false,
+      meta: { label: t('users:columns.name'), group: t('users:columnGroups.identity') },
       cell: ({ row }) => {
         const user = row.original
         return h('div', { class: 'flex items-center gap-3' }, [
@@ -91,21 +146,45 @@ export function createUserColumns({
     },
     {
       accessorKey: 'email',
+      size: WIDTH.email,
       enableSorting: false,
       header: () => t('users:columns.email'),
+      meta: { label: t('users:columns.email'), group: t('users:columnGroups.contact') },
       cell: ({ row }) => h('span', { class: 'text-sm text-muted-foreground' }, row.original.email),
     },
     {
       accessorKey: 'roleName',
+      id: 'role',
+      size: WIDTH.role,
       enableSorting: false,
       header: () => t('users:columns.role'),
+      meta: { label: t('users:columns.role'), group: t('users:columnGroups.access') },
       cell: ({ row }) =>
         h(Badge, { variant: 'secondary', class: 'font-normal' }, () => row.original.roleName),
     },
     {
+      accessorKey: 'department',
+      size: WIDTH.department,
+      enableSorting: false,
+      header: () => t('users:columns.department'),
+      meta: { label: t('users:columns.department'), group: t('users:columnGroups.access') },
+      cell: ({ row }) =>
+        h(
+          'span',
+          { class: 'text-sm text-muted-foreground' },
+          // The dictionary is keyed by the English name; an unmapped department
+          // still has to render, so fall back to the raw value.
+          t(`common:departments.${row.original.department}`, {
+            defaultValue: row.original.department,
+          }),
+        ),
+    },
+    {
       accessorKey: 'status',
+      size: WIDTH.status,
       enableSorting: false,
       header: () => t('users:columns.status'),
+      meta: { label: t('users:columns.status'), group: t('users:columnGroups.access') },
       cell: ({ row }) => {
         const status = row.original.status
         return h(Badge, { variant: STATUS_VARIANTS[status], class: 'gap-1.5 font-normal' }, () => [
@@ -119,7 +198,9 @@ export function createUserColumns({
     },
     {
       accessorKey: 'createdAt',
+      size: WIDTH.createdAt,
       header: sortableHeader(t('users:columns.createdAt')),
+      meta: { label: t('users:columns.createdAt'), group: t('users:columnGroups.activity') },
       cell: ({ row }) =>
         h(
           'span',
@@ -127,14 +208,28 @@ export function createUserColumns({
           formatDate(row.original.createdAt, language, { dateStyle: 'medium' }),
         ),
     },
-  ]
+    {
+      accessorKey: 'lastActiveAt',
+      size: WIDTH.lastActive,
+      header: sortableHeader(t('users:columns.lastActive')),
+      meta: { label: t('users:columns.lastActive'), group: t('users:columnGroups.activity') },
+      cell: ({ row }) =>
+        h(
+          'span',
+          { class: 'text-sm text-muted-foreground' },
+          formatRelativeTime(row.original.lastActiveAt, language),
+        ),
+    },
+  )
 
   if (canEdit || canDelete) {
     columns.push({
       id: 'actions',
+      size: WIDTH.actions,
       enableSorting: false,
       enableHiding: false,
       header: () => h('span', { class: 'sr-only' }, t('users:columns.actions')),
+      meta: { label: t('users:columns.actions') },
       cell: ({ row }) => {
         const user = row.original
         return h(DropdownMenu, null, {
