@@ -12,29 +12,36 @@ const props = withDefaults(
     loading?: boolean
     skeletonRows?: number
     onRowClick?: (row: TData) => void
+    // Same two values and the same paddings as the React `DataTableDensity`,
+    // so a page can switch density without the app reaching into these classes.
+    density?: 'comfortable' | 'compact'
   }>(),
-  { loading: false, skeletonRows: 6 },
+  { loading: false, skeletonRows: 6, density: 'comfortable' },
 )
 
 const rows = computed(() => props.table.getRowModel().rows)
 const columnCount = computed(() => props.table.getVisibleLeafColumns().length)
+const compact = computed(() => props.density === 'compact')
 
 const cardClass = 'shadow-soft overflow-hidden rounded-2xl border bg-card'
 const scrollClass =
   'overflow-auto focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset'
 const headBase =
-  'h-10 px-2 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]'
+  'px-2 text-start align-middle font-medium whitespace-nowrap text-foreground [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]'
 // React adds these separators only when a column can resize; resizing is not ported, so match the demo rendering.
-const headClass = cn(
-  headBase,
-  'relative text-[11px] font-semibold tracking-wide text-muted-foreground uppercase',
-  'border-e last:border-e-0',
-  'bg-muted/35',
+const headClass = computed(() =>
+  cn(
+    headBase,
+    compact.value ? 'h-9' : 'h-10',
+    'relative text-[11px] font-semibold tracking-wide text-muted-foreground uppercase',
+    'border-e last:border-e-0',
+    'bg-muted/35',
+  ),
 )
 const cellBase =
   'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]'
-const cellClass = cn(cellBase, 'py-3 overflow-hidden')
-const skeletonCellClass = cn(cellBase, 'py-3.5')
+const cellClass = computed(() => cn(cellBase, compact.value ? 'py-1.5' : 'py-3', 'overflow-hidden'))
+const skeletonCellClass = computed(() => cn(cellBase, compact.value ? 'py-2' : 'py-3.5'))
 const emptyCellClass = cn(cellBase, 'p-0')
 const rowClass =
   'border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted'

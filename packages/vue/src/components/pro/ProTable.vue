@@ -31,6 +31,7 @@ function clearSelection() {
       :table="table"
       :table-label="tableLabel"
       :loading="loading"
+      :density="density"
       :on-row-click="onRowClick"
     >
       <template v-if="slots.toolbar" #toolbar>

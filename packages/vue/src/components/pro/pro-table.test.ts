@@ -80,6 +80,17 @@ describe('DataTable', () => {
     await nextTick()
     expect(wrapper.get('thead th').attributes('aria-sort')).toBe('descending')
   })
+
+  it('keeps the comfortable padding unless asked for compact', () => {
+    const roomy = mount(TableView, { props: { table: makeTable() } })
+    expect(roomy.get('tbody td').classes()).toContain('py-3')
+    expect(roomy.get('thead th').classes()).toContain('h-10')
+
+    const dense = mount(TableView, { props: { table: makeTable(), density: 'compact' } })
+    expect(dense.get('tbody td').classes()).toContain('py-1.5')
+    expect(dense.get('tbody td').classes()).not.toContain('py-3')
+    expect(dense.get('thead th').classes()).toContain('h-9')
+  })
 })
 
 describe('BulkActionsBar', () => {

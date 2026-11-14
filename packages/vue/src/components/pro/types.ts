@@ -20,6 +20,7 @@ export type ProTableProps<TData> = {
   table: Table<TData>
   tableLabel?: string
   loading?: boolean
+  density?: 'comfortable' | 'compact'
   search?: ProTableSearchConfig
   selection?: ProTableSelectionConfig
   fetching?: boolean
