@@ -6,9 +6,18 @@ import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { i18nReady, setLanguage } from '../../lib/i18n'
+import { downloadCsv } from '../../lib/csv'
 import { useAuthStore } from '../../stores/auth'
 import UsersPage from './UsersPage.vue'
-import { deleteUser, fetchDepartments, fetchRoleOptions, fetchUsers } from './api'
+import {
+  bulkDeleteUsers,
+  bulkUpdateUserStatus,
+  deleteUser,
+  fetchDepartments,
+  fetchRoleOptions,
+  fetchUsers,
+  restoreUsers,
+} from './api'
 
 vi.mock('./api', () => ({
   fetchUsers: vi.fn(),
@@ -21,6 +30,8 @@ vi.mock('./api', () => ({
   bulkDeleteUsers: vi.fn(),
   restoreUsers: vi.fn(),
 }))
+
+vi.mock('../../lib/csv', () => ({ downloadCsv: vi.fn(), toCsv: vi.fn() }))
 
 const ada: User = {
   id: 'u1',
@@ -254,5 +265,119 @@ describe('UsersPage', () => {
 
     await vi.waitFor(() => expect(document.body.textContent).toContain('Edit user'))
     expect(document.body.textContent).not.toContain('Delete user')
+  })
+
+  it('filters by role', async () => {
+    const page = mountPage(['user:read'])
+    await waitForRows(page)
+
+    page.findAllComponents(Select)[0].vm.$emit('update:modelValue', 'r1')
+    await flushPromises()
+
+    await vi.waitFor(() =>
+      expect(fetchUsers).toHaveBeenCalledWith(
+        expect.objectContaining({ roleId: 'r1', page: 1 }),
+        expect.anything(),
+      ),
+    )
+  })
+
+  it('changes the page size', async () => {
+    const page = mountPage(['user:read'])
+    await waitForRows(page)
+
+    // Role, status, then the page-size select in the pager.
+    page.findAllComponents(Select)[2].vm.$emit('update:modelValue', '50')
+    await flushPromises()
+
+    await vi.waitFor(() =>
+      expect(fetchUsers).toHaveBeenCalledWith(
+        expect.objectContaining({ pageSize: 50, page: 1 }),
+        expect.anything(),
+      ),
+    )
+  })
+
+  it('remembers the density and repaints the rows', async () => {
+    const page = mountPage(['user:read', 'user:update'])
+    await waitForRows(page)
+
+    expect(page.get('tbody td').classes()).toContain('py-3')
+    await page.get('[data-segmented-option="compact"]').trigger('click')
+    await flushPromises()
+
+    expect(localStorage.getItem('fish-admin:users-density')).toBe('compact')
+    expect(page.get('[data-segmented-option="compact"]').attributes('aria-pressed')).toBe('true')
+  })
+
+  it('bulk deletes the selected rows and restores them on undo', async () => {
+    vi.mocked(bulkDeleteUsers).mockResolvedValue({ deleted: ['u1'], skipped: [] })
+    vi.mocked(restoreUsers).mockResolvedValue({ restored: [ada] })
+    const page = mountPage(['user:read', 'user:delete'])
+    await waitForRows(page)
+
+    await page.get('[aria-label="Select Ada Lovelace"]').trigger('click')
+    await flushPromises()
+
+    const bar = page.get('[data-slot="bulk-actions-bar"]')
+    expect(bar.text()).toContain('1 selected')
+
+    const remove = bar.findAll('button').find((button) => button.text() === 'Delete')
+    expect(remove).toBeTruthy()
+    await remove!.trigger('click')
+    await flushPromises()
+
+    const confirm = document.body.querySelector('[data-action="confirm"]')
+    expect(confirm).toBeTruthy()
+    confirm!.dispatchEvent(new Event('click', { bubbles: true }))
+
+    await vi.waitFor(() => expect(bulkDeleteUsers).toHaveBeenCalledWith(['u1']))
+    await vi.waitFor(() => expect(page.text()).toContain('1 user deleted.'))
+
+    // The undo button is the notice's action; it must die with the notice.
+    await page.get('[data-notice-action]').trigger('click')
+    await vi.waitFor(() => expect(restoreUsers).toHaveBeenCalledWith(['u1']))
+  })
+
+  it('updates the status of the selection', async () => {
+    vi.mocked(bulkUpdateUserStatus).mockResolvedValue({ updated: ['u1'], skipped: [] })
+    const page = mountPage(['user:read', 'user:update'])
+    await waitForRows(page)
+
+    await page.get('[aria-label="Select Ada Lovelace"]').trigger('click')
+    await flushPromises()
+
+    await page.get('[data-slot="bulk-actions-bar"] button').trigger('click')
+    const items = Array.from(
+      document.body.querySelectorAll('[data-slot="dropdown-menu-item"]'),
+    ) as HTMLElement[]
+    const invited = items.find((item) => item.textContent?.trim() === 'Invited')
+    expect(invited).toBeTruthy()
+    invited!.dispatchEvent(new Event('click', { bubbles: true }))
+
+    await vi.waitFor(() => expect(bulkUpdateUserStatus).toHaveBeenCalledWith(['u1'], 'invited'))
+  })
+
+  it('exports every page the filters match', async () => {
+    const grace: User = { ...ada, id: 'u2', name: 'Grace Hopper', email: 'grace@fish.dev' }
+    vi.mocked(fetchUsers).mockImplementation(async (params) =>
+      params.pageSize === 100
+        ? params.page === 1
+          ? { items: [ada], total: 2, page: 1, pageSize: 100, pageCount: 2 }
+          : { items: [grace], total: 2, page: 2, pageSize: 100, pageCount: 2 }
+        : { items: [ada, grace], total: 2, page: 1, pageSize: 10, pageCount: 1 },
+    )
+    const page = mountPage(['user:read'])
+    await waitForRows(page)
+
+    await page.get('[data-export-users]').trigger('click')
+
+    await vi.waitFor(() => expect(downloadCsv).toHaveBeenCalled())
+    const [filename, rows] = vi.mocked(downloadCsv).mock.calls[0]
+    expect(filename).toMatch(/^users-\d{4}-\d{2}-\d{2}\.csv$/)
+    // Header plus both pages, not just the two rows on screen.
+    expect(rows).toHaveLength(3)
+    expect(rows[2]).toContain('Grace Hopper')
+    expect(page.text()).toContain('CSV exported.')
   })
 })
