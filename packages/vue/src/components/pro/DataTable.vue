@@ -20,8 +20,45 @@ const props = withDefaults(
 )
 
 const rows = computed(() => props.table.getRowModel().rows)
-const columnCount = computed(() => props.table.getVisibleLeafColumns().length)
+const leaves = computed(() => props.table.getVisibleLeafColumns())
+const columnCount = computed(() => leaves.value.length)
 const compact = computed(() => props.density === 'compact')
+
+interface GroupRun {
+  group: string
+  label: string
+  width: number
+  span: number
+}
+
+// React draws a band above the column headers by walking `meta.group`. TanStack
+// has no such row, so the runs are built here the same way: adjacent visible
+// leaves sharing a group, and no band at all as soon as one column omits it.
+const groupRuns = computed<GroupRun[]>(() => {
+  const runs: GroupRun[] = []
+
+  for (const column of leaves.value) {
+    const meta = (column.columnDef.meta ?? {}) as { group?: string; groupLabel?: string }
+    if (!meta.group) return []
+
+    const last = runs[runs.length - 1]
+    if (last?.group === meta.group) {
+      last.width += column.getSize()
+      last.span += 1
+    } else {
+      runs.push({
+        group: meta.group,
+        // `groupLabel` may be an empty string on purpose (the actions column),
+        // so only an absent label falls back to the key.
+        label: meta.groupLabel ?? meta.group,
+        width: column.getSize(),
+        span: 1,
+      })
+    }
+  }
+
+  return runs
+})
 
 const cardClass = 'shadow-soft overflow-hidden rounded-2xl border bg-card'
 const scrollClass =
@@ -43,6 +80,10 @@ const cellBase =
 const cellClass = computed(() => cn(cellBase, compact.value ? 'py-1.5' : 'py-3', 'overflow-hidden'))
 const skeletonCellClass = computed(() => cn(cellBase, compact.value ? 'py-2' : 'py-3.5'))
 const emptyCellClass = cn(cellBase, 'p-0')
+// Verbatim from the React data table: the band is not a header, it is a label
+// over one, so it keeps the muted strip and drops to 32 px.
+const groupHeadClass =
+  'h-8 border-b px-2 text-start align-middle text-[11px] font-semibold tracking-wide text-muted-foreground uppercase bg-muted/35'
 const rowClass =
   'border-b transition-colors hover:bg-muted/50 has-aria-expanded:bg-muted/50 data-[state=selected]:bg-muted'
 const headerRowClass = cn(rowClass, 'hover:bg-transparent')
@@ -70,6 +111,18 @@ function ariaSort(column: { getIsSorted: () => false | 'asc' | 'desc' }) {
     <div tabindex="0" :class="scrollClass">
       <table data-slot="table" class="w-full caption-bottom text-sm" :aria-label="tableLabel">
         <thead data-slot="table-header" class="[&_tr]:border-b">
+          <tr v-if="groupRuns.length > 0" data-slot="table-row" :class="headerRowClass">
+            <th
+              v-for="run in groupRuns"
+              :key="`${run.group}-${run.label}`"
+              data-slot="table-group-head"
+              :colspan="run.span"
+              :style="{ width: `${run.width}px` }"
+              :class="groupHeadClass"
+            >
+              {{ run.label }}
+            </th>
+          </tr>
           <tr
             v-for="headerGroup in table.getHeaderGroups()"
             :key="headerGroup.id"

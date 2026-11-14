@@ -91,6 +91,37 @@ describe('DataTable', () => {
     expect(dense.get('tbody td').classes()).not.toContain('py-3')
     expect(dense.get('thead th').classes()).toContain('h-9')
   })
+
+  it('bands adjacent columns that share a group', () => {
+    const grouped: ColumnDef<Member>[] = [
+      { accessorKey: 'name', header: 'Name', meta: { group: 'identity', groupLabel: 'Identity' } },
+      { id: 'email', header: 'Email', meta: { group: 'contact', groupLabel: 'Contact' } },
+      { id: 'phone', header: 'Phone', meta: { group: 'contact', groupLabel: 'Contact' } },
+    ]
+
+    const table = useVueTable({
+      data: members,
+      columns: grouped,
+      getCoreRowModel: getCoreRowModel(),
+    })
+    const wrapper = mount(TableView, { props: { table } })
+
+    const band = wrapper.findAll('thead th[data-slot="table-group-head"]')
+    expect(band.map((cell) => cell.text())).toEqual(['Identity', 'Contact'])
+    expect(band.map((cell) => cell.attributes('colspan'))).toEqual(['1', '2'])
+  })
+
+  it('drops the band when one column omits its group', () => {
+    const mixed: ColumnDef<Member>[] = [
+      { accessorKey: 'name', header: 'Name', meta: { group: 'identity', groupLabel: 'Identity' } },
+      { id: 'email', header: 'Email' },
+    ]
+
+    const table = useVueTable({ data: members, columns: mixed, getCoreRowModel: getCoreRowModel() })
+    const wrapper = mount(TableView, { props: { table } })
+
+    expect(wrapper.find('thead th[data-slot="table-group-head"]').exists()).toBe(false)
+  })
 })
 
 describe('BulkActionsBar', () => {
