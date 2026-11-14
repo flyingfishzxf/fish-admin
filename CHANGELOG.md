@@ -25,6 +25,13 @@ All notable changes to this project are documented here. The format is based on
   Two-factor sign-in replaces the `MFA_NOT_SUPPORTED` stub, the sidebar grows from 9 to 12 pages,
   settings keeps the five accent palettes, and four full-page status states (401, 500, 503,
   maintenance) are routable outside the shell. 297 Vitest tests and 14 Playwright specs.
+- **Vue template shell and notifications:** the sidebar / header / mixed layouts, compact density,
+  three content widths, a persisted tab workspace with pinning and close-to-the-right, a group
+  subnav for the mixed layout, a `Ctrl/Cmd+K` command palette, an offline banner and a four-step
+  product tour. A header bell with an unread badge opens a seven-endpoint inbox at
+  `/notifications`: filters, row selection, single and bulk read, a deep-linkable detail drawer and
+  a delivery-preferences card with quiet hours, digest cadence and per-channel switches. The
+  sidebar grows from 12 to 13 pages. 374 Vitest tests and 21 Playwright specs.
 
 ### Fixed
 
