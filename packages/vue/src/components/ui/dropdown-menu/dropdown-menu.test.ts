@@ -15,12 +15,12 @@ afterEach(() => {
   document.body.innerHTML = ''
 })
 
-function mountMenu(onSelect: () => void) {
+function mountMenu(onSelect: () => void, side?: 'top' | 'right' | 'bottom' | 'left') {
   return mount(DropdownMenu, {
     slots: {
       default: () => [
         h(DropdownMenuTrigger, { asChild: true }, () => h('button', { type: 'button' }, 'Actions')),
-        h(DropdownMenuContent, { align: 'end' }, () => [
+        h(DropdownMenuContent, { align: 'end', side }, () => [
           h(DropdownMenuItem, { onSelect }, () => 'Edit'),
           h(DropdownMenuItem, { variant: 'destructive', onSelect }, () => 'Delete'),
         ]),
@@ -59,5 +59,25 @@ describe('DropdownMenu', () => {
     await vi.waitFor(() => {
       expect(document.body.querySelector('[data-slot="dropdown-menu-content"]')).toBeNull()
     })
+  })
+
+  it('forwards the side instead of warning about a fallthrough attribute', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    wrapper = mountMenu(() => {}, 'top')
+    await wrapper.get('button').trigger('keydown', { key: 'Enter' })
+    await nextTick()
+
+    const content = document.body.querySelector<HTMLElement>('[data-slot="dropdown-menu-content"]')
+    expect(content).not.toBeNull()
+    // Reka writes the resolved side back onto the popper wrapper, so this also
+    // covers the placement reaching the primitive rather than just the prop.
+    expect(
+      content?.closest('[data-side]')?.getAttribute('data-side') ??
+        content?.getAttribute('data-side'),
+    ).toBe('top')
+    expect(warn).not.toHaveBeenCalledWith(
+      expect.stringContaining('Extraneous non-props attributes'),
+    )
+    warn.mockRestore()
   })
 })

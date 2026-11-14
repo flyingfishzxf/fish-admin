@@ -7,6 +7,11 @@ import { cn } from '../../../lib/utils'
 const props = withDefaults(
   defineProps<{
     align?: 'start' | 'center' | 'end'
+    // Declared rather than left to attribute fallthrough: the root here is a
+    // teleport, so an undeclared `side` is dropped with a warning and the menu
+    // always opens downwards — which puts a footer-anchored menu back over the
+    // rows it acts on.
+    side?: 'top' | 'right' | 'bottom' | 'left'
     sideOffset?: number
     class?: string
   }>(),
@@ -26,6 +31,7 @@ const classes = computed(() =>
     <DropdownMenuContentPrimitive
       data-slot="dropdown-menu-content"
       :align="align"
+      :side="side"
       :side-offset="sideOffset"
       :class="classes"
     >
