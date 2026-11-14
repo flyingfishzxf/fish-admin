@@ -11,7 +11,10 @@ import Tour from '../../components/layout/Tour.vue'
 import type { TourStep } from '../../components/layout/tour'
 import { useT } from '../../lib/i18n'
 import ActivityList from './ActivityList.vue'
+import ChannelsChart from './ChannelsChart.vue'
 import KpiCards from './KpiCards.vue'
+import RevenueChart from './RevenueChart.vue'
+import TrafficChart from './TrafficChart.vue'
 import { dashboardQueryOptions } from './queries'
 
 const t = useT('dashboard')
@@ -55,6 +58,7 @@ const TOUR_STEPS: TourStep[] = [
             v-for="option in [7, 30] as const"
             :key="option"
             type="button"
+            :data-range="option"
             :aria-pressed="range === option"
             :class="
               range === option
@@ -89,13 +93,52 @@ const TOUR_STEPS: TourStep[] = [
     />
     <template v-else>
       <KpiCards :kpis="query.data.value?.kpis ?? []" />
-      <section class="shadow-soft rounded-xl border bg-card p-5 text-card-foreground">
-        <div class="mb-4 space-y-1">
-          <h2 class="leading-none font-semibold">{{ t('charts.activity.title') }}</h2>
-          <p class="text-sm text-muted-foreground">{{ t('charts.activity.description') }}</p>
-        </div>
-        <ActivityList :items="(query.data.value?.activity ?? []).slice(0, 8)" />
-      </section>
+
+      <div class="grid gap-4 lg:grid-cols-3">
+        <section
+          data-dashboard-card="revenue"
+          class="shadow-soft rounded-xl border bg-card p-5 text-card-foreground lg:col-span-2"
+        >
+          <div class="mb-4 space-y-1">
+            <h2 class="leading-none font-semibold">{{ t('charts.revenue.title') }}</h2>
+            <p class="text-sm text-muted-foreground">{{ t('charts.revenue.description') }}</p>
+          </div>
+          <RevenueChart :data="query.data.value?.revenue ?? []" />
+        </section>
+
+        <section
+          data-dashboard-card="channels"
+          class="shadow-soft rounded-xl border bg-card p-5 text-card-foreground"
+        >
+          <div class="mb-4 space-y-1">
+            <h2 class="leading-none font-semibold">{{ t('charts.channels.title') }}</h2>
+            <p class="text-sm text-muted-foreground">{{ t('charts.channels.description') }}</p>
+          </div>
+          <ChannelsChart :data="query.data.value?.channels ?? []" />
+        </section>
+
+        <section
+          data-dashboard-card="traffic"
+          class="shadow-soft rounded-xl border bg-card p-5 text-card-foreground lg:col-span-2"
+        >
+          <div class="mb-4 space-y-1">
+            <h2 class="leading-none font-semibold">{{ t('charts.traffic.title') }}</h2>
+            <p class="text-sm text-muted-foreground">{{ t('charts.traffic.description') }}</p>
+          </div>
+          <TrafficChart :data="query.data.value?.traffic ?? []" />
+        </section>
+
+        <section
+          data-dashboard-card="activity"
+          class="shadow-soft rounded-xl border bg-card p-5 text-card-foreground"
+        >
+          <div class="mb-4 space-y-1">
+            <h2 class="leading-none font-semibold">{{ t('charts.activity.title') }}</h2>
+            <p class="text-sm text-muted-foreground">{{ t('charts.activity.description') }}</p>
+          </div>
+          <ActivityList :items="(query.data.value?.activity ?? []).slice(0, 8)" />
+        </section>
+      </div>
     </template>
 
     <Tour v-model:open="tourOpen" :steps="TOUR_STEPS" />

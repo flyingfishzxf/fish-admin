@@ -22,10 +22,16 @@ const props = withDefaults(
     data: BarDatum[]
     series: BarSeries[]
     valueFormat: (value: number) => string
+    /** Axis tick formatter; defaults to the plain number. */
+    yFormat?: (value: number) => string
     height?: number
     class?: string
   }>(),
-  { height: 280, class: undefined },
+  {
+    yFormat: (value: number) => String(value),
+    height: 280,
+    class: undefined,
+  },
 )
 
 const hover = ref(-1)
@@ -63,6 +69,7 @@ function tooltipStyle(plot: PlotArea, xs: number[], width: number) {
       :height="props.height"
       :y-ticks="yTicks"
       :x-labels="props.data.map((point) => point.label)"
+      :y-format="props.yFormat"
       x-mode="band"
       hit-mode="band"
       @hover="hover = $event"

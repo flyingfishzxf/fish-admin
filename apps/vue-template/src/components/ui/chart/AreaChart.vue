@@ -20,12 +20,19 @@ const props = withDefaults(
     /** Series name shown next to the value in the tooltip. */
     seriesLabel: string
     valueFormat: (value: number) => string
+    /** Axis tick formatter; defaults to the plain number. */
+    yFormat?: (value: number) => string
     height?: number
     /** Dashed horizontal target line with a corner caption. */
     reference?: { value: number; label: string }
     class?: string
   }>(),
-  { height: 280, reference: undefined, class: undefined },
+  {
+    yFormat: (value: number) => String(value),
+    height: 280,
+    reference: undefined,
+    class: undefined,
+  },
 )
 
 const hover = ref(-1)
@@ -55,6 +62,7 @@ function tooltipStyle(plot: PlotArea, xs: number[], width: number) {
     :height="props.height"
     :y-ticks="yTicks"
     :x-labels="props.data.map((point) => point.label)"
+    :y-format="props.yFormat"
     :class="props.class"
     @hover="hover = $event"
   >
