@@ -344,7 +344,7 @@ docs/{en,zh-CN}/             # Repository documentation (the site above is the p
 | `pnpm test:vue`                      | Test `@fish-admin/vue` and the Vue parity app                  |
 | `pnpm dev:vue-template`              | Run the Vue template on port 4177                              |
 | `pnpm test:vue-template`             | Vitest for the Vue template                                    |
-| `pnpm test:e2e:vue-template`         | Thirty-four Playwright functional specs                        |
+| `pnpm test:e2e:vue-template`         | Thirty-seven Playwright functional specs                       |
 | `pnpm check:package`                 | Fail unless the barrel exports every registry entry            |
 | `pnpm maturity` / `check:maturity`   | Regenerate / verify the component maturity matrix              |
 | `pnpm gen-api` / `gen-api:check`     | Regenerate / verify the docs API tables and coverage floor     |

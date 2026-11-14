@@ -50,6 +50,13 @@ All notable changes to this project are documented here. The format is based on
   list name links to the detail and the row menu gains View details. Adds app-level `Timeline`,
   `TagsInput` and `Dropzone`, and lifts the avatar encoder into `lib/image.ts` for the profile
   page to share. 502 Vitest tests and 34 Playwright specs.
+- **Vue template CSV import:** `/users` adds a four-step import wizard — upload
+  or sample CSV, automatic column mapping with aliases, per-row validation, and
+  a done screen. Only valid rows reach `POST /users/import`; the page reports
+  created and skipped counts in its inline notice. Adds a CSV parser to
+  `lib/csv.ts` and pure mapping helpers in `features/users/import.ts`; the
+  wizard stays app-level because the package export surface is frozen.
+  522 Vitest tests and 37 Playwright specs.
 
 ### Fixed
 

@@ -33,7 +33,8 @@ published package.
   a CSV export of the filtered result, density and column-visibility controls,
   saved views, row actions, create/edit dialog and delete confirmation — plus
   `/users/:id` with a nine-field overview, tag and avatar editing, an audit
-  activity timeline and an in-page not-found state.
+  activity timeline and an in-page not-found state, and a four-step CSV import
+  wizard with column mapping and per-row review.
 - Reports: range and granularity filters, four KPIs, a trend chart with a
   metric switch and a target line, a channel ring chart with shares, and a
   paginated table with CSV export.
@@ -52,10 +53,10 @@ published package.
   shell, plus the existing 403 and 404 pages.
 
 Not included: the three collaboration pages (`/projects`, `/workflows`,
-`/files`), the users CSV import wizard, and page-level pixel parity. Of the 16
-pages in `NAV_CONTRACT`, 13 ship; only the three collaboration pages above are
-absent, because they need roughly 6 200 lines of production code and about 50
-primitives `@fish-admin/vue` does not export.
+`/files`), column drag-to-reorder / pinning / resizing, and page-level pixel
+parity. Of the 16 pages in `NAV_CONTRACT`, 13 ship; only the three collaboration
+pages above are absent, because they need roughly 6 200 lines of production code
+and about 50 primitives `@fish-admin/vue` does not export.
 
 ## Routes
 
@@ -233,7 +234,7 @@ pnpm test:e2e:vue-template
 | Navigation      | all 16 contracted pages                                                    | 13 of 16; the three collaboration pages absent                                  |
 | Authentication  | sign in, register, recovery, invite, OTP, 2FA                              | the same six flows; no email delivery, fixed demo TOTP secret                   |
 | Dashboard       | KPIs, three charts, product tour                                           | the same three charts and the tour, drawn as hand-written SVG                   |
-| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity | everything except the CSV import wizard                                         |
+| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity | the same surfaces; column drag / pin / resize are not ported                    |
 | Roles           | two-step create wizard that also picks permissions                         | one dialog; permissions are granted in the matrix                               |
 | Dictionaries    | drag handle plus arrow keys, no pagination                                 | same, and the item list is not paged                                            |
 | Audit log       | JSON viewer, per-action icons, debounced search, page-size control         | metadata as a definition list, text badges, no debounce, fixed page size of 20  |
@@ -305,6 +306,14 @@ Implementation details that also differ from the React template:
   runs of adjacent visible leaves that share `meta.group`, because TanStack has
   no such row; it stays 32 px under both densities and disappears entirely as
   soon as one column omits a group.
+- The CSV parser and the import mapping/validation helpers are pure modules
+  (`lib/csv.ts`, `features/users/import.ts`), tested without a DOM. The wizard
+  itself is app-level: `packages/vue` has no `ImportWizard` and its export
+  surface is frozen, so there is no 35-key labels interface to keep in sync.
+- The import dialog reads the `users:import.*` strings directly. Instead of
+  toasts, the page composes created and skipped counts into one inline notice;
+  a `Dropzone` takes the upload and gained an optional browse label because the
+  Chinese import action differs from the shared enterprise wording.
 - The detail header is inline in `UserDetailPage.vue` rather than a new
   `DetailPage` primitive: there is one consumer, and the package export surface
   is frozen. The nine overview fields are a `<dl>` grid, not a data-driven
@@ -350,7 +359,7 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-502 tests in 73 files. Thirty-four Playwright specs cover the golden paths,
+522 tests in 75 files. Thirty-seven Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios
@@ -358,9 +367,10 @@ invite acceptance, accent persistence), seven shell/notification scenarios
 single read, mark-all persistence, offline banner), seven chart/report
 scenarios (three dashboard charts, range redraw, hover tooltip, report charts,
 metric switch, target line, CSV download) and three users-table scenarios
-(bulk delete with undo, CSV download, role filter) and three user-detail
-scenarios (tag save across a reload, an unknown id, the activity request); they
-do not produce or compare screenshots.
+(bulk delete with undo, CSV download, role filter), three user-detail
+scenarios (tag save across a reload, an unknown id, the activity request) and
+three import scenarios (sample CSV, invalid rows sent nowhere, viewer has no
+import action); they do not produce or compare screenshots.
 
 ## Client-side permission boundary
 
