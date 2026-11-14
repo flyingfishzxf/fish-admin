@@ -38,6 +38,7 @@ async function signOut() {
       <Button
         variant="ghost"
         class="h-9 gap-2 px-1.5 md:pe-2"
+        data-tour="account"
         :aria-label="`${initials} ${user.name} — ${t('common:header.account')}`"
       >
         <Avatar class="size-7" aria-hidden="true">

@@ -16,3 +16,9 @@
 @source '../';
 /* Four levels up lands on the repo root; `packages/vue/src` must be scanned too. */
 @source '../../../../packages/vue/src';
+
+/* Mirrors the React template: compact density tightens the Tailwind spacing
+   scale. It has to sit on <html> so portalled overlays inherit it too. */
+html[data-density='compact'] {
+  --spacing: 0.21rem;
+}

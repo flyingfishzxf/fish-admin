@@ -39,6 +39,8 @@ watch(
   <aside
     class="hidden border-e bg-sidebar text-sidebar-foreground lg:flex lg:flex-col"
     :class="ui.collapsed ? 'w-16' : 'w-64'"
+    :data-collapsed="ui.collapsed ? 'true' : undefined"
+    data-tour="sidebar"
   >
     <RouterLink
       to="/"
