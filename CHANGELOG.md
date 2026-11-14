@@ -32,6 +32,13 @@ All notable changes to this project are documented here. The format is based on
   `/notifications`: filters, row selection, single and bulk read, a deep-linkable detail drawer and
   a delivery-preferences card with quiet hours, digest cadence and per-channel switches. The
   sidebar grows from 12 to 13 pages. 374 Vitest tests and 21 Playwright specs.
+- **Vue template charts and reports:** the dashboard now draws its revenue area chart, traffic bar
+  chart and acquisition ring chart, and `/reports` gains a trend chart with a metric switch, a
+  user-chosen colour and a movable target line, a channel ring chart with per-channel shares, and
+  summary/detail CSV export. The three shapes are hand-written SVG on a shared axis shell — no chart
+  library — with the geometry in a tested module (`niceTicks`, monotone cubic interpolation, ring
+  arcs, band layout). Adds RadioGroup, Slider, InputNumber and ColorPicker to the app-level UI set.
+  449 Vitest tests and 28 Playwright specs.
 
 ### Fixed
 

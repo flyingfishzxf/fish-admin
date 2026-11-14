@@ -26,11 +26,13 @@ published package.
 - Permission-filtered sidebar, route guards and button-level permission checks.
 - Light / dark / system theme, five accent palettes and en / zh-CN language, all
   persisted.
-- Dashboard: 7/30 day range, four KPI cards, recent activity.
+- Dashboard: 7/30 day range, four KPI cards, a revenue area chart, a traffic
+  bar chart, an acquisition ring chart and the recent-activity feed.
 - Users: search, status filter, server pagination and sorting, row actions,
   create/edit dialog and delete confirmation.
-- Reports: range and granularity filters, four KPIs, channel breakdown and a
-  paginated table.
+- Reports: range and granularity filters, four KPIs, a trend chart with a
+  metric switch and a target line, a channel ring chart with shares, and a
+  paginated table with CSV export.
 - Departments: role="tree" with arrow-key navigation, member counts and inline
   create/rename.
 - Roles: search, create/rename/delete, and a permission matrix that saves one
@@ -154,6 +156,36 @@ Seven endpoints back the domain, all served by `packages/mock`:
 write invalidates the whole `['notifications']` key, and the unread count is
 always the server's number.
 
+## Charts
+
+Three chart shapes cover every visualisation the template needs: area, grouped
+bar and ring. They are hand-written SVG rather than Recharts, which only ships
+for React; the geometry lives in `components/ui/chart/chart.ts` as pure
+functions with unit tests, and the components only render.
+
+| File             | Role                                                                        |
+| ---------------- | --------------------------------------------------------------------------- |
+| `chart.ts`       | `niceTicks`, Fritsch–Carlson monotone interpolation, ring arcs, band layout |
+| `ChartShell.vue` | measures the container, draws the grid and both axes, reports hover         |
+| `AreaChart.vue`  | gradient fill, optional dashed target line                                  |
+| `BarChart.vue`   | grouped bars with rounded caps and a legend                                 |
+| `DonutChart.vue` | ring segments with a 3° gap, label tooltip in the hole                      |
+
+The SVG is drawn at the measured pixel width rather than scaled from a fixed
+`viewBox`, so tick labels keep their size in a narrow card. Width comes from a
+`ResizeObserver`; jsdom has none and reports `0`, so `useChartSize` falls back
+to 640 px and the component tests can assert on structure instead of pixels.
+
+Hover is per chart, not per point: `ChartShell` resolves the index (nearest point
+for the area chart, band for the bar chart) and emits it, the chart draws a
+cursor line and an active dot, and the tooltip is an HTML layer above the SVG so
+it can use the same border and shadow tokens as the rest of the UI.
+
+Colours come straight from the caller (`var(--chart-1)`, or the hex the colour
+picker returns) instead of the React `ChartConfig` indirection that exists to
+feed Recharts' CSS variables. The trend chart on `/reports` is the one place a
+colour is user-editable; it defaults to `#6366f1`.
+
 ## Auth flows
 
 | Flow              | Path                                     | Notes                                                            |
@@ -190,7 +222,7 @@ pnpm test:e2e:vue-template
 | Shell           | sidebar / header / mixed + density and width settings                      | the same three layouts, both densities and all three widths, on `/settings`     |
 | Navigation      | all 16 contracted pages                                                    | 13 of 16; the three collaboration pages absent                                  |
 | Authentication  | sign in, register, recovery, invite, OTP, 2FA                              | the same six flows; no email delivery, fixed demo TOTP secret                   |
-| Dashboard       | KPIs, three charts, product tour                                           | KPIs and activity feed; no charts or tour                                       |
+| Dashboard       | KPIs, three charts, product tour                                           | the same three charts and the tour, drawn as hand-written SVG                   |
 | Users           | column controls, density, saved views, CSV, bulk, import, detail, activity | search, status, paging, sorting, CRUD                                           |
 | Roles           | two-step create wizard that also picks permissions                         | one dialog; permissions are granted in the matrix                               |
 | Dictionaries    | drag handle plus arrow keys, no pagination                                 | same, and the item list is not paged                                            |
@@ -272,13 +304,15 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-374 tests in 61 files. Twenty-one Playwright specs cover the golden paths, four
-management scenarios (nine nav items, viewer 403, matrix persistence, pager
+449 tests in 66 files. Twenty-eight Playwright specs cover the golden paths,
+four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
-invite acceptance, accent persistence) and seven shell/notification scenarios
+invite acceptance, accent persistence), seven shell/notification scenarios
 (header layout, mixed layout with compact density, palette navigation, tab close,
-single read, mark-all persistence, offline banner); they do not produce or
-compare screenshots.
+single read, mark-all persistence, offline banner) and seven chart/report
+scenarios (three dashboard charts, range redraw, hover tooltip, report charts,
+metric switch, target line, CSV download); they do not produce or compare
+screenshots.
 
 ## Client-side permission boundary
 
