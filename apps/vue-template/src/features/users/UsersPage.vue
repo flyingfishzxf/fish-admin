@@ -22,18 +22,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@fish-admin/vue'
-import { BadgeCheck, ChevronDown, Loader2, Plus, SearchX, Trash2, Users } from 'lucide-vue-next'
+import {
+  BadgeCheck,
+  ChevronDown,
+  Download,
+  Loader2,
+  Plus,
+  SearchX,
+  Trash2,
+  Users,
+} from 'lucide-vue-next'
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 
 import AlertDialog from '../../components/ui/AlertDialog.vue'
 import EmptyState from '../../components/common/EmptyState.vue'
 import ErrorState from '../../components/common/ErrorState.vue'
 import PageHeader from '../../components/common/PageHeader.vue'
+import { downloadCsv, type CsvCell } from '../../lib/csv'
+import { formatDate } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { hasPermission } from '../../lib/permissions'
 import { useTransientMessage } from '../../lib/use-transient-message'
 import { useAuthStore } from '../../stores/auth'
-import { bulkDeleteUsers, bulkUpdateUserStatus, restoreUsers } from './api'
+import { bulkDeleteUsers, bulkUpdateUserStatus, fetchUsers, restoreUsers } from './api'
 import { createUserColumns } from './columns'
 import DeleteUserDialog from './DeleteUserDialog.vue'
 import { userOptionsQueryOptions, usersQueryOptions } from './queries'
@@ -51,6 +62,7 @@ const editing = ref<User | null>(null)
 const deleting = ref<User | null>(null)
 const rowSelection = ref<RowSelectionState>({})
 const bulkDeleteOpen = ref(false)
+const exporting = ref(false)
 const { message: notice, action: noticeAction, show: showNotice } = useTransientMessage()
 
 const granted = computed(() => auth.user?.permissions ?? [])
@@ -73,6 +85,7 @@ const optionsQuery = useQuery(userOptionsQueryOptions)
 
 const rows = computed(() => usersQuery.data.value?.items ?? [])
 const pageCount = computed(() => Math.max(usersQuery.data.value?.pageCount ?? 1, 1))
+const total = computed(() => usersQuery.data.value?.total ?? 0)
 const hasFilters = computed(() => Boolean(search.q || search.roleId || search.status))
 
 // Selection is keyed by row id, so a refetch that changes the page cannot leave
@@ -298,6 +311,67 @@ function handleDeleted() {
   deleting.value = null
   if (name) showNotice(t('users:delete.success', { name }))
 }
+
+const EXPORT_PAGE_SIZE = 100
+// A pageCount that lies (or a filter that keeps returning rows) must not spin
+// forever: 200 pages is 20,000 rows, well past anything the mock returns.
+const EXPORT_MAX_PAGES = 200
+
+/**
+ * Exports everything the current filters match, not just the visible page —
+ * an export that silently stops at row 10 is worse than no export.
+ */
+async function handleExport() {
+  if (exporting.value) return
+  exporting.value = true
+  try {
+    const filters = {
+      q: search.q,
+      roleId: search.roleId,
+      status: search.status,
+      sort: search.sort,
+      order: search.order,
+    }
+    const collected: User[] = []
+    let page = 1
+    let pages = 1
+
+    do {
+      const result = await fetchUsers({ ...filters, page, pageSize: EXPORT_PAGE_SIZE })
+      collected.push(...result.items)
+      pages = Math.min(Math.max(result.pageCount, 1), EXPORT_MAX_PAGES)
+      page += 1
+    } while (page <= pages)
+
+    const rows: CsvCell[][] = [
+      [
+        t('users:columns.name'),
+        t('users:columns.email'),
+        t('users:columns.role'),
+        t('users:columns.status'),
+        t('users:columns.department'),
+        t('users:columns.createdAt'),
+      ],
+      ...collected.map((user) => [
+        user.name,
+        user.email,
+        user.roleName,
+        t(`common:status.${user.status}`),
+        t(`common:departments.${user.department}`, { defaultValue: user.department }),
+        formatDate(user.createdAt, language.value, { dateStyle: 'medium' }),
+      ]),
+    ]
+
+    // Data is collected before this call so a mid-export failure never leaves a
+    // half-written file on disk.
+    downloadCsv(`users-${new Date().toISOString().slice(0, 10)}.csv`, rows)
+    showNotice(t('users:exportSuccess'))
+  } catch {
+    showNotice(t('errors:api.unknown'))
+  } finally {
+    exporting.value = false
+  }
+}
 </script>
 
 <template>
@@ -377,6 +451,21 @@ function handleDeleted() {
 
           <Button v-if="hasFilters" variant="ghost" size="sm" class="h-9" @click="clearFilters">
             {{ t('users:actions.resetFilters') }}
+          </Button>
+        </template>
+
+        <template #actions>
+          <Button
+            variant="outline"
+            size="sm"
+            class="h-9 gap-2"
+            data-export-users
+            :disabled="exporting || total === 0"
+            @click="handleExport"
+          >
+            <Loader2 v-if="exporting" class="size-4 animate-spin" aria-hidden="true" />
+            <Download v-else class="size-4" aria-hidden="true" />
+            <span class="hidden sm:inline">{{ t('users:actions.exportCsv') }}</span>
           </Button>
         </template>
 
