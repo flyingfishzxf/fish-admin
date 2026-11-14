@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import type { DashboardRange } from '@fish-admin/contracts'
 import { useQuery } from '@tanstack/vue-query'
+import { Button } from '@fish-admin/vue'
+import { Compass } from 'lucide-vue-next'
 import { ref } from 'vue'
 
 import ErrorState from '../../components/common/ErrorState.vue'
 import PageHeader from '../../components/common/PageHeader.vue'
+import Tour from '../../components/layout/Tour.vue'
+import type { TourStep } from '../../components/layout/tour'
 import { useT } from '../../lib/i18n'
 import ActivityList from './ActivityList.vue'
 import KpiCards from './KpiCards.vue'
@@ -13,6 +17,33 @@ import { dashboardQueryOptions } from './queries'
 const t = useT('dashboard')
 const range = ref<DashboardRange>(7)
 const query = useQuery(dashboardQueryOptions(range))
+const tourOpen = ref(false)
+
+// Anchors live on the shell, so the tour follows whatever chrome the chosen
+// layout renders; a step whose target is absent is skipped, not fatal.
+const TOUR_STEPS: TourStep[] = [
+  {
+    target: '[data-tour="sidebar"]',
+    titleKey: 'tour.steps.sidebar.title',
+    descriptionKey: 'tour.steps.sidebar.description',
+    placement: 'right',
+  },
+  {
+    target: '[data-tour="search"]',
+    titleKey: 'tour.steps.search.title',
+    descriptionKey: 'tour.steps.search.description',
+  },
+  {
+    target: '[data-tour="notifications"]',
+    titleKey: 'tour.steps.notifications.title',
+    descriptionKey: 'tour.steps.notifications.description',
+  },
+  {
+    target: '[data-tour="account"]',
+    titleKey: 'tour.steps.account.title',
+    descriptionKey: 'tour.steps.account.description',
+  },
+]
 </script>
 
 <template>
@@ -36,6 +67,10 @@ const query = useQuery(dashboardQueryOptions(range))
             {{ t(`range.${option}`) }}
           </button>
         </div>
+        <Button variant="outline" size="sm" data-action="start-tour" @click="tourOpen = true">
+          <Compass class="size-4" />
+          {{ t('tour.start') }}
+        </Button>
       </template>
     </PageHeader>
 
@@ -62,5 +97,7 @@ const query = useQuery(dashboardQueryOptions(range))
         <ActivityList :items="(query.data.value?.activity ?? []).slice(0, 8)" />
       </section>
     </template>
+
+    <Tour v-model:open="tourOpen" :steps="TOUR_STEPS" />
   </div>
 </template>
