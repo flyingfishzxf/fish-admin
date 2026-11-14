@@ -59,14 +59,14 @@ function toggleRead() {
         >
           <component :is="icon" v-if="icon" class="size-5" aria-hidden="true" />
         </span>
-        <p class="text-sm text-muted-foreground">{{ summary }}</p>
-      </div>
-
-      <div class="space-y-5 pt-4" data-drawer-body>
+        <!-- The drawer header already shows the summary, so the body starts with
+             the detail sentence instead of repeating it. -->
         <p class="text-sm leading-relaxed text-muted-foreground">
           {{ notificationBody(t, props.notification) }}
         </p>
+      </div>
 
+      <div class="space-y-5 pt-4" data-drawer-body>
         <dl class="grid gap-3 text-sm">
           <div class="flex items-center justify-between gap-3">
             <dt class="text-muted-foreground">{{ t('detail.kind') }}</dt>
