@@ -186,6 +186,11 @@ picker returns) instead of the React `ChartConfig` indirection that exists to
 feed Recharts' CSS variables. The trend chart on `/reports` is the one place a
 colour is user-editable; it defaults to `#6366f1`.
 
+One deliberate divergence: the acquisition legend wraps long channel names
+instead of truncating them. In a third-width card the React template reserves
+200 px for the ring and leaves the label column too narrow, so "Organic search"
+becomes "Organic …"; at 160 px plus wrapping the name survives intact.
+
 ## Auth flows
 
 | Flow              | Path                                     | Notes                                                            |
