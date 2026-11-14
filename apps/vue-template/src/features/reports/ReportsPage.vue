@@ -34,10 +34,10 @@ import {
   formatNumber,
   formatPercent,
 } from '../../lib/format'
+import { downloadCsv } from '../../lib/csv'
 import { language, useT } from '../../lib/i18n'
 import { clampToPageCount } from '../../lib/list-page'
 import { useTransientMessage } from '../../lib/use-transient-message'
-import { downloadCsv } from './csv'
 import { reportsQueryOptions } from './queries'
 import {
   DEFAULT_REPORT_SEARCH,

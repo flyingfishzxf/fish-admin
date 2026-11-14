@@ -5,13 +5,13 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import { downloadCsv } from '../../lib/csv'
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import { fetchReports } from './api'
-import { downloadCsv } from './csv'
 import ReportsPage from './ReportsPage.vue'
 
 vi.mock('./api', () => ({ fetchReports: vi.fn() }))
-vi.mock('./csv', () => ({ downloadCsv: vi.fn(), toCsv: vi.fn() }))
+vi.mock('../../lib/csv', () => ({ downloadCsv: vi.fn(), toCsv: vi.fn() }))
 
 function reportRow(index: number): ReportData['rows'][number] {
   return {
