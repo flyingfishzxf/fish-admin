@@ -12,6 +12,7 @@ import Separator from '../../components/ui/Separator.vue'
 import Textarea from '../../components/ui/Textarea.vue'
 import { ApiError } from '../../lib/api-error'
 import { useT } from '../../lib/i18n'
+import { createAvatarDataUrl, validateAvatarFile } from '../../lib/image'
 import { getInitials } from '../../lib/initials'
 import { useTransientMessage } from '../../lib/use-transient-message'
 import { useAuthStore } from '../../stores/auth'
@@ -26,9 +27,6 @@ const validationT = useT('validation')
 const NAME_MIN = 2
 const NAME_MAX = 60
 const BIO_MAX = 280
-const MAX_AVATAR_BYTES = 2 * 1024 * 1024
-const AVATAR_TYPES = ['image/png', 'image/jpeg', 'image/webp']
-const AVATAR_SIZE = 256
 
 const router = useRouter()
 const queryClient = useQueryClient()
@@ -114,24 +112,6 @@ function removeAvatar() {
   errors.avatar = undefined
 }
 
-// Re-encode every avatar to 256² so the stored data URL stays far below the
-// 2 MB limit no matter what the user picked.
-async function toAvatarDataUrl(file: File) {
-  if (typeof createImageBitmap !== 'function') throw new Error('createImageBitmap is unavailable')
-  const bitmap = await createImageBitmap(file)
-  const canvas = document.createElement('canvas')
-  canvas.width = AVATAR_SIZE
-  canvas.height = AVATAR_SIZE
-  const context = canvas.getContext('2d')
-  if (!context) throw new Error('Canvas is unavailable')
-  const scale = Math.max(AVATAR_SIZE / bitmap.width, AVATAR_SIZE / bitmap.height)
-  const width = bitmap.width * scale
-  const height = bitmap.height * scale
-  context.drawImage(bitmap, (AVATAR_SIZE - width) / 2, (AVATAR_SIZE - height) / 2, width, height)
-  bitmap.close()
-  return canvas.toDataURL('image/webp', 0.85)
-}
-
 async function onAvatarChange(event: Event) {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
@@ -140,16 +120,15 @@ async function onAvatarChange(event: Event) {
   if (!file) return
 
   errors.avatar = undefined
-  if (!AVATAR_TYPES.includes(file.type)) {
-    errors.avatar = t('avatarErrors.invalidType')
-    return
-  }
-  if (file.size > MAX_AVATAR_BYTES) {
-    errors.avatar = t('avatarErrors.tooLarge')
+  const issue = validateAvatarFile(file)
+  if (issue) {
+    errors.avatar = t(
+      issue === 'invalidType' ? 'avatarErrors.invalidType' : 'avatarErrors.tooLarge',
+    )
     return
   }
   try {
-    form.avatar = await toAvatarDataUrl(file)
+    form.avatar = await createAvatarDataUrl(file)
     avatarDirty.value = true
   } catch {
     errors.avatar = t('avatarErrors.invalidType')
