@@ -28,8 +28,10 @@ published package.
   persisted.
 - Dashboard: 7/30 day range, four KPI cards, a revenue area chart, a traffic
   bar chart, an acquisition ring chart and the recent-activity feed.
-- Users: search, status filter, server pagination and sorting, row actions,
-  create/edit dialog and delete confirmation.
+- Users: search, role and status filters, server pagination, sorting and page
+  size, row selection with bulk status change and bulk delete (both undoable),
+  a CSV export of the filtered result, density and column-visibility controls,
+  saved views, row actions, create/edit dialog and delete confirmation.
 - Reports: range and granularity filters, four KPIs, a trend chart with a
   metric switch and a target line, a channel ring chart with shares, and a
   paginated table with CSV export.
@@ -228,7 +230,7 @@ pnpm test:e2e:vue-template
 | Navigation      | all 16 contracted pages                                                    | 13 of 16; the three collaboration pages absent                                  |
 | Authentication  | sign in, register, recovery, invite, OTP, 2FA                              | the same six flows; no email delivery, fixed demo TOTP secret                   |
 | Dashboard       | KPIs, three charts, product tour                                           | the same three charts and the tour, drawn as hand-written SVG                   |
-| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity | search, status, paging, sorting, CRUD                                           |
+| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity | the same list surfaces except import; no detail page or activity tab yet        |
 | Roles           | two-step create wizard that also picks permissions                         | one dialog; permissions are granted in the matrix                               |
 | Dictionaries    | drag handle plus arrow keys, no pagination                                 | same, and the item list is not paged                                            |
 | Audit log       | JSON viewer, per-action icons, debounced search, page-size control         | metadata as a definition list, text badges, no debounce, fixed page size of 20  |
@@ -281,6 +283,25 @@ Implementation details that also differ from the React template:
   of asking again with the requested page, so a shrink cannot strand the pager.
 - The dictionaries screen derives the selected type from the list rather than
   syncing it in an effect, so deleting the selected type converges immediately.
+- Table density is an optional `density` prop on `DataTable` that swaps the two
+  padding pairs the React component uses (`py-3`/`h-10` for `py-1.5`/`h-9`), so
+  a page can offer the switch without the template reaching into cell classes
+  and the parity scenes keep their default rendering.
+- The CSV helpers live in `src/lib/csv.ts` because two features write files now;
+  the users export walks pages until it has `total` rows (200 pages at most)
+  and writes the file once, so a mid-export failure leaves no partial download.
+- A saved view stores the query fields but never `page`, and applying one
+  replaces the whole query instead of merging it — otherwise "inactive admins"
+  would keep whatever filter was set before it.
+- Row selection is keyed by user id and cleared whenever the query changes: a
+  tick on a row that is no longer in the result set makes "delete selected"
+  mean something the user cannot see.
+- The undo notice owns its action, so both disappear together; a button that
+  outlived its message would offer to restore ids the user has left behind.
+- Column labels and groups are read from `columnDef.meta` through a local cast
+  rather than a `ColumnMeta` augmentation: this repo resolves
+  `@tanstack/table-core` as a transitive dependency, so the augmentation would
+  have no stable module path to target.
 - Reka's `AlertDialogAction` is an alias of the close button, so the shared
   `AlertDialog` renders a plain confirm button instead and leaves `open` under
   the caller's control; the caller closes the dialog after its mutation resolves.
@@ -309,15 +330,16 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-449 tests in 66 files. Twenty-eight Playwright specs cover the golden paths,
+469 tests in 69 files. Thirty-one Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios
 (header layout, mixed layout with compact density, palette navigation, tab close,
-single read, mark-all persistence, offline banner) and seven chart/report
+single read, mark-all persistence, offline banner), seven chart/report
 scenarios (three dashboard charts, range redraw, hover tooltip, report charts,
-metric switch, target line, CSV download); they do not produce or compare
-screenshots.
+metric switch, target line, CSV download) and three users-table scenarios
+(bulk delete with undo, CSV download, role filter); they do not produce or
+compare screenshots.
 
 ## Client-side permission boundary
 

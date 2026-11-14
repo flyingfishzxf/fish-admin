@@ -39,9 +39,17 @@ All notable changes to this project are documented here. The format is based on
   library — with the geometry in a tested module (`niceTicks`, monotone cubic interpolation, ring
   arcs, band layout). Adds RadioGroup, Slider, InputNumber and ColorPicker to the app-level UI set.
   449 Vitest tests and 28 Playwright specs.
+- **Vue template users table:** `/users` gains role filtering, a page-size control, two densities, a
+  column-visibility menu, saved views in `localStorage`, row selection with bulk status change and
+  bulk delete (both undoable from the inline notice) and a CSV export that walks every page of the
+  filtered result. Adds an optional `density` prop to `DataTable`. 469 Vitest tests and 31 Playwright
+  specs.
 
 ### Fixed
 
+- **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
+  teleport, so a caller's `side="top"` was dropped with a warning and the menu opened downwards —
+  the users bulk-status menu then covered the rows it acts on.
 - **Vue template shell:** deleting the last row on the final page now brings the pager back to a
   valid page, and a startup failure shows a readable error with a reload button instead of a blank
   screen.
