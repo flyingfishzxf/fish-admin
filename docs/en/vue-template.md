@@ -298,6 +298,10 @@ Implementation details that also differ from the React template:
   mean something the user cannot see.
 - The undo notice owns its action, so both disappear together; a button that
   outlived its message would offer to restore ids the user has left behind.
+- The group band above the column headers is drawn by `DataTable` itself, from
+  runs of adjacent visible leaves that share `meta.group`, because TanStack has
+  no such row; it stays 32 px under both densities and disappears entirely as
+  soon as one column omits a group.
 - Column labels and groups are read from `columnDef.meta` through a local cast
   rather than a `ColumnMeta` augmentation: this repo resolves
   `@tanstack/table-core` as a transitive dependency, so the augmentation would
@@ -330,7 +334,7 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-469 tests in 69 files. Thirty-one Playwright specs cover the golden paths,
+470 tests in 69 files. Thirty-one Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios

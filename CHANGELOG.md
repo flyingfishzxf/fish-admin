@@ -42,8 +42,8 @@ All notable changes to this project are documented here. The format is based on
 - **Vue template users table:** `/users` gains role filtering, a page-size control, two densities, a
   column-visibility menu, saved views in `localStorage`, row selection with bulk status change and
   bulk delete (both undoable from the inline notice) and a CSV export that walks every page of the
-  filtered result. Adds an optional `density` prop to `DataTable`. 469 Vitest tests and 31 Playwright
-  specs.
+  filtered result. Adds an optional `density` prop to `DataTable` and the column group band the React
+  table draws from `meta.group`. 470 Vitest tests and 31 Playwright specs.
 
 ### Fixed
 
