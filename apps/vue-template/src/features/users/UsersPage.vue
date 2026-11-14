@@ -34,6 +34,7 @@ import {
   Users,
 } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 import AlertDialog from '../../components/ui/AlertDialog.vue'
 import ColumnOptions from '../../components/common/ColumnOptions.vue'
@@ -59,6 +60,7 @@ import UserFormDialog from './UserFormDialog.vue'
 const t = useT()
 const auth = useAuthStore()
 const queryClient = useQueryClient()
+const router = useRouter()
 
 const DENSITY_KEY = 'fish-admin:users-density'
 const LAYOUT_KEY = 'fish-admin:users-table-layout'
@@ -260,6 +262,7 @@ const columns = computed(() =>
     canEdit: canEdit.value,
     canDelete: canDelete.value,
     selectable: selectable.value,
+    onView: (user) => router.push({ name: 'user-detail', params: { id: user.id } }),
     onEdit: (user) => {
       editing.value = user
       formOpen.value = true

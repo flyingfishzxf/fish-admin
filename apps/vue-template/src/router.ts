@@ -169,6 +169,14 @@ export const router = createRouter({
           component: () => import('./features/notifications/NotificationsPage.vue'),
         },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
+        {
+          // A detail is a drill-down, not a nav item: it sits under the same
+          // permission as the list and does not join the sidebar contract.
+          path: 'users/:id',
+          name: 'user-detail',
+          component: () => import('./features/users/UserDetailPage.vue'),
+          meta: { permission: 'user:read' },
+        },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
       ],
     },

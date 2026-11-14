@@ -1,7 +1,8 @@
 import type { User } from '@fish-admin/contracts'
 import type { ColumnDef } from '@tanstack/vue-table'
-import { ArrowDown, ArrowUp, MoreHorizontal, Pencil, Trash2 } from 'lucide-vue-next'
+import { ArrowDown, ArrowUp, Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-vue-next'
 import { h } from 'vue'
+import { RouterLink } from 'vue-router'
 
 import {
   Avatar,
@@ -20,6 +21,7 @@ import {
 import { formatDate, formatRelativeTime } from '../../lib/format'
 import { getInitials } from '../../lib/initials'
 import type { Translate } from './form'
+import UserStatusBadge from './UserStatusBadge.vue'
 
 export interface UserColumnsOptions {
   t: Translate
@@ -29,6 +31,7 @@ export interface UserColumnsOptions {
   canDelete: boolean
   /** Row checkboxes only exist when the user may act on the selection. */
   selectable: boolean
+  onView: (user: User) => void
   onEdit: (user: User) => void
   onDelete: (user: User) => void
 }
@@ -48,18 +51,6 @@ const WIDTH = {
   createdAt: 150,
   lastActive: 150,
   actions: 64,
-} as const
-
-const STATUS_VARIANTS = {
-  active: 'default',
-  invited: 'secondary',
-  inactive: 'outline',
-} as const
-
-const STATUS_DOTS = {
-  active: 'bg-success',
-  invited: 'bg-warning',
-  inactive: 'bg-muted-foreground/60',
 } as const
 
 function sortableHeader(label: string): ColumnDef<User>['header'] {
@@ -90,6 +81,7 @@ export function createUserColumns({
   canEdit,
   canDelete,
   selectable,
+  onView,
   onEdit,
   onDelete,
 }: UserColumnsOptions): ColumnDef<User>[] {
@@ -148,7 +140,22 @@ export function createUserColumns({
               getInitials(user.name),
             ),
           ]),
-          h('span', { class: 'text-sm font-medium' }, user.name),
+          // A real link, not a click handler: opening a user in a new tab and
+          // copying the URL both have to work. The row menu offers the same
+          // destination for people who never notice the name is clickable.
+          h(
+            'div',
+            { class: 'min-w-0' },
+            h(
+              RouterLink,
+              {
+                to: { name: 'user-detail', params: { id: user.id } },
+                class:
+                  'block truncate text-sm font-medium hover:text-primary hover:underline focus-visible:underline focus-visible:outline-none',
+              },
+              () => user.name,
+            ),
+          ),
         ])
       },
     },
@@ -209,16 +216,7 @@ export function createUserColumns({
         group: 'access',
         groupLabel: t('users:columnGroups.access'),
       },
-      cell: ({ row }) => {
-        const status = row.original.status
-        return h(Badge, { variant: STATUS_VARIANTS[status], class: 'gap-1.5 font-normal' }, () => [
-          h('span', {
-            class: ['size-1.5 rounded-full', STATUS_DOTS[status]],
-            'aria-hidden': 'true',
-          }),
-          t(`common:status.${status}`),
-        ])
-      },
+      cell: ({ row }) => h(UserStatusBadge, { status: row.original.status }),
     },
     {
       accessorKey: 'createdAt',
@@ -288,6 +286,11 @@ export function createUserColumns({
               { align: 'end' },
               {
                 default: () => [
+                  h(DropdownMenuItem, { onSelect: () => onView(user) }, () => [
+                    h(Eye, { 'aria-hidden': 'true' }),
+                    t('users:actions.view'),
+                  ]),
+                  h(DropdownMenuSeparator),
                   canEdit
                     ? h(DropdownMenuItem, { onSelect: () => onEdit(user) }, () => [
                         h(Pencil, { 'aria-hidden': 'true' }),

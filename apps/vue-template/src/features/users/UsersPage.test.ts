@@ -4,6 +4,7 @@ import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import { downloadCsv } from '../../lib/csv'
@@ -83,8 +84,17 @@ function mountPage(permissions: string[]) {
   queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
   })
+  // The name cell is a RouterLink, so the page needs a router instance even
+  // when the test never navigates.
+  const router = createRouter({
+    history: createMemoryHistory(),
+    routes: [
+      { path: '/users', name: 'users', component: UsersPage },
+      { path: '/users/:id', name: 'user-detail', component: { template: '<div>detail</div>' } },
+    ],
+  })
   wrapper = mount(UsersPage, {
-    global: { plugins: [pinia, [VueQueryPlugin, { queryClient }]] },
+    global: { plugins: [pinia, router, [VueQueryPlugin, { queryClient }]] },
   })
   return wrapper
 }

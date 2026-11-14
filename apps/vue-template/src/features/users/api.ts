@@ -1,9 +1,12 @@
 import type {
+  AuditEvent,
   Department,
+  DictionaryDetail,
   PaginatedResult,
   RoleOption,
   User,
   UserInput,
+  UserProfileInput,
   UserStatus,
 } from '@fish-admin/contracts'
 
@@ -44,6 +47,31 @@ export function fetchDepartments(signal?: AbortSignal) {
 
 export function createUser(input: UserInput) {
   return apiRequest<User>('/users', { method: 'POST', body: input })
+}
+
+export function fetchUser(id: string, signal?: AbortSignal) {
+  return apiRequest<User>(`/users/${encodeURIComponent(id)}`, { signal })
+}
+
+/** The detail page only ever sends changed fields; a full UserInput would
+ * re-validate the role and the email on a tag or avatar edit. */
+export function updateUserProfile(id: string, input: UserProfileInput) {
+  return apiRequest<User>(`/users/${encodeURIComponent(id)}`, { method: 'PATCH', body: input })
+}
+
+export function fetchUserActivity(id: string, limit = 20, signal?: AbortSignal) {
+  const search = new URLSearchParams({
+    entityType: 'user',
+    entityId: id,
+    page: '1',
+    pageSize: String(limit),
+  })
+  return apiRequest<PaginatedResult<AuditEvent>>(`/audit-events?${search.toString()}`, { signal })
+}
+
+/** Enabled `user_tag` entries are the tag suggestions on the detail page. */
+export function fetchUserTagOptions(signal?: AbortSignal) {
+  return apiRequest<DictionaryDetail>('/dictionaries/user_tag', { signal })
 }
 
 export function updateUser(id: string, input: UserInput) {
