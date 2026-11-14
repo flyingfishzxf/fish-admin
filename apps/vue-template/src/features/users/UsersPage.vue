@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { User, UserStatus } from '@fish-admin/contracts'
-import { useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import {
   getCoreRowModel,
   useVueTable,
@@ -9,6 +9,12 @@ import {
 } from '@tanstack/vue-table'
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   ProTable,
   Select,
   SelectContent,
@@ -16,40 +22,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@fish-admin/vue'
-import { Plus, SearchX, Users } from 'lucide-vue-next'
+import { BadgeCheck, ChevronDown, Loader2, Plus, SearchX, Trash2, Users } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 
+import AlertDialog from '../../components/ui/AlertDialog.vue'
 import EmptyState from '../../components/common/EmptyState.vue'
 import ErrorState from '../../components/common/ErrorState.vue'
 import PageHeader from '../../components/common/PageHeader.vue'
 import { language, useT } from '../../lib/i18n'
 import { hasPermission } from '../../lib/permissions'
+import { useTransientMessage } from '../../lib/use-transient-message'
 import { useAuthStore } from '../../stores/auth'
+import { bulkDeleteUsers, bulkUpdateUserStatus, restoreUsers } from './api'
 import { createUserColumns } from './columns'
 import DeleteUserDialog from './DeleteUserDialog.vue'
 import { userOptionsQueryOptions, usersQueryOptions } from './queries'
-import { DEFAULT_USERS_SEARCH, type UserSortKey, type UsersSearch } from './search'
+import { DEFAULT_USERS_SEARCH, USER_STATUSES, type UserSortKey, type UsersSearch } from './search'
 import UserFormDialog from './UserFormDialog.vue'
 
 const t = useT()
 const auth = useAuthStore()
+const queryClient = useQueryClient()
 
 const search = reactive<UsersSearch>({ ...DEFAULT_USERS_SEARCH })
 const searchValue = ref('')
 const formOpen = ref(false)
 const editing = ref<User | null>(null)
 const deleting = ref<User | null>(null)
-const feedback = ref<string | null>(null)
+const rowSelection = ref<RowSelectionState>({})
+const bulkDeleteOpen = ref(false)
+const { message: notice, action: noticeAction, show: showNotice } = useTransientMessage()
 
 const granted = computed(() => auth.user?.permissions ?? [])
 const canCreate = computed(() => hasPermission(granted.value, 'user:create'))
 const canEdit = computed(() => hasPermission(granted.value, 'user:update'))
 const canDelete = computed(() => hasPermission(granted.value, 'user:delete'))
+const selectable = computed(() => canEdit.value || canDelete.value)
 
 const params = computed(() => ({
   page: search.page,
   pageSize: search.pageSize,
   q: search.q,
+  roleId: search.roleId,
   status: search.status,
   sort: search.sort,
   order: search.order,
@@ -59,7 +73,28 @@ const optionsQuery = useQuery(userOptionsQueryOptions)
 
 const rows = computed(() => usersQuery.data.value?.items ?? [])
 const pageCount = computed(() => Math.max(usersQuery.data.value?.pageCount ?? 1, 1))
-const hasFilters = computed(() => Boolean(search.q || search.status))
+const hasFilters = computed(() => Boolean(search.q || search.roleId || search.status))
+
+// Selection is keyed by row id, so a refetch that changes the page cannot leave
+// a checkbox behind on a row that is no longer in the list.
+const selectedIds = computed(() =>
+  Object.entries(rowSelection.value)
+    .filter(([, selected]) => selected)
+    .map(([id]) => id),
+)
+const selectedCount = computed(() => selectedIds.value.length)
+
+const selection = computed(() =>
+  selectedCount.value > 0
+    ? {
+        count: selectedCount.value,
+        label: t('users:bulk.selected', { count: selectedCount.value }),
+        regionLabel: t('users:bulk.regionLabel'),
+        clearLabel: t('users:bulk.clear'),
+        onClear: clearSelection,
+      }
+    : undefined,
+)
 
 // The API clamps an out-of-range page to the last available one. Keep the
 // requested page in step with the server response: deleting the only row on the
@@ -74,9 +109,21 @@ watch(
     if (search.page > lastPage) search.page = lastPage
   },
 )
+
+// Any change of filter, sort or page starts a new result set; keeping ticked
+// rows from the previous one would make "delete selected" ambiguous.
+watch(params, () => {
+  rowSelection.value = {}
+})
+
 // `SelectValue` renders the label it is given rather than the selected item text.
 const statusLabel = computed(() =>
   search.status ? t(`common:status.${search.status}`) : undefined,
+)
+const roleLabel = computed(() =>
+  search.roleId
+    ? (optionsQuery.data.value?.roles ?? []).find((role) => role.id === search.roleId)?.name
+    : undefined,
 )
 
 // A failed refetch keeps the last page on screen, so the stale rows get a notice
@@ -86,7 +133,6 @@ const actionError = computed(() =>
 )
 
 let searchTimer: ReturnType<typeof setTimeout> | undefined
-let feedbackTimer: ReturnType<typeof setTimeout> | undefined
 
 watch(searchValue, (value) => {
   if (searchTimer) clearTimeout(searchTimer)
@@ -100,20 +146,58 @@ watch(searchValue, (value) => {
 
 onBeforeUnmount(() => {
   if (searchTimer) clearTimeout(searchTimer)
-  if (feedbackTimer) clearTimeout(feedbackTimer)
 })
 
-function showFeedback(message: string) {
-  feedback.value = message
-  if (feedbackTimer) clearTimeout(feedbackTimer)
-  feedbackTimer = setTimeout(() => {
-    feedback.value = null
-  }, 3000)
+function invalidateUsers() {
+  void queryClient.invalidateQueries({ queryKey: ['users'] })
+  void queryClient.invalidateQueries({ queryKey: ['roles'] })
 }
 
+const statusMutation = useMutation({
+  mutationFn: (input: { ids: string[]; status: UserStatus }) =>
+    bulkUpdateUserStatus(input.ids, input.status),
+  onSuccess: (result) => {
+    clearSelection()
+    invalidateUsers()
+    showNotice(
+      result.updated.length === 0
+        ? t('users:bulk.noChanges')
+        : t('users:bulk.statusSuccess', { count: result.updated.length }),
+    )
+  },
+  onError: () => showNotice(t('users:bulk.statusError')),
+})
+
+const deleteMutation = useMutation({
+  mutationFn: (ids: string[]) => bulkDeleteUsers(ids),
+  onSuccess: (result) => {
+    bulkDeleteOpen.value = false
+    clearSelection()
+    invalidateUsers()
+    if (result.deleted.length === 0) {
+      showNotice(t('users:bulk.noChanges'))
+      return
+    }
+    showNotice(t('users:bulk.deleteSuccess', { count: result.deleted.length }), {
+      action: { label: t('users:bulk.undo'), run: () => restoreMutation.mutate(result.deleted) },
+      timeout: 8000,
+    })
+  },
+  onError: () => showNotice(t('users:bulk.deleteError')),
+})
+
+const restoreMutation = useMutation({
+  mutationFn: (ids: string[]) => restoreUsers(ids),
+  onSuccess: (result) => {
+    invalidateUsers()
+    if (result.restored.length > 0) {
+      showNotice(t('users:bulk.restoreSuccess', { count: result.restored.length }))
+    }
+  },
+  onError: () => showNotice(t('users:bulk.restoreError')),
+})
+
 const sorting = computed<SortingState>(() => [{ id: search.sort, desc: search.order === 'desc' }])
-const rowSelection = ref<RowSelectionState>({})
-const selectable = computed(() => canEdit.value || canDelete.value)
 const columns = computed(() =>
   createUserColumns({
     t,
@@ -170,12 +254,21 @@ const table = useVueTable({
   },
 })
 
+function clearSelection() {
+  rowSelection.value = {}
+}
+
 function setSearch(value: string) {
   searchValue.value = value
 }
 
 function setStatus(value: string) {
   search.status = value === 'all' ? undefined : (value as UserStatus)
+  search.page = 1
+}
+
+function setRole(value: string) {
+  search.roleId = value === 'all' ? undefined : value
   search.page = 1
 }
 
@@ -191,18 +284,19 @@ function openCreate() {
 function clearFilters() {
   searchValue.value = ''
   search.q = undefined
+  search.roleId = undefined
   search.status = undefined
   search.page = 1
 }
 
 function handleSaved(action: 'created' | 'updated') {
-  showFeedback(t(action === 'created' ? 'users:createSuccess' : 'users:updateSuccess'))
+  showNotice(t(action === 'created' ? 'users:createSuccess' : 'users:updateSuccess'))
 }
 
 function handleDeleted() {
   const name = deleting.value?.name
   deleting.value = null
-  if (name) showFeedback(t('users:delete.success', { name }))
+  if (name) showNotice(t('users:delete.success', { name }))
 }
 </script>
 
@@ -217,7 +311,19 @@ function handleDeleted() {
       </template>
     </PageHeader>
 
-    <p v-if="feedback" role="status" class="text-sm text-success">{{ feedback }}</p>
+    <p v-if="notice" role="status" class="flex items-center gap-2 text-sm text-success">
+      {{ notice }}
+      <Button
+        v-if="noticeAction"
+        variant="ghost"
+        size="sm"
+        data-notice-action
+        class="h-7 text-success underline"
+        @click="noticeAction.run()"
+      >
+        {{ noticeAction.label }}
+      </Button>
+    </p>
     <p v-if="actionError" role="alert" class="text-sm text-destructive">{{ actionError }}</p>
 
     <ErrorState
@@ -231,6 +337,7 @@ function handleDeleted() {
         :fetching="usersQuery.isFetching.value && !usersQuery.isPending.value"
         :fetching-label="t('common:states.loading')"
         :table-label="t('users:tableRegion')"
+        :selection="selection"
         :search="{
           value: searchValue,
           onChange: setSearch,
@@ -240,18 +347,72 @@ function handleDeleted() {
         }"
       >
         <template #filters>
+          <Select :model-value="search.roleId ?? 'all'" @update:model-value="setRole">
+            <SelectTrigger class="h-9 w-[9.5rem]" :aria-label="t('users:filters.role')">
+              <SelectValue :label="roleLabel" :placeholder="t('users:filters.allRoles')" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{{ t('users:filters.allRoles') }}</SelectItem>
+              <SelectItem
+                v-for="role in optionsQuery.data.value?.roles ?? []"
+                :key="role.id"
+                :value="role.id"
+              >
+                {{ role.name }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+
           <Select :model-value="search.status ?? 'all'" @update:model-value="setStatus">
             <SelectTrigger class="h-9 w-[8.5rem]" :aria-label="t('users:filters.status')">
               <SelectValue :label="statusLabel" :placeholder="t('users:filters.allStatuses')" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">{{ t('users:filters.allStatuses') }}</SelectItem>
-              <SelectItem value="active">{{ t('common:status.active') }}</SelectItem>
-              <SelectItem value="invited">{{ t('common:status.invited') }}</SelectItem>
-              <SelectItem value="inactive">{{ t('common:status.inactive') }}</SelectItem>
+              <SelectItem v-for="status in USER_STATUSES" :key="status" :value="status">
+                {{ t(`common:status.${status}`) }}
+              </SelectItem>
             </SelectContent>
           </Select>
+
+          <Button v-if="hasFilters" variant="ghost" size="sm" class="h-9" @click="clearFilters">
+            {{ t('users:actions.resetFilters') }}
+          </Button>
         </template>
+
+        <template #selection-actions>
+          <DropdownMenu v-if="canEdit">
+            <DropdownMenuTrigger :as-child="true">
+              <Button variant="outline" size="sm" :disabled="statusMutation.isPending.value">
+                <Loader2
+                  v-if="statusMutation.isPending.value"
+                  class="size-4 animate-spin"
+                  aria-hidden="true"
+                />
+                <BadgeCheck v-else class="size-4" aria-hidden="true" />
+                {{ t('users:bulk.setStatus') }}
+                <ChevronDown class="size-3.5" aria-hidden="true" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="top" align="center" class="w-44">
+              <DropdownMenuLabel>{{ t('users:bulk.setStatus') }}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                v-for="status in USER_STATUSES"
+                :key="status"
+                @select="statusMutation.mutate({ ids: selectedIds, status })"
+              >
+                {{ t(`common:status.${status}`) }}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Button v-if="canDelete" variant="destructive" size="sm" @click="bulkDeleteOpen = true">
+            <Trash2 class="size-4" aria-hidden="true" />
+            {{ t('users:bulk.delete') }}
+          </Button>
+        </template>
+
         <template #empty>
           <EmptyState
             v-if="hasFilters"
@@ -305,6 +466,16 @@ function handleDeleted() {
         </div>
       </div>
     </template>
+
+    <AlertDialog
+      v-model:open="bulkDeleteOpen"
+      :title="t('users:bulk.deleteTitle', { count: selectedCount })"
+      :description="t('users:bulk.deleteDescription')"
+      :confirm-label="t('users:bulk.deleteConfirm', { count: selectedCount })"
+      :cancel-label="t('common:actions.cancel')"
+      :pending="deleteMutation.isPending.value"
+      @confirm="deleteMutation.mutate(selectedIds)"
+    />
 
     <UserFormDialog
       v-model:open="formOpen"

@@ -54,4 +54,28 @@ describe('useTransientMessage', () => {
     // The pending timer was cancelled on dispose, so nothing rewrites the value.
     expect(api.message.value).toBe('Saved')
   })
+
+  it('carries an action that expires with the message', () => {
+    const scope = effectScope()
+    const api = scope.run(() => useTransientMessage(1000))!
+    const run = vi.fn()
+
+    api.show('2 users deleted.', { action: { label: 'Undo', run }, timeout: 8000 })
+    expect(api.action.value?.label).toBe('Undo')
+
+    // The per-call timeout wins over the instance default.
+    vi.advanceTimersByTime(1000)
+    expect(api.message.value).toBe('2 users deleted.')
+
+    vi.advanceTimersByTime(6999)
+    expect(api.action.value?.label).toBe('Undo')
+
+    vi.advanceTimersByTime(1)
+    expect(api.message.value).toBeNull()
+    expect(api.action.value).toBeNull()
+
+    api.show('Saved')
+    expect(api.action.value).toBeNull()
+    scope.stop()
+  })
 })

@@ -17,6 +17,9 @@ vi.mock('./api', () => ({
   createUser: vi.fn(),
   updateUser: vi.fn(),
   deleteUser: vi.fn(),
+  bulkUpdateUserStatus: vi.fn(),
+  bulkDeleteUsers: vi.fn(),
+  restoreUsers: vi.fn(),
 }))
 
 const ada: User = {
@@ -130,7 +133,8 @@ describe('UsersPage', () => {
     const page = mountPage(['user:read'])
     await waitForRows(page)
 
-    page.findComponent(Select).vm.$emit('update:modelValue', 'inactive')
+    // Role comes first in the filter row, status second.
+    page.findAllComponents(Select)[1].vm.$emit('update:modelValue', 'inactive')
     await flushPromises()
 
     await vi.waitFor(() =>
