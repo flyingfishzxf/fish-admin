@@ -36,8 +36,10 @@ function valueOf(name: string) {
 </script>
 
 <template>
-  <!-- The card is a third of the grid, so the ring stays at 160 px: at 200 the
-       legend column had ~20 px left and every channel name truncated. -->
+  <!-- The card is a third of the grid, so the ring stays at 160 px: at the React
+       template's 200 the legend column had ~20 px left and every channel name
+       truncated. Labels wrap rather than ellipsise — a second line costs 18 px,
+       an ellipsis costs the reader the channel name. -->
   <div class="grid gap-3 sm:grid-cols-[minmax(0,160px)_minmax(0,1fr)] sm:items-center">
     <DonutChart
       :ariaLabel="t('charts.channels.title')"
@@ -55,8 +57,10 @@ function valueOf(name: string) {
         class="flex items-center gap-2.5 text-sm"
       >
         <span class="size-2.5 shrink-0 rounded-full" :style="{ backgroundColor: channel.color }" />
-        <span class="flex-1 truncate text-muted-foreground">{{ channel.label }}</span>
-        <span class="font-medium tabular-nums">{{ formatValue(valueOf(channel.name)) }}</span>
+        <span class="min-w-0 flex-1 text-muted-foreground">{{ channel.label }}</span>
+        <span class="shrink-0 font-medium tabular-nums">{{
+          formatValue(valueOf(channel.name))
+        }}</span>
       </li>
     </ul>
   </div>
