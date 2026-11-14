@@ -51,6 +51,8 @@ import { bulkDeleteUsers, bulkUpdateUserStatus, fetchUsers, restoreUsers } from 
 import { createUserColumns } from './columns'
 import DeleteUserDialog from './DeleteUserDialog.vue'
 import { userOptionsQueryOptions, usersQueryOptions } from './queries'
+import SavedViewsMenu from './SavedViewsMenu.vue'
+import type { SavedView } from './saved-views'
 import { DEFAULT_USERS_SEARCH, USER_STATUSES, type UserSortKey, type UsersSearch } from './search'
 import UserFormDialog from './UserFormDialog.vue'
 
@@ -355,6 +357,22 @@ function clearFilters() {
   search.page = 1
 }
 
+/**
+ * A saved view replaces the whole query rather than merging into it: a field
+ * the view left out has to go back to "no filter", otherwise applying a view
+ * onto a filtered table silently keeps the leftover filter.
+ */
+function applyView(view: SavedView) {
+  searchValue.value = view.search.q ?? ''
+  search.q = view.search.q
+  search.roleId = view.search.roleId
+  search.status = view.search.status
+  search.sort = view.search.sort
+  search.order = view.search.order
+  search.pageSize = view.search.pageSize
+  search.page = 1
+}
+
 function handleSaved(action: 'created' | 'updated') {
   showNotice(t(action === 'created' ? 'users:createSuccess' : 'users:updateSuccess'))
 }
@@ -509,6 +527,7 @@ async function handleExport() {
         </template>
 
         <template #actions>
+          <SavedViewsMenu :user-id="auth.user?.id" :search="search" @apply="applyView" />
           <Segmented
             v-model="density"
             data-density
