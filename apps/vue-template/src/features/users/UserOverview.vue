@@ -214,7 +214,6 @@ async function onFile(file: File) {
           </div>
           <Dropzone
             :label="t('users:detail.avatarLabel')"
-            :hint="t('users:detail.avatarHint')"
             :accept="'image/png,image/jpeg,image/webp'"
             :disabled="!canEdit || avatarMutation.isPending.value"
             :error="avatarError ? avatarLabels[avatarError] : undefined"
