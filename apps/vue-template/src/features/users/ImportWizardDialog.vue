@@ -194,15 +194,19 @@ function onMappingChange(key: string, event: Event) {
             :disabled="importing"
             @file="loadFile"
           />
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            data-action="use-sample"
-            @click="loadText(IMPORT_SAMPLE, 'users.csv')"
-          >
-            {{ t('users:import.sample') }}
-          </Button>
+          <!-- React puts this next to Browse inside the drop area; the shared
+               Dropzone has one action slot, so centre it underneath instead. -->
+          <div class="flex justify-center">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              data-action="use-sample"
+              @click="loadText(IMPORT_SAMPLE, 'users.csv')"
+            >
+              {{ t('users:import.sample') }}
+            </Button>
+          </div>
         </div>
 
         <!-- Step 2: map columns -->
