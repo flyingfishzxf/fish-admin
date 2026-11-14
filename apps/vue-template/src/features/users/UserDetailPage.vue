@@ -103,11 +103,7 @@ function backToList() {
       </template>
     </EmptyState>
 
-    <ErrorState
-      v-else-if="query.isError.value"
-      :title="t('users:detail.notFoundTitle')"
-      :on-retry="() => query.refetch()"
-    />
+    <ErrorState v-else-if="query.isError.value" :on-retry="() => query.refetch()" />
 
     <template v-else-if="query.data.value">
       <div class="space-y-4">
@@ -145,9 +141,7 @@ function backToList() {
                 </span>
                 <span>
                   {{ t('users:detail.joined') }}:
-                  {{
-                    formatDate(query.data.value.createdAt, language, { dateStyle: 'medium' })
-                  }}
+                  {{ formatDate(query.data.value.createdAt, language, { dateStyle: 'medium' }) }}
                 </span>
               </div>
             </div>

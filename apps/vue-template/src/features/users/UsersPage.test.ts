@@ -4,7 +4,7 @@ import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createMemoryHistory, createRouter, type Router } from 'vue-router'
 
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import { downloadCsv } from '../../lib/csv'
@@ -64,6 +64,7 @@ const departments: Department[] = [
 
 let wrapper: VueWrapper | null = null
 let queryClient: QueryClient
+let router: Router
 
 function mountPage(permissions: string[]) {
   const pinia = createPinia()
@@ -86,7 +87,7 @@ function mountPage(permissions: string[]) {
   })
   // The name cell is a RouterLink, so the page needs a router instance even
   // when the test never navigates.
-  const router = createRouter({
+  router = createRouter({
     history: createMemoryHistory(),
     routes: [
       { path: '/users', name: 'users', component: UsersPage },
@@ -145,6 +146,32 @@ describe('UsersPage', () => {
     expect(
       page.findAll('thead th[data-slot="table-group-head"]').map((cell) => cell.text()),
     ).toEqual(['Identity', 'Contact', 'Access', 'Activity'])
+  })
+
+  it('links each row name to its detail page', async () => {
+    const page = mountPage(['user:read'])
+    await waitForRows(page)
+
+    const link = page.get('tbody a')
+    expect(link.text()).toBe('Ada Lovelace')
+    expect(link.attributes('href')).toBe('/users/u1')
+  })
+
+  it('offers View details in the row menu and follows it', async () => {
+    // The actions column only exists for someone who can act on the row.
+    const page = mountPage(['user:read', 'user:update'])
+    await waitForRows(page)
+
+    await page.get('[aria-label="Actions"]').trigger('click')
+    await vi.waitFor(() => expect(document.body.textContent).toContain('View details'))
+
+    const item = Array.from(
+      document.body.querySelectorAll('[data-slot="dropdown-menu-item"]'),
+    ).find((menu) => menu.textContent?.trim() === 'View details')!
+    item.dispatchEvent(new Event('click', { bubbles: true }))
+    await flushPromises()
+
+    expect(router.currentRoute.value.path).toBe('/users/u1')
   })
 
   it('debounces the search box into the query', async () => {
