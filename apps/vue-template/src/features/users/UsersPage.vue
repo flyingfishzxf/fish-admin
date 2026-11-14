@@ -6,6 +6,7 @@ import {
   useVueTable,
   type RowSelectionState,
   type SortingState,
+  type VisibilityState,
 } from '@tanstack/vue-table'
 import {
   Button,
@@ -35,9 +36,11 @@ import {
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 
 import AlertDialog from '../../components/ui/AlertDialog.vue'
+import ColumnOptions from '../../components/common/ColumnOptions.vue'
 import EmptyState from '../../components/common/EmptyState.vue'
 import ErrorState from '../../components/common/ErrorState.vue'
 import PageHeader from '../../components/common/PageHeader.vue'
+import Segmented from '../../components/ui/Segmented.vue'
 import { downloadCsv, type CsvCell } from '../../lib/csv'
 import { formatDate } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
@@ -55,6 +58,33 @@ const t = useT()
 const auth = useAuthStore()
 const queryClient = useQueryClient()
 
+const DENSITY_KEY = 'fish-admin:users-density'
+const LAYOUT_KEY = 'fish-admin:users-table-layout'
+const PAGE_SIZES = [10, 25, 50, 100] as const
+// Department is the widest and least consulted column; React hides it by
+// default and the visibility menu is one click away.
+const DEFAULT_VISIBILITY: VisibilityState = { department: false }
+
+type Density = 'comfortable' | 'compact'
+
+function readDensity(): Density {
+  return localStorage.getItem(DENSITY_KEY) === 'compact' ? 'compact' : 'comfortable'
+}
+
+function readVisibility(): VisibilityState {
+  try {
+    const raw = localStorage.getItem(LAYOUT_KEY)
+    if (!raw) return DEFAULT_VISIBILITY
+    const parsed = JSON.parse(raw) as { visibility?: unknown }
+    return parsed.visibility && typeof parsed.visibility === 'object'
+      ? (parsed.visibility as VisibilityState)
+      : DEFAULT_VISIBILITY
+  } catch {
+    // A corrupt or blocked store must not take the page down with it.
+    return DEFAULT_VISIBILITY
+  }
+}
+
 const search = reactive<UsersSearch>({ ...DEFAULT_USERS_SEARCH })
 const searchValue = ref('')
 const formOpen = ref(false)
@@ -63,7 +93,16 @@ const deleting = ref<User | null>(null)
 const rowSelection = ref<RowSelectionState>({})
 const bulkDeleteOpen = ref(false)
 const exporting = ref(false)
+const density = ref<Density>(readDensity())
+const columnVisibility = ref<VisibilityState>(readVisibility())
 const { message: notice, action: noticeAction, show: showNotice } = useTransientMessage()
+
+watch(density, (value) => localStorage.setItem(DENSITY_KEY, value))
+watch(
+  columnVisibility,
+  (value) => localStorage.setItem(LAYOUT_KEY, JSON.stringify({ visibility: value })),
+  { deep: true },
+)
 
 const granted = computed(() => auth.user?.permissions ?? [])
 const canCreate = computed(() => hasPermission(granted.value, 'user:create'))
@@ -246,6 +285,9 @@ const table = useVueTable({
     get rowSelection() {
       return rowSelection.value
     },
+    get columnVisibility() {
+      return columnVisibility.value
+    },
   },
   // Checkbox state is keyed by row id, so the ids come from the server rows.
   getRowId: (user) => user.id,
@@ -255,6 +297,10 @@ const table = useVueTable({
   pageCount: pageCount.value,
   onRowSelectionChange: (updater) => {
     rowSelection.value = typeof updater === 'function' ? updater(rowSelection.value) : updater
+  },
+  onColumnVisibilityChange: (updater) => {
+    columnVisibility.value =
+      typeof updater === 'function' ? updater(columnVisibility.value) : updater
   },
   getCoreRowModel: getCoreRowModel(),
   onSortingChange: (updater) => {
@@ -282,6 +328,13 @@ function setStatus(value: string) {
 
 function setRole(value: string) {
   search.roleId = value === 'all' ? undefined : value
+  search.page = 1
+}
+
+function setPageSize(value: string) {
+  const size = Number(value)
+  if (!PAGE_SIZES.includes(size as (typeof PAGE_SIZES)[number])) return
+  search.pageSize = size
   search.page = 1
 }
 
@@ -411,6 +464,7 @@ async function handleExport() {
         :fetching="usersQuery.isFetching.value && !usersQuery.isPending.value"
         :fetching-label="t('common:states.loading')"
         :table-label="t('users:tableRegion')"
+        :density="density"
         :selection="selection"
         :search="{
           value: searchValue,
@@ -455,6 +509,15 @@ async function handleExport() {
         </template>
 
         <template #actions>
+          <Segmented
+            v-model="density"
+            data-density
+            :aria-label="t('users:density.label')"
+            :options="[
+              { value: 'comfortable', label: t('users:density.comfortable') },
+              { value: 'compact', label: t('users:density.compact') },
+            ]"
+          />
           <Button
             variant="outline"
             size="sm"
@@ -467,6 +530,11 @@ async function handleExport() {
             <Download v-else class="size-4" aria-hidden="true" />
             <span class="hidden sm:inline">{{ t('users:actions.exportCsv') }}</span>
           </Button>
+          <ColumnOptions
+            :table="table"
+            :visibility="columnVisibility"
+            :label="t('users:actions.columns')"
+          />
         </template>
 
         <template #selection-actions>
@@ -531,9 +599,19 @@ async function handleExport() {
         </template>
       </ProTable>
 
-      <div class="flex items-center justify-between gap-3 text-sm text-muted-foreground">
+      <div class="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground">
         <span>{{ t('common:table.pageOf', { page: search.page, pageCount }) }}</span>
         <div class="flex items-center gap-2">
+          <Select :model-value="String(search.pageSize)" @update:model-value="setPageSize">
+            <SelectTrigger class="h-8 w-[7.5rem]" :aria-label="t('common:table.rowsPerPage')">
+              <SelectValue :label="String(search.pageSize)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem v-for="size in PAGE_SIZES" :key="size" :value="String(size)">
+                {{ size }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
           <Button
             variant="outline"
             size="sm"
