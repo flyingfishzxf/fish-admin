@@ -3,12 +3,6 @@ import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 /** Width used until the container is measured, and whenever it cannot be. */
 export const FALLBACK_CHART_WIDTH = 640
 
-export interface ChartSize {
-  /** Attach to the element whose width drives the chart. */
-  container: Ref<HTMLElement | undefined>
-  width: Ref<number>
-}
-
 /**
  * Tracks the container's content width.
  *
@@ -17,8 +11,10 @@ export interface ChartSize {
  * `ResizeObserver`, which is why the fallback exists: unit tests render at a
  * stable 640 px instead of collapsing to an empty viewBox.
  */
-export function useChartSize(fallback = FALLBACK_CHART_WIDTH): ChartSize {
-  const container = ref<HTMLElement>()
+export function useChartSize(
+  container: Readonly<Ref<HTMLElement | null | undefined>>,
+  fallback = FALLBACK_CHART_WIDTH,
+) {
   const width = ref(fallback)
   let observer: ResizeObserver | undefined
 
@@ -39,5 +35,5 @@ export function useChartSize(fallback = FALLBACK_CHART_WIDTH): ChartSize {
     observer = undefined
   })
 
-  return { container, width }
+  return width
 }
