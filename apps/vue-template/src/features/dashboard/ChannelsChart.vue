@@ -36,13 +36,15 @@ function valueOf(name: string) {
 </script>
 
 <template>
-  <div class="grid gap-2 sm:grid-cols-[minmax(0,200px)_1fr] sm:items-center">
+  <!-- The card is a third of the grid, so the ring stays at 160 px: at 200 the
+       legend column had ~20 px left and every channel name truncated. -->
+  <div class="grid gap-3 sm:grid-cols-[minmax(0,160px)_minmax(0,1fr)] sm:items-center">
     <DonutChart
       :ariaLabel="t('charts.channels.title')"
       :data="props.data"
       :series="series"
       :value-format="formatValue"
-      :size="200"
+      :size="160"
     />
 
     <ul class="space-y-2.5">

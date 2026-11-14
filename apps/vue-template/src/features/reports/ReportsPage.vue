@@ -355,7 +355,7 @@ function goToPage(page: number) {
               {{ revenueKpi.change >= 0 ? '+' : ''
               }}{{ formatPercent(revenueKpi.change, language) }}
             </span>
-            <span class="font-normal text-muted-foreground">{{ t('comparison') }}</span>
+            <span class="ms-1 font-normal text-muted-foreground">{{ t('comparison') }}</span>
           </p>
         </div>
 
