@@ -7,6 +7,7 @@ import { useUiStore } from '../../stores/ui'
 import AppHeader from './AppHeader.vue'
 import AppSidebar from './AppSidebar.vue'
 import AppTopNav from './AppTopNav.vue'
+import CommandPalette from './CommandPalette.vue'
 
 const t = useT('common')
 const ui = useUiStore()
@@ -37,7 +38,14 @@ watch(
 )
 
 function onKeydown(event: KeyboardEvent) {
-  if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'b') return
+  if (!(event.metaKey || event.ctrlKey)) return
+  const key = event.key.toLowerCase()
+  if (key === 'k') {
+    event.preventDefault()
+    ui.toggleCommand()
+    return
+  }
+  if (key !== 'b') return
   // No sidebar in the header layout, so the shortcut has nothing to act on.
   if (ui.layout === 'header') return
   event.preventDefault()
@@ -64,5 +72,6 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
         <span>{{ appVersion }} · {{ t('footer.license') }}</span>
       </footer>
     </div>
+    <CommandPalette />
   </div>
 </template>

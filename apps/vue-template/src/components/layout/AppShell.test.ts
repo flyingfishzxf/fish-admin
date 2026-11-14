@@ -117,4 +117,17 @@ describe('AppShell', () => {
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'b', ctrlKey: true }))
     expect(ui.collapsed).toBe(false)
   })
+
+  it('toggles the command palette with Ctrl+K', async () => {
+    wrapper = await mountShell()
+    const ui = useUiStore()
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))
+    await flushPromises()
+    expect(ui.commandOpen).toBe(true)
+
+    window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }))
+    await flushPromises()
+    expect(ui.commandOpen).toBe(false)
+  })
 })
