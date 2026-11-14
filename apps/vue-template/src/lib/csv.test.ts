@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { downloadCsv, toCsv } from './csv'
+import { downloadCsv, parseCsvTable, toCsv } from './csv'
 
 const createObjectURL = vi.fn(() => 'blob:report')
 const revokeObjectURL = vi.fn()
@@ -22,6 +22,54 @@ describe('toCsv', () => {
     expect(toCsv([['a,b']])).toBe('\ufeff"a,b"')
     expect(toCsv([['say "hi"']])).toBe('\ufeff"say ""hi"""')
     expect(toCsv([['line\nbreak']])).toBe('\ufeff"line\nbreak"')
+  })
+})
+
+describe('parseCsvTable', () => {
+  it('splits a header and its rows, dropping blank lines', () => {
+    const table = parseCsvTable('name,email\nAda,ada@fish.dev\n\nGrace,grace@fish.dev\n')
+    expect(table).toEqual({
+      headers: ['name', 'email'],
+      rows: [
+        ['Ada', 'ada@fish.dev'],
+        ['Grace', 'grace@fish.dev'],
+      ],
+    })
+  })
+
+  it('keeps commas, escaped quotes and newlines inside quoted cells', () => {
+    const source = ['name,note', '"Lin, Harper","say ""hi"""', '"Chen, Riley","line\nbreak"'].join(
+      '\n',
+    )
+    const table = parseCsvTable(source)
+    expect(table.headers).toEqual(['name', 'note'])
+    expect(table.rows).toEqual([
+      ['Lin, Harper', 'say "hi"'],
+      ['Chen, Riley', 'line\nbreak'],
+    ])
+  })
+
+  it('treats CRLF, CR and LF as row breaks', () => {
+    expect(parseCsvTable('a\r\nb\r\nc').rows).toEqual([['b'], ['c']])
+    expect(parseCsvTable('a\rb\rc').rows).toEqual([['b'], ['c']])
+    expect(parseCsvTable('a\nb\nc').rows).toEqual([['b'], ['c']])
+  })
+
+  it('strips a BOM and round-trips what toCsv writes', () => {
+    const source = [
+      ['name', 'note'],
+      ['Lin, Harper', 'say "hi"'],
+      ['Chen', '中,文'],
+    ]
+    expect(parseCsvTable(toCsv(source))).toEqual({
+      headers: source[0],
+      rows: source.slice(1),
+    })
+  })
+
+  it('returns an empty table for an empty or whitespace-only file', () => {
+    expect(parseCsvTable('')).toEqual({ headers: [], rows: [] })
+    expect(parseCsvTable('  \n\n')).toEqual({ headers: [], rows: [] })
   })
 })
 

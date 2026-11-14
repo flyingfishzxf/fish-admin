@@ -30,6 +30,7 @@ vi.mock('./api', () => ({
   bulkUpdateUserStatus: vi.fn(),
   bulkDeleteUsers: vi.fn(),
   restoreUsers: vi.fn(),
+  importUsers: vi.fn(),
 }))
 
 vi.mock('../../lib/csv', () => ({ downloadCsv: vi.fn(), toCsv: vi.fn() }))
@@ -90,6 +91,7 @@ function mountPage(permissions: string[]) {
   router = createRouter({
     history: createMemoryHistory(),
     routes: [
+      { path: '/', component: { template: '<div>home</div>' } },
       { path: '/users', name: 'users', component: UsersPage },
       { path: '/users/:id', name: 'user-detail', component: { template: '<div>detail</div>' } },
     ],
@@ -172,6 +174,20 @@ describe('UsersPage', () => {
     await flushPromises()
 
     expect(router.currentRoute.value.path).toBe('/users/u1')
+  })
+
+  it('offers the import wizard only to creators', async () => {
+    const viewer = mountPage(['user:read'])
+    await waitForRows(viewer)
+    expect(viewer.find('[data-import-users]').exists()).toBe(false)
+    viewer.unmount()
+    wrapper = null
+
+    const creator = mountPage(['user:read', 'user:create'])
+    await waitForRows(creator)
+    await creator.get('[data-import-users]').trigger('click')
+    await flushPromises()
+    expect(document.body.querySelector('[data-import-dialog]')).toBeTruthy()
   })
 
   it('debounces the search box into the query', async () => {
