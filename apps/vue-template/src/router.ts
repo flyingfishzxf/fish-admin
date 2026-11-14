@@ -161,6 +161,13 @@ export const router = createRouter({
           name: 'settings',
           component: () => import('./features/settings/SettingsPage.vue'),
         },
+        {
+          // The inbox is personal, not administrative: every signed-in role has
+          // notifications, so this route deliberately carries no permission.
+          path: 'notifications',
+          name: 'notifications',
+          component: () => import('./features/notifications/NotificationsPage.vue'),
+        },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         { path: '403', name: 'forbidden', component: ForbiddenPage },
       ],
