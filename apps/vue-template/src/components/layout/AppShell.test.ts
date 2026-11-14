@@ -25,6 +25,7 @@ function makeRouter() {
     routes: [
       { path: '/', component: Stub },
       { path: '/users', component: Stub },
+      { path: '/notifications', component: Stub },
       { path: '/profile', component: Stub },
       { path: '/security', component: Stub },
       { path: '/settings', component: Stub },

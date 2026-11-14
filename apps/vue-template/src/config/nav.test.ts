@@ -5,10 +5,10 @@ import { router } from '../router'
 import { findNavGroup, findNavItem, IMPLEMENTED_PATHS, NAV_GROUPS, type NavGroup } from './nav'
 
 describe('nav', () => {
-  it('exposes exactly the twelve implemented paths', () => {
+  it('exposes exactly the thirteen implemented paths', () => {
     const paths = NAV_GROUPS.flatMap((group) => group.items.map((item) => item.to))
     expect(paths.sort()).toEqual([...IMPLEMENTED_PATHS].sort())
-    expect(paths).toHaveLength(12)
+    expect(paths).toHaveLength(13)
   })
 
   it('ships the three account pages without a permission key', () => {
@@ -28,9 +28,20 @@ describe('nav', () => {
     }
   })
 
-  it('drops a group whose items are all unbuilt', () => {
+  it('keeps only the built item of a partly shipped group', () => {
+    // Projects, workflows and files are still missing, so Collaboration holds
+    // exactly one entry: the inbox.
     const groups = NAV_GROUPS.filter((group) => group.titleKey === 'nav:groups.collaboration')
-    expect(groups).toEqual([])
+    expect(groups.map((group) => group.items.map((item) => item.to))).toEqual([['/notifications']])
+  })
+
+  it('ships the inbox without a permission key', () => {
+    // Every signed-in role has notifications, so the entry and its route must
+    // both stay keyless — a permission here would hide the bell's deep link.
+    const collaboration = NAV_GROUPS.find((group) => group.titleKey === 'nav:groups.collaboration')
+    const inbox = collaboration?.items.find((item) => item.to === '/notifications')
+    expect(inbox?.permission).toBeUndefined()
+    expect(router.resolve('/notifications').meta.permission).toBeUndefined()
   })
 
   it('finds the active item', () => {

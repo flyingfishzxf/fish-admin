@@ -24,6 +24,7 @@ function makeRouter() {
     routes: [
       { path: '/', component: Stub },
       { path: '/users', component: Stub },
+      { path: '/notifications', component: Stub },
     ],
   })
 }
@@ -66,10 +67,11 @@ describe('AppTopNav', () => {
     })
 
     expect(wrapper.attributes('data-tour')).toBe('topnav')
-    // Overview, Management and Account keep at least one reachable item once the
-    // collaboration group is empty in this build, so three triggers show up.
+    // All four groups keep at least one reachable item: Collaboration is down to
+    // the keyless inbox, which every role can open.
     expect(wrapper.findAll('nav button').map((button) => button.text())).toEqual([
       'Overview',
+      'Collaboration',
       'Management',
       'Account',
     ])
@@ -86,7 +88,8 @@ describe('AppTopNav', () => {
       attachTo: document.body,
     })
 
-    const trigger = wrapper.findAll('nav button')[1]!
+    // Collaboration sits at index 1 now, so Management is the third trigger.
+    const trigger = wrapper.findAll('nav button')[2]!
     await trigger.trigger('keydown', { key: 'Enter' })
     await flushPromises()
 

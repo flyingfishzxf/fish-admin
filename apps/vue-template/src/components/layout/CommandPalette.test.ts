@@ -16,6 +16,7 @@ function makeRouter() {
     routes: [
       { path: '/', component: Stub },
       { path: '/users', component: Stub },
+      { path: '/notifications', component: Stub },
       { path: '/profile', component: Stub },
       { path: '/login', component: Stub },
     ],
@@ -79,10 +80,12 @@ describe('CommandPalette', () => {
   it('lists every reachable page plus the action group', async () => {
     await openPalette()
 
-    // Sidebar order first: Dashboard, the reachable management page, then the
-    // three unpermissioned account pages, then the action group.
+    // Sidebar order first: Dashboard, the keyless inbox, the reachable
+    // management page, then the three unpermissioned account pages, then the
+    // action group.
     expect(itemIds()).toEqual([
       'nav:/',
+      'nav:/notifications',
       'nav:/users',
       'nav:/profile',
       'nav:/security',
@@ -127,16 +130,17 @@ describe('CommandPalette', () => {
     const router = await openPalette()
     const dialog = document.body.querySelector<HTMLElement>('[data-command-palette]')
 
+    // One press moves off the first row, which is the inbox.
     dialog?.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }))
     await flushPromises()
     expect(
       document.body
-        .querySelector('[data-command-item="nav:/users"]')
+        .querySelector('[data-command-item="nav:/notifications"]')
         ?.getAttribute('aria-selected'),
     ).toBe('true')
 
     dialog?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
     await flushPromises()
-    expect(router.currentRoute.value.path).toBe('/users')
+    expect(router.currentRoute.value.path).toBe('/notifications')
   })
 })

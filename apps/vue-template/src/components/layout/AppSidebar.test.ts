@@ -16,6 +16,7 @@ function makeRouter() {
     routes: [
       { path: '/', component: Stub },
       { path: '/users', component: Stub },
+      { path: '/notifications', component: Stub },
       { path: '/profile', component: Stub },
       { path: '/security', component: Stub },
       { path: '/settings', component: Stub },
@@ -68,6 +69,7 @@ describe('AppSidebar', () => {
     // viewer's narrow permission set — this is UX, not a security boundary.
     expect(links.map((link) => link.text())).toEqual([
       'Dashboard',
+      'Notifications',
       'Users',
       'Profile',
       'Security',
@@ -76,6 +78,7 @@ describe('AppSidebar', () => {
     expect(wrapper.get('a[aria-current="page"]').attributes('href')).toBe('/users')
     expect(groupKeys(wrapper)).toEqual([
       'nav:groups.overview',
+      'nav:groups.collaboration',
       'nav:groups.management',
       'nav:groups.account',
     ])
@@ -94,7 +97,14 @@ describe('AppSidebar', () => {
 
     // `Management` ships only Users in this build, so denying user:read must
     // remove the heading too — never leave a bare group title behind.
-    expect(groupKeys(wrapper)).toEqual(['nav:groups.overview', 'nav:groups.account'])
+    // Collaboration survives on the keyless inbox alone, which is exactly the
+    // case this test now proves the filter handles.
+    expect(groupKeys(wrapper)).toEqual([
+      'nav:groups.overview',
+      'nav:groups.collaboration',
+      'nav:groups.account',
+    ])
+    expect(wrapper.text()).toContain('Notifications')
     expect(wrapper.text()).not.toContain('Management')
   })
 

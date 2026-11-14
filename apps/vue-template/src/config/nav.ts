@@ -61,6 +61,7 @@ const ICONS: Record<string, Component> = {
 export const IMPLEMENTED_PATHS = new Set([
   '/',
   '/reports',
+  '/notifications',
   '/users',
   '/departments',
   '/roles',
