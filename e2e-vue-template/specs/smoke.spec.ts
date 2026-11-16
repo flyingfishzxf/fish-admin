@@ -125,9 +125,9 @@ test('persists language and theme, then signs out', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN')
   await expect(page.locator('html')).toHaveClass(/dark/)
 
-  // zh-CN `common:header.account` ships as 账号菜单, so the regex covers the
-  // actual locale value plus the English label.
-  await page.getByRole('button', { name: /账号菜单|Account menu/ }).click()
+  // The account trigger is named by the person it belongs to, which is the same
+  // in both locales.
+  await page.getByRole('button', { name: /Avery Chen/ }).click()
   await page.getByRole('menuitem', { name: '退出登录' }).click()
   await expect(page).toHaveURL(/\/login$/)
   await page.goto('/users')

@@ -59,11 +59,12 @@ for (const path of PAGES) {
     await expect(current).toBeVisible()
     expect((await current.innerText()).trim()).toBe(title)
 
-    // The bell and the account menu carry a count badge and avatar initials as
-    // their only visible text; their accessible names spell the control out on
-    // purpose ("Notifications (6)", "… — Account menu"), which the
-    // label-in-name rule reads as a mismatch. Excluding those two buttons keeps
-    // the rest of the page under the rule.
+    // Two header controls are excluded from this one rule rather than the whole
+    // audit. The bell's only visible text is a count badge, so no sensible name
+    // contains it. The account trigger renders avatar initials plus a name that
+    // is hidden below `lg`, and axe's visible-text extraction disagrees with the
+    // button's name even when the two strings are identical — verified by
+    // naming it exactly "AC Avery Chen" and watching the rule still fire.
     const { violations } = await new AxeBuilder({ page })
       .exclude('[data-tour="notifications"]')
       .exclude('[data-tour="account"]')

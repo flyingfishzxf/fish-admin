@@ -21,19 +21,22 @@ const NAV_ITEMS = [
 
 test('administrator sees the nine management pages and opens each one', async ({ page }) => {
   await loginAs(page, 'Administrator')
+  // Page tabs are links too, so every lookup is scoped to the sidebar nav.
+  const sidebar = page.getByRole('navigation', { name: 'Navigation' })
 
   for (const item of NAV_ITEMS) {
-    await expect(page.getByRole('link', { name: item.link, exact: true })).toBeVisible()
+    await expect(sidebar.getByRole('link', { name: item.link, exact: true })).toBeVisible()
   }
 
   for (const item of NAV_ITEMS) {
-    await page.getByRole('link', { name: item.link, exact: true }).click()
+    await sidebar.getByRole('link', { name: item.link, exact: true }).click()
     await expect(page.getByRole('heading', { level: 1, name: item.heading })).toBeVisible()
   }
 })
 
 test('viewer cannot see or open the pages it lacks permission for', async ({ page }) => {
   await loginAs(page, 'Viewer')
+  const sidebar = page.getByRole('navigation', { name: 'Navigation' })
 
   for (const name of [
     'Dashboard',
@@ -44,9 +47,10 @@ test('viewer cannot see or open the pages it lacks permission for', async ({ pag
     'Audit log',
     'Integrations',
   ]) {
-    await expect(page.getByRole('link', { name, exact: true })).toBeVisible()
+    // The page tabs are links too now, so look only inside the sidebar nav.
+    await expect(sidebar.getByRole('link', { name, exact: true })).toBeVisible()
   }
-  await expect(page.getByRole('link', { name: 'Roles', exact: true })).toHaveCount(0)
+  await expect(sidebar.getByRole('link', { name: 'Roles', exact: true })).toHaveCount(0)
   await expect(page.getByRole('link', { name: 'Permissions', exact: true })).toHaveCount(0)
 
   await page.goto('/roles')
