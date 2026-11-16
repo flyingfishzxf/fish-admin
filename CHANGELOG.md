@@ -75,6 +75,14 @@ All notable changes to this project are documented here. The format is based on
   app-level equivalents, listed in the spec. 615 Vitest tests and 44 Playwright
   specs.
 
+- **Vue template workflows:** `/workflows` adds the approval inbox with three view
+  tabs, debounced search, four filters (the package `DateRangePicker` used as-is)
+  and paging with page-size options. `/workflows/:id` adds the form and snapshot
+  as definition lists, the step timeline, the comment thread and a decision panel
+  that appears only for the approver a pending request waits on; approve, reject
+  and transfer share one confirm dialog. All 16 pages in `NAV_CONTRACT` now ship.
+  637 Vitest tests and 49 Playwright specs.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

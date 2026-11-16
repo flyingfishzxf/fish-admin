@@ -59,13 +59,16 @@ published package.
   project opens at `/projects/:id` with an overview (milestone groups,
   attachments, activity), a four-column task board, an editable budget and a
   three-step retrospective, plus member and settings drawers.
+- Workflows: an approval inbox with three view tabs (mine, pending, all),
+  debounced search, status / type / initiator / date-range filters, a request
+  table and paging with page-size options; each request opens at
+  `/workflows/:id` with its form, step timeline, comment thread and — for the
+  approver it waits on — a decision panel that approves, rejects or transfers.
 - Four full-page status states (401, 500, 503, maintenance) rendered outside the
   shell, plus the existing 403 and 404 pages.
 
-Not included: `/workflows`, column drag-to-reorder / pinning / resizing, and
-page-level pixel parity. Of the 16 pages in `NAV_CONTRACT`, 15 ship; only the
-workflow editor is absent, because it needs a canvas, a node graph and roughly
-two thousand lines of its own.
+Not included: column drag-to-reorder / pinning / resizing in the users table,
+and page-level pixel parity. **All 16 pages in `NAV_CONTRACT` now ship.**
 
 ## Routes
 
@@ -85,6 +88,8 @@ two thousand lines of its own.
 | `/files`           | Files             | signed in + `file:read`              |
 | `/projects`        | Projects          | signed in + `project:read`           |
 | `/projects/:id`    | Project workspace | signed in + `project:read`           |
+| `/workflows`       | Workflows         | signed in + `workflow:read`          |
+| `/workflows/:id`   | Request detail    | signed in + `workflow:read`          |
 | `/users/:id`       | User detail       | signed in + `user:read`              |
 | `/departments`     | Departments       | signed in + `department:read`        |
 | `/roles`           | Roles             | signed in + `role:read`              |
@@ -243,7 +248,7 @@ pnpm test:e2e:vue-template
 | Area            | React                                                                                                        | Vue template                                                                                                                          |
 | --------------- | ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
 | Shell           | sidebar / header / mixed + density and width settings                                                        | the same three layouts, both densities and all three widths, on `/settings`                                                           |
-| Navigation      | all 16 contracted pages                                                                                      | 13 of 16; the three collaboration pages absent                                                                                        |
+| Navigation      | all 16 contracted pages                                                                                      | all 16; no entry is hidden                                                                                                            |
 | Authentication  | sign in, register, recovery, invite, OTP, 2FA                                                                | the same six flows; no email delivery, fixed demo TOTP secret                                                                         |
 | Dashboard       | KPIs, three charts, product tour                                                                             | the same three charts and the tour, drawn as hand-written SVG                                                                         |
 | Users           | column controls, density, saved views, CSV, bulk, import, detail, activity                                   | the same surfaces; column drag / pin / resize are not ported                                                                          |
@@ -251,7 +256,8 @@ pnpm test:e2e:vue-template
 | Dictionaries    | drag handle plus arrow keys, no pagination                                                                   | same, and the item list is not paged                                                                                                  |
 | Files           | resizable split, watermark, carousel, JSON viewer, combobox and date pickers                                 | fixed two-column split, thumbnail gallery, definition list, Select filters, native date input, flat folder list                       |
 | Projects        | featured carousel, statistic cards, query filter, milestone calendar, transfer, editable table, rate/stepper | featured cards, KPI cards, one filter row, grouped milestone list, checkbox roster, inline budget rows, star buttons and a step strip |
-| Remaining pages | 16 features                                                                                                  | 15 pages plus `/roles/matrix` and four status pages                                                                                   |
+| Workflows       | ProTable with virtual scrolling and pinned columns, JSON viewer, Popconfirm, descriptions                    | plain table, definition lists, one shared confirm dialog, the package `DateRangePicker` used as-is                                    |
+| Remaining pages | 16 features                                                                                                  | 16 pages plus `/roles/matrix` and four status pages                                                                                   |
 | Audit log       | JSON viewer, per-action icons, debounced search, page-size control                                           | metadata as a definition list, text badges, no debounce, fixed page size of 20                                                        |
 | Integrations    | Combobox, Segmented status filter, numeric page tokens, Popconfirm                                           | Select filters, prev/next pager, delete dialog                                                                                        |
 | Profile         | avatar crop tool, upload progress, timezone and language preferences                                         | name, bio and avatar only; the avatar is re-encoded to 256×256 locally                                                                |
@@ -320,6 +326,13 @@ Implementation details that also differ from the React template:
   runs of adjacent visible leaves that share `meta.group`, because TanStack has
   no such row; it stays 32 px under both densities and disappears entirely as
   soon as one column omits a group.
+- The workflow inbox is the first page where an enterprise primitive from
+  `@fish-admin/vue` was used unchanged: `DateRangePicker` already speaks
+  `{ from, to }` day strings and carries the five presets. Everything else it
+  needed — table, descriptions, JSON viewer, Popconfirm, textarea — is app-level.
+- Approve, reject and transfer share one confirm dialog driven by a
+  `pendingDecision` value; three permanent dialogs would mean three copies of the
+  same copy and three chances to forget the destructive variant.
 - The projects slice is the largest port so far (3,400 lines of React). It ships
   in one feature commit with three logical parts — data layer and board, detail
   shell with two tabs, then the remaining tabs and drawers — because the card
@@ -388,7 +401,7 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-615 tests in 88 files. Forty-four Playwright specs cover the golden paths,
+637 tests in 91 files. Forty-nine Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios
@@ -400,8 +413,10 @@ metric switch, target line, CSV download) and three users-table scenarios
 scenarios (tag save across a reload, an unknown id, the activity request) and
 three import scenarios (sample CSV, invalid rows sent nowhere, viewer has no
 import action) three files scenarios (batch upload, bulk delete from the
-list view, read-only viewer) and four project scenarios (create, view/sort/filter,
-a write through every tab, read-only viewer); they do not produce or compare
+list view, read-only viewer) four project scenarios (create, view/sort/filter,
+a write through every tab, read-only viewer) and five workflow scenarios (tabs
+and filters, reading a request, approving a single-step chain, commenting, the
+403 for a role without workflow access); they do not produce or compare
 screenshots.
 
 ## Client-side permission boundary
