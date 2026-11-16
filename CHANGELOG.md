@@ -58,6 +58,14 @@ All notable changes to this project are documented here. The format is based on
   wizard stays app-level because the package export surface is frozen.
   522 Vitest tests and 37 Playwright specs.
 
+- **Vue template files page:** `/files` adds the folder tree with counts, a
+  breadcrumb, five filters, grid and list views, selection with bulk delete, a
+  preview panel with metadata, move, visibility, rename, delete and a folder
+  gallery, and an upload queue with per-file status and retry. Twelve React
+  primitives are replaced by app-level equivalents and listed in the spec;
+  uploads run one at a time because the mock's read-modify-write drops parallel
+  writes. 573 Vitest tests and 40 Playwright specs.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

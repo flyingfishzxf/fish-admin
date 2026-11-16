@@ -49,14 +49,19 @@ published package.
   drawer with the recorded metadata and related events.
 - Integrations: connection cards, provider and status filters, a form drawer
   with request headers, and a delivery drawer with replay.
+- Files: a folder tree with per-folder counts, breadcrumbs, search plus kind,
+  visibility, date and favorite filters, grid and list views, selection with
+  bulk delete, a preview panel with metadata, move, visibility, rename, delete
+  and a folder gallery, and an upload queue with a destination folder, per-file
+  status and retry.
 - Four full-page status states (401, 500, 503, maintenance) rendered outside the
   shell, plus the existing 403 and 404 pages.
 
-Not included: the three collaboration pages (`/projects`, `/workflows`,
-`/files`), column drag-to-reorder / pinning / resizing, and page-level pixel
-parity. Of the 16 pages in `NAV_CONTRACT`, 13 ship; only the three collaboration
-pages above are absent, because they need roughly 6 200 lines of production code
-and about 50 primitives `@fish-admin/vue` does not export.
+Not included: the two remaining collaboration pages (`/projects`,
+`/workflows`), column drag-to-reorder / pinning / resizing, and page-level pixel
+parity. Of the 16 pages in `NAV_CONTRACT`, 14 ship; only projects and workflows
+are absent, because together they need several thousand lines of production code
+and a set of primitives `@fish-admin/vue` does not export.
 
 ## Routes
 
@@ -73,6 +78,7 @@ and about 50 primitives `@fish-admin/vue` does not export.
 | `/reports`         | Reports           | signed in + `report:read`            |
 | `/notifications`   | Notifications     | signed in; no permission key         |
 | `/users`           | Users             | signed in + `user:read`              |
+| `/files`           | Files             | signed in + `file:read`              |
 | `/users/:id`       | User detail       | signed in + `user:read`              |
 | `/departments`     | Departments       | signed in + `department:read`        |
 | `/roles`           | Roles             | signed in + `role:read`              |
@@ -228,22 +234,23 @@ pnpm test:e2e:vue-template
 
 ## Deviations from the React template
 
-| Area            | React                                                                      | Vue template                                                                    |
-| --------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| Shell           | sidebar / header / mixed + density and width settings                      | the same three layouts, both densities and all three widths, on `/settings`     |
-| Navigation      | all 16 contracted pages                                                    | 13 of 16; the three collaboration pages absent                                  |
-| Authentication  | sign in, register, recovery, invite, OTP, 2FA                              | the same six flows; no email delivery, fixed demo TOTP secret                   |
-| Dashboard       | KPIs, three charts, product tour                                           | the same three charts and the tour, drawn as hand-written SVG                   |
-| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity | the same surfaces; column drag / pin / resize are not ported                    |
-| Roles           | two-step create wizard that also picks permissions                         | one dialog; permissions are granted in the matrix                               |
-| Dictionaries    | drag handle plus arrow keys, no pagination                                 | same, and the item list is not paged                                            |
-| Audit log       | JSON viewer, per-action icons, debounced search, page-size control         | metadata as a definition list, text badges, no debounce, fixed page size of 20  |
-| Integrations    | Combobox, Segmented status filter, numeric page tokens, Popconfirm         | Select filters, prev/next pager, delete dialog                                  |
-| Profile         | avatar crop tool, upload progress, timezone and language preferences       | name, bio and avatar only; the avatar is re-encoded to 256×256 locally          |
-| Security        | password, 2FA, session list with device icons and revoke                   | the same three cards; no recovery codes                                         |
-| Settings        | appearance, shell, language, storage, security, demo data, about           | appearance, language, security, retention, status previews, demo data and about |
-| Theme           | light/dark/system + accent                                                 | light/dark/system + the same five accents                                       |
-| Remaining pages | 16 features                                                                | 13 pages plus `/roles/matrix` and four status pages                             |
+| Area            | React                                                                        | Vue template                                                                                                    |
+| --------------- | ---------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Shell           | sidebar / header / mixed + density and width settings                        | the same three layouts, both densities and all three widths, on `/settings`                                     |
+| Navigation      | all 16 contracted pages                                                      | 13 of 16; the three collaboration pages absent                                                                  |
+| Authentication  | sign in, register, recovery, invite, OTP, 2FA                                | the same six flows; no email delivery, fixed demo TOTP secret                                                   |
+| Dashboard       | KPIs, three charts, product tour                                             | the same three charts and the tour, drawn as hand-written SVG                                                   |
+| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity   | the same surfaces; column drag / pin / resize are not ported                                                    |
+| Roles           | two-step create wizard that also picks permissions                           | one dialog; permissions are granted in the matrix                                                               |
+| Dictionaries    | drag handle plus arrow keys, no pagination                                   | same, and the item list is not paged                                                                            |
+| Files           | resizable split, watermark, carousel, JSON viewer, combobox and date pickers | fixed two-column split, thumbnail gallery, definition list, Select filters, native date input, flat folder list |
+| Remaining pages | 16 features                                                                  | 14 pages plus `/roles/matrix` and four status pages                                                             |
+| Audit log       | JSON viewer, per-action icons, debounced search, page-size control           | metadata as a definition list, text badges, no debounce, fixed page size of 20                                  |
+| Integrations    | Combobox, Segmented status filter, numeric page tokens, Popconfirm           | Select filters, prev/next pager, delete dialog                                                                  |
+| Profile         | avatar crop tool, upload progress, timezone and language preferences         | name, bio and avatar only; the avatar is re-encoded to 256×256 locally                                          |
+| Security        | password, 2FA, session list with device icons and revoke                     | the same three cards; no recovery codes                                                                         |
+| Settings        | appearance, shell, language, storage, security, demo data, about             | appearance, language, security, retention, status previews, demo data and about                                 |
+| Theme           | light/dark/system + accent                                                   | light/dark/system + the same five accents                                                                       |
 
 Shell and notification deviations, item by item:
 
@@ -306,6 +313,13 @@ Implementation details that also differ from the React template:
   runs of adjacent visible leaves that share `meta.group`, because TanStack has
   no such row; it stays 32 px under both densities and disappears entirely as
   soon as one column omits a group.
+- The files page replaces twelve React primitives with app-level equivalents, and
+  each replacement is written down in the spec's table: a flat, indented folder
+  list instead of a roving-tabindex tree, `Select` instead of a searchable
+  combobox, a native date input, a definition list instead of a JSON viewer, a
+  thumbnail grid instead of a carousel, and a CSS split instead of resizable
+  panels. Uploads run one at a time because the mock persists with a
+  read-modify-write that silently drops parallel POSTs.
 - The CSV parser and the import mapping/validation helpers are pure modules
   (`lib/csv.ts`, `features/users/import.ts`), tested without a DOM. The wizard
   itself is app-level: `packages/vue` has no `ImportWizard` and its export
@@ -359,7 +373,7 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-522 tests in 75 files. Thirty-seven Playwright specs cover the golden paths,
+573 tests in 82 files. Forty Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios
@@ -370,7 +384,8 @@ metric switch, target line, CSV download) and three users-table scenarios
 (bulk delete with undo, CSV download, role filter), three user-detail
 scenarios (tag save across a reload, an unknown id, the activity request) and
 three import scenarios (sample CSV, invalid rows sent nowhere, viewer has no
-import action); they do not produce or compare screenshots.
+import action) and three files scenarios (batch upload, bulk delete from the
+list view, read-only viewer); they do not produce or compare screenshots.
 
 ## Client-side permission boundary
 
