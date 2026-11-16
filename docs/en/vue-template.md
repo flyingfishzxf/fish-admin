@@ -67,8 +67,10 @@ published package.
 - Four full-page status states (401, 500, 503, maintenance) rendered outside the
   shell, plus the existing 403 and 404 pages.
 
-Not included: column drag-to-reorder / pinning / resizing in the users table,
-and page-level pixel parity. **All 16 pages in `NAV_CONTRACT` now ship.**
+Not included: interactive column pinning in the users table (React only pins the
+checkbox and name columns initially, and the Vue table has no sticky-column
+rendering), and page-level pixel parity. **All 16 pages in `NAV_CONTRACT` now
+ship.**
 
 ## Routes
 
@@ -251,7 +253,7 @@ pnpm test:e2e:vue-template
 | Navigation      | all 16 contracted pages                                                                                      | all 16; no entry is hidden                                                                                                            |
 | Authentication  | sign in, register, recovery, invite, OTP, 2FA                                                                | the same six flows; no email delivery, fixed demo TOTP secret                                                                         |
 | Dashboard       | KPIs, three charts, product tour                                                                             | the same three charts and the tour, drawn as hand-written SVG                                                                         |
-| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity                                   | the same surfaces; column drag / pin / resize are not ported                                                                          |
+| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity                                   | the same surfaces; drag-to-reorder and resize are app-level, and interactive pinning is not offered                                   |
 | Roles           | two-step create wizard that also picks permissions                                                           | one dialog; permissions are granted in the matrix                                                                                     |
 | Dictionaries    | drag handle plus arrow keys, no pagination                                                                   | same, and the item list is not paged                                                                                                  |
 | Files           | resizable split, watermark, carousel, JSON viewer, combobox and date pickers                                 | fixed two-column split, thumbnail gallery, definition list, Select filters, native date input, flat folder list                       |
@@ -326,6 +328,11 @@ Implementation details that also differ from the React template:
   runs of adjacent visible leaves that share `meta.group`, because TanStack has
   no such row; it stays 32 px under both densities and disappears entirely as
   soon as one column omits a group.
+- The users table's column layout (drag-to-reorder in the Columns popover,
+  resize handles, persisted order and sizing) is app-level: `column-order.ts`
+  mirrors the pure helper in `packages/ui`, and `packages/vue`'s DataTable
+  renders a resize handle only for columns that can resize, which leaves the
+  docs demos and the parity baselines untouched.
 - The workflow inbox is the first page where an enterprise primitive from
   `@fish-admin/vue` was used unchanged: `DateRangePicker` already speaks
   `{ from, to }` day strings and carries the five presets. Everything else it
@@ -401,7 +408,7 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-637 tests in 91 files. Sixty-five Playwright specs cover the golden paths,
+644 tests in 92 files. Sixty-seven Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios

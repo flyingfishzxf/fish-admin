@@ -91,6 +91,13 @@ All notable changes to this project are documented here. The format is based on
   names that omitted their visible text. 637 Vitest tests and 65 Playwright
   specs.
 
+- **Vue template column layout:** the users table gains drag-to-reorder in the
+  Columns popover (drag or ↑/↓, focus stays on the grip), resize handles on every
+  resizable header, and a persisted table layout under the same storage key the
+  React template uses. DataTable renders the handle only for columns that can
+  resize, so the docs demos and parity baselines are untouched. 644 Vitest tests
+  and 67 Playwright specs.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
