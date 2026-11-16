@@ -142,6 +142,19 @@ function ariaSort(column: { getIsSorted: () => false | 'asc' | 'desc' }) {
                 :render="header.column.columnDef.header"
                 :props="header.getContext()"
               />
+              <!-- React renders the same handle for every resizable column; it is
+                   a mouse/touch affordance and stays out of the tab order. -->
+              <button
+                v-if="header.column.getCanResize()"
+                type="button"
+                tabindex="-1"
+                :aria-label="`Resize ${header.column.id}`"
+                class="absolute inset-y-0 end-0 z-10 w-1.5 cursor-col-resize touch-none bg-transparent transition-colors hover:bg-primary/40"
+                :class="header.column.getIsResizing() && 'bg-primary/60'"
+                data-resize-handle
+                @mousedown="(event) => header.getResizeHandler()(event)"
+                @touchstart="(event) => header.getResizeHandler()(event)"
+              />
             </th>
           </tr>
         </thead>

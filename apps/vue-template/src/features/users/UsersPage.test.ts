@@ -444,4 +444,20 @@ describe('UsersPage', () => {
     expect(rows[2]).toContain('Grace Hopper')
     expect(page.text()).toContain('CSV exported.')
   })
+
+  it('renders the persisted column order and width', async () => {
+    localStorage.setItem('fish-admin:users-table-layout', '')
+    localStorage.setItem(
+      'fish-admin:users-table-layout',
+      JSON.stringify({ visibility: {}, order: ['email', 'name'], sizing: { email: 220 } }),
+    )
+    const page = mountPage(['user:read', 'user:create'])
+    await waitForRows(page)
+
+    // The stored order runs the header, and the stored width lands on the email
+    // column's box.
+    const heads = page.findAll('[data-slot="table-head"]')
+    expect((await heads[0]?.text())?.trim()).toBe('Email')
+    expect(await heads[0]?.attributes('style')).toContain('220')
+  })
 })

@@ -48,6 +48,8 @@ import { formatDate } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { hasPermission } from '../../lib/permissions'
 import { useTransientMessage } from '../../lib/use-transient-message'
+import type { ColumnOrderState, ColumnSizingState } from '@tanstack/vue-table'
+
 import { useAuthStore } from '../../stores/auth'
 import { bulkDeleteUsers, bulkUpdateUserStatus, fetchUsers, restoreUsers } from './api'
 import { createUserColumns } from './columns'
@@ -77,17 +79,33 @@ function readDensity(): Density {
   return localStorage.getItem(DENSITY_KEY) === 'compact' ? 'compact' : 'comfortable'
 }
 
-function readVisibility(): VisibilityState {
+function readLayout(): {
+  visibility: VisibilityState
+  order: ColumnOrderState
+  sizing: ColumnSizingState
+} {
   try {
     const raw = localStorage.getItem(LAYOUT_KEY)
-    if (!raw) return DEFAULT_VISIBILITY
-    const parsed = JSON.parse(raw) as { visibility?: unknown }
-    return parsed.visibility && typeof parsed.visibility === 'object'
-      ? (parsed.visibility as VisibilityState)
-      : DEFAULT_VISIBILITY
+    if (!raw) return { visibility: DEFAULT_VISIBILITY, order: [], sizing: {} }
+    const parsed = JSON.parse(raw) as {
+      visibility?: unknown
+      order?: unknown
+      sizing?: unknown
+    }
+    return {
+      visibility:
+        parsed.visibility && typeof parsed.visibility === 'object'
+          ? (parsed.visibility as VisibilityState)
+          : DEFAULT_VISIBILITY,
+      order: Array.isArray(parsed.order) ? (parsed.order as ColumnOrderState) : [],
+      sizing:
+        parsed.sizing && typeof parsed.sizing === 'object'
+          ? (parsed.sizing as ColumnSizingState)
+          : {},
+    }
   } catch {
     // A corrupt or blocked store must not take the page down with it.
-    return DEFAULT_VISIBILITY
+    return { visibility: DEFAULT_VISIBILITY, order: [], sizing: {} }
   }
 }
 
@@ -100,7 +118,10 @@ const rowSelection = ref<RowSelectionState>({})
 const bulkDeleteOpen = ref(false)
 const exporting = ref(false)
 const density = ref<Density>(readDensity())
-const columnVisibility = ref<VisibilityState>(readVisibility())
+const layout = readLayout()
+const columnVisibility = ref<VisibilityState>(layout.visibility)
+const columnOrder = ref<ColumnOrderState>(layout.order)
+const columnSizing = ref<ColumnSizingState>(layout.sizing)
 const { message: notice, action: noticeAction, show: showNotice } = useTransientMessage()
 
 const importOpen = ref(false)
@@ -117,8 +138,9 @@ function handleImported({ created, skipped }: { created: number; skipped: number
 
 watch(density, (value) => localStorage.setItem(DENSITY_KEY, value))
 watch(
-  columnVisibility,
-  (value) => localStorage.setItem(LAYOUT_KEY, JSON.stringify({ visibility: value })),
+  [columnVisibility, columnOrder, columnSizing],
+  ([visibility, order, sizing]) =>
+    localStorage.setItem(LAYOUT_KEY, JSON.stringify({ visibility, order, sizing })),
   { deep: true },
 )
 
@@ -307,10 +329,19 @@ const table = useVueTable({
     get columnVisibility() {
       return columnVisibility.value
     },
+    get columnOrder() {
+      return columnOrder.value
+    },
+    get columnSizing() {
+      return columnSizing.value
+    },
   },
   // Checkbox state is keyed by row id, so the ids come from the server rows.
   getRowId: (user) => user.id,
   enableRowSelection: selectable.value,
+  enableColumnResizing: true,
+  columnResizeMode: 'onChange',
+  defaultColumn: { minSize: 80, maxSize: 600 },
   manualSorting: true,
   manualPagination: true,
   pageCount: pageCount.value,
@@ -320,6 +351,12 @@ const table = useVueTable({
   onColumnVisibilityChange: (updater) => {
     columnVisibility.value =
       typeof updater === 'function' ? updater(columnVisibility.value) : updater
+  },
+  onColumnOrderChange: (updater) => {
+    columnOrder.value = typeof updater === 'function' ? updater(columnOrder.value) : updater
+  },
+  onColumnSizingChange: (updater) => {
+    columnSizing.value = typeof updater === 'function' ? updater(columnSizing.value) : updater
   },
   getCoreRowModel: getCoreRowModel(),
   onSortingChange: (updater) => {

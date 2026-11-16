@@ -1,9 +1,11 @@
 import type { ColumnDef } from '@tanstack/vue-table'
 import { DataTable } from '@fish-admin/vue'
 import { getCoreRowModel, useVueTable } from '@tanstack/vue-table'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { afterEach, describe, expect, it } from 'vitest'
 import { defineComponent, h, ref, type Ref } from 'vue'
+
+import type { ColumnOrderState } from '@tanstack/vue-table'
 
 import ColumnOptions from './ColumnOptions.vue'
 
@@ -26,8 +28,11 @@ const columns: ColumnDef<Member>[] = [
   },
 ]
 
+let wrapper: VueWrapper | null = null
+
 function mountHost() {
   const visibility: Ref<Record<string, boolean>> = ref({ status: false })
+  const order: Ref<ColumnOrderState> = ref([])
 
   const Host = defineComponent({
     setup() {
@@ -39,6 +44,9 @@ function mountHost() {
           get columnVisibility() {
             return visibility.value
           },
+          get columnOrder() {
+            return order.value
+          },
         },
         onColumnVisibilityChange: (updater) => {
           visibility.value =
@@ -46,6 +54,13 @@ function mountHost() {
               ? updater(visibility.value)
               : (updater as Record<string, boolean>)
         },
+        onColumnOrderChange: (updater) => {
+          order.value =
+            typeof updater === 'function'
+              ? (updater as (old: ColumnOrderState) => ColumnOrderState)(order.value)
+              : updater
+        },
+        enableColumnResizing: true,
         getCoreRowModel: getCoreRowModel(),
       })
 
@@ -53,11 +68,13 @@ function mountHost() {
         h('div', [
           h(DataTable as never, { table }),
           h(ColumnOptions as never, { table, visibility: visibility.value, label: 'Columns' }),
+          h('pre', { 'data-order': true }, JSON.stringify(order.value)),
         ])
     },
   })
 
-  return mount(Host, { attachTo: document.body })
+  wrapper = mount(Host, { attachTo: document.body })
+  return wrapper
 }
 
 function openMenu() {
@@ -68,6 +85,8 @@ function openMenu() {
 
 describe('ColumnOptions', () => {
   afterEach(() => {
+    wrapper?.unmount()
+    wrapper = null
     document.body.innerHTML = ''
   })
 
@@ -115,5 +134,71 @@ describe('ColumnOptions', () => {
     ])
 
     wrapper.unmount()
+  })
+
+  // jsdom has no DragEvent; a plain Event with a dataTransfer stub is enough.
+  function dragEvent(type: string, transfer: Record<string, unknown>) {
+    const event = new Event(type, { bubbles: true })
+    Object.defineProperty(event, 'dataTransfer', { value: transfer })
+    return event
+  }
+
+  const transfer = {
+    setData(kind: string, value: string) {
+      this.data = { ...this.data, [kind]: value }
+    },
+    getData(kind: string) {
+      return this.data?.[kind] ?? ''
+    },
+    data: {} as Record<string, string>,
+  }
+
+  function optionRow(id: string) {
+    return document.body.querySelector<HTMLElement>(`[data-column-option="${id}"]`)!
+  }
+
+  it('reorders through the drag events and the table follows', async () => {
+    mountHost()
+    await flushPromises()
+    openMenu()
+    await flushPromises()
+
+    // The name column hides itself from this menu (it stays first), so the
+    // reorder targets are email and status.
+    const statusHandle = optionRow('status').querySelector('[data-column-handle]')!
+    const emailRow = optionRow('email')
+    statusHandle.dispatchEvent(dragEvent('dragstart', transfer))
+    emailRow.dispatchEvent(dragEvent('dragover', transfer))
+    emailRow.dispatchEvent(dragEvent('drop', transfer))
+    await flushPromises()
+
+    expect(document.body.querySelector('[data-order]')?.textContent).toBe(
+      JSON.stringify(['name', 'status', 'email']),
+    )
+  })
+
+  it('reorders with the keyboard and keeps focus on the grip', async () => {
+    mountHost()
+    await flushPromises()
+    openMenu()
+    await flushPromises()
+
+    const grip = optionRow('email').querySelector('[data-column-handle]') as HTMLElement
+    grip.focus()
+    grip.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }))
+    await flushPromises()
+
+    expect(document.body.querySelector('[data-order]')?.textContent).toBe(
+      JSON.stringify(['name', 'status', 'email']),
+    )
+    expect(document.activeElement).toBe(optionRow('email').querySelector('[data-column-handle]'))
+  })
+
+  it('renders a resize handle for every resizable column', async () => {
+    mountHost()
+    await flushPromises()
+
+    // The host hides the status column, so two of the three headers render one.
+    expect(document.body.querySelectorAll('[data-resize-handle]')).toHaveLength(2)
   })
 })
