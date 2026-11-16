@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "components": [
+    {
+      "id": "accordion",
+      "name": "Accordion",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/projects/$id"
+    },
+    {
+      "id": "avatar",
+      "name": "Avatar",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "badge",
+      "name": "Badge",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/workflows"
+    },
+    {
+      "id": "bulk-actions-bar",
+      "name": "BulkActionsBar",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "button",
+      "name": "Button",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "checkbox",
+      "name": "Checkbox",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "data-table",
+      "name": "DataTable",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "date-range-picker",
+      "name": "DateRangePicker",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/workflows"
+    },
+    {
+      "id": "dialog",
+      "name": "Dialog",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "dropdown-menu",
+      "name": "DropdownMenu",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "input",
+      "name": "Input",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "label",
+      "name": "Label",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "pro-table",
+      "name": "ProTable",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "select",
+      "name": "Select",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "skeleton",
+      "name": "Skeleton",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "switch",
+      "name": "Switch",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/notifications"
+    },
+    {
+      "id": "tabs",
+      "name": "Tabs",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.2.0",
+      "usedIn": "/projects/$id"
+    }
+  ]
+}

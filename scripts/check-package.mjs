@@ -84,5 +84,67 @@ for (const dep of ['react-i18next', 'i18next', '@tanstack/react-router', 'zustan
     throw new Error(`package.json must not depend on ${dep}`)
 }
 
+// --- Vue package: same contract, own registry and build ---------------------
+
+const vuePkgDir = path.join(root, 'packages/vue')
+fs.mkdirSync(path.join(checkDir, 'node_modules/@fish-admin/vue'), { recursive: true })
+
+execSync('pnpm --filter @fish-admin/vue build', { stdio: 'inherit' })
+const vuePackOutput = execSync('pnpm pack', { cwd: vuePkgDir, encoding: 'utf8' })
+const vueTarball = vuePackOutput.trim().split('\n').filter(Boolean).at(-1)
+execSync(
+  `tar --force-local -xzf "${toPosix(path.resolve(vuePkgDir, vueTarball))}" -C "${toPosix(path.join(checkDir, 'node_modules/@fish-admin/vue'))}" --strip-components=1`,
+  { stdio: 'inherit' },
+)
+fs.rmSync(path.resolve(vuePkgDir, vueTarball), { force: true })
+
+const { components: vueComponents } = JSON.parse(
+  fs.readFileSync(path.join(vuePkgDir, 'registry.json'), 'utf8'),
+)
+const vueExportNames = vueComponents.map((entry) =>
+  entry.id
+    .split('-')
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join(''),
+)
+
+fs.writeFileSync(
+  path.join(checkDir, 'entry-vue.ts'),
+  `import { ${vueExportNames.join(', ')} } from '@fish-admin/vue'\n\nexport const all = [${vueExportNames.map((name) => `Boolean(${name})`).join(', ')}]\n`,
+)
+fs.writeFileSync(
+  path.join(checkDir, 'vite.vue.config.ts'),
+  `import { defineConfig } from 'vite'\nimport vue from '@vitejs/plugin-vue'\n\nexport default defineConfig({\n  plugins: [vue()],\n  build: {
+    lib: { entry: './entry-vue.ts', formats: ['es'], fileName: 'entry-vue' },
+    // Only the package itself is bundled: its runtime dependencies are not
+    // resolvable from this sandbox (pnpm does not hoist them), and the point is
+    // to exercise the dist barrel, not to bundle them.
+    rollupOptions: { external: (id) => !id.startsWith('.') && !id.startsWith('@fish-admin/vue') },
+  },\n})\n`,
+)
+
+execSync('pnpm exec vite build --config vite.vue.config.ts', { cwd: checkDir, stdio: 'inherit' })
+
+const vueDist = path.join(vuePkgDir, 'dist')
+for (const file of ['index.js', 'index.d.ts', 'styles.css']) {
+  if (!fs.existsSync(path.join(vueDist, file))) throw new Error(`vue: missing dist/${file}`)
+}
+for (const file of ['index.js', 'components/ui/button/Button.js']) {
+  const text = fs.readFileSync(path.join(vueDist, file), 'utf8')
+  for (const forbidden of ['@/components', '@fish-admin/i18n', 'vue-i18n', 'pinia']) {
+    if (text.includes(forbidden)) throw new Error(`vue dist/${file} contains ${forbidden}`)
+  }
+}
+const vuePkg = JSON.parse(fs.readFileSync(path.join(vuePkgDir, 'package.json'), 'utf8'))
+for (const [dep, spec] of Object.entries(vuePkg.dependencies ?? {})) {
+  if (spec.startsWith('workspace:'))
+    throw new Error(`vue dependencies must not use ${spec} (${dep})`)
+}
+for (const dep of ['pinia', 'vue-router', '@fish-admin/i18n']) {
+  if (vuePkg.dependencies?.[dep] || vuePkg.peerDependencies?.[dep])
+    throw new Error(`package.json must not depend on ${dep}`)
+}
+
 fs.rmSync(checkDir, { recursive: true, force: true })
-console.log(`check-package: ${ids.length} component exports verified`)
+console.log(`check-package: ${ids.length} react component exports verified`)
+console.log(`check-package: ${vueExportNames.length} vue component exports verified`)

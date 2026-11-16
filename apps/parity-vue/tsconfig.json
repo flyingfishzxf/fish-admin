@@ -4,6 +4,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "allowImportingTsExtensions": true,
     "moduleResolution": "bundler",
     "moduleDetection": "force",
     "verbatimModuleSyntax": true,
@@ -14,6 +15,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@fish-admin/vue": ["../../packages/vue/src/index.ts"]
+    },
     "types": ["vite/client"]
   },
   "include": ["src", "test", "vite.config.ts", "vitest.config.ts"]
