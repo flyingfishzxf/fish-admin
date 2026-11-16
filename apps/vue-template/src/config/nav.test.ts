@@ -5,10 +5,10 @@ import { router } from '../router'
 import { findNavGroup, findNavItem, IMPLEMENTED_PATHS, NAV_GROUPS, type NavGroup } from './nav'
 
 describe('nav', () => {
-  it('exposes exactly the thirteen implemented paths', () => {
+  it('exposes exactly the fourteen implemented paths', () => {
     const paths = NAV_GROUPS.flatMap((group) => group.items.map((item) => item.to))
     expect(paths.sort()).toEqual([...IMPLEMENTED_PATHS].sort())
-    expect(paths).toHaveLength(13)
+    expect(paths).toHaveLength(14)
   })
 
   it('ships the three account pages without a permission key', () => {
@@ -28,11 +28,13 @@ describe('nav', () => {
     }
   })
 
-  it('keeps only the built item of a partly shipped group', () => {
-    // Projects, workflows and files are still missing, so Collaboration holds
-    // exactly one entry: the inbox.
+  it('keeps only the built items of a partly shipped group', () => {
+    // Projects and workflows are still missing, so Collaboration holds the
+    // library and the inbox.
     const groups = NAV_GROUPS.filter((group) => group.titleKey === 'nav:groups.collaboration')
-    expect(groups.map((group) => group.items.map((item) => item.to))).toEqual([['/notifications']])
+    expect(groups.map((group) => group.items.map((item) => item.to))).toEqual([
+      ['/files', '/notifications'],
+    ])
   })
 
   it('ships the inbox without a permission key', () => {

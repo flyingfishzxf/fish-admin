@@ -156,6 +156,21 @@ describe('Dropzone', () => {
     expect((input.element as HTMLInputElement).value).toBe('')
   })
 
+  it('emits the whole batch when it is allowed to take more than one file', async () => {
+    const wrapper = mount(Dropzone, {
+      props: { label: 'Drop files here', multiple: true },
+    })
+    const input = wrapper.get('[data-slot="dropzone-file"]')
+    const batch = [file(), new File(['y'], 'two.csv', { type: 'text/csv' })]
+    Object.defineProperty(input.element, 'files', { value: batch, configurable: true })
+    await input.trigger('change')
+    await flushPromises()
+
+    // The single-file event must stay untouched: the avatar editor relies on it.
+    expect(wrapper.emitted('files')?.[0]?.[0]).toEqual(batch)
+    expect(wrapper.emitted('file')).toBeUndefined()
+  })
+
   it('announces the error and disables the input', () => {
     const wrapper = zone({ error: 'Choose a smaller image.', disabled: true })
     expect(wrapper.get('[data-slot="dropzone-error"]').attributes('role')).toBe('alert')
