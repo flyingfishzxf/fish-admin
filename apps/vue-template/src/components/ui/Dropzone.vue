@@ -14,6 +14,8 @@ const props = withDefaults(
     hint?: string
     /** Defaults to the shared enterprise label; a page may name its own action. */
     browseLabel?: string
+    /** Accepts a batch and emits `files` instead of `file`. */
+    multiple?: boolean
     disabled?: boolean
     error?: string
     class?: string
@@ -22,13 +24,22 @@ const props = withDefaults(
     accept: undefined,
     hint: undefined,
     browseLabel: undefined,
+    multiple: false,
     disabled: false,
     error: undefined,
     class: undefined,
   },
 )
 
-const emit = defineEmits<{ file: [file: File] }>()
+const emit = defineEmits<{ file: [file: File]; files: [files: File[]] }>()
+
+function accepted(files: File[]) {
+  if (files.length === 0) return
+  const list = files
+  // Single mode keeps its original contract; batches go out as `files`.
+  if (props.multiple) emit('files', list)
+  else emit('file', list[0]!)
+}
 
 const commonT = useT('common')
 const inputId = useId()
@@ -56,16 +67,17 @@ function drop(event: DragEvent) {
   dragDepth = 0
   dragging.value = false
   if (props.disabled) return
-  const first = event.dataTransfer?.files?.[0]
-  if (first) emit('file', first)
+  accepted(Array.from(event.dataTransfer?.files ?? []))
 }
 
 function change(event: Event) {
   const input = event.target as HTMLInputElement
-  const first = input.files?.[0]
-  // Clearing the value allows the same file to be picked again after a retry.
+  // Copy before clearing: `input.files` is a live list, and resetting the value
+  // empties it, which would hand the caller zero files.
+  const picked = Array.from(input.files ?? [])
+  // Clearing the value lets the same file be picked again after a retry.
   input.value = ''
-  if (first) emit('file', first)
+  accepted(picked)
 }
 
 function browse() {
@@ -107,6 +119,7 @@ function browse() {
       class="sr-only"
       :aria-label="label"
       :accept="accept"
+      :multiple="multiple"
       :disabled="disabled"
       data-slot="dropzone-file"
       @change="change"

@@ -20,6 +20,7 @@ export const REQUIRED_NAMESPACES = [
   'auth',
   'dashboard',
   'users',
+  'files',
   'validation',
   'reports',
   'departments',

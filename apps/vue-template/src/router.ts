@@ -170,6 +170,12 @@ export const router = createRouter({
         },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         {
+          path: 'files',
+          name: 'files',
+          component: () => import('./features/files/FilesPage.vue'),
+          meta: { permission: 'file:read' },
+        },
+        {
           // A detail is a drill-down, not a nav item: it sits under the same
           // permission as the list and does not join the sidebar contract.
           path: 'users/:id',
