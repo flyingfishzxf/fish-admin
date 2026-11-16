@@ -170,6 +170,18 @@ export const router = createRouter({
         },
         { path: 'users', name: 'users', component: UsersPage, meta: { permission: 'user:read' } },
         {
+          path: 'workflows',
+          name: 'workflows',
+          component: () => import('./features/workflows/WorkflowsPage.vue'),
+          meta: { permission: 'workflow:read' },
+        },
+        {
+          path: 'workflows/:id',
+          name: 'workflow-detail',
+          component: () => import('./features/workflows/WorkflowDetailPage.vue'),
+          meta: { permission: 'workflow:read' },
+        },
+        {
           path: 'projects',
           name: 'projects',
           component: () => import('./features/projects/ProjectsPage.vue'),

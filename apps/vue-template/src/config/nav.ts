@@ -65,6 +65,7 @@ export const IMPLEMENTED_PATHS = new Set([
   '/users',
   '/files',
   '/projects',
+  '/workflows',
   '/departments',
   '/roles',
   '/permissions',
