@@ -361,7 +361,7 @@ const tableLabels = computed(() => ({
       </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 lg:grid-cols-[240px_minmax(0,1fr)]">
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-[208px_minmax(0,1fr)]">
       <aside class="h-fit rounded-xl border bg-card p-4" data-files-folders>
         <p class="pb-2 text-sm font-semibold">{{ t('folders.title') }}</p>
         <div v-if="foldersQuery.isPending.value" class="space-y-2">
@@ -498,7 +498,7 @@ const tableLabels = computed(() => ({
           </Button>
         </div>
 
-        <div class="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div class="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
           <div class="min-w-0 space-y-3">
             <div
               v-if="listQuery.isPending.value"
@@ -561,7 +561,10 @@ const tableLabels = computed(() => ({
           </div>
 
           <aside class="hidden xl:block">
-            <div class="sticky top-4 rounded-xl border bg-card p-4" data-files-preview>
+            <div
+              class="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto rounded-xl border bg-card p-4"
+              data-files-preview
+            >
               <FilePreviewPanel
                 :file="selectedFile"
                 :images="images"

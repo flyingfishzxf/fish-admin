@@ -195,10 +195,12 @@ const icon = computed(() => fileIcon(props.file ?? { mime: 'application/octet-st
       </div>
     </div>
 
-    <dl class="grid gap-x-4 gap-y-2 text-xs" data-preview-meta>
+    <dl class="grid gap-x-4 gap-y-2 text-xs sm:grid-cols-2" data-preview-meta>
       <div v-for="row in metadata" :key="row.key" class="min-w-0">
         <dt class="font-mono text-muted-foreground">{{ row.key }}</dt>
-        <dd class="truncate" :class="row.mono && 'font-mono'">{{ row.value }}</dd>
+        <!-- Wrapped, not truncated: an ISO timestamp and a file id are the two
+             values a reader actually copies out of this panel. -->
+        <dd class="break-all" :class="row.mono && 'font-mono'">{{ row.value }}</dd>
       </div>
     </dl>
 
