@@ -221,7 +221,9 @@ const archivingId = computed(() =>
       <p v-if="featured.length === 0" class="pt-3 text-sm text-muted-foreground">
         {{ t('featured.empty') }}
       </p>
-      <div v-else class="grid gap-4 pt-4 md:grid-cols-2">
+      <!-- Three across at xl: the seeded portfolio has three featured projects,
+           and a 2-column grid pushed the KPI row below the fold. -->
+      <div v-else class="grid gap-4 pt-4 md:grid-cols-2 xl:grid-cols-3">
         <article
           v-for="project in featured"
           :key="project.id"

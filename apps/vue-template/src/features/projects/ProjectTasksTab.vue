@@ -154,16 +154,15 @@ function assigneeName(task: ProjectTask) {
           class="rounded-xl border"
           :data-task-group="group.status"
         >
-          <header class="flex items-center justify-between border-b px-4 py-2 text-sm font-medium">
-            <span>
-              {{
-                t('detail.tasks.group', {
-                  status: t(`detail.tasks.statuses.${group.status}`),
-                  count: group.tasks.length,
-                })
-              }}
-            </span>
-            <span class="text-xs text-muted-foreground">{{ group.tasks.length }}</span>
+          <header class="border-b px-4 py-2 text-sm font-medium">
+            <!-- The label already carries the count; a second number on the right
+                 just gave the eye two places to read the same thing. -->
+            {{
+              t('detail.tasks.group', {
+                status: t(`detail.tasks.statuses.${group.status}`),
+                count: group.tasks.length,
+              })
+            }}
           </header>
           <p v-if="group.tasks.length === 0" class="px-4 py-3 text-sm text-muted-foreground">
             {{ t('detail.tasks.empty') }}
