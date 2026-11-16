@@ -67,10 +67,12 @@ published package.
 - Four full-page status states (401, 500, 503, maintenance) rendered outside the
   shell, plus the existing 403 and 404 pages.
 
-Not included: interactive column pinning in the users table (React only pins the
-checkbox and name columns initially, and the Vue table has no sticky-column
-rendering), and page-level pixel parity. **All 16 pages in `NAV_CONTRACT` now
-ship.**
+Not included: virtual scrolling in the users table (React virtualizes the
+5,000-row dataset; the Vue table renders all rows, which is fine for the seeded
+data but not for that scale), interactive column pinning in the users table
+(React only pins the checkbox and name columns initially, and the Vue table has
+no sticky-column rendering), and page-level pixel parity. **All 16 pages in
+`NAV_CONTRACT` now ship.**
 
 ## Routes
 
@@ -253,7 +255,7 @@ pnpm test:e2e:vue-template
 | Navigation      | all 16 contracted pages                                                                                      | all 16; no entry is hidden                                                                                                            |
 | Authentication  | sign in, register, recovery, invite, OTP, 2FA                                                                | the same six flows; no email delivery, fixed demo TOTP secret                                                                         |
 | Dashboard       | KPIs, three charts, product tour                                                                             | the same three charts and the tour, drawn as hand-written SVG                                                                         |
-| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity                                   | the same surfaces; drag-to-reorder and resize are app-level, and interactive pinning is not offered                                   |
+| Users           | column controls, density, saved views, CSV, bulk, import, detail, activity, virtual scrolling                | the same surfaces except virtual scrolling; drag-to-reorder and resize are app-level, and interactive pinning is not offered          |
 | Roles           | two-step create wizard that also picks permissions                                                           | one dialog; permissions are granted in the matrix                                                                                     |
 | Dictionaries    | drag handle plus arrow keys, no pagination                                                                   | same, and the item list is not paged                                                                                                  |
 | Files           | resizable split, watermark, carousel, JSON viewer, combobox and date pickers                                 | fixed two-column split, thumbnail gallery, definition list, Select filters, native date input, flat folder list                       |
