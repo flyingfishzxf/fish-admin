@@ -83,6 +83,14 @@ All notable changes to this project are documented here. The format is based on
   and transfer share one confirm dialog. All 16 pages in `NAV_CONTRACT` now ship.
   637 Vitest tests and 49 Playwright specs.
 
+- **Vue template page contract:** sixteen new Playwright specs walk every route
+  in `NAV_CONTRACT` and assert one heading that matches the sidebar label, a
+  current nav entry, a clean console and no serious or critical axe violation.
+  The first run surfaced two shell defects, both fixed: the tab strip claimed
+  `role="tablist"` without owning tabs, and four header controls had accessible
+  names that omitted their visible text. 637 Vitest tests and 65 Playwright
+  specs.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

@@ -401,23 +401,44 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-637 tests in 91 files. Forty-nine Playwright specs cover the golden paths,
+637 tests in 91 files. Sixty-five Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios
 (header layout, mixed layout with compact density, palette navigation, tab close,
 single read, mark-all persistence, offline banner), seven chart/report
 scenarios (three dashboard charts, range redraw, hover tooltip, report charts,
-metric switch, target line, CSV download) and three users-table scenarios
-(bulk delete with undo, CSV download, role filter), three user-detail
-scenarios (tag save across a reload, an unknown id, the activity request) and
-three import scenarios (sample CSV, invalid rows sent nowhere, viewer has no
-import action) three files scenarios (batch upload, bulk delete from the
-list view, read-only viewer) four project scenarios (create, view/sort/filter,
-a write through every tab, read-only viewer) and five workflow scenarios (tabs
-and filters, reading a request, approving a single-step chain, commenting, the
-403 for a role without workflow access); they do not produce or compare
-screenshots.
+metric switch, target line, CSV download), three users-table scenarios (bulk
+delete with undo, CSV download, role filter), three user-detail scenarios (tag
+save across a reload, an unknown id, the activity request), three import
+scenarios (sample CSV, invalid rows sent nowhere, viewer has no import action),
+three files scenarios (batch upload, bulk delete from the list view, read-only
+viewer), four project scenarios (create, view/sort/filter, a write through every
+tab, read-only viewer), five workflow scenarios (tabs and filters, reading a
+request, approving a single-step chain, commenting, the 403 for a role without
+workflow access) and sixteen page-contract specs, one per route. None of them
+produce or compare screenshots.
+
+### Page contract
+
+`e2e-vue-template/specs/pages.spec.ts` walks every route in `NAV_CONTRACT` and
+checks the same five things on each: the page opens, it announces itself with one
+heading that matches its sidebar label, the sidebar marks that entry current, the
+console stays clean, and axe reports no serious or critical violation.
+
+The first run found two systemic problems, both fixed in the shell rather than on
+sixteen pages. The tab strip declared `role="tablist"` around wrapper divs and
+action buttons — a tablist may only own tabs, and each tab would owe a tabpanel
+— so it is a `nav` with `aria-current` now. Four header controls also carried a
+name that omitted their visible text, which breaks voice control: the brand link
+dropped its tagline, the search button said "Open command menu" over "Search…",
+the bell repeated its count in a hidden span, and the colour picker hid its hex
+value.
+
+This is the structural half of page-level parity. The two implementations are
+deliberately different, so a cross-app screenshot diff would compare two designs
+rather than two builds of one; pixel parity stays out of scope, and the frozen
+component baselines under `parity/` remain the visual contract.
 
 ## Client-side permission boundary
 
