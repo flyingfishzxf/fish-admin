@@ -105,6 +105,18 @@ function open(instance: WorkflowInstance) {
   void router.push({ name: 'workflow-detail', params: { id: instance.id } })
 }
 
+// A bare number in the footer says nothing; the shared summary string already
+// reads "Showing 1–10 of 12" in both languages.
+const summary = computed(() => {
+  if (total.value === 0) return ''
+  const from = (search.page - 1) * search.pageSize + 1
+  return t('common:table.summary', {
+    from,
+    to: Math.min(search.page * search.pageSize, total.value),
+    total: total.value,
+  })
+})
+
 const emptyTitle = computed(() =>
   hasFilters.value ? t('empty.filteredTitle') : t(`empty.${search.view}Title`),
 )
@@ -168,7 +180,7 @@ const emptyDescription = computed(() =>
     <WorkflowTable v-else :rows="rows" :language="language" @open="open" />
 
     <div class="flex flex-wrap items-center justify-between gap-3">
-      <p class="text-xs text-muted-foreground" data-workflows-total>{{ total }}</p>
+      <p class="text-xs text-muted-foreground" data-workflows-total>{{ summary }}</p>
       <div class="flex items-center gap-3">
         <div class="flex items-center gap-2 text-xs text-muted-foreground">
           <span>{{ t('common:table.rowsPerPage') }}</span>

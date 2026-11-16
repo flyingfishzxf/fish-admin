@@ -122,7 +122,6 @@ const initiatorLabel = computed(
       :ariaLabel="t('filters.dateRange')"
       :presets="presets"
       class="h-9 w-full sm:w-[15rem]"
-      data-filter-range
     />
 
     <Button

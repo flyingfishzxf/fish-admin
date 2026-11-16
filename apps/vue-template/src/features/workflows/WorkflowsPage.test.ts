@@ -115,7 +115,7 @@ describe('WorkflowsPage', () => {
     expect(page.get('[data-workflow-row]').text()).toContain('Request 142')
     // A request without an amount shows an em dash, not "undefined".
     expect(page.findAll('[data-workflow-row]')[1]!.text()).toContain('—')
-    expect(page.get('[data-workflows-total]').text()).toBe('12')
+    expect(page.get('[data-workflows-total]').text()).toContain('12')
   })
 
   it('switches the view and returns to the first page', async () => {
