@@ -72,7 +72,7 @@ All notable changes to this project are documented here. The format is based on
   tabs — overview with day-grouped milestones, attachments and an audit timeline,
   a four-column task board, an editable budget and a three-step retrospective —
   plus member and settings drawers. Sixteen React primitives are replaced by
-  app-level equivalents, listed in the spec. 615 Vitest tests and 41 Playwright
+  app-level equivalents, listed in the spec. 615 Vitest tests and 44 Playwright
   specs.
 
 ### Fixed

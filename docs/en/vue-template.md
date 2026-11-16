@@ -388,7 +388,7 @@ Vitest covers redirects, permissions, auth/session, i18n, theme, the login,
 registration, verification, recovery, invite and OTP pages, the three account
 pages, the four status pages, the shell (layouts, tabs, command palette, subnav,
 offline banner, tour) and the notification surfaces, plus every management page:
-615 tests in 88 files. Forty-one Playwright specs cover the golden paths,
+615 tests in 88 files. Forty-four Playwright specs cover the golden paths,
 four management scenarios (nine nav items, viewer 403, matrix persistence, pager
 recovery), four auth/account scenarios (register–verify–sign in, password reset,
 invite acceptance, accent persistence), seven shell/notification scenarios
