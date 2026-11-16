@@ -36,6 +36,7 @@ describe('i18n', () => {
       'users',
       'files',
       'projects',
+      'workflows',
       'validation',
       'reports',
       'departments',

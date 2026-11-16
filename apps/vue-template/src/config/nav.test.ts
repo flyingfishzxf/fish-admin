@@ -5,10 +5,10 @@ import { router } from '../router'
 import { findNavGroup, findNavItem, IMPLEMENTED_PATHS, NAV_GROUPS, type NavGroup } from './nav'
 
 describe('nav', () => {
-  it('exposes exactly the fifteen implemented paths', () => {
+  it('exposes exactly the sixteen implemented paths', () => {
     const paths = NAV_GROUPS.flatMap((group) => group.items.map((item) => item.to))
     expect(paths.sort()).toEqual([...IMPLEMENTED_PATHS].sort())
-    expect(paths).toHaveLength(15)
+    expect(paths).toHaveLength(16)
   })
 
   it('ships the three account pages without a permission key', () => {
@@ -28,12 +28,10 @@ describe('nav', () => {
     }
   })
 
-  it('keeps only the built items of a partly shipped group', () => {
-    // Workflows is still missing, so Collaboration holds the board, the library
-    // and the inbox.
+  it('ships the whole collaboration group', () => {
     const groups = NAV_GROUPS.filter((group) => group.titleKey === 'nav:groups.collaboration')
     expect(groups.map((group) => group.items.map((item) => item.to))).toEqual([
-      ['/projects', '/files', '/notifications'],
+      ['/projects', '/workflows', '/files', '/notifications'],
     ])
   })
 
@@ -70,6 +68,6 @@ describe('nav', () => {
   })
 
   it('returns nothing for a path the shell does not own', () => {
-    expect(findNavItem('/workflows')).toBeUndefined()
+    expect(findNavItem('/nowhere')).toBeUndefined()
   })
 })
