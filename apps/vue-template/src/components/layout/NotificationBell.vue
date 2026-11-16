@@ -73,7 +73,6 @@ function viewAll() {
         >
           {{ badge }}
         </span>
-        <span class="sr-only">{{ t('bell.label') }}: {{ unread }}</span>
       </Button>
     </template>
 

@@ -20,12 +20,12 @@ const ui = useUiStore()
       size="sm"
       data-tour="search"
       class="gap-2 text-muted-foreground"
-      :aria-label="t('header.openCommand')"
       @click="ui.setCommandOpen(true)"
     >
-      <Search class="size-4" />
+      <Search class="size-4" aria-hidden="true" />
       <span class="hidden md:inline">{{ t('header.search') }}</span>
       <kbd
+        aria-hidden="true"
         class="hidden rounded border bg-muted/60 px-1.5 py-0.5 text-[10px] font-medium md:inline"
       >
         {{ t('command.shortcut') }}

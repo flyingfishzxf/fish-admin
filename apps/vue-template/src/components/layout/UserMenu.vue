@@ -39,7 +39,7 @@ async function signOut() {
         variant="ghost"
         class="h-9 gap-2 px-1.5 md:pe-2"
         data-tour="account"
-        :aria-label="`${initials} ${user.name} — ${t('common:header.account')}`"
+        :aria-label="`${initials} ${user.name}`"
       >
         <Avatar class="size-7" aria-hidden="true">
           <AvatarImage v-if="user.avatar" :src="user.avatar" alt="" />

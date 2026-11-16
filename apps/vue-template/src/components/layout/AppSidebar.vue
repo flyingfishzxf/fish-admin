@@ -42,12 +42,7 @@ watch(
     :data-collapsed="ui.collapsed ? 'true' : undefined"
     data-tour="sidebar"
   >
-    <RouterLink
-      to="/"
-      :aria-label="t('common:app.name')"
-      class="flex items-center gap-2.5 px-1.5 py-1"
-      @click="ui.closeMobile()"
-    >
+    <RouterLink to="/" class="flex items-center gap-2.5 px-1.5 py-1" @click="ui.closeMobile()">
       <BrandMark />
       <div class="min-w-0 leading-tight" :class="ui.collapsed ? 'hidden' : 'grid'">
         <span class="truncate text-sm font-semibold tracking-tight">{{
@@ -127,12 +122,7 @@ watch(
         class="absolute inset-y-0 start-0 flex w-72 flex-col border-e bg-sidebar text-sidebar-foreground shadow-xl"
         @keydown.esc="ui.closeMobile"
       >
-        <RouterLink
-          to="/"
-          :aria-label="t('common:app.name')"
-          class="flex items-center gap-2.5 px-1.5 py-1"
-          @click="ui.closeMobile()"
-        >
+        <RouterLink to="/" class="flex items-center gap-2.5 px-1.5 py-1" @click="ui.closeMobile()">
           <BrandMark />
           <div class="grid min-w-0 leading-tight">
             <span class="truncate text-sm font-semibold tracking-tight">

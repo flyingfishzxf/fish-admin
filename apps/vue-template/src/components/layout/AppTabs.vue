@@ -103,9 +103,11 @@ function reload(tab: { to: string; search?: Record<string, string> }) {
 </script>
 
 <template>
-  <div
+  <!-- These tabs navigate between routes, so they are links, not an ARIA tab
+       widget: a `tablist` may only own `tab` children, and each tab would owe a
+       `tabpanel`. `nav` + `aria-current` describes what they actually do. -->
+  <nav
     v-if="tabs.length > 0"
-    role="tablist"
     :aria-label="t('tabs.label')"
     data-slot="app-tabs"
     class="flex items-center gap-0.5 overflow-x-auto border-b bg-background/60 px-2 py-1.5"
@@ -122,9 +124,7 @@ function reload(tab: { to: string; search?: Record<string, string> }) {
     >
       <RouterLink
         :to="tabTarget(tab)"
-        role="tab"
         :data-tab="tab.to"
-        :aria-selected="tab.to === route.path"
         :aria-current="tab.to === route.path ? 'page' : undefined"
         class="max-w-40 truncate px-1 py-0.5"
       >
@@ -186,5 +186,5 @@ function reload(tab: { to: string; search?: Record<string, string> }) {
     >
       {{ t('tabs.closeAll') }}
     </Button>
-  </div>
+  </nav>
 </template>

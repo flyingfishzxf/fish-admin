@@ -69,7 +69,7 @@ function commitDraft() {
       <button
         type="button"
         data-color-trigger
-        :aria-label="props.ariaLabel"
+        :aria-label="`${props.ariaLabel} ${props.modelValue.toUpperCase()}`"
         class="flex h-8 w-full items-center gap-2 rounded-lg border bg-background px-2 text-sm"
       >
         <span
@@ -87,7 +87,7 @@ function commitDraft() {
         type="color"
         data-color-native
         :value="props.modelValue"
-        :aria-label="props.ariaLabel"
+        :aria-label="`${props.ariaLabel} ${props.modelValue.toUpperCase()}`"
         class="h-8 w-full cursor-pointer rounded-md border bg-transparent"
         @input="pick(($event.target as HTMLInputElement).value)"
       />
@@ -95,7 +95,7 @@ function commitDraft() {
       <input
         :value="draft"
         data-color-hex
-        :aria-label="props.ariaLabel"
+        :aria-label="`${props.ariaLabel} ${props.modelValue.toUpperCase()}`"
         spellcheck="false"
         class="h-8 w-full rounded-md border bg-background px-2 font-mono text-xs uppercase outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
         @input="draft = ($event.target as HTMLInputElement).value"
