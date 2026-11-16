@@ -66,6 +66,15 @@ All notable changes to this project are documented here. The format is based on
   uploads run one at a time because the mock's read-modify-write drops parallel
   writes. 573 Vitest tests and 40 Playwright specs.
 
+- **Vue template projects:** `/projects` adds the portfolio KPI, a featured
+  strip, six filters, board and list views with server sorting, paging, a
+  two-step create dialog and archive. `/projects/:id` adds the header and four
+  tabs — overview with day-grouped milestones, attachments and an audit timeline,
+  a four-column task board, an editable budget and a three-step retrospective —
+  plus member and settings drawers. Sixteen React primitives are replaced by
+  app-level equivalents, listed in the spec. 615 Vitest tests and 41 Playwright
+  specs.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

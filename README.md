@@ -305,7 +305,7 @@ apps/docs/                   # the Rspress documentation site
 apps/parity-vue/             # @fish-admin/parity-vue — private Vite target for the Vue parity suite
 ├─ src/demos/                # the six pilot demos, one folder per component
 └─ src/data/demos.ts         # the demo registry the target routes render
-apps/vue-template/           # Private Vue 3 admin app (14 pages, incl. the account and inbox)
+apps/vue-template/           # Private Vue 3 admin app (15 pages, incl. the account and inbox)
 src/                         # the template
 ├─ routes/                   # File-based routes; routeTree.gen.ts is generated
 ├─ features/                 # auth, dashboard, users, roles, permissions, departments, audit, projects, files, reports, notifications, integrations, profile, security, settings
@@ -344,7 +344,7 @@ docs/{en,zh-CN}/             # Repository documentation (the site above is the p
 | `pnpm test:vue`                      | Test `@fish-admin/vue` and the Vue parity app                  |
 | `pnpm dev:vue-template`              | Run the Vue template on port 4177                              |
 | `pnpm test:vue-template`             | Vitest for the Vue template                                    |
-| `pnpm test:e2e:vue-template`         | Forty Playwright functional specs                              |
+| `pnpm test:e2e:vue-template`         | Forty-one Playwright functional specs                          |
 | `pnpm check:package`                 | Fail unless the barrel exports every registry entry            |
 | `pnpm maturity` / `check:maturity`   | Regenerate / verify the component maturity matrix              |
 | `pnpm gen-api` / `gen-api:check`     | Regenerate / verify the docs API tables and coverage floor     |
