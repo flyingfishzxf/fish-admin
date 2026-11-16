@@ -98,6 +98,16 @@ All notable changes to this project are documented here. The format is based on
   resize, so the docs demos and parity baselines are untouched. 644 Vitest tests
   and 67 Playwright specs.
 
+- **`@fish-admin/vue` is installable:** the package now ships built artifacts —
+  ESM with per-module sources and TypeScript declarations for every SFC, plus a
+  precompiled `styles.css` carrying the design tokens and every utility the
+  components use, so a consumer project needs neither Tailwind nor the tokens
+  package. `check-package` guards both barrels and the vue registry of seventeen
+  components; the monorepo keeps compiling the source through a shared vite alias
+  layer, leaving the template, parity app and docs imports untouched. Verified by
+  installing the packed tarball in an empty project and building a button-only
+  entry without Tailwind.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
