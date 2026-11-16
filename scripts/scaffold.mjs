@@ -373,6 +373,7 @@ function dropTestBrowsers(editor, state) {
       'perf',
       'test:parity',
       'test:parity:docker',
+      'test:parity:vue',
       'check:parity:freeze',
       'check:parity:contract',
       'check:parity:scenarios',
