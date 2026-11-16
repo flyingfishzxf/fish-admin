@@ -77,7 +77,13 @@ describe('ProjectCreateDialog', () => {
     document.body.innerHTML = ''
     vi.clearAllMocks()
     vi.mocked(fetchProjectUserOptions).mockResolvedValue([
-      { id: 'u1', name: 'Ada Lovelace', email: 'ada@fish.dev', department: 'Engineering' },
+      {
+        id: 'u1',
+        name: 'Ada Lovelace',
+        email: 'ada@fish.dev',
+        department: 'Engineering',
+        jobTitle: undefined,
+      },
     ])
     vi.mocked(fetchProjectDepartments).mockResolvedValue({ items: [] })
     vi.mocked(createProject).mockResolvedValue({ id: 'p9', name: 'Nebula' } as never)

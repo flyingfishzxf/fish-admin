@@ -113,7 +113,13 @@ describe('ProjectsPage', () => {
       params.archived ? pageOf([], 0) : pageOf(projects),
     )
     vi.mocked(fetchProjectUserOptions).mockResolvedValue([
-      { id: 'u1', name: 'Ada Lovelace', email: 'ada@fish.dev', department: 'Engineering' },
+      {
+        id: 'u1',
+        name: 'Ada Lovelace',
+        email: 'ada@fish.dev',
+        department: 'Engineering',
+        jobTitle: undefined,
+      },
     ])
     vi.mocked(fetchProjectDepartments).mockResolvedValue({ items: [] })
     vi.mocked(archiveProject).mockResolvedValue(projects[0] as never)

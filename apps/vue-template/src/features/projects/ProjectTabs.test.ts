@@ -3,6 +3,8 @@ import { QueryClient, VueQueryPlugin } from '@tanstack/vue-query'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
+import type { Component } from 'vue'
+
 import { i18nReady, setLanguage } from '../../lib/i18n'
 import {
   createProjectTask,
@@ -115,8 +117,8 @@ const detail: ProjectDetail = {
 
 let wrapper: VueWrapper | null = null
 
-function mountTab(component: unknown, canManage = true) {
-  wrapper = mount(component as never, {
+function mountTab(component: Component, canManage = true) {
+  wrapper = mount(component, {
     props: { detail, canManage },
     attachTo: document.body,
     global: {

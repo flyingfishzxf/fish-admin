@@ -138,7 +138,7 @@ describe('ProjectDetailPage', () => {
 
     expect(page.text()).toContain('Engineering')
     expect(page.findAll('[data-slot="tabs-trigger"]')).toHaveLength(4)
-    expect(page.get('[data-overview-tab]').exists()).toBe(true)
+    expect(page.find('[data-overview-tab]').exists()).toBe(true)
   })
 
   it('keeps a missing project inside the shell with a way back', async () => {
