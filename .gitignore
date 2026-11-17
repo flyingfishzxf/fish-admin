@@ -24,3 +24,4 @@ apps/docs/docs/en/template
 apps/docs/docs/zh/template
 video/
 .worktrees
+*.tgz
