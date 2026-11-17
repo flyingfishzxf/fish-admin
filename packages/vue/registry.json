@@ -304,6 +304,78 @@
       "status": "stable",
       "since": "0.3.0",
       "usedIn": "/users/$id"
+    },
+    {
+      "id": "descriptions",
+      "name": "Descriptions",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "/users/$id"
+    },
+    {
+      "id": "json-viewer",
+      "name": "JsonViewer",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "/workflows/$id"
+    },
+    {
+      "id": "popconfirm",
+      "name": "Popconfirm",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "list",
+      "name": "List",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "/notifications"
+    },
+    {
+      "id": "result",
+      "name": "Result",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "spinner",
+      "name": "Spinner",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "loading-overlay",
+      "name": "LoadingOverlay",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "statistic",
+      "name": "Statistic",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "/dashboard"
+    },
+    {
+      "id": "trend",
+      "name": "Trend",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.4.0",
+      "usedIn": "/dashboard"
     }
   ]
 }

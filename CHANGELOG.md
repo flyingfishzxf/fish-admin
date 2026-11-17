@@ -117,6 +117,14 @@ All notable changes to this project are documented here. The format is based on
   template's, the app imports everything from the barrel, and the packed
   tarball still tree-shakes a button-only build to its previous size.
 
+- **`@fish-admin/vue` 0.4.0 — 47 exports:** nine more React components ported:
+  Descriptions, JsonViewer (recursive tree with copy), Popconfirm (controlled
+  popover confirm with destructive variant), List (rows with icons, selection and
+  an actions slot), Result, Spinner, LoadingOverlay, Statistic and Trend — each
+  with its own unit tests and registry entry. check-package now verifies
+  47 vue exports, and the packed tarball tree-shakes a button-only build to its
+  previous size.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
