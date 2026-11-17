@@ -132,6 +132,13 @@ All notable changes to this project are documented here. The format is based on
   stays free of vue-router), and reka-backed HoverCard and ScrollArea. Each ships
   with unit tests and a registry entry; check-package verifies 54 vue exports.
 
+- **`@fish-admin/vue` 0.6.0 — 58 exports:** Watermark (canvas tile grid that
+  redraws on resize and theme change), ImagePreview (thumbnail grid opening the
+  package dialog with arrow-key stepping), TimePicker (HH/MM select pair with a
+  tested minute-step helper) and ContextMenu (items-driven entries with labels,
+  separators, destructive items and one submenu level). check-package verifies
+  58 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
