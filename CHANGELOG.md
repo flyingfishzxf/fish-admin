@@ -125,6 +125,13 @@ All notable changes to this project are documented here. The format is based on
   47 vue exports, and the packed tarball tree-shakes a button-only build to its
   previous size.
 
+- **`@fish-admin/vue` 0.5.0 — 54 exports:** seven more React components ported:
+  AnchorNav and BackTop (scroll-container aware, reduced-motion safe),
+  PageContainer (composing PageHeader, which gains React's `eyebrow` prop),
+  Stepper, Breadcrumb (link trail with ellipsis; plain anchors so the package
+  stays free of vue-router), and reka-backed HoverCard and ScrollArea. Each ships
+  with unit tests and a registry entry; check-package verifies 54 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
