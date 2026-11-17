@@ -35,13 +35,16 @@ sources, import the stylesheet source instead and compile it yourself:
 import '@fish-admin/vue/styles/index.css'
 ```
 
-## Components (v0.2.0)
+## Components (v0.3.0 — 38 exports)
 
-Accordion, Avatar, Badge, BulkActionsBar, Button, Checkbox, DataTable,
-DateRangePicker, Dialog, DropdownMenu, Input, Label, ProTable, Select, Skeleton,
-Switch, Tabs — the surfaces the admin template needs, with the React parity
-pilots behind them. The remaining components of the 83-component React library
-are on the roadmap (`docs/superpowers/specs/2026-11-16-vue-package-installable-checklist.md`).
+Accordion, Alert, AlertDialog, Avatar, Badge, BulkActionsBar, Button, Calendar
+parts via DateRangePicker, Card, Checkbox, Collapsible, ColorPicker, DataTable,
+DateRangePicker, Dialog, DropdownMenu, Dropzone, EmptyState, ErrorState, Input,
+InputNumber, Label, OtpInput, PageHeader, Pagination, Popover, ProgressBar,
+ProTable, RadioGroup, Segmented, Select, Skeleton, Slider, Switch, Tabs,
+TagsInput, Textarea, Timeline — the surfaces the admin template needs. The
+remaining components of the 83-component React library are on the roadmap
+(`docs/superpowers/specs/2026-11-16-vue-package-installable-checklist.md`).
 
 ## Peer dependencies
 

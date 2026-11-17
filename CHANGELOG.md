@@ -108,6 +108,15 @@ All notable changes to this project are documented here. The format is based on
   installing the packed tarball in an empty project and building a button-only
   entry without Tailwind.
 
+- **`@fish-admin/vue` 0.3.0 — 38 exports:** twenty-one components the template
+  had implemented at the app level (Alert, AlertDialog, Card, Collapsible,
+  ColorPicker, Dropzone, EmptyState, ErrorState, InputNumber, OtpInput,
+  PageHeader, Pagination, Popover, ProgressBar, RadioGroup, Segmented, Slider,
+  TagsInput, Textarea, Timeline and friends) move into the package. ErrorState
+  and Dropzone read the package's built-in locales with copy identical to the
+  template's, the app imports everything from the barrel, and the packed
+  tarball still tree-shakes a button-only build to its previous size.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
