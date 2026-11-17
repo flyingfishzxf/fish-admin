@@ -432,6 +432,38 @@
       "status": "stable",
       "since": "0.5.0",
       "usedIn": "/projects/$id"
+    },
+    {
+      "id": "watermark",
+      "name": "Watermark",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.6.0",
+      "usedIn": "/projects/$id"
+    },
+    {
+      "id": "image-preview",
+      "name": "ImagePreview",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.6.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "time-picker",
+      "name": "TimePicker",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.6.0",
+      "usedIn": "/projects/$id"
+    },
+    {
+      "id": "context-menu",
+      "name": "ContextMenu",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.6.0",
+      "usedIn": "/files"
     }
   ]
 }
