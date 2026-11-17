@@ -376,6 +376,62 @@
       "status": "stable",
       "since": "0.4.0",
       "usedIn": "/dashboard"
+    },
+    {
+      "id": "anchor-nav",
+      "name": "AnchorNav",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.5.0",
+      "usedIn": "/workflows/$id"
+    },
+    {
+      "id": "back-top",
+      "name": "BackTop",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.5.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "breadcrumb",
+      "name": "Breadcrumb",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.5.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "hover-card",
+      "name": "HoverCard",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.5.0",
+      "usedIn": "/notifications"
+    },
+    {
+      "id": "page-container",
+      "name": "PageContainer",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.5.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "scroll-area",
+      "name": "ScrollArea",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.5.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "stepper",
+      "name": "Stepper",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.5.0",
+      "usedIn": "/projects/$id"
     }
   ]
 }
