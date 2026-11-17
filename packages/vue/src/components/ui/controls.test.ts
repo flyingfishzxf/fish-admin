@@ -1,7 +1,7 @@
 import { DOMWrapper, flushPromises, mount } from '@vue/test-utils'
 import { afterEach, describe, expect, it } from 'vitest'
 
-import ColorPicker from './ColorPicker.vue'
+import ColorPicker from '../enterprise/ColorPicker.vue'
 import InputNumber from './InputNumber.vue'
 import RadioGroup from './RadioGroup.vue'
 import Slider from './Slider.vue'

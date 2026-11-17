@@ -4,6 +4,8 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
+  EmptyState,
+  ErrorState,
   Skeleton,
   Tabs,
   TabsContent,
@@ -15,8 +17,6 @@ import { ArrowLeft, Building2, Pencil, ShieldCheck, Trash2, UserRoundSearch } fr
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import { ApiError } from '../../lib/api-error'
 import { formatDate } from '../../lib/format'
 import { getInitials } from '../../lib/initials'

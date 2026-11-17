@@ -3,27 +3,27 @@ import type { AuthSession } from '@fish-admin/contracts'
 import { DEMO_MFA_CODE } from '@fish-admin/contracts/demo'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import {
+  Alert,
+  AlertDialog,
   Badge,
   Button,
+  Card,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  ErrorState,
   Input,
   Label,
+  OtpInput,
+  PageHeader,
+  Separator,
   Skeleton,
 } from '@fish-admin/vue'
 import { Check, Copy, KeyRound, Laptop, ShieldCheck, ShieldOff, Smartphone } from 'lucide-vue-next'
 import { computed, reactive, ref } from 'vue'
 
-import ErrorState from '../../components/common/ErrorState.vue'
-import PageHeader from '../../components/common/PageHeader.vue'
-import Alert from '../../components/ui/Alert.vue'
-import AlertDialog from '../../components/ui/AlertDialog.vue'
-import Card from '../../components/ui/Card.vue'
-import OtpInput from '../../components/ui/OtpInput.vue'
-import Separator from '../../components/ui/Separator.vue'
 import { ApiError } from '../../lib/api-error'
 import { formatRelativeTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'

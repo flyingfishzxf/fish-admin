@@ -6,12 +6,12 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  Dropzone,
 } from '@fish-admin/vue'
 import { useQueryClient } from '@tanstack/vue-query'
 import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, FileSpreadsheet } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import Dropzone from '../../components/ui/Dropzone.vue'
 import { parseCsvTable, type CsvTable } from '../../lib/csv'
 import { useT } from '../../lib/i18n'
 import { importUsers, type UserImportRow } from './api'

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { WorkflowDecision, WorkflowDetail } from '@fish-admin/contracts'
 import {
+  AlertDialog,
   Button,
+  Card,
   Select,
   SelectContent,
   SelectItem,
@@ -12,8 +14,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { CheckCheck, CircleX, Forward } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 
-import AlertDialog from '../../components/ui/AlertDialog.vue'
-import Card from '../../components/ui/Card.vue'
 import { hasPermission } from '../../lib/permissions'
 import { useT } from '../../lib/i18n'
 import { useAuthStore } from '../../stores/auth'

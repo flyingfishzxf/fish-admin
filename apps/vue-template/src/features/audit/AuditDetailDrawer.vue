@@ -2,11 +2,10 @@
 import type { AuditAction, AuditEvent } from '@fish-admin/contracts'
 import { AUDIT_ACTION_TONES } from '@fish-admin/contracts/audit'
 import { useQuery } from '@tanstack/vue-query'
-import { Badge, Skeleton, cn } from '@fish-admin/vue'
+import { Badge, ErrorState, Skeleton, cn } from '@fish-admin/vue'
 import { computed } from 'vue'
 
 import DetailDrawer from '../../components/common/DetailDrawer.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import { formatDateTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { auditEventQueryOptions } from './queries'

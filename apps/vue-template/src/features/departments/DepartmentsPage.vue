@@ -8,13 +8,13 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  ErrorState,
   Input,
   Label,
 } from '@fish-admin/vue'
 import { Pencil, Plus } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, ref } from 'vue'
 
-import ErrorState from '../../components/common/ErrorState.vue'
 import ListPageHeader from '../../components/common/ListPageHeader.vue'
 import { ApiError } from '../../lib/api-error'
 import { formatDate } from '../../lib/format'

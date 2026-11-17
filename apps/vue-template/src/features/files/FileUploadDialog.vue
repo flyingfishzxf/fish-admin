@@ -2,6 +2,7 @@
 import type { WorkspaceFile } from '@fish-admin/contracts'
 import {
   Button,
+  Dropzone,
   Select,
   SelectContent,
   SelectItem,
@@ -13,7 +14,6 @@ import { AlertCircle, CheckCircle2, Loader2, RotateCcw, X } from 'lucide-vue-nex
 import { computed, ref, watch } from 'vue'
 
 import DetailDrawer from '../../components/common/DetailDrawer.vue'
-import Dropzone from '../../components/ui/Dropzone.vue'
 import { useT } from '../../lib/i18n'
 import { uploadFile, type FileFolderSummary } from './api'
 import { flattenFolders } from './folder-utils'

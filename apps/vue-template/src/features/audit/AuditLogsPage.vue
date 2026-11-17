@@ -7,6 +7,8 @@ import {
   Badge,
   Button,
   DateRangePicker,
+  EmptyState,
+  ErrorState,
   ProTable,
   Select,
   SelectContent,
@@ -20,8 +22,6 @@ import {
 import { ChevronRight, SearchX, ScrollText } from 'lucide-vue-next'
 import { computed, h, reactive, ref, watchEffect } from 'vue'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import ListPageHeader from '../../components/common/ListPageHeader.vue'
 import { formatDateTime, formatRelativeTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'

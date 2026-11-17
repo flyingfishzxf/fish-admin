@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Input,
   Label,
+  ProgressBar,
   Select,
   SelectContent,
   SelectItem,
@@ -20,7 +21,6 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { CalendarClock, Plus } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import ProgressBar from '../../components/ui/ProgressBar.vue'
 import { formatDate } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { createProjectTask, updateProjectTask } from './api'

@@ -4,6 +4,8 @@ import { PERMISSION_GROUPS } from '@fish-admin/contracts/permissions'
 import { useQuery } from '@tanstack/vue-query'
 import {
   Badge,
+  EmptyState,
+  ErrorState,
   Input,
   Select,
   SelectContent,
@@ -15,8 +17,6 @@ import {
 import { KeyRound, Search } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import ListPageHeader from '../../components/common/ListPageHeader.vue'
 import { useT } from '../../lib/i18n'
 import { permissionsQueryOptions } from './queries'

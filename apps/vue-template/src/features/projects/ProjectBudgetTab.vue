@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { ProjectBudgetItem, ProjectDetail } from '@fish-admin/contracts'
-import { Button, Input } from '@fish-admin/vue'
+import { Button, Card, Input, ProgressBar } from '@fish-admin/vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Plus, Trash2 } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import Card from '../../components/ui/Card.vue'
-import ProgressBar from '../../components/ui/ProgressBar.vue'
 import { formatCurrency } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { updateProject } from './api'

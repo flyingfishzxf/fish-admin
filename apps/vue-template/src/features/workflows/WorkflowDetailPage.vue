@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import type { WorkflowStep } from '@fish-admin/contracts'
-import { Button, Skeleton } from '@fish-admin/vue'
+import { Button, Card, EmptyState, ErrorState, Skeleton } from '@fish-admin/vue'
 import { useQuery } from '@tanstack/vue-query'
 import { ArrowLeft, CheckCheck, CircleX, Forward, Send } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
-import Card from '../../components/ui/Card.vue'
-import Timeline, { type TimelineItem, type TimelineTone } from '../../components/ui/Timeline.vue'
+import { Timeline, type TimelineItem, type TimelineTone } from '@fish-admin/vue'
 import { ApiError } from '../../lib/api-error'
 import { formatCurrency, formatDateTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'

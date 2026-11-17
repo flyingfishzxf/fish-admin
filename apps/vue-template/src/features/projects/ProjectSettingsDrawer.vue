@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { Project } from '@fish-admin/contracts'
-import { Button, Input, Label } from '@fish-admin/vue'
+import { Button, Input, Label, TagsInput } from '@fish-admin/vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { ref, watch } from 'vue'
 
 import DetailDrawer from '../../components/common/DetailDrawer.vue'
-import TagsInput from '../../components/ui/TagsInput.vue'
 import { useT } from '../../lib/i18n'
 import { archiveProject, updateProject } from './api'
 

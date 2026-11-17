@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { DashboardRange } from '@fish-admin/contracts'
 import { useQuery } from '@tanstack/vue-query'
-import { Button } from '@fish-admin/vue'
+import { Button, ErrorState, PageHeader } from '@fish-admin/vue'
 import { Compass } from 'lucide-vue-next'
 import { ref } from 'vue'
 
-import ErrorState from '../../components/common/ErrorState.vue'
-import PageHeader from '../../components/common/PageHeader.vue'
 import Tour from '../../components/layout/Tour.vue'
 import type { TourStep } from '../../components/layout/tour'
 import { useT } from '../../lib/i18n'

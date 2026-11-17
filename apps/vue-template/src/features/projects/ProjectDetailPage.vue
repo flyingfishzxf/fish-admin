@@ -1,13 +1,20 @@
 <script setup lang="ts">
-import { Button, Skeleton, Tabs, TabsContent, TabsList, TabsTrigger } from '@fish-admin/vue'
+import {
+  AlertDialog,
+  Button,
+  EmptyState,
+  ErrorState,
+  Skeleton,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@fish-admin/vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { Archive, ArrowLeft, Settings2, Users } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
-import AlertDialog from '../../components/ui/AlertDialog.vue'
 import { ApiError } from '../../lib/api-error'
 import { formatDate } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'

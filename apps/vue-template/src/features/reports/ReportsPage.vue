@@ -4,29 +4,29 @@ import { useQuery } from '@tanstack/vue-query'
 import { getCoreRowModel, useVueTable, type ColumnDef } from '@tanstack/vue-table'
 import {
   Button,
+  ColorPicker,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  EmptyState,
+  ErrorState,
+  InputNumber,
   ProTable,
+  RadioGroup,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Slider,
 } from '@fish-admin/vue'
 import { ChevronDown } from 'lucide-vue-next'
 import { computed, reactive, ref, watch } from 'vue'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import ListPageHeader from '../../components/common/ListPageHeader.vue'
 import AreaChart from '../../components/ui/chart/AreaChart.vue'
 import DonutChart from '../../components/ui/chart/DonutChart.vue'
-import ColorPicker from '../../components/ui/ColorPicker.vue'
-import InputNumber from '../../components/ui/InputNumber.vue'
-import RadioGroup from '../../components/ui/RadioGroup.vue'
-import Slider from '../../components/ui/Slider.vue'
 import {
   formatCompactNumber,
   formatCurrency,

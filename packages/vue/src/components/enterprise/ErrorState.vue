@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Button, cn } from '@fish-admin/vue'
+import { cn } from '../../lib/utils'
+import { Button } from '../ui/button'
 import { AlertTriangle, RotateCcw } from 'lucide-vue-next'
 
-import { useT } from '../../lib/i18n'
+import { useUITranslation } from '../../i18n'
 
 const props = defineProps<{
   title?: string
@@ -11,7 +12,7 @@ const props = defineProps<{
   class?: string
 }>()
 
-const t = useT('common')
+const { t } = useUITranslation()
 </script>
 
 <template>

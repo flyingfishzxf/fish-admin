@@ -2,9 +2,13 @@
 import type { SupportedLanguage } from '@fish-admin/i18n'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import {
+  AlertDialog,
   Badge,
   Button,
+  Card,
+  Collapsible,
   Label,
+  PageHeader,
   Select,
   SelectContent,
   SelectItem,
@@ -25,10 +29,6 @@ import {
 import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
-import PageHeader from '../../components/common/PageHeader.vue'
-import AlertDialog from '../../components/ui/AlertDialog.vue'
-import Card from '../../components/ui/Card.vue'
-import Collapsible from '../../components/ui/Collapsible.vue'
 import { env } from '../../config/env'
 import {
   SHELL_CONTENT_WIDTH_OPTIONS,

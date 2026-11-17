@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { NotificationPreferences } from '@fish-admin/contracts'
-import { Button, Switch } from '@fish-admin/vue'
+import { Button, Card, Popover, Switch } from '@fish-admin/vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { Info } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import Card from '../../components/ui/Card.vue'
-import Popover from '../../components/ui/Popover.vue'
 import { useT } from '../../lib/i18n'
 import { useTransientMessage } from '../../lib/use-transient-message'
 import { updateNotificationPreferences } from './api'

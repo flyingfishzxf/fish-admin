@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { Button, Input, Label } from '@fish-admin/vue'
+import { Alert, Button, Input, Label } from '@fish-admin/vue'
 import { KeyRound, Loader2, MailCheck } from 'lucide-vue-next'
 import { reactive, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 
-import Alert from '../../components/ui/Alert.vue'
 import { ApiError } from '../../lib/api-error'
 import { useT } from '../../lib/i18n'
 import AuthShell from './AuthShell.vue'

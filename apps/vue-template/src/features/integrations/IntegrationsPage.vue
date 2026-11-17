@@ -10,6 +10,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  ErrorState,
   Input,
   Label,
   Select,
@@ -37,7 +38,6 @@ import {
 import { computed, onBeforeUnmount, reactive, ref, watchEffect } from 'vue'
 
 import DetailDrawer from '../../components/common/DetailDrawer.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import ListPageHeader from '../../components/common/ListPageHeader.vue'
 import { ApiError } from '../../lib/api-error'
 import { formatRelativeTime } from '../../lib/format'

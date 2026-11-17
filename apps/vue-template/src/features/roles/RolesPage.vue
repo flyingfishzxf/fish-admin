@@ -9,6 +9,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  EmptyState,
+  ErrorState,
   Input,
   Label,
   ProTable,
@@ -17,8 +19,6 @@ import { Pencil, Plus, Trash2 } from 'lucide-vue-next'
 import { computed, h, onBeforeUnmount, ref, watch, type VNode } from 'vue'
 import { RouterLink } from 'vue-router'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import ListPageHeader from '../../components/common/ListPageHeader.vue'
 import { ApiError } from '../../lib/api-error'
 import { useT } from '../../lib/i18n'

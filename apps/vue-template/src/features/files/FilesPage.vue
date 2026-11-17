@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import type { WorkspaceFile } from '@fish-admin/contracts'
 import {
+  AlertDialog,
   Button,
+  EmptyState,
+  ErrorState,
   Input,
+  PageHeader,
+  Pagination,
+  Segmented,
   Select,
   SelectContent,
   SelectItem,
@@ -15,13 +21,7 @@ import { FolderOpen, Star, UploadCloud, X } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 
 import DetailDrawer from '../../components/common/DetailDrawer.vue'
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
-import PageHeader from '../../components/common/PageHeader.vue'
-import AlertDialog from '../../components/ui/AlertDialog.vue'
 import FolderTree from '../../components/ui/FolderTree.vue'
-import Pagination from '../../components/ui/Pagination.vue'
-import Segmented from '../../components/ui/Segmented.vue'
 import { language, useT } from '../../lib/i18n'
 import { hasPermission } from '../../lib/permissions'
 import { useTransientMessage } from '../../lib/use-transient-message'

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { Project } from '@fish-admin/contracts'
-import { Button } from '@fish-admin/vue'
+import { Button, ProgressBar } from '@fish-admin/vue'
 import { Archive, ArrowUpRight, CalendarClock, Users } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 
-import ProgressBar from '../../components/ui/ProgressBar.vue'
 import { formatCurrency, formatDate } from '../../lib/format'
 import { useT } from '../../lib/i18n'
 import ProjectKeyMark from './ProjectKeyMark.vue'

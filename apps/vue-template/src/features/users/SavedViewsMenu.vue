@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { Badge, Button, Input } from '@fish-admin/vue'
+import { Badge, Button, Input, Popover } from '@fish-admin/vue'
 import { Bookmark, Trash2 } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import Popover from '../../components/ui/Popover.vue'
 import { useT } from '../../lib/i18n'
 import { useTransientMessage } from '../../lib/use-transient-message'
 import {

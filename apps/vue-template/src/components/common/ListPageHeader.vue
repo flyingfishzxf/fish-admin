@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PageHeader from './PageHeader.vue'
+import { PageHeader } from '@fish-admin/vue'
 
 defineProps<{ title: string; description?: string }>()
 </script>

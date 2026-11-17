@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Button } from '@fish-admin/vue'
+import { Button } from '../ui/button'
 import { cn } from '@fish-admin/vue'
 import { UploadCloud } from 'lucide-vue-next'
 import { ref, useId } from 'vue'
 
-import { useT } from '../../lib/i18n'
+import { useUITranslation } from '../../i18n'
 
 const props = withDefaults(
   defineProps<{
@@ -41,7 +41,7 @@ function accepted(files: File[]) {
   else emit('file', list[0]!)
 }
 
-const commonT = useT('common')
+const { t: commonT } = useUITranslation()
 const inputId = useId()
 const field = ref<HTMLInputElement | null>(null)
 const dragging = ref(false)

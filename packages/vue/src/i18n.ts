@@ -6,17 +6,29 @@ type Messages = Record<string, string>
 const BUILT_IN: Record<UILocale, Messages> = {
   en: {
     'actions.close': 'Close',
+    'actions.retry': 'Try again',
     'calendar.label': 'Calendar',
     'calendar.nextMonth': 'Go to next month',
     'calendar.previousMonth': 'Go to previous month',
+    'dropzone.browse': 'Browse files',
+    'dropzone.hint': 'Drag files here or click to browse',
+    'enterprise.browse': 'Browse files',
     'enterprise.clear': 'Clear',
+    'states.error.description': "We couldn't load this content. Please try again.",
+    'states.error.title': 'Something went wrong',
   },
   'zh-CN': {
     'actions.close': '关闭',
+    'actions.retry': '重试',
     'calendar.label': '日历',
     'calendar.nextMonth': '转到下个月',
     'calendar.previousMonth': '转到上个月',
+    'dropzone.browse': '浏览文件',
+    'dropzone.hint': '拖拽文件到此处，或点击选择',
+    'enterprise.browse': '浏览文件',
     'enterprise.clear': '清除',
+    'states.error.description': '内容加载失败，请重试。',
+    'states.error.title': '出了点问题',
   },
 }
 

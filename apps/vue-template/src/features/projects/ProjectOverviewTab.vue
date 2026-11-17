@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { ProjectDetail } from '@fish-admin/contracts'
-import { Badge, Button, Checkbox, Skeleton } from '@fish-admin/vue'
+import { Badge, Button, Card, Checkbox, Dropzone, Separator, Skeleton } from '@fish-admin/vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { CalendarClock, Paperclip, UploadCloud, X } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import Card from '../../components/ui/Card.vue'
-import Dropzone from '../../components/ui/Dropzone.vue'
-import Separator from '../../components/ui/Separator.vue'
-import Timeline, { type TimelineItem, type TimelineTone } from '../../components/ui/Timeline.vue'
+import { Timeline, type TimelineItem, type TimelineTone } from '@fish-admin/vue'
 import { AUDIT_ACTION_TONES, type AuditTone } from '@fish-admin/contracts/audit'
 import { formatDate, formatDateTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'

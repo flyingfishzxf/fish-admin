@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { Integration, IntegrationDelivery } from '@fish-admin/contracts'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
-import { Badge, Button, Skeleton } from '@fish-admin/vue'
+import { Badge, Button, ErrorState, Skeleton } from '@fish-admin/vue'
 import { RotateCcw } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 
 import DetailDrawer from '../../components/common/DetailDrawer.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
 import { formatDateTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { retryDelivery } from './api'

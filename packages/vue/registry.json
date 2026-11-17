@@ -136,6 +136,174 @@
       "status": "stable",
       "since": "0.2.0",
       "usedIn": "/projects/$id"
+    },
+    {
+      "id": "alert",
+      "name": "Alert",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/notifications"
+    },
+    {
+      "id": "alert-dialog",
+      "name": "AlertDialog",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "card",
+      "name": "Card",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "collapsible",
+      "name": "Collapsible",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "separator",
+      "name": "Separator",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "textarea",
+      "name": "Textarea",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "input-number",
+      "name": "InputNumber",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/projects/$id"
+    },
+    {
+      "id": "input-otp",
+      "name": "OtpInput",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/register"
+    },
+    {
+      "id": "radio-group",
+      "name": "RadioGroup",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/settings"
+    },
+    {
+      "id": "slider",
+      "name": "Slider",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/settings"
+    },
+    {
+      "id": "color-picker",
+      "name": "ColorPicker",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/reports"
+    },
+    {
+      "id": "dropzone",
+      "name": "Dropzone",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "empty",
+      "name": "EmptyState",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "error-state",
+      "name": "ErrorState",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "page-header",
+      "name": "PageHeader",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "pagination",
+      "name": "Pagination",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "popover",
+      "name": "Popover",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/reports"
+    },
+    {
+      "id": "progress-bar",
+      "name": "ProgressBar",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "segmented",
+      "name": "Segmented",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/reports"
+    },
+    {
+      "id": "tags-input",
+      "name": "TagsInput",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/users/$id"
+    },
+    {
+      "id": "timeline",
+      "name": "Timeline",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.3.0",
+      "usedIn": "/users/$id"
     }
   ]
 }

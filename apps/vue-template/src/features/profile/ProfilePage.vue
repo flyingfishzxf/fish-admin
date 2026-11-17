@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import { PERMISSIONS } from '@fish-admin/contracts/permissions'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Input, Label } from '@fish-admin/vue'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Card,
+  Input,
+  Label,
+  PageHeader,
+  Separator,
+  Textarea,
+} from '@fish-admin/vue'
 import { LogOut, ShieldCheck, UserRound } from 'lucide-vue-next'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import PageHeader from '../../components/common/PageHeader.vue'
-import Card from '../../components/ui/Card.vue'
-import Separator from '../../components/ui/Separator.vue'
-import Textarea from '../../components/ui/Textarea.vue'
 import { ApiError } from '../../lib/api-error'
 import { useT } from '../../lib/i18n'
 import { createAvatarDataUrl, validateAvatarFile } from '../../lib/image'

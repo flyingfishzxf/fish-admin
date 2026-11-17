@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import type { User, UserProfileInput } from '@fish-admin/contracts'
-import { Avatar, AvatarFallback, AvatarImage, Badge, Button } from '@fish-admin/vue'
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Badge,
+  Button,
+  Card,
+  Dropzone,
+  Separator,
+  TagsInput,
+} from '@fish-admin/vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { Loader2, Trash2 } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import Card from '../../components/ui/Card.vue'
-import Dropzone from '../../components/ui/Dropzone.vue'
-import Separator from '../../components/ui/Separator.vue'
-import TagsInput from '../../components/ui/TagsInput.vue'
 import { createAvatarDataUrl, validateAvatarFile, type AvatarIssue } from '../../lib/image'
 import { formatDate, formatRelativeTime } from '../../lib/format'
 import { getInitials } from '../../lib/initials'

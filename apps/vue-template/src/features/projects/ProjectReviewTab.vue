@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { ProjectDetail } from '@fish-admin/contracts'
-import { Button, Label } from '@fish-admin/vue'
+import { Button, Card, Label } from '@fish-admin/vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { Star } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import Card from '../../components/ui/Card.vue'
 import { useT } from '../../lib/i18n'
 import { updateProject } from './api'
 

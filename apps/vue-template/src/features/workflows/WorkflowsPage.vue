@@ -2,7 +2,11 @@
 import type { WorkflowInstance } from '@fish-admin/contracts'
 import {
   Button,
+  EmptyState,
+  ErrorState,
   Input,
+  PageHeader,
+  Pagination,
   Select,
   SelectContent,
   SelectItem,
@@ -18,10 +22,6 @@ import { Inbox, SearchX } from 'lucide-vue-next'
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
-import PageHeader from '../../components/common/PageHeader.vue'
-import Pagination from '../../components/ui/Pagination.vue'
 import { language, useT } from '../../lib/i18n'
 import { workflowListQueryOptions } from './queries'
 import {

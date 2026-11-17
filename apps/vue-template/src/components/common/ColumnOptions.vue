@@ -5,7 +5,7 @@ import { GripVertical, SlidersHorizontal } from 'lucide-vue-next'
 import { computed, nextTick, ref } from 'vue'
 
 import { useT } from '../../lib/i18n'
-import Popover from '../ui/Popover.vue'
+import { Popover } from '@fish-admin/vue'
 
 interface ColumnMeta {
   label?: string

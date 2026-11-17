@@ -18,7 +18,7 @@ import {
   notificationsQueryKey,
 } from '../../features/notifications/queries'
 import { useT } from '../../lib/i18n'
-import Popover from '../ui/Popover.vue'
+import { Popover } from '@fish-admin/vue'
 
 const t = useT('notifications')
 const router = useRouter()

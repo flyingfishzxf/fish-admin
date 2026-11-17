@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import type { Project } from '@fish-admin/contracts'
 import {
+  AlertDialog,
   Button,
+  EmptyState,
+  ErrorState,
   Input,
+  PageHeader,
+  Pagination,
+  ProgressBar,
+  Segmented,
   Select,
   SelectContent,
   SelectItem,
@@ -23,13 +30,6 @@ import {
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
-import PageHeader from '../../components/common/PageHeader.vue'
-import AlertDialog from '../../components/ui/AlertDialog.vue'
-import Pagination from '../../components/ui/Pagination.vue'
-import ProgressBar from '../../components/ui/ProgressBar.vue'
-import Segmented from '../../components/ui/Segmented.vue'
 import { formatCurrency, formatDate } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { hasPermission } from '../../lib/permissions'

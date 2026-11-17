@@ -3,7 +3,7 @@ import type { ActivityAction, ActivityItem } from '@fish-admin/contracts'
 import { LogIn, Pencil, RotateCcw, ShieldCheck, Trash2, UserPlus, UserRound } from 'lucide-vue-next'
 import type { Component } from 'vue'
 
-import EmptyState from '../../components/common/EmptyState.vue'
+import { EmptyState } from '@fish-admin/vue'
 import { formatRelativeTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 

@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { DEMO_MFA_CODE } from '@fish-admin/contracts/demo'
-import { Button } from '@fish-admin/vue'
+import { Alert, Button, OtpInput } from '@fish-admin/vue'
 import { AlertTriangle, Loader2, ShieldCheck } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 
-import Alert from '../../components/ui/Alert.vue'
-import OtpInput from '../../components/ui/OtpInput.vue'
 import { ApiError } from '../../lib/api-error'
 import { sanitizeRedirect } from '../../lib/auth-redirect'
 import { useT } from '../../lib/i18n'

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { WorkflowComment } from '@fish-admin/contracts'
-import { Button } from '@fish-admin/vue'
+import { Button, Card } from '@fish-admin/vue'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { MessageSquare } from 'lucide-vue-next'
 import { ref } from 'vue'
 
-import Card from '../../components/ui/Card.vue'
 import { formatRelativeTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { addWorkflowComment } from './api'

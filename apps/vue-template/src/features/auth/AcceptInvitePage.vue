@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { Badge, Button, Input, Label, Skeleton } from '@fish-admin/vue'
+import { Alert, Badge, Button, Input, Label, Skeleton } from '@fish-admin/vue'
 import { useQuery, useQueryClient } from '@tanstack/vue-query'
 import { AlertTriangle, Loader2, MailCheck } from 'lucide-vue-next'
 import { computed, reactive, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 
-import Alert from '../../components/ui/Alert.vue'
 import { ApiError } from '../../lib/api-error'
 import { formatDate } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'

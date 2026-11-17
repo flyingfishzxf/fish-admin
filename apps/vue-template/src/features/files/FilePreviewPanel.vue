@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { WorkspaceFile } from '@fish-admin/contracts'
 import {
+  AlertDialog,
   Button,
   Dialog,
   DialogContent,
@@ -8,6 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  EmptyState,
   Input,
   Label,
   Select,
@@ -20,8 +22,6 @@ import {
 import { File, Pencil, Star, Trash2 } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 
-import AlertDialog from '../../components/ui/AlertDialog.vue'
-import EmptyState from '../../components/common/EmptyState.vue'
 import { formatDate } from '../../lib/format'
 import { useT } from '../../lib/i18n'
 import { fileIcon, formatFileSize, isPreviewable } from './file-meta'

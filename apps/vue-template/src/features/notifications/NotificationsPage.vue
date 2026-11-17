@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import type { NotificationFilter, WorkspaceNotification } from '@fish-admin/contracts'
-import { Button, Checkbox, Skeleton, cn } from '@fish-admin/vue'
+import {
+  Button,
+  Card,
+  Checkbox,
+  EmptyState,
+  ErrorState,
+  PageHeader,
+  Pagination,
+  Segmented,
+  Skeleton,
+  cn,
+} from '@fish-admin/vue'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { BellOff, CheckCheck, MailOpen } from 'lucide-vue-next'
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import EmptyState from '../../components/common/EmptyState.vue'
-import ErrorState from '../../components/common/ErrorState.vue'
-import PageHeader from '../../components/common/PageHeader.vue'
-import Card from '../../components/ui/Card.vue'
-import Pagination from '../../components/ui/Pagination.vue'
-import Segmented from '../../components/ui/Segmented.vue'
 import { formatRelativeTime } from '../../lib/format'
 import { language, useT } from '../../lib/i18n'
 import { clampToPageCount } from '../../lib/list-page'
