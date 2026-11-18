@@ -148,6 +148,14 @@ All notable changes to this project are documented here. The format is based on
   primitives with side variants and a built-in close button. check-package
   verifies 62 vue exports.
 
+- **`@fish-admin/vue` 0.8.0 — 66 exports:** the input trio lands. DatePicker
+  wraps a single-mode reka Calendar (the disabled-range matcher is a predicate —
+  reka has no react-day-picker object matchers), Combobox pairs the package
+  Popover with a self-contained search filter (label and description both
+  searchable, clear button surfaced through the attrs so an absent handler hides
+  it), and AutoComplete ports the React keyboard navigation with a scoped
+  option-list. check-package verifies 66 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

@@ -496,6 +496,38 @@
       "status": "stable",
       "since": "0.7.0",
       "usedIn": "*"
+    },
+    {
+      "id": "date-picker",
+      "name": "DatePicker",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.8.0",
+      "usedIn": "/workflows"
+    },
+    {
+      "id": "combobox",
+      "name": "Combobox",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.8.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "auto-complete",
+      "name": "AutoComplete",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.8.0",
+      "usedIn": "/users"
+    },
+    {
+      "id": "calendar",
+      "name": "Calendar",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.8.0",
+      "usedIn": "*"
     }
   ]
 }
