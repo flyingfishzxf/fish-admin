@@ -464,6 +464,38 @@
       "status": "stable",
       "since": "0.6.0",
       "usedIn": "/files"
+    },
+    {
+      "id": "tour",
+      "name": "Tour",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.7.0",
+      "usedIn": "/dashboard"
+    },
+    {
+      "id": "upload",
+      "name": "Upload",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.7.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "carousel",
+      "name": "Carousel",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.7.0",
+      "usedIn": "/reports"
+    },
+    {
+      "id": "sheet",
+      "name": "Sheet",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.7.0",
+      "usedIn": "*"
     }
   ]
 }

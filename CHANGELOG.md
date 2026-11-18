@@ -139,6 +139,15 @@ All notable changes to this project are documented here. The format is based on
   separators, destructive items and one submenu level). check-package verifies
   58 vue exports.
 
+- **`@fish-admin/vue` 0.7.0 — 62 exports:** Tour moves out of the template with
+  a string-based step API (the app now resolves its dashboard copy through the
+  language at render time), and Upload, Carousel and Sheet are ported from React
+  — Upload reuses the package Dropzone and emits single-file picks through the
+  same handler as multi-file ones, Carousel renders slide content through a
+  scoped slot with the data-driven fallback, and Sheet composes the reka dialog
+  primitives with side variants and a built-in close button. check-package
+  verifies 62 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

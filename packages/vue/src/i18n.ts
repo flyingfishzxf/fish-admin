@@ -21,6 +21,12 @@ const BUILT_IN: Record<UILocale, Messages> = {
     'dropzone.browse': 'Browse files',
     'dropzone.hint': 'Drag files here or click to browse',
     'enterprise.backToTop': 'Back to top',
+    'enterprise.removeFile': 'Remove {{name}}',
+    'tour.finish': 'Done',
+    'tour.next': 'Next',
+    'tour.previous': 'Back',
+    'tour.skip': 'Skip',
+    'tour.step': 'Step {{current}} of {{total}}',
     'enterprise.browse': 'Browse files',
     'enterprise.clear': 'Clear',
     'enterprise.noData': 'No data',
@@ -44,6 +50,12 @@ const BUILT_IN: Record<UILocale, Messages> = {
     'dropzone.browse': '浏览文件',
     'dropzone.hint': '拖拽文件到此处，或点击选择',
     'enterprise.backToTop': '回到顶部',
+    'enterprise.removeFile': '移除 {{name}}',
+    'tour.finish': '完成',
+    'tour.next': '下一步',
+    'tour.previous': '上一步',
+    'tour.skip': '跳过',
+    'tour.step': '第 {{current}} / {{total}} 步',
     'enterprise.browse': '浏览文件',
     'enterprise.clear': '清除',
     'enterprise.noData': '暂无数据',
@@ -59,9 +71,17 @@ export function provideUILocale(locale: Ref<UILocale>) {
   provide(LOCALE_KEY, locale)
 }
 
+export type UITranslationParams = Record<string, string | number>
+
 export function useUITranslation() {
   const locale = inject(LOCALE_KEY, DEFAULT_LOCALE)
   const messages = computed(() => BUILT_IN[locale.value])
-  const t = (key: string) => messages.value[key] ?? BUILT_IN.en[key] ?? key
+  const t = (key: string, params?: UITranslationParams) => {
+    const raw = messages.value[key] ?? BUILT_IN.en[key] ?? key
+    if (!params) return raw
+    return raw.replace(/\{\{(\w+)\}\}/g, (match, name) =>
+      name in params ? String(params[name]) : match,
+    )
+  }
   return { t, locale }
 }

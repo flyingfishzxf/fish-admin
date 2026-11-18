@@ -3,10 +3,9 @@ import type { DashboardRange } from '@fish-admin/contracts'
 import { useQuery } from '@tanstack/vue-query'
 import { Button, ErrorState, PageHeader } from '@fish-admin/vue'
 import { Compass } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
-import Tour from '../../components/layout/Tour.vue'
-import type { TourStep } from '../../components/layout/tour'
+import { Tour, type TourStep } from '@fish-admin/vue'
 import { useT } from '../../lib/i18n'
 import ActivityList from './ActivityList.vue'
 import ChannelsChart from './ChannelsChart.vue'
@@ -22,29 +21,31 @@ const tourOpen = ref(false)
 
 // Anchors live on the shell, so the tour follows whatever chrome the chosen
 // layout renders; a step whose target is absent is skipped, not fatal.
-const TOUR_STEPS: TourStep[] = [
+// The copy stays in the dashboard namespace; the package API takes strings, so
+// the keys are resolved at render time and follow the language switch live.
+const TOUR_STEPS = computed((): TourStep[] => [
   {
     target: '[data-tour="sidebar"]',
-    titleKey: 'tour.steps.sidebar.title',
-    descriptionKey: 'tour.steps.sidebar.description',
+    title: t('tour.steps.sidebar.title'),
+    description: t('tour.steps.sidebar.description'),
     placement: 'right',
   },
   {
     target: '[data-tour="search"]',
-    titleKey: 'tour.steps.search.title',
-    descriptionKey: 'tour.steps.search.description',
+    title: t('tour.steps.search.title'),
+    description: t('tour.steps.search.description'),
   },
   {
     target: '[data-tour="notifications"]',
-    titleKey: 'tour.steps.notifications.title',
-    descriptionKey: 'tour.steps.notifications.description',
+    title: t('tour.steps.notifications.title'),
+    description: t('tour.steps.notifications.description'),
   },
   {
     target: '[data-tour="account"]',
-    titleKey: 'tour.steps.account.title',
-    descriptionKey: 'tour.steps.account.description',
+    title: t('tour.steps.account.title'),
+    description: t('tour.steps.account.description'),
   },
-]
+])
 </script>
 
 <template>

@@ -1,14 +1,45 @@
 <script setup lang="ts">
-import { Button } from '@fish-admin/vue'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 
-import { useT } from '../../lib/i18n'
-import type { TourStep } from './tour'
+import { useUITranslation } from '../../i18n'
+import { Button } from '../ui/button'
 
-const props = withDefaults(defineProps<{ open: boolean; steps: TourStep[] }>(), {})
+export type TourPlacement = 'top' | 'bottom' | 'left' | 'right'
+
+/** One highlight of the product tour: a CSS anchor plus localized copy. */
+export interface TourStep {
+  target: string
+  title: string
+  description?: string
+  placement?: TourPlacement
+}
+
+const props = withDefaults(
+  defineProps<{
+    open: boolean
+    steps: TourStep[]
+    /** Label overrides; every control falls back to the package locales. */
+    labels?: { next?: string; previous?: string; skip?: string; finish?: string; step?: string }
+    onFinish?: () => void
+  }>(),
+  {},
+)
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
-const t = useT('dashboard')
+const { t } = useUITranslation()
+
+const labels = computed(() => ({
+  next: props.labels?.next ?? t('tour.next'),
+  previous: props.labels?.previous ?? t('tour.previous'),
+  skip: props.labels?.skip ?? t('tour.skip'),
+  finish: props.labels?.finish ?? t('tour.finish'),
+  step: (current: number, total: number) =>
+    props.labels?.step
+      ? props.labels.step
+          .replace('{{current}}', String(current))
+          .replace('{{total}}', String(total))
+      : t('tour.step', { current, total }),
+}))
 
 const POPOVER_WIDTH = 320
 const GAP = 10
@@ -162,20 +193,20 @@ onBeforeUnmount(() => {
         ref="popover"
         role="dialog"
         aria-modal="true"
-        :aria-label="t(step.titleKey)"
+        :aria-label="step?.title"
         tabindex="-1"
         data-slot="tour-popover"
         class="fixed z-[82] w-80 space-y-2 rounded-lg border bg-background p-4 shadow-lg outline-none"
         :style="{ top: `${popoverPos.top}px`, left: `${popoverPos.left}px` }"
       >
-        <p class="text-sm font-semibold">{{ t(step.titleKey) }}</p>
-        <p class="text-xs text-muted-foreground">{{ t(step.descriptionKey) }}</p>
+        <p class="text-sm font-semibold">{{ step?.title }}</p>
+        <p class="text-xs text-muted-foreground">{{ step?.description }}</p>
         <div class="flex items-center justify-between pt-1">
           <span class="text-[11px] text-muted-foreground">
-            {{ t('tour.step', { current: index + 1, total: steps.length }) }}
+            {{ labels.step(index + 1, steps.length) }}
           </span>
           <div class="flex items-center gap-1">
-            <Button variant="ghost" size="sm" @click="close">{{ t('tour.skip') }}</Button>
+            <Button variant="ghost" size="sm" @click="close">{{ labels.skip }}</Button>
             <Button
               v-if="index > 0"
               variant="outline"
@@ -183,10 +214,10 @@ onBeforeUnmount(() => {
               data-tour-action="previous"
               @click="previous"
             >
-              {{ t('tour.previous') }}
+              {{ labels.previous }}
             </Button>
             <Button size="sm" data-tour-action="next" @click="next">
-              {{ index === steps.length - 1 ? t('tour.finish') : t('tour.next') }}
+              {{ index === steps.length - 1 ? labels.finish : labels.next }}
             </Button>
           </div>
         </div>

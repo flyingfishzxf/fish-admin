@@ -1,31 +1,30 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import { i18nReady } from '../../lib/i18n'
 import Tour from './Tour.vue'
-import type { TourStep } from './tour'
+import type { TourStep } from './Tour.vue'
 
 const STEPS: TourStep[] = [
   {
     target: '[data-tour="sidebar"]',
-    titleKey: 'tour.steps.sidebar.title',
-    descriptionKey: 'tour.steps.sidebar.description',
+    title: 'Navigate the workspace',
+    description: 'Overview, collaboration and management groups hold every page.',
     placement: 'right',
   },
   {
     target: '[data-tour="search"]',
-    titleKey: 'tour.steps.search.title',
-    descriptionKey: 'tour.steps.search.description',
+    title: 'Find anything fast',
+    description: 'Jump to pages, people and actions with the command palette.',
   },
   {
     target: '[data-tour="notifications"]',
-    titleKey: 'tour.steps.notifications.title',
-    descriptionKey: 'tour.steps.notifications.description',
+    title: 'Stay on top of updates',
+    description: 'Mentions, file shares and integration alerts land in the bell inbox.',
   },
   {
     target: '[data-tour="account"]',
-    titleKey: 'tour.steps.account.title',
-    descriptionKey: 'tour.steps.account.description',
+    title: 'Manage your account',
+    description: 'Update your profile, review sessions or sign out.',
   },
 ]
 
@@ -42,8 +41,7 @@ function popoverText() {
 }
 
 describe('Tour', () => {
-  beforeEach(async () => {
-    await i18nReady
+  beforeEach(() => {
     document.body.innerHTML = ''
     for (const name of ['sidebar', 'search', 'notifications', 'account']) addAnchor(name)
   })
