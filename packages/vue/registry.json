@@ -672,6 +672,30 @@
       "status": "stable",
       "since": "0.14.0",
       "usedIn": "*"
+    },
+    {
+      "id": "table",
+      "name": "Table",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.15.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "detail-page",
+      "name": "DetailPage",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.15.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "drawer",
+      "name": "Drawer",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.15.0",
+      "usedIn": "*"
     }
   ]
 }

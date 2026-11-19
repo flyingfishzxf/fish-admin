@@ -200,6 +200,12 @@ All notable changes to this project are documented here. The format is based on
   radiogroup with keyboard navigation, hover preview and clear-on-repeat).
   check-package verifies 84 vue exports.
 
+- **`@fish-admin/vue` 0.15.0 — 87 exports:** the table component family (eight
+  thin wrappers over semantic table elements), DetailPage (header, avatar, tabs
+  and actions as slots) and Drawer (a reka-backed bottom sheet with direction
+  variants) land with tests and registry entries. check-package verifies 87
+  vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
