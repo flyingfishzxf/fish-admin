@@ -164,6 +164,13 @@ All notable changes to this project are documented here. The format is based on
   Enter/Space) over the shared tree helpers, with controlled and uncontrolled
   expansion. check-package verifies 69 vue exports.
 
+- **`@fish-admin/vue` 0.10.0 — 72 exports:** TreeSelect pairs the package Tree
+  with the Popover trigger and a joined path label, NotificationCenter renders a
+  bell trigger with a derived unread badge and optional mark-all/view-all actions,
+  and QueryFilter ports the descriptor-driven field grid (text, select, boolean,
+  date range and a scoped custom slot) with expand/reset via the shared filter
+  helpers. check-package verifies 72 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

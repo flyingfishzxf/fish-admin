@@ -552,6 +552,30 @@
       "status": "stable",
       "since": "0.9.0",
       "usedIn": "/files"
+    },
+    {
+      "id": "tree-select",
+      "name": "TreeSelect",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.10.0",
+      "usedIn": "/settings"
+    },
+    {
+      "id": "notification-center",
+      "name": "NotificationCenter",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.10.0",
+      "usedIn": "/notifications"
+    },
+    {
+      "id": "query-filter",
+      "name": "QueryFilter",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.10.0",
+      "usedIn": "/users"
     }
   ]
 }
