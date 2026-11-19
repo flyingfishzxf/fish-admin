@@ -128,3 +128,12 @@ export { default as NotificationCenter } from './components/enterprise/Notificat
 export { default as QueryFilter } from './components/enterprise/QueryFilter.vue'
 export type { NotificationItem } from './components/enterprise/NotificationCenter.vue'
 export type { FilterField, FilterValue, FilterOption } from './lib/query-filter-types'
+export { default as Command } from './components/ui/Command.vue'
+export { default as CommandDialog } from './components/ui/CommandDialog.vue'
+export { default as EditableTable } from './components/pro/EditableTable.vue'
+export type { CommandEntry, CommandGroupDef } from './components/ui/Command.vue'
+export type {
+  EditableTableRow,
+  EditableTableColumn,
+  EditableTableLabels,
+} from './components/pro/EditableTable.vue'

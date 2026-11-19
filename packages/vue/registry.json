@@ -576,6 +576,30 @@
       "status": "stable",
       "since": "0.10.0",
       "usedIn": "/users"
+    },
+    {
+      "id": "command",
+      "name": "Command",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.11.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "command-dialog",
+      "name": "CommandDialog",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.11.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "editable-table",
+      "name": "EditableTable",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.11.0",
+      "usedIn": "/users"
     }
   ]
 }

@@ -171,6 +171,13 @@ All notable changes to this project are documented here. The format is based on
   date range and a scoped custom slot) with expand/reset via the shared filter
   helpers. check-package verifies 72 vue exports.
 
+- **`@fish-admin/vue` 0.11.0 — 75 exports:** Command and CommandDialog bring a
+  searchable command palette without a cmdk equivalent — grouped entries, keyword
+  filtering, arrow/Enter navigation and a dialog variant built on the package
+  Dialog. EditableTable ports the draft/validate/parse editing model with a
+  scoped `cell` slot for custom rendering; Escape cancels an open edit.
+  check-package verifies 75 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
