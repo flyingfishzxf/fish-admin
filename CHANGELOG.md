@@ -156,6 +156,14 @@ All notable changes to this project are documented here. The format is based on
   it), and AutoComplete ports the React keyboard navigation with a scoped
   option-list. check-package verifies 66 vue exports.
 
+- **`@fish-admin/vue` 0.9.0 — 69 exports:** the selection trio lands. Cascader
+  renders multi-column drill-down with an active-path trail and a joined label,
+  Transfer moves its split/filter/group/toggle helpers into the package lib and
+  drives both panels from one controlled key list (select-all respects disabled
+  rows), and Tree ports the roving-focus keyboard model (arrows, Home/End,
+  Enter/Space) over the shared tree helpers, with controlled and uncontrolled
+  expansion. check-package verifies 69 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
