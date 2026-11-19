@@ -158,3 +158,8 @@ export type {
   ImportMessages,
   ImportRowResult,
 } from './lib/import-wizard-utils'
+export { default as Progress } from './components/ui/Progress.vue'
+export { default as Toggle } from './components/ui/Toggle.vue'
+export { default as ToggleGroup } from './components/ui/ToggleGroup.vue'
+export { default as Tooltip } from './components/ui/Tooltip.vue'
+export { default as Rate } from './components/enterprise/Rate.vue'

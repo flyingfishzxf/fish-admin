@@ -632,6 +632,46 @@
       "status": "stable",
       "since": "0.13.0",
       "usedIn": "/users"
+    },
+    {
+      "id": "progress",
+      "name": "Progress",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.14.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "toggle",
+      "name": "Toggle",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.14.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "toggle-group",
+      "name": "ToggleGroup",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.14.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "tooltip",
+      "name": "Tooltip",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.14.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "rate",
+      "name": "Rate",
+      "category": "enterprise",
+      "status": "stable",
+      "since": "0.14.0",
+      "usedIn": "*"
     }
   ]
 }

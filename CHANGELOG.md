@@ -194,6 +194,12 @@ All notable changes to this project are documented here. The format is based on
   payloads. The CSV parser and mapping/validation helpers are shared pure libs.
   check-package verifies 79 vue exports.
 
+- **`@fish-admin/vue` 0.14.0 — 84 exports:** the remaining small gaps close:
+  Progress, Toggle (standalone or inside ToggleGroup with single/multiple
+  selection), Tooltip (reka-backed provider trigger content) and Rate (five-star
+  radiogroup with keyboard navigation, hover preview and clear-on-repeat).
+  check-package verifies 84 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
