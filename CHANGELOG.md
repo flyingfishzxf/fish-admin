@@ -213,6 +213,11 @@ All notable changes to this project are documented here. The format is based on
   element uses a render function because Vue templates ignore `<style>` tags.
   check-package verifies 89 vue exports.
 
+- **`@fish-admin/vue` 1.0.0 — 90 exports:** the Sidebar family (22 parts —
+  provider, desktop shell, mobile sheet, trigger, rail, inset, header/footer,
+  groups and menus) completes the registry. check-package verifies 90 vue
+  exports; every React registry id now has a Vue counterpart.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

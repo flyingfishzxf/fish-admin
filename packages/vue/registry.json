@@ -712,6 +712,14 @@
       "status": "stable",
       "since": "0.16.0",
       "usedIn": "*"
+    },
+    {
+      "id": "sidebar",
+      "name": "Sidebar",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.17.0",
+      "usedIn": "*"
     }
   ]
 }
