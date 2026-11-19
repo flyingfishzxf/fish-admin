@@ -178,6 +178,15 @@ All notable changes to this project are documented here. The format is based on
   scoped `cell` slot for custom rendering; Escape cancels an open edit.
   check-package verifies 75 vue exports.
 
+- **`@fish-admin/vue` 0.12.0 — 78 exports:** three formerly dependency-bound
+  components are now dependency-free Vue implementations. Toaster plus the
+  imperative `toast` API provide a reactive queue with tones, descriptions,
+  actions, durations and multiple toaster ids. The resizable trio (group, panel,
+  handle) implements drag-to-resize with min/max clamping from scratch. ProForm
+  replaces react-hook-form with a controlled reactive form that applies the same
+  required, email, number, range and length rules. check-package verifies 78
+  vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

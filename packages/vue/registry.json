@@ -600,6 +600,30 @@
       "status": "stable",
       "since": "0.11.0",
       "usedIn": "/users"
+    },
+    {
+      "id": "sonner",
+      "name": "Toaster",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.12.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "resizable",
+      "name": "ResizablePanelGroup",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.12.0",
+      "usedIn": "/files"
+    },
+    {
+      "id": "pro-form",
+      "name": "ProForm",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.12.0",
+      "usedIn": "/users"
     }
   ]
 }

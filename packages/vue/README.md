@@ -35,7 +35,7 @@ sources, import the stylesheet source instead and compile it yourself:
 import '@fish-admin/vue/styles/index.css'
 ```
 
-## Components (v0.11.0 — 75 exports)
+## Components (v0.12.0 — 78 exports)
 
 Accordion, Alert, AlertDialog, Avatar, Badge, BulkActionsBar, Button, Card,
 Checkbox, Collapsible, ColorPicker, DataTable, DateRangePicker, Descriptions,
@@ -49,7 +49,9 @@ Breadcrumb, Carousel, ContextMenu, HoverCard, ImagePreview, PageContainer,
 Sheet, TimePicker, Tour and Upload, plus AutoComplete, Calendar, Cascader, Combobox,
 DatePicker, EditableTable, NotificationCenter, QueryFilter, Transfer, Tree and
 TreeSelect for the input, selection and filtering side. Command and
-CommandDialog provide a palette without pulling in a cmdk equivalent.
+CommandDialog provide a palette without pulling in a cmdk equivalent. Toaster
+and `toast` offer a dependency-free notification queue; the resizable trio and
+ProForm (a controlled form with rule-based validation) round out the set.
 The remaining components of the 83-component React library are on the roadmap
 (`docs/superpowers/specs/2026-11-16-vue-package-installable-checklist.md`).
 
