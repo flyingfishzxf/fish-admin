@@ -151,3 +151,10 @@ export type {
   ProFormRule,
   ProFormValues,
 } from './components/pro/ProForm.vue'
+export { default as ImportWizard } from './components/pro/ImportWizard.vue'
+export type {
+  ImportField,
+  ImportFieldType,
+  ImportMessages,
+  ImportRowResult,
+} from './lib/import-wizard-utils'

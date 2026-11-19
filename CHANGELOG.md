@@ -187,6 +187,13 @@ All notable changes to this project are documented here. The format is based on
   required, email, number, range and length rules. check-package verifies 78
   vue exports.
 
+- **`@fish-admin/vue` 0.13.0 — 79 exports:** ImportWizard ports the four-step
+  CSV workflow — upload (drag, browse or bundled sample), column mapping with
+  alias-based auto-detection and a live preview, row review with per-field
+  validation, and a done state with an `import` event carrying only valid
+  payloads. The CSV parser and mapping/validation helpers are shared pure libs.
+  check-package verifies 79 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a

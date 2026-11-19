@@ -35,7 +35,7 @@ sources, import the stylesheet source instead and compile it yourself:
 import '@fish-admin/vue/styles/index.css'
 ```
 
-## Components (v0.12.0 — 78 exports)
+## Components (v0.13.0 — 79 exports)
 
 Accordion, Alert, AlertDialog, Avatar, Badge, BulkActionsBar, Button, Card,
 Checkbox, Collapsible, ColorPicker, DataTable, DateRangePicker, Descriptions,

@@ -624,6 +624,14 @@
       "status": "stable",
       "since": "0.12.0",
       "usedIn": "/users"
+    },
+    {
+      "id": "import-wizard",
+      "name": "ImportWizard",
+      "category": "pro",
+      "status": "stable",
+      "since": "0.13.0",
+      "usedIn": "/users"
     }
   ]
 }
