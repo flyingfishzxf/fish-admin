@@ -696,6 +696,22 @@
       "status": "stable",
       "since": "0.15.0",
       "usedIn": "*"
+    },
+    {
+      "id": "form",
+      "name": "Form",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.16.0",
+      "usedIn": "*"
+    },
+    {
+      "id": "chart",
+      "name": "Chart",
+      "category": "primitive",
+      "status": "stable",
+      "since": "0.16.0",
+      "usedIn": "*"
     }
   ]
 }

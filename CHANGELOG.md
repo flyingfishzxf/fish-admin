@@ -206,6 +206,13 @@ All notable changes to this project are documented here. The format is based on
   variants) land with tests and registry entries. check-package verifies 87
   vue exports.
 
+- **`@fish-admin/vue` 0.16.0 — 89 exports:** Form (the registry name for the
+  controlled ProForm) and a recharts-free Chart family — ChartContainer with a
+  config-driven CSS variable provider, ChartStyle, tooltip and legend content
+  components that resolve series labels and colours from the config. The style
+  element uses a render function because Vue templates ignore `<style>` tags.
+  check-package verifies 89 vue exports.
+
 ### Fixed
 
 - **Vue `DropdownMenuContent`:** `side` was not a declared prop and the component renders a
