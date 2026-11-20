@@ -15,6 +15,14 @@ const view = ref<'preview' | 'code'>('preview')
 const copied = ref(false)
 const uid = useId()
 
+const isMirrored = computed(() => props.demo.filename.endsWith('.tsx'))
+const sourceLabel = computed(() => (isMirrored.value ? 'TSX' : 'Vue'))
+const sourceUrl = computed(() =>
+  isMirrored.value
+    ? demoSourceUrl(props.demo.filename)
+    : `${SITE.githubUrl}/blob/${SITE.repoBranch}/${props.demo.filename}`,
+)
+
 function select(next: 'preview' | 'code') {
   view.value = next
   document.getElementById(`${uid}-${next}-tab`)?.focus()
@@ -51,9 +59,7 @@ async function onCopy() {
         >
           {{ text.demoUsedIn }}
         </a>
-        <a :href="demoSourceUrl(demo.filename)" target="_blank" rel="noreferrer">
-          {{ text.demoViewSource }}
-        </a>
+        <a :href="sourceUrl" target="_blank" rel="noreferrer">{{ text.demoViewSource }}</a>
       </div>
     </header>
     <div class="fish-demo__card">
@@ -87,7 +93,7 @@ async function onCopy() {
           </button>
         </div>
         <div class="fish-demo__tools">
-          <span class="fish-demo__meta">TSX · {{ demo.lines }} {{ text.demoLines }}</span>
+          <span class="fish-demo__meta">{{ sourceLabel }} · {{ demo.lines }} {{ text.demoLines }}</span>
           <button
             type="button"
             class="fish-demo__copy"

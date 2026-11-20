@@ -428,3 +428,49 @@ html.dark body {
   background: color-mix(in oklch, var(--foreground) 30%, transparent);
   background-clip: content-box;
 }
+
+/* Component index (mirrors the docs theme so both surfaces browse the same way). */
+.fish-index {
+  display: grid;
+  gap: 2rem;
+}
+
+.fish-index__group h2 {
+  margin-bottom: 0.5rem;
+}
+
+.fish-index__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.5rem;
+}
+
+.fish-index__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--card-foreground);
+  text-decoration: none;
+}
+
+.fish-index__item:hover {
+  border-color: var(--primary);
+}
+
+.fish-index__item[data-pending='true'] {
+  opacity: 0.65;
+}
+
+.fish-index__name {
+  font-weight: 500;
+}
+
+.fish-index__note {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
