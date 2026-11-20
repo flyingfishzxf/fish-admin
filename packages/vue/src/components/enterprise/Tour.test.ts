@@ -1,5 +1,5 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import Tour from './Tour.vue'
 import type { TourStep } from './Tour.vue'
@@ -99,6 +99,27 @@ describe('Tour', () => {
 
     expect(wrapper.emitted('update:open')?.at(-1)).toEqual([false])
     expect(document.body.querySelector('[data-slot="tour-popover"]')).toBeNull()
+  })
+
+  it('calls onFinish when the last step advances', async () => {
+    const onFinish = vi.fn()
+    wrapper = mount(Tour, {
+      props: { open: true, steps: STEPS, onFinish },
+      attachTo: document.body,
+    })
+    await flushPromises()
+
+    for (let i = 0; i < STEPS.length - 1; i += 1) {
+      await document.body.querySelector<HTMLElement>('[data-tour-action="next"]')?.click()
+      await flushPromises()
+    }
+    expect(onFinish).not.toHaveBeenCalled()
+
+    await document.body.querySelector<HTMLElement>('[data-tour-action="next"]')?.click()
+    await flushPromises()
+
+    expect(onFinish).toHaveBeenCalledTimes(1)
+    expect(wrapper!.emitted('update:open')?.at(-1)).toEqual([false])
   })
 
   it('starts over on the first step each time it opens', async () => {

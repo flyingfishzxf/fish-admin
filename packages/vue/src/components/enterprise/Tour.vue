@@ -117,6 +117,7 @@ function close() {
 
 function next() {
   if (index.value >= props.steps.length - 1) {
+    props.onFinish?.()
     close()
     return
   }
