@@ -4,8 +4,8 @@
     "component": "accordion",
     "file": "demos/accordion/basic.tsx",
     "title": {
-      "en": "Basic usage",
-      "zh": "基础用法"
+      "en": "FAQ accordion with one open panel",
+      "zh": "单项展开的常见问题"
     },
     "description": {
       "en": "A single-open FAQ accordion with billing, data residency and SSO questions.",
@@ -18,8 +18,8 @@
     "component": "accordion",
     "file": "demos/accordion/controlled.tsx",
     "title": {
-      "en": "Controlled with multiple open panels",
-      "zh": "受控与多项展开"
+      "en": "Multiple panels held in state",
+      "zh": "由 state 管理多项展开"
     },
     "description": {
       "en": "A controlled multiple accordion that reports how many panels are open and can collapse them all.",

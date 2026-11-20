@@ -4,8 +4,8 @@
     "component": "pro-table",
     "file": "demos/pro-table/basic.tsx",
     "title": {
-      "en": "Basic table with search",
-      "zh": "带搜索的基础表格"
+      "en": "Searchable member list",
+      "zh": "可搜索的成员列表"
     },
     "description": {
       "en": "A TanStack Table instance plus a controlled search field.",
@@ -18,8 +18,8 @@
     "component": "pro-table",
     "file": "demos/pro-table/selection.tsx",
     "title": {
-      "en": "Row selection",
-      "zh": "行选择"
+      "en": "Select rows and act on them",
+      "zh": "选中行并执行操作"
     },
     "description": {
       "en": "Checkbox selection with a summary bar that clears the selection.",

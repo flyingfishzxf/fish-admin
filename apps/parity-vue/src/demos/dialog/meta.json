@@ -4,8 +4,8 @@
     "component": "dialog",
     "file": "demos/dialog/basic.tsx",
     "title": {
-      "en": "Basic usage",
-      "zh": "基础用法"
+      "en": "Invite a member",
+      "zh": "邀请成员"
     },
     "description": {
       "en": "An invite-member dialog with an email and a role field, plus footer actions.",

@@ -4,8 +4,8 @@
     "component": "tabs",
     "file": "demos/tabs/basic.tsx",
     "title": {
-      "en": "Basic usage",
-      "zh": "基础用法"
+      "en": "Account settings tabs",
+      "zh": "账户设置标签页"
     },
     "description": {
       "en": "Account settings split into profile, notification and security panels.",
@@ -18,8 +18,8 @@
     "component": "tabs",
     "file": "demos/tabs/vertical.tsx",
     "title": {
-      "en": "Vertical with a disabled tab",
-      "zh": "垂直布局与禁用标签"
+      "en": "Vertical list and a disabled tab",
+      "zh": "垂直列表与禁用标签"
     },
     "description": {
       "en": "A vertical tab list where the billing tab stays disabled until the owner view is on.",

@@ -4,8 +4,8 @@
     "component": "date-range-picker",
     "file": "demos/date-range-picker/basic.tsx",
     "title": {
-      "en": "Basic range",
-      "zh": "基础范围选择"
+      "en": "From and to on one calendar",
+      "zh": "在同一个日历中选择起止日期"
     },
     "description": {
       "en": "A controlled range stored as YYYY-MM-DD strings.",
@@ -18,8 +18,8 @@
     "component": "date-range-picker",
     "file": "demos/date-range-picker/presets.tsx",
     "title": {
-      "en": "Presets",
-      "zh": "预设范围"
+      "en": "Presets next to the calendar",
+      "zh": "日历旁的预设"
     },
     "description": {
       "en": "Quick ranges next to the calendar.",

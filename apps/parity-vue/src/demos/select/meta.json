@@ -4,8 +4,8 @@
     "component": "select",
     "file": "demos/select/basic.tsx",
     "title": {
-      "en": "Basic usage",
-      "zh": "基础用法"
+      "en": "Controlled role picker",
+      "zh": "受控的角色选择器"
     },
     "description": {
       "en": "A controlled role picker that explains the chosen role underneath.",
@@ -18,8 +18,8 @@
     "component": "select",
     "file": "demos/select/groups.tsx",
     "title": {
-      "en": "Groups and disabled options",
-      "zh": "分组与禁用选项"
+      "en": "Groups, one disabled item and one disabled select",
+      "zh": "分组、一个禁用项与一个禁用选择器"
     },
     "description": {
       "en": "Grouped permissions with a disabled item, plus a disabled select showing an inherited value.",
