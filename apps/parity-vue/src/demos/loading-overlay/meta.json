@@ -1,0 +1,28 @@
+[
+  {
+    "id": "loading-overlay/basic",
+    "component": "loading-overlay",
+    "file": "apps/parity-vue/src/demos/loading-overlay/basic.vue",
+    "title": {
+      "en": "Panel-covering overlay",
+      "zh": "覆盖面板的加载遮罩"
+    },
+    "description": {
+      "en": "The overlay covers a region after a 150 ms delay so fast loads never flash.",
+      "zh": "遮罩延迟 150 ms 出现，快速加载不会闪烁。"
+    }
+  },
+  {
+    "id": "loading-overlay/inline",
+    "component": "loading-overlay",
+    "file": "apps/parity-vue/src/demos/loading-overlay/inline.vue",
+    "title": {
+      "en": "Brief saving overlay",
+      "zh": "短暂的保存遮罩"
+    },
+    "description": {
+      "en": "A save button covers the panel for just over a second.",
+      "zh": "保存按钮让遮罩短暂覆盖面板一秒左右。"
+    }
+  }
+]

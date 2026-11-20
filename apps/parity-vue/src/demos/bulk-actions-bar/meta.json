@@ -1,0 +1,28 @@
+[
+  {
+    "id": "bulk-actions-bar/basic",
+    "component": "bulk-actions-bar",
+    "file": "apps/parity-vue/src/demos/bulk-actions-bar/basic.vue",
+    "title": {
+      "en": "Floating bulk actions",
+      "zh": "悬浮的批量操作条"
+    },
+    "description": {
+      "en": "A floating action bar for the selected rows, with a clear action.",
+      "zh": "为选中行悬浮的操作条，带清除选择。"
+    }
+  },
+  {
+    "id": "bulk-actions-bar/region",
+    "component": "bulk-actions-bar",
+    "file": "apps/parity-vue/src/demos/bulk-actions-bar/region.vue",
+    "title": {
+      "en": "Named region for screen readers",
+      "zh": "可命名的读屏区域"
+    },
+    "description": {
+      "en": "regionLabel renames the accessible region so several bars can coexist.",
+      "zh": "regionLabel 可重命名无障碍区域名，让多个操作条共存。"
+    }
+  }
+]

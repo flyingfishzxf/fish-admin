@@ -1,0 +1,28 @@
+[
+  {
+    "id": "command-dialog/basic",
+    "component": "command-dialog",
+    "file": "apps/parity-vue/src/demos/command-dialog/basic.vue",
+    "title": {
+      "en": "Command palette in a dialog",
+      "zh": "对话框中的命令面板"
+    },
+    "description": {
+      "en": "A controlled palette opened from a button, with page and action groups.",
+      "zh": "由按钮打开的受控面板，包含页面与操作分组。"
+    }
+  },
+  {
+    "id": "command-dialog/shortcuts",
+    "component": "command-dialog",
+    "file": "apps/parity-vue/src/demos/command-dialog/shortcuts.vue",
+    "title": {
+      "en": "⌘K shortcut binding",
+      "zh": "⌘K 快捷键绑定"
+    },
+    "description": {
+      "en": "The page owns the keyboard shortcut and toggles the palette.",
+      "zh": "快捷键由页面持有并负责切换面板开合。"
+    }
+  }
+]

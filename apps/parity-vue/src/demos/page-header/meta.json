@@ -1,0 +1,28 @@
+[
+  {
+    "id": "page-header/basic",
+    "component": "page-header",
+    "file": "apps/parity-vue/src/demos/page-header/basic.vue",
+    "title": {
+      "en": "Header with eyebrow and actions",
+      "zh": "带眉题与操作的页头"
+    },
+    "description": {
+      "en": "An eyebrow, a title, a description and two actions on one row.",
+      "zh": "眉题、标题、描述与两个操作排在一行。"
+    }
+  },
+  {
+    "id": "page-header/plain",
+    "component": "page-header",
+    "file": "apps/parity-vue/src/demos/page-header/plain.vue",
+    "title": {
+      "en": "Plain title and description",
+      "zh": "纯标题与描述"
+    },
+    "description": {
+      "en": "The lightest page opening: a title and one supporting sentence.",
+      "zh": "最轻的页头：一个标题加一句说明。"
+    }
+  }
+]

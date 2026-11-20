@@ -1,0 +1,28 @@
+[
+  {
+    "id": "progress-bar/basic",
+    "component": "progress-bar",
+    "file": "apps/parity-vue/src/demos/progress-bar/basic.vue",
+    "title": {
+      "en": "Thin determinate bar",
+      "zh": "细进度条"
+    },
+    "description": {
+      "en": "A slim bar for tight layouts, clamped to 0–100.",
+      "zh": "用于紧凑布局的细进度条，取值钳制在 0–100。"
+    }
+  },
+  {
+    "id": "progress-bar/warning",
+    "component": "progress-bar",
+    "file": "apps/parity-vue/src/demos/progress-bar/warning.vue",
+    "title": {
+      "en": "Warning tone near a quota",
+      "zh": "配额临界时的警告色"
+    },
+    "description": {
+      "en": "The warning tone turns the fill amber at 96%.",
+      "zh": "warning 色调在 96% 时把填充变为琥珀色。"
+    }
+  }
+]

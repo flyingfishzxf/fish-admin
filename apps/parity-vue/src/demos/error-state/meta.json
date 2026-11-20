@@ -1,0 +1,28 @@
+[
+  {
+    "id": "error-state/basic",
+    "component": "error-state",
+    "file": "apps/parity-vue/src/demos/error-state/basic.vue",
+    "title": {
+      "en": "Retryable error state",
+      "zh": "可重试的错误状态"
+    },
+    "description": {
+      "en": "A failed report load with a retry action owned by the page.",
+      "zh": "报告加载失败，重试操作由页面持有。"
+    }
+  },
+  {
+    "id": "error-state/custom",
+    "component": "error-state",
+    "file": "apps/parity-vue/src/demos/error-state/custom.vue",
+    "title": {
+      "en": "Calm read-only empty surface",
+      "zh": "安静的只读空面板"
+    },
+    "description": {
+      "en": "Without a retry handler the state becomes a plain reassuring panel.",
+      "zh": "没有重试处理器时，状态退化为一个安抚性的只读面板。"
+    }
+  }
+]
