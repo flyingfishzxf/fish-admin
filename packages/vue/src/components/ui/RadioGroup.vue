@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { cn } from '@fish-admin/vue'
 import { useId } from 'vue'
+
+import { cn } from '../../lib/utils'
 
 // Native radio inputs rather than a Reka wrapper: the browser already gives
 // arrow-key navigation, a shared name and the correct announcement, and the
@@ -8,7 +9,7 @@ import { useId } from 'vue'
 const props = withDefaults(
   defineProps<{
     modelValue: string
-    options: { value: string; label: string }[]
+    options: { value: string; label: string; disabled?: boolean }[]
     ariaLabel?: string
     name?: string
     class?: string
@@ -32,6 +33,7 @@ const groupName = `radio-${useId()}`
       v-for="option in props.options"
       :key="option.value"
       class="flex cursor-pointer items-center gap-2 text-sm"
+      :class="option.disabled ? 'cursor-not-allowed opacity-50' : ''"
     >
       <input
         type="radio"
@@ -39,6 +41,7 @@ const groupName = `radio-${useId()}`
         :name="props.name ?? groupName"
         :value="option.value"
         :checked="option.value === props.modelValue"
+        :disabled="option.disabled || undefined"
         :data-radio-option="option.value"
         @change="emit('update:modelValue', option.value)"
       />

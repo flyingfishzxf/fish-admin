@@ -6,7 +6,7 @@ import { cn } from '@fish-admin/vue'
 // toggle state without the arrow-key contract a real tablist implies.
 const props = withDefaults(
   defineProps<{
-    options: { value: string; label: string }[]
+    options: { value: string; label: string; disabled?: boolean }[]
     modelValue: string
     ariaLabel?: string
     size?: 'sm' | 'md'
@@ -35,9 +35,10 @@ const SIZE_CLASS = {
       type="button"
       :data-segmented-option="option.value"
       :aria-pressed="option.value === props.modelValue"
+      :disabled="option.disabled || undefined"
       :class="
         cn(
-          'rounded-md font-medium whitespace-nowrap transition-colors',
+          'rounded-md font-medium whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50',
           SIZE_CLASS[props.size],
           option.value === props.modelValue
             ? 'bg-background text-foreground shadow-sm'

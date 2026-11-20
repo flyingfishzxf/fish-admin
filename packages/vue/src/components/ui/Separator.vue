@@ -1,13 +1,24 @@
 <script setup lang="ts">
-import { cn } from '@fish-admin/vue'
+import { computed } from 'vue'
 
-const props = defineProps<{ class?: string }>()
+import { cn } from '../../lib/utils'
+
+const props = withDefaults(
+  defineProps<{ orientation?: 'horizontal' | 'vertical'; class?: string }>(),
+  { orientation: 'horizontal' },
+)
+
+const classes = computed(() =>
+  props.orientation === 'vertical'
+    ? cn('h-full w-px shrink-0 bg-border', props.class)
+    : cn('h-px w-full shrink-0 bg-border', props.class),
+)
 </script>
 
 <template>
   <div
     role="separator"
-    aria-orientation="horizontal"
-    :class="cn('h-px w-full shrink-0 bg-border', props.class)"
+    :aria-orientation="props.orientation"
+    :class="classes"
   />
 </template>
