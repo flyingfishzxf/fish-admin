@@ -29,7 +29,7 @@ function save() {
     <div class="fish-demo-row">
       <Drawer :open="open" @update:open="handleOpenChange">
         <template #trigger>
-          <Button variant="outline">Notification settings</Button>
+          <Button @click="open = true" variant="outline">Notification settings</Button>
         </template>
         <div style="max-width: 32rem; margin-left: auto; margin-right: auto; width: 100%">
           <header style="padding: 1rem 1.5rem">

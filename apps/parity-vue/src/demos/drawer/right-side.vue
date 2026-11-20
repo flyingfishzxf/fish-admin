@@ -37,7 +37,7 @@ function handleSave() {
     <div class="fish-demo-row">
       <Drawer direction="right" :open="open" @update:open="handleOpenChange">
         <template #trigger>
-          <Button variant="outline">
+          <Button @click="open = true" variant="outline">
             <Pencil :size="16" />
             Rename project
           </Button>
