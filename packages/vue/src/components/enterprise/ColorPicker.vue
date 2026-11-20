@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ChevronsUpDown } from 'lucide-vue-next'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import Popover from './Popover.vue'
 
-const PRESETS = [
+const DEFAULT_PRESETS = [
   '#6366f1',
   '#8b5cf6',
   '#ec4899',
@@ -18,11 +18,38 @@ const PRESETS = [
 const HEX_PATTERN = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i
 
 const props = withDefaults(
-  defineProps<{ modelValue: string; ariaLabel?: string; class?: string }>(),
-  { ariaLabel: undefined, class: undefined },
+  defineProps<{
+    modelValue: string
+    ariaLabel?: string
+    /** Id applied to the trigger button. */
+    id?: string
+    /** Swatches offered in the popover; defaults to the eight template colours. */
+    presets?: string[]
+    /** Accessible name for the hex field; falls back to ariaLabel. */
+    hexLabel?: string
+    /** Accessible name for the native colour input; falls back to ariaLabel. */
+    pickerLabel?: string
+    /** Accessible name for the preset group; falls back to ariaLabel. */
+    presetsLabel?: string
+    /** Disable the trigger and every control in the popover. */
+    disabled?: boolean
+    class?: string
+  }>(),
+  {
+    ariaLabel: undefined,
+    id: undefined,
+    presets: undefined,
+    hexLabel: undefined,
+    pickerLabel: undefined,
+    presetsLabel: undefined,
+    disabled: false,
+    class: undefined,
+  },
 )
 
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
+
+const presetList = computed(() => props.presets ?? DEFAULT_PRESETS)
 
 const draft = ref(props.modelValue)
 
@@ -67,10 +94,12 @@ function commitDraft() {
   <Popover :class="props.class ?? 'w-60 p-3'" align="end">
     <template #trigger>
       <button
+        :id="props.id"
         type="button"
         data-color-trigger
+        :disabled="props.disabled"
         :aria-label="`${props.ariaLabel} ${props.modelValue.toUpperCase()}`"
-        class="flex h-8 w-full items-center gap-2 rounded-lg border bg-background px-2 text-sm"
+        class="flex h-8 w-full items-center gap-2 rounded-lg border bg-background px-2 text-sm disabled:pointer-events-none disabled:opacity-50"
       >
         <span
           data-color-swatch
@@ -87,7 +116,8 @@ function commitDraft() {
         type="color"
         data-color-native
         :value="props.modelValue"
-        :aria-label="`${props.ariaLabel} ${props.modelValue.toUpperCase()}`"
+        :disabled="props.disabled"
+        :aria-label="`${props.pickerLabel ?? props.ariaLabel} ${props.modelValue.toUpperCase()}`"
         class="h-8 w-full cursor-pointer rounded-md border bg-transparent"
         @input="pick(($event.target as HTMLInputElement).value)"
       />
@@ -95,24 +125,26 @@ function commitDraft() {
       <input
         :value="draft"
         data-color-hex
-        :aria-label="`${props.ariaLabel} ${props.modelValue.toUpperCase()}`"
+        :disabled="props.disabled"
+        :aria-label="`${props.hexLabel ?? props.ariaLabel} ${props.modelValue.toUpperCase()}`"
         spellcheck="false"
-        class="h-8 w-full rounded-md border bg-background px-2 font-mono text-xs uppercase outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
+        class="h-8 w-full rounded-md border bg-background px-2 font-mono text-xs uppercase outline-none focus-visible:ring-2 focus-visible:ring-ring/40 disabled:opacity-50"
         @input="draft = ($event.target as HTMLInputElement).value"
         @change="commitDraft"
         @keydown.enter="commitDraft"
       />
 
-      <div class="grid grid-cols-4 gap-2">
+      <div role="group" :aria-label="props.presetsLabel ?? props.ariaLabel" class="grid grid-cols-4 gap-2">
         <button
-          v-for="preset in PRESETS"
+          v-for="preset in presetList"
           :key="preset"
           type="button"
           :data-color-preset="preset"
+          :disabled="props.disabled"
           :aria-pressed="preset === props.modelValue"
           :aria-label="preset"
           :style="{ backgroundColor: preset }"
-          class="size-6 rounded-md border ring-offset-2 ring-offset-popover aria-pressed:ring-2 aria-pressed:ring-ring"
+          class="size-6 rounded-md border ring-offset-2 ring-offset-popover aria-pressed:ring-2 aria-pressed:ring-ring disabled:pointer-events-none disabled:opacity-50"
           @click="pick(preset)"
         />
       </div>
