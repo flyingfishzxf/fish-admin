@@ -7,16 +7,21 @@ import {
   TooltipRoot,
   TooltipTrigger,
 } from 'reka-ui'
-withDefaults(
+
+const props = withDefaults(
   defineProps<{
     delayDuration?: number
+    /** Preferred side of the trigger. */
+    side?: 'top' | 'right' | 'bottom' | 'left'
+    /** Alignment along the chosen side. */
+    align?: 'start' | 'center' | 'end'
   }>(),
-  { delayDuration: 0 },
+  { delayDuration: 0, side: 'top', align: 'center' },
 )
 </script>
 
 <template>
-  <TooltipProvider :delay-duration="delayDuration" data-slot="tooltip-provider">
+  <TooltipProvider :delay-duration="props.delayDuration" data-slot="tooltip-provider">
     <TooltipRoot data-slot="tooltip">
       <TooltipTrigger as-child data-slot="tooltip-trigger">
         <slot name="trigger" />
@@ -24,6 +29,8 @@ withDefaults(
       <TooltipPortal>
         <TooltipContentPrimitive
           data-slot="tooltip-content"
+          :side="props.side"
+          :align="props.align"
           :side-offset="0"
           class="z-50 w-fit origin-(--reka-tooltip-content-transform-origin) rounded-md bg-foreground px-3 py-1.5 text-xs text-background shadow-md"
         >
