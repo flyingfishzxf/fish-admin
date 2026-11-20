@@ -190,6 +190,21 @@ export { default as ChartTooltipContent } from './components/ui/chart/ChartToolt
 export { default as ChartLegendContent } from './components/ui/chart/ChartLegendContent.vue'
 export { default as ChartStyle } from './components/ui/chart/ChartStyle.vue'
 export { default as Chart } from './components/ui/chart/ChartContainer.vue'
+export { renderChartTooltip } from './components/ui/chart/render'
+export type { RenderChartTooltipOptions } from './components/ui/chart/render'
+// Re-export the shadcn-vue tooltip/crosshair pair under chart names, plus the
+// xy primitives, so a chart can be composed entirely from `@fish-admin/vue`.
+export { VisCrosshair as ChartCrosshair, VisTooltip as ChartTooltip } from '@unovis/vue'
+export {
+  VisXYContainer,
+  VisAxis,
+  VisGroupedBar,
+  VisStackedBar,
+  VisArea,
+  VisLine,
+  VisScatter,
+  VisDonut,
+} from '@unovis/vue'
 export type { ChartConfig, ChartSeriesConfig } from './components/ui/chart/context'
 export { default as Sidebar } from './components/ui/sidebar/Sidebar.vue'
 export { default as SidebarProvider } from './components/ui/sidebar/SidebarProvider.vue'

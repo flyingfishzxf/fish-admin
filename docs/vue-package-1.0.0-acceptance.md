@@ -84,5 +84,17 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
 
 - Breadcrumb 的链接条目渲染 `<a :href>` 而非 RouterLink——包边界保持零 vue-router 依赖；
 - Combobox / Command 使用自研过滤而非 cmdk；
-- Chart 提供容器、config 变量、tooltip/legend 内容组件，不捆绑具体图形库；
+- Chart 提供容器、config 变量、tooltip/legend 内容组件；2026-11-20 起改为绑定 unovis（`@unovis/vue`，shadcn-vue 同款）提供图形渲染层，并以 `ChartCrosshair`/`ChartTooltip` 再导出 + `renderChartTooltip` 助手保持单一样式来源（见补跑记录）；
 - Rate 以 `readOnly` 判定交互性（Vue emit 恒存在，不等价 React 的可选 onChange）。
+
+## 2026-11-20 追加：Chart 绑定 unovis
+
+- 经确认打破"不捆绑图形库"决策：`packages/vue` 新增 `@unovis/vue` + `@unovis/ts` 依赖；
+- `ChartCrosshair`/`ChartTooltip` 直接再导出 unovis 的 VisCrosshair/VisTooltip（shadcn-vue 同款），
+  并补齐 xy 原语（VisXYContainer/VisAxis/VisGroupedBar/VisStackedBar/VisArea/VisLine/VisScatter/VisDonut）再导出；
+- 新增 `renderChartTooltip`：把 ChartTooltipContent（唯一 tooltip 样式来源）挂载为 detached 元素，
+  供 unovis 的 `template` 回调返回（unovis 约定返回 HTML 字符串或 HTMLElement）；
+- unovis 数据模型与 recharts 不同：GroupedBar 的 `y` 返回"每组数值数组"，Area 是点模型
+  （datum = 一个点，多系列 = 每系列一个 VisArea，容器 data 为各行）——chart demo 已按此重写；
+- parity-vue 的 3 个 chart demo（basic/area-legend）全部改为 unovis 组合，浏览器验证
+  柱状/面积渲染、悬停 tooltip（"Jul Revenue 34800"）与图例均正常，无页面错误。

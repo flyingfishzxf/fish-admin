@@ -50,6 +50,8 @@
   "dependencies": {
     "@internationalized/date": "^3.12.4",
     "@tanstack/vue-table": "^8.21.3",
+    "@unovis/ts": "^1.5",
+    "@unovis/vue": "^1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-vue-next": "^1.0.0",

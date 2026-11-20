@@ -5,6 +5,7 @@ import ChartContainer from './ChartContainer.vue'
 import ChartLegendContent from './ChartLegendContent.vue'
 import ChartStyle from './ChartStyle.vue'
 import ChartTooltipContent from './ChartTooltipContent.vue'
+import { renderChartTooltip } from './render'
 import type { ChartConfig } from './context'
 
 const config: ChartConfig = {
@@ -77,3 +78,26 @@ describe('Chart family', () => {
 })
 
 import { h } from 'vue'
+
+describe('renderChartTooltip', () => {
+  it('mounts ChartTooltipContent into a detached element with the config context', () => {
+    const node = renderChartTooltip({
+      config,
+      label: 'Jul',
+      payload: [{ dataKey: 'revenue', value: 34800 }],
+    })
+
+    // renderChartTooltip returns the tooltip root itself
+    expect(node.matches('[data-slot="chart-tooltip-content"]')).toBe(true)
+    expect(node.textContent).toContain('Jul')
+    expect(node.textContent).toContain('Revenue')
+    expect(node.textContent).toContain('34800')
+  })
+
+  it('renders nothing visible when the payload is empty', () => {
+    const node = renderChartTooltip({ config, label: 'Jan', payload: [] })
+
+    // ChartTooltipContent hides itself without items
+    expect(node.querySelector('[data-slot="chart-tooltip-content"]')).toBeNull()
+  })
+})

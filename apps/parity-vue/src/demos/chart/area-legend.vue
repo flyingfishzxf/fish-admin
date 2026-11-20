@@ -3,12 +3,15 @@ export default { name: 'ChartAreaLegend' }
 </script>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-
 import {
   ChartContainer,
+  ChartCrosshair,
   ChartLegendContent,
-  ChartTooltipContent,
+  ChartTooltip,
+  renderChartTooltip,
+  VisArea,
+  VisAxis,
+  VisXYContainer,
   type ChartConfig,
 } from '@fish-admin/vue'
 
@@ -26,38 +29,24 @@ const data = [
   { month: 'Jun', revenue: 48290, costs: 27600 },
 ]
 
-const MAX = 55000
-const W = 480
-const H = 240
-const TOP = 8
-const BOTTOM = 24
-const PLOT_H = H - TOP - BOTTOM
+// unovis uses a point model; each series is one VisArea over the shared scale.
+const x = (_d: (typeof data)[number], i: number) => i
+const revenueY = (d: (typeof data)[number]) => d.revenue
+const costsY = (d: (typeof data)[number]) => d.costs
+const revenueColor = () => 'var(--color-revenue)'
+const costsColor = () => 'var(--color-costs)'
+const xTickFormat = (i: number) => data[Math.round(i)]?.month ?? ''
+const yTickFormat = (v: number) => `$${v / 1000}k`
 
-const points = computed(() =>
-  data.map((entry, index) => ({
-    ...entry,
-    x: 8 + (index * (W - 16)) / (data.length - 1),
-    revenueY: TOP + PLOT_H - (entry.revenue / MAX) * PLOT_H,
-    costsY: TOP + PLOT_H - (entry.costs / MAX) * PLOT_H,
-  })),
-)
-
-const hovered = ref<number | undefined>(undefined)
-
-const tooltipPayload = computed(() =>
-  hovered.value === undefined
-    ? []
-    : [
-        { dataKey: 'revenue', value: data[hovered.value].revenue },
-        { dataKey: 'costs', value: data[hovered.value].costs },
-      ],
-)
-const tooltipLabel = computed(() => (hovered.value === undefined ? '' : data[hovered.value].month))
-
-function columnFromEvent(event: MouseEvent) {
-  const rect = (event.currentTarget as SVGElement).getBoundingClientRect()
-  const ratio = (event.clientX - rect.left) / rect.width
-  hovered.value = Math.min(data.length - 1, Math.max(0, Math.round(ratio * (data.length - 1))))
+function tooltipTemplate(d: (typeof data)[number]) {
+  return renderChartTooltip({
+    config,
+    label: d.month,
+    payload: [
+      { dataKey: 'revenue', value: d.revenue },
+      { dataKey: 'costs', value: d.costs },
+    ],
+  })
 }
 </script>
 
@@ -72,86 +61,20 @@ function columnFromEvent(event: MouseEvent) {
       </p>
     </div>
     <ChartContainer :config="config" class="relative h-60 w-full">
-      <svg
-        :viewBox="`0 0 ${W} ${H}`"
-        role="img"
-        aria-label="Revenue and operating costs area chart"
+      <VisXYContainer
+        :data="data"
+        :x-domain="[0, data.length - 1]"
+        :y-domain="[0, 55000]"
         style="width: 100%; height: 100%"
-        @mousemove="columnFromEvent"
-        @mouseleave="hovered = undefined"
       >
-        <defs>
-          <linearGradient id="demo-chart-revenue" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="4%" stop-color="var(--color-revenue)" stop-opacity="0.35" />
-            <stop offset="96%" stop-color="var(--color-revenue)" stop-opacity="0.02" />
-          </linearGradient>
-          <linearGradient id="demo-chart-costs" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="4%" stop-color="var(--color-costs)" stop-opacity="0.3" />
-            <stop offset="96%" stop-color="var(--color-costs)" stop-opacity="0.02" />
-          </linearGradient>
-        </defs>
-        <line
-          v-for="entry in [0.25, 0.5, 0.75]"
-          :key="entry"
-          x1="0"
-          :x2="W"
-          :y1="TOP + PLOT_H * entry"
-          :y2="TOP + PLOT_H * entry"
-          stroke="var(--border)"
-          stroke-dasharray="4 4"
-        />
-        <polygon
-          :points="`${points.map((p) => `${p.x},${p.costsY}`).join(' ')} ${W - 8},${TOP + PLOT_H} 8,${TOP + PLOT_H}`"
-          fill="url(#demo-chart-costs)"
-        />
-        <polyline
-          :points="points.map((p) => `${p.x},${p.costsY}`).join(' ')"
-          fill="none"
-          stroke="var(--color-costs)"
-          stroke-width="2"
-        />
-        <polygon
-          :points="`${points.map((p) => `${p.x},${p.revenueY}`).join(' ')} ${W - 8},${TOP + PLOT_H} 8,${TOP + PLOT_H}`"
-          fill="url(#demo-chart-revenue)"
-        />
-        <polyline
-          :points="points.map((p) => `${p.x},${p.revenueY}`).join(' ')"
-          fill="none"
-          stroke="var(--color-revenue)"
-          stroke-width="2"
-        />
-        <line
-          v-if="hovered !== undefined"
-          :x1="points[hovered].x"
-          :x2="points[hovered].x"
-          :y1="TOP"
-          :y2="TOP + PLOT_H"
-          stroke="var(--border)"
-        />
-        <text
-          v-for="entry in points"
-          :key="`label-${entry.month}`"
-          :x="entry.x"
-          :y="H - 6"
-          text-anchor="middle"
-          font-size="11"
-          fill="var(--muted-foreground)"
-        >
-          {{ entry.month }}
-        </text>
-      </svg>
-      <div
-        v-if="hovered !== undefined"
-        class="pointer-events-none absolute"
-        :style="{
-          left: `${(points[hovered].x / W) * 100}%`,
-          top: '0.25rem',
-          transform: hovered > 2 ? 'translateX(-100%)' : 'translateX(-10%)',
-        }"
-      >
-        <ChartTooltipContent active :payload="tooltipPayload" :label="tooltipLabel" indicator="line" />
-      </div>
-      <ChartLegendContent :payload="[{ value: 'revenue' }, { value: 'costs' }]" />
+        <ChartCrosshair :template="tooltipTemplate" />
+        <ChartTooltip />
+        <VisArea :x="x" :y="costsY" :data="data" :color="costsColor" :opacity="0.3" :line="true" />
+        <VisArea :x="x" :y="revenueY" :data="data" :color="revenueColor" :opacity="0.3" :line="true" />
+        <VisAxis type="x" :tick-format="xTickFormat" :grid-line="false" :tick-line="false" />
+        <VisAxis type="y" :tick-format="yTickFormat" :domain-line="false" :grid-line="false" />
+      </VisXYContainer>
+      <ChartLegendContent :payload="Object.keys(config).map((key) => ({ value: key }))" />
     </ChartContainer>
   </div>
 </template>
