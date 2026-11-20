@@ -7,10 +7,19 @@ const props = withDefaults(
     min?: number
     max?: number
     step?: number
+    /** Decimal places fixed on the value after it is committed. */
+    precision?: number
     id?: string
     ariaLabel?: string
   }>(),
-  { min: undefined, max: undefined, step: 1, id: undefined, ariaLabel: undefined },
+  {
+    min: undefined,
+    max: undefined,
+    step: 1,
+    precision: undefined,
+    id: undefined,
+    ariaLabel: undefined,
+  },
 )
 
 const emit = defineEmits<{ 'update:modelValue': [value: number] }>()
@@ -28,7 +37,11 @@ function commit(value: string | number) {
   if (text === '') return
   const parsed = Number(text)
   if (!Number.isFinite(parsed)) return
-  emit('update:modelValue', clamp(parsed))
+  const bounded = clamp(parsed)
+  emit(
+    'update:modelValue',
+    props.precision === undefined ? bounded : Number(bounded.toFixed(props.precision)),
+  )
 }
 </script>
 

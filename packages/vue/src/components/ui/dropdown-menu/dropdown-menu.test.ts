@@ -3,8 +3,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { h, nextTick } from 'vue'
 
 import DropdownMenu from './DropdownMenu.vue'
+import DropdownMenuCheckboxItem from './DropdownMenuCheckboxItem.vue'
 import DropdownMenuContent from './DropdownMenuContent.vue'
 import DropdownMenuItem from './DropdownMenuItem.vue'
+import DropdownMenuRadioGroup from './DropdownMenuRadioGroup.vue'
+import DropdownMenuRadioItem from './DropdownMenuRadioItem.vue'
+import DropdownMenuSub from './DropdownMenuSub.vue'
+import DropdownMenuSubContent from './DropdownMenuSubContent.vue'
+import DropdownMenuSubTrigger from './DropdownMenuSubTrigger.vue'
 import DropdownMenuTrigger from './DropdownMenuTrigger.vue'
 
 let wrapper: VueWrapper | undefined
@@ -79,5 +85,75 @@ describe('DropdownMenu', () => {
       expect.stringContaining('Extraneous non-props attributes'),
     )
     warn.mockRestore()
+  })
+
+  it('renders checkbox and radio items with their indicators', async () => {
+    const onChecked = vi.fn()
+    wrapper = mount(DropdownMenu, {
+      slots: {
+        default: () => [
+          h(DropdownMenuTrigger, { asChild: true }, () =>
+            h('button', { type: 'button' }, 'View options'),
+          ),
+          h(DropdownMenuContent, () => [
+            h(
+              DropdownMenuCheckboxItem,
+              { checked: true, 'onUpdate:checked': onChecked },
+              () => 'Grid lines',
+            ),
+            h(DropdownMenuRadioGroup, { modelValue: 'compact' }, () => [
+              h(DropdownMenuRadioItem, { value: 'comfortable' }, () => 'Comfortable'),
+              h(DropdownMenuRadioItem, { value: 'compact' }, () => 'Compact'),
+            ]),
+          ]),
+        ],
+      },
+      attachTo: document.body,
+    })
+    await wrapper.get('button').trigger('keydown', { key: 'Enter' })
+    await nextTick()
+
+    const checkbox = document.body.querySelector('[data-slot="dropdown-menu-checkbox-item"]')
+    expect(checkbox).not.toBeNull()
+    expect(checkbox?.querySelector('[data-state="checked"]')).not.toBeNull()
+    const radios = document.body.querySelectorAll('[data-slot="dropdown-menu-radio-item"]')
+    expect(radios).toHaveLength(2)
+    expect(radios[0].getAttribute('data-state')).toBe('unchecked')
+    expect(radios[1].getAttribute('data-state')).toBe('checked')
+
+    const content = document.body.querySelector('[data-slot="dropdown-menu-content"]')!
+    content
+      .querySelector<HTMLElement>('[data-slot="dropdown-menu-checkbox-item"]')!
+      .dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+    await nextTick()
+    expect(onChecked).toHaveBeenCalled()
+  })
+
+  it('opens a submenu from its trigger', async () => {
+    wrapper = mount(DropdownMenu, {
+      slots: {
+        default: () => [
+          h(DropdownMenuTrigger, { asChild: true }, () =>
+            h('button', { type: 'button' }, 'Actions'),
+          ),
+          h(DropdownMenuContent, () => [
+            h(DropdownMenuSub, () => [
+              h(DropdownMenuSubTrigger, () => 'Share'),
+              h(DropdownMenuSubContent, () =>
+                h(DropdownMenuItem, { onSelect: () => undefined }, () => 'Copy link'),
+              ),
+            ]),
+          ]),
+        ],
+      },
+      attachTo: document.body,
+    })
+    await wrapper.get('button').trigger('keydown', { key: 'Enter' })
+    await nextTick()
+
+    const subTrigger = document.body.querySelector('[data-slot="dropdown-menu-sub-trigger"]')!
+    subTrigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }))
+    await new Promise((resolve) => setTimeout(resolve, 120))
+    expect(document.body.querySelector('[data-slot="dropdown-menu-sub-content"]')).not.toBeNull()
   })
 })
