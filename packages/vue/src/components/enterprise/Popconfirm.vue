@@ -5,7 +5,7 @@ import {
   PopoverRoot,
   PopoverTrigger,
 } from 'reka-ui'
-import { ref } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 
 import { cn } from '../../lib/utils'
 import { useUITranslation } from '../../i18n'
@@ -40,6 +40,18 @@ const emit = defineEmits<{ confirm: [] }>()
 
 const { t } = useUITranslation()
 const open = ref(false)
+
+// Reka hardcodes `role="dialog"` on its popover content, so the static
+// attribute below never reaches the DOM. The React surface announces the
+// confirm panel as an alertdialog; force the role after every render that
+// could reset it (open toggles, pending flips) through a plain fallthrough
+// marker attribute.
+watch([open, () => props.pending], async () => {
+  await nextTick()
+  document
+    .querySelector<HTMLElement>('[data-popconfirm-content]')
+    ?.setAttribute('role', 'alertdialog')
+})
 </script>
 
 <template>
@@ -56,6 +68,7 @@ const open = ref(false)
     </PopoverTrigger>
     <PopoverPortal>
       <PopoverContentPrimitive
+        data-popconfirm-content
         :side="props.side"
         :align="props.align"
         :side-offset="6"

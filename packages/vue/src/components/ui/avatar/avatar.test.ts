@@ -51,7 +51,7 @@ describe('Avatar', () => {
     expect(wrapper.attributes('data-slot')).toBe('avatar-group')
     // Overlap comes from the parent's child-selector class, not the child itself.
     expect(wrapper.classes()).toContain('*:data-[slot=avatar]:ring-2')
-    expect(wrapper.get('[data-slot="avatar"]').exists()).toBe(true)
+    expect(wrapper.find('[data-slot="avatar"]').exists()).toBe(true)
     const count = wrapper.get('[data-slot="avatar-group-count"]')
     expect(count.classes()).toContain('rounded-full')
     expect(count.text()).toBe('+5')
