@@ -161,6 +161,7 @@ export type {
   ProFormValues,
 } from './components/pro/ProForm.vue'
 export { default as ImportWizard } from './components/pro/ImportWizard.vue'
+export type { ImportWizardLabels } from './components/pro/ImportWizard.vue'
 export type {
   ImportField,
   ImportFieldType,

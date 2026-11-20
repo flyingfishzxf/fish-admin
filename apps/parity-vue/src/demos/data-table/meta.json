@@ -1,0 +1,28 @@
+[
+  {
+    "id": "data-table/basic",
+    "component": "data-table",
+    "file": "apps/parity-vue/src/demos/data-table/basic.vue",
+    "title": {
+      "en": "Clickable rows",
+      "zh": "可点击的表格行"
+    },
+    "description": {
+      "en": "A members table whose whole row acts as a button via onRowClick.",
+      "zh": "通过 onRowClick 让整行成为按钮的成员表。"
+    }
+  },
+  {
+    "id": "data-table/loading",
+    "component": "data-table",
+    "file": "apps/parity-vue/src/demos/data-table/loading.vue",
+    "title": {
+      "en": "Skeleton loading and density",
+      "zh": "骨架加载与密度"
+    },
+    "description": {
+      "en": "Skeleton rows during a simulated load, plus the comfortable/compact density switch.",
+      "zh": "模拟加载时的骨架行，以及 comfortable/compact 密度切换。"
+    }
+  }
+]

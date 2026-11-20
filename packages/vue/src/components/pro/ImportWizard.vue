@@ -21,43 +21,46 @@ import {
 import { cn } from '../../lib/utils'
 import { Button } from '../ui/button'
 
+/** Every visible string of the wizard, including the step names and row messages. */
+export interface ImportWizardLabels {
+  steps: string[]
+  dropTitle: string
+  dropHint: string
+  browse: string
+  sample: string
+  emptyFile: string
+  parseError: string
+  mapTitle: string
+  mapHint: string
+  sourceColumn: string
+  skipColumn: string
+  previewTitle: string
+  mapRequired: (labels: string) => string
+  reviewTitle: string
+  reviewHint: string
+  validCount: (count: number) => string
+  invalidCount: (count: number) => string
+  rowNumber: string
+  status: string
+  statusValid: string
+  statusInvalid: string
+  back: string
+  next: string
+  import: (count: number) => string
+  importing: string
+  importFailed: string
+  doneTitle: string
+  doneHint: (count: number) => string
+  reset: string
+  messages: ImportMessages
+}
+
 const props = withDefaults(
   defineProps<{
     /** Target fields; `aliases` feed the automatic column matching. */
     fields: ImportField[]
     /** Every visible string, including the step names and row messages. */
-    labels: {
-      steps: string[]
-      dropTitle: string
-      dropHint: string
-      browse: string
-      sample: string
-      emptyFile: string
-      parseError: string
-      mapTitle: string
-      mapHint: string
-      sourceColumn: string
-      skipColumn: string
-      previewTitle: string
-      mapRequired: (labels: string) => string
-      reviewTitle: string
-      reviewHint: string
-      validCount: (count: number) => string
-      invalidCount: (count: number) => string
-      rowNumber: string
-      status: string
-      statusValid: string
-      statusInvalid: string
-      back: string
-      next: string
-      import: (count: number) => string
-      importing: string
-      importFailed: string
-      doneTitle: string
-      doneHint: (count: number) => string
-      reset: string
-      messages: ImportMessages
-    }
+    labels: ImportWizardLabels
     /** CSV text for the "load sample" button; omit the button when undefined. */
     sample?: string
     /** File name shown for the sample once it is loaded. */
