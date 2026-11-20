@@ -8,8 +8,7 @@
 `@fish-admin/vue` 从 0.2.0（15 个不可安装组件）走到 **1.0.0（90 个可独立安装导出）**，
 registry 中 React 的 83 个 id **全部有 Vue 对应实现**（差集为空），另多出 7 个 Vue 侧独有 id
 （bulk-actions-bar、command-dialog、data-table、error-state、loading-overlay、page-header、
-progress-bar）。**验收通过**；唯一未执行项是 parity 冻结基线的 Docker 镜像跑法，原因是本机
-Docker Desktop 未运行（非代码问题）。
+progress-bar）。**验收全部通过，无遗留项**——包括 Docker 中的 parity 冻结基线（见下表）。
 
 ## 覆盖与版本进度
 
@@ -44,6 +43,7 @@ registry 分类：primitive 45 / enterprise 37 / pro 8。
 | `test:shared`（contracts/i18n/mock）            | 50 文件 / 383 + 9 + 4 + 18 测试                         |
 | `test:vue-template`                             | **594 测试**                                            |
 | `test:e2e:vue-template`                         | **67 通过**                                             |
+| `test:parity:vue`（Docker 中的 vue parity）     | **42 通过**（含 8 组明暗视觉冻结基线）                  |
 | `check:package`                                 | 83 react + **90 vue** 导出验证                          |
 | `check:parity:contract`                         | 通过                                                    |
 | `check:parity:freeze`                           | 460 文件匹配 2.2.0 基线                                 |
@@ -63,12 +63,11 @@ registry 分类：primitive 45 / enterprise 37 / pro 8。
   **11 项检查全部 PASS**（组件导出、Table/Sidebar/Chart/Form/Toaster/toast 等关键 API、
   SSR 输出 `data-slot` 钩子与内容）。
 
-## 未执行项
+## 补跑记录
 
-- `test:parity:vue`（Docker 中的 vue parity 冻结基线）——本机 Docker Desktop 未运行，
-  `npipe:////./pipe/dockerDesktopLinuxEngine` 连接失败。此前多个切片该门禁为 42 通过；
-  `check:parity:contract` 与 `check:parity:freeze` 已通过，代码侧无回归迹象。
-  需要在 Docker 可用的机器上补跑一次。
+2026-11-20：Docker Desktop 启动后补跑 `pnpm test:parity:vue`，42 项全部通过——
+含 en/zh 双语文案 surface 比对，以及 accordion、date-range-picker、dialog、
+pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告无遗留项。
 
 ## 关键工程决策
 
