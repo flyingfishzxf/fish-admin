@@ -5,7 +5,9 @@
     "command": "pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/parity-vue build && pnpm --filter @fish-admin/parity-vue preview --port 4176",
     "timeout": 300000
   },
-  "contract": { "scope": "pilot" },
+  "contract": {
+    "scope": "all"
+  },
   "api": {
     "mode": "reference",
     "deviations": {

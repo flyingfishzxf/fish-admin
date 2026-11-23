@@ -136,3 +136,14 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
 - 浏览器验证：概览页侧栏正确显示 Vue 3 分组；清单页渲染 90 张卡片 / 7 个 Vue-only 标签 /
   181 个 demo 链接；组件索引页跨链 `/vue/components` 可用；中文页正常。
 - React 冻结面：`check:parity:freeze` 460 文件全匹配，docs visual 基线未改动。
+
+## 2026-11-23 追加：Vue 契约校验扩展到全部组件
+
+- `parity/targets/vue.json` 的 `contract.scope` 从 `pilot` 改为 `all`，Vue 侧契约测试从 6 个 pilot
+  扩展到全部 83 个 React 对应组件：逐组件校验 demo 数量、每个 demo 的 preview/源码块与控制台无错；
+- 前提：React 167 个 demo id 在 Vue 侧全部存在，Vue 另有 14 个 demo 来自 7 个自有组件，故 demo
+  表面检查对 83 个组件逐一成立；API 表逐行比对仍只适用于 React（exact 模式），Vue 用 reference
+  模式记录 6 个 pilot 的 API 差异，不假装存在；
+- `api.deviations` 的完整性校验仍只针对 6 个 pilot，扩展 scope 不影响该检查；
+- 结果：`pnpm test:parity:vue` 从 42 项增加到 **119 项全过**（83 契约、12 docs-surface、6 行为、
+  12 跨版本视觉、6 axe）；其余 parity spec 各自独立读取 pilot，不受 scope 影响。
