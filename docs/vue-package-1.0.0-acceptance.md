@@ -71,9 +71,10 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
 
 ## 关键工程决策
 
-- **零新增运行时依赖**：sonner / resizable / react-hook-form / recharts / cmdk 五个在 React
-  侧依赖第三方库的组件，全部用 Vue 响应式与 reka 原语自研（toast 队列、pointer 拖拽 + 钳制、
-  受控表单、config 驱动图表 CSS 变量、自研搜索过滤）。
+- **运行时依赖克制**：sonner / resizable / react-hook-form / cmdk 四个在 React 侧依赖第三方库的
+  组件，用 Vue 响应式与 reka 原语自研（toast 队列、pointer 拖拽 + 钳制、受控表单、自研搜索过滤）。
+  Chart 起初同样只做容器与样式壳，2026-11-20 起改为绑定 `@unovis/vue` 提供图形渲染层（见下方
+  追加记录）；这是全包唯一新增的运行时依赖，未引入 vue-router / pinia / vue-i18n。
 - **ReactNode → Vue 插槽**：所有 ReactNode props 统一映射为具名/作用域插槽（cell、actions、
   extra、trigger 等），可选回调用 `useAttrs()` 检测 `onXxx` 是否存在。
 - **纯函数库先行**：`lib/{date,tree,filter-utils,transfer-utils,import-wizard-utils,csv,toast}`
@@ -96,5 +97,8 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
   供 unovis 的 `template` 回调返回（unovis 约定返回 HTML 字符串或 HTMLElement）；
 - unovis 数据模型与 recharts 不同：GroupedBar 的 `y` 返回"每组数值数组"，Area 是点模型
   （datum = 一个点，多系列 = 每系列一个 VisArea，容器 data 为各行）——chart demo 已按此重写；
-- parity-vue 的 3 个 chart demo（basic/area-legend）全部改为 unovis 组合，浏览器验证
-  柱状/面积渲染、悬停 tooltip（"Jul Revenue 34800"）与图例均正常，无页面错误。
+- parity-vue 的 2 个 chart demo（basic/area-legend）全部改为 unovis 组合，浏览器验证
+  柱状/面积渲染、悬停 tooltip（"Jul Revenue 34800"）与图例均正常，无页面错误；
+- ChartContainer 只保留 unovis 选择器，React 时代的 `recharts-*` 死样式已移除；
+- 包外复验：`pnpm pack` 后在全新消费目录 npm 安装，Node SSR 成功导入 12 个 chart 导出
+  并渲染 ChartContainer，确认 unovis 未破坏服务端渲染。

@@ -17,7 +17,7 @@ const chartId = `chart-${useId().replace(/:/g, '')}`
 provide(CHART_KEY, { config: computed(() => props.config) })
 
 const BASE =
-  'flex justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke="#ccc"]]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke="#fff"]]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none [&_.unovis-js-container]:h-full [&_.unovis-js-container]:w-full [&_.vis-axis-text]:fill-muted-foreground [&_.vis-axis-line]:stroke-border [&_.vis-tick_line]:stroke-border'
+  'flex justify-center text-xs [&_.unovis-js-container]:h-full [&_.unovis-js-container]:w-full [&_.vis-axis-text]:fill-muted-foreground [&_.vis-axis-line]:stroke-border [&_.vis-tick_line]:stroke-border'
 </script>
 
 <template>

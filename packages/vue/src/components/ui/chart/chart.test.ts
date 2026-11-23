@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
+import { h } from 'vue'
 
 import ChartContainer from './ChartContainer.vue'
 import ChartLegendContent from './ChartLegendContent.vue'
@@ -20,7 +21,10 @@ describe('Chart family', () => {
       slots: { default: () => h(ChartTooltipContent, { active: true, label: 'Jan' }) },
     })
 
-    expect(wrapper.find('[data-slot="chart"]').attributes('data-chart')).toContain('chart-')
+    const root = wrapper.get('[data-slot="chart"]')
+    expect(root.attributes('data-chart')).toContain('chart-')
+    expect(root.classes().join(' ')).toContain('unovis-js-container')
+    expect(root.classes().join(' ')).not.toContain('recharts')
     expect(wrapper.find('[data-slot="chart-style"]').text()).toContain('--color-revenue')
     expect(wrapper.find('[data-slot="chart-style"]').text()).toContain('.dark')
   })
@@ -76,8 +80,6 @@ describe('Chart family', () => {
     expect(wrapper.find('style').exists()).toBe(false)
   })
 })
-
-import { h } from 'vue'
 
 describe('renderChartTooltip', () => {
   it('mounts ChartTooltipContent into a detached element with the config context', () => {
