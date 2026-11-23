@@ -147,3 +147,24 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
 - `api.deviations` 的完整性校验仍只针对 6 个 pilot，扩展 scope 不影响该检查；
 - 结果：`pnpm test:parity:vue` 从 42 项增加到 **119 项全过**（83 契约、12 docs-surface、6 行为、
   12 跨版本视觉、6 axe）；其余 parity spec 各自独立读取 pilot，不受 scope 影响。
+
+## 待发布项：文档站顶栏 Vue 入口（有意推迟）
+
+Vue 专区已接入主文档站并有独立侧栏，但**顶栏导航入口与过时的页脚文案暂不改动**，
+推迟到下一次正式发布窗口一并处理。原因与范围：
+
+- 当前页脚仍写着 `Vue 3 planned`，与 Vue 1.0.0 已发布的事实不符，是待修正的过时信息；
+- 顶栏（`apps/docs/docs/{en,zh}/_nav.json`）与页脚（`apps/docs/rspress.config.ts`）都出现在
+  14 张文档布局冻结基线的全页截图里。改动会迫使重拍这 14 张 PNG，并更新
+  `parity/baseline/2.2.0/manifest.json` 的 460 个哈希——即重写 React 2.2.0 的冻结参考点；
+- 收益只是一个一等入口，不抵重写发布快照的代价。下次发布本就要更新基线，届时顺带处理成本最低；
+- 当前可达性不受影响：`/vue/` 与 `/zh/vue/` 直接可访问，组件索引页有跨链，搜索引擎可收录；
+- 166 张组件局部基线（`section[data-demo]`）与 180 张 Vue 自基线均不受导航改动影响，
+  届时无需重拍。
+
+触发条件：下一次 React 或 Vue 发布需要更新冻结基线时，同步执行以下改动，再重拍 14 张布局图
+并 re-freeze：
+
+1. `apps/docs/docs/en/_nav.json` / `zh/_nav.json` 增加 Vue 导航项（指向 `/vue/index`）；
+2. `apps/docs/rspress.config.ts` 的 `footer.message` 去掉 `Vue 3 planned`，改为指向 Vue 专区的链接；
+3. 顶栏 locale 描述可一并从"83 React components"扩展为涵盖 Vue 的表述。
