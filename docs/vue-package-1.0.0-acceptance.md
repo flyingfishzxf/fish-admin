@@ -102,3 +102,21 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
 - ChartContainer 只保留 unovis 选择器，React 时代的 `recharts-*` 死样式已移除；
 - 包外复验：`pnpm pack` 后在全新消费目录 npm 安装，Node SSR 成功导入 12 个 chart 导出
   并渲染 ChartContainer，确认 unovis 未破坏服务端渲染。
+
+## 2026-11-23 追加：Vue 视觉基线扩展到全部组件
+
+- 原有 parity 视觉基线只有 6 个 pilot 组件 × 明暗，且是**跨版本逐像素比对**（Vue demo 截图
+  直接对 React 冻结基线），因此只能覆盖刻意对齐到像素级的那一小组；
+- 新增独立的 Vue **自基线**套件：`playwright.vue-visual.config.ts` + `e2e-vue-visual/vue-visual.spec.ts`，
+  遍历 registry 全部 90 个组件 × light/dark = **180 张基线**，存于
+  `e2e-vue-visual/__screenshots__/vue-visual.spec.ts/`，与 React 的 2.2.0 冻结目录隔离；
+- 复用 parity 的 `openComponent` helper：固定时钟、主题存储键与等待窗口一致，截图只依赖代码；
+- 基线在 `mcr.microsoft.com/playwright:v1.64.1-noble` 容器中生成与校验，避免跨平台字体漂移；
+  命令：`pnpm test:vue-visual:docker:update`（生成）/ `pnpm test:vue-visual:docker`（校验）；
+- `parity/baseline/vue-visual-1.0.0/manifest.json` 对 180 张 PNG 做 sha256 冻结，
+  `pnpm check:vue-visual:freeze` 校验数量与哈希，防止基线被静默改动；
+- 门禁新增：`test:vue-visual`（本地比对）、`test:vue-visual:docker`（容器比对）、
+  `check:vue-visual:freeze`（清单校验）；生成/更新入口为 `test:vue-visual:docker:update`
+  与 `vue-visual:freeze`；
+- 实测：180 项全部通过，基线总量 5.2 MB；原有 6 个 pilot 跨版本基线仍 42/42 通过，
+  两套基线互不干扰。

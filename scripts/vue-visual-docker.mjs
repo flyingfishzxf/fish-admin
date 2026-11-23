@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+import { spawnSync } from 'node:child_process'
+
+// Screenshot baselines must be produced by the same Linux image CI uses;
+// running this on a developer machine (Windows, macOS) would fork the fonts.
+const IMAGE = 'mcr.microsoft.com/playwright:v1.64.1-noble'
+const update = process.argv.includes('--update')
+
+const steps = [
+  'npm install -g --no-fund --no-audit pnpm@9.1.1',
+  'pnpm install --frozen-lockfile --store-dir /root/.local/share/pnpm/store',
+  update ? 'pnpm test:vue-visual:update' : 'pnpm test:vue-visual',
+]
+
+const args = [
+  'run',
+  '--rm',
+  '--init',
+  '--ipc=host',
+  '-v',
+  `${process.cwd()}:/work`,
+  '-v',
+  'fishadmin-vue-visual-node-modules:/work/node_modules',
+  '-v',
+  'fishadmin-vue-visual-pnpm-store:/root/.local/share/pnpm/store',
+  '-w',
+  '/work',
+  '-e',
+  'CI=1',
+  IMAGE,
+  'bash',
+  '-lc',
+  steps.join(' && '),
+]
+
+console.log(`${update ? 'Updating' : 'Checking'} Vue visual baselines in ${IMAGE}`)
+const { status, error } = spawnSync('docker', args, { stdio: 'inherit' })
+
+if (error) {
+  console.error(`Failed to start Docker: ${error.message}`)
+  process.exit(1)
+}
+
+process.exit(status ?? 1)
