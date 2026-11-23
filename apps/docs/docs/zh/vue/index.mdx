@@ -1,0 +1,71 @@
+---
+title: Vue 版本
+description: FishAdmin UI 的 Vue 3 移植版——90 个组件、181 个演示与自基线视觉套件。
+---
+
+import { Link } from '@rspress/core/theme'
+
+# Vue 3 版本
+
+`@fish-admin/vue` 是本组件库的 Vue 3 移植版，导出 **90 个组件**：React 的 83 个 id 全部有对应实现，
+另有 7 个 Vue 独有组件。每个组件都有明暗两套演示。
+
+## 现状
+
+| 范围     | React          | Vue                              |
+| -------- | -------------- | -------------------------------- |
+| 组件     | 83             | 90（83 共有 + 7 独有）           |
+| 文档     | 每页中英双语   | 本站提供 Vue 概览 + 组件清单     |
+| 演示     | 167 个 TSX     | 181 个 SFC，在 `apps/parity-vue` |
+| 视觉基线 | 6 pilot × 明暗 | 6 个跨版本 + 90 个自基线 × 明暗  |
+| 单元测试 | 93 个文件      | 71 个文件 / 248 个测试           |
+
+**组件清单**列出每个 Vue 导出及其演示：<Link href="/zh/vue/components">浏览全部 90 个组件</Link>。
+
+## 安装
+
+```bash
+pnpm add @fish-admin/vue
+```
+
+Vue 是 peer dependency（`^3.5.45`）。包自带样式，引入一次即可：
+
+```ts
+import '@fish-admin/vue/styles.css'
+```
+
+## 与 React 版的关系
+
+框架无关的三个包（`@fish-admin/contracts`、`@fish-admin/i18n`、`@fish-admin/mock`）由两个版本共用。
+Vue 包用 Reka UI 原语，并自研替代 React 专属库（sonner、react-hook-form、cmdk、resizable）。
+图表通过 `@unovis/vue` 渲染，这是 Vue 包唯一新增的运行时依赖。
+
+有几处 API 是**有意的差异**，不是缺失：
+
+- Form 是配置驱动的 `ProForm` 别名，不是 React Hook Form 包装。
+- Calendar 只支持单选；区间请用 `DateRangePicker`。
+- `TourStep.target` 接收 CSS 选择器，而不是元素回调。
+- Breadcrumb 渲染普通 `<a>`，以保持包边界不含 `vue-router`。
+
+6 个 pilot 组件（Accordion、DateRangePicker、Dialog、ProTable、Select、Tabs）与冻结的 React
+截图做逐像素比对。其余组件在 `e2e-vue-visual` 有自己的自基线，既能捕获视觉回归，也不假装两种不同实现必须长得一样。
+
+## 本地运行 Vue 演示
+
+演示在 `apps/parity-vue`，不在这个由 React 构建的文档站里（本站 CSP 禁止 iframe，打包器也无法渲染 `.vue`）：
+
+```bash
+pnpm --filter @fish-admin/parity-vue dev
+```
+
+打开 `http://localhost:4176` 选择组件。组件清单里每个演示都链接到源码文件。
+
+## 验证命令
+
+```bash
+pnpm test:vue                  # Vue 包 + parity-vue 单测
+pnpm test:parity:vue           # 6 个 pilot 的跨版本 parity
+pnpm test:vue-visual:docker    # 90 组件自基线比对
+pnpm check:vue-visual:freeze   # 基线清单完整性
+pnpm check:package             # 导出面校验，React 83 + Vue 90
+```

@@ -120,3 +120,19 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
   与 `vue-visual:freeze`；
 - 实测：180 项全部通过，基线总量 5.2 MB；原有 6 个 pilot 跨版本基线仍 42/42 通过，
   两套基线互不干扰。
+
+## 2026-11-23 追加：Vue 接入主文档站
+
+- 约束：主站是 Rspress（React/Webpack），CSP 为 `frame-ancestors 'none'` + `X-Frame-Options: DENY`，
+  既不能 iframe 嵌 Vue 演示站，也无法在站内渲染 `.vue` SFC；且 14 张布局冻结基线是全页截图，
+  改顶栏/页脚会漂移；
+- 方案：新增 `/vue/` 专区（概览 + 组件清单，en/zh 共 4 页），只给它单独配侧栏；顶栏与页脚保持
+  冻结态不动。入口放在组件索引页（不在冻结截图范围内）的跨版本链接；
+- 数据：`apps/docs/scripts/build-vue-data.mjs` 从 `packages/vue/registry.json` + parity-vue 的
+  demo meta 生成 `apps/docs/generated/vue-components.json`（90 组件 / 181 demo / 7 Vue-only），
+  接入 docs 的 build/check 脚本，防止清单漂移；
+- 组件清单页用 `apps/docs/theme/VueIndex.tsx` 展示三分类卡片、统计与 demo 源码链接；样式为
+  独立的 `.fish-vue__*`，不影响 React 页面；
+- 浏览器验证：概览页侧栏正确显示 Vue 3 分组；清单页渲染 90 张卡片 / 7 个 Vue-only 标签 /
+  181 个 demo 链接；组件索引页跨链 `/vue/components` 可用；中文页正常。
+- React 冻结面：`check:parity:freeze` 460 文件全匹配，docs visual 基线未改动。

@@ -814,3 +814,85 @@ body .rp-doc .fish-index .fish-index__item {
     display: none;
   }
 }
+
+/* Vue 3 catalog (static data — no Vue runtime inside this React-authored site). */
+.fish-vue {
+  display: grid;
+  gap: 2rem;
+}
+
+.fish-vue__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem;
+}
+
+.fish-vue__stats > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.fish-vue__stats strong {
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.fish-vue__stats span {
+  font-size: 0.8rem;
+  color: var(--muted-foreground);
+}
+
+.fish-vue__group h2 {
+  margin-bottom: 0.5rem;
+}
+
+.fish-vue__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: 0.6rem;
+}
+
+.fish-vue__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.fish-vue__item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.fish-vue__item-meta {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+.fish-vue__tag {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.fish-vue__demos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.75rem;
+}
+
+.fish-vue__demos a {
+  font-size: 0.8rem;
+}
