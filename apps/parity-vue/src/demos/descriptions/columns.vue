@@ -14,8 +14,7 @@ const ITEMS: DescriptionItem[] = [
   { term: 'Acknowledged', description: '09:44 UTC' },
   {
     term: 'Summary',
-    description:
-      'Invoice retries doubled after the 09:30 deploy; the queue drained at 10:12 UTC.',
+    description: 'Invoice retries doubled after the 09:30 deploy; the queue drained at 10:12 UTC.',
     span: 2,
   },
 ]
@@ -27,8 +26,8 @@ const ITEMS: DescriptionItem[] = [
     <Descriptions :columns="3" :items="ITEMS" />
     <p class="fish-demo-muted" style="margin: 0">
       <code>columns</code> accepts 1, 2 or 3 and applies from the <code>sm</code> breakpoint up;
-      below it every item stacks in one column. <code>span: 2</code> makes an item two columns
-      wide; a three-column span is not available.
+      below it every item stacks in one column. <code>span: 2</code> makes an item two columns wide;
+      a three-column span is not available.
     </p>
   </div>
 </template>

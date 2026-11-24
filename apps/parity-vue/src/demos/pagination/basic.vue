@@ -18,11 +18,7 @@ const last = computed(() => Math.min(page.value * PAGE_SIZE, TOTAL_RESULTS))
 
 <template>
   <div class="fish-demo-stack">
-    <Pagination
-      v-model:page="page"
-      :page-count="TOTAL_PAGES"
-      aria-label="Reports pagination"
-    />
+    <Pagination v-model:page="page" :page-count="TOTAL_PAGES" aria-label="Reports pagination" />
     <p class="fish-demo-muted" aria-live="polite" style="margin: 0">
       Page {{ page }} of {{ TOTAL_PAGES }} — reports {{ first }}–{{ last }} of {{ TOTAL_RESULTS }}.
     </p>

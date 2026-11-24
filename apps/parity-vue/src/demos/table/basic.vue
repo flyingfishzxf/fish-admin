@@ -40,11 +40,7 @@ const rows = computed(() =>
   <div class="fish-demo-stack" style="max-width: 36rem">
     <div style="display: grid; gap: 0.375rem">
       <Label for="demo-table-search">Filter members</Label>
-      <Input
-        id="demo-table-search"
-        v-model="query"
-        placeholder="Search by name or team"
-      />
+      <Input id="demo-table-search" v-model="query" placeholder="Search by name or team" />
     </div>
     <Table>
       <TableCaption>Workspace members and the teams they belong to.</TableCaption>

@@ -89,9 +89,7 @@ async function onSubmit(next: ProFormValues) {
       @submit="onSubmit"
     />
     <div v-if="values" style="display: flex; flex-direction: column; gap: 0.25rem">
-      <p class="fish-demo-label" style="margin: 0">
-        Payload passed to the submit handler
-      </p>
+      <p class="fish-demo-label" style="margin: 0">Payload passed to the submit handler</p>
       <pre
         style="
           margin: 0;
@@ -103,7 +101,7 @@ async function onSubmit(next: ProFormValues) {
           white-space: pre-wrap;
           word-break: break-word;
         "
-      >{{ JSON.stringify(values, null, 2) }}</pre>
+        >{{ JSON.stringify(values, null, 2) }}</pre>
     </div>
     <p v-else class="fish-demo-muted" style="margin: 0" role="status">
       Submit to see the values. The async handler keeps the button in its loading state for a

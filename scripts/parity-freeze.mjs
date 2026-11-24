@@ -5,8 +5,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-export const RELEASE = '2.2.0'
-export const MANIFEST_PATH = 'parity/baseline/2.2.0/manifest.json'
+export const RELEASE = '2.3.0'
+export const MANIFEST_PATH = 'parity/baseline/2.3.0/manifest.json'
 
 const INPUT_FILES = [
   'apps/docs/generated/api.json',
@@ -37,7 +37,7 @@ const EXPECTED_COUNTS = {
 }
 
 const EXPECTED_PACKAGES = {
-  root: '2.2.0',
+  root: '2.3.0',
   '@fish-admin/react': '0.2.2',
   '@fish-admin/tokens': '0.1.1',
 }

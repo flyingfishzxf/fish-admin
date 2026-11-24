@@ -12,7 +12,7 @@ description: FishAdmin 中后台模板，组件库的第一个使用者。
 
 ## 入口
 
-- **在线演示：** <https://fish-admin.vercel.app>
+- **在线演示：** <https://fish-admin-react-demo.vercel.app>
 - **源码：** <https://github.com/flyingfishzxf/fish-admin>
 - **演示账号：** 登录页列出管理员、经理与只读三种账号。
 

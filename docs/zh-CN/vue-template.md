@@ -1,6 +1,6 @@
 # Vue 模板
 
-`apps/vue-template` 是 FishAdmin 的私有 Vue 3 管理后台。它复用框架无关的 contracts、i18n 资源与 MSW Mock API，以及 `@fish-admin/vue` 组件移植。它是演示模板，不是发布包。
+`apps/vue-template` 是公开的 Vue 3 管理后台模板，部署在 <https://fish-admin-vue-demo.vercel.app>。它复用框架无关的 contracts、i18n 资源与 MSW Mock API，以及 `@fish-admin/vue` 组件移植。它是演示模板，不是发布包。
 
 > 客户端权限是体验层，不是安全边界。路由守卫和按钮检查都可以在浏览器中被绕过；
 > 真实部署必须在服务端执行授权校验。

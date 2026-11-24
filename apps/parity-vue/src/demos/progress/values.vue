@@ -22,14 +22,20 @@ const processed = ref(TASKS[1].value)
       <div v-for="task in TASKS" :key="task.label" class="fish-demo-stack" style="gap: 0.35rem">
         <div class="fish-demo-row" style="justify-content: space-between">
           <span class="fish-demo-label">{{ task.label }}</span>
-          <span class="fish-demo-muted">{{ task.label === 'Normalise fields' ? processed : task.value }}%</span>
+          <span class="fish-demo-muted"
+            >{{ task.label === 'Normalise fields' ? processed : task.value }}%</span
+          >
         </div>
         <Progress
           :value="task.label === 'Normalise fields' ? processed : task.value"
           :aria-label="task.label"
         />
         <p class="fish-demo-muted" style="margin: 0">
-          {{ task.label === 'Normalise fields' ? `${processed}% of rows cleaned; each click adds 12 points.` : task.detail }}
+          {{
+            task.label === 'Normalise fields'
+              ? `${processed}% of rows cleaned; each click adds 12 points.`
+              : task.detail
+          }}
         </p>
       </div>
     </div>

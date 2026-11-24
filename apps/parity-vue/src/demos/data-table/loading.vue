@@ -36,9 +36,7 @@ function toggle() {
 <template>
   <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%">
     <div class="fish-demo-row">
-      <Button size="sm" variant="outline" @click="toggle">
-        Preview the loading state
-      </Button>
+      <Button size="sm" variant="outline" @click="toggle"> Preview the loading state </Button>
       <Button
         size="sm"
         :variant="density === 'compact' ? 'secondary' : 'outline'"
@@ -56,8 +54,8 @@ function toggle() {
       :density="density"
     />
     <p class="fish-demo-muted" style="margin: 0">
-      Loading replaces every row with {{ 4 }} skeleton rows and marks the region busy; density
-      only changes the paddings, never the columns.
+      Loading replaces every row with {{ 4 }} skeleton rows and marks the region busy; density only
+      changes the paddings, never the columns.
     </p>
   </div>
 </template>

@@ -16,10 +16,7 @@ const details: [string, string][] = [
 
 <template>
   <div style="width: 100%">
-    <DetailPage
-      title="Northwind migration"
-      subtitle="Rolling out the v2 data pipeline"
-    >
+    <DetailPage title="Northwind migration" subtitle="Rolling out the v2 data pipeline">
       <template #back>
         <Button type="button" variant="ghost" size="sm">
           <ArrowLeft />
@@ -44,8 +41,8 @@ const details: [string, string][] = [
       </template>
       <div class="fish-demo-stack">
         <p style="margin: 0">
-          This record passes a single body through the default slot instead of tabbed sections,
-          adds a back node above the header, and closes with a footer action row — the layout the
+          This record passes a single body through the default slot instead of tabbed sections, adds
+          a back node above the header, and closes with a footer action row — the layout the
           component falls back to whenever <code>tabs</code> is empty.
         </p>
         <dl
@@ -66,11 +63,7 @@ const details: [string, string][] = [
       <template #footer>
         <div
           class="fish-demo-row"
-          style="
-            justify-content: flex-end;
-            border-top: 1px solid var(--border);
-            padding-top: 1rem;
-          "
+          style="justify-content: flex-end; border-top: 1px solid var(--border); padding-top: 1rem"
         >
           <Button type="button" variant="outline" size="sm">Export summary</Button>
           <Button type="button" size="sm">Share</Button>

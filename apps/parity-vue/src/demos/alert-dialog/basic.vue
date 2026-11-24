@@ -37,8 +37,6 @@ function onConfirm() {
       variant="destructive"
       @confirm="onConfirm"
     />
-    <p class="fish-demo-muted">
-      Escape or “Keep key” closes the dialog without changing anything.
-    </p>
+    <p class="fish-demo-muted">Escape or “Keep key” closes the dialog without changing anything.</p>
   </div>
 </template>

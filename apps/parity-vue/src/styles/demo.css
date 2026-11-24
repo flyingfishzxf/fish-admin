@@ -53,6 +53,18 @@ html.dark body {
   padding-top: 0.703125px;
 }
 
+/*
+ * Heading height (2.5rem) plus its margin (1rem) is a whole 56px, so the first demo keeps the
+ * 0.703125px offset that the frozen screenshots were captured at.
+ */
+.fish-page__title {
+  margin: 0 0 1rem;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
 /* Copied from the top of the docs stylesheet: DemoBlock's role="status" span relies on it. */
 .fish-visually-hidden {
   position: absolute;
@@ -353,6 +365,23 @@ html.dark body {
   word-break: break-word;
 }
 
+/* The 876px docs column is narrower than Rspress's 1000px, so pin the short columns. */
+.fish-api td:first-child code {
+  white-space: nowrap;
+}
+
+.fish-api th:nth-child(1),
+.fish-api td:nth-child(1),
+.fish-api th:nth-child(4),
+.fish-api td:nth-child(4) {
+  width: 8rem;
+}
+
+.fish-api th:nth-child(3),
+.fish-api td:nth-child(3) {
+  width: 7.5rem;
+}
+
 .fish-api-note {
   margin-top: 0.75rem;
   font-size: 0.85rem;
@@ -362,9 +391,9 @@ html.dark body {
 /* ---------- prose emulation ---------- */
 
 /*
- * Rspress prose sizes the docs h3 through `body .rp-doc h3` and outranks the `.fish-demo__title`
- * base rule copied above. These are the probed computed values for the demo title; the selector
- * has one class, so it only wins when it stays after the copied block.
+ * Rspress prose sizes the docs demo headings through tag selectors and outranks the
+ * `.fish-demo__title` base rule copied above. These are the probed computed values for the demo
+ * title; the selector has one class, so it only wins when it stays after the copied block.
  */
 .fish-demo__title {
   margin: 28px 0 20px;

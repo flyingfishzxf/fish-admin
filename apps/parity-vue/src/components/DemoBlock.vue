@@ -3,6 +3,7 @@ import { computed, ref, useId } from 'vue'
 
 import type { ComponentEntry, DemoEntry, DocsLang } from '../data/types'
 import { SITE, demoSourceUrl, templatePath, uiText } from '../data/ui'
+import { SITES } from '../config/site'
 
 const props = defineProps<{
   demo: DemoEntry
@@ -50,10 +51,10 @@ async function onCopy() {
 <template>
   <section class="fish-demo" :data-demo="demo.id">
     <header class="fish-demo__header">
-      <h3 class="fish-demo__title">{{ demo.title[lang] }}</h3>
+      <h2 class="fish-demo__title">{{ demo.title[lang] }}</h2>
       <div class="fish-demo__links">
         <a
-          :href="`${SITE.demoUrl}${templatePath(componentEntry.usedIn)}`"
+          :href="`${SITES.vueDemo}${templatePath(componentEntry.usedIn)}`"
           target="_blank"
           rel="noreferrer"
         >
@@ -93,7 +94,9 @@ async function onCopy() {
           </button>
         </div>
         <div class="fish-demo__tools">
-          <span class="fish-demo__meta">{{ sourceLabel }} · {{ demo.lines }} {{ text.demoLines }}</span>
+          <span class="fish-demo__meta"
+            >{{ sourceLabel }} · {{ demo.lines }} {{ text.demoLines }}</span
+          >
           <button
             type="button"
             class="fish-demo__copy"

@@ -55,8 +55,8 @@ import { Building2, Clock, MapPin } from 'lucide-vue-next'
       </HoverCard>
     </div>
     <p class="fish-demo-muted">
-      The card opens after a 200 ms delay. It is a read-only preview, so real actions belong on
-      the destination page.
+      The card opens after a 200 ms delay. It is a read-only preview, so real actions belong on the
+      destination page.
     </p>
   </div>
 </template>

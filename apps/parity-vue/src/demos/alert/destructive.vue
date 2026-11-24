@@ -31,10 +31,7 @@ const healthy = ref(false)
         <p style="margin: 0">
           These jobs stopped before completing, so downstream reports are incomplete:
         </p>
-        <ul
-          class="fish-demo-stack"
-          style="gap: 4px; margin: 0; padding: 0; list-style: none"
-        >
+        <ul class="fish-demo-stack" style="gap: 4px; margin: 0; padding: 0; list-style: none">
           <li v-for="failure in FAILURES" :key="failure.job" class="fish-demo-row" style="gap: 6px">
             <XCircle aria-hidden="true" :size="14" />
             <span>{{ failure.job }}</span>

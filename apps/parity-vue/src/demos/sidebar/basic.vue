@@ -77,11 +77,21 @@ const current = computed(() => NAV.find((item) => item.id === active.value) ?? N
       <SidebarProvider embedded :default-open="true" class="h-full min-h-0">
         <Sidebar collapsible="icon" style="height: 320px">
           <SidebarHeader>
-            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0 0.25rem; overflow: hidden">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0 0.25rem;
+                overflow: hidden;
+              "
+            >
               <Boxes :size="18" style="flex-shrink: 0" />
               <div :style="BRAND_TEXT">
                 <p style="margin: 0; font-size: 0.85rem; font-weight: 600">Acme Ops</p>
-                <p style="margin: 0; font-size: 0.7rem; color: var(--muted-foreground)">Team plan</p>
+                <p style="margin: 0; font-size: 0.7rem; color: var(--muted-foreground)">
+                  Team plan
+                </p>
               </div>
             </div>
           </SidebarHeader>
@@ -105,7 +115,15 @@ const current = computed(() => NAV.find((item) => item.id === active.value) ?? N
             </SidebarGroup>
           </SidebarContent>
           <SidebarFooter>
-            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0 0.25rem; overflow: hidden">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0 0.25rem;
+                overflow: hidden;
+              "
+            >
               <span
                 aria-hidden="true"
                 style="

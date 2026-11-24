@@ -111,7 +111,7 @@ test('the button page renders every demo with a preview-first source toggle', as
   await expect(basic.locator('.fish-demo__source')).toContainText('ButtonBasic')
   await expect(basic.locator('a', { hasText: 'Used in the template' })).toHaveAttribute(
     'href',
-    'https://fish-admin.vercel.app/',
+    'https://fish-admin-react-demo.vercel.app/',
   )
 })
 

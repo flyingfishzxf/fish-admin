@@ -75,6 +75,9 @@ jobs:
       - name: Vue parity app tests
         run: pnpm --filter @fish-admin/parity-vue test
 
+      - name: Vue template tests
+        run: pnpm test:vue-template
+
       - name: Package contract
         run: pnpm check:package
 
@@ -96,6 +99,9 @@ jobs:
       - name: Parity scenarios are valid
         run: pnpm check:parity:scenarios
 
+      - name: Vue visual freeze manifest is current
+        run: pnpm check:vue-visual:freeze
+
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -116,6 +122,12 @@ jobs:
 
       - name: Build and check bundle size budgets
         run: pnpm size
+
+      - name: Build the Vue package and Vue sites
+        run: pnpm build:vue-docs && pnpm build:vue-template:demo
+
+      - name: Build the landing page
+        run: pnpm build:landing
 
       - name: Upload the mock-free bundle
         # The artifact is what `pnpm size` measured, so a budget question can be
@@ -149,6 +161,9 @@ jobs:
 
       - name: Run E2E, accessibility and performance tests
         run: pnpm test:e2e
+
+      - name: Run the Vue template E2E suite
+        run: pnpm test:e2e:vue-template
 
       - name: Upload Playwright report
         if: failure()
@@ -281,6 +296,37 @@ jobs:
           path: |
             playwright-report/docs-visual
             test-results
+          retention-days: 7
+
+  vue-visual:
+    name: Vue visual regression
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --user 1001 --ipc=host
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable pnpm
+        # The playwright image moved to Node 26, which no longer bundles corepack.
+        run: |
+          npm install -g --prefix /tmp/pnpm-home --no-fund --no-audit pnpm@9.1.1
+          echo /tmp/pnpm-home/bin >> "$GITHUB_PATH"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --store-dir /tmp/pnpm-store
+
+      - name: Compare Vue screenshots
+        run: pnpm test:vue-visual
+
+      - name: Upload Vue visual diff report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vue-visual-report
+          path: |
+            playwright-report/vue-visual
+            test-results/vue-visual
           retention-days: 7
 
   parity:

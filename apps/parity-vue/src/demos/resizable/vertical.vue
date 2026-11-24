@@ -33,7 +33,12 @@ const CODE = {
   <div class="fish-demo-stack" style="max-width: 40rem">
     <ResizablePanelGroup
       orientation="vertical"
-      style="height: 280px; border: 1px solid var(--border); border-radius: 0.5rem; overflow: hidden"
+      style="
+        height: 280px;
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        overflow: hidden;
+      "
     >
       <ResizablePanel :default-size="56" :min-size="30">
         <div :style="PANE" role="region" aria-label="Webhook request body" tabindex="0">

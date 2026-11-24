@@ -18,8 +18,8 @@ const ITEMS: DescriptionItem[] = [
   <div class="fish-demo-stack">
     <Descriptions :columns="2" :items="ITEMS" />
     <p class="fish-demo-muted" style="margin: 0">
-      Terms are <code>dt</code> elements in 12 px muted text, values are <code>dd</code> elements
-      at 14 px. The last item sets <code>span: 2</code> so it fills the row.
+      Terms are <code>dt</code> elements in 12 px muted text, values are <code>dd</code> elements at
+      14 px. The last item sets <code>span: 2</code> so it fills the row.
     </p>
   </div>
 </template>

@@ -34,7 +34,12 @@ const marks = reactive<Record<string, boolean>>({ ...INITIAL_MARKS })
         <component :is="mark.icon" aria-hidden="true" />
       </Button>
       <Separator orientation="vertical" style="height: 20px" />
-      <Button size="icon-sm" variant="ghost" aria-label="Clear formatting" @click="Object.assign(marks, INITIAL_MARKS)">
+      <Button
+        size="icon-sm"
+        variant="ghost"
+        aria-label="Clear formatting"
+        @click="Object.assign(marks, INITIAL_MARKS)"
+      >
         <RotateCcw aria-hidden="true" />
       </Button>
     </div>

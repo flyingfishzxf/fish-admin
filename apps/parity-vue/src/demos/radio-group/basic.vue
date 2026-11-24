@@ -20,11 +20,7 @@ const current = computed(() => PLANS.find((option) => option.value === plan.valu
 <template>
   <div class="fish-demo-stack">
     <span id="demo-radio-plan-label" class="fish-demo-label">Billing plan</span>
-    <RadioGroup
-      v-model="plan"
-      :options="PLANS"
-      aria-label="Billing plan"
-    />
+    <RadioGroup v-model="plan" :options="PLANS" aria-label="Billing plan" />
     <div class="fish-demo-stack" style="gap: 0.35rem">
       <p v-for="option in PLANS" :key="option.value" class="fish-demo-muted" style="margin: 0">
         <strong>{{ option.label }}</strong> — {{ option.hint }}

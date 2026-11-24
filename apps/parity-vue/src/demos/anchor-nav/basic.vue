@@ -30,13 +30,10 @@ const scrollRef = ref<HTMLElement | null>(null)
 
 <template>
   <div class="fish-demo-stack">
-    <div style="display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; width: 100%">
-      <AnchorNav
-        :items="SECTIONS"
-        ariaLabel="Report sections"
-        :root="scrollRef"
-        :offset="8"
-      />
+    <div
+      style="display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 1rem; width: 100%"
+    >
+      <AnchorNav :items="SECTIONS" ariaLabel="Report sections" :root="scrollRef" :offset="8" />
       <div
         ref="scrollRef"
         role="region"

@@ -386,7 +386,7 @@ function dropTestBrowsers(editor, state) {
 
   editor.sub('tsconfig.json', text('    "src",', '    "e2e",'), text('    "src",'))
   editor.sub('tsconfig.json', '    "e2e-parity",\n', '')
-  editor.sub('tsconfig.json', '    "playwright.parity.config.ts"\n', '')
+  editor.sub('tsconfig.json', '    "playwright.parity.config.ts",\n', '')
 
   editor.block(
     '.github/workflows/ci.yml',

@@ -16,9 +16,7 @@ const tooShort = computed(() => reason.value.trim().length < MIN_REASON)
 <template>
   <div class="fish-demo-stack">
     <div class="fish-demo-stack" style="gap: 0.4rem">
-      <Label for="demo-textarea-states-disabled" style="opacity: 0.5">
-        Resolution summary
-      </Label>
+      <Label for="demo-textarea-states-disabled" style="opacity: 0.5"> Resolution summary </Label>
       <Textarea
         id="demo-textarea-states-disabled"
         :rows="3"

@@ -32,11 +32,7 @@ function onRowClick(row: DemoMember) {
 
 <template>
   <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%">
-    <DataTable
-      :table="table"
-      table-label="Workspace members"
-      :on-row-click="onRowClick"
-    />
+    <DataTable :table="table" table-label="Workspace members" :on-row-click="onRowClick" />
     <p class="fish-demo-muted" role="status" style="margin: 0" aria-live="polite">
       {{
         selected

@@ -38,8 +38,8 @@ function onFiles(files: File[]) {
     </p>
     <p v-else class="fish-demo-muted">Nothing queued yet.</p>
     <p class="fish-demo-muted" style="margin: 0">
-      <code>accept</code> filters the native file dialog only. Dropped files bypass it, which is
-      why the demo checks the extension before accepting the drop.
+      <code>accept</code> filters the native file dialog only. Dropped files bypass it, which is why
+      the demo checks the extension before accepting the drop.
     </p>
   </div>
 </template>

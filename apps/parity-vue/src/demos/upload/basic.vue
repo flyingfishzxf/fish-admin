@@ -21,7 +21,9 @@ watch(hasUploading, (active) => {
       items.value = items.value.map((item) => {
         if (item.status !== 'uploading') return item
         const next = Math.min(100, (item.progress ?? 0) + 20)
-        return next >= 100 ? { ...item, progress: 100, status: 'done' } : { ...item, progress: next }
+        return next >= 100
+          ? { ...item, progress: 100, status: 'done' }
+          : { ...item, progress: next }
       })
     }, 350)
   } else if (timer) {
@@ -32,22 +34,20 @@ watch(hasUploading, (active) => {
 
 onBeforeUnmount(() => timer && clearInterval(timer))
 
-const uploadingCount = computed(() =>
-  items.value.filter((item) => item.status === 'uploading').length,
+const uploadingCount = computed(
+  () => items.value.filter((item) => item.status === 'uploading').length,
 )
 
 function onFiles(files: File[]) {
   items.value = [
     ...items.value,
-    ...files.map(
-      (f): UploadItem => ({
-        id: `pick-${(nextId += 1)}`,
-        name: f.name,
-        size: f.size,
-        status: 'uploading',
-        progress: 0,
-      }),
-    ),
+    ...files.map((f): UploadItem => ({
+      id: `pick-${(nextId += 1)}`,
+      name: f.name,
+      size: f.size,
+      status: 'uploading',
+      progress: 0,
+    })),
   ]
 }
 

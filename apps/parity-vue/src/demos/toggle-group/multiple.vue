@@ -23,7 +23,12 @@ const channels = ref<string[]>(['Email'])
       </ToggleGroup>
     </div>
     <div style="width: 320px">
-      <ToggleGroup v-model="channels" type="multiple" :spacing="1" aria-label="Notification channels">
+      <ToggleGroup
+        v-model="channels"
+        type="multiple"
+        :spacing="1"
+        aria-label="Notification channels"
+      >
         <Toggle v-for="channel in CHANNELS" :key="channel" :value="channel" variant="outline">
           {{ channel }}
         </Toggle>

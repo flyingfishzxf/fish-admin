@@ -24,7 +24,15 @@ import {
   SidebarMenuSubItem,
   SidebarProvider,
 } from '@fish-admin/vue'
-import { BarChart3, ChevronDown, ChevronRight, FolderKanban, Inbox, Settings, Users } from 'lucide-vue-next'
+import {
+  BarChart3,
+  ChevronDown,
+  ChevronRight,
+  FolderKanban,
+  Inbox,
+  Settings,
+  Users,
+} from 'lucide-vue-next'
 
 const navOpen = ref(true)
 const projectsOpen = ref(true)
@@ -113,7 +121,10 @@ const active = ref('website')
                     </SidebarMenuSub>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton :is-active="active === 'reports'" @click="active = 'reports'">
+                    <SidebarMenuButton
+                      :is-active="active === 'reports'"
+                      @click="active = 'reports'"
+                    >
                       <BarChart3 />
                       <span>Reports</span>
                     </SidebarMenuButton>
@@ -126,13 +137,19 @@ const active = ref('website')
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <SidebarMenuButton :is-active="active === 'members'" @click="active = 'members'">
+                    <SidebarMenuButton
+                      :is-active="active === 'members'"
+                      @click="active = 'members'"
+                    >
                       <Users />
                       <span>Members</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <SidebarMenuButton :is-active="active === 'settings'" @click="active = 'settings'">
+                    <SidebarMenuButton
+                      :is-active="active === 'settings'"
+                      @click="active = 'settings'"
+                    >
                       <Settings />
                       <span>Settings</span>
                     </SidebarMenuButton>

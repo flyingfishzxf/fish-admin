@@ -52,8 +52,8 @@ const pressed = computed(() => MARKS.filter((mark) => marks[mark]).join(', ') ||
     </p>
     <p class="fish-demo-muted" style="margin: 0" aria-live="polite">Pressed: {{ pressed }}</p>
     <p class="fish-demo-muted" style="margin: 0">
-      Each toggle is its own tab stop. Pressing Space or Enter flips the icon button and updates
-      the preview.
+      Each toggle is its own tab stop. Pressing Space or Enter flips the icon button and updates the
+      preview.
     </p>
   </div>
 </template>

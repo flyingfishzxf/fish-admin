@@ -10,7 +10,7 @@ export default function BadgeBasic() {
         <Badge variant="destructive">Past due</Badge>
         <Badge variant="ghost">Draft</Badge>
         <Badge variant="link" asChild>
-          <a href="https://fish-admin.vercel.app/" target="_blank" rel="noreferrer">
+          <a href="https://fish-admin-react-demo.vercel.app/" target="_blank" rel="noreferrer">
             Changelog
           </a>
         </Badge>

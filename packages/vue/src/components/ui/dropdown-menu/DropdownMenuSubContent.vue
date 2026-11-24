@@ -15,10 +15,7 @@ const classes = computed(() =>
 </script>
 
 <template>
-  <DropdownMenuSubContentPrimitive
-    data-slot="dropdown-menu-sub-content"
-    :class="classes"
-  >
+  <DropdownMenuSubContentPrimitive data-slot="dropdown-menu-sub-content" :class="classes">
     <slot />
   </DropdownMenuSubContentPrimitive>
 </template>

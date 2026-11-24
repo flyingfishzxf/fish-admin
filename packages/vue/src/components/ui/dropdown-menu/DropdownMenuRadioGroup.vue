@@ -4,7 +4,6 @@ import { DropdownMenuRadioGroup as DropdownMenuRadioGroupPrimitive } from 'reka-
 const props = defineProps<{ modelValue?: string }>()
 
 const emit = defineEmits<{ 'update:modelValue': [value: string] }>()
-
 </script>
 
 <template>

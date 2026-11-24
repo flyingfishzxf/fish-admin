@@ -1,9 +1,9 @@
 # Vue template
 
-`apps/vue-template` is a private Vue 3 admin app for FishAdmin. It reuses the
-framework-neutral contracts, i18n resources and MSW mock API, and the
-`@fish-admin/vue` component port. It is a demonstration template, not a
-published package.
+`apps/vue-template` is the public Vue 3 admin template, deployed at
+<https://fish-admin-vue-demo.vercel.app>. It reuses the framework-neutral
+contracts, i18n resources and MSW mock API, and the `@fish-admin/vue` component
+port. It is a demonstration template, not a published package.
 
 > Client-side permissions are a UX layer, not a security boundary. Every route
 > guard and button check can be bypassed in the browser; a real deployment must

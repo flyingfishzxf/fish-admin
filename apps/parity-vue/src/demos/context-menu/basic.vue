@@ -57,9 +57,7 @@ const ITEMS: ContextMenuEntry[] = [
           "
         >
           <p style="margin: 0; font-size: 0.875rem; font-weight: 600">Apollo migration</p>
-          <p class="fish-demo-muted" style="margin: 0.25rem 0 0">
-            Updated 2 hours ago · 8 members
-          </p>
+          <p class="fish-demo-muted" style="margin: 0.25rem 0 0">Updated 2 hours ago · 8 members</p>
         </div>
       </template>
     </ContextMenu>

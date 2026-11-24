@@ -7,7 +7,6 @@ import { computed, ref } from 'vue'
 
 import { Slider } from '@fish-admin/vue'
 
-
 const budget = ref(1800)
 const formatted = computed(() => `$${budget.value.toLocaleString('en-US')}`)
 </script>

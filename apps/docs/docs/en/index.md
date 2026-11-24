@@ -10,7 +10,7 @@ hero:
       link: /components
     - theme: alt
       text: Live template
-      link: https://fish-admin.vercel.app
+      link: https://fish-admin-react-demo.vercel.app
     - theme: alt
       text: GitHub
       link: https://github.com/flyingfishzxf/fish-admin

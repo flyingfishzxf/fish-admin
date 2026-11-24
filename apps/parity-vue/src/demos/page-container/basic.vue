@@ -28,7 +28,11 @@ import { Download } from 'lucide-vue-next'
         </Button>
       </template>
       <div
-        style="display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr))"
+        style="
+          display: grid;
+          gap: 0.75rem;
+          grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+        "
       >
         <div>
           <span class="fish-demo-label">Gross revenue</span>

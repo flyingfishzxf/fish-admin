@@ -1,22 +1,26 @@
 # FishAdmin
 
-> **面向企业中后台的 React 组件库 —— 以及随它一起发布的模板工程。**
+> **面向企业中后台的 React 与 Vue 3 组件库 —— 以及随它们一起发布的模板工程。**
 
 [English](./README.md) · 简体中文
 
 [![CI](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/Docs-组件库-8b5cf6)](https://fish-admin-docs.vercel.app)
+[![React 文档](https://img.shields.io/badge/React_%E6%96%87%E6%A1%A3-83_%E4%B8%AA%E7%BB%84%E4%BB%B6-8b5cf6)](https://fish-admin-react-docs.vercel.app)
+[![Vue 文档](https://img.shields.io/badge/Vue_%E6%96%87%E6%A1%A3-90_%E4%B8%AA%E7%BB%84%E4%BB%B6-42b883)](https://fish-admin-vue-docs.vercel.app)
 [![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)](https://react.dev)
+[![Vue](https://img.shields.io/badge/Vue-3.5-42b883?logo=vuedotjs&logoColor=white)](https://vuejs.org)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](https://vite.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
 
-FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深浅主题、中英文与按 RBAC 组织的页面），以及一套可以 clone 下来登录、故意越权试试、再换成自己后端的模板工程。[组件文档](https://fish-admin-docs.vercel.app) 是这两部分的统一入口。
+FishAdmin 让同一套设计语言同时落在两个框架上：`@fish-admin/react` 提供 83 个有文档的组件，`@fish-admin/vue` 提供 90 个，二者都带深浅主题、中英文与按 RBAC 组织的页面。每个框架都有一套可以 clone 下来登录、故意越权试试、再换成自己后端的模板工程。从[门面页](https://fish-admin.vercel.app)开始。
 
 > **安全声明：** 客户端 RBAC 只是交互层，**不是安全边界**。修改 JavaScript 或直接调用 API 都能绕过本项目的权限判断。真实权限必须由服务端校验。Mock API 对无权限的写操作返回 `403`，用于演示这一契约。
 
-**在线演示：<https://fish-admin.vercel.app>** —— 使用 `pnpm build:demo` 构建，MSW Mock API 完全跑在你的浏览器里。可直接登录下面的[演示账号](#演示账号)；数据保存在 `localStorage`，清除站点数据即可恢复初始状态。线上的权限判断同样只是体验层，不是安全边界。
+**在线演示：** [React 模板](https://fish-admin-react-demo.vercel.app) · [Vue 模板](https://fish-admin-vue-demo.vercel.app)。两者都用 MSW 在浏览器里跑完整 Mock API，可直接登录下面的[演示账号](#演示账号)；数据保存在 `localStorage`，清除站点数据即可恢复初始状态。线上的权限判断同样只是体验层，不是安全边界。
+
+**组件文档：** [React](https://fish-admin-react-docs.vercel.app) · [Vue](https://fish-admin-vue-docs.vercel.app)。
 
 ## 预览
 
@@ -26,7 +30,7 @@ FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深
 | --------------------------------------------------------------------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | ![平板视口下的用户表格](apps/docs/docs/public/screenshots/users-tablet.png) | ![手机视口下的角色页](apps/docs/docs/public/screenshots/roles-mobile.png) | ![审批中心](apps/docs/docs/public/screenshots/workflows.png) |
 
-这四张图同样由[文档站点](https://fish-admin-docs.vercel.app)在 `/screenshots/` 下提供。
+这四张图同样由[文档站点](https://fish-admin-react-docs.vercel.app)在 `/screenshots/` 下提供。
 
 ## 功能
 
@@ -49,10 +53,11 @@ FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深
 - **审计日志** —— `/audit-logs` 支持 URL 同步筛选、日期区间预设、详情抽屉与关联事件，并可跳转到受影响的用户、角色或部门。
 - **可见的异常处理** —— `401`、`403`、`500`、`503` 与维护页各有专页，断网时显示离线横幅并在恢复后提示，路由错误由 error boundary 兜底，设置页提供直达预览入口。
 - **工作台** —— KPI 卡片、收入面积图、流量柱状图、渠道环形图、最近活动，支持 7/30 天切换；图表随路由懒加载。
-- **83 个组件，一个包** —— `@fish-admin/react` 导出 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）。83 个组件在[文档站点](https://fish-admin-docs.vercel.app)各有一页，中英双语，都带贴合业务场景的实时演示、可复制的 import 路径与自动生成的属性表。`pnpm check:package` 会在出口文件少导出任一条目时让构建失败，`pnpm docs:check` 会在页面、演示或登记项漂移时失败。ProTable 已用于用户与审计页，模板本身就是这个包的第一个使用者。
-- **有证据兜底的成熟度矩阵** —— 83 个组件在成熟度矩阵（[/zh/guide/maturity](https://fish-admin-docs.vercel.app/zh/guide/maturity)）中全部为 `stable`；stable 意味着中英各一页文档、实时演示、行为测试、文档路由上的 axe 覆盖与浅色/深色各一张视觉基线。`pnpm check:maturity` 会从磁盘重新核对这份证据，stable 组件丢掉任何一项即失败，标签不会和仓库脱节。2.2.0 周期新增 50 个组件测试文件、补强 5 个已有测试——共 93 个文件、303 个用例——并且 `@fish-admin/react` 的覆盖率低于语句 77%、分支 68%、函数 78%、行 79% 时测试直接失败。
-- **设计令牌成为契约** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，6 个动效令牌与高对比度取值。`@fish-admin/tokens` 把一份 JSON 源编译成纯 CSS、Tailwind 4 主题入口、双语 manifest 与浏览器安全的编辑器辅助函数；[令牌参考](https://fish-admin-docs.vercel.app/zh/guide/tokens)与[主题编辑器](https://fish-admin-docs.vercel.app/zh/guide/theme-editor)共用这份契约。7 个有动效的浮层尊重 `prefers-reduced-motion`；`@fish-admin/react` 内联编译后的令牌，npm 用户仍然只装一个包。
-- **诚实的 RTL 审计** —— `pnpm check:rtl` 在存在未处理的物理方向工具类或报告过期时失败。当前 253 个文件中未处理项为 0；34 处有意保留的匹配在 [RTL 就绪度](https://fish-admin-docs.vercel.app/zh/guide/rtl-readiness) 分类说明，而不是宣称已完整支持 RTL。
+- **83 个组件，一个包** —— `@fish-admin/react` 导出 47 个 shadcn/ui 原语、30 个企业组件与 6 个 Pro 组合（`DetailPage`、`EditableTable`、`ImportWizard`、`ProForm`、`QueryFilter`、`ProTable`）。83 个组件在[文档站点](https://fish-admin-react-docs.vercel.app)各有一页，中英双语，都带贴合业务场景的实时演示、可复制的 import 路径与自动生成的属性表。`pnpm check:package` 会在出口文件少导出任一条目时让构建失败，`pnpm docs:check` 会在页面、演示或登记项漂移时失败。ProTable 已用于用户与审计页，模板本身就是这个包的第一个使用者。
+- **90 个 Vue 3 组件** —— `@fish-admin/vue` 实现了 React 的每个组件 id，另有 7 个 Vue 独有组件（`bulk-actions-bar`、`command-dialog`、`data-table`、`error-state`、`loading-overlay`、`page-header`、`progress-bar`）。它使用 Reka UI 原语，自研替代 React 专属库，并用 `@unovis/vue` 绘制图表。90 个组件都在 [fish-admin-vue-docs.vercel.app](https://fish-admin-vue-docs.vercel.app) 有实时演示，另有 180 张明暗自基线与 6 个 pilot 的 42 条跨版本 parity 检查。详见 [Vue 文档](https://fish-admin-vue-docs.vercel.app)。
+- **有证据兜底的成熟度矩阵** —— 83 个组件在成熟度矩阵（[/zh/guide/maturity](https://fish-admin-react-docs.vercel.app/zh/guide/maturity)）中全部为 `stable`；stable 意味着中英各一页文档、实时演示、行为测试、文档路由上的 axe 覆盖与浅色/深色各一张视觉基线。`pnpm check:maturity` 会从磁盘重新核对这份证据，stable 组件丢掉任何一项即失败，标签不会和仓库脱节。2.2.0 周期新增 50 个组件测试文件、补强 5 个已有测试——共 93 个文件、303 个用例——并且 `@fish-admin/react` 的覆盖率低于语句 77%、分支 68%、函数 78%、行 79% 时测试直接失败。
+- **设计令牌成为契约** —— 亮色、暗色、跟随系统，5 套强调色，oklch 语义变量，轻量分层阴影，6 个动效令牌与高对比度取值。`@fish-admin/tokens` 把一份 JSON 源编译成纯 CSS、Tailwind 4 主题入口、双语 manifest 与浏览器安全的编辑器辅助函数；[令牌参考](https://fish-admin-react-docs.vercel.app/zh/guide/tokens)与[主题编辑器](https://fish-admin-react-docs.vercel.app/zh/guide/theme-editor)共用这份契约。7 个有动效的浮层尊重 `prefers-reduced-motion`；`@fish-admin/react` 内联编译后的令牌，npm 用户仍然只装一个包。
+- **诚实的 RTL 审计** —— `pnpm check:rtl` 在存在未处理的物理方向工具类或报告过期时失败。当前 253 个文件中未处理项为 0；34 处有意保留的匹配在 [RTL 就绪度](https://fish-admin-react-docs.vercel.app/zh/guide/rtl-readiness) 分类说明，而不是宣称已完整支持 RTL。
 - **中英双语** —— i18next 按 namespace 懒加载，`Intl` 处理日期/数字，校验文案随语言切换。
 - **命令面板** —— `Ctrl/⌘ K` 打开导航与快捷动作，按当前角色过滤。
 - **响应式** —— 移动端侧边栏 Sheet、表格自适应、窄屏抽屉，375 / 768 / 1440 三档可用。
@@ -68,7 +73,15 @@ FishAdmin 是两件事：`@fish-admin/react`（83 个有文档的组件，带深
 npm install @fish-admin/react
 ```
 
-这就是模板在用的那 83 个组件。[安装](https://fish-admin-docs.vercel.app/guide/installation)说明 peer 依赖、Tailwind v4 的引入方式与 CSS 入口；[快速开始](https://fish-admin-docs.vercel.app/guide/quick-start)带你跑通第一张表格。
+这就是模板在用的那 83 个组件。[安装](https://fish-admin-react-docs.vercel.app/guide/installation)说明 peer 依赖、Tailwind v4 的引入方式与 CSS 入口；[快速开始](https://fish-admin-react-docs.vercel.app/guide/quick-start)带你跑通第一张表格。
+
+### 安装 Vue 组件库
+
+```bash
+npm install @fish-admin/vue
+```
+
+面向 Vue 3.5+ 的 90 个导出组件，自带编译好的 CSS，无需配置 Tailwind。[Vue 文档](https://fish-admin-vue-docs.vercel.app)列出每个组件及其实时演示；6 个 pilot 组件与 React 逐像素对齐，其余每个组件都有自己的明暗自基线。
 
 ### 从演示开始
 
@@ -117,7 +130,7 @@ pnpm scaffold
 - **审计日志** —— `/audit-logs` 可按动作、对象与日期区间筛选，演示中的每次变更都会记录在案。
 - **组织架构** —— `/departments?dept=dept-engineering` 可深链到节点，并分页查看其成员（含后代部门）。
 - **异常页** —— `/401`、`/500`、`/503`、`/maintenance` 均可直接访问；在开发者工具中断网会出现离线横幅。
-- **组件文档** —— 当 `VITE_DOCS_URL` 指向一个部署时，侧边栏、命令面板与宽屏登录页都会在新标签页打开[文档站点](https://fish-admin-docs.vercel.app)，已下线的 `/components` 与 `/ui` 也会重定向过去而不是 404。
+- **组件文档** —— 当 `VITE_DOCS_URL` 指向一个部署时，侧边栏、命令面板与宽屏登录页都会在新标签页打开[文档站点](https://fish-admin-react-docs.vercel.app)，已下线的 `/components` 与 `/ui` 也会重定向过去而不是 404。
 
 ## 项目内容
 
@@ -292,20 +305,24 @@ packages/mock/               # @fish-admin/mock —— 不依赖 React 的演示
 ├─ src/handlers/             # 14 个 MSW handler
 ├─ src/db/                   # 种子数据库与迁移
 └─ src/{browser,node,runtime}.ts
-packages/vue/                # @fish-admin/vue —— 私有的 Vue 3 试点组件（不发布）
-├─ src/components/           # accordion、tabs、select、dialog、date-range-picker 与 pro
-├─ src/lib/                  # cn 与共享日期辅助函数
+packages/vue/                # @fish-admin/vue —— 90 个 Vue 3 导出，构建 ESM + 类型 + styles.css
+├─ src/components/           # React 的每个组件 id，另加 7 个 Vue 独有组件
+├─ src/lib/                  # cn、日期、树、穿梭框、导入与 toast 辅助函数
+├─ registry.json             # Vue 组件清单
 └─ src/styles/index.css      # 自包含的 Tailwind 入口
-apps/docs/                   # Rspress 文档站点
+apps/docs/                   # Rspress 文档站点（React）
 ├─ docs/{en,zh}/             # 83 个组件页、指南与版本页
 ├─ demos/<component>/        # 每个页面渲染的实时示例
 ├─ theme/                    # 令牌参考、主题编辑器与 RTL 审计视图
 ├─ generated/                # registry.json、API 表与 rtl-audit.json
 └─ docs/public/screenshots/  # README 与文档首屏截图
-apps/parity-vue/             # @fish-admin/parity-vue —— Vue parity 测试台的私有 Vite target
-├─ src/demos/                # 六个试点 demo，每个组件一个目录
-└─ src/data/demos.ts         # target 路由渲染的 demo 登记表
-apps/vue-template/           # 私有 Vue 3 管理后台（导航契约里的全部页面）
+apps/parity-vue/             # Vue 组件文档与 parity target（Vue 文档站）
+├─ src/demos/                # 每个组件一个目录，共 181 个演示
+└─ src/data/demos.ts         # 路由渲染的 demo 登记表
+apps/vue-template/           # Vue 3 管理后台模板（Vue 演示站）
+├─ src/                      # 导航契约里的 16 个页面、登录与账号流程
+└─ e2e-vue-template/         # 67 条 Playwright 功能用例
+apps/landing/                # 框架中立的门面页（fish-admin.vercel.app）
 src/                         # 模板
 ├─ routes/                   # 文件路由；routeTree.gen.ts 自动生成
 ├─ features/                 # auth、dashboard、users、roles、permissions、departments、audit、projects、files、reports、notifications、integrations、profile、security、settings
@@ -317,54 +334,60 @@ src/                         # 模板
 ├─ stores/                   # 会话、主题、UI 状态
 └─ styles/index.css          # 唯一的 Tailwind 入口
 parity/                      # 冻结的跨框架契约与场景
-├─ baseline/2.2.0/           # 2.2.0 表面的 SHA-256 清单
+├─ baseline/2.3.0/           # 2.3.0 表面的 SHA-256 清单
 ├─ contract/                 # 生成的组件契约与 docs surface 契约
 ├─ scenarios/                # 六个行为场景
 ├─ targets/react.json        # React target
-└─ targets/vue.json          # 私有 Vue target
+└─ targets/vue.json          # Vue target
 e2e/                         # Playwright 用例
 e2e-parity/                  # 与 target 无关的 parity 用例
+e2e-vue-visual/              # 180 张 Vue 明暗自基线
 docs/{en,zh-CN}/             # 仓库文档（上面那个站点才是产品文档）
 ```
 
 ## 常用命令
 
-| 命令                                 | 说明                                              |
-| ------------------------------------ | ------------------------------------------------- |
-| `pnpm scaffold`                      | 重写品牌信息，并删掉不需要的部分                  |
-| `pnpm dev`                           | 启动开发服务器（Mock 开启）                       |
-| `pnpm build`                         | 类型检查并构建生产包（默认关闭 Mock）             |
-| `pnpm build:demo`                    | 开启 Mock 构建演示包                              |
-| `pnpm preview`                       | 预览生产构建                                      |
-| `pnpm build:tokens` / `check:tokens` | 构建 / 校验 `@fish-admin/tokens`，拒绝包外声明    |
-| `pnpm test:tokens`                   | 单元测试清洗、对比度与序列化                      |
-| `pnpm test:shared`                   | 一次运行 `contracts`、`i18n`、`mock` 三个包的测试 |
-| `pnpm audit:rtl` / `pnpm check:rtl`  | 重新生成 / 校验 RTL 审计报告                      |
-| `pnpm build:ui` / `pnpm test:ui`     | 构建 / 测试 `@fish-admin/react`                   |
-| `pnpm test:vue`                      | 测试 `@fish-admin/vue` 与 Vue parity 应用         |
-| `pnpm dev:vue-template`              | 在 4177 端口运行 Vue 模板                         |
-| `pnpm test:vue-template`             | Vue 模板的 Vitest 单元测试                        |
-| `pnpm test:e2e:vue-template`         | 六十七条 Playwright 功能用例                      |
-| `pnpm check:package`                 | 导出必须覆盖注册表全部条目，否则失败              |
-| `pnpm maturity` / `check:maturity`   | 重新生成 / 校验组件成熟度矩阵                     |
-| `pnpm gen-api` / `gen-api:check`     | 重新生成 / 校验文档 API 表与覆盖率下限            |
-| `pnpm docs:dev` / `docs:build`       | 运行 / 构建文档站点                               |
-| `pnpm docs:check`                    | 缺页面、缺示例或注册表漂移即失败                  |
-| `pnpm test:docs`                     | 构建站点并运行它的 Playwright 用例                |
-| `pnpm lint` / `pnpm lint:fix`        | 运行 ESLint                                       |
-| `pnpm format` / `pnpm format:check`  | 运行 Prettier                                     |
-| `pnpm typecheck`                     | 仅跑 TypeScript 检查                              |
-| `pnpm test` / `pnpm test:watch`      | 单元测试                                          |
-| `pnpm test:coverage`                 | 带覆盖率的单元测试                                |
-| `pnpm test:e2e`                      | 构建演示包并运行 E2E、axe 与性能用例              |
-| `pnpm perf`                          | 仅运行运行时性能预算                              |
-| `pnpm size`                          | 构建生产包并校验 gzip 体积预算                    |
-| `pnpm test:visual:docker`            | 在 Playwright Docker 镜像中比对截图               |
-| `pnpm check:parity:freeze`           | 校验冻结的 2.2.0 parity 清单                      |
-| `pnpm check:parity:contract`         | 校验生成的组件契约与 docs surface 契约            |
-| `pnpm check:parity:scenarios`        | 校验六个试点的行为场景                            |
-| `pnpm test:parity:docker`            | 在 Docker 中把 React target 与冻结基线比对        |
-| `pnpm test:parity:vue`               | 在 Docker 中把 Vue target 与冻结基线比对          |
+| 命令                                   | 说明                                              |
+| -------------------------------------- | ------------------------------------------------- |
+| `pnpm scaffold`                        | 重写品牌信息，并删掉不需要的部分                  |
+| `pnpm dev`                             | 启动开发服务器（Mock 开启）                       |
+| `pnpm build`                           | 类型检查并构建生产包（默认关闭 Mock）             |
+| `pnpm build:demo`                      | 开启 Mock 构建演示包                              |
+| `pnpm preview`                         | 预览生产构建                                      |
+| `pnpm build:tokens` / `check:tokens`   | 构建 / 校验 `@fish-admin/tokens`，拒绝包外声明    |
+| `pnpm test:tokens`                     | 单元测试清洗、对比度与序列化                      |
+| `pnpm test:shared`                     | 一次运行 `contracts`、`i18n`、`mock` 三个包的测试 |
+| `pnpm audit:rtl` / `pnpm check:rtl`    | 重新生成 / 校验 RTL 审计报告                      |
+| `pnpm build:ui` / `pnpm test:ui`       | 构建 / 测试 `@fish-admin/react`                   |
+| `pnpm build:vue` / `test:vue`          | 构建 / 测试 `@fish-admin/vue` 与 Vue 文档应用     |
+| `pnpm build:vue-docs` / `dev:vue-docs` | 构建 / 运行 Vue 组件文档（`apps/parity-vue`）     |
+| `pnpm dev:vue-template`                | 在 4177 端口运行 Vue 模板                         |
+| `pnpm build:vue-template:demo`         | 开启 Mock 构建 Vue 模板演示包                     |
+| `pnpm test:vue-template`               | Vue 模板的 Vitest 单元测试                        |
+| `pnpm test:e2e:vue-template`           | 六十七条 Playwright 功能用例                      |
+| `pnpm dev:landing` / `build:landing`   | 运行 / 构建框架中立的门面页                       |
+| `pnpm check:package`                   | 导出必须覆盖注册表全部条目，否则失败              |
+| `pnpm maturity` / `check:maturity`     | 重新生成 / 校验组件成熟度矩阵                     |
+| `pnpm gen-api` / `gen-api:check`       | 重新生成 / 校验文档 API 表与覆盖率下限            |
+| `pnpm docs:dev` / `docs:build`         | 运行 / 构建文档站点                               |
+| `pnpm docs:check`                      | 缺页面、缺示例或注册表漂移即失败                  |
+| `pnpm test:docs`                       | 构建站点并运行它的 Playwright 用例                |
+| `pnpm lint` / `pnpm lint:fix`          | 运行 ESLint                                       |
+| `pnpm format` / `pnpm format:check`    | 运行 Prettier                                     |
+| `pnpm typecheck`                       | 仅跑 TypeScript 检查                              |
+| `pnpm test` / `pnpm test:watch`        | 单元测试                                          |
+| `pnpm test:coverage`                   | 带覆盖率的单元测试                                |
+| `pnpm test:e2e`                        | 构建演示包并运行 E2E、axe 与性能用例              |
+| `pnpm perf`                            | 仅运行运行时性能预算                              |
+| `pnpm size`                            | 构建生产包并校验 gzip 体积预算                    |
+| `pnpm test:visual:docker`              | 在 Playwright Docker 镜像中比对截图               |
+| `pnpm check:parity:freeze`             | 校验冻结的 2.3.0 parity 清单                      |
+| `pnpm check:parity:contract`           | 校验生成的组件契约与 docs surface 契约            |
+| `pnpm check:parity:scenarios`          | 校验六个试点的行为场景                            |
+| `pnpm test:parity:docker`              | 在 Docker 中把 React target 与冻结基线比对        |
+| `pnpm test:parity:vue`                 | 在 Docker 中把 Vue target 与冻结基线比对          |
+| `pnpm test:vue-visual:docker`          | 在 Docker 中比对 90 个 Vue 组件 × 明暗            |
+| `pnpm check:vue-visual:freeze`         | 校验 180 张 Vue 视觉清单                          |
 
 ## 质量门禁
 
@@ -377,12 +400,12 @@ CI 在每次 push 和 pull request 上跑这些门禁：
 - **打包体积** —— `pnpm size` 构建不含 Mock 的生产包，对每个 chunk 做 gzip 统计，四项预算超线即失败：首屏 JS 180 KB、最大懒加载分块 115 KB、JS 总量 800 KB、CSS 总量 30 KB。首屏口径是入口脚本加上 `dist/index.html` 中所有 `modulepreload` 标签，再算上首屏阻塞的 `/theme-bootstrap.js`——现在是 31 个 chunk、共 175.2 KB——因为浏览器在首屏前下载的是这一整组，而不是入口文件本身。CSS 总量同样计入通过 `<link>` 引入的 `/boot.css`。
 - **运行时预算** —— `e2e/perf.spec.ts` 在仪表盘测量 FCP、LCP、CLS 与请求数。预算：FCP ≤ 2.5 s、LCP ≤ 3 s、CLS ≤ 0.1、请求数 ≤ 140。
 - **视觉回归** —— 模板的十八张截图（登录页、仪表盘浅色与深色、用户、权限矩阵、审计日志、安全、设置、项目看板、项目详情、资源库、报表浅色与深色、通知中心、集成中心、审批中心、审批详情与数据字典）、文档站的 14 张页面基线（首页、安装、Button、ProTable、主题编辑器、成熟度矩阵与 RTL 就绪度，各取浅色与深色）以及 166 张逐组件基线（83 个组件 × 浅色/深色）都和 `mcr.microsoft.com/playwright:v1.64.1-noble` 中渲染的图片比对。Mock 数据库使用固定种子，测试冻结时钟，相对时间因此保持稳定。`e2e/visual/readme-shots.spec.ts` 在同一次运行里，但它只写文件，且只有设置 `README_SHOTS=1` 时才执行。
-- **跨框架 parity** —— `parity/` 冻结 2.2.0 的组件契约、文档 DOM 表面与六个可访问行为场景。`pnpm test:parity:docker` 使用文档站同一批 `*-linux.png` 基线运行 119 条检查：83 条 API 合同、12 条 docs surface、6 条行为场景、12 张截图与 6 条 axe 扫描。私有 Vue target 新增 `parity/targets/vue.json` 与 `pnpm test:parity:vue`：42 条检查——6 条 API 合同、12 条 docs surface、6 条行为场景、12 张截图与 6 条 axe 扫描——同样比对这批基线。测试台的 `updateSnapshots` 固定为 `'none'`。详见 [docs/zh-CN/vue-port-foundation.md](docs/zh-CN/vue-port-foundation.md)。复用同一批包的私有 Vue 管理后台外壳见 [docs/zh-CN/vue-template.md](docs/zh-CN/vue-template.md)。
+- **跨框架 parity** —— `parity/` 冻结 2.3.0 的组件契约、文档 DOM 表面与六个可访问行为场景。`pnpm test:parity:docker` 使用文档站同一批 `*-linux.png` 基线运行 119 条检查：83 条 API 合同、12 条 docs surface、6 条行为场景、12 张截图与 6 条 axe 扫描。Vue target（`parity/targets/vue.json`）的 `pnpm test:parity:vue` 覆盖全部 83 个 React 组件 id：83 条契约、12 条 docs surface、6 条行为场景、12 张跨版本截图与 6 条 axe 扫描，另有独立的 90 个组件 × 明暗自基线套件。测试台的 `updateSnapshots` 固定为 `'none'`。详见 [docs/zh-CN/vue-port-foundation.md](docs/zh-CN/vue-port-foundation.md)。复用同一批包的 Vue 管理后台模板见 [docs/zh-CN/vue-template.md](docs/zh-CN/vue-template.md)。
 - **安全响应头** —— `e2e/security.spec.ts` 先比对 `/`、`/index.html`、一个带 hash 的资源与两个外壳文件的响应头是否完全一致，再带着 `securitypolicyviolation` 监听器走完登录、仪表盘、用户、报表、文件、项目与设置，监听器必须始终为空。详见 [docs/zh-CN/security-headers.md](docs/zh-CN/security-headers.md)。
 - **文档站** —— `pnpm gen-api:check` 在生成的 props 表与包源码不一致时失败，`pnpm docs:check` 在某个注册表条目缺少页面、缺少示例或缺少译文时失败，`pnpm test:docs` 跑文档站自己的 Playwright 用例。
 - **依赖供应链** —— `pnpm audit --audit-level=high` 有高危漏洞就让质量 job 失败，CodeQL 在每次 push、pull request 与每周定时任务中分析 JavaScript 和 TypeScript，[`.github/dependabot.yml`](.github/dependabot.yml) 为 npm 与 actions 分别开分组后的 minor/patch 和 major 升级 PR，所有 workflow 使用只读 token（`permissions: contents: read`），构建 job 还会上传被度量的产物。
 
-基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。文档站同样有一对命令：`pnpm test:docs:visual` 与 `pnpm test:docs:visual:docker`。`pnpm test:parity:docker` 复用组件基线，且永不写入。
+基线按平台区分。请使用 `pnpm test:visual:docker`（需要 Docker），不要在本机直接运行 `pnpm test:visual`——本机脚本在非 Linux 环境会直接报错退出；有意的 UI 改动后用 `pnpm test:visual:docker --update` 重新生成基线。文档站同样有一对命令：`pnpm test:docs:visual` 与 `pnpm test:docs:visual:docker`；Vue 自基线使用 `pnpm test:vue-visual:docker` 与 `pnpm test:vue-visual:docker:update`。`pnpm test:parity:docker` 复用组件基线，且永不写入。
 
 ## 接入真实后端
 
@@ -403,7 +426,7 @@ CI 在每次 push 和 pull request 上跑这些门禁：
 
 ## 文档
 
-**组件文档：<https://fish-admin-docs.vercel.app>** —— 83 个组件页，中英双语，每页都有实时示例、导入路径与自动生成的 props 表，另有安装、快速开始与主题定制指南、[令牌参考](https://fish-admin-docs.vercel.app/zh/guide/tokens)、[主题编辑器](https://fish-admin-docs.vercel.app/zh/guide/theme-editor)与 [RTL 审计](https://fish-admin-docs.vercel.app/zh/guide/rtl-readiness)。
+**组件文档：<https://fish-admin-react-docs.vercel.app>** —— 83 个组件页，中英双语，每页都有实时示例、导入路径与自动生成的 props 表，另有安装、快速开始与主题定制指南、[令牌参考](https://fish-admin-react-docs.vercel.app/zh/guide/tokens)、[主题编辑器](https://fish-admin-react-docs.vercel.app/zh/guide/theme-editor)与 [RTL 审计](https://fish-admin-react-docs.vercel.app/zh/guide/rtl-readiness)。
 
 下面的文档讲的是模板本身：
 

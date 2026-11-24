@@ -37,13 +37,7 @@ const scrollRef = ref<HTMLElement | null>(null)
         style="height: 248px; overflow-y: auto"
       >
         <div
-          style="
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            background: var(--card);
-            padding: 0 0.5rem;
-          "
+          style="position: sticky; top: 0; z-index: 1; background: var(--card); padding: 0 0.5rem"
         >
           <AnchorNav
             :items="SECTIONS"
@@ -54,7 +48,12 @@ const scrollRef = ref<HTMLElement | null>(null)
           />
         </div>
         <div style="padding: 0.75rem">
-          <section v-for="item in SECTIONS" :id="item.id" :key="item.id" style="margin-bottom: 1rem">
+          <section
+            v-for="item in SECTIONS"
+            :id="item.id"
+            :key="item.id"
+            style="margin-bottom: 1rem"
+          >
             <h4 style="margin: 0; font-size: 0.875rem; font-weight: 600">{{ item.label }}</h4>
             <p style="margin: 0.25rem 0 0; font-size: 0.8rem; color: var(--muted-foreground)">
               {{ COPY[item.id] }}
@@ -66,8 +65,8 @@ const scrollRef = ref<HTMLElement | null>(null)
       </div>
     </div>
     <p class="fish-demo-muted">
-      The bar sticks to the top of the panel and pages through the same sections with a bottom
-      rule instead of a left rail.
+      The bar sticks to the top of the panel and pages through the same sections with a bottom rule
+      instead of a left rail.
     </p>
   </div>
 </template>

@@ -66,9 +66,7 @@ function handleSave() {
           </footer>
         </div>
       </Drawer>
-      <p class="fish-demo-muted" aria-live="polite">
-        Current name: {{ projectName }}
-      </p>
+      <p class="fish-demo-muted" aria-live="polite">Current name: {{ projectName }}</p>
     </div>
   </div>
 </template>

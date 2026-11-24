@@ -40,17 +40,11 @@ function save() {
           </header>
           <div style="display: grid; gap: 0.75rem; padding: 0 1.5rem">
             <div class="fish-demo-row">
-              <Checkbox
-                id="demo-drawer-signin"
-                v-model="draft.signin"
-              />
+              <Checkbox id="demo-drawer-signin" v-model="draft.signin" />
               <Label for="demo-drawer-signin">Sign-in alerts</Label>
             </div>
             <div class="fish-demo-row">
-              <Checkbox
-                id="demo-drawer-digest"
-                v-model="draft.digest"
-              />
+              <Checkbox id="demo-drawer-digest" v-model="draft.digest" />
               <Label for="demo-drawer-digest">Weekly digest</Label>
             </div>
           </div>

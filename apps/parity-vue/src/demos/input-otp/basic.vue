@@ -15,9 +15,7 @@ const complete = computed(() => code.value.length === 6)
   <div class="fish-demo-stack">
     <div class="fish-demo-stack" style="gap: 0.4rem">
       <span class="fish-demo-label">Verification code</span>
-      <p class="fish-demo-muted" style="margin: 0">
-        Enter the six digits sent to ada@acme.dev.
-      </p>
+      <p class="fish-demo-muted" style="margin: 0">Enter the six digits sent to ada@acme.dev.</p>
       <OtpInput v-model="code" :length="6" aria-label="Six-digit verification code" />
       <p class="fish-demo-muted" aria-live="polite" style="margin: 0">
         {{ complete ? 'Code complete — ready to verify.' : `${code.length} of 6 digits entered.` }}

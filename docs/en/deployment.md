@@ -4,14 +4,19 @@ FishAdmin builds to static files. The demo build also ships a Service Worker (MS
 
 ## Build commands
 
-| Command           | Mock API                                           | Use for                              |
-| ----------------- | -------------------------------------------------- | ------------------------------------ |
-| `pnpm dev`        | On by default                                      | Local development without a backend  |
-| `pnpm build`      | Off (unless `VITE_ENABLE_MOCK=true` at build time) | Production with a real backend       |
-| `pnpm build:demo` | On                                                 | Public demo and preview deployments  |
-| `pnpm preview`    | Serves the last build                              | Local check of the production output |
+| Command                        | Mock API                                           | Use for                                |
+| ------------------------------ | -------------------------------------------------- | -------------------------------------- |
+| `pnpm dev`                     | On by default                                      | Local development without a backend    |
+| `pnpm build`                   | Off (unless `VITE_ENABLE_MOCK=true` at build time) | Production with a real backend         |
+| `pnpm build:demo`              | On                                                 | Public demo and preview deployments    |
+| `pnpm build:vue`               | n/a                                                | Build `@fish-admin/vue` for consumers  |
+| `pnpm build:vue-docs`          | n/a                                                | Vue component docs (`apps/parity-vue`) |
+| `pnpm build:vue-template`      | Off                                                | Vue template against a real backend    |
+| `pnpm build:vue-template:demo` | On                                                 | Vue template demo                      |
+| `pnpm preview`                 | Serves the last build                              | Local check of the production output   |
 
-`pnpm build` runs `tsc --noEmit` first, so a type error fails the build.
+`pnpm build` runs `tsc --noEmit` first, so a type error fails the build. The Vue docs and template
+builds compile `@fish-admin/vue` first, because both apps import the package's built `dist/`.
 
 ### Environment variables
 
@@ -27,7 +32,36 @@ Only [`.env.example`](../../.env.example) is tracked. `.env.development` and `.e
 
 ## Vercel
 
-This exact configuration is deployed at <https://fish-admin.vercel.app>. The repository ships with [`vercel.json`](../../vercel.json):
+The public deployment is five projects in one Vercel team. Each project sets its **Root Directory**
+to the app folder below; the app's `vercel.json` runs the monorepo install and the right build.
+
+| Surface             | URL                                        | Root Directory      | Build command                  | Output      |
+| ------------------- | ------------------------------------------ | ------------------- | ------------------------------ | ----------- |
+| Landing             | <https://fish-admin.vercel.app>            | `apps/landing`      | `pnpm build:landing`           | `dist`      |
+| React template demo | <https://fish-admin-react-demo.vercel.app> | repository root     | `pnpm build:demo`              | `dist`      |
+| React docs          | <https://fish-admin-react-docs.vercel.app> | `apps/docs`         | `pnpm docs:build`              | `doc_build` |
+| Vue template demo   | <https://fish-admin-vue-demo.vercel.app>   | `apps/vue-template` | `pnpm build:vue-template:demo` | `dist`      |
+| Vue docs            | <https://fish-admin-vue-docs.vercel.app>   | `apps/parity-vue`   | `pnpm build:vue-docs`          | `dist`      |
+
+The React template demo keeps the root `vercel.json` shown below. The docs site and both Vue apps
+have their own `vercel.json` in their folder; they install from the repository root
+(`cd ../.. && pnpm install --frozen-lockfile`) and build from there so the workspace packages are
+available. The two Vue apps compile `@fish-admin/vue` first; the Vue template demo sets
+`VITE_ENABLE_MOCK=true` through `cross-env`.
+
+Steps for a new project:
+
+1. Push the repository to GitHub.
+2. In Vercel, **Add New → Project**, import the repository and set the **Root Directory** from the
+   table. Keep the Node version at 24.
+3. Deploy. Every pull request gets a preview URL.
+4. For a real backend, change the build command to the non-demo variant, set `VITE_API_BASE_URL`,
+   and add your API domain to the rewrite rules if needed.
+5. After the first deploy, replace the relative `og:image` and `twitter:image` values in the app's
+   `index.html` with absolute URLs on your domain, and upload `public/og.png` as the repository
+   social preview.
+
+The React template's root [`vercel.json`](../../vercel.json) is:
 
 ```json
 {
@@ -36,14 +70,6 @@ This exact configuration is deployed at <https://fish-admin.vercel.app>. The rep
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
 ```
-
-Steps:
-
-1. Push the repository to GitHub.
-2. In Vercel, **Add New → Project** and import it. Vercel detects Vite and pnpm; keep the Node version at 24.
-3. Deploy. Every pull request gets a preview URL.
-4. For a real backend, change the build command to `pnpm build`, set `VITE_API_BASE_URL`, and add your API domain to the rewrite rules if needed.
-5. After the first deploy, replace the relative `og:image` and `twitter:image` values in [`index.html`](../../index.html) with absolute URLs on your domain, and upload `public/og.png` as the repository social preview.
 
 The rewrite sends unknown paths to `index.html` so deep links such as `/users?status=active` work. Static assets and `/mockServiceWorker.js` are served directly before the rewrite applies.
 

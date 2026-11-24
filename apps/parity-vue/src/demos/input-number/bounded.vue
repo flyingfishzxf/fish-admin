@@ -47,7 +47,9 @@ const total = computed(() => seatCount.value * 12 + storageCount.value * 4)
     </div>
 
     <p class="fish-demo-muted" aria-live="polite" style="margin: 0">
-      {{ `$${total.toFixed(2)} per month: ${seatCount} × $12 plus ${storageCount.toFixed(1)} GB × $4.` }}
+      {{
+        `$${total.toFixed(2)} per month: ${seatCount} × $12 plus ${storageCount.toFixed(1)} GB × $4.`
+      }}
     </p>
     <p class="fish-demo-muted" style="margin: 0">
       Both steppers disable at their bounds; typed values clamp and reformat on commit.

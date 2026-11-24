@@ -134,7 +134,11 @@ function commitDraft() {
         @keydown.enter="commitDraft"
       />
 
-      <div role="group" :aria-label="props.presetsLabel ?? props.ariaLabel" class="grid grid-cols-4 gap-2">
+      <div
+        role="group"
+        :aria-label="props.presetsLabel ?? props.ariaLabel"
+        class="grid grid-cols-4 gap-2"
+      >
         <button
           v-for="preset in presetList"
           :key="preset"
@@ -144,7 +148,7 @@ function commitDraft() {
           :aria-pressed="preset === props.modelValue"
           :aria-label="preset"
           :style="{ backgroundColor: preset }"
-          class="size-6 rounded-md border ring-offset-2 ring-offset-popover aria-pressed:ring-2 aria-pressed:ring-ring disabled:pointer-events-none disabled:opacity-50"
+          class="size-6 rounded-md border ring-offset-2 ring-offset-popover disabled:pointer-events-none disabled:opacity-50 aria-pressed:ring-2 aria-pressed:ring-ring"
           @click="pick(preset)"
         />
       </div>

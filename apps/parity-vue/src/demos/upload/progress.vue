@@ -45,15 +45,13 @@ onBeforeUnmount(() => timer && clearInterval(timer))
 function onFiles(files: File[]) {
   items.value = [
     ...items.value,
-    ...files.map(
-      (f): UploadItem => ({
-        id: `pick-${(nextId += 1)}`,
-        name: f.name,
-        size: f.size,
-        status: 'uploading',
-        progress: 0,
-      }),
-    ),
+    ...files.map((f): UploadItem => ({
+      id: `pick-${(nextId += 1)}`,
+      name: f.name,
+      size: f.size,
+      status: 'uploading',
+      progress: 0,
+    })),
   ]
 }
 
@@ -85,8 +83,8 @@ function onRetry(item: UploadItem) {
       @retry="onRetry"
     />
     <p class="fish-demo-muted" style="margin: 0">
-      Retrying the failed row flips it back to <code>uploading</code> and the same timer advances
-      it to 100 %. An oversize pick never reaches <code>files</code>: the dropzone shows the{' '}
+      Retrying the failed row flips it back to <code>uploading</code> and the same timer advances it
+      to 100 %. An oversize pick never reaches <code>files</code>: the dropzone shows the{' '}
       <code>maxSizeLabel</code> as a <code>role="alert"</code> instead.
     </p>
   </div>

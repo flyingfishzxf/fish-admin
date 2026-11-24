@@ -30,8 +30,7 @@ const value = ref<string | undefined>('2026-10-15')
     </p>
     <p class="fish-demo-muted" style="margin: 0">
       <code>min</code> and <code>max</code> are inclusive: every day before {{ MIN }} and after
-      {{ MAX }} is a disabled day in the calendar, and the picker still opens on the selected
-      month.
+      {{ MAX }} is a disabled day in the calendar, and the picker still opens on the selected month.
     </p>
   </div>
 </template>

@@ -27,12 +27,7 @@ const hidden = computed(() => MEMBERS.length - visible.value.length)
 <template>
   <div class="fish-demo-stack">
     <AvatarGroup>
-      <Avatar
-        v-for="member in visible"
-        :key="member.id"
-        role="img"
-        :aria-label="member.name"
-      >
+      <Avatar v-for="member in visible" :key="member.id" role="img" :aria-label="member.name">
         <AvatarFallback>{{ member.initials }}</AvatarFallback>
       </Avatar>
       <AvatarGroupCount v-if="hidden > 0" role="img" :aria-label="`${hidden} more members`">

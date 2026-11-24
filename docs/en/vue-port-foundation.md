@@ -1,10 +1,10 @@
 # Vue port foundation
 
-FishAdmin 2.2.0 is the reference release for the Vue 3 port. This page documents what is frozen, how the framework-neutral packages are laid out, and how the parity harness works. A private six-component pilot slice in `apps/parity-vue` now runs the harness end to end; it is not published and does not change the React package.
+FishAdmin 2.3.0 is the reference release for the Vue 3 port. This page documents what is frozen, how the framework-neutral packages are laid out, and how the parity harness works. `@fish-admin/vue` 1.0.0 now exports all 90 components, and the `apps/parity-vue` harness runs the full contract: 119 checks, a 180-screenshot self-baseline suite and six cross-version pilot comparisons.
 
 ## What is frozen
 
-`parity/baseline/2.2.0/manifest.json` stores SHA-256 hashes for:
+`parity/baseline/2.3.0/manifest.json` stores SHA-256 hashes for:
 
 - 198 Linux screenshots: 166 component baselines (83 components × light/dark), 14 docs layout baselines and 18 template baselines.
 - The generated docs artifacts: `registry.json`, `documented.json`, `api.json`, `maturity.json` and `rtl-audit.json`.
@@ -58,7 +58,7 @@ pnpm test:parity:vue
 
 `pnpm test:parity:docker` runs the suite in the Playwright image. The suite has 119 tests: 83 API contracts, 12 docs-surface checks (six pilots × two locales), six behaviour scenarios, 12 screenshots (six pilots × light/dark) and six axe scans. The 12 screenshots compare with the same `*-linux.png` files the docs site uses; no baseline is duplicated.
 
-The private Vue target runs 42 checks: six API contracts, 12 docs-surface checks (six pilots × two locales), six behaviour scenarios, 12 screenshots and six axe scans.
+The Vue target runs the same 119 checks, with `contract.scope: all` and `api.mode: reference`: 83 API contracts for every React component id, 12 docs-surface checks, six behaviour scenarios, 12 cross-version pilot screenshots and six axe scans. A separate self-baseline suite freezes all 90 components × light/dark (`pnpm test:vue-visual:docker`), and `pnpm check:vue-visual:freeze` verifies its 180-file manifest.
 
 ## Adding a Vue target
 
@@ -76,7 +76,7 @@ The private Vue target runs 42 checks: six API contracts, 12 docs-surface checks
 
 ## Verification
 
-The foundation is complete when `pnpm check:parity:freeze`, `pnpm check:parity:contract`, `pnpm check:parity:scenarios`, `pnpm test:parity:docker`, the existing Docker visual jobs and the full quality gate all pass without modifying a single `*-linux.png`.
+The foundation is complete when `pnpm check:parity:freeze`, `pnpm check:parity:contract`, `pnpm check:parity:scenarios`, `pnpm test:parity:docker`, `pnpm test:parity:vue`, `pnpm test:vue-visual:docker`, `pnpm check:vue-visual:freeze` and the full quality gate all pass without modifying a `*-linux.png` or Vue self-baseline.
 
 ### 2026-11-09 run
 

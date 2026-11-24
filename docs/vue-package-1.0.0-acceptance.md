@@ -35,25 +35,25 @@ registry 分类：primitive 45 / enterprise 37 / pro 8。
 
 ## 单测与门禁（全部通过）
 
-| 项目                                            | 结果                                                    |
-| ----------------------------------------------- | ------------------------------------------------------- |
-| `test:vue`（Vue 包 + parity-vue 契约测试）      | 59 文件 / **206 测试**                                  |
-| `test:ui`（React 包）                           | 2 文件 / 4 测试                                         |
-| `test`（根项目）                                | 93 文件 / 303 测试                                      |
-| `test:shared`（contracts/i18n/mock）            | 50 文件 / 383 + 9 + 4 + 18 测试                         |
-| `test:vue-template`                             | **594 测试**                                            |
-| `test:e2e:vue-template`                         | **67 通过**                                             |
-| `test:parity:vue`（Docker 中的 vue parity）     | **42 通过**（含 8 组明暗视觉冻结基线）                  |
-| `check:package`                                 | 83 react + **90 vue** 导出验证                          |
-| `check:parity:contract`                         | 通过                                                    |
-| `check:parity:freeze`                           | 460 文件匹配 2.2.0 基线                                 |
-| `check:rtl`                                     | 0 未处理物理类名（14 定向 / 7 中性 / 13 豁免）          |
-| `check:maturity`                                | 83 组件全部 stable；0 缺测试 / 0 缺 demo / 0 缺视觉基线 |
-| `check:tokens`                                  | 48 token、41 色彩映射，生成文件最新                     |
-| `lint`                                          | 0 error（1 个既有 react-refresh warning）               |
-| `format:check`                                  | 全部符合 Prettier                                       |
-| `typecheck`                                     | 10 个 target 全部通过                                   |
-| `build:vue` / `build:ui` / `build:vue-template` | 全部构建成功                                            |
+| 项目                                            | 结果                                                             |
+| ----------------------------------------------- | ---------------------------------------------------------------- |
+| `test:vue`（Vue 包 + parity-vue 契约测试）      | 73 文件 / **253 测试**                                           |
+| `test:ui`（React 包）                           | 2 文件 / 4 测试                                                  |
+| `test`（根项目）                                | 93 文件 / 303 测试                                               |
+| `test:shared`（contracts/i18n/mock）            | 50 文件 / 383 + 9 + 4 + 18 测试                                  |
+| `test:vue-template`                             | **594 测试**                                                     |
+| `test:e2e:vue-template`                         | **67 通过**                                                      |
+| `test:parity:vue`（Docker 中的 vue parity）     | **119 通过**（83 契约、12 docs-surface、6 行为、12 视觉、6 axe） |
+| `check:package`                                 | 83 react + **90 vue** 导出验证                                   |
+| `check:parity:contract`                         | 通过                                                             |
+| `check:parity:freeze`                           | 460 文件匹配 2.3.0 基线                                          |
+| `check:rtl`                                     | 0 未处理物理类名（14 定向 / 7 中性 / 13 豁免）                   |
+| `check:maturity`                                | 83 组件全部 stable；0 缺测试 / 0 缺 demo / 0 缺视觉基线          |
+| `check:tokens`                                  | 48 token、41 色彩映射，生成文件最新                              |
+| `lint`                                          | 0 error（1 个既有 react-refresh warning）                        |
+| `format:check`                                  | 全部符合 Prettier                                                |
+| `typecheck`                                     | 10 个 target 全部通过                                            |
+| `build:vue` / `build:ui` / `build:vue-template` | 全部构建成功                                                     |
 
 ## 包外安装复验
 
@@ -121,22 +121,6 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
 - 实测：180 项全部通过，基线总量 5.2 MB；原有 6 个 pilot 跨版本基线仍 42/42 通过，
   两套基线互不干扰。
 
-## 2026-11-23 追加：Vue 接入主文档站
-
-- 约束：主站是 Rspress（React/Webpack），CSP 为 `frame-ancestors 'none'` + `X-Frame-Options: DENY`，
-  既不能 iframe 嵌 Vue 演示站，也无法在站内渲染 `.vue` SFC；且 14 张布局冻结基线是全页截图，
-  改顶栏/页脚会漂移；
-- 方案：新增 `/vue/` 专区（概览 + 组件清单，en/zh 共 4 页），只给它单独配侧栏；顶栏与页脚保持
-  冻结态不动。入口放在组件索引页（不在冻结截图范围内）的跨版本链接；
-- 数据：`apps/docs/scripts/build-vue-data.mjs` 从 `packages/vue/registry.json` + parity-vue 的
-  demo meta 生成 `apps/docs/generated/vue-components.json`（90 组件 / 181 demo / 7 Vue-only），
-  接入 docs 的 build/check 脚本，防止清单漂移；
-- 组件清单页用 `apps/docs/theme/VueIndex.tsx` 展示三分类卡片、统计与 demo 源码链接；样式为
-  独立的 `.fish-vue__*`，不影响 React 页面；
-- 浏览器验证：概览页侧栏正确显示 Vue 3 分组；清单页渲染 90 张卡片 / 7 个 Vue-only 标签 /
-  181 个 demo 链接；组件索引页跨链 `/vue/components` 可用；中文页正常。
-- React 冻结面：`check:parity:freeze` 460 文件全匹配，docs visual 基线未改动。
-
 ## 2026-11-23 追加：Vue 契约校验扩展到全部组件
 
 - `parity/targets/vue.json` 的 `contract.scope` 从 `pilot` 改为 `all`，Vue 侧契约测试从 6 个 pilot
@@ -148,23 +132,23 @@ pro-table、select、tabs 六组组件的明暗视觉冻结基线。至此报告
 - 结果：`pnpm test:parity:vue` 从 42 项增加到 **119 项全过**（83 契约、12 docs-surface、6 行为、
   12 跨版本视觉、6 axe）；其余 parity spec 各自独立读取 pilot，不受 scope 影响。
 
-## 待发布项：文档站顶栏 Vue 入口（有意推迟）
+## 2026-11-24 追加：v2.3.0 发布整合
 
-Vue 专区已接入主文档站并有独立侧栏，但**顶栏导航入口与过时的页脚文案暂不改动**，
-推迟到下一次正式发布窗口一并处理。原因与范围：
-
-- 当前页脚仍写着 `Vue 3 planned`，与 Vue 1.0.0 已发布的事实不符，是待修正的过时信息；
-- 顶栏（`apps/docs/docs/{en,zh}/_nav.json`）与页脚（`apps/docs/rspress.config.ts`）都出现在
-  14 张文档布局冻结基线的全页截图里。改动会迫使重拍这 14 张 PNG，并更新
-  `parity/baseline/2.2.0/manifest.json` 的 460 个哈希——即重写 React 2.2.0 的冻结参考点；
-- 收益只是一个一等入口，不抵重写发布快照的代价。下次发布本就要更新基线，届时顺带处理成本最低；
-- 当前可达性不受影响：`/vue/` 与 `/zh/vue/` 直接可访问，组件索引页有跨链，搜索引擎可收录；
-- 166 张组件局部基线（`section[data-demo]`）与 180 张 Vue 自基线均不受导航改动影响，
-  届时无需重拍。
-
-触发条件：下一次 React 或 Vue 发布需要更新冻结基线时，同步执行以下改动，再重拍 14 张布局图
-并 re-freeze：
-
-1. `apps/docs/docs/en/_nav.json` / `zh/_nav.json` 增加 Vue 导航项（指向 `/vue/index`）；
-2. `apps/docs/rspress.config.ts` 的 `footer.message` 去掉 `Vue 3 planned`，改为指向 Vue 专区的链接；
-3. 顶栏 locale 描述可一并从"83 React components"扩展为涵盖 Vue 的表述。
+- 放弃 Rspress 的 `/vue/` 专区：站内无法渲染 SFC，专区只是重复清单。Vue 包的安装方式、发布状态与
+  与 React 的 4 处有意差异并入 Vue 文档站（`apps/parity-vue/src/data/about.ts`）；
+  `/vue/`、`/zh/vue/`、`build-vue-data.mjs`、`generated/vue-components.json` 与 `VueIndex.tsx`
+  一并删除，React 组件索引页改为外链到 `fish-admin-vue-docs`。
+- 顶栏与页脚同步更新：`apps/docs/docs/{en,zh}/_nav.json` 增加 Vue 3 入口（指向 Vue 文档站），
+  页脚用 React demo / Vue demo 双链接替代 `Vue 3 planned`，locale 描述覆盖 83 React + 90 Vue。
+- 14 张 docs 布局基线（7 路由 × 明暗）在 `mcr.microsoft.com/playwright:v1.64.1-noble` 中重拍，
+  `parity/baseline/2.3.0/manifest.json` 取代 2.2.0 成为新的冻结参考点；组件局部基线与
+  180 张 Vue 自基线不受影响。
+- 五站拓扑：`fish-admin.vercel.app`（landing）、`fish-admin-react-demo`、
+  `fish-admin-react-docs`、`fish-admin-vue-demo`、`fish-admin-vue-docs`；旧域名释放。
+  Vue 两站各有 `vercel.json`（monorepo install、SPA 重写、缓存与 CSP），模板演示构建带
+  `VITE_ENABLE_MOCK=true`。
+- 发布门禁新增：`check:vue-visual:freeze`、`test:vue-template`、Vue 视觉回归、两站生产构建与
+  landing 构建进入 CI。
+- Vue 文档站收尾：站头改为固定 60px 高度，让 demo 截图的亚像素相位与冻结基线一致（不需要重拍）；
+  组件页补 `<h1>`（高度 + 间距为整数，首个 demo 的 y 偏移仍是 0.703125px）；API 表在 876px 列宽下
+  锁定 Name/Default/Required 列宽，属性名不再折行。

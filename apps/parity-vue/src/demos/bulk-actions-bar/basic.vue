@@ -26,16 +26,14 @@ function clearSelection() {
       clear-label="Clear selection"
       @clear="clearSelection"
     >
-      <Button size="sm" variant="outline" @click="lastAction = 'Email drafted.'">
-        Email
-      </Button>
-      <Button size="sm" variant="outline" @click="lastAction = 'Export queued.'">
-        Export
-      </Button>
+      <Button size="sm" variant="outline" @click="lastAction = 'Email drafted.'"> Email </Button>
+      <Button size="sm" variant="outline" @click="lastAction = 'Export queued.'"> Export </Button>
       <Button size="sm" variant="destructive" @click="lastAction = 'Deletion scheduled.'">
         Remove
       </Button>
     </BulkActionsBar>
-    <p class="fish-demo-muted" style="margin: 0" aria-live="polite">Last action: {{ lastAction }}</p>
+    <p class="fish-demo-muted" style="margin: 0" aria-live="polite">
+      Last action: {{ lastAction }}
+    </p>
   </div>
 </template>

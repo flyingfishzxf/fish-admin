@@ -57,8 +57,8 @@ const region = ref<string | null>('eu-central')
       />
     </div>
     <p class="fish-demo-muted" style="margin: 0">
-      Gov West is an option with <code>disabled: true</code>, so it stays visible and searchable
-      but cannot be chosen. A disabled control still renders its label and stops the clear button.
+      Gov West is an option with <code>disabled: true</code>, so it stays visible and searchable but
+      cannot be chosen. A disabled control still renders its label and stops the clear button.
     </p>
   </div>
 </template>

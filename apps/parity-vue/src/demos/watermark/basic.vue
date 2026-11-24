@@ -28,8 +28,8 @@ import { Watermark } from '@fish-admin/vue'
     </Watermark>
     <p class="fish-demo-muted" style="margin: 0">
       The repeated "CONFIDENTIAL" text is a decorative <code>aria-hidden</code> canvas layer. The
-      real confidentiality note lives in the readable paragraph above it, so the label is never
-      the only copy of that information.
+      real confidentiality note lives in the readable paragraph above it, so the label is never the
+      only copy of that information.
     </p>
   </div>
 </template>

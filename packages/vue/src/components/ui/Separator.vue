@@ -16,9 +16,5 @@ const classes = computed(() =>
 </script>
 
 <template>
-  <div
-    role="separator"
-    :aria-orientation="props.orientation"
-    :class="classes"
-  />
+  <div role="separator" :aria-orientation="props.orientation" :class="classes" />
 </template>

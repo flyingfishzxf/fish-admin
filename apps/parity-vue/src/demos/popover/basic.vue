@@ -16,9 +16,7 @@ const CHANNELS = [
 const selected = ref<string[]>(['mentions', 'approvals'])
 
 function toggle(id: string, checked: boolean) {
-  selected.value = checked
-    ? [...selected.value, id]
-    : selected.value.filter((item) => item !== id)
+  selected.value = checked ? [...selected.value, id] : selected.value.filter((item) => item !== id)
 }
 </script>
 
@@ -37,7 +35,12 @@ function toggle(id: string, checked: boolean) {
           Choose which alerts reach your inbox.
         </p>
         <div class="fish-demo-stack" style="gap: 0.5rem; margin-top: 0.75rem">
-          <div v-for="channel in CHANNELS" :key="channel.id" class="fish-demo-row" style="gap: 0.5rem">
+          <div
+            v-for="channel in CHANNELS"
+            :key="channel.id"
+            class="fish-demo-row"
+            style="gap: 0.5rem"
+          >
             <Checkbox
               :id="`demo-popover-channel-${channel.id}`"
               :model-value="selected.includes(channel.id)"

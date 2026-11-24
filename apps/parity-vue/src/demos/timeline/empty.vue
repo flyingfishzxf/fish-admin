@@ -29,12 +29,7 @@ const items = ref<TimelineItem[]>(EVENTS)
 <template>
   <div class="fish-demo-stack">
     <div class="fish-demo-row">
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        @click="items = items.length ? [] : EVENTS"
-      >
+      <Button type="button" variant="outline" size="sm" @click="items = items.length ? [] : EVENTS">
         {{ items.length ? 'Clear events' : 'Reload events' }}
       </Button>
     </div>

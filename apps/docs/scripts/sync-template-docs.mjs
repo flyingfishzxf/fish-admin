@@ -23,7 +23,7 @@ function rewriteLinks(markdown) {
 }
 
 function splitTitle(markdown) {
-  const match = markdown.match(/^#\s+(.+)\n+/)
+  const match = markdown.match(/^#\s+([^\r\n]+)\r?\n+/)
   if (!match) return { title: null, body: markdown }
   return { title: match[1].trim(), body: markdown.slice(match[0].length) }
 }

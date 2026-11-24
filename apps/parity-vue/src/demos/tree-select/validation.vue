@@ -43,7 +43,8 @@ const isMissing = computed(() => value.value === null)
       Select a deployment region before saving.
     </p>
     <p v-else class="fish-demo-muted" style="margin: 0">
-      Region accepted: <code>{{ value }}</code>.
+      Region accepted: <code>{{ value }}</code
+      >.
     </p>
     <p class="fish-demo-label" style="margin: 0">Failover region (locked by policy)</p>
     <TreeSelect

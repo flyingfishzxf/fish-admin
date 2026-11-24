@@ -19,7 +19,11 @@ const date = ref<string | undefined>(new Date().toISOString().slice(0, 10))
       <Calendar v-model="date" locale="en-US" />
     </Card>
     <p class="fish-demo-muted" aria-live="polite">
-      {{ date ? `Next access review: ${DATE_FORMAT.format(new Date(date))}` : 'Pick a date to schedule the review.' }}
+      {{
+        date
+          ? `Next access review: ${DATE_FORMAT.format(new Date(date))}`
+          : 'Pick a date to schedule the review.'
+      }}
     </p>
   </div>
 </template>

@@ -35,8 +35,8 @@ const SLIDES: CarouselSlide[] = [{ id: 'migration' }, { id: 'maintenance' }]
               Move your webhooks to the v2 endpoint
             </p>
             <p style="margin: 0; font-size: 0.85rem; color: var(--muted-foreground)">
-              The v1 endpoint stops accepting deliveries on November 30. Four workspaces still
-              point at it.
+              The v1 endpoint stops accepting deliveries on November 30. Four workspaces still point
+              at it.
             </p>
             <div>
               <Button type="button" size="sm">Review endpoints</Button>

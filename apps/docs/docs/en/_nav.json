@@ -2,5 +2,6 @@
   { "text": "Guide", "link": "/guide/installation" },
   { "text": "Components", "link": "/components" },
   { "text": "Template", "link": "/template" },
-  { "text": "Versions", "link": "/versions" }
+  { "text": "Versions", "link": "/versions" },
+  { "text": "Vue 3", "link": "https://fish-admin-vue-docs.vercel.app/" }
 ]

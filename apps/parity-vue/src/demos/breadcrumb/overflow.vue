@@ -5,7 +5,14 @@ export default { name: 'BreadcrumbOverflow' }
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Breadcrumb, Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@fish-admin/vue'
+import {
+  Breadcrumb,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@fish-admin/vue'
 import { MoreHorizontal } from 'lucide-vue-next'
 
 const opened = ref('No hidden folder opened yet')

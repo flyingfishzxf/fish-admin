@@ -26,7 +26,11 @@ const count = computed(() => seats.value ?? 0)
         />
       </div>
       <p class="fish-demo-muted" aria-live="polite" style="margin: 0">
-        {{ seats === null ? 'Enter a seat count between 1 and 50.' : `${count} seats × 12 AI credits = ${count * 12} credits per month.` }}
+        {{
+          seats === null
+            ? 'Enter a seat count between 1 and 50.'
+            : `${count} seats × 12 AI credits = ${count * 12} credits per month.`
+        }}
       </p>
     </div>
     <p class="fish-demo-muted" style="margin: 0">

@@ -1,10 +1,10 @@
 # Vue 移植地基
 
-FishAdmin 2.2.0 是 Vue 3 移植的参考版本。本页说明冻结了什么、框架无关包如何分层，以及 parity 测试台如何工作。`apps/parity-vue` 中的私有六组件试点切片已经端到端跑通测试台；它尚未发布，也不改动 React 包。
+FishAdmin 2.3.0 是 Vue 3 移植的参考版本。本页说明冻结了什么、框架无关包如何分层，以及 parity 测试台如何工作。`@fish-admin/vue` 1.0.0 现已导出全部 90 个组件，`apps/parity-vue` 跑完整套契约：119 项检查、180 张自基线截图套件与 6 组跨版本试点比对。
 
 ## 冻结范围
 
-`parity/baseline/2.2.0/manifest.json` 保存以下内容的 SHA-256：
+`parity/baseline/2.3.0/manifest.json` 保存以下内容的 SHA-256：
 
 - 198 张 Linux 截图：166 张组件基线（83 个组件 × 明暗两套）、14 张文档布局基线与 18 张模板基线。
 - 文档生成物：`registry.json`、`documented.json`、`api.json`、`maturity.json` 与 `rtl-audit.json`。
@@ -58,7 +58,7 @@ pnpm test:parity:vue
 
 `pnpm test:parity:docker` 在 Playwright 镜像中运行。套件共 119 条：83 条 API 合同、12 条 docs surface（六个试点 × 两种语言）、6 条行为场景、12 张截图（六个试点 × 明暗两套）与 6 条 axe 扫描。12 张截图复用文档站已有的 `*-linux.png`，不复制基线。
 
-私有 Vue target 运行 42 条检查：6 条 API 合同、12 条 docs surface（六个试点 × 两种语言）、6 条行为场景、12 张截图与 6 条 axe 扫描。
+Vue target 跑同一套 119 条检查，使用 `contract.scope: all` 与 `api.mode: reference`：83 条覆盖全部 React 组件 id 的 API 合同、12 条 docs surface、6 条行为场景、12 张跨版本试点截图与 6 条 axe 扫描。另有独立自基线套件冻结全部 90 个组件 × 明暗（`pnpm test:vue-visual:docker`），`pnpm check:vue-visual:freeze` 校验其 180 文件清单。
 
 ## 增加 Vue target
 
@@ -76,7 +76,7 @@ pnpm test:parity:vue
 
 ## 验收
 
-当 `pnpm check:parity:freeze`、`pnpm check:parity:contract`、`pnpm check:parity:scenarios`、`pnpm test:parity:docker`、现有 Docker 视觉任务与完整质量门禁全部通过，且没有修改任何 `*-linux.png` 时，地基才算完成。
+当 `pnpm check:parity:freeze`、`pnpm check:parity:contract`、`pnpm check:parity:scenarios`、`pnpm test:parity:docker`、`pnpm test:parity:vue`、`pnpm test:vue-visual:docker`、`pnpm check:vue-visual:freeze` 与完整质量门禁全部通过，且没有修改任何 `*-linux.png` 或 Vue 自基线时，地基才算完成。
 
 ### 2026-11-09 run
 

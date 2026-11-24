@@ -13,19 +13,12 @@ const requested = ref(false)
 
 <template>
   <div class="fish-demo-stack">
-    <Alert
-      :icon="ShieldCheck"
-      title="Service tokens must be rotated"
-    >
+    <Alert :icon="ShieldCheck" title="Service tokens must be rotated">
       <p style="margin: 0">
         Tokens issued before October 1 stop working in 3 days. Rotate them to keep CI deployments
         running.
       </p>
-      <Button
-        size="sm"
-        :variant="requested ? 'ghost' : 'outline'"
-        @click="requested = !requested"
-      >
+      <Button size="sm" :variant="requested ? 'ghost' : 'outline'" @click="requested = !requested">
         {{ requested ? 'Cancel request' : 'Request rotation' }}
       </Button>
       <p class="fish-demo-muted" style="margin: 0">

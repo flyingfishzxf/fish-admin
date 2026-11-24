@@ -43,8 +43,8 @@ const layout = ref('rows')
       </div>
     </div>
     <p class="fish-demo-muted" style="margin: 0">
-      type="single" keeps one value; spacing defaults to 0, so the two items join into one
-      segmented control with rounded outer corners.
+      type="single" keeps one value; spacing defaults to 0, so the two items join into one segmented
+      control with rounded outer corners.
     </p>
     <p class="fish-demo-muted" style="margin: 0" aria-live="polite">
       Selected layout: {{ layout }}

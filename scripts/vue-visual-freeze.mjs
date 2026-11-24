@@ -109,7 +109,9 @@ function main() {
   void _actual
   fs.mkdirSync(path.dirname(manifestPath), { recursive: true })
   fs.writeFileSync(manifestPath, serializeManifest(manifest))
-  console.log(`vue-visual-freeze: wrote ${MANIFEST_PATH} (${Object.keys(manifest.files).length} files)`)
+  console.log(
+    `vue-visual-freeze: wrote ${MANIFEST_PATH} (${Object.keys(manifest.files).length} files)`,
+  )
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main()

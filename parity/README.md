@@ -1,16 +1,16 @@
 # Parity harness
 
-This directory freezes the documented surface of FishAdmin 2.2.0 and compares a renderer against it.
+This directory freezes the documented surface of FishAdmin 2.3.0 and compares a renderer against it.
 
 | Path                           | Purpose                                                              |
 | ------------------------------ | -------------------------------------------------------------------- |
-| `baseline/2.2.0/manifest.json` | SHA-256 manifest for screenshots, generated artifacts and docs hooks |
+| `baseline/2.3.0/manifest.json` | SHA-256 manifest for screenshots, generated artifacts and docs hooks |
 | `pilot.json`                   | The six components with behaviour scenarios and screenshot parity    |
 | `contract/components.json`     | Generated reference API for all 83 documented components             |
 | `contract/docs-surface.json`   | Generated route, demo anchor, selector and API-row contract          |
 | `scenarios/*.json`             | Accessible-name and ARIA-state behaviour scenarios                   |
 | `targets/react.json`           | The React reference target; `contract.scope` defaults to `all`       |
-| `targets/vue.json`             | The Vue slice target; `contract.scope: "pilot"` limits it to six     |
+| `targets/vue.json`             | The Vue target; `contract.scope: "all"` plus `api.mode: "reference"` |
 
 ## What a target must match
 
@@ -18,7 +18,7 @@ Every one of the 83 documented components is checked for its route, demo count, 
 
 A target in `api.mode: "reference"` must record a deviation entry for each of the six pilots. The harness does not compare API rows for the other 77 components; reference mode is not a per-component API diff. Add pilots when a port needs stricter behaviour and surface coverage.
 
-A target may set `"contract": { "scope": "pilot" }` to run the 83-component contract for the six pilots only; the default is `"all"`. React keeps `all` (119 checks); Vue uses `pilot` (42 checks). Reference mode never compares API rows, so the Vue target can ship six pilots while the other 77 React routes stay unported.
+A target may set `"contract": { "scope": "pilot" }` to run the 83-component contract for the six pilots only; the default is `"all"`. React keeps `all` (119 checks); Vue also uses `all` (119 checks) with `api.mode: "reference"`, so the other 77 components get the DOM-surface checks while API rows stay a pilot-only guarantee.
 
 Commands (from the repository root):
 
@@ -28,6 +28,8 @@ pnpm check:parity:contract
 pnpm check:parity:scenarios
 pnpm test:parity:docker
 PARITY_TARGET=vue pnpm test:parity:docker
+pnpm test:vue-visual:docker
+pnpm check:vue-visual:freeze
 ```
 
 `test:parity:docker` runs `playwright.parity.config.ts` in `mcr.microsoft.com/playwright:v1.64.1-noble`. Screenshots compare against `e2e-docs/__screenshots__/component-visual.spec.ts`; `updateSnapshots` is `'none'`, so the harness can never rewrite a baseline.

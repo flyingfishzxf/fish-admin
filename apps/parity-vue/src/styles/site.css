@@ -1,0 +1,221 @@
+.fish-site-header {
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+}
+
+.fish-site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  width: min(1100px, 100% - 2rem);
+  min-height: 3.75rem;
+  margin: 0 auto;
+}
+
+.fish-site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--foreground);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.fish-site-header__chip {
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fish-site-header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  font-size: 0.85rem;
+}
+
+.fish-site-header__nav a {
+  color: var(--muted-foreground);
+  text-decoration: none;
+}
+
+.fish-site-header__nav a:hover {
+  color: var(--foreground);
+}
+
+.fish-site-header__lang {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.fish-home {
+  padding-bottom: 4rem;
+}
+
+.fish-home__eyebrow {
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.fish-home h1 {
+  margin-top: 0;
+}
+
+.fish-home__intro {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+
+.fish-home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.25rem 0 2rem;
+}
+
+.fish-home__button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--card-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.fish-home__button:hover {
+  border-color: var(--primary);
+}
+
+.fish-home__button--primary {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.fish-home__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.fish-home__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+.fish-home__stat strong {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.fish-home__stat span {
+  color: var(--muted-foreground);
+  font-size: 0.78rem;
+}
+
+.fish-home__section {
+  margin-bottom: 2.5rem;
+}
+
+.fish-home__section h2 {
+  margin-bottom: 0.75rem;
+}
+
+.fish-home__code {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.fish-home__list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.35rem;
+}
+
+.fish-home__list li {
+  margin: 0.35rem 0;
+}
+
+.fish-home__security {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--muted);
+  font-size: 0.875rem;
+}
+
+.fish-home__commands {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.fish-home__command {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.85rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  font-size: 0.85rem;
+}
+
+.fish-home__command code {
+  font-size: 0.82rem;
+}
+
+.fish-home__command span {
+  color: var(--muted-foreground);
+}
+
+.fish-home__catalog {
+  scroll-margin-top: 1rem;
+}
+
+.fish-home__catalog > h2 {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 640px) {
+  .fish-site-header__inner {
+    align-items: flex-start;
+  }
+
+  .fish-site-header__nav {
+    font-size: 0.8rem;
+  }
+}

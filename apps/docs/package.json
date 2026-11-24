@@ -1,7 +1,7 @@
 {
   "name": "@fish-admin/docs",
   "private": true,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "type": "module",
   "engines": {
     "node": ">=22"
@@ -9,15 +9,14 @@
   "scripts": {
     "sync:template": "node scripts/sync-template-docs.mjs",
     "manifests": "node scripts/build-manifests.mjs",
-    "predev": "pnpm vue:data && pnpm manifests && pnpm sync:template && pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/react build",
+    "predev": "pnpm manifests && pnpm sync:template && pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/react build",
     "dev": "rspress dev",
-    "prebuild": "pnpm vue:data && pnpm manifests && pnpm sync:template && pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/react build",
+    "prebuild": "pnpm manifests && pnpm sync:template && pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/react build",
     "build": "rspress build",
     "preview": "rspress preview",
-    "pretypecheck": "pnpm vue:data && pnpm manifests && pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/react build",
+    "pretypecheck": "pnpm manifests && pnpm --filter @fish-admin/tokens build && pnpm --filter @fish-admin/react build",
     "typecheck": "tsc --noEmit",
-    "check": "node scripts/build-vue-data.mjs --check && node scripts/build-manifests.mjs --check && node scripts/check-docs.mjs",
-    "vue:data": "node scripts/build-vue-data.mjs"
+    "check": "node scripts/build-manifests.mjs --check && node scripts/check-docs.mjs"
   },
   "dependencies": {
     "@fish-admin/react": "workspace:*",

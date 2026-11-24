@@ -6,12 +6,49 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-11-24
+
+FishAdmin becomes a two-framework design system. `@fish-admin/vue` reaches 1.0.0 with 90
+exports, the Vue template ships every page in its navigation contract, and both get public docs.
+The deployment topology moves to a neutral landing page plus separate React and Vue demo and docs
+sites; the React docs site drops its temporary `/vue/` section and links to the Vue docs instead.
+
 ### Added
 
+- **`@fish-admin/vue` 1.0.0 is public.** 90 exports: every one of the 83 React component ids plus
+  seven Vue-only components (bulk-actions-bar, command-dialog, data-table, error-state,
+  loading-overlay, page-header, progress-bar). The package ships ESM, per-SFC declarations and a
+  precompiled `styles.css`; a packed tarball was installed in a clean consumer and rendered through
+  `vue/server-renderer`. See [the acceptance report](docs/vue-package-1.0.0-acceptance.md).
+- **A public Vue template demo.** `apps/vue-template` moves from a private slice to the
+  `fish-admin-vue-demo` deployment: sign-in, the full 16-page navigation contract, light/dark/system
+  theme, en/zh-CN, the MSW mock API in the browser and 67 Playwright functional specs.
+- **A public Vue component docs site.** `apps/parity-vue` now serves the Vue catalog at
+  `fish-admin-vue-docs`: all 90 components with 181 live demos, install instructions, the React
+  relationship and the intentional API differences, in English and Chinese. The Rspress `/vue/`
+  section and its generator were removed, and the React component index links to the new site.
+- **A framework-neutral landing page.** `apps/landing` is a small React app with a language toggle,
+  stack cards for both docs sites and both demos, install commands and the client-side RBAC caveat.
+- **Five-site deployment topology.** `fish-admin.vercel.app` is the landing; the React template and
+  docs move to `fish-admin-react-demo` and `fish-admin-react-docs`; the Vue template and docs deploy
+  to `fish-admin-vue-demo` and `fish-admin-vue-docs`. Both Vue apps have their own `vercel.json`
+  with monorepo install, SPA rewrites, cache headers and a CSP; the Vue template demo sets
+  `VITE_ENABLE_MOCK=true`.
+- **Vue visual coverage for every component.** 90 components × light/dark = 180 self-baselines in
+  `e2e-vue-visual`, generated and compared in the Playwright Docker image, with a SHA-256 manifest
+  in `parity/baseline/vue-visual-1.0.0`. The six pilot components keep their stricter cross-version
+  comparison.
+- **Vue contract coverage for every component.** `parity/targets/vue.json` moves from `pilot` to
+  `all`: `pnpm test:parity:vue` now runs 119 checks across the 83 React component ids (83 contracts,
+  12 docs-surface checks, six behaviour scenarios, 12 screenshots and six axe scans).
+- **React docs navigation links to Vue.** Both locales gain a Vue 3 entry in the top nav, the footer
+  replaces `Vue 3 planned` with React and Vue demo links, and the locale descriptions cover both
+  component sets. The 14 docs layout baselines and the `parity/baseline/2.3.0` manifest were
+  re-shot and re-frozen for the new chrome.
 - **Private Vue 3 pilot slice.** `@fish-admin/vue@0.1.0` and the private `@fish-admin/parity-vue@0.1.0`
   target port Accordion, Tabs, Select, Dialog, DateRangePicker and ProTable to Vue 3 with Reka UI and
-  TanStack Table. The Vue target passes 42 frozen parity checks, the React target still passes 119,
-  and every `*-linux.png` baseline is untouched. Neither package is published.
+  TanStack Table. The Vue target passed 42 frozen parity checks, the React target still passed 119,
+  and every `*-linux.png` baseline was untouched. The slice itself published nothing.
 - **Vue template shell:** a private Vue 3 admin app with sign-in, permission-filtered navigation,
   theme and language switching, a dashboard and a users CRUD page; adds Avatar and DropdownMenu
   wrappers to `@fish-admin/vue`.
@@ -217,6 +254,16 @@ All notable changes to this project are documented here. The format is based on
   provider, desktop shell, mobile sheet, trigger, rail, inset, header/footer,
   groups and menus) completes the registry. check-package verifies 90 vue
   exports; every React registry id now has a Vue counterpart.
+
+### Changed
+
+- **Every public URL moved to the five-site scheme.** `fish-admin.vercel.app` is now the landing
+  page, the React template and docs live on `fish-admin-react-demo` and `fish-admin-react-docs`, and
+  the Vue demo and docs use `fish-admin-vue-demo` and `fish-admin-vue-docs`. README files, deployment
+  docs, demo links, component pages and generated metadata were updated together; the old domains
+  are released.
+- **The React docs site no longer carries Vue pages.** `/vue/` and `/zh/vue/` were removed; the Vue
+  package's install, status and API-difference content lives in the Vue docs site.
 
 ### Fixed
 

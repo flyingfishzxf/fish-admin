@@ -96,9 +96,8 @@ function addRow(): EditableTableRow {
     </EditableTable>
     <p class="fish-demo-muted" role="status">{{ status }}</p>
     <p class="fish-demo-muted" style="margin: 0">
-      Adding a row opens it as a draft at the bottom of the table. Escape or Cancel throws the
-      draft away, and a failed <code>validate</code> keeps the row open with the message under the
-      field.
+      Adding a row opens it as a draft at the bottom of the table. Escape or Cancel throws the draft
+      away, and a failed <code>validate</code> keeps the row open with the message under the field.
     </p>
   </div>
 </template>

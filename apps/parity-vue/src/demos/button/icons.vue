@@ -21,7 +21,7 @@ import { ArrowUpRight, Download, Save, Trash2 } from 'lucide-vue-next'
       <Trash2 aria-hidden="true" />
     </Button>
     <Button as-child variant="link">
-      <a href="https://fish-admin.vercel.app/" target="_blank" rel="noreferrer">
+      <a href="https://fish-admin-react-demo.vercel.app/" target="_blank" rel="noreferrer">
         Open the template
         <ArrowUpRight aria-hidden="true" />
       </a>

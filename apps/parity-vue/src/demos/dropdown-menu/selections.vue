@@ -40,16 +40,10 @@ const shareStatus = ref('Nothing shared yet')
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" class="min-w-52">
           <DropdownMenuLabel>Show</DropdownMenuLabel>
-          <DropdownMenuCheckboxItem
-            :checked="gridLines"
-            @update:checked="gridLines = $event"
-          >
+          <DropdownMenuCheckboxItem :checked="gridLines" @update:checked="gridLines = $event">
             Grid lines
           </DropdownMenuCheckboxItem>
-          <DropdownMenuCheckboxItem
-            :checked="inlineHints"
-            @update:checked="inlineHints = $event"
-          >
+          <DropdownMenuCheckboxItem :checked="inlineHints" @update:checked="inlineHints = $event">
             Inline hints
           </DropdownMenuCheckboxItem>
           <DropdownMenuSeparator />

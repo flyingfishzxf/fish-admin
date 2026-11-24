@@ -2,6 +2,7 @@
 @import '@fish-admin/vue/styles/index.css';
 @import 'tailwindcss/preflight.css' layer(base);
 @import './demo.css';
+@import './site.css';
 
 /*
  * Tailwind's preflight resets `border: 0 solid` after the package's `* { @apply border-border }`,

@@ -4,14 +4,19 @@ FishAdmin 构建为静态文件。演示构建还会附带 Service Worker（MSW�
 
 ## 构建命令
 
-| 命令              | Mock API                                           | 用途                    |
-| ----------------- | -------------------------------------------------- | ----------------------- |
-| `pnpm dev`        | 默认开启                                           | 无后端时的本地开发      |
-| `pnpm build`      | 关闭（除非构建时显式设置 `VITE_ENABLE_MOCK=true`） | 对接真实后端的生产环境  |
-| `pnpm build:demo` | 开启                                               | 公开演示与 Preview 部署 |
-| `pnpm preview`    | 预览最近一次构建                                   | 本地检查生产产物        |
+| 命令                           | Mock API                                           | 用途                                 |
+| ------------------------------ | -------------------------------------------------- | ------------------------------------ |
+| `pnpm dev`                     | 默认开启                                           | 无后端时的本地开发                   |
+| `pnpm build`                   | 关闭（除非构建时显式设置 `VITE_ENABLE_MOCK=true`） | 对接真实后端的生产环境               |
+| `pnpm build:demo`              | 开启                                               | 公开演示与 Preview 部署              |
+| `pnpm build:vue`               | 不适用                                             | 构建供消费方使用的 `@fish-admin/vue` |
+| `pnpm build:vue-docs`          | 不适用                                             | Vue 组件文档（`apps/parity-vue`）    |
+| `pnpm build:vue-template`      | 关闭                                               | Vue 模板对接真实后端                 |
+| `pnpm build:vue-template:demo` | 开启                                               | Vue 模板演示                         |
+| `pnpm preview`                 | 预览最近一次构建                                   | 本地检查生产产物                     |
 
-`pnpm build` 会先执行 `tsc --noEmit`，类型错误会直接导致构建失败。
+`pnpm build` 会先执行 `tsc --noEmit`，类型错误会直接导致构建失败。Vue 文档与 Vue 模板都会先编译
+`@fish-admin/vue`，因为两个应用导入的是包构建后的 `dist/`。
 
 ### 环境变量
 
@@ -27,7 +32,31 @@ Vite 在构建时内联变量。请在托管平台的构建设置或 `.env.*` �
 
 ## Vercel
 
-这套配置已部署在 <https://fish-admin.vercel.app>。仓库自带 [`vercel.json`](../../vercel.json)：
+公开部署是同一个 Vercel 团队下的五个项目。每个项目把 **Root Directory** 设为下表的应用目录，
+再由该目录的 `vercel.json` 执行 monorepo 安装与对应构建。
+
+| 表面           | URL                                        | Root Directory      | 构建命令                       | 产物        |
+| -------------- | ------------------------------------------ | ------------------- | ------------------------------ | ----------- |
+| 门面           | <https://fish-admin.vercel.app>            | `apps/landing`      | `pnpm build:landing`           | `dist`      |
+| React 模板演示 | <https://fish-admin-react-demo.vercel.app> | 仓库根目录          | `pnpm build:demo`              | `dist`      |
+| React 文档     | <https://fish-admin-react-docs.vercel.app> | `apps/docs`         | `pnpm docs:build`              | `doc_build` |
+| Vue 模板演示   | <https://fish-admin-vue-demo.vercel.app>   | `apps/vue-template` | `pnpm build:vue-template:demo` | `dist`      |
+| Vue 文档       | <https://fish-admin-vue-docs.vercel.app>   | `apps/parity-vue`   | `pnpm build:vue-docs`          | `dist`      |
+
+React 模板演示继续使用根目录的 `vercel.json`（见下）。文档站与两个 Vue 应用各自目录里都有
+`vercel.json`：它们从仓库根安装（`cd ../.. && pnpm install --frozen-lockfile`）并从根构建，
+以便拿到 workspace 包。两个 Vue 应用会先编译 `@fish-admin/vue`；Vue 模板演示通过 `cross-env`
+设置 `VITE_ENABLE_MOCK=true`。
+
+新建项目的步骤：
+
+1. 将仓库推送到 GitHub。
+2. 在 Vercel 中选择 **Add New → Project** 并导入，按上表设置 **Root Directory**。Node 版本保持 24。
+3. 部署完成。每个 Pull Request 都会生成 Preview URL。
+4. 对接真实后端时，把构建命令改成非演示版本，设置 `VITE_API_BASE_URL`，并在需要时把 API 域名加入 rewrite 规则。
+5. 首次部署后，把应用 `index.html` 中相对路径的 `og:image` 与 `twitter:image` 换成自有域名下的绝对地址，并将 `public/og.png` 上传为仓库的社交预览图。
+
+React 模板的根 [`vercel.json`](../../vercel.json)：
 
 ```json
 {
@@ -37,17 +66,10 @@ Vite 在构建时内联变量。请在托管平台的构建设置或 `.env.*` �
 }
 ```
 
-步骤：
-
-1. 将仓库推送到 GitHub。
-2. 在 Vercel 中选择 **Add New → Project** 并导入。Vercel 会自动识别 Vite 与 pnpm，Node 版本保持 24。
-3. 部署完成。每个 Pull Request 都会生成 Preview URL。
-4. 对接真实后端时，将构建命令改为 `pnpm build`，设置 `VITE_API_BASE_URL`，并在需要时把 API 域名加入 rewrite 规则。
-5. 首次部署后，把 [`index.html`](../../index.html) 中相对路径的 `og:image` 与 `twitter:image` 换成自有域名下的绝对地址，并将 `public/og.png` 上传为仓库的社交预览图。
-
 Rewrite 会把未知路径交给 `index.html`，因此 `/users?status=active` 这类深链接可直接访问。静态资源与 `/mockServiceWorker.js` 会在 rewrite 之前直接返回。
 
-`vercel.json` 还设置了 `Cache-Control`：Service Worker 需要重新验证，带哈希的静态资源可长期缓存。这一点很重要——过期的 worker 会在新版本部署后继续提供旧演示。
+`vercel.json` 还设置了 `Cache-Control`：Service Worker 需要重新验证，带哈希的静态资源可长期缓存。这一点很重要——过期的 worker 会在新版本部署后继续提供旧演示。两个 Vue 应用都使用 `createWebHistory`，
+因此各自也把所有路径 rewrite 到 `index.html`；Vue 模板演示同样以 `no-cache` 提供 `/mockServiceWorker.js`。
 
 ## Docker
 

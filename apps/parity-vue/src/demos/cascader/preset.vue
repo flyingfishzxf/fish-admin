@@ -55,7 +55,9 @@ const value = ref<string[]>(['europe', 'germany', 'berlin'])
       />
     </div>
     <p class="fish-demo-muted">
-      {{ value.length > 0 ? `Billing office: ${value.join(' / ')}` : 'Cleared — pick a branch again.' }}
+      {{
+        value.length > 0 ? `Billing office: ${value.join(' / ')}` : 'Cleared — pick a branch again.'
+      }}
     </p>
     <p class="fish-demo-muted">
       Oslo and the whole Antarctica branch are disabled; disabled nodes never commit a path.

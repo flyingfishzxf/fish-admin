@@ -20,21 +20,19 @@ const CATEGORY_LABELS: Record<DocsLang, Record<(typeof CATEGORIES)[number], stri
 
 const GROUP_LABELS: Record<
   DocsLang,
-  { guide: string; components: string; template: string; versions: string; vue: string }
+  { guide: string; components: string; template: string; versions: string }
 > = {
   en: {
     guide: 'Guide',
     components: 'Components',
     template: 'Template',
     versions: 'Versions',
-    vue: 'Vue 3',
   },
   zh: {
     guide: '指南',
     components: '组件',
     template: '模板',
     versions: '版本',
-    vue: 'Vue 3',
   },
 }
 
@@ -139,22 +137,10 @@ export function createSidebar(lang: DocsLang): Sidebar {
 
   const full: Array<Page | Group> = [guide, components, template, versions]
 
-  // The Vue section has its own sidebar so it does not alter the frozen React
-  // pages. `full` stays untouched for the existing paths.
-  const vue: Group = {
-    text: GROUP_LABELS[lang].vue,
-    link: '/vue/index',
-    collapsible: true,
-    collapsed: false,
-    items: pageItems(lang, 'vue'),
-  }
-  const vueSidebar: Array<Page | Group> = [vue, guide, components, versions]
-
   return {
     [`${prefix}/guide/`]: full,
     [`${prefix}/components/`]: full,
     [`${prefix}/template/`]: full,
     [`${prefix}/versions`]: full,
-    [`${prefix}/vue/`]: vueSidebar,
   }
 }

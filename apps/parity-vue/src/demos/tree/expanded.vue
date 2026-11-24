@@ -17,9 +17,9 @@ const ITEMS: TreeItem[] = [
   { id: 'ap-south', parentId: null, label: 'ap-south-1', description: 'Mumbai, edge' },
 ]
 
-const parentIds = ITEMS.filter((item) =>
-  ITEMS.some((child) => child.parentId === item.id),
-).map((item) => item.id)
+const parentIds = ITEMS.filter((item) => ITEMS.some((child) => child.parentId === item.id)).map(
+  (item) => item.id,
+)
 
 const expandedIds = ref<ReadonlySet<string>>(new Set(['eu-central']))
 const selectedId = ref<string | null>(null)
@@ -30,20 +30,10 @@ const openCount = computed(() => expandedIds.value.size)
 <template>
   <div class="fish-demo-stack">
     <div class="fish-demo-row">
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        @click="expandedIds = new Set(parentIds)"
-      >
+      <Button type="button" variant="outline" size="sm" @click="expandedIds = new Set(parentIds)">
         Expand all
       </Button>
-      <Button
-        type="button"
-        variant="outline"
-        size="sm"
-        @click="expandedIds = new Set()"
-      >
+      <Button type="button" variant="outline" size="sm" @click="expandedIds = new Set()">
         Collapse all
       </Button>
     </div>
@@ -66,9 +56,9 @@ const openCount = computed(() => expandedIds.value.size)
     </div>
     <p class="fish-demo-muted" aria-live="polite" style="margin: 0">
       {{ `${openCount} of ${parentIds.length} branches open` }}
-      {{ selectedId ? ` · focused node: ${selectedId}` : '' }}. With `expandedIds` provided the
-      tree stops expanding on its own, so <code>update:expandedIds</code> is the only way to
-      update the set.
+      {{ selectedId ? ` · focused node: ${selectedId}` : '' }}. With `expandedIds` provided the tree
+      stops expanding on its own, so <code>update:expandedIds</code> is the only way to update the
+      set.
     </p>
   </div>
 </template>

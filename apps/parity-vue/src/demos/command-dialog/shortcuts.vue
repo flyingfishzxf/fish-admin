@@ -39,8 +39,8 @@ onBeforeUnmount(() => window.removeEventListener('keydown', toggle))
 <template>
   <div class="fish-demo-stack">
     <p class="fish-demo-muted" style="margin: 0">
-      Press <code>⌘K</code> (or <code>Ctrl+K</code>) anywhere in this preview to toggle the
-      palette — the shortcut belongs to the page, not the component.
+      Press <code>⌘K</code> (or <code>Ctrl+K</code>) anywhere in this preview to toggle the palette
+      — the shortcut belongs to the page, not the component.
     </p>
     <p class="fish-demo-muted">Last command: {{ lastRun }}</p>
     <CommandDialog

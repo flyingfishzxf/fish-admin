@@ -47,6 +47,11 @@ const activeCount = computed(
       (entry) => entry !== undefined && entry !== null && entry !== '' && entry !== false,
     ).length,
 )
+
+function onReset() {
+  value.value = {}
+  savedView.value = ''
+}
 </script>
 
 <template>
@@ -57,10 +62,7 @@ const activeCount = computed(
       :max-visible="2"
       :labels="{ reset: 'Reset filters', more: 'More filters', less: 'Show fewer' }"
       @change="value = $event"
-      @reset="
-        value = {};
-        savedView = '';
-      "
+      @reset="onReset"
     >
       <template #extra>
         <Button variant="outline" size="sm" @click="savedView = JSON.stringify(value)">

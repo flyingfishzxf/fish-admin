@@ -11,8 +11,20 @@ const MEMBERS = [
   { id: 'ada', initials: 'AL', name: 'Ada Lovelace', email: 'ada@acme.dev', status: 'Active' },
   { id: 'grace', initials: 'GH', name: 'Grace Hopper', email: 'grace@acme.dev', status: 'Active' },
   { id: 'alan', initials: 'AT', name: 'Alan Turing', email: 'alan@acme.dev', status: 'Invited' },
-  { id: 'katherine', initials: 'KJ', name: 'Katherine Johnson', email: 'katherine@acme.dev', status: 'Active' },
-  { id: 'edsger', initials: 'ED', name: 'Edsger Dijkstra', email: 'edsger@acme.dev', status: 'Invited' },
+  {
+    id: 'katherine',
+    initials: 'KJ',
+    name: 'Katherine Johnson',
+    email: 'katherine@acme.dev',
+    status: 'Active',
+  },
+  {
+    id: 'edsger',
+    initials: 'ED',
+    name: 'Edsger Dijkstra',
+    email: 'edsger@acme.dev',
+    status: 'Invited',
+  },
 ]
 
 const loading = ref(true)
@@ -30,10 +42,7 @@ const loading = ref(true)
     </div>
     <div class="fish-demo-stack" style="gap: 12px" :aria-busy="loading">
       <div v-for="member in MEMBERS" :key="member.id" class="fish-demo-row">
-        <Skeleton
-          v-if="loading"
-          style="width: 32px; height: 32px; border-radius: 9999px"
-        />
+        <Skeleton v-if="loading" style="width: 32px; height: 32px; border-radius: 9999px" />
         <Avatar v-else role="img" :aria-label="member.name">
           <AvatarFallback>{{ member.initials }}</AvatarFallback>
         </Avatar>
@@ -47,10 +56,7 @@ const loading = ref(true)
             <span class="fish-demo-muted">{{ member.email }}</span>
           </template>
         </div>
-        <Skeleton
-          v-if="loading"
-          style="width: 56px; height: 20px; border-radius: 9999px"
-        />
+        <Skeleton v-if="loading" style="width: 56px; height: 20px; border-radius: 9999px" />
         <Badge v-else :variant="member.status === 'Active' ? 'secondary' : 'outline'">
           {{ member.status }}
         </Badge>

@@ -43,9 +43,9 @@ function resend() {
         <p class="fish-demo-muted" aria-live="polite" style="margin: 0">
           {{
             notice ||
-              (completed
-                ? `Code ${completed} accepted. Signing you in…`
-                : 'Didn’t get it? Resend, or check your spam folder.')
+            (completed
+              ? `Code ${completed} accepted. Signing you in…`
+              : 'Didn’t get it? Resend, or check your spam folder.')
           }}
         </p>
       </div>

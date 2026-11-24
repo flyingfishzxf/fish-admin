@@ -19,9 +19,7 @@ const invalid = computed(() => {
     <div class="fish-demo-stack" style="gap: 0.4rem">
       <Label for="demo-input-types-text">Project name</Label>
       <Input id="demo-input-types-text" model-value="Apollo migration" />
-      <p class="fish-demo-muted">
-        Omit <code>type</code> and the native default, text, applies.
-      </p>
+      <p class="fish-demo-muted">Omit <code>type</code> and the native default, text, applies.</p>
     </div>
 
     <div class="fish-demo-stack" style="gap: 0.4rem">
@@ -34,7 +32,9 @@ const invalid = computed(() => {
         aria-describedby="demo-input-types-email-hint"
       />
       <p id="demo-input-types-email-hint" class="fish-demo-muted">
-        {{ invalid ? 'Enter an address like finance@acme.dev.' : 'Invoices are sent to this address.' }}
+        {{
+          invalid ? 'Enter an address like finance@acme.dev.' : 'Invoices are sent to this address.'
+        }}
       </p>
     </div>
 

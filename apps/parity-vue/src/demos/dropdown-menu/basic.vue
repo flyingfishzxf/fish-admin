@@ -47,8 +47,7 @@ const lastAction = ref('No action chosen yet')
       <span class="fish-demo-muted">Last action: {{ lastAction }}</span>
     </div>
     <p class="fish-demo-muted">
-      Open with Enter, Space or Arrow Down; Escape closes the menu and returns focus to the
-      trigger.
+      Open with Enter, Space or Arrow Down; Escape closes the menu and returns focus to the trigger.
     </p>
   </div>
 </template>

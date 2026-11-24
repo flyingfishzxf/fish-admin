@@ -58,8 +58,8 @@ const query = ref('Nightingale')
       />
     </div>
     <p class="fish-demo-muted">
-      The first field stays in its loading row, the second is disabled, the third starts on a
-      query that matches nothing.
+      The first field stays in its loading row, the second is disabled, the third starts on a query
+      that matches nothing.
     </p>
   </div>
 </template>

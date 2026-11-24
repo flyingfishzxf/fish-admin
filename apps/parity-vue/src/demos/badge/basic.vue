@@ -15,7 +15,9 @@ import { Badge } from '@fish-admin/vue'
       <Badge variant="destructive">Past due</Badge>
       <Badge variant="ghost">Draft</Badge>
       <Badge variant="link" as-child>
-        <a href="https://fish-admin.vercel.app/" target="_blank" rel="noreferrer">Changelog</a>
+        <a href="https://fish-admin-react-demo.vercel.app/" target="_blank" rel="noreferrer"
+          >Changelog</a
+        >
       </Badge>
     </div>
     <p class="fish-demo-muted" style="margin: 0">

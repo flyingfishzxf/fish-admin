@@ -40,7 +40,11 @@ const matches = computed(() =>
         <div style="width: 15rem; margin-bottom: 0.75rem">
           <Input v-model="query" placeholder="Filter activity" aria-label="Filter activity" />
         </div>
-        <ul v-if="matches.length > 0" class="fish-demo-stack" style="gap: 0.5rem; margin: 0; padding: 0; list-style: none">
+        <ul
+          v-if="matches.length > 0"
+          class="fish-demo-stack"
+          style="gap: 0.5rem; margin: 0; padding: 0; list-style: none"
+        >
           <li
             v-for="event in matches"
             :key="event.title"

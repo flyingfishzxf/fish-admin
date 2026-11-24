@@ -29,6 +29,8 @@ const updates = ref(true)
         </p>
       </div>
     </div>
-    <p class="fish-demo-muted" aria-live="polite">Product updates are {{ updates ? 'on' : 'off' }}.</p>
+    <p class="fish-demo-muted" aria-live="polite">
+      Product updates are {{ updates ? 'on' : 'off' }}.
+    </p>
   </div>
 </template>

@@ -13,7 +13,7 @@ navigation — built from the same components documented here.
 
 ## Entry points
 
-- **Live demo:** <https://fish-admin.vercel.app>
+- **Live demo:** <https://fish-admin-react-demo.vercel.app>
 - **Source:** <https://github.com/flyingfishzxf/fish-admin>
 - **Demo accounts:** the login page lists the administrator, manager and viewer accounts.
 

@@ -16,8 +16,8 @@ import { ProgressBar } from '@fish-admin/vue'
       <ProgressBar :value="96" ariaLabel="Seat usage" tone="warning" />
     </div>
     <p class="fish-demo-muted" style="margin: 0">
-      The warning tone turns the fill amber once a quota is nearly exhausted; the value still
-      clamps to 0–100.
+      The warning tone turns the fill amber once a quota is nearly exhausted; the value still clamps
+      to 0–100.
     </p>
   </div>
 </template>

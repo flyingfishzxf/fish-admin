@@ -204,7 +204,7 @@ Tailwind 4 is CSS-first: there is no `tailwind.config.js`. Custom tokens live in
 
 ## Internationalization
 
-- Locale JSON lives in `packages/i18n/locales/{en,zh-CN}` with 21 namespaces: `common`, `nav`, `auth`, `dashboard`, `projects`, `files`, `reports`, `notifications`, `integrations`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `dictionaries`, `workflows`, `errors`, `validation`; `src/lib/i18n.ts` is only the React-i18next adapter over `setupI18n`. Component strings live in the package, not here — see [`@fish-admin/react` i18n](https://fish-admin-docs.vercel.app/guide/installation).
+- Locale JSON lives in `packages/i18n/locales/{en,zh-CN}` with 21 namespaces: `common`, `nav`, `auth`, `dashboard`, `projects`, `files`, `reports`, `notifications`, `integrations`, `users`, `roles`, `permissions`, `departments`, `audit`, `profile`, `security`, `settings`, `dictionaries`, `workflows`, `errors`, `validation`; `src/lib/i18n.ts` is only the React-i18next adapter over `setupI18n`. Component strings live in the package, not here — see [`@fish-admin/react` i18n](https://fish-admin-react-docs.vercel.app/guide/installation).
 - `common`, `nav` and `errors` are bundled; other namespaces are loaded on demand with `i18next-resources-to-backend` and `import.meta.glob`.
 - The initial language comes from `localStorage`, then the browser language, then English.
 - `changeLanguage()` persists the choice, switches i18next and updates `<html lang>`.

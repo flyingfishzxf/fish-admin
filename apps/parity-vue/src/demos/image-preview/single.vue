@@ -22,8 +22,8 @@ const RECEIPT: PreviewImage = {
       <p class="fish-demo-label" style="margin: 0">Receipt on file</p>
       <ImagePreview :images="[RECEIPT]" ariaLabel="Payment receipt" />
       <p class="fish-demo-muted" style="margin: 0">
-        With one image the dialog shows no arrows and no counter, and the caption falls back to
-        the <code>alt</code> text.
+        With one image the dialog shows no arrows and no counter, and the caption falls back to the
+        <code>alt</code> text.
       </p>
     </div>
     <div class="fish-demo-stack" style="gap: 0.4rem">

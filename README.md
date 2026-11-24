@@ -1,22 +1,26 @@
 # FishAdmin
 
-> **A React component library for enterprise admin apps — plus the template that ships with it.**
+> **React and Vue 3 component libraries for enterprise admin apps — plus the templates that ship with them.**
 
 English · [简体中文](./README.zh-CN.md)
 
 [![CI](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml/badge.svg)](https://github.com/flyingfishzxf/fish-admin/actions/workflows/ci.yml)
-[![Docs](https://img.shields.io/badge/Docs-component_library-8b5cf6)](https://fish-admin-docs.vercel.app)
+[![React docs](https://img.shields.io/badge/React_docs-83_components-8b5cf6)](https://fish-admin-react-docs.vercel.app)
+[![Vue docs](https://img.shields.io/badge/Vue_docs-90_components-42b883)](https://fish-admin-vue-docs.vercel.app)
 [![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)](https://react.dev)
+[![Vue](https://img.shields.io/badge/Vue-3.5-42b883?logo=vuedotjs&logoColor=white)](https://vuejs.org)
 [![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)](https://vite.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06b6d4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e.svg)](./LICENSE)
 
-FishAdmin is two things: `@fish-admin/react`, 83 documented components with light/dark theming, English and Chinese locales and RBAC-shaped screens, and a front-end starter you can clone, log into, break on purpose and then connect to your own backend. The [component documentation](https://fish-admin-docs.vercel.app) is the front door for both.
+FishAdmin is one design language in two frameworks. `@fish-admin/react` ships 83 documented components and `@fish-admin/vue` ships 90, both with light/dark theming, English and Chinese locales and RBAC-shaped screens. Each has a template you can clone, log into, break on purpose and then connect to your own backend. Start at the [landing page](https://fish-admin.vercel.app).
 
 > **Security note:** client-side RBAC is a UX layer, **not a security boundary**. Every permission check in this project can be bypassed by editing JavaScript or calling the API directly. Your backend must enforce authorization. The mock API returns `403` for forbidden writes to demonstrate the expected contract.
 
-**Live demo: <https://fish-admin.vercel.app>** — built with `pnpm build:demo`, so the MSW mock API runs entirely in your browser. Sign in with any [demo account](#demo-accounts) below. Data lives in `localStorage`; clear site storage to reset it. The client-side permission checks there are still a UX layer, not a security boundary.
+**Live demos:** [React template](https://fish-admin-react-demo.vercel.app) · [Vue template](https://fish-admin-vue-demo.vercel.app). Both are built with the MSW mock API running entirely in your browser. Sign in with any [demo account](#demo-accounts) below. Data lives in `localStorage`; clear site storage to reset it. The client-side permission checks there are still a UX layer, not a security boundary.
+
+**Component docs:** [React](https://fish-admin-react-docs.vercel.app) · [Vue](https://fish-admin-vue-docs.vercel.app).
 
 ## Preview
 
@@ -26,7 +30,7 @@ FishAdmin is two things: `@fish-admin/react`, 83 documented components with ligh
 | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | ![Users table on a tablet viewport](apps/docs/docs/public/screenshots/users-tablet.png) | ![Roles page on a phone viewport](apps/docs/docs/public/screenshots/roles-mobile.png) | ![Approval center](apps/docs/docs/public/screenshots/workflows.png) |
 
-The same four files are served by the [documentation site](https://fish-admin-docs.vercel.app) under `/screenshots/`.
+The same four files are served by the [documentation site](https://fish-admin-react-docs.vercel.app) under `/screenshots/`.
 
 ## Features
 
@@ -49,10 +53,11 @@ The same four files are served by the [documentation site](https://fish-admin-do
 - **Audit log** — `/audit-logs` with URL-synced filters, date-range presets, a detail drawer with related events, and links back to the affected user, role or department.
 - **Failure handling you can see** — dedicated `401`, `403`, `500`, `503` and maintenance screens, an offline banner with recovery toast, a route error boundary and preview links from Settings.
 - **Dashboard** — KPI cards, revenue area chart, traffic bars, acquisition donut and recent activity, with a 7/30-day switch. Charts are lazy-loaded with the dashboard route.
-- **83 components, one package** — `@fish-admin/react` exports 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`). Each of the 83 has a page on the [documentation site](https://fish-admin-docs.vercel.app), in English and Chinese, with a business-framed live demo, the copyable import path and the generated props table. `pnpm check:package` fails the build if the barrel stops exporting any of them, and `pnpm docs:check` fails if a page, demo or registry entry drifts. ProTable powers the users and audit pages, so the template is the package's first consumer.
-- **A maturity matrix backed by evidence** — all 83 components are `stable` in the maturity matrix ([/guide/maturity](https://fish-admin-docs.vercel.app/guide/maturity)), where stable means a docs page in both locales, a live demo, a behavioural test, axe coverage of its documented route and a light/dark visual baseline. `pnpm check:maturity` recomputes that evidence from disk and fails when a stable component loses any of it, so the label cannot drift from the repository. The 2.2.0 cycle added 50 component test files and extended 5 existing suites — 93 files and 303 tests — and `@fish-admin/react` now fails its test run below 77% statements, 68% branches, 78% functions or 79% lines.
-- **Design tokens as a contract** — light, dark and system modes, five accent colors, oklch tokens, refined shadows, six motion tokens and high-contrast values. `@fish-admin/tokens` compiles one JSON source into plain CSS, a Tailwind 4 theme entry, a bilingual manifest and browser-safe editor helpers; the [reference](https://fish-admin-docs.vercel.app/guide/tokens) and [live theme editor](https://fish-admin-docs.vercel.app/guide/theme-editor) run on the same contract. Seven signature overlays honour `prefers-reduced-motion`, and `@fish-admin/react` inlines the compiled tokens so npm consumers still install one package.
-- **Honest RTL audit** — `pnpm check:rtl` fails on any unhandled physical-direction utility and on a stale report. The library has zero today across 253 files; the 34 intentional matches are classified and documented at [RTL readiness](https://fish-admin-docs.vercel.app/guide/rtl-readiness) instead of claiming full RTL support.
+- **83 components, one package** — `@fish-admin/react` exports 47 shadcn/ui primitives, 30 enterprise components and 6 Pro compositions (`DetailPage`, `EditableTable`, `ImportWizard`, `ProForm`, `QueryFilter`, `ProTable`). Each of the 83 has a page on the [documentation site](https://fish-admin-react-docs.vercel.app), in English and Chinese, with a business-framed live demo, the copyable import path and the generated props table. `pnpm check:package` fails the build if the barrel stops exporting any of them, and `pnpm docs:check` fails if a page, demo or registry entry drifts. ProTable powers the users and audit pages, so the template is the package's first consumer.
+- **90 Vue 3 components** — `@fish-admin/vue` implements every React component id plus seven Vue-only additions (`bulk-actions-bar`, `command-dialog`, `data-table`, `error-state`, `loading-overlay`, `page-header`, `progress-bar`). It uses Reka UI primitives, self-built replacements for the React-only libraries and `@unovis/vue` for charts. All 90 have live demos at [fish-admin-vue-docs.vercel.app](https://fish-admin-vue-docs.vercel.app), plus 180 light/dark self-baselines and 42 cross-version parity checks for the six pilots. See [the Vue docs](https://fish-admin-vue-docs.vercel.app).
+- **A maturity matrix backed by evidence** — all 83 components are `stable` in the maturity matrix ([/guide/maturity](https://fish-admin-react-docs.vercel.app/guide/maturity)), where stable means a docs page in both locales, a live demo, a behavioural test, axe coverage of its documented route and a light/dark visual baseline. `pnpm check:maturity` recomputes that evidence from disk and fails when a stable component loses any of it, so the label cannot drift from the repository. The 2.2.0 cycle added 50 component test files and extended 5 existing suites — 93 files and 303 tests — and `@fish-admin/react` now fails its test run below 77% statements, 68% branches, 78% functions or 79% lines.
+- **Design tokens as a contract** — light, dark and system modes, five accent colors, oklch tokens, refined shadows, six motion tokens and high-contrast values. `@fish-admin/tokens` compiles one JSON source into plain CSS, a Tailwind 4 theme entry, a bilingual manifest and browser-safe editor helpers; the [reference](https://fish-admin-react-docs.vercel.app/guide/tokens) and [live theme editor](https://fish-admin-react-docs.vercel.app/guide/theme-editor) run on the same contract. Seven signature overlays honour `prefers-reduced-motion`, and `@fish-admin/react` inlines the compiled tokens so npm consumers still install one package.
+- **Honest RTL audit** — `pnpm check:rtl` fails on any unhandled physical-direction utility and on a stale report. The library has zero today across 253 files; the 34 intentional matches are classified and documented at [RTL readiness](https://fish-admin-react-docs.vercel.app/guide/rtl-readiness) instead of claiming full RTL support.
 - **English + Simplified Chinese** — lazy-loaded i18next namespaces, `Intl` date/number formatting and locale-aware validation messages.
 - **Command palette** — `Ctrl/⌘ K` navigation and actions, filtered by the current role.
 - **Responsive layout** — mobile sidebar sheet, adaptive tables and drawers that work at 375, 768 and 1440 pixels.
@@ -68,7 +73,15 @@ Requirements: **Node.js >= 22** (24 LTS recommended) and **pnpm 9.1.1** (`corepa
 npm install @fish-admin/react
 ```
 
-That is the same 83-component set the template runs on. [Installation](https://fish-admin-docs.vercel.app/guide/installation) covers the peer dependencies, the Tailwind v4 import and the CSS entry; [Quick start](https://fish-admin-docs.vercel.app/guide/quick-start) walks the first table.
+That is the same 83-component set the template runs on. [Installation](https://fish-admin-react-docs.vercel.app/guide/installation) covers the peer dependencies, the Tailwind v4 import and the CSS entry; [Quick start](https://fish-admin-react-docs.vercel.app/guide/quick-start) walks the first table.
+
+### Install the Vue components
+
+```bash
+npm install @fish-admin/vue
+```
+
+90 component exports for Vue 3.5+, including its own compiled CSS — no Tailwind setup required. The [Vue docs](https://fish-admin-vue-docs.vercel.app) list every component with live demos; the six pilot components are pixel-matched against React, and every component has its own light/dark baseline.
 
 ### Start from the demo
 
@@ -117,7 +130,7 @@ More things to try:
 - **Audit trail** — `/audit-logs` filters by action, entity and date range. Every change made in the demo is recorded there.
 - **Departments** — `/departments?dept=dept-engineering` deep-links to a node and lists its members, including descendants.
 - **Failure screens** — `/401`, `/500`, `/503` and `/maintenance` are directly reachable, and the offline banner appears when you throttle the network.
-- **Component docs** — when `VITE_DOCS_URL` names a deployment, the sidebar, the command palette and the wide login layout all open the [documentation site](https://fish-admin-docs.vercel.app) in a new tab, and the retired `/components` and `/ui` paths redirect there instead of 404ing.
+- **Component docs** — when `VITE_DOCS_URL` names a deployment, the sidebar, the command palette and the wide login layout all open the [documentation site](https://fish-admin-react-docs.vercel.app) in a new tab, and the retired `/components` and `/ui` paths redirect there instead of 404ing.
 
 ## What is inside
 
@@ -292,20 +305,24 @@ packages/mock/               # @fish-admin/mock — the demo API without React
 ├─ src/handlers/             # 14 MSW handlers
 ├─ src/db/                   # seeded database and migrations
 └─ src/{browser,node,runtime}.ts
-packages/vue/                # @fish-admin/vue — private Vue 3 pilot components (not published)
-├─ src/components/           # accordion, tabs, select, dialog, date-range-picker and pro
-├─ src/lib/                  # cn and the shared date helpers
+packages/vue/                # @fish-admin/vue — 90 Vue 3 exports, built ESM + types + styles.css
+├─ src/components/           # every React component id plus seven Vue-only components
+├─ src/lib/                  # cn, date, tree, transfer, import and toast helpers
+├─ registry.json             # the Vue component inventory
 └─ src/styles/index.css      # the self-contained Tailwind entry
-apps/docs/                   # the Rspress documentation site
+apps/docs/                   # the Rspress documentation site (React)
 ├─ docs/{en,zh}/             # 83 component pages, guides and the versions page
 ├─ demos/<component>/        # the live example each page renders
 ├─ theme/                    # token reference, theme editor and RTL audit views
 ├─ generated/                # registry.json, API tables and rtl-audit.json
 └─ docs/public/screenshots/  # the README and docs hero shots
-apps/parity-vue/             # @fish-admin/parity-vue — private Vite target for the Vue parity suite
-├─ src/demos/                # the six pilot demos, one folder per component
-└─ src/data/demos.ts         # the demo registry the target routes render
-apps/vue-template/           # Private Vue 3 admin app (every page in the nav contract)
+apps/parity-vue/             # Vue component docs and the parity target (vue-docs site)
+├─ src/demos/                # one folder per component, 181 demos
+└─ src/data/demos.ts         # the demo registry the routes render
+apps/vue-template/           # the Vue 3 admin template (vue-demo site)
+├─ src/                      # 16 pages in the nav contract, auth and account flows
+└─ e2e-vue-template/         # 67 functional Playwright specs
+apps/landing/                # framework-neutral landing page (fish-admin.vercel.app)
 src/                         # the template
 ├─ routes/                   # File-based routes; routeTree.gen.ts is generated
 ├─ features/                 # auth, dashboard, users, roles, permissions, departments, audit, projects, files, reports, notifications, integrations, profile, security, settings
@@ -317,54 +334,60 @@ src/                         # the template
 ├─ stores/                   # Auth, theme and UI Zustand stores
 └─ styles/index.css          # the only Tailwind entry
 parity/                      # frozen cross-framework contract and scenarios
-├─ baseline/2.2.0/           # SHA-256 manifest of the 2.2.0 surface
+├─ baseline/2.3.0/           # SHA-256 manifest of the 2.3.0 surface
 ├─ contract/                 # generated component and docs-surface contracts
 ├─ scenarios/                # six behaviour scenarios
 ├─ targets/react.json        # the React target
-└─ targets/vue.json          # the private Vue target
+└─ targets/vue.json          # the Vue target
 e2e/                         # Playwright specs
 e2e-parity/                  # target-agnostic parity specs
+e2e-vue-visual/              # 180 Vue light/dark self-baselines
 docs/{en,zh-CN}/             # Repository documentation (the site above is the product one)
 ```
 
 ## Scripts
 
-| Command                              | Description                                                    |
-| ------------------------------------ | -------------------------------------------------------------- |
-| `pnpm scaffold`                      | Rebrand the clone and drop the parts you do not want           |
-| `pnpm dev`                           | Start Vite with the mock API enabled                           |
-| `pnpm build`                         | Type-check and build for production (mock off by default)      |
-| `pnpm build:demo`                    | Build with the mock API enabled, as used by the live demo      |
-| `pnpm preview`                       | Preview the production build                                   |
-| `pnpm build:tokens` / `check:tokens` | Build / verify `@fish-admin/tokens`, reject stray declarations |
-| `pnpm test:tokens`                   | Unit-test sanitisation, contrast and serialisation             |
-| `pnpm test:shared`                   | Test `contracts`, `i18n` and `mock` as one unit                |
-| `pnpm audit:rtl` / `pnpm check:rtl`  | Regenerate / verify the RTL audit report                       |
-| `pnpm build:ui` / `pnpm test:ui`     | Build / test `@fish-admin/react`                               |
-| `pnpm test:vue`                      | Test `@fish-admin/vue` and the Vue parity app                  |
-| `pnpm dev:vue-template`              | Run the Vue template on port 4177                              |
-| `pnpm test:vue-template`             | Vitest for the Vue template                                    |
-| `pnpm test:e2e:vue-template`         | Sixty-seven Playwright functional specs                        |
-| `pnpm check:package`                 | Fail unless the barrel exports every registry entry            |
-| `pnpm maturity` / `check:maturity`   | Regenerate / verify the component maturity matrix              |
-| `pnpm gen-api` / `gen-api:check`     | Regenerate / verify the docs API tables and coverage floor     |
-| `pnpm docs:dev` / `docs:build`       | Run / build the documentation site                             |
-| `pnpm docs:check`                    | Fail on a missing page, demo or registry drift                 |
-| `pnpm test:docs`                     | Build the site, then run its Playwright suite                  |
-| `pnpm lint` / `pnpm lint:fix`        | Run ESLint                                                     |
-| `pnpm format` / `pnpm format:check`  | Run Prettier                                                   |
-| `pnpm typecheck`                     | Run TypeScript without emitting                                |
-| `pnpm test` / `pnpm test:watch`      | Run unit tests                                                 |
-| `pnpm test:coverage`                 | Unit tests with a coverage report                              |
-| `pnpm test:e2e`                      | Build the demo, then run E2E, axe and performance specs        |
-| `pnpm perf`                          | Run only the runtime performance budgets                       |
-| `pnpm size`                          | Build production and check gzip budgets                        |
-| `pnpm test:visual:docker`            | Compare screenshots in the Playwright Docker image             |
-| `pnpm check:parity:freeze`           | Verify the frozen 2.2.0 parity manifest                        |
-| `pnpm check:parity:contract`         | Verify the generated component and docs-surface contracts      |
-| `pnpm check:parity:scenarios`        | Validate the six pilot behaviour scenarios                     |
-| `pnpm test:parity:docker`            | Compare the React target against the frozen baselines          |
-| `pnpm test:parity:vue`               | Compare the Vue target against the frozen baselines            |
+| Command                                | Description                                                    |
+| -------------------------------------- | -------------------------------------------------------------- |
+| `pnpm scaffold`                        | Rebrand the clone and drop the parts you do not want           |
+| `pnpm dev`                             | Start Vite with the mock API enabled                           |
+| `pnpm build`                           | Type-check and build for production (mock off by default)      |
+| `pnpm build:demo`                      | Build with the mock API enabled, as used by the live demo      |
+| `pnpm preview`                         | Preview the production build                                   |
+| `pnpm build:tokens` / `check:tokens`   | Build / verify `@fish-admin/tokens`, reject stray declarations |
+| `pnpm test:tokens`                     | Unit-test sanitisation, contrast and serialisation             |
+| `pnpm test:shared`                     | Test `contracts`, `i18n` and `mock` as one unit                |
+| `pnpm audit:rtl` / `pnpm check:rtl`    | Regenerate / verify the RTL audit report                       |
+| `pnpm build:ui` / `test:ui`            | Build / test `@fish-admin/react`                               |
+| `pnpm build:vue` / `test:vue`          | Build / test `@fish-admin/vue` and the Vue docs app            |
+| `pnpm build:vue-docs` / `dev:vue-docs` | Build / run the Vue component docs (`apps/parity-vue`)         |
+| `pnpm dev:vue-template`                | Run the Vue template on port 4177                              |
+| `pnpm build:vue-template:demo`         | Build the Vue template with the mock API enabled               |
+| `pnpm test:vue-template`               | Vitest for the Vue template                                    |
+| `pnpm test:e2e:vue-template`           | Sixty-seven Playwright functional specs                        |
+| `pnpm dev:landing` / `build:landing`   | Run / build the framework-neutral landing page                 |
+| `pnpm check:package`                   | Fail unless the barrel exports every registry entry            |
+| `pnpm maturity` / `check:maturity`     | Regenerate / verify the component maturity matrix              |
+| `pnpm gen-api` / `gen-api:check`       | Regenerate / verify the docs API tables and coverage floor     |
+| `pnpm docs:dev` / `docs:build`         | Run / build the documentation site                             |
+| `pnpm docs:check`                      | Fail on a missing page, demo or registry drift                 |
+| `pnpm test:docs`                       | Build the site, then run its Playwright suite                  |
+| `pnpm lint` / `pnpm lint:fix`          | Run ESLint                                                     |
+| `pnpm format` / `pnpm format:check`    | Run Prettier                                                   |
+| `pnpm typecheck`                       | Run TypeScript without emitting                                |
+| `pnpm test` / `pnpm test:watch`        | Run unit tests                                                 |
+| `pnpm test:coverage`                   | Unit tests with a coverage report                              |
+| `pnpm test:e2e`                        | Build the demo, then run E2E, axe and performance specs        |
+| `pnpm perf`                            | Run only the runtime performance budgets                       |
+| `pnpm size`                            | Build production and check gzip budgets                        |
+| `pnpm test:visual:docker`              | Compare screenshots in the Playwright Docker image             |
+| `pnpm check:parity:freeze`             | Verify the frozen 2.3.0 parity manifest                        |
+| `pnpm check:parity:contract`           | Verify the generated component and docs-surface contracts      |
+| `pnpm check:parity:scenarios`          | Validate the six pilot behaviour scenarios                     |
+| `pnpm test:parity:docker`              | Compare the React target against the frozen baselines          |
+| `pnpm test:parity:vue`                 | Compare the Vue target against the frozen baselines            |
+| `pnpm test:vue-visual:docker`          | Compare 90 Vue components × light/dark in Docker               |
+| `pnpm check:vue-visual:freeze`         | Verify the 180-file Vue visual manifest                        |
 
 ## Quality gates
 
@@ -377,12 +400,12 @@ CI runs these gates on every push and pull request:
 - **Bundle size** — `pnpm size` builds the production bundle (mock API off), gzips every chunk and fails on four budgets: 180 KB of JavaScript for first paint, 115 KB for the largest lazy chunk, 800 KB for all JavaScript and 30 KB for all CSS. First paint counts the entry script _and_ every `modulepreload` tag in `dist/index.html`, together with the shell's blocking `/theme-bootstrap.js` — 31 chunks totalling 175.2 KB — because that set, not the entry file alone, is what the browser downloads before it paints. The CSS total counts the linked `/boot.css` as well.
 - **Runtime budget** — `e2e/perf.spec.ts` measures first contentful paint, largest contentful paint, cumulative layout shift and request count on the dashboard. Budgets: FCP ≤ 2.5 s, LCP ≤ 3 s, CLS ≤ 0.1 and ≤ 140 requests.
 - **Visual regression** — eighteen template screenshots (login, dashboard in both themes, users, permission matrix, audit log, security, settings, projects, project detail, files, reports in both themes, notifications, integrations, approval center, approval detail and dictionaries), 14 docs page baselines (home, installation, Button, ProTable, the theme editor, the maturity matrix and RTL readiness, each in light and dark) and 166 per-component baselines (all 83 components in light and dark) are compared against images rendered in `mcr.microsoft.com/playwright:v1.64.1-noble`. The mock database is seeded and the tests freeze the clock, so relative dates stay stable. `e2e/visual/readme-shots.spec.ts` lives in the same run but only writes files, and only when `README_SHOTS=1`.
-- **Cross-framework parity** — `parity/` freezes the 2.2.0 component contract, docs DOM surface and six accessible behaviour scenarios. `pnpm test:parity:docker` runs 119 checks against the same `*-linux.png` baselines the docs site uses: 83 API contracts, 12 docs-surface checks, six behaviour scenarios, 12 screenshots and six axe scans. The private Vue target adds `parity/targets/vue.json` and `pnpm test:parity:vue`: 42 checks — six API contracts, 12 docs-surface checks, six behaviour scenarios, 12 screenshots and six axe scans — against the same baselines. The harness runs with `updateSnapshots: 'none'`. See [docs/en/vue-port-foundation.md](docs/en/vue-port-foundation.md). The private Vue admin shell built on the same packages is documented in [docs/en/vue-template.md](docs/en/vue-template.md).
+- **Cross-framework parity** — `parity/` freezes the 2.3.0 component contract, docs DOM surface and six accessible behaviour scenarios. `pnpm test:parity:docker` runs 119 checks against the same `*-linux.png` baselines the docs site uses: 83 API contracts, 12 docs-surface checks, six behaviour scenarios, 12 screenshots and six axe scans. The Vue target in `parity/targets/vue.json` runs `pnpm test:parity:vue`: 119 checks across all 83 React component ids — 83 contracts, 12 docs-surface checks, six behaviour scenarios, 12 cross-version screenshots and six axe scans — plus 90 Vue self-baselines × light/dark in a separate suite. The harness runs with `updateSnapshots: 'none'`. See [docs/en/vue-port-foundation.md](docs/en/vue-port-foundation.md). The Vue admin shell built on the same packages is documented in [docs/en/vue-template.md](docs/en/vue-template.md).
 - **Security headers** — `e2e/security.spec.ts` checks that `/`, `/index.html`, a hashed asset and the two shell files all carry the identical header set, then walks sign-in, dashboard, users, reports, files, projects and settings with a `securitypolicyviolation` listener that must stay empty. See [docs/en/security-headers.md](docs/en/security-headers.md).
 - **Documentation** — `pnpm gen-api:check` fails when the generated props tables drift from the package source, `pnpm docs:check` fails when a registry entry has no page, no demo or no translation, and `pnpm test:docs` runs the site's own Playwright suite.
 - **Supply chain** — `pnpm audit --audit-level=high` fails the quality job, CodeQL analyses JavaScript and TypeScript on every push, pull request and weekly schedule, [`.github/dependabot.yml`](.github/dependabot.yml) opens grouped minor/patch and major pull requests for npm and for the actions, every workflow runs on a read-scoped token (`permissions: contents: read`), and the build job uploads the bundle it measured.
 
-Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`. The docs site has the same pair under `pnpm test:docs:visual` and `pnpm test:docs:visual:docker`. `pnpm test:parity:docker` reuses the component baselines and never writes them.
+Baselines are platform-specific. Run `pnpm test:visual:docker` (Docker required) instead of `pnpm test:visual` on your machine — the local script refuses to run outside Linux — and regenerate them after an intentional UI change with `pnpm test:visual:docker --update`. The docs site has the same pair under `pnpm test:docs:visual` and `pnpm test:docs:visual:docker`; the Vue self-baselines use `pnpm test:vue-visual:docker` and `pnpm test:vue-visual:docker:update`. `pnpm test:parity:docker` reuses the component baselines and never writes them.
 
 ## Connect your own backend
 
@@ -403,7 +426,7 @@ Details and subpath notes: [docs/en/deployment.md](docs/en/deployment.md).
 
 ## Documentation
 
-**Component documentation: <https://fish-admin-docs.vercel.app>** — 83 pages in English and Chinese, each with a live demo, the import path and the generated props table, plus the installation, quick-start and theming guides, the [token reference](https://fish-admin-docs.vercel.app/guide/tokens), the [theme editor](https://fish-admin-docs.vercel.app/guide/theme-editor) and the [RTL audit](https://fish-admin-docs.vercel.app/guide/rtl-readiness).
+**Component documentation: <https://fish-admin-react-docs.vercel.app>** — 83 pages in English and Chinese, each with a live demo, the import path and the generated props table, plus the installation, quick-start and theming guides, the [token reference](https://fish-admin-react-docs.vercel.app/guide/tokens), the [theme editor](https://fish-admin-react-docs.vercel.app/guide/theme-editor) and the [RTL audit](https://fish-admin-react-docs.vercel.app/guide/rtl-readiness).
 
 The pages below document the template itself:
 

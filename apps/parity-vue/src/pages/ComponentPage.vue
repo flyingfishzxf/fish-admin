@@ -23,6 +23,7 @@ const demos = computed(() => DEMOS.filter((demo) => demo.componentId === route.p
   <main class="fish-page">
     <div class="rp-doc rspress-doc">
       <template v-if="componentEntry">
+        <h1 class="fish-page__title">{{ componentEntry.name }}</h1>
         <DemoBlock
           v-for="demo in demos"
           :key="demo.id"

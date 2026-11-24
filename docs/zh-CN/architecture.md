@@ -203,7 +203,7 @@ Tailwind 4 采用 CSS-first 配置，没有 `tailwind.config.js`。自定义 tok
 
 ## 国际化
 
-- 语言 JSON 位于 `packages/i18n/locales/{en,zh-CN}`，共 21 个 namespace：`common`、`nav`、`auth`、`dashboard`、`projects`、`files`、`reports`、`notifications`、`integrations`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`dictionaries`、`workflows`、`errors`、`validation`；`src/lib/i18n.ts` 只是 `setupI18n` 之上的 react-i18next 适配层。组件自身的文案在包里，由 `UIProvider` 提供语言，见[安装指南](https://fish-admin-docs.vercel.app/guide/installation)。
+- 语言 JSON 位于 `packages/i18n/locales/{en,zh-CN}`，共 21 个 namespace：`common`、`nav`、`auth`、`dashboard`、`projects`、`files`、`reports`、`notifications`、`integrations`、`users`、`roles`、`permissions`、`departments`、`audit`、`profile`、`security`、`settings`、`dictionaries`、`workflows`、`errors`、`validation`；`src/lib/i18n.ts` 只是 `setupI18n` 之上的 react-i18next 适配层。组件自身的文案在包里，由 `UIProvider` 提供语言，见[安装指南](https://fish-admin-react-docs.vercel.app/guide/installation)。
 - `common`、`nav`、`errors` 直接打入主包；其余通过 `i18next-resources-to-backend` 与 `import.meta.glob` 按需加载。
 - 初始语言依次取 `localStorage`、浏览器语言，最后回退英文。
 - `changeLanguage()` 持久化选择、切换 i18next 并同步 `<html lang>`。

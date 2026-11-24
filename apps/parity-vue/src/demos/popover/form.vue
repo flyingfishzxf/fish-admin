@@ -40,11 +40,7 @@ function submit() {
           </p>
           <div class="fish-demo-stack" style="gap: 0.35rem">
             <Label for="demo-popover-form-name">Label name</Label>
-            <Input
-              id="demo-popover-form-name"
-              v-model="name"
-              placeholder="Quarterly review"
-            />
+            <Input id="demo-popover-form-name" v-model="name" placeholder="Quarterly review" />
           </div>
           <div class="fish-demo-row" style="justify-content: flex-end">
             <Button type="button" variant="ghost" size="sm" @click="open = false">Cancel</Button>

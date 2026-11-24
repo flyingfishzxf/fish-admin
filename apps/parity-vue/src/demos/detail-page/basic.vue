@@ -3,7 +3,14 @@ export default { name: 'DetailPageBasic' }
 </script>
 
 <script setup lang="ts">
-import { Avatar, AvatarFallback, Badge, Button, DetailPage, type DetailPageTab } from '@fish-admin/vue'
+import {
+  Avatar,
+  AvatarFallback,
+  Badge,
+  Button,
+  DetailPage,
+  type DetailPageTab,
+} from '@fish-admin/vue'
 
 const overviewRows: [string, string][] = [
   ['Email', 'ada@fishadmin.dev'],

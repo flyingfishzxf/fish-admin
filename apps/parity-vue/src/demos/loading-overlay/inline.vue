@@ -33,9 +33,7 @@ function saveDraft() {
       </div>
     </LoadingOverlay>
     <div class="fish-demo-row">
-      <Button size="sm" :disabled="saving" @click="saveDraft">
-        Save draft
-      </Button>
+      <Button size="sm" :disabled="saving" @click="saveDraft"> Save draft </Button>
       <span class="fish-demo-muted" aria-live="polite">
         {{ saving ? 'Saving…' : 'Idle — press save to cover the panel briefly.' }}
       </span>

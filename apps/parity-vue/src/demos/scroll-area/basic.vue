@@ -8,13 +8,43 @@ import { ref } from 'vue'
 import { Button, ScrollArea } from '@fish-admin/vue'
 
 const EVENTS = [
-  { id: 'e1', title: 'Report exported', detail: 'Q3 revenue by region · 1.2 MB CSV', time: '09:41' },
+  {
+    id: 'e1',
+    title: 'Report exported',
+    detail: 'Q3 revenue by region · 1.2 MB CSV',
+    time: '09:41',
+  },
   { id: 'e2', title: 'Member invited', detail: 'new.teammate@acme.dev · Design', time: '09:12' },
-  { id: 'e3', title: 'Webhook retried', detail: 'Endpoint billing-sync · attempt 2', time: '08:55' },
-  { id: 'e4', title: 'API key rotated', detail: 'Production key · expires in 90 days', time: '08:20' },
-  { id: 'e5', title: 'Plan changed', detail: 'Team → Business · prorated invoice', time: 'Yesterday' },
-  { id: 'e6', title: 'Audit log purge', detail: 'Entries older than 180 days removed', time: 'Yesterday' },
-  { id: 'e7', title: 'Backup completed', detail: 'eu-central-1 · 42 GB snapshot', time: '2 days ago' },
+  {
+    id: 'e3',
+    title: 'Webhook retried',
+    detail: 'Endpoint billing-sync · attempt 2',
+    time: '08:55',
+  },
+  {
+    id: 'e4',
+    title: 'API key rotated',
+    detail: 'Production key · expires in 90 days',
+    time: '08:20',
+  },
+  {
+    id: 'e5',
+    title: 'Plan changed',
+    detail: 'Team → Business · prorated invoice',
+    time: 'Yesterday',
+  },
+  {
+    id: 'e6',
+    title: 'Audit log purge',
+    detail: 'Entries older than 180 days removed',
+    time: 'Yesterday',
+  },
+  {
+    id: 'e7',
+    title: 'Backup completed',
+    detail: 'eu-central-1 · 42 GB snapshot',
+    time: '2 days ago',
+  },
 ]
 
 const unread = ref(['e1', 'e2', 'e3'])
@@ -30,7 +60,9 @@ function markRead(id: string) {
       <div>
         <p style="margin: 0; font-size: 0.875rem; font-weight: 600">Workspace activity</p>
         <p class="fish-demo-muted" style="margin: 0">
-          {{ unread.length === 0 ? 'All caught up' : `${unread.length} unread of ${EVENTS.length}` }}
+          {{
+            unread.length === 0 ? 'All caught up' : `${unread.length} unread of ${EVENTS.length}`
+          }}
         </p>
       </div>
       <Button variant="outline" size="sm" :disabled="unread.length === 0" @click="unread = []">

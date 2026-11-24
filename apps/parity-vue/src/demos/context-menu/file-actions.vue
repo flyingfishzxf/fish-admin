@@ -99,11 +99,7 @@ const anyPinned = computed(() => pinned.value.length > 0)
               cursor: context-menu;
             "
           >
-            <FileText
-              aria-hidden="true"
-              :size="16"
-              style="color: var(--muted-foreground)"
-            />
+            <FileText aria-hidden="true" :size="16" style="color: var(--muted-foreground)" />
             <div style="min-width: 0; flex: 1">
               <p style="margin: 0; font-size: 0.875rem">{{ file.name }}</p>
               <p class="fish-demo-muted" style="margin: 0">{{ file.meta }}</p>

@@ -53,9 +53,7 @@ function tooltipTemplate(d: (typeof data)[number]) {
 <template>
   <div class="fish-demo-stack">
     <div>
-      <p style="margin: 0; font-size: 0.85rem; font-weight: 600">
-        Revenue against operating costs
-      </p>
+      <p style="margin: 0; font-size: 0.85rem; font-weight: 600">Revenue against operating costs</p>
       <p class="fish-demo-muted" style="margin: 0.15rem 0 0">
         Two series share one axis; the legend maps each colour to its key.
       </p>
@@ -70,7 +68,14 @@ function tooltipTemplate(d: (typeof data)[number]) {
         <ChartCrosshair :template="tooltipTemplate" />
         <ChartTooltip />
         <VisArea :x="x" :y="costsY" :data="data" :color="costsColor" :opacity="0.3" :line="true" />
-        <VisArea :x="x" :y="revenueY" :data="data" :color="revenueColor" :opacity="0.3" :line="true" />
+        <VisArea
+          :x="x"
+          :y="revenueY"
+          :data="data"
+          :color="revenueColor"
+          :opacity="0.3"
+          :line="true"
+        />
         <VisAxis type="x" :tick-format="xTickFormat" :grid-line="false" :tick-line="false" />
         <VisAxis type="y" :tick-format="yTickFormat" :domain-line="false" :grid-line="false" />
       </VisXYContainer>

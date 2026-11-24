@@ -16,9 +16,7 @@ const OPTIONS = [
 const selected = ref<string[]>(['security'])
 
 function toggle(id: string, checked: boolean) {
-  selected.value = checked
-    ? [...selected.value, id]
-    : selected.value.filter((item) => item !== id)
+  selected.value = checked ? [...selected.value, id] : selected.value.filter((item) => item !== id)
 }
 
 const selectedLabels = computed(() =>
@@ -30,7 +28,12 @@ const selectedLabels = computed(() =>
   <div class="fish-demo-stack">
     <div role="group" aria-labelledby="demo-checkbox-group-label" class="fish-demo-stack">
       <span id="demo-checkbox-group-label" class="fish-demo-label">Email notifications</span>
-      <div v-for="option in OPTIONS" :key="option.id" class="fish-demo-row" style="align-items: flex-start">
+      <div
+        v-for="option in OPTIONS"
+        :key="option.id"
+        class="fish-demo-row"
+        style="align-items: flex-start"
+      >
         <Checkbox
           :id="`demo-checkbox-group-${option.id}`"
           :model-value="selected.includes(option.id)"
@@ -50,7 +53,11 @@ const selectedLabels = computed(() =>
       </div>
     </div>
     <p class="fish-demo-muted" aria-live="polite">
-      {{ selectedLabels.length > 0 ? `Sending: ${selectedLabels.join(', ')}.` : 'All notifications are muted.' }}
+      {{
+        selectedLabels.length > 0
+          ? `Sending: ${selectedLabels.join(', ')}.`
+          : 'All notifications are muted.'
+      }}
     </p>
   </div>
 </template>

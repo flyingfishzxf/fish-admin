@@ -21,9 +21,9 @@ import { Trend } from '@fish-admin/vue'
       <Trend :value="4.2" label="vs last month" invert />
     </div>
     <p class="fish-demo-muted" style="margin: 0">
-      With <code>invert</code>, the arrow still follows the sign, but the tone flips: churn
-      dropping 0.6% reads as a success, while failed logins rising 4.2% turns destructive. Bounce
-      rate prints <code>-1.25 pt</code> thanks to <code>suffix</code> and <code>precision</code>.
+      With <code>invert</code>, the arrow still follows the sign, but the tone flips: churn dropping
+      0.6% reads as a success, while failed logins rising 4.2% turns destructive. Bounce rate prints
+      <code>-1.25 pt</code> thanks to <code>suffix</code> and <code>precision</code>.
     </p>
   </div>
 </template>

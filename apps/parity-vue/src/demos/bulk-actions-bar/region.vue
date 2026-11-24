@@ -19,7 +19,9 @@ function archiveAll() {
 <template>
   <div class="fish-demo-stack" style="position: relative; min-height: 10rem; overflow: hidden">
     <p class="fish-demo-muted" style="margin: 0" aria-live="polite">
-      {{ archived ? 'Every row was archived — the selection is gone.' : `${rows} invoices selected.` }}
+      {{
+        archived ? 'Every row was archived — the selection is gone.' : `${rows} invoices selected.`
+      }}
     </p>
     <BulkActionsBar
       label="Bulk actions"

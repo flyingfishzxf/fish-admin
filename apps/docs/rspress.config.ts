@@ -11,7 +11,7 @@ export default defineConfig({
   root: path.join(root, 'docs'),
   outDir: path.join(root, 'doc_build'),
   title: 'FishAdmin UI',
-  description: '83 React components and a production-shaped admin template.',
+  description: '83 React components, 90 Vue 3 components and a production-shaped admin template.',
   lang: 'en',
   logo: '/logo.svg',
   logoText: 'FishAdmin UI',
@@ -20,13 +20,14 @@ export default defineConfig({
       lang: 'en',
       label: 'English',
       title: 'FishAdmin UI',
-      description: '83 React components and a production-shaped admin template.',
+      description:
+        '83 React components, 90 Vue 3 components and a production-shaped admin template.',
     },
     {
       lang: 'zh',
       label: '简体中文',
       title: 'FishAdmin UI',
-      description: '83 个 React 组件与一套可直接运行的中后台模板。',
+      description: '83 个 React 组件、90 个 Vue 3 组件与一套可直接运行的中后台模板。',
     },
   ],
   themeConfig: {
@@ -34,7 +35,7 @@ export default defineConfig({
     search: true,
     footer: {
       message:
-        'MIT Licensed · <a href="https://fish-admin.vercel.app" target="_blank" rel="noreferrer">Live demo</a> · <a href="https://github.com/flyingfishzxf/fish-admin" target="_blank" rel="noreferrer">GitHub</a> · Vue 3 planned',
+        'MIT Licensed · <a href="https://fish-admin-react-demo.vercel.app" target="_blank" rel="noreferrer">React demo</a> · <a href="https://fish-admin-vue-demo.vercel.app" target="_blank" rel="noreferrer">Vue demo</a> · <a href="https://github.com/flyingfishzxf/fish-admin" target="_blank" rel="noreferrer">GitHub</a>',
     },
     locales: [
       {

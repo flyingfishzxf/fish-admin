@@ -48,8 +48,8 @@ const ROWS = [
       </div>
     </div>
     <p class="fish-demo-muted" style="margin: 0">
-      The scrollbar appears on scroll by default; the Vue surface currently exposes the
-      orientation switch instead of a visibility mode.
+      The scrollbar appears on scroll by default; the Vue surface currently exposes the orientation
+      switch instead of a visibility mode.
     </p>
   </div>
 </template>

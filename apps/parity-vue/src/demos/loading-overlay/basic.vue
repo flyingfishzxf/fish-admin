@@ -22,7 +22,9 @@ const loading = ref(false)
       <Button size="sm" variant="outline" @click="loading = !loading">
         {{ loading ? 'Stop loading' : 'Load entries' }}
       </Button>
-      <span class="fish-demo-muted">The overlay fades in after 150 ms, so fast loads never flash.</span>
+      <span class="fish-demo-muted"
+        >The overlay fades in after 150 ms, so fast loads never flash.</span
+      >
     </div>
   </div>
 </template>

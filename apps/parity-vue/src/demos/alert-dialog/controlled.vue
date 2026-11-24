@@ -38,8 +38,8 @@ function onConfirm() {
       @confirm="onConfirm"
     />
     <p class="fish-demo-muted">
-      The page owns the open state, so the result line updates from the same handlers that close
-      the dialog.
+      The page owns the open state, so the result line updates from the same handlers that close the
+      dialog.
     </p>
   </div>
 </template>

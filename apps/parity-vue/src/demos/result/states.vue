@@ -46,9 +46,7 @@ const STATUSES: {
 ]
 
 const status = ref<ResultStatus>('error')
-const active = computed(
-  () => STATUSES.find((item) => item.value === status.value) ?? STATUSES[0],
-)
+const active = computed(() => STATUSES.find((item) => item.value === status.value) ?? STATUSES[0])
 </script>
 
 <template>

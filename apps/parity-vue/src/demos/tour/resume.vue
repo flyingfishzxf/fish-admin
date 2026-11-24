@@ -30,13 +30,7 @@ const steps: TourStep[] = [
   <div class="fish-demo-stack">
     <div class="fish-demo-row" style="justify-content: space-between">
       <p class="fish-demo-label" style="margin: 0">Audit retention</p>
-      <Button
-        v-if="!completed"
-        type="button"
-        size="sm"
-        variant="outline"
-        @click="open = true"
-      >
+      <Button v-if="!completed" type="button" size="sm" variant="outline" @click="open = true">
         Guided setup
       </Button>
       <p v-else class="fish-demo-muted" style="margin: 0">Setup completed.</p>
@@ -60,7 +54,13 @@ const steps: TourStep[] = [
     <Tour
       :steps="steps"
       :open="open"
-      :labels="{ next: 'Next', previous: 'Back', skip: 'Skip', finish: 'Done', step: '{{current}} / {{total}}' }"
+      :labels="{
+        next: 'Next',
+        previous: 'Back',
+        skip: 'Skip',
+        finish: 'Done',
+        step: '{{current}} / {{total}}',
+      }"
       @update:open="open = $event"
       @finish="completed = true"
     />

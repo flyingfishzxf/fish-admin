@@ -1,6 +1,6 @@
 export const SITE = {
   githubUrl: 'https://github.com/flyingfishzxf/fish-admin',
-  demoUrl: 'https://fish-admin.vercel.app',
+  demoUrl: 'https://fish-admin-react-demo.vercel.app',
   packageName: '@fish-admin/react',
   repoBranch: 'main',
 } as const

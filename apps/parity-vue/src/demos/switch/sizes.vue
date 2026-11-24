@@ -21,10 +21,7 @@ const mentions = ref(false)
       <Label for="demo-switch-mentions">Mentions only</Label>
       <Switch id="demo-switch-mentions" v-model="mentions" size="sm" />
     </div>
-    <div
-      class="fish-demo-row"
-      style="align-items: flex-start; justify-content: space-between"
-    >
+    <div class="fish-demo-row" style="align-items: flex-start; justify-content: space-between">
       <div>
         <Label for="demo-switch-streaming">Audit log streaming</Label>
         <p class="fish-demo-muted" style="margin: 0.35rem 0 0">

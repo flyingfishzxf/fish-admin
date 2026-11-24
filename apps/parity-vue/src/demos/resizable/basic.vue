@@ -44,7 +44,12 @@ const PANE = { height: '100%', overflow: 'auto', padding: '0.75rem' }
   <div class="fish-demo-stack" style="max-width: 44rem">
     <ResizablePanelGroup
       orientation="horizontal"
-      style="height: 240px; border: 1px solid var(--border); border-radius: 0.5rem; overflow: hidden"
+      style="
+        height: 240px;
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        overflow: hidden;
+      "
     >
       <ResizablePanel :default-size="38" :min-size="26">
         <div :style="PANE" role="region" aria-label="Support queue" tabindex="0">
