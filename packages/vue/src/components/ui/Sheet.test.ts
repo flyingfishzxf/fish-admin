@@ -14,6 +14,11 @@ describe('Sheet', () => {
 
     const content = document.body.querySelector('[data-slot="sheet-content"]')
     expect(content?.className).toContain('left-0')
+    expect(content?.className).toContain('data-[state=open]:animate-in')
+    expect(content?.className).toContain('data-[state=closed]:slide-out-to-left')
+    expect(document.body.querySelector('[data-slot="sheet-overlay"]')?.className).toContain(
+      'data-[state=open]:fade-in-0',
+    )
     expect(document.body.querySelector('[aria-label="Close"]')).not.toBeNull()
     expect(document.body.textContent).toContain('Sheet body')
   })

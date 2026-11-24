@@ -40,6 +40,7 @@ describe('AreaChart', () => {
     expect(wrapper.find('[data-chart-line]').exists()).toBe(true)
     expect(wrapper.find('[data-chart-area]').exists()).toBe(true)
     expect(wrapper.find('[data-chart-line]').attributes('stroke')).toBe('var(--chart-1)')
+    expect(wrapper.find('[data-chart-reveal]').classes()).toContain('chart-reveal-x')
   })
 
   it('renders one y tick per axis value and keeps the axis at zero-based steps', () => {
@@ -143,6 +144,7 @@ describe('BarChart', () => {
   it('renders one bar per category and series', () => {
     const wrapper = mount(BarChart, { props })
     expect(wrapper.findAll('[data-chart-bars] rect')).toHaveLength(TRAFFIC.length * 2)
+    expect(wrapper.find('[data-chart-bars]').classes()).toContain('chart-reveal-y')
   })
 
   it('lists every series in the legend', () => {
@@ -185,6 +187,8 @@ describe('DonutChart', () => {
     expect(segments).toHaveLength(2)
     expect(segments[0]!.attributes('fill')).toBe('var(--chart-1)')
     expect(segments[1]!.attributes('fill')).toBe('var(--chart-2)')
+    expect(segments[0]!.classes()).toContain('chart-reveal-pop')
+    expect(segments[1]!.attributes('style')).toContain('animation-delay: 60ms')
   })
 
   it('shows a placeholder ring when every value is zero', () => {

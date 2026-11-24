@@ -43,4 +43,34 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
+  .toast-bottom-enter-active,
+  .toast-bottom-leave-active,
+  .toast-top-enter-active,
+  .toast-top-leave-active {
+    transition:
+      opacity var(--motion-duration-base) var(--motion-ease-standard),
+      transform var(--motion-duration-base) var(--motion-ease-standard);
+  }
+
+  .toast-bottom-enter-from,
+  .toast-bottom-leave-to {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+
+  .toast-top-enter-from,
+  .toast-top-leave-to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.98);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toast-bottom-enter-active,
+    .toast-bottom-leave-active,
+    .toast-top-enter-active,
+    .toast-top-leave-active {
+      transition: none;
+    }
+  }
 }

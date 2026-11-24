@@ -25,6 +25,7 @@ describe('AlertDialog', () => {
     expect(dialog?.textContent).toContain('This signs the device out immediately.')
     expect(dialog?.textContent).toContain('Cancel')
     expect(dialog?.textContent).toContain('Revoke')
+    expect(dialog?.className).toContain('data-[state=open]:zoom-in-95')
     wrapper.unmount()
   })
 

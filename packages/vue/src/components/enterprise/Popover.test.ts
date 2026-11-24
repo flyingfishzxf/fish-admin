@@ -35,6 +35,8 @@ describe('Popover', () => {
     await wrapper.find('button').trigger('click')
     expect(content()).not.toBeNull()
     expect(content()!.textContent).toContain('Filter notifications')
+    expect(content()!.className).toContain('data-[state=open]:zoom-in-95')
+    expect(content()!.className).toContain('origin-(--reka-popover-content-transform-origin)')
 
     // reka emits update:open on outside interaction; simulate the close path
     await wrapper.setProps({ open: false })

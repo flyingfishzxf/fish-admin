@@ -47,7 +47,7 @@ function DrawerContent({
       <DrawerPrimitive.Content
         data-slot="drawer-content"
         className={cn(
-          'group/drawer-content fixed z-50 flex h-auto flex-col bg-background motion-reduce:[transition-duration:0s]!',
+          'group/drawer-content fixed z-50 flex h-auto flex-col bg-background motion-reduce:animate-none! motion-reduce:[transition-duration:0s]!',
           // Drawer sides are physical: the direction data attribute pins the edge, so these
           // variants are the direction contract rather than document-level rtl/ltr.
           'data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-lg data-[vaul-drawer-direction=top]:border-b',

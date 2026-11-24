@@ -26,6 +26,10 @@ const props = withDefaults(
 
 const store = observeToaster(props.toasterId)
 const records = computed(() => store.records.slice(-props.visibleToasts))
+// Top stacks enter from above, bottom stacks from below.
+const transitionName = computed(() =>
+  props.position.startsWith('top') ? 'toast-top' : 'toast-bottom',
+)
 
 const POSITION_CLASSES: Record<string, string> = {
   'top-right': 'top-4 right-4 items-end',
@@ -68,40 +72,42 @@ onBeforeUnmount(() => toast.dismiss(undefined, props.toasterId))
     :class="`pointer-events-none fixed z-[100] flex flex-col gap-2 ${POSITION_CLASSES[props.position]}`"
     aria-live="polite"
   >
-    <div
-      v-for="record in records"
-      :key="record.id"
-      data-slot="toast"
-      :data-tone="record.tone"
-      class="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-lg border bg-popover p-4 text-popover-foreground shadow-lg"
-    >
-      <component
-        :is="TONE_ICONS[record.tone]"
-        aria-hidden="true"
-        :class="`mt-0.5 size-4 shrink-0 ${TONE_CLASSES[record.tone]} ${record.tone === 'loading' && 'animate-spin'}`"
-      />
-      <div class="min-w-0 flex-1">
-        <p class="text-sm font-medium">{{ record.message }}</p>
-        <p v-if="record.description" class="mt-0.5 text-xs text-muted-foreground">
-          {{ record.description }}
-        </p>
+    <TransitionGroup :name="transitionName">
+      <div
+        v-for="record in records"
+        :key="record.id"
+        data-slot="toast"
+        :data-tone="record.tone"
+        class="pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-lg border bg-popover p-4 text-popover-foreground shadow-lg"
+      >
+        <component
+          :is="TONE_ICONS[record.tone]"
+          aria-hidden="true"
+          :class="`mt-0.5 size-4 shrink-0 ${TONE_CLASSES[record.tone]} ${record.tone === 'loading' && 'animate-spin'}`"
+        />
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-medium">{{ record.message }}</p>
+          <p v-if="record.description" class="mt-0.5 text-xs text-muted-foreground">
+            {{ record.description }}
+          </p>
+          <button
+            v-if="record.action"
+            type="button"
+            class="mt-1 text-xs font-medium text-primary hover:underline"
+            @click="runAction(record)"
+          >
+            {{ record.action.label }}
+          </button>
+        </div>
         <button
-          v-if="record.action"
           type="button"
-          class="mt-1 text-xs font-medium text-primary hover:underline"
-          @click="runAction(record)"
+          aria-label="Dismiss"
+          class="shrink-0 rounded-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
+          @click="toast.dismiss(record.id, record.toasterId)"
         >
-          {{ record.action.label }}
+          <XIcon class="size-4" />
         </button>
       </div>
-      <button
-        type="button"
-        aria-label="Dismiss"
-        class="shrink-0 rounded-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
-        @click="toast.dismiss(record.id, record.toasterId)"
-      >
-        <XIcon class="size-4" />
-      </button>
-    </div>
+    </TransitionGroup>
   </div>
 </template>

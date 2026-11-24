@@ -19,6 +19,11 @@ describe('Drawer', () => {
     const content = document.body.querySelector('[data-slot="drawer-content"]')
     expect(content).not.toBeNull()
     expect(content?.getAttribute('data-direction')).toBe('bottom')
+    expect(content?.className).toContain('data-[state=open]:slide-in-from-bottom')
+    expect(content?.className).toContain('motion-reduce:animate-none!')
+    expect(document.body.querySelector('[data-slot="drawer-overlay"]')?.className).toContain(
+      'data-[state=open]:fade-in-0',
+    )
     expect(document.body.textContent).toContain('Drawer body')
   })
 

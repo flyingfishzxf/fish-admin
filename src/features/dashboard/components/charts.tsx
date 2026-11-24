@@ -21,6 +21,11 @@ import {
   type ChartConfig,
 } from '@fish-admin/react'
 import { formatCompactNumber, formatDate } from '@/lib/format'
+import {
+  CHART_ANIMATION_DURATION,
+  CHART_ANIMATION_EASING,
+  usePrefersReducedMotion,
+} from '@/lib/motion'
 import type { ChannelPoint, RevenuePoint, TrafficPoint } from '@/types'
 
 function dateTick(value: string, language: string) {
@@ -29,6 +34,7 @@ function dateTick(value: string, language: string) {
 
 export function RevenueChart({ data }: { data: RevenuePoint[] }) {
   const { t, i18n } = useTranslation('dashboard')
+  const reducedMotion = usePrefersReducedMotion()
   const config = {
     value: { label: t('series.revenue'), color: 'var(--chart-1)' },
   } satisfies ChartConfig
@@ -80,6 +86,9 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
           strokeWidth={2.5}
           dot={false}
           activeDot={{ r: 4 }}
+          isAnimationActive={!reducedMotion}
+          animationDuration={CHART_ANIMATION_DURATION}
+          animationEasing={CHART_ANIMATION_EASING}
         />
       </AreaChart>
     </ChartContainer>
@@ -88,6 +97,7 @@ export function RevenueChart({ data }: { data: RevenuePoint[] }) {
 
 export function TrafficChart({ data }: { data: TrafficPoint[] }) {
   const { t, i18n } = useTranslation('dashboard')
+  const reducedMotion = usePrefersReducedMotion()
   const config = {
     visits: { label: t('series.visits'), color: 'var(--chart-2)' },
     signups: { label: t('series.signups'), color: 'var(--chart-3)' },
@@ -126,8 +136,24 @@ export function TrafficChart({ data }: { data: TrafficPoint[] }) {
           }
         />
         <ChartLegend content={<ChartLegendContent />} />
-        <Bar dataKey="visits" fill="var(--color-visits)" radius={3} maxBarSize={18} />
-        <Bar dataKey="signups" fill="var(--color-signups)" radius={3} maxBarSize={18} />
+        <Bar
+          dataKey="visits"
+          fill="var(--color-visits)"
+          radius={3}
+          maxBarSize={18}
+          isAnimationActive={!reducedMotion}
+          animationDuration={CHART_ANIMATION_DURATION}
+          animationEasing={CHART_ANIMATION_EASING}
+        />
+        <Bar
+          dataKey="signups"
+          fill="var(--color-signups)"
+          radius={3}
+          maxBarSize={18}
+          isAnimationActive={!reducedMotion}
+          animationDuration={CHART_ANIMATION_DURATION}
+          animationEasing={CHART_ANIMATION_EASING}
+        />
       </BarChart>
     </ChartContainer>
   )
@@ -135,6 +161,7 @@ export function TrafficChart({ data }: { data: TrafficPoint[] }) {
 
 export function ChannelsChart({ data }: { data: ChannelPoint[] }) {
   const { t, i18n } = useTranslation('dashboard')
+  const reducedMotion = usePrefersReducedMotion()
   const config = {
     direct: { label: t('channels.direct'), color: 'var(--chart-1)' },
     organic: { label: t('channels.organic'), color: 'var(--chart-2)' },
@@ -156,6 +183,9 @@ export function ChannelsChart({ data }: { data: ChannelPoint[] }) {
             outerRadius="92%"
             paddingAngle={3}
             strokeWidth={0}
+            isAnimationActive={!reducedMotion}
+            animationDuration={CHART_ANIMATION_DURATION}
+            animationEasing={CHART_ANIMATION_EASING}
           >
             {data.map((channel) => (
               <Cell key={channel.name} fill={`var(--color-${channel.name})`} />

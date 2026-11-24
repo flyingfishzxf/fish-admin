@@ -24,6 +24,11 @@ import {
   formatNumber,
   formatPercent,
 } from '@/lib/format'
+import {
+  CHART_ANIMATION_DURATION,
+  CHART_ANIMATION_EASING,
+  usePrefersReducedMotion,
+} from '@/lib/motion'
 import type { ReportChannel, ReportPoint } from '@/types'
 
 export type ReportMetric = 'revenue' | 'orders'
@@ -48,6 +53,7 @@ export function ReportTrendChart({
   target: number
 }) {
   const { t, i18n } = useTranslation('reports')
+  const reducedMotion = usePrefersReducedMotion()
   const config = {
     value: { label: t(`trend.metrics.${metric}`), color },
   } satisfies ChartConfig
@@ -131,6 +137,9 @@ export function ReportTrendChart({
           strokeWidth={2.5}
           dot={false}
           activeDot={{ r: 4 }}
+          isAnimationActive={!reducedMotion}
+          animationDuration={CHART_ANIMATION_DURATION}
+          animationEasing={CHART_ANIMATION_EASING}
         />
       </AreaChart>
     </ChartContainer>
@@ -139,6 +148,7 @@ export function ReportTrendChart({
 
 export function ReportChannelsChart({ data }: { data: ReportChannel[] }) {
   const { t, i18n } = useTranslation('reports')
+  const reducedMotion = usePrefersReducedMotion()
   const config = {
     direct: { label: t('channels.names.direct'), color: CHANNEL_COLORS[0] },
     organic: { label: t('channels.names.organic'), color: CHANNEL_COLORS[1] },
@@ -175,6 +185,9 @@ export function ReportChannelsChart({ data }: { data: ReportChannel[] }) {
             outerRadius="92%"
             paddingAngle={3}
             strokeWidth={0}
+            isAnimationActive={!reducedMotion}
+            animationDuration={CHART_ANIMATION_DURATION}
+            animationEasing={CHART_ANIMATION_EASING}
           >
             {data.map((channel) => (
               <Cell key={channel.name} fill={`var(--color-${channel.name})`} />

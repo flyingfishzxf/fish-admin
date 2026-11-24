@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import ContextMenu, { type ContextMenuEntry } from './ContextMenu.vue'
 
@@ -13,6 +13,10 @@ const items: ContextMenuEntry[] = [
 ]
 
 describe('ContextMenu', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
   it('renders the trigger and the item labels', () => {
     const wrapper = mount(ContextMenu, {
       props: { items },
@@ -41,5 +45,25 @@ describe('ContextMenu', () => {
     expect(openSelect).toHaveBeenCalledTimes(1)
     items[3].onSelect?.()
     expect(deleteSelect).toHaveBeenCalledTimes(1)
+  })
+
+  it('animates the menu content in and out from the pointer origin', async () => {
+    const wrapper = mount(ContextMenu, {
+      props: { items },
+      slots: { trigger: '<div>row</div>' },
+      attachTo: document.body,
+    })
+    const trigger = wrapper.find('[data-slot="context-menu-trigger"]')
+    trigger.element.dispatchEvent(
+      new MouseEvent('contextmenu', { bubbles: true, clientX: 10, clientY: 20 }),
+    )
+
+    await vi.waitFor(() =>
+      expect(document.body.querySelector('[data-slot="context-menu-content"]')).not.toBeNull(),
+    )
+    const content = document.body.querySelector('[data-slot="context-menu-content"]')
+    expect(content?.className).toContain('origin-(--reka-context-menu-content-transform-origin)')
+    expect(content?.className).toContain('data-[state=open]:zoom-in-95')
+    wrapper.unmount()
   })
 })

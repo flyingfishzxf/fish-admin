@@ -6,6 +6,21 @@ All notable changes to this project are documented here. The format is based on
 
 ## [Unreleased]
 
+### Fixed
+
+- **Motion parity between the React and Vue demos.** The Vue overlays now enter and leave with the
+  same fade/slide/zoom animations as their React counterparts: `Sheet`, `Drawer` and `AlertDialog`
+  (base 200ms in, slow 300ms out on the standard curve), plus `Popover`, `Tooltip`, `HoverCard` and
+  `ContextMenu` (fast 150ms with the Reka transform origin), with `motion-reduce` opt-outs on every
+  surface. `Toaster` stacks now transition in and out with Vue `TransitionGroup`.
+- **Charts animate their entrance on both frameworks.** The Vue hand-drawn `AreaChart`, `BarChart`
+  and `DonutChart` reveal with CSS keyframes (600ms, standard curve, staggered donut segments), and
+  every Recharts chart on the React side — dashboard revenue, traffic and channels, report trend and
+  channels — now passes the same 600ms duration and standard easing token instead of Recharts'
+  defaults. Both sides read `prefers-reduced-motion` and skip the animation when it is set.
+- **React overlays respect reduced motion.** `alert-dialog` and `drawer` gained
+  `motion-reduce:animate-none` so the Tailwind enter/exit utilities stop with the system preference.
+
 ## [2.3.0] - 2026-11-24
 
 FishAdmin becomes a two-framework design system. `@fish-admin/vue` reaches 1.0.0 with 90

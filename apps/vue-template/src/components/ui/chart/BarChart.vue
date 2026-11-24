@@ -75,7 +75,7 @@ function tooltipStyle(plot: PlotArea, xs: number[], width: number) {
       @hover="hover = $event"
     >
       <template #plot="{ plot, yMax }">
-        <g data-chart-bars>
+        <g data-chart-bars class="chart-reveal-y">
           <template v-for="(group, index) in bars(plot, yMax)" :key="`group-${index}`">
             <rect
               v-for="(bar, series) in group"

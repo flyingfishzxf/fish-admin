@@ -32,7 +32,7 @@ const props = withDefaults(
           :side="props.side"
           :align="props.align"
           :side-offset="0"
-          class="z-50 w-fit origin-(--reka-tooltip-content-transform-origin) rounded-md bg-foreground px-3 py-1.5 text-xs text-background shadow-md"
+          class="z-50 w-fit origin-(--reka-tooltip-content-transform-origin) animate-in rounded-md bg-foreground px-3 py-1.5 text-xs text-background shadow-md duration-(--motion-duration-fast) ease-(--motion-ease-standard) fade-in-0 zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 motion-reduce:animate-none!"
         >
           <slot />
           <TooltipArrow

@@ -45,7 +45,7 @@ const SIDE_CLASSES: Record<string, string> = {
 
 const classes = computed(() =>
   cn(
-    'fixed z-50 flex flex-col gap-4 bg-background shadow-lg outline-none',
+    'fixed z-50 flex flex-col gap-4 bg-background shadow-lg outline-none transition ease-(--motion-ease-standard) data-[state=closed]:animate-out data-[state=closed]:duration-(--motion-duration-base) data-[state=open]:animate-in data-[state=open]:duration-(--motion-duration-slow) motion-reduce:animate-none! motion-reduce:transition-none!',
     SIDE_CLASSES[props.side],
     props.class,
   ),
@@ -58,7 +58,10 @@ const classes = computed(() =>
       <slot name="trigger" />
     </DialogTrigger>
     <DialogPortal>
-      <DialogOverlayPrimitive data-slot="sheet-overlay" class="fixed inset-0 z-50 bg-black/50" />
+      <DialogOverlayPrimitive
+        data-slot="sheet-overlay"
+        class="fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 motion-reduce:animate-none!"
+      />
       <DialogContentPrimitive
         data-slot="sheet-content"
         :class="classes"

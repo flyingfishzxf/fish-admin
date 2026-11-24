@@ -96,10 +96,11 @@ function tooltipText(segment: { name: string; share: number }) {
         v-for="(segment, index) in segments"
         :key="segment.name"
         :data-donut-segment="segment.name"
+        class="chart-reveal-pop"
         :d="arcPath(radius, radius, innerRadius, outerRadius, segment.start, segment.end)"
         :fill="seriesFor(segment.name)?.color"
         :fill-opacity="hover === -1 || hover === index ? 1 : 0.55"
-        style="transition: fill-opacity 120ms"
+        :style="{ transition: 'fill-opacity 120ms', animationDelay: `${index * 60}ms` }"
         @mouseenter="hover = index"
         @mouseleave="hover = -1"
       />

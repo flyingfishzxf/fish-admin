@@ -74,22 +74,24 @@ function tooltipStyle(plot: PlotArea, xs: number[], width: number) {
         </linearGradient>
       </defs>
 
-      <path
-        v-if="props.data.length"
-        data-chart-area
-        :d="areaPath(points(xPositions, yFor), plot.bottom)"
-        :fill="`url(#${gradientId})`"
-      />
-      <path
-        v-if="props.data.length"
-        data-chart-line
-        :d="monotonePath(points(xPositions, yFor))"
-        fill="none"
-        :stroke="props.color"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
+      <g data-chart-reveal class="chart-reveal-x">
+        <path
+          v-if="props.data.length"
+          data-chart-area
+          :d="areaPath(points(xPositions, yFor), plot.bottom)"
+          :fill="`url(#${gradientId})`"
+        />
+        <path
+          v-if="props.data.length"
+          data-chart-line
+          :d="monotonePath(points(xPositions, yFor))"
+          fill="none"
+          :stroke="props.color"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </g>
 
       <line
         v-if="props.reference"
