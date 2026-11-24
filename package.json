@@ -40,7 +40,7 @@
     "test:ui": "pnpm --filter @fish-admin/react test",
     "test:vue": "pnpm --filter @fish-admin/vue test && pnpm --filter @fish-admin/parity-vue test",
     "dev:landing": "pnpm --filter @fish-admin/landing dev",
-    "build:landing": "pnpm --filter @fish-admin/landing build",
+    "build:landing": "pnpm build:tokens && pnpm --filter @fish-admin/landing build",
     "dev:vue-template": "pnpm --filter @fish-admin/vue-template dev",
     "build:vue-template": "pnpm --filter @fish-admin/vue-template build",
     "build:vue-template:demo": "pnpm build:vue && cross-env VITE_ENABLE_MOCK=true pnpm --filter @fish-admin/vue-template build",
