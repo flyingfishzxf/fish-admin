@@ -7,11 +7,11 @@ description: React 与 Vue 两条线的组件包、模板与文档站版本。
 
 | 表面                 | 版本  | 状态                                                                   |
 | -------------------- | ----- | ---------------------------------------------------------------------- |
-| `@fish-admin/react`  | 0.2.2 | 已发布到 npm。                                                         |
-| `@fish-admin/vue`    | 1.0.0 | 已发布到 npm；90 个组件导出。                                          |
+| `@fish-admin/react`  | 0.2.3 | 已发布到 npm。                                                         |
+| `@fish-admin/vue`    | 1.0.1 | 已发布到 npm；90 个组件导出。                                          |
 | `@fish-admin/tokens` | 0.1.1 | 已发布到 npm；0.1.0 已被取代。                                         |
-| React 模板           | 2.3.0 | 已上线；[演示站](https://fish-admin-react-demo.vercel.app)运行 2.3.0。 |
-| Vue 模板             | 2.3.0 | 已上线；[演示站](https://fish-admin-vue-demo.vercel.app)运行 2.3.0。   |
+| React 模板           | 2.3.1 | 已上线；[演示站](https://fish-admin-react-demo.vercel.app)运行 2.3.1。 |
+| Vue 模板             | 2.3.1 | 已上线；[演示站](https://fish-admin-vue-demo.vercel.app)运行 2.3.1。   |
 | React 文档           | 0.4.0 | 已上线；由 `main` 部署。                                               |
 | Vue 文档             | 1.0.0 | 已上线；由 `main` 部署。                                               |
 
@@ -43,7 +43,7 @@ description: React 与 Vue 两条线的组件包、模板与文档站版本。
 
 ## Vue 3
 
-`@fish-admin/vue` 1.0.0 实现了 React 的全部 83 个组件 id，并新增 7 个 Vue 独有组件：
+`@fish-admin/vue` 1.0.1 实现了 React 的全部 83 个组件 id，并新增 7 个 Vue 独有组件：
 bulk-actions-bar、command-dialog、data-table、error-state、loading-overlay、page-header 与
 progress-bar。它与 React 共享设计令牌以及框架无关的 contracts、i18n 与 mock 包，但不共享实现。
 [Vue 文档](https://fish-admin-vue-docs.vercel.app)列出每个导出及其实时演示。

@@ -4,7 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const RELEASE = '1.0.0'
+const RELEASE = '1.0.1'
 const MANIFEST_PATH = `parity/baseline/vue-visual-${RELEASE}/manifest.json`
 const BASELINE_DIR = 'e2e-vue-visual/__screenshots__/vue-visual.spec.ts'
 const APPEARANCES = ['light', 'dark']

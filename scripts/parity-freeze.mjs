@@ -5,8 +5,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-export const RELEASE = '2.3.0'
-export const MANIFEST_PATH = 'parity/baseline/2.3.0/manifest.json'
+export const RELEASE = '2.3.1'
+export const MANIFEST_PATH = 'parity/baseline/2.3.1/manifest.json'
 
 const INPUT_FILES = [
   'apps/docs/generated/api.json',
@@ -37,8 +37,8 @@ const EXPECTED_COUNTS = {
 }
 
 const EXPECTED_PACKAGES = {
-  root: '2.3.0',
-  '@fish-admin/react': '0.2.2',
+  root: '2.3.1',
+  '@fish-admin/react': '0.2.3',
   '@fish-admin/tokens': '0.1.1',
 }
 
@@ -107,7 +107,7 @@ function gitHead(root) {
 export function collectManifest(
   root,
   {
-    verifiedAt = '2026-11-04',
+    verifiedAt = '2026-11-26',
     frozenOn = new Date().toISOString().slice(0, 10),
     sourceCommit = gitHead(root),
   } = {},
@@ -221,7 +221,7 @@ function main() {
       )
     }
     const manifest = collectManifest(root, {
-      verifiedAt: '2026-11-04',
+      verifiedAt: '2026-11-26',
       frozenOn: process.env.PARITY_FROZEN_ON ?? new Date().toISOString().slice(0, 10),
     })
     fs.mkdirSync(path.dirname(manifestPath), { recursive: true })

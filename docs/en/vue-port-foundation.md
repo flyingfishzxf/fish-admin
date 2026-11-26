@@ -1,10 +1,10 @@
 # Vue port foundation
 
-FishAdmin 2.3.0 is the reference release for the Vue 3 port. This page documents what is frozen, how the framework-neutral packages are laid out, and how the parity harness works. `@fish-admin/vue` 1.0.0 now exports all 90 components, and the `apps/parity-vue` harness runs the full contract: 119 checks, a 180-screenshot self-baseline suite and six cross-version pilot comparisons.
+FishAdmin 2.3.1 is the reference release for the Vue 3 port. This page documents what is frozen, how the framework-neutral packages are laid out, and how the parity harness works. `@fish-admin/vue` 1.0.1 now exports all 90 components, and the `apps/parity-vue` harness runs the full contract: 119 checks, a 180-screenshot self-baseline suite and six cross-version pilot comparisons.
 
 ## What is frozen
 
-`parity/baseline/2.3.0/manifest.json` stores SHA-256 hashes for:
+`parity/baseline/2.3.1/manifest.json` stores SHA-256 hashes for:
 
 - 198 Linux screenshots: 166 component baselines (83 components × light/dark), 14 docs layout baselines and 18 template baselines.
 - The generated docs artifacts: `registry.json`, `documented.json`, `api.json`, `maturity.json` and `rtl-audit.json`.

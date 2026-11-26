@@ -1,7 +1,7 @@
 {
   "name": "fish-admin",
   "private": true,
-  "version": "2.3.0",
+  "version": "2.3.1",
   "type": "module",
   "description": "MIT-licensed React and Vue 3 component libraries — 83 React and 90 Vue components — plus both RBAC admin templates.",
   "license": "MIT",

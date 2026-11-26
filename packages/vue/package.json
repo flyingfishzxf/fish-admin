@@ -1,6 +1,6 @@
 {
   "name": "@fish-admin/vue",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FishAdmin UI — Vue 3 components and design tokens for the FishAdmin admin template.",
   "license": "MIT",
   "type": "module",

@@ -1,10 +1,10 @@
 # Parity harness
 
-This directory freezes the documented surface of FishAdmin 2.3.0 and compares a renderer against it.
+This directory freezes the documented surface of FishAdmin 2.3.1 and compares a renderer against it.
 
 | Path                           | Purpose                                                              |
 | ------------------------------ | -------------------------------------------------------------------- |
-| `baseline/2.3.0/manifest.json` | SHA-256 manifest for screenshots, generated artifacts and docs hooks |
+| `baseline/2.3.1/manifest.json` | SHA-256 manifest for screenshots, generated artifacts and docs hooks |
 | `pilot.json`                   | The six components with behaviour scenarios and screenshot parity    |
 | `contract/components.json`     | Generated reference API for all 83 documented components             |
 | `contract/docs-surface.json`   | Generated route, demo anchor, selector and API-row contract          |

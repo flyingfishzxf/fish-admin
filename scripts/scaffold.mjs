@@ -121,7 +121,7 @@ class Editor {
 
     const path = this.absolute(relative)
     assert(existsSync(path), `${relative} is missing — is this directory a FishAdmin template?`)
-    const contents = readFileSync(path, 'utf8')
+    const contents = readFileSync(path, 'utf8').replace(/\r\n/g, '\n')
     this.buffers.set(relative, contents)
     return contents
   }

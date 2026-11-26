@@ -1,10 +1,10 @@
 # Vue 移植地基
 
-FishAdmin 2.3.0 是 Vue 3 移植的参考版本。本页说明冻结了什么、框架无关包如何分层，以及 parity 测试台如何工作。`@fish-admin/vue` 1.0.0 现已导出全部 90 个组件，`apps/parity-vue` 跑完整套契约：119 项检查、180 张自基线截图套件与 6 组跨版本试点比对。
+FishAdmin 2.3.1 是 Vue 3 移植的参考版本。本页说明冻结了什么、框架无关包如何分层，以及 parity 测试台如何工作。`@fish-admin/vue` 1.0.1 现已导出全部 90 个组件，`apps/parity-vue` 跑完整套契约：119 项检查、180 张自基线截图套件与 6 组跨版本试点比对。
 
 ## 冻结范围
 
-`parity/baseline/2.3.0/manifest.json` 保存以下内容的 SHA-256：
+`parity/baseline/2.3.1/manifest.json` 保存以下内容的 SHA-256：
 
 - 198 张 Linux 截图：166 张组件基线（83 个组件 × 明暗两套）、14 张文档布局基线与 18 张模板基线。
 - 文档生成物：`registry.json`、`documented.json`、`api.json`、`maturity.json` 与 `rtl-audit.json`。

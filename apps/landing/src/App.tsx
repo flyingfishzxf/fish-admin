@@ -292,7 +292,7 @@ export default function App() {
               >
                 <span className="code-row__stack">React</span>
                 <code>npm install @fish-admin/react</code>
-                <span className="code-row__version">0.2.2</span>
+                <span className="code-row__version">0.2.3</span>
               </a>
               <a
                 className="code-row"
@@ -302,7 +302,7 @@ export default function App() {
               >
                 <span className="code-row__stack">Vue</span>
                 <code>npm install @fish-admin/vue</code>
-                <span className="code-row__version">1.0.0</span>
+                <span className="code-row__version">1.0.1</span>
               </a>
             </div>
           </div>

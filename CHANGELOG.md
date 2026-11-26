@@ -4,7 +4,9 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [2.3.1] - 2026-11-26
+
+Ships `@fish-admin/react` 0.2.3 and `@fish-admin/vue` 1.0.1 alongside the matching 2.3.1 templates.
 
 ### Fixed
 
@@ -20,6 +22,8 @@ All notable changes to this project are documented here. The format is based on
   defaults. Both sides read `prefers-reduced-motion` and skip the animation when it is set.
 - **React overlays respect reduced motion.** `alert-dialog` and `drawer` gained
   `motion-reduce:animate-none` so the Tailwind enter/exit utilities stop with the system preference.
+- **The scaffold handles Windows checkouts.** Template reads normalise CRLF line endings before
+  applying literal anchors, so `pnpm scaffold` also works on Windows with `core.autocrlf=true`.
 
 ## [2.3.0] - 2026-11-24
 
@@ -924,7 +928,9 @@ table columns.
   documentation, five accent themes, light/dark/system modes, and a UI
   playground.
 
-[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/flyingfishzxf/fish-admin/compare/v2.3.1...HEAD
+[2.3.1]: https://github.com/flyingfishzxf/fish-admin/compare/v2.3.0...v2.3.1
+[2.3.0]: https://github.com/flyingfishzxf/fish-admin/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/flyingfishzxf/fish-admin/compare/v2.1.1...v2.2.0
 [2.1.1]: https://github.com/flyingfishzxf/fish-admin/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/flyingfishzxf/fish-admin/compare/v2.0.0...v2.1.0
